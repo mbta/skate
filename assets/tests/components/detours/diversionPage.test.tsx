@@ -938,7 +938,7 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("When 'Review Detour' button is clicked, shows 'Share Detour Details' screen but there was an error", async () => {
+  test("When the API call errors and 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
     jest.mocked(fetchFinishedDetour).mockRejectedValue("NOPE")
 
     const { container } = render(<DiversionPage />)
