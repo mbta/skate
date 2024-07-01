@@ -318,6 +318,8 @@ export const createDetourMachine = setup({
                     finishedDetour: ({ event }) => event.output,
                   }),
                 },
+
+                onError: {},
               },
               on: {
                 "detour.edit.undo": {

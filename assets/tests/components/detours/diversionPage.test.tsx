@@ -938,6 +938,29 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
+  test("When 'Review Detour' button is clicked, shows 'Share Detour Details' screen but there was an error", async () => {
+    jest.mocked(fetchFinishedDetour).mockRejectedValue("NOPE")
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    expect(
+      screen.queryByRole("heading", { name: "Create Detour" })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole("heading", { name: "Share Detour Details" })
+    ).toBeVisible()
+  })
+
   test("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
     const { container } = render(<DiversionPage />)
 
