@@ -23,7 +23,7 @@ const defaultOptions = {}
 export function useReactDivIcon(options?: DivIconOptions) {
   const opts = options || defaultOptions
   // Persistent element for react portal to use between `divIcon` recreations
-  const iconContainer = useMemo(() => createPortalElement(), [])
+  const iconContainer = useMemo(createPortalElement, [])
   // Leaflet by default doesn't support updating a `divIcon` in place.
   // To ensure that the `divIcon` updates when `opts` change
   // regenerate the `divIcon` with the portal element and provided `opts`
