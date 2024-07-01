@@ -82,15 +82,14 @@ export const createDetourMachine = setup({
         points?: ShapePoint[]
       }
     >(async ({ input: { points } }) => {
-      if (points) {
-        if (points.length < 2) {
-          return Ok({ coordinates: [], directions: undefined })
-        } else {
-          return fetchDetourDirections(points)
-        }
-      } else {
+      if (!points) {
         throw "Missing detour direction inputs"
       }
+      if (points.length < 2) {
+        return Ok({ coordinates: [], directions: undefined })
+      }
+      return fetchDetourDirections(points)
+ 
     }),
 
     "fetch-finished-detour": fromPromise<
