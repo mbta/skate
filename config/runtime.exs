@@ -63,4 +63,32 @@ if config_env() == :prod do
     providers: [
       keycloak: keycloak_opts
     ]
+
+  mqtt_url = System.get_env("MQTT_BROKER_URLS")
+
+  if mqtt_url not in [nil, ""] do
+    topic_prefix = System.get_env("MQTT_TOPIC_PREFIX", "")
+    username = System.get_env("MQTT_BROKER_USERNAME")
+
+    passwords =
+      case System.get_env("MQTT_BROKER_PASSWORDS") do
+        nil -> [nil]
+        "" -> [nil]
+        passwords -> String.split(passwords, " ")
+      end
+
+    configs =
+      for url <- String.split(mqtt_url, " "),
+          password <- passwords do
+        EmqttFailover.Config.from_url(url, username: username, password: password)
+      end
+
+    config :skate, Skate.MqttConnection,
+      enabled?: true,
+      broker_configs: configs,
+      broker_topic_prefix: topic_prefix
+
+    # Configure TripModifications to publish if the env var is present
+    config :skate, Skate.Detours.TripModificationPublisher, start: true
+  end
 end

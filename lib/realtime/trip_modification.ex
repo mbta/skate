@@ -29,6 +29,7 @@ defmodule Realtime.TripModification do
       :service_date,
       :last_modified_time
     ]
+    @derive Jason.Encoder
     defstruct [
       :route_pattern,
       :missed_stops,
@@ -51,6 +52,7 @@ defmodule Realtime.TripModification do
           }
 
     @enforce_keys [:trip_ids, :shape_id]
+    @derive Jason.Encoder
     defstruct [:trip_ids, :shape_id]
   end
 
@@ -68,6 +70,7 @@ defmodule Realtime.TripModification do
           }
 
     @enforce_keys [:start_stop_selector, :end_stop_selector, :last_modified_time]
+    @derive Jason.Encoder
     defstruct [:start_stop_selector, :end_stop_selector, :last_modified_time]
   end
 
@@ -82,6 +85,7 @@ defmodule Realtime.TripModification do
             stop_id: String.t()
           }
 
+    @derive Jason.Encoder
     defstruct [:stop_id]
   end
 
@@ -91,6 +95,7 @@ defmodule Realtime.TripModification do
           modifications: [Modification.t()]
         }
   @enforce_keys [:selected_trips, :service_dates, :modifications]
+  @derive Jason.Encoder
   defstruct [:selected_trips, :service_dates, :modifications]
 
   @spec new(input :: Input.t()) :: {:ok, __MODULE__.t()}
