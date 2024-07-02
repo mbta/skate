@@ -546,6 +546,7 @@ describe("DiversionPage", () => {
 
   test("clicking on 'Clear' restores the placeholder text when appropriate", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
         detourShapeFactory.build({
           directions: [
@@ -558,7 +559,7 @@ describe("DiversionPage", () => {
     )
 
     const { container } = render(<DiversionPage />)
-    const { queryByText, getByText } = within(
+    const { queryByText, findByText } = within(
       screen
         .getByRole("heading", { name: "Detour Directions" })
         .closest("section")!
@@ -570,28 +571,25 @@ describe("DiversionPage", () => {
     act(() => {
       fireEvent.click(container.querySelector(".c-vehicle-map")!)
     })
-    await waitFor(() => {
-      expect(
-        queryByText(
-          "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
-        )
-      ).not.toBeInTheDocument()
 
-      expect(getByText("Turn left on Main Street")).toBeVisible()
-    })
+    const directionText = await findByText("Turn left on Main Street")
+    expect(directionText).toBeVisible()
+    expect(
+      queryByText(
+        "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
+      )
+    ).not.toBeInTheDocument()
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: "Clear" }))
     })
-    await waitFor(() => {
-      expect(
-        getByText(
-          "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
-        )
-      ).toBeVisible()
 
-      expect(queryByText("Turn left on Main Street")).not.toBeInTheDocument()
-    })
+    const startingHelpText = await findByText(
+      "Click a point on the regular route to start drawing your detour. As you continue to select points on the map, turn-by-turn directions will appear in this panel."
+    )
+    expect(startingHelpText).toBeVisible()
+    expect(directionText).not.toBeInTheDocument()
+
   })
 
   test("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
