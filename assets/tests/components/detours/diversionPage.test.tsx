@@ -546,7 +546,6 @@ describe("DiversionPage", () => {
 
   test("clicking on 'Clear' restores the placeholder text when appropriate", async () => {
     jest.mocked(fetchDetourDirections).mockResolvedValue(
-    jest.mocked(fetchDetourDirections).mockResolvedValue(
       Ok(
         detourShapeFactory.build({
           directions: [
@@ -589,7 +588,6 @@ describe("DiversionPage", () => {
     )
     expect(startingHelpText).toBeVisible()
     expect(directionText).not.toBeInTheDocument()
-
   })
 
   test("'Undo' and 'Clear' are disabled before detour drawing is started", async () => {
