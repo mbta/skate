@@ -1,10 +1,20 @@
 defmodule SkateWeb.DetoursControllerTest do
+  alias Skate.OpenRouteServiceAPI.DirectionsRequest
   use SkateWeb.ConnCase
 
   import Test.Support.Helpers
+  import Mox
   import Skate.Factory
 
   alias Skate.Detours.MissedStops
+
+  setup do
+    stub(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn _ ->
+      {:ok, build(:ors_directions_json)}
+    end)
+
+    :ok
+  end
 
   describe "unfinished_detour/2" do
     @tag :authenticated
@@ -92,6 +102,16 @@ defmodule SkateWeb.DetoursControllerTest do
             "lat" => connection_start.latitude,
             "lon" => connection_start.longitude
           },
+          waypoints: [
+            %{
+              "lat" => 42.431,
+              "lon" => -70.99
+            },
+            %{
+              "lat" => 42.439,
+              "lon" => -70.99
+            }
+          ],
           connection_end: %{"lat" => connection_end.latitude, "lon" => connection_end.longitude}
         )
 
@@ -133,6 +153,16 @@ defmodule SkateWeb.DetoursControllerTest do
       conn =
         post(conn, ~p"/api/detours/finished_detour",
           route_pattern_id: route_pattern.id,
+          waypoints: [
+            %{
+              "lat" => 42.431,
+              "lon" => -70.99
+            },
+            %{
+              "lat" => 42.439,
+              "lon" => -70.99
+            }
+          ],
           connection_start: %{
             "lat" => connection_start.latitude,
             "lon" => connection_start.longitude
@@ -179,6 +209,16 @@ defmodule SkateWeb.DetoursControllerTest do
             "lat" => 42.425,
             "lon" => -70.99
           },
+          waypoints: [
+            %{
+              "lat" => 42.431,
+              "lon" => -70.99
+            },
+            %{
+              "lat" => 42.439,
+              "lon" => -70.99
+            }
+          ],
           connection_end: %{
             "lat" => 42.445,
             "lon" => -70.99
@@ -209,6 +249,173 @@ defmodule SkateWeb.DetoursControllerTest do
     end
 
     @tag :authenticated
+    test "returns detour shape as geojson from ORS", %{conn: conn} do
+      expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn _ ->
+        {:ok, build(:ors_directions_json, coordinates: [[0, 0], [0.5, 0.5], [1, 1]])}
+      end)
+
+      route_pattern = build(:gtfs_route_pattern)
+      shape_with_stops = build(:shape_with_stops)
+
+      reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
+      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
+
+      conn =
+        post(conn, ~p"/api/detours/finished_detour",
+          route_pattern_id: route_pattern.id,
+          connection_start: %{
+            "lat" => 42.425,
+            "lon" => -70.99
+          },
+          waypoints: [
+            %{
+              "lat" => 42.431,
+              "lon" => -70.99
+            },
+            %{
+              "lat" => 42.439,
+              "lon" => -70.99
+            }
+          ],
+          connection_end: %{
+            "lat" => 42.445,
+            "lon" => -70.99
+          }
+        )
+
+      assert %{
+               "data" => %{
+                 "detour_shape" => %{
+                   "coordinates" => [
+                     %{"lat" => 0, "lon" => 0},
+                     %{"lat" => 0.5, "lon" => 0.5},
+                     %{"lat" => 1, "lon" => 1}
+                   ]
+                 }
+               }
+             } =
+               json_response(conn, 200)
+    end
+
+    @tag :authenticated
+    test "returns turn-by-turn directions from ORS", %{conn: conn} do
+      expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn _ ->
+        {:ok,
+         build(:ors_directions_json,
+           segments: [
+             %{
+               "steps" => [
+                 %{
+                   "instruction" => "1",
+                   "type" => 1
+                 },
+                 %{
+                   "instruction" => "2",
+                   "type" => 0
+                 }
+               ]
+             },
+             %{
+               "steps" => [
+                 %{
+                   "instruction" => "3",
+                   "type" => 2
+                 }
+               ]
+             }
+           ]
+         )}
+      end)
+
+      route_pattern = build(:gtfs_route_pattern)
+      shape_with_stops = build(:shape_with_stops)
+
+      reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
+      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
+
+      conn =
+        post(conn, ~p"/api/detours/finished_detour",
+          route_pattern_id: route_pattern.id,
+          connection_start: %{
+            "lat" => 42.425,
+            "lon" => -70.99
+          },
+          waypoints: [
+            %{
+              "lat" => 42.431,
+              "lon" => -70.99
+            },
+            %{
+              "lat" => 42.439,
+              "lon" => -70.99
+            }
+          ],
+          connection_end: %{
+            "lat" => 42.445,
+            "lon" => -70.99
+          }
+        )
+
+      assert %{
+               "data" => %{
+                 "detour_shape" => %{
+                   "directions" => [
+                     %{"instruction" => "1"},
+                     %{"instruction" => "2"},
+                     %{"instruction" => "3"}
+                   ]
+                 }
+               }
+             } =
+               json_response(conn, 200)
+    end
+
+    @tag :authenticated
+    test "formats coordinates as [lon, lat] when sending to ORS and includes the start and end points",
+         %{conn: conn} do
+      expect(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn request ->
+        assert %DirectionsRequest{
+                 coordinates: [
+                   [-70.99, 42.425],
+                   [-70.99, 42.431],
+                   [-70.99, 42.439],
+                   [-70.99, 42.445]
+                 ]
+               } = request
+
+        {:ok, build(:ors_directions_json, coordinates: [[0, 0], [0.5, 0.5], [1, 1]])}
+      end)
+
+      route_pattern = build(:gtfs_route_pattern)
+      shape_with_stops = build(:shape_with_stops)
+
+      reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
+      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
+
+      post(conn, ~p"/api/detours/finished_detour",
+        route_pattern_id: route_pattern.id,
+        connection_start: %{
+          "lat" => 42.425,
+          "lon" => -70.99
+        },
+        waypoints: [
+          %{
+            "lat" => 42.431,
+            "lon" => -70.99
+          },
+          %{
+            "lat" => 42.439,
+            "lon" => -70.99
+          }
+        ],
+        connection_end: %{
+          "lat" => 42.445,
+          "lon" => -70.99
+        }
+      )
+    end
+
+    @tag :authenticated
     test "returns bad request if bad data is sent", %{conn: conn} do
       route_pattern = nil
       shape_with_stops = build(:shape_with_stops)
@@ -226,6 +433,16 @@ defmodule SkateWeb.DetoursControllerTest do
             "lat" => connection_start.latitude,
             "lon" => connection_start.longitude
           },
+          waypoints: [
+            %{
+              "lat" => 42.431,
+              "lon" => -70.99
+            },
+            %{
+              "lat" => 42.439,
+              "lon" => -70.99
+            }
+          ],
           connection_end: %{"lat" => connection_end.latitude, "lon" => connection_end.longitude}
         )
 

@@ -1,7 +1,7 @@
 import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
 import { RoutePatternId, ShapePoint } from "../schedule"
 import { Route, RouteId, RoutePattern } from "../schedule"
-import { Ok, Result, map } from "../util/result"
+import { Ok, Result } from "../util/result"
 import {
   FetchDetourDirectionsError,
   fetchDetourDirections,
@@ -96,15 +96,25 @@ export const createDetourMachine = setup({
       {
         routePatternId?: RoutePatternId
         startPoint?: ShapePoint
+        waypoints: ShapePoint[]
         endPoint?: ShapePoint
       }
-    >(async ({ input: { routePatternId, startPoint, endPoint } }) => {
-      if (routePatternId && startPoint && endPoint) {
-        return fetchFinishedDetour(routePatternId, startPoint, endPoint)
-      } else {
-        throw "Missing finished detour inputs"
+    >(
+      async ({
+        input: { routePatternId, startPoint, waypoints, endPoint },
+      }) => {
+        if (routePatternId && startPoint && endPoint) {
+          return fetchFinishedDetour(
+            routePatternId,
+            startPoint,
+            waypoints,
+            endPoint
+          )
+        } else {
+          throw "Missing finished detour inputs"
+        }
       }
-    }),
+    ),
   },
   actions: {
     "set.route-pattern": assign({
@@ -348,51 +358,35 @@ export const createDetourMachine = setup({
               },
             },
             "Finished Drawing": {
-              invoke: [
-                {
-                  src: "fetch-finished-detour",
-                  input: ({
-                    context: { routePattern, startPoint, endPoint },
-                  }) => ({
-                    routePatternId: routePattern?.id,
-                    startPoint,
-                    endPoint,
-                  }),
+              invoke: {
+                src: "fetch-finished-detour",
+                input: ({
+                  context: { routePattern, startPoint, waypoints, endPoint },
+                }) => ({
+                  routePatternId: routePattern?.id,
+                  startPoint,
+                  waypoints,
+                  endPoint,
+                }),
 
-                  onDone: {
-                    actions: assign({
-                      finishedDetour: ({ event }) => event.output,
-                    }),
-                  },
-
-                  onError: {},
-                },
-
-                {
-                  src: "fetch-detour-directions",
-                  input: ({
-                    context: { startPoint, waypoints, endPoint },
-                  }) => ({
-                    points: (startPoint ? [startPoint] : [])
-                      .concat(waypoints || [])
-                      .concat(endPoint ? [endPoint] : []),
-                  }),
-
-                  onDone: {
-                    actions: assign({
-                      detourShape: ({ event: { output: detourShape } }) =>
-                        map(detourShape, (shape) => ({
-                          ...shape,
-                          directions: shape.directions?.concat({
+                onDone: {
+                  actions: assign({
+                    finishedDetour: ({ event }) => event.output,
+                    detourShape: ({ event }) =>
+                      event.output?.detourShape &&
+                      Ok({
+                        ...event.output.detourShape,
+                        directions: event.output.detourShape.directions?.concat(
+                          {
                             instruction: "Regular Route",
-                          }),
-                        })),
-                    }),
-                  },
-
-                  onError: {},
+                          }
+                        ),
+                      }),
+                  }),
                 },
-              ],
+
+                onError: {},
+              },
 
               on: {
                 "detour.edit.undo": {

@@ -30,4 +30,5 @@ export interface FinishedDetour {
     end?: Stop
   }
   routeSegments: RouteSegments
+  detourShape: DetourShape
 }

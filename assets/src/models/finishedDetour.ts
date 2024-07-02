@@ -1,6 +1,7 @@
 import { array, Infer, nullable, number, type } from "superstruct"
 import { FinishedDetour } from "./detour"
 import { StopData, stopFromData, stopsFromData } from "./stopData"
+import { DetourShapeData } from "./detourShapeData"
 
 const Coordinate = type({
   lat: number(),
@@ -16,6 +17,7 @@ export const FinishedDetourData = type({
     detour: array(Coordinate),
     after_detour: array(Coordinate),
   }),
+  detour_shape: DetourShapeData,
 })
 export type FinishedDetourData = Infer<typeof FinishedDetourData>
 
@@ -37,5 +39,6 @@ export const finishedDetourFromData = (
       detour: finishedDetour.route_segments.detour,
       afterDetour: finishedDetour.route_segments.after_detour,
     },
+    detourShape: finishedDetour.detour_shape,
   }
 }

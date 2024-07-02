@@ -252,6 +252,7 @@ export const fetchDetourDirections = (
 export const fetchFinishedDetour = (
   routePatternId: RoutePatternId,
   connectionStart: ShapePoint,
+  waypoints: ShapePoint[],
   connectionEnd: ShapePoint
 ): Promise<FinishedDetour | null> =>
   checkedApiCall<FinishedDetourData, FinishedDetour | null>({
@@ -262,6 +263,7 @@ export const fetchFinishedDetour = (
     fetchArgs: postJsonParameter({
       route_pattern_id: routePatternId,
       connection_start: connectionStart,
+      waypoints: waypoints,
       connection_end: connectionEnd,
     }),
   })

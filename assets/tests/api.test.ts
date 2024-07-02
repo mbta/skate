@@ -49,6 +49,7 @@ import locationSearchSuggestionFactory from "./factories/locationSearchSuggestio
 import stopDataFactory from "./factories/stopData"
 import { shapePointFactory } from "./factories/shapePointFactory"
 import { ok, fetchError } from "../src/util/fetchResult"
+import { directionsFactory } from "./factories/detourShapeFactory"
 
 jest.mock("@sentry/react", () => ({
   __esModule: true,
@@ -493,6 +494,9 @@ describe("fetchFinishedDetour", () => {
     const detour = shapePointFactory.buildList(3)
     const afterDetour = shapePointFactory.buildList(3)
 
+    const detourCoordinates = shapePointFactory.buildList(3)
+    const directions = directionsFactory.buildList(2)
+
     mockFetch(200, {
       data: {
         missed_stops: stopData,
@@ -503,12 +507,17 @@ describe("fetchFinishedDetour", () => {
           detour: detour,
           after_detour: afterDetour,
         },
+        detour_shape: {
+          coordinates: detourCoordinates,
+          directions,
+        },
       },
     })
 
     return fetchFinishedDetour(
       "route_pattern_id",
       shapePointFactory.build(),
+      shapePointFactory.buildList(3),
       shapePointFactory.build()
     ).then((result) => {
       expect(result).toEqual({
@@ -521,6 +530,10 @@ describe("fetchFinishedDetour", () => {
           beforeDetour,
           detour,
           afterDetour,
+        },
+        detourShape: {
+          coordinates: detourCoordinates,
+          directions,
         },
       })
     })
@@ -535,6 +548,9 @@ describe("fetchFinishedDetour", () => {
     const detour = shapePointFactory.buildList(3)
     const afterDetour = shapePointFactory.buildList(3)
 
+    const detourCoordinates = shapePointFactory.buildList(3)
+    const directions = directionsFactory.buildList(2)
+
     mockFetch(200, {
       data: {
         missed_stops: stopData,
@@ -545,12 +561,17 @@ describe("fetchFinishedDetour", () => {
           detour: detour,
           after_detour: afterDetour,
         },
+        detour_shape: {
+          coordinates: detourCoordinates,
+          directions,
+        },
       },
     })
 
     return fetchFinishedDetour(
       "route_pattern_id",
       shapePointFactory.build(),
+      shapePointFactory.buildList(3),
       shapePointFactory.build()
     ).then((result) => {
       expect(result).toEqual({
@@ -564,6 +585,10 @@ describe("fetchFinishedDetour", () => {
           detour,
           afterDetour,
         },
+        detourShape: {
+          coordinates: detourCoordinates,
+          directions,
+        },
       })
     })
   })
@@ -574,6 +599,7 @@ describe("fetchFinishedDetour", () => {
     return fetchFinishedDetour(
       "route_pattern_id",
       shapePointFactory.build(),
+      shapePointFactory.buildList(3),
       shapePointFactory.build()
     ).then((result) => {
       expect(result).toBeNull()
