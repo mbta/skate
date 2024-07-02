@@ -89,7 +89,6 @@ export const createDetourMachine = setup({
         return Ok({ coordinates: [], directions: undefined })
       }
       return fetchDetourDirections(points)
- 
     }),
 
     "fetch-finished-detour": fromPromise<
