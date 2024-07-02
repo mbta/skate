@@ -38,12 +38,12 @@ defmodule Skate.Detours.RouteSegments do
         shape,
         start_point
       ) do
-    {nearest_point, index} = NearestPoint.nearest_point_on_shape(shape, start_point)
+    {before_start_point, after_start_point} = split_shape_at_point(shape, start_point)
 
     {:ok,
      %__MODULE__.UnfinishedResult{
-       before_start_point: Enum.slice(shape, 0..index) ++ [nearest_point],
-       after_start_point: [nearest_point] ++ Enum.slice(shape, (index + 1)..-1)
+       before_start_point: before_start_point,
+       after_start_point: after_start_point
      }}
   end
 
@@ -93,24 +93,28 @@ defmodule Skate.Detours.RouteSegments do
         connection_start,
         connection_end
       ) do
-    {nearest_start_point, start_index} =
-      NearestPoint.nearest_point_on_shape(shape, connection_start)
-
-    {nearest_end_point, end_index} =
-      NearestPoint.nearest_point_on_shape(shape, connection_end)
+    {before_start_point, after_start_point} = split_shape_at_point(shape, connection_start)
+    {between_points, after_end_point} = split_shape_at_point(after_start_point, connection_end)
 
     {:ok,
      %__MODULE__.Result{
-       before_detour:
-         Enum.slice(shape, 0..start_index) ++
-           [nearest_start_point],
-       detour:
-         [nearest_start_point] ++
-           Enum.slice(shape, (start_index + 1)..end_index) ++
-           [nearest_end_point],
-       after_detour:
-         [nearest_end_point] ++
-           Enum.slice(shape, (end_index + 1)..-1)
+       before_detour: before_start_point,
+       detour: between_points,
+       after_detour: after_end_point
      }}
+  end
+
+  @spec split_shape_at_point(nonempty_list(Util.Location.From.t()), Util.Location.From.t()) :: {
+          nonempty_list(Util.Location.From.t()),
+          nonempty_list(Util.Location.From.t())
+        }
+  defp split_shape_at_point(shape, point) do
+    {nearest_point, index} = NearestPoint.nearest_point_on_shape(shape, point)
+    {shape_before_point, shape_after_point} = Enum.split(shape, index + 1)
+
+    {before_point, after_point} =
+      {shape_before_point ++ [nearest_point], [nearest_point | shape_after_point]}
+
+    {before_point, after_point}
   end
 end
