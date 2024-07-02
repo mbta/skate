@@ -106,23 +106,26 @@ export const DiversionPage = ({
     : {}
 
   useEffect(() => {
-    setTextArea(
-      [
-        `Detour ${routeName} ${routeDirection}`,
-        routeOrigin,
-        ,
-        "Connection Points:",
-        connectionPoints?.start?.name ?? "N/A",
-        connectionPoints?.end?.name ?? "N/A",
-        ,
-        `Missed Stops (${missedStops?.length}):`,
-        ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
-        ,
-        "Turn-by-Turn Directions:",
-        ...(extendedDirections?.map((v) => v.instruction) ?? []),
-      ].join("\n")
-    )
+    if (snapshot.matches({ "Detour Drawing": "Share Detour" })) {
+      setTextArea(
+        [
+          `Detour ${routeName} ${routeDirection}`,
+          routeOrigin,
+          ,
+          "Connection Points:",
+          connectionPoints?.start?.name ?? "N/A",
+          connectionPoints?.end?.name ?? "N/A",
+          ,
+          `Missed Stops (${missedStops?.length}):`,
+          ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
+          ,
+          "Turn-by-Turn Directions:",
+          ...(extendedDirections?.map((v) => v.instruction) ?? []),
+        ].join("\n")
+      )
+    }
   }, [
+    snapshot,
     routeName,
     routeDirection,
     routeOrigin,
