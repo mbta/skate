@@ -1,9 +1,5 @@
-import { useCallback, useMemo } from "react"
 import { ShapePoint } from "../schedule"
-import { fetchDetourDirections } from "../api"
-
-import { useApiCall } from "./useApiCall"
-import { Ok, isErr, isOk } from "../util/result"
+import { isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
 import { useMachine } from "@xstate/react"
 import {
@@ -11,59 +7,30 @@ import {
   createDetourMachine,
 } from "../models/createDetourMachine"
 
-const useDetourDirections = (shapePoints: ShapePoint[]) =>
-  useApiCall({
-    apiCall: useCallback(async () => {
-      // We expect not to have any directions or shape if we don't have at
-      // least two points to route between
-      if (shapePoints.length < 2) {
-        return Ok({ coordinates: [], directions: undefined })
-      }
-
-      return fetchDetourDirections(shapePoints)
-    }, [shapePoints]),
-  })
-
 export const useDetour = (input: CreateDetourMachineInput) => {
   const [snapshot, send] = useMachine(createDetourMachine, {
     input,
   })
 
-  const { routePattern, startPoint, endPoint, waypoints, finishedDetour } =
-    snapshot.context
-
-  const allPoints = useMemo(() => {
-    if (!startPoint) {
-      return []
-    } else if (!endPoint) {
-      return [startPoint].concat(waypoints)
-    } else {
-      return [startPoint].concat(waypoints).concat([endPoint])
-    }
-  }, [startPoint, waypoints, endPoint])
+  const {
+    routePattern,
+    startPoint,
+    endPoint,
+    waypoints,
+    finishedDetour,
+    detourShape,
+  } = snapshot.context
 
   const { result: nearestIntersection } = useNearestIntersection({
     latitude: startPoint?.lat,
     longitude: startPoint?.lon,
   })
 
-  const detourShape = useDetourDirections(allPoints)
-
   const coordinates =
-    detourShape.result && isOk(detourShape.result)
-      ? detourShape.result.ok.coordinates
-      : []
+    detourShape && isOk(detourShape) ? detourShape.ok.coordinates : []
 
-  let directions =
-    detourShape.result && isOk(detourShape.result)
-      ? detourShape.result.ok.directions
-      : undefined
-  // Only append direction "Regular Route" after detour is finished
-  if (!detourShape.isLoading && directions && finishedDetour) {
-    directions = directions.concat({
-      instruction: "Regular Route",
-    })
-  }
+  const directions =
+    detourShape && isOk(detourShape) ? detourShape.ok.directions : undefined
 
   const canAddWaypoint = () =>
     snapshot.can({
@@ -156,9 +123,7 @@ export const useDetour = (input: CreateDetourMachineInput) => {
      * Indicates if there was an error fetching directions from ORS
      */
     routingError:
-      detourShape.result && isErr(detourShape.result)
-        ? detourShape.result.err
-        : undefined,
+      detourShape && isErr(detourShape) ? detourShape.err : undefined,
 
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)
