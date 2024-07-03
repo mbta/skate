@@ -38,7 +38,7 @@ defmodule Skate.Detours.RouteSegments do
         shape,
         start_point
       ) do
-    {before_start_point, after_start_point} = split_shape_at_point(shape, start_point)
+    {before_start_point, after_start_point} = bisect_shape(shape, start_point)
 
     {:ok,
      %__MODULE__.UnfinishedResult{
@@ -93,8 +93,8 @@ defmodule Skate.Detours.RouteSegments do
         connection_start,
         connection_end
       ) do
-    {before_start_point, after_start_point} = split_shape_at_point(shape, connection_start)
-    {between_points, after_end_point} = split_shape_at_point(after_start_point, connection_end)
+    {before_start_point, after_start_point} = bisect_shape(shape, connection_start)
+    {between_points, after_end_point} = bisect_shape(after_start_point, connection_end)
 
     {:ok,
      %__MODULE__.Result{
@@ -104,11 +104,11 @@ defmodule Skate.Detours.RouteSegments do
      }}
   end
 
-  @spec split_shape_at_point(nonempty_list(Util.Location.From.t()), Util.Location.From.t()) :: {
+  @spec bisect_shape(nonempty_list(Util.Location.From.t()), Util.Location.From.t()) :: {
           nonempty_list(Util.Location.From.t()),
           nonempty_list(Util.Location.From.t())
         }
-  defp split_shape_at_point(shape, point) do
+  defp bisect_shape(shape, point) do
     {nearest_point, index} = NearestPoint.nearest_point_on_shape(shape, point)
     {shape_before_point, shape_after_point} = Enum.split(shape, index + 1)
 
