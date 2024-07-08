@@ -103,16 +103,15 @@ export const createDetourMachine = setup({
       async ({
         input: { routePatternId, startPoint, waypoints, endPoint },
       }) => {
-        if (routePatternId && startPoint && endPoint) {
-          return fetchFinishedDetour(
-            routePatternId,
-            startPoint,
-            waypoints,
-            endPoint
-          )
-        } else {
+        if (!(routePatternId && startPoint && endPoint)) {
           throw "Missing finished detour inputs"
         }
+        return fetchFinishedDetour(
+          routePatternId,
+          startPoint,
+          waypoints,
+          endPoint
+        )
       }
     ),
   },
