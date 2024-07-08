@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useId } from "react"
 import {
   AlertIcon,
   CrowdingIcon,
@@ -32,6 +32,7 @@ import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { ExclamationTriangleFill, PlusSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
+import { joinTruthy } from "../helpers/dom"
 
 interface Props {
   route: Route
@@ -96,13 +97,25 @@ export const NewHeader = ({
 
   onClickAddDetour?: () => void
 }) => {
+  const routePillId = "route-pill" + useId()
+  const routeOptionsToggleId = "route-options-toggle" + useId()
   return (
     <Card className="c-new-route-ladder__header">
       <Card.Body>
         <div className="c-route-ladder__header__action-container">
           {showDropdown && (
             <Dropdown className="border-box inherit-box">
-              <Dropdown.Toggle className="c-route-ladder__dropdown-button" />
+              <Dropdown.Toggle
+                className="c-route-ladder__dropdown-button"
+                aria-labelledby={joinTruthy([
+                  routePillId,
+                  routeOptionsToggleId,
+                ])}
+              >
+                <span className="visually-hidden" id={routeOptionsToggleId}>
+                  Route Options
+                </span>
+              </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item className="icon-link" onClick={onClickAddDetour}>
                   <PlusSquare />
@@ -124,6 +137,7 @@ export const NewHeader = ({
           )}
         </div>
         <RoutePill
+          id={routePillId}
           routeName={routeName}
           largeFormat
           className="c-route-ladder__route-pill c-route-pill"

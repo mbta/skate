@@ -64,6 +64,11 @@
   .c-route-ladder__dropdown-button {
     height: 2.25rem;
     width: 2.25rem;
+
+    &.dropdown-toggle::after {
+      // Force bootstrap carat to center even with hidden text
+      margin-left: 0;
+    }
   }
 
   .c-route-ladder__alert-icon {
