@@ -1,4 +1,5 @@
 defmodule SkateWeb.DetoursController do
+  alias Realtime.TripModification
   alias Skate.OpenRouteServiceAPI
   use SkateWeb, :controller
 
@@ -71,6 +72,19 @@ defmodule SkateWeb.DetoursController do
 
       {:ok, ors_result} =
         OpenRouteServiceAPI.directions([connection_start] ++ waypoints ++ [connection_end])
+
+      with {:ok, modification} <-
+             TripModification.new(%TripModification.Input{
+               route_pattern: route_pattern,
+               shape_with_stops: shape_with_stops,
+               missed_stops: missed_stops,
+               service_date: Date.utc_today(),
+               last_modified_time: DateTime.utc_now()
+             }) do
+        Skate.Detours.TripModificationPublisher.publish_modification(modification,
+          is_draft?: true
+        )
+      end
 
       json(conn, %{
         data: %{
