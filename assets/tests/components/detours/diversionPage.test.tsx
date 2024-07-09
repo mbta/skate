@@ -199,7 +199,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("calls the API twice when a waypoint is added and then the detour is finished", async () => {
+  test("calls the API twice with different endpoints when a waypoint is added and then the detour is finished", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -215,7 +215,8 @@ describe("DiversionPage", () => {
     })
 
     await waitFor(() => {
-      expect(fetchDetourDirections).toHaveBeenCalledTimes(2)
+      expect(fetchDetourDirections).toHaveBeenCalledTimes(1)
+      expect(fetchFinishedDetour).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -714,22 +715,18 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("shows 'Regular Route' text when the detour is finished", async () => {
-    jest.mocked(fetchDetourDirections).mockResolvedValue(
-      Ok(
-        detourShapeFactory.build({
+  test("shows 'Regular Route' text after directions when the detour is finished", async () => {
+    jest.mocked(fetchFinishedDetour).mockResolvedValue(
+      finishedDetourFactory.build({
+        detourShape: detourShapeFactory.build({
           directions: [
             { instruction: "Turn left on Main Street" },
             { instruction: "Turn right on High Street" },
             { instruction: "Turn sharp right on Broadway" },
           ],
-        })
-      )
+        }),
+      })
     )
-
-    jest
-      .mocked(fetchFinishedDetour)
-      .mockResolvedValue(finishedDetourFactory.build())
 
     const { container } = render(<DiversionPage />)
 
@@ -744,6 +741,8 @@ describe("DiversionPage", () => {
     await waitFor(() => {
       expect(screen.getByText("Regular Route")).toBeVisible()
     })
+
+    expect(screen.getByText("Turn left on Main Street")).toBeVisible()
   })
 
   test("does not show 'Regular Route' when detour is not finished", async () => {
@@ -933,7 +932,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("calls the API after undo'ing if there is still at least one waypoint left", async () => {
+  test("calls the fetch-detour-directions endpoint after undo'ing if there is still at least one waypoint left", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -954,12 +953,17 @@ describe("DiversionPage", () => {
 
     await waitFor(() => {
       /**
-       * Three calls:
+       * Two calls:
        * 1. Adding the first waypoint
-       * 2. Adding the end point
-       * 3. Removing the end point, and mapping just to the first waypoint again
+       * 2. Removing the end point, and mapping just to the first waypoint again
        **/
-      expect(fetchDetourDirections).toHaveBeenCalledTimes(3)
+      expect(fetchDetourDirections).toHaveBeenCalledTimes(2)
+
+      /**
+       * One call:
+       * 1. Placing the end point
+       **/
+      expect(fetchFinishedDetour).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -1133,26 +1137,23 @@ describe("DiversionPage", () => {
     const stops = stopFactory.buildList(4)
     const [start, end] = stopFactory.buildList(2)
 
-    jest.mocked(fetchDetourDirections).mockResolvedValue(
-      Ok(
-        detourShapeFactory.build({
+    jest.mocked(fetchFinishedDetour).mockResolvedValue(
+      finishedDetourFactory.build({
+        missedStops: stops,
+        connectionPoint: {
+          start,
+          end,
+        },
+        routeSegments: routeSegmentsFactory.build(),
+        detourShape: detourShapeFactory.build({
           directions: [
             { instruction: "Turn left on Main Street" },
             { instruction: "Turn right on High Street" },
             { instruction: "Turn sharp right on Broadway" },
           ],
-        })
-      )
+        }),
+      })
     )
-
-    jest.mocked(fetchFinishedDetour).mockResolvedValue({
-      missedStops: stops,
-      connectionPoint: {
-        start,
-        end,
-      },
-      routeSegments: routeSegmentsFactory.build(),
-    })
 
     const intersection = "Avenue 1 & Street 2"
     jest.mocked(fetchNearestIntersection).mockResolvedValue(intersection)

@@ -1,4 +1,5 @@
 defmodule SkateWeb.DetoursController do
+  alias Skate.OpenRouteServiceAPI
   use SkateWeb, :controller
 
   alias Skate.Detours.MissedStops
@@ -32,11 +33,15 @@ defmodule SkateWeb.DetoursController do
   end
 
   @spec finished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def finished_detour(conn, %{
-        "route_pattern_id" => route_pattern_id,
-        "connection_start" => connection_start,
-        "connection_end" => connection_end
-      }) do
+  def finished_detour(
+        conn,
+        %{
+          "route_pattern_id" => route_pattern_id,
+          "connection_start" => connection_start,
+          "waypoints" => waypoints,
+          "connection_end" => connection_end
+        }
+      ) do
     with route_pattern <- route_pattern(route_pattern_id),
          false <- is_nil(route_pattern),
          shape_with_stops <-
@@ -64,12 +69,16 @@ defmodule SkateWeb.DetoursController do
           connection_end_location
         )
 
+      {:ok, ors_result} =
+        OpenRouteServiceAPI.directions([connection_start] ++ waypoints ++ [connection_end])
+
       json(conn, %{
         data: %{
           missed_stops: missed_stops,
           route_segments: format(route_segments),
           connection_stop_start: connection_stop_start,
-          connection_stop_end: connection_stop_end
+          connection_stop_end: connection_stop_end,
+          detour_shape: ors_result
         }
       })
     else
