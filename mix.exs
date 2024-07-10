@@ -56,6 +56,7 @@ defmodule Skate.MixProject do
       {:diskusage_logger, "~> 0.2.0"},
       {:ecto_sql, "~> 3.4"},
       {:ehmon, github: "mbta/ehmon", only: :prod},
+      {:emqtt_failover, "~> 0.3.0"},
       {:ex_aws_rds, "~> 2.0.2"},
       {:ex_aws_secretsmanager, "~> 2.0"},
       {:ex_aws, "~> 2.1"},

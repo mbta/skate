@@ -61,8 +61,17 @@ jobs:
           POSTGRES_USER: ${{env.DATABASE_USER}}
           POSTGRES_DB: ${{env.DATABASE_NAME}}
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mosquitto:
+        image: eclipse-mosquitto:2.0
+        ports:
+          - 1883:1883
+        volumes:
+          - ./mosquitto:/mosquitto/config/
+        options: --name mqtt
     steps:
       - uses: actions/checkout@v4
+      - name: Restart MQTT to load mosquitto/mosquitto.conf from checkout
+        run: docker restart mqtt
       - name: ASDF cache
         uses: actions/cache@v4
         with:
@@ -95,7 +104,7 @@ jobs:
       - name: Sobelow
         run: mix sobelow
       - name: Run tests
-        run: mix test --cover
+        run: mix test --cover --include 'Test.Integration'
         env:
           POSTGRES_USERNAME: ${{env.DATABASE_USER}}
           POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
