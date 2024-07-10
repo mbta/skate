@@ -78,7 +78,9 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
-  } = useDetour(originalRoute)
+  } = useDetour({
+    input: originalRoute
+  })
 
   const [textArea, setTextArea] = useState("")
 

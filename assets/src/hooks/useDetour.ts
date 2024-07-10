@@ -6,11 +6,22 @@ import {
   CreateDetourMachineInput,
   createDetourMachine,
 } from "../models/createDetourMachine"
+import { Snapshot } from "xstate"
+import { useEffect } from "react"
 
-export const useDetour = (input: CreateDetourMachineInput) => {
-  const [snapshot, send] = useMachine(createDetourMachine, {
-    input,
-  })
+export type UseDetourInput =
+  | {
+      /** Initial arguments for {@linkcode createDetourMachine} */
+      input: CreateDetourMachineInput
+    }
+  | {
+      /** A _validated_ snapshot from which to initialize {@linkcode createDetourMachine} with */
+      snapshot: Snapshot<unknown>
+    }
+
+export const useDetour = (input: UseDetourInput) => {
+  const [snapshot, send, actorRef] = useMachine(createDetourMachine, input)
+
 
   const {
     routePattern,
