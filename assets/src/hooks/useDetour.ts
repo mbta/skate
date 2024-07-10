@@ -22,6 +22,17 @@ export type UseDetourInput =
 export const useDetour = (input: UseDetourInput) => {
   const [snapshot, send, actorRef] = useMachine(createDetourMachine, input)
 
+  // Record snapshots when changed
+  useEffect(() => {
+    const snapshotSubscription = actorRef.subscribe(() => {
+      const serializedSnapshot = JSON.stringify(actorRef.getPersistedSnapshot())
+      localStorage.setItem("snapshot", serializedSnapshot)
+    })
+
+    return () => {
+      snapshotSubscription.unsubscribe()
+    }
+  }, [actorRef])
 
   const {
     routePattern,
