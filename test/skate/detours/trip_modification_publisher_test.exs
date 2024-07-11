@@ -26,7 +26,7 @@ defmodule Skate.Detours.TripModificationPublisherTest do
         {TripModificationPublisher, start: true, name: __MODULE__, on_connect: self()}
       )
 
-    assert_receive {:connected, ^pid}
+    assert_receive {:connected, ^pid}, 500
   end
 
   @tag "Test.Integration": :mqtt
@@ -38,8 +38,8 @@ defmodule Skate.Detours.TripModificationPublisherTest do
         {TripModificationPublisher, start: true, name: __MODULE__, on_connect: self()}
       )
 
-    assert_receive {:connected, ^pid}
-    assert_receive {:connected, ^reader_pid}
+    assert_receive {:connected, ^pid}, 500
+    assert_receive {:connected, ^reader_pid}, 500
 
     message = %TripModification{
       selected_trips: [
