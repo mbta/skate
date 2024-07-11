@@ -123,42 +123,40 @@ defmodule Skate.Detours.TripModificationPublisher do
       when not is_nil(connection) do
     id = Ecto.UUID.generate()
 
-    with :ok <-
-           Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
-             topic: shape_topic(id),
-             payload:
-               Jason.encode!(%{
-                 data: shape
-               }),
-             # Send at least once
-             qos: 1
-           }),
-         :ok <-
-           Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
-             topic: trip_modification_topic(id),
-             payload:
-               Jason.encode!(%{
-                 data: modification,
-                 meta: %{
-                   is_draft?: is_draft?
-                 }
-               }),
-             # Send at least once
-             qos: 1
-           }) do
-      {
-        :reply,
-        {:ok, id},
-        state
-      }
-    else
-      res ->
-        {
-          :reply,
-          {res, id},
-          state
-        }
-    end
+    res =
+      with :ok <-
+             Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
+               topic: shape_topic(id),
+               payload:
+                 Jason.encode!(%{
+                   data: shape
+                 }),
+               # Send at least once
+               qos: 1
+             }),
+           :ok <-
+             Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
+               topic: trip_modification_topic(id),
+               payload:
+                 Jason.encode!(%{
+                   data: modification,
+                   meta: %{
+                     is_draft?: is_draft?
+                   }
+                 }),
+               # Send at least once
+               qos: 1
+             }) do
+        :ok
+      else
+        res -> res
+      end
+
+    {
+      :reply,
+      {res, id},
+      state
+    }
   end
 
   def trip_modification_topic(id), do: "#{trip_modifications_topic(id)}/trip_modification"
