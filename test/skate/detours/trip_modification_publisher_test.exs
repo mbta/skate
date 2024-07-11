@@ -21,8 +21,10 @@ defmodule Skate.Detours.TripModificationPublisherTest do
   # Make Integration tests run
   @tag "Test.Integration": :mqtt
   test "sends :connected to :on_connect subscribers when connected" do
-    {:ok, pid} =
-      TripModificationPublisher.start_link(start: true, name: __MODULE__, on_connect: self())
+    pid =
+      start_link_supervised!(
+        {TripModificationPublisher, start: true, name: __MODULE__, on_connect: self()}
+      )
 
     assert_receive {:connected, ^pid}
   end
@@ -31,8 +33,10 @@ defmodule Skate.Detours.TripModificationPublisherTest do
   test "can publish as draft via metadata" do
     {:ok, reader_pid} = MqttConnection.start_link(["trip_modifications/+/trip_modification"])
 
-    {:ok, pid} =
-      TripModificationPublisher.start_link(start: true, name: __MODULE__, on_connect: self())
+    pid =
+      start_link_supervised!(
+        {TripModificationPublisher, start: true, name: __MODULE__, on_connect: self()}
+      )
 
     assert_receive {:connected, ^pid}
     assert_receive {:connected, ^reader_pid}
