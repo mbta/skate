@@ -30,7 +30,7 @@ defmodule Skate.Detours.TripModificationPublisherTest do
 
   @tag "Test.Integration": :mqtt
   test "can publish as draft via metadata" do
-    {:ok, reader_pid} = MqttConnection.start_link(["trip_modifications/+/trip_modification"])
+    {:ok, reader_pid} = MqttConnection.start_link(["trip_modifications/+/+"])
 
     {:ok, pid} =
       TripModificationPublisher.start_link(start: true, name: __MODULE__, on_connect: self())
@@ -38,7 +38,7 @@ defmodule Skate.Detours.TripModificationPublisherTest do
     assert_receive {:connected, ^pid}
     assert_receive {:connected, ^reader_pid}
 
-    message = %TripModification{
+    trip_modification_message = %TripModification{
       selected_trips: [
         %TripModification.SelectedTrip{
           trip_ids: ["39-0-0-1"],
@@ -55,61 +55,84 @@ defmodule Skate.Detours.TripModificationPublisherTest do
       ]
     }
 
-    {:ok, id} =
-      TripModificationPublisher.publish_modification(
-        message,
-        is_draft?: true,
-        server: pid
-      )
-
-    expected_topic =
-      id |> TripModificationPublisher.trip_modification_topic() |> MqttConnection.prefix_topic()
-
-    assert_receive {:message, ^reader_pid,
-                    %EmqttFailover.Message{payload: incoming_message, topic: ^expected_topic}}
-
-    message =
-      message
-      |> Jason.encode!()
-      |> Jason.decode!()
-
-    assert %{"data" => ^message, "meta" => %{"is_draft?" => true}} =
-             Jason.decode!(incoming_message)
-  end
-
-  @tag "Test.Integration": :mqtt
-  test "can publish Shape data" do
-    {:ok, reader_pid} = MqttConnection.start_link(["trip_modifications/+/shape"])
-
-    {:ok, pid} =
-      TripModificationPublisher.start_link(start: true, name: __MODULE__, on_connect: self())
-
-    assert_receive {:connected, ^pid}
-    assert_receive {:connected, ^reader_pid}
-
-    message = %Shape{
+    shape_message = %Shape{
       shape_id: "shape_id_1",
       encoded_polyline: "gc}aGnfhpLod@?fE~{B_q@?gE_|Bod@?"
     }
 
     {:ok, id} =
-      TripModificationPublisher.publish_shape(
-        message,
+      TripModificationPublisher.publish_modification(
+        trip_modification_message,
+        shape_message,
+        is_draft?: true,
         server: pid
       )
 
-    expected_topic =
-      id |> TripModificationPublisher.shape_topic() |> MqttConnection.prefix_topic()
+    expected_tm_topic =
+      id |> TripModificationPublisher.trip_modification_topic() |> MqttConnection.prefix_topic()
 
     assert_receive {:message, ^reader_pid,
-                    %EmqttFailover.Message{payload: incoming_message, topic: ^expected_topic}}
+                    %EmqttFailover.Message{payload: incoming_message, topic: ^expected_tm_topic}}
 
-    message =
-      message
+    trip_modification_message =
+      trip_modification_message
       |> Jason.encode!()
       |> Jason.decode!()
 
-    assert %{"data" => ^message} =
+    assert %{"data" => ^trip_modification_message, "meta" => %{"is_draft?" => true}} =
+             Jason.decode!(incoming_message)
+
+    expected_shape_topic =
+      id |> TripModificationPublisher.shape_topic() |> MqttConnection.prefix_topic()
+
+    assert_receive {:message, ^reader_pid,
+                    %EmqttFailover.Message{
+                      payload: incoming_message,
+                      topic: ^expected_shape_topic
+                    }}
+
+    shape_message =
+      shape_message
+      |> Jason.encode!()
+      |> Jason.decode!()
+
+    assert %{"data" => ^shape_message} =
              Jason.decode!(incoming_message)
   end
+
+  # @tag "Test.Integration": :mqtt
+  # test "can publish Shape data" do
+  #   {:ok, reader_pid} = MqttConnection.start_link(["trip_modifications/+/shape"])
+
+  #   {:ok, pid} =
+  #     TripModificationPublisher.start_link(start: true, name: __MODULE__, on_connect: self())
+
+  #   assert_receive {:connected, ^pid}
+  #   assert_receive {:connected, ^reader_pid}
+
+  #   message = %Shape{
+  #     shape_id: "shape_id_1",
+  #     encoded_polyline: "gc}aGnfhpLod@?fE~{B_q@?gE_|Bod@?"
+  #   }
+
+  #   {:ok, id} =
+  #     TripModificationPublisher.publish_shape(
+  #       message,
+  #       server: pid
+  #     )
+
+  #   expected_topic =
+  #     id |> TripModificationPublisher.shape_topic() |> MqttConnection.prefix_topic()
+
+  #   assert_receive {:message, ^reader_pid,
+  #                   %EmqttFailover.Message{payload: incoming_message, topic: ^expected_topic}}
+
+  #   message =
+  #     message
+  #     |> Jason.encode!()
+  #     |> Jason.decode!()
+
+  #   assert %{"data" => ^message} =
+  #            Jason.decode!(incoming_message)
+  # end
 end

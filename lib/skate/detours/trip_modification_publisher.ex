@@ -58,6 +58,7 @@ defmodule Skate.Detours.TripModificationPublisher do
   """
   def publish_modification(
         %Realtime.TripModification{} = modification,
+        %Realtime.Shape{} = shape,
         opts \\ []
       ) do
     is_draft? = Keyword.get(opts, :is_draft?, false)
@@ -69,7 +70,8 @@ defmodule Skate.Detours.TripModificationPublisher do
         :new_modification,
         %{
           is_draft?: is_draft?,
-          modification: modification
+          modification: modification,
+          shape: shape
         }
       }
     )
@@ -137,32 +139,49 @@ defmodule Skate.Detours.TripModificationPublisher do
 
   @impl GenServer
   def handle_call(
-        {:new_modification, %{is_draft?: is_draft?, modification: modification}},
+        {:new_modification, %{is_draft?: is_draft?, modification: modification, shape: shape}},
         _from,
         %__MODULE__{connection: connection} = state
       )
       when not is_nil(connection) do
     id = Ecto.UUID.generate()
 
-    res =
-      Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
-        topic: trip_modification_topic(id),
-        payload:
-          Jason.encode!(%{
-            data: modification,
-            meta: %{
-              is_draft?: is_draft?
-            }
-          }),
-        # Send at least once
-        qos: 1
-      })
-
-    {
-      :reply,
-      {res, id},
-      state
-    }
+    with :ok <-
+           Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
+             topic: shape_topic(id),
+             payload:
+               Jason.encode!(%{
+                 data: shape
+               }),
+             # Send at least once
+             qos: 1
+           }),
+         :ok <-
+           Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
+             topic: trip_modification_topic(id),
+             payload:
+               Jason.encode!(%{
+                 data: modification,
+                 meta: %{
+                   is_draft?: is_draft?
+                 }
+               }),
+             # Send at least once
+             qos: 1
+           }) do
+      {
+        :reply,
+        {:ok, id},
+        state
+      }
+    else
+      res ->
+        {
+          :reply,
+          {res, id},
+          state
+        }
+    end
   end
 
   @impl GenServer
@@ -174,7 +193,7 @@ defmodule Skate.Detours.TripModificationPublisher do
       when not is_nil(connection) do
     id = Ecto.UUID.generate()
 
-    res =
+    shape_res =
       Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
         topic: shape_topic(id),
         payload:
@@ -187,7 +206,7 @@ defmodule Skate.Detours.TripModificationPublisher do
 
     {
       :reply,
-      {res, id},
+      {shape_res, id},
       state
     }
   end
