@@ -30,7 +30,11 @@ defmodule Skate.Detours.TripModificationPublisherTest do
 
   @tag "Test.Integration": :mqtt
   test "can publish as draft via metadata" do
-    {:ok, reader_pid} = MqttConnection.start_link(["trip_modifications/+/+"])
+    {:ok, reader_pid} =
+      MqttConnection.start_link([
+        "trip_modifications/+/trip_modification",
+        "trip_modifications/+/shape"
+      ])
 
     {:ok, pid} =
       TripModificationPublisher.start_link(start: true, name: __MODULE__, on_connect: self())
