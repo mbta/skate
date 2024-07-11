@@ -28,6 +28,7 @@ defmodule Realtime.Shape do
           encoded_polyline: String.t()
         }
   @enforce_keys [:shape_id, :encoded_polyline]
+  @derive Jason.Encoder
   defstruct [:shape_id, :encoded_polyline]
 
   @doc """
