@@ -25,7 +25,7 @@ defmodule Skate.Detours.TripModificationPublisherTest do
     {:ok, pid} =
       TripModificationPublisher.start_link(start: true, name: __MODULE__, on_connect: self())
 
-    assert_receive {:connected, ^pid}
+    assert_receive {:connected, ^pid}, 1000
   end
 
   @tag "Test.Integration": :mqtt
@@ -35,7 +35,7 @@ defmodule Skate.Detours.TripModificationPublisherTest do
     {:ok, pid} =
       TripModificationPublisher.start_link(start: true, name: __MODULE__, on_connect: self())
 
-    assert_receive {:connected, ^pid}
+    assert_receive {:connected, ^pid}, 1000
     assert_receive {:connected, ^reader_pid}
 
     trip_modification_message = %TripModification{
