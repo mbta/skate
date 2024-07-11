@@ -75,6 +75,29 @@ defmodule Skate.Detours.TripModificationPublisher do
     )
   end
 
+  @doc """
+  Publishes a `Realtime.Shape` to the configured `MQTT` server.
+
+  MQTT is optional for Skate, and callers should remember to handle both the
+  `:ok` and `:error` return values
+  """
+  def publish_shape(
+        %Realtime.Shape{} = shape,
+        opts \\ []
+      ) do
+    server = Keyword.get(opts, :server, @default_name)
+
+    GenServer.call(
+      server,
+      {
+        :new_shape,
+        %{
+          shape: shape
+        }
+      }
+    )
+  end
+
   @type t :: %{
           connection: Skate.MqttConnection.on_start() | nil,
           on_connect_subscribers: [pid()]
@@ -142,6 +165,34 @@ defmodule Skate.Detours.TripModificationPublisher do
     }
   end
 
+  @impl GenServer
+  def handle_call(
+        {:new_shape, %{shape: shape}},
+        _from,
+        %__MODULE__{connection: connection} = state
+      )
+      when not is_nil(connection) do
+    id = Ecto.UUID.generate()
+
+    res =
+      Skate.MqttConnection.publish(connection, %EmqttFailover.Message{
+        topic: shape_topic(id),
+        payload:
+          Jason.encode!(%{
+            data: shape
+          }),
+        # Send at least once
+        qos: 1
+      })
+
+    {
+      :reply,
+      {res, id},
+      state
+    }
+  end
+
   def trip_modification_topic(id), do: "#{trip_modifications_topic(id)}/trip_modification"
+  def shape_topic(id), do: "#{trip_modifications_topic(id)}/shape"
   defp trip_modifications_topic(id), do: "trip_modifications/#{id}"
 end
