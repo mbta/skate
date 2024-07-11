@@ -17,7 +17,6 @@ defmodule Realtime.TripModificationTest do
 
     shape_with_stops =
       build(:shape_with_stops,
-        id: "id-of-the-shape",
         stops: build_list(5, :gtfs_stop)
       )
 
@@ -29,14 +28,15 @@ defmodule Realtime.TripModificationTest do
              missed_stops: missed_stops,
              shape_with_stops: shape_with_stops,
              service_date: service_date,
-             last_modified_time: last_modified_time
+             last_modified_time: last_modified_time,
+             shape_id: "id-of-the-diverted-shape"
            }) ==
              {:ok,
               %TripModification{
                 selected_trips: [
                   %TripModification.SelectedTrip{
                     trip_ids: ["39-0-0-1"],
-                    shape_id: "id-of-the-shape"
+                    shape_id: "id-of-the-diverted-shape"
                   }
                 ],
                 service_dates: [Date.to_iso8601(service_date, :basic)],
@@ -66,7 +66,8 @@ defmodule Realtime.TripModificationTest do
              missed_stops: build_list(3, :gtfs_stop),
              shape_with_stops: shape_with_stops,
              service_date: Date.utc_today(),
-             last_modified_time: DateTime.utc_now()
+             last_modified_time: DateTime.utc_now(),
+             shape_id: "id-of-the-diverted-shape"
            }) == {:error, :duplicate_stops_in_shape}
   end
 end

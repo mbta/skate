@@ -19,7 +19,8 @@ defmodule Realtime.TripModification do
             missed_stops: [Stop.t()],
             shape_with_stops: ShapeWithStops.t(),
             service_date: Date.t(),
-            last_modified_time: DateTime.t()
+            last_modified_time: DateTime.t(),
+            shape_id: String.t()
           }
 
     @enforce_keys [
@@ -27,14 +28,16 @@ defmodule Realtime.TripModification do
       :missed_stops,
       :shape_with_stops,
       :service_date,
-      :last_modified_time
+      :last_modified_time,
+      :shape_id
     ]
     defstruct [
       :route_pattern,
       :missed_stops,
       :shape_with_stops,
       :service_date,
-      :last_modified_time
+      :last_modified_time,
+      :shape_id
     ]
   end
 
@@ -112,11 +115,11 @@ defmodule Realtime.TripModification do
       ...>       build(:gtfs_stop, id: "ABC129")
       ...>     ],
       ...>     shape_with_stops: build(:shape_with_stops,
-      ...>       id: "010128",
       ...>       stops: build_list(5, :gtfs_stop)
       ...>     ),
       ...>     service_date: ~D[2024-06-20],
-      ...>     last_modified_time: ~U[2024-06-18 12:00:00Z]
+      ...>     last_modified_time: ~U[2024-06-18 12:00:00Z],
+      ...>     shape_id: "diverted-shape-id"
       ...>   }
       ...> )
       {:ok,
@@ -124,7 +127,7 @@ defmodule Realtime.TripModification do
          selected_trips: [
            %Realtime.TripModification.SelectedTrip{
              trip_ids: ["01-00"],
-             shape_id: "010128"
+             shape_id: "diverted-shape-id"
            }
          ],
          service_dates: ["20240620"],
@@ -165,7 +168,8 @@ defmodule Realtime.TripModification do
       ...>       ]
       ...>     ),
       ...>     service_date: ~D[2024-06-20],
-      ...>     last_modified_time: ~U[2024-06-18 12:00:00Z]
+      ...>     last_modified_time: ~U[2024-06-18 12:00:00Z],
+      ...>     shape_id: "diverted-shape-id"
       ...>   }
       ...> )
       {:error, :duplicate_stops_in_shape}
@@ -173,10 +177,10 @@ defmodule Realtime.TripModification do
   def new(%Input{
         route_pattern: %RoutePattern{representative_trip_id: trip_id},
         missed_stops: missed_stops,
-        shape_with_stops:
-          shape_with_stops = %Schedule.ShapeWithStops{stops: original_shape_stops},
+        shape_with_stops: %Schedule.ShapeWithStops{stops: original_shape_stops},
         service_date: service_date,
-        last_modified_time: last_modified_time
+        last_modified_time: last_modified_time,
+        shape_id: shape_id
       }) do
     has_duplicate_stops =
       original_shape_stops
@@ -191,7 +195,7 @@ defmodule Realtime.TripModification do
         {:ok,
          %__MODULE__{
            selected_trips: [
-             %SelectedTrip{trip_ids: [trip_id], shape_id: shape_with_stops.id}
+             %SelectedTrip{trip_ids: [trip_id], shape_id: shape_id}
            ],
            service_dates: [Date.to_iso8601(service_date, :basic)],
            modifications: [
