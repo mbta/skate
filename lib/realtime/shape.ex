@@ -111,6 +111,14 @@ defmodule Realtime.Shape do
       encoded_polyline:
         (before_detour ++ detour_coordinates ++ after_detour)
         |> Enum.map(fn
+          %Schedule.Gtfs.Shape.Point{} = point ->
+            {:ok, location} = Util.Location.From.as_location(point)
+            location
+
+          other ->
+            other
+        end)
+        |> Enum.map(fn
           # The coordinates that come from the route segments are
           # formatted as `Util.Location`'s.
           %Location{latitude: latitude, longitude: longitude} ->
