@@ -98,6 +98,7 @@ defmodule Realtime.Shape do
       ...> ])
       "_j{`GfkjpL?fE???~iA???vQ" # Does not match the polyline in the %Shape{...}
   """
+  @spec new(Realtime.Shape.Input.t()) :: Realtime.Shape.t()
   def new(%Input{
         shape_id: shape_id,
         route_segments: %RouteSegments.Result{
