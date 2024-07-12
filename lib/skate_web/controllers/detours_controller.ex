@@ -1,4 +1,5 @@
 defmodule SkateWeb.DetoursController do
+  alias Realtime.Shape
   alias Realtime.TripModification
   alias Skate.OpenRouteServiceAPI
   use SkateWeb, :controller
@@ -73,15 +74,23 @@ defmodule SkateWeb.DetoursController do
       {:ok, ors_result} =
         OpenRouteServiceAPI.directions([connection_start] ++ waypoints ++ [connection_end])
 
-      with {:ok, modification} <-
+      with shape_id <- Ecto.UUID.generate(),
+           shape <-
+             Shape.new(%Shape.Input{
+               shape_id: shape_id,
+               route_segments: route_segments,
+               detour_shape: ors_result
+             }),
+           {:ok, modification} <-
              TripModification.new(%TripModification.Input{
                route_pattern: route_pattern,
                shape_with_stops: shape_with_stops,
                missed_stops: missed_stops,
                service_date: Date.utc_today(),
-               last_modified_time: DateTime.utc_now()
+               last_modified_time: DateTime.utc_now(),
+               shape_id: shape.shape_id
              }) do
-        Skate.Detours.TripModificationPublisher.publish_modification(modification,
+        Skate.Detours.TripModificationPublisher.publish_modification(modification, shape,
           is_draft?: true
         )
       end
