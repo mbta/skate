@@ -88,11 +88,9 @@ defmodule SkateWeb.DetoursController do
                missed_stops: missed_stops,
                service_date: Date.utc_today(),
                last_modified_time: DateTime.utc_now(),
-               shape_id: shape.shape_id
+               shape_id: shape_id
              }) do
-        Skate.Detours.TripModificationPublisher.publish_modification(modification, shape,
-          is_draft?: true
-        )
+        trip_modification_publisher().publish_modification(modification, shape, is_draft?: true)
       end
 
       json(conn, %{
@@ -155,5 +153,13 @@ defmodule SkateWeb.DetoursController do
 
   defp missed_stops(args) do
     Application.get_env(:skate_web, :missed_stops_fn, &MissedStops.missed_stops/1).(args)
+  end
+
+  defp trip_modification_publisher() do
+    Application.get_env(
+      :skate_web,
+      :trip_modification_publisher,
+      Skate.Detours.TripModificationPublisher
+    )
   end
 end

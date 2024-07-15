@@ -16,3 +16,13 @@ Mox.defmock(Skate.OpenRouteServiceAPI.MockClient, for: Skate.OpenRouteServiceAPI
 Application.put_env(:skate, Skate.OpenRouteServiceAPI,
   client: Skate.OpenRouteServiceAPI.MockClient
 )
+
+Mox.defmock(Skate.Detours.MockTripModificationPublisher,
+  for: Skate.Detours.TripModificationPublisher
+)
+
+Application.put_env(
+  :skate_web,
+  :trip_modification_publisher,
+  Skate.Detours.MockTripModificationPublisher
+)

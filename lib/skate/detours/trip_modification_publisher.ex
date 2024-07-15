@@ -1,4 +1,5 @@
 defmodule Skate.Detours.TripModificationPublisher do
+  @behaviour Skate.Detours.TripModificationPublisher
   @moduledoc """
   Connects to the MQTT Broker, then allows sending `Realtime.TripModification`'s
   to the Broker.
@@ -50,12 +51,16 @@ defmodule Skate.Detours.TripModificationPublisher do
     end
   end
 
+  @callback publish_modification(Realtime.TripModification.t(), Realtime.Shape.t(), Map.t()) ::
+              any()
+
   @doc """
   Publishes a `Realtime.TripModification` to the configured `MQTT` server.
 
   MQTT is optional for Skate, and callers should remember to handle both the
   `:ok` and `:error` return values
   """
+  @impl true
   def publish_modification(
         %Realtime.TripModification{} = modification,
         %Realtime.Shape{} = shape,
