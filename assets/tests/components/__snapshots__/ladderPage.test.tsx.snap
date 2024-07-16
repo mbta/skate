@@ -290,28 +290,29 @@ exports[`LadderPage renders with alerts 1`] = `
         data-testid="route-ladders-div"
       >
         <div
-          class="c-route-ladder__header"
+          class="c-new-route-ladder__header card"
         >
           <div
-            class="c-route-ladder__close-button-container"
+            class="card-body"
           >
-            <button
-              aria-label="Close"
-              class="c-close-button c-close-button--large c-close-button--darker"
+            <div
+              class="c-route-ladder__header__action-container"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              id="route-pill:rq:"
             >
-              <span
-                aria-hidden="true"
-                aria-label=""
-                role="img"
-              >
-                <svg />
-              </span>
-            </button>
-          </div>
-          <div
-            class="c-route-ladder__route-name"
-          >
-            28
+              28
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -330,43 +331,57 @@ exports[`LadderPage renders with alerts 1`] = `
         </div>
         loading...
         <div
-          class="c-route-ladder__header"
+          class="c-new-route-ladder__header card"
         >
           <div
-            class="mock-tippy"
+            class="card-body"
           >
             <div
-              class="mock-tippy-content"
+              class="c-route-ladder__header__action-container"
             >
-              Active detour
-            </div>
-            <span
-              aria-label="Route Alert"
-              class="c-route-ladder__alert-icon"
-            >
-              <svg />
-            </span>
-          </div>
-          <div
-            class="c-route-ladder__close-button-container"
-          >
-            <button
-              aria-label="Close"
-              class="c-close-button c-close-button--large c-close-button--darker"
-            >
-              <span
-                aria-hidden="true"
-                aria-label=""
-                role="img"
+              <div
+                class="mock-tippy"
               >
-                <svg />
-              </span>
-            </button>
-          </div>
-          <div
-            class="c-route-ladder__route-name"
-          >
-            1
+                <div
+                  class="mock-tippy-content"
+                >
+                  Active detour
+                </div>
+                <div
+                  class="c-route-ladder__alert-icon"
+                >
+                  <svg
+                    aria-hidden="true"
+                    aria-label="Route Alert"
+                    class="bi bi-exclamation-triangle-fill"
+                    fill="currentColor"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              id="route-pill:rs:"
+            >
+              1
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -585,28 +600,29 @@ exports[`LadderPage renders with route tabs 1`] = `
         data-testid="route-ladders-div"
       >
         <div
-          class="c-route-ladder__header"
+          class="c-new-route-ladder__header card"
         >
           <div
-            class="c-route-ladder__close-button-container"
+            class="card-body"
           >
-            <button
-              aria-label="Close"
-              class="c-close-button c-close-button--large c-close-button--darker"
+            <div
+              class="c-route-ladder__header__action-container"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              id="route-pill:r0:"
             >
-              <span
-                aria-hidden="true"
-                aria-label=""
-                role="img"
-              >
-                <svg />
-              </span>
-            </button>
-          </div>
-          <div
-            class="c-route-ladder__route-name"
-          >
-            1
+              1
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -804,28 +820,29 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         data-testid="route-ladders-div"
       >
         <div
-          class="c-route-ladder__header"
+          class="c-new-route-ladder__header card"
         >
           <div
-            class="c-route-ladder__close-button-container"
+            class="card-body"
           >
-            <button
-              aria-label="Close"
-              class="c-close-button c-close-button--large c-close-button--darker"
+            <div
+              class="c-route-ladder__header__action-container"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              id="route-pill:ri:"
             >
-              <span
-                aria-hidden="true"
-                aria-label=""
-                role="img"
-              >
-                <svg />
-              </span>
-            </button>
-          </div>
-          <div
-            class="c-route-ladder__route-name"
-          >
-            28
+              28
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -844,28 +861,29 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         </div>
         loading...
         <div
-          class="c-route-ladder__header"
+          class="c-new-route-ladder__header card"
         >
           <div
-            class="c-route-ladder__close-button-container"
+            class="card-body"
           >
-            <button
-              aria-label="Close"
-              class="c-close-button c-close-button--large c-close-button--darker"
+            <div
+              class="c-route-ladder__header__action-container"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              id="route-pill:rk:"
             >
-              <span
-                aria-hidden="true"
-                aria-label=""
-                role="img"
-              >
-                <svg />
-              </span>
-            </button>
-          </div>
-          <div
-            class="c-route-ladder__route-name"
-          >
-            1
+              1
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -1063,28 +1081,29 @@ exports[`LadderPage renders with timepoints 1`] = `
         data-testid="route-ladders-div"
       >
         <div
-          class="c-route-ladder__header"
+          class="c-new-route-ladder__header card"
         >
           <div
-            class="c-route-ladder__close-button-container"
+            class="card-body"
           >
-            <button
-              aria-label="Close"
-              class="c-close-button c-close-button--large c-close-button--darker"
+            <div
+              class="c-route-ladder__header__action-container"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              id="route-pill:rm:"
             >
-              <span
-                aria-hidden="true"
-                aria-label=""
-                role="img"
-              >
-                <svg />
-              </span>
-            </button>
-          </div>
-          <div
-            class="c-route-ladder__route-name"
-          >
-            28
+              28
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
           </div>
         </div>
         <div
@@ -1221,28 +1240,29 @@ exports[`LadderPage renders with timepoints 1`] = `
           class="c-incoming-box"
         />
         <div
-          class="c-route-ladder__header"
+          class="c-new-route-ladder__header card"
         >
           <div
-            class="c-route-ladder__close-button-container"
+            class="card-body"
           >
-            <button
-              aria-label="Close"
-              class="c-close-button c-close-button--large c-close-button--darker"
+            <div
+              class="c-route-ladder__header__action-container"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              id="route-pill:ro:"
             >
-              <span
-                aria-hidden="true"
-                aria-label=""
-                role="img"
-              >
-                <svg />
-              </span>
-            </button>
-          </div>
-          <div
-            class="c-route-ladder__route-name"
-          >
-            1
+              1
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
           </div>
         </div>
         <div
