@@ -196,12 +196,14 @@ defmodule Skate.Factory do
   end
 
   def gtfs_route_pattern_factory do
+    route_pattern_id = sequence("Schedule.Gtfs.RoutePattern.id:")
+
     %Schedule.Gtfs.RoutePattern{
-      id: "route_pattern",
+      id: route_pattern_id,
       name: "",
       route_id: "route",
       direction_id: 0,
-      representative_trip_id: "trip",
+      representative_trip_id: "#{route_pattern_id}_representative_trip_id",
       time_desc: nil,
       sort_order: 1
     }
