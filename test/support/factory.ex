@@ -384,6 +384,14 @@ defmodule Skate.Factory do
     }
   end
 
+  def missed_stops_result_factory do
+    %Skate.Detours.MissedStops.Result{
+      missed_stops: build_list(3, :gtfs_stop),
+      connection_stop_start: build(:gtfs_stop),
+      connection_stop_end: build(:gtfs_stop)
+    }
+  end
+
   def ueberauth_auth_factory do
     %Ueberauth.Auth{
       provider: :keycloak,

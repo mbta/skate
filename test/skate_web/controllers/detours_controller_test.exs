@@ -13,6 +13,8 @@ defmodule SkateWeb.DetoursControllerTest do
       {:ok, build(:ors_directions_json)}
     end)
 
+    reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> build(:shape_with_stops) end)
+
     :ok
   end
 
@@ -74,8 +76,8 @@ defmodule SkateWeb.DetoursControllerTest do
       shape_with_stops = build(:shape_with_stops)
       missed_stop = Enum.at(shape_with_stops.stops, 0)
 
-      connection_start = shape_with_stops.points |> Enum.at(0) |> Util.Location.as_location!()
-      connection_end = shape_with_stops.points |> Enum.at(1) |> Util.Location.as_location!()
+      connection_start = Util.Location.as_location!(build(:gtfs_shape_point))
+      connection_end = Util.Location.as_location!(build(:gtfs_shape_point))
 
       reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
       reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
@@ -192,15 +194,14 @@ defmodule SkateWeb.DetoursControllerTest do
       ]
 
       route_pattern = build(:gtfs_route_pattern)
+      reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
 
-      shape_with_stops =
+      reassign_env(:skate_web, :shape_with_stops_fn, fn _ ->
         build(
           :shape_with_stops,
           %{points: points}
         )
-
-      reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
-      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
+      end)
 
       conn =
         post(conn, ~p"/api/detours/finished_detour",
@@ -255,10 +256,7 @@ defmodule SkateWeb.DetoursControllerTest do
       end)
 
       route_pattern = build(:gtfs_route_pattern)
-      shape_with_stops = build(:shape_with_stops)
-
       reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
-      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
 
       conn =
         post(conn, ~p"/api/detours/finished_detour",
@@ -328,10 +326,7 @@ defmodule SkateWeb.DetoursControllerTest do
       end)
 
       route_pattern = build(:gtfs_route_pattern)
-      shape_with_stops = build(:shape_with_stops)
-
       reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
-      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
 
       conn =
         post(conn, ~p"/api/detours/finished_detour",
@@ -387,10 +382,7 @@ defmodule SkateWeb.DetoursControllerTest do
       end)
 
       route_pattern = build(:gtfs_route_pattern)
-      shape_with_stops = build(:shape_with_stops)
-
       reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
-      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
 
       post(conn, ~p"/api/detours/finished_detour",
         route_pattern_id: route_pattern.id,
