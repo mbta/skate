@@ -4,22 +4,23 @@ defmodule Realtime.ShapeTest do
   alias Realtime.Shape
   alias Skate.Detours.RouteSegments
   use ExUnit.Case
+  import Skate.Factory
 
   doctest Shape
 
   test "translates route segments and detour shape into encoded polyline shape" do
     route_segments = %RouteSegments.Result{
       before_detour: [
-        Location.new(42.425, -70.99),
-        Location.new(42.431, -70.99)
+        build(:gtfs_stop, %{latitude: 42.425, longitude: -70.99}),
+        build(:gtfs_stop, %{latitude: 42.431, longitude: -70.99})
       ],
       detour: [
-        Location.new(42.431, -70.99),
-        Location.new(42.439, -70.99)
+        build(:gtfs_stop, %{latitude: 42.431, longitude: -70.99}),
+        build(:gtfs_stop, %{latitude: 42.439, longitude: -70.99})
       ],
       after_detour: [
-        Location.new(42.439, -70.99),
-        Location.new(42.445, -70.99)
+        build(:gtfs_stop, %{latitude: 42.439, longitude: -70.99}),
+        build(:gtfs_stop, %{latitude: 42.445, longitude: -70.99})
       ]
     }
 

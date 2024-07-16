@@ -112,15 +112,19 @@ defmodule Realtime.Shape do
       encoded_polyline:
         (before_detour ++ detour_coordinates ++ after_detour)
         |> Enum.map(fn
-          # The coordinates that come from the route segments are
-          # formatted as `Util.Location`'s.
-          %Location{latitude: latitude, longitude: longitude} ->
+          # The coordinates that come from the detour shape, from
+          # `OpenRouteServiceAPI`, are formatted as "lat"/"lon"
+          # `Map`'s,
+          %{"lat" => latitude, "lon" => longitude} ->
             {longitude, latitude}
 
-          # ...but the coordinates that come from the detour shape, from
-          # `OpenRouteServiceAPI`, are formatted as "lat"/"lon" `Map`'s,
-          # so we need to handle both cases.
-          %{"lat" => latitude, "lon" => longitude} ->
+          # ...but the coordinates that come from the route segments
+          # are formatted as `Util.Location.From`'s, so we need to
+          # handle both cases.
+          point ->
+            %Location{latitude: latitude, longitude: longitude} =
+              Util.Location.as_location!(point)
+
             {longitude, latitude}
         end)
         |> Polyline.encode()
