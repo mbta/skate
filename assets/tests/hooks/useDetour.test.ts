@@ -14,6 +14,7 @@ import { finishedDetourFactory } from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
 import { Err, Ok } from "../../src/util/result"
+import { OriginalRoute } from "../../src/models/detour"
 
 jest.mock("../../src/api")
 
@@ -27,8 +28,8 @@ beforeEach(() => {
   jest.mocked(fetchNearestIntersection).mockReturnValue(new Promise(() => {}))
 })
 
-const useDetourWithFakeRoutePattern = () =>
-  useDetour(originalRouteFactory.build())
+const useDetourWithFakeRoutePattern = (originalRoute: OriginalRoute) => () =>
+  useDetour(originalRoute)
 
 describe("useDetour", () => {
   test("when `addWaypoint` is called, should update `detourShape`", async () => {
@@ -48,7 +49,9 @@ describe("useDetour", () => {
       return Promise.resolve(Ok(detourShape))
     })
 
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
+    const { result } = renderHook(
+      useDetourWithFakeRoutePattern(originalRouteFactory.build())
+    )
 
     act(() => result.current.addConnectionPoint?.(start))
     act(() => result.current.addWaypoint?.(end))
@@ -74,7 +77,9 @@ describe("useDetour", () => {
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Err({ type: "unknown" }))
 
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
+    const { result } = renderHook(
+      useDetourWithFakeRoutePattern(originalRouteFactory.build())
+    )
 
     act(() => result.current.addConnectionPoint?.(start))
     act(() => result.current.addWaypoint?.(end))
@@ -90,7 +95,9 @@ describe("useDetour", () => {
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Ok(detourShapeFactory.build()))
 
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
+    const { result } = renderHook(
+      useDetourWithFakeRoutePattern(originalRouteFactory.build())
+    )
 
     act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
@@ -113,7 +120,9 @@ describe("useDetour", () => {
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Ok(detourShapeFactory.build()))
 
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
+    const { result } = renderHook(
+      useDetourWithFakeRoutePattern(originalRouteFactory.build())
+    )
 
     act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
@@ -132,7 +141,9 @@ describe("useDetour", () => {
   })
 
   test("when `endPoint` is set, `routeSegments` is filled in", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
+    const { result } = renderHook(
+      useDetourWithFakeRoutePattern(originalRouteFactory.build())
+    )
 
     const routeSegments = routeSegmentsFactory.build()
 
@@ -151,7 +162,9 @@ describe("useDetour", () => {
   })
 
   test("when `endPoint` is undone, `routeSegments` is cleared", async () => {
-    const { result } = renderHook(useDetourWithFakeRoutePattern)
+    const { result } = renderHook(
+      useDetourWithFakeRoutePattern(originalRouteFactory.build())
+    )
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
