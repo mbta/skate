@@ -27,6 +27,11 @@ beforeEach(() => {
   jest.mocked(fetchNearestIntersection).mockReturnValue(new Promise(() => {}))
 })
 
+const renderDetourHook = () =>
+  renderHook(useDetour, {
+    initialProps: originalRouteFactory.build(),
+  })
+
 describe("useDetour", () => {
   test("when `addWaypoint` is called, should update `detourShape`", async () => {
     const start: ShapePoint = { lat: -2, lon: -2 }
@@ -45,9 +50,7 @@ describe("useDetour", () => {
       return Promise.resolve(Ok(detourShape))
     })
 
-    const { result } = renderHook(useDetour, {
-      initialProps: originalRouteFactory.build(),
-    })
+    const { result } = renderDetourHook()
 
     act(() => result.current.addConnectionPoint?.(start))
     act(() => result.current.addWaypoint?.(end))
@@ -73,9 +76,7 @@ describe("useDetour", () => {
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Err({ type: "unknown" }))
 
-    const { result } = renderHook(useDetour, {
-      initialProps: originalRouteFactory.build(),
-    })
+    const { result } = renderDetourHook()
 
     act(() => result.current.addConnectionPoint?.(start))
     act(() => result.current.addWaypoint?.(end))
@@ -91,9 +92,7 @@ describe("useDetour", () => {
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Ok(detourShapeFactory.build()))
 
-    const { result } = renderHook(useDetour, {
-      initialProps: originalRouteFactory.build(),
-    })
+    const { result } = renderDetourHook()
 
     act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
@@ -116,9 +115,7 @@ describe("useDetour", () => {
       .mocked(fetchDetourDirections)
       .mockResolvedValue(Ok(detourShapeFactory.build()))
 
-    const { result } = renderHook(useDetour, {
-      initialProps: originalRouteFactory.build(),
-    })
+    const { result } = renderDetourHook()
 
     act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
     act(() => result.current.addWaypoint?.(shapePointFactory.build()))
@@ -137,9 +134,7 @@ describe("useDetour", () => {
   })
 
   test("when `endPoint` is set, `routeSegments` is filled in", async () => {
-    const { result } = renderHook(useDetour, {
-      initialProps: originalRouteFactory.build(),
-    })
+    const { result } = renderDetourHook()
 
     const routeSegments = routeSegmentsFactory.build()
 
@@ -158,9 +153,7 @@ describe("useDetour", () => {
   })
 
   test("when `endPoint` is undone, `routeSegments` is cleared", async () => {
-    const { result } = renderHook(useDetour, {
-      initialProps: originalRouteFactory.build(),
-    })
+    const { result } = renderDetourHook()
 
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
