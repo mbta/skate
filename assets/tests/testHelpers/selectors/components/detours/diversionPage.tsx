@@ -14,6 +14,12 @@ export const originalRouteShape = {
         container.querySelectorAll(".c-detour_map--original-route-shape-core"),
     },
   },
+  diverted: {
+    getAll: (container: HTMLElement) =>
+      container.querySelectorAll(
+        ".c-detour_map--original-route-shape-diverted"
+      ),
+  },
 
   get(container: HTMLElement): Element {
     const maybeShape = container.querySelector(

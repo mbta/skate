@@ -932,6 +932,50 @@ describe("DiversionPage", () => {
     })
   })
 
+  test("has (only) an original route shape at the beginning", async () => {
+    const { container } = render(<DiversionPage />)
+
+    await waitFor(() => {
+      expect(originalRouteShape.get(container)).toBeVisible()
+    })
+
+    expect(originalRouteShape.diverted.getAll(container)).toHaveLength(0)
+  })
+
+  test("keeps the original route shape after the start point is added", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(originalRouteShape.get(container)).toBeVisible()
+    })
+  })
+
+  test("replaces the original route shape with a diverted segment after the end point is added", async () => {
+    jest
+      .mocked(fetchFinishedDetour)
+      .mockResolvedValue(finishedDetourFactory.build())
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(originalRouteShape.interactive.getAll(container)).toHaveLength(0)
+    })
+
+    expect(originalRouteShape.diverted.getAll(container)).toHaveLength(1)
+  })
+
   test("calls the fetch-detour-directions endpoint after undo'ing if there is still at least one waypoint left", async () => {
     const { container } = render(<DiversionPage />)
 
