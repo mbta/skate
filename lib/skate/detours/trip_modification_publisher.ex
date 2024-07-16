@@ -51,7 +51,7 @@ defmodule Skate.Detours.TripModificationPublisher do
     end
   end
 
-  @callback publish_modification(Realtime.TripModification.t(), Realtime.Shape.t(), Map.t()) ::
+  @callback publish_modification(Realtime.TripModification.t(), Realtime.Shape.t(), Keyword.t()) ::
               any()
 
   @doc """
