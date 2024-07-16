@@ -251,30 +251,17 @@ const RouteLadder = ({
 
   return (
     <>
-      {inTestGroup(TestGroups.RouteLadderHeaderUpdate) ? (
-        <NewHeader
-          routeName={route.name}
-          hasAlert={hasAlert}
-          onClose={() => {
-            deselectRoute(route.id)
-          }}
-          showDropdown={
-            inTestGroup(TestGroups.DetoursPilot) &&
-            inTestGroup(TestGroups.DetourRouteSelection)
-          }
-          onClickAddDetour={() => {
-            onAddDetour?.(route)
-          }}
-        />
-      ) : (
-        <Header
-          routeName={route.name}
-          hasAlert={hasAlert}
-          onClose={() => {
-            deselectRoute(route.id)
-          }}
-        />
-      )}
+      <NewHeader
+        routeName={route.name}
+        hasAlert={hasAlert}
+        onClose={() => {
+          deselectRoute(route.id)
+        }}
+        showDropdown={inTestGroup(TestGroups.DetoursPilot)}
+        onClickAddDetour={() => {
+          onAddDetour?.(route)
+        }}
+      />
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
         ladderDirection={ladderDirection}

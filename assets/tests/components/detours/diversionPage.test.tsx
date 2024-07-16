@@ -37,7 +37,6 @@ import { neverPromise } from "../../testHelpers/mockHelpers"
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { DeepPartial } from "fishery"
 import getTestGroups from "../../../src/userTestGroups"
-import { TestGroups } from "../../../src/userInTestGroup"
 import { routePatternFactory } from "../../factories/routePattern"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import routeFactory from "../../factories/route"
@@ -1400,21 +1399,7 @@ describe("DiversionPage", () => {
   })
 
   describe("'Change route or direction' button", () => {
-    test("when not in test group, is not present", async () => {
-      render(<DiversionPage />)
-
-      expect(
-        await screen.findByRole("heading", { name: "Create Detour" })
-      ).toBeInTheDocument()
-      expect(
-        screen.queryByRole("button", { name: "Change route or direction" })
-      ).not.toBeInTheDocument()
-    })
-
     test("when in test group, is visible", async () => {
-      jest
-        .mocked(getTestGroups)
-        .mockReturnValue([TestGroups.DetourRouteSelection])
       jest
         .mocked(fetchRoutePatterns)
         .mockResolvedValue(routePatternFactory.buildList(1, { id: "66_666" }))
@@ -1432,10 +1417,6 @@ describe("DiversionPage", () => {
     })
 
     test("when clicked, shows the route selection panel", async () => {
-      jest
-        .mocked(getTestGroups)
-        .mockReturnValue([TestGroups.DetourRouteSelection])
-
       const routePatterns = routePatternFactory.buildList(1, { id: "66_666" })
       const [routePattern] = routePatterns
       jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
@@ -1452,10 +1433,6 @@ describe("DiversionPage", () => {
     })
 
     test("when clicked, clears any existing detour state", async () => {
-      jest
-        .mocked(getTestGroups)
-        .mockReturnValue([TestGroups.DetourRouteSelection])
-
       const route = routeFactory.build()
       const routePatterns = routePatternFactory.buildList(2, {
         routeId: route.id,
@@ -1525,13 +1502,6 @@ describe("DiversionPage", () => {
   })
 
   describe("'Route Selection Panel'", () => {
-    beforeEach(() => {
-      // Access to this panel via the "Change route or direction" button requires a test group currently
-      jest
-        .mocked(getTestGroups)
-        .mockReturnValue([TestGroups.DetourRouteSelection])
-    })
-
     test("can change route", async () => {
       const routes = routeFactory.buildList(2)
       const [initialRoute, targetRoute] = routes

@@ -16,7 +16,7 @@ export interface DiversionPanelProps {
   routeDirection: string
   detourFinished?: boolean
   onReviewDetour?: () => void
-  onChangeRoute?: () => void
+  onChangeRoute: () => void
 }
 
 export const DiversionPanel = ({

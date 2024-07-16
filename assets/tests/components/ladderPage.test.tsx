@@ -534,13 +534,7 @@ describe("LadderPage", () => {
   })
 
   test("opens the detour modal", async () => {
-    jest
-      .mocked(getTestGroups)
-      .mockReturnValue([
-        TestGroups.DetourRouteSelection,
-        TestGroups.DetoursPilot,
-        TestGroups.RouteLadderHeaderUpdate,
-      ])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 
     const mockState = stateFactory.build({
       routeTabs: [
