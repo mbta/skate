@@ -29,7 +29,7 @@ beforeEach(() => {
 
 const renderDetourHook = () =>
   renderHook(useDetour, {
-    initialProps: originalRouteFactory.build(),
+    initialProps: { input: originalRouteFactory.build() },
   })
 
 describe("useDetour", () => {
