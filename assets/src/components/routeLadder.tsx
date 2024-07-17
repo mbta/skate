@@ -130,8 +130,11 @@ export const NewHeader = ({
               trigger="click"
               onShow={() => tagManagerEvent("alert_tooltip_clicked")}
             >
-              <div className="c-route-ladder__alert-icon">
-                <ExclamationTriangleFill aria-label="Route Alert" />
+              <div
+                className="c-route-ladder__alert-icon"
+                aria-label="Route Alert"
+              >
+                <ExclamationTriangleFill />
               </div>
             </Tippy>
           )}

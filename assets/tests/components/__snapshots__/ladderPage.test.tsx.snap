@@ -348,11 +348,11 @@ exports[`LadderPage renders with alerts 1`] = `
                   Active detour
                 </div>
                 <div
+                  aria-label="Route Alert"
                   class="c-route-ladder__alert-icon"
                 >
                   <svg
                     aria-hidden="true"
-                    aria-label="Route Alert"
                     class="bi bi-exclamation-triangle-fill"
                     fill="currentColor"
                     height="16"
