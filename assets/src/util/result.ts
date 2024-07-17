@@ -13,7 +13,7 @@ enum ResultTag {
  * This is not exported so that usages of the objects cannot be
  * accessed or modified manually outside of this module.
  */
-const tag = Symbol("result-enum-tag")
+const tag = "$result-enum-tag"
 
 /** The {@linkcode Ok<T>} variant of {@linkcode Result<T, E>} */
 export type Ok<T> = { [tag]: ResultTag.Ok; ok: T }
