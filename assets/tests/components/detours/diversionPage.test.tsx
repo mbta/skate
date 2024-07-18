@@ -16,7 +16,10 @@ import {
   fetchNearestIntersection,
   fetchRoutePatterns,
 } from "../../../src/api"
-import { DiversionPage as DiversionPageDefault, DiversionPageProps } from "../../../src/components/detours/diversionPage"
+import {
+  DiversionPage as DiversionPageDefault,
+  DiversionPageProps,
+} from "../../../src/components/detours/diversionPage"
 import stopFactory from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
@@ -41,7 +44,9 @@ import { RoutesProvider } from "../../../src/contexts/routesContext"
 import routeFactory from "../../factories/route"
 import { patternDisplayName } from "../../../src/components/mapPage/routePropertiesCard"
 import { RoutePattern } from "../../../src/schedule"
-
+import { createActor } from "xstate"
+import { createDetourMachine } from "../../../src/models/createDetourMachine"
+import { shapePointFactory } from "../../factories/shapePointFactory"
 
 const DiversionPage = (props: Partial<DiversionPageProps>) => {
   return (
@@ -1888,5 +1893,40 @@ describe("DiversionPage", () => {
       // Interactive route shape
       expect(originalRouteShape.interactive.getAll(container)).toHaveLength(0)
     })
+  })
+
+  test("can restore from snapshot", async () => {
+    const routes = routeFactory.buildList(2)
+
+    const machine = createActor(createDetourMachine, {
+      input: originalRouteFactory.build(),
+    }).start()
+
+    machine.send({
+      type: "detour.edit.place-waypoint-on-route",
+      location: shapePointFactory.build(),
+    })
+    machine.send({
+      type: "detour.edit.place-waypoint",
+      location: shapePointFactory.build(),
+    })
+    machine.send({
+      type: "detour.edit.place-waypoint-on-route",
+      location: shapePointFactory.build(),
+    })
+    machine.send({ type: "detour.edit.done" })
+
+    const snapshot = machine.getPersistedSnapshot()
+    machine.stop()
+
+    render(
+      <RoutesProvider routes={routes}>
+        <DiversionPage snapshot={snapshot} />
+      </RoutesProvider>
+    )
+
+    expect(
+      screen.getByRole("heading", { name: "Share Detour Details" })
+    ).toBeVisible()
   })
 })
