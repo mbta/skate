@@ -32,7 +32,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     case request_fn.(%ExAws.Operation.RestQuery{
            http_method: :post,
            path: path,
-           body: Map.merge(base_arguments(), %{Text: text}),
+           body: Map.merge(base_arguments(), %{Text: String.byte_slice(text, 0, 200)}),
            service: :places
          }) do
       {:ok, response} -> {:ok, parse_search_response(response)}
@@ -51,7 +51,7 @@ defmodule Skate.LocationSearch.AwsLocationRequest do
     case request_fn.(%ExAws.Operation.RestQuery{
            http_method: :post,
            path: path,
-           body: Map.merge(base_arguments(), %{Text: text}),
+           body: Map.merge(base_arguments(), %{Text: String.byte_slice(text, 0, 200)}),
            service: :places
          }) do
       {:ok, response} -> {:ok, parse_suggest_response(response)}
