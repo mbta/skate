@@ -1,4 +1,6 @@
 defmodule SkateWeb.DetoursControllerTest do
+  alias Realtime.Shape
+  alias Realtime.TripModification
   alias Skate.OpenRouteServiceAPI.DirectionsRequest
   use SkateWeb.ConnCase
 
@@ -13,10 +15,15 @@ defmodule SkateWeb.DetoursControllerTest do
       {:ok, build(:ors_directions_json)}
     end)
 
+    stub(Skate.Detours.MockTripModificationPublisher, :publish_modification, fn _, _, _ -> nil end)
+
+    reassign_env(:skate_web, :missed_stops_fn, fn _ -> build(:missed_stops_result) end)
     reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> build(:shape_with_stops) end)
 
     :ok
   end
+
+  setup :verify_on_exit!
 
   describe "unfinished_detour/2" do
     @tag :authenticated
@@ -404,6 +411,76 @@ defmodule SkateWeb.DetoursControllerTest do
           "lat" => 42.445,
           "lon" => -70.99
         }
+      )
+    end
+
+    @tag :authenticated
+    test "sends data to TripModificationPublisher", %{conn: conn} do
+      route_pattern = build(:gtfs_route_pattern)
+      shape_with_stops = build(:shape_with_stops)
+
+      connection_start = Util.Location.as_location!(build(:gtfs_shape_point))
+      connection_end = Util.Location.as_location!(build(:gtfs_shape_point))
+      missed_stop = Enum.at(shape_with_stops.stops, 1)
+
+      reassign_env(:skate_web, :route_pattern_fn, fn _ -> route_pattern end)
+      reassign_env(:skate_web, :shape_with_stops_fn, fn _ -> shape_with_stops end)
+
+      reassign_env(:skate_web, :missed_stops_fn, fn _ ->
+        build(:missed_stops_result,
+          missed_stops: [missed_stop]
+        )
+      end)
+
+      missed_stop_id = missed_stop.id
+      representative_trip_id = route_pattern.representative_trip_id
+
+      expect(
+        Skate.Detours.MockTripModificationPublisher,
+        :publish_modification,
+        fn trip_modification, shape, opts ->
+          assert %TripModification{
+                   modifications: [
+                     %TripModification.Modification{
+                       start_stop_selector: %TripModification.StopSelector{
+                         stop_id: ^missed_stop_id
+                       },
+                       end_stop_selector: %TripModification.StopSelector{stop_id: ^missed_stop_id}
+                     }
+                   ],
+                   selected_trips: [
+                     %TripModification.SelectedTrip{
+                       trip_ids: [^representative_trip_id],
+                       shape_id: shape_id
+                     }
+                   ]
+                 } = trip_modification
+
+          assert %Shape{
+                   shape_id: ^shape_id
+                 } = shape
+
+          assert opts == [is_draft?: true]
+        end
+      )
+
+      post(conn, ~p"/api/detours/finished_detour",
+        route_pattern_id: route_pattern.id,
+        waypoints: [
+          %{
+            "lat" => 42.431,
+            "lon" => -70.99
+          },
+          %{
+            "lat" => 42.439,
+            "lon" => -70.99
+          }
+        ],
+        connection_start: %{
+          "lat" => connection_start.latitude,
+          "lon" => connection_start.longitude
+        },
+        connection_end: %{"lat" => connection_end.latitude, "lon" => connection_end.longitude}
       )
     end
 
