@@ -179,7 +179,7 @@ exports[`MinimalLadders renders route ladders 1`] = `
           />
           <div
             class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-            id="route-pill:r2:"
+            id="route-pill:r3:"
           >
             28
           </div>

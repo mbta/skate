@@ -60,6 +60,7 @@ export const NewHeader = ({
 }) => {
   const routePillId = "route-pill" + useId()
   const routeOptionsToggleId = "route-options-toggle" + useId()
+  const routeAlertLabelId = "route-alert-label" + useId()
   return (
     <Card className="c-new-route-ladder__header">
       <Card.Body>
@@ -91,12 +92,20 @@ export const NewHeader = ({
               trigger="click"
               onShow={() => tagManagerEvent("alert_tooltip_clicked")}
             >
-              <div
-                className="c-route-ladder__alert-icon"
-                aria-label="Route Alert"
-              >
-                <ExclamationTriangleFill />
-              </div>
+              <>
+                <div
+                  className="c-route-ladder__alert-label"
+                  id={routeAlertLabelId}
+                >
+                  Route Alert
+                </div>
+                <div
+                  className="c-route-ladder__alert-icon"
+                  aria-labelledby={routeAlertLabelId}
+                >
+                  <ExclamationTriangleFill />
+                </div>
+              </>
             </Tippy>
           )}
         </div>
