@@ -110,7 +110,7 @@ export const DetourRouteSelectionPanel = ({
             <h2 className="c-diversion-panel__h2">Choose direction</h2>
             {selectedRouteInfo.selectedRoute ? (
               <div className="position-relative">
-                {selectedRouteInfo.routePatterns && (
+                {selectedRouteInfo.routePatterns ? (
                   <>
                     <RoutePropertiesCard
                       routePatterns={selectedRouteInfo.routePatterns}
@@ -127,6 +127,10 @@ export const DetourRouteSelectionPanel = ({
                       <Spinner />
                     </div>
                   </>
+                ) : (
+                  // If there's a selected route, but no routePatterns loaded
+                  // yet, show a loading spinner.
+                  <Spinner />
                 )}
               </div>
             ) : (
