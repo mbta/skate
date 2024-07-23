@@ -9,6 +9,7 @@ defmodule Skate.Settings.Db.User do
   alias Skate.Settings.Db.RouteTab, as: DbRouteTab
   alias Skate.Settings.Db.TestGroupUser, as: DbTestGroupUser
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
+  alias Skate.Detours.Db.Detour
 
   @type t :: %__MODULE__{}
   @type id :: integer()
@@ -26,6 +27,8 @@ defmodule Skate.Settings.Db.User do
 
     has_many(:test_group_users, DbTestGroupUser, on_replace: :delete_if_exists)
     has_many(:test_groups, through: [:test_group_users, :test_group])
+
+    has_many(:detours, Detour, foreign_key: :author_id)
   end
 
   def changeset(user, attrs \\ %{}) do
