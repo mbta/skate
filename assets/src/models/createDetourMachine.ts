@@ -11,8 +11,8 @@ import {
 import { DetourShape, FinishedDetour } from "./detour"
 
 export const createDetourMachine = setup({
-  types: {} as {
-    context: {
+  types: {
+    context: {} as {
       route?: Route
       routePattern?: RoutePattern
 
@@ -25,9 +25,9 @@ export const createDetourMachine = setup({
       detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
 
       finishedDetour: FinishedDetour | undefined | null
-    }
+    },
 
-    input:
+    input: {} as
       | {
           // Caller has target route pattern
           route: Route
@@ -42,9 +42,9 @@ export const createDetourMachine = setup({
           // Caller has no prior selection
           route: undefined
           routePattern: undefined
-        }
+        },
 
-    events:
+    events: {} as
       | { type: "detour.route-pattern.open" }
       | { type: "detour.route-pattern.done" }
       | { type: "detour.route-pattern.delete-route" }
@@ -59,7 +59,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
-      | { type: "detour.share.copy-detour"; detourText: string }
+      | { type: "detour.share.copy-detour"; detourText: string },
   },
   actors: {
     "fetch-route-patterns": fromPromise<
