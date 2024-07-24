@@ -1,6 +1,9 @@
 defmodule Skate.Repo.Migrations.CreateDetours do
   use Ecto.Migration
 
+  @disable_ddl_transaction true
+  @disable_migration_lock true
+
   def change do
     create table(:detours) do
       add :state, :map
@@ -9,6 +12,6 @@ defmodule Skate.Repo.Migrations.CreateDetours do
       timestamps()
     end
 
-    create index(:detours, [:author_id])
+    create index(:detours, [:author_id], concurrently: true)
   end
 end
