@@ -196,10 +196,6 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with the new header format", () => {
-    jest
-      .mocked(getTestGroups)
-      .mockReturnValue([TestGroups.RouteLadderHeaderUpdate])
-
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
@@ -229,13 +225,7 @@ describe("routeLadder", () => {
   })
 
   test("renders a route ladder with the new header and detour dropdown", () => {
-    jest
-      .mocked(getTestGroups)
-      .mockReturnValue([
-        TestGroups.DetourRouteSelection,
-        TestGroups.RouteLadderHeaderUpdate,
-        TestGroups.DetoursPilot,
-      ])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 
     const route: Route = routeFactory.build({
       id: "28",
@@ -265,42 +255,6 @@ describe("routeLadder", () => {
     expect(
       screen.getByRole("button", { name: "28 Route Options" })
     ).toBeVisible()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("does not include the detour dropdown if the 'RouteLadderHeaderDropdown' group is absent", () => {
-    jest
-      .mocked(getTestGroups)
-      .mockReturnValue([
-        TestGroups.RouteLadderHeaderUpdate,
-        TestGroups.DetoursPilot,
-      ])
-
-    const route: Route = routeFactory.build({
-      id: "28",
-      name: "28",
-    })
-    const timepoints = [
-      { id: "MATPN", name: "MATPN Name" },
-      { id: "WELLH", name: "WELLH Name" },
-      { id: "MORTN", name: "MORTN Name" },
-    ]
-
-    const { container: tree } = render(
-      <RouteLadder
-        route={route}
-        timepoints={timepoints}
-        vehiclesAndGhosts={undefined}
-        selectedVehicleId={undefined}
-        deselectRoute={() => {}}
-        reverseLadder={() => {}}
-        toggleCrowding={() => {}}
-        ladderDirections={{}}
-        ladderCrowdingToggles={{}}
-        hasAlert={false}
-      />
-    )
 
     expect(tree).toMatchSnapshot()
   })

@@ -7,28 +7,29 @@ exports[`RouteLadders renders a route ladder 1`] = `
     data-testid="route-ladders-div"
   >
     <div
-      class="c-route-ladder__header"
+      class="c-new-route-ladder__header card"
     >
       <div
-        class="c-route-ladder__close-button-container"
+        class="card-body"
       >
-        <button
-          aria-label="Close"
-          class="c-close-button c-close-button--large c-close-button--darker"
+        <div
+          class="c-route-ladder__header__action-container"
+        />
+        <div
+          class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+          id="route-pill:r0:"
         >
-          <span
-            aria-hidden="true"
-            aria-label=""
-            role="img"
-          >
-            <svg />
-          </span>
-        </button>
-      </div>
-      <div
-        class="c-route-ladder__route-name"
-      >
-        1
+          1
+        </div>
+        <div
+          class="c-route-ladder__close-button-container"
+        >
+          <button
+            aria-label="Close"
+            class="btn-close p-2"
+            type="button"
+          />
+        </div>
       </div>
     </div>
     <div
@@ -165,28 +166,29 @@ exports[`RouteLadders renders a route ladder 1`] = `
       class="c-incoming-box"
     />
     <div
-      class="c-route-ladder__header"
+      class="c-new-route-ladder__header card"
     >
       <div
-        class="c-route-ladder__close-button-container"
+        class="card-body"
       >
-        <button
-          aria-label="Close"
-          class="c-close-button c-close-button--large c-close-button--darker"
+        <div
+          class="c-route-ladder__header__action-container"
+        />
+        <div
+          class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+          id="route-pill:r2:"
         >
-          <span
-            aria-hidden="true"
-            aria-label=""
-            role="img"
-          >
-            <svg />
-          </span>
-        </button>
-      </div>
-      <div
-        class="c-route-ladder__route-name"
-      >
-        28
+          28
+        </div>
+        <div
+          class="c-route-ladder__close-button-container"
+        >
+          <button
+            aria-label="Close"
+            class="btn-close p-2"
+            type="button"
+          />
+        </div>
       </div>
     </div>
     <div
