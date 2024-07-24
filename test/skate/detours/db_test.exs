@@ -15,12 +15,15 @@ defmodule Skate.Detours.DbTest do
 
     test "list_detours/0 returns all detours" do
       detour = detour_fixture()
-      assert Db.list_detours() |> Skate.Repo.preload(:author) == [detour]
+      assert Skate.Repo.preload(Db.list_detours(), :author) == [detour]
     end
 
     test "get_detour!/1 returns the detour with given id" do
       detour = detour_fixture()
-      assert Db.get_detour!(detour.id) |> Skate.Repo.preload(:author) == detour
+
+      assert detour.id
+             |> Db.get_detour!()
+             |> Skate.Repo.preload(:author) == detour
     end
 
     test "create_detour/1 with valid data creates a detour" do
@@ -45,7 +48,11 @@ defmodule Skate.Detours.DbTest do
     test "update_detour/2 with invalid data returns error changeset" do
       detour = detour_fixture()
       assert {:error, %Ecto.Changeset{}} = Db.update_detour(detour, @invalid_attrs)
-      assert detour == Db.get_detour!(detour.id) |> Skate.Repo.preload(:author)
+
+      assert detour ==
+               detour.id
+               |> Db.get_detour!()
+               |> Skate.Repo.preload(:author)
     end
 
     test "delete_detour/1 deletes the detour" do

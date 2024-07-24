@@ -1,4 +1,6 @@
 defmodule Skate.Detours.Db.Detour do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,7 +13,6 @@ defmodule Skate.Detours.Db.Detour do
     timestamps()
   end
 
-  @doc false
   def changeset(detour, attrs) do
     detour
     |> cast(attrs, [:state])
