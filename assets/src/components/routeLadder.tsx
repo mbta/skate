@@ -42,7 +42,7 @@ interface Props {
   onAddDetour?: (route: Route) => void
 }
 
-export const NewHeader = ({
+export const Header = ({
   routeName,
   onClose,
   hasAlert,
@@ -215,7 +215,7 @@ const RouteLadder = ({
 
   return (
     <>
-      <NewHeader
+      <Header
         routeName={route.name}
         hasAlert={hasAlert}
         onClose={() => {
