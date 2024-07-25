@@ -1,6 +1,5 @@
 import React, { useState } from "react"
-import { DiversionPage } from "./diversionPage"
-import { OriginalRoute } from "../../models/detour"
+import { DiversionPage, DiversionPageStateProps } from "./diversionPage"
 import { Modal } from "@restart/ui"
 import { ModalTransitionProps } from "@restart/ui/esm/Modal"
 import { CSSTransition } from "react-transition-group"
@@ -16,14 +15,13 @@ const Fade = ({ children, ...props }: ModalTransitionProps) => (
 )
 
 export const DetourModal = ({
-  originalRoute,
   onClose,
   show,
+  ...useDetourProps
 }: {
-  originalRoute: OriginalRoute
   onClose: () => void
   show: boolean
-}) => {
+} & DiversionPageStateProps) => {
   const [showConfirmCloseModal, setShowConfirmCloseModal] =
     useState<boolean>(false)
 
@@ -35,13 +33,13 @@ export const DetourModal = ({
       onHide={() => setShowConfirmCloseModal(true)}
     >
       <DiversionPage
+        {...useDetourProps}
         onClose={() => setShowConfirmCloseModal(true)}
         onConfirmClose={() => {
           setShowConfirmCloseModal(false)
           onClose()
         }}
         onCancelClose={() => setShowConfirmCloseModal(false)}
-        originalRoute={originalRoute}
         showConfirmCloseModal={showConfirmCloseModal}
       />
     </Modal>

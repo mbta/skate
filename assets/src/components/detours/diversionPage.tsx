@@ -18,7 +18,6 @@ import { DetourFinishedPanel } from "./detourFinishedPanel"
 import { DetourRouteSelectionPanel } from "./detourRouteSelectionPanel"
 import { Route, RoutePattern } from "../../schedule"
 import RoutesContext from "../../contexts/routesContext"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { Snapshot } from "xstate"
 
 const displayFieldsFromRouteAndPattern = (
@@ -46,18 +45,21 @@ interface DiversionPageFunctions {
   showConfirmCloseModal: boolean
 }
 
-interface DiversionPageFromInput extends DiversionPageFunctions {
+interface DiversionPageFromInput {
   originalRoute: OriginalRoute
 }
 
-interface DiversionPageFromSnapshot extends DiversionPageFunctions {
+interface DiversionPageFromSnapshot {
   /** A _validated_ snapshot from which to initialize {@linkcode createDetourMachine} with */
   snapshot: Snapshot<unknown>
 }
 
-export type DiversionPageProps =
+export type DiversionPageStateProps =
   | DiversionPageFromInput
   | DiversionPageFromSnapshot
+
+export type DiversionPageProps = DiversionPageStateProps &
+  DiversionPageFunctions
 
 export const DiversionPage = ({
   onClose,
