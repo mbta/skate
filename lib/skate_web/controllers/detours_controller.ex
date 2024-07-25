@@ -81,6 +81,7 @@ defmodule SkateWeb.DetoursController do
                route_segments: route_segments,
                detour_shape: ors_result
              }),
+           false <- length(missed_stops) == 0,
            {:ok, modification} <-
              TripModification.new(%TripModification.Input{
                route_pattern: route_pattern,
