@@ -412,4 +412,11 @@ defmodule Skate.Factory do
       }
     }
   end
+
+  def detour_factory do
+    %Skate.Detours.Db.Detour{
+      state: %{},
+      author: build(:user)
+    }
+  end
 end
