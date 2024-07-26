@@ -1,4 +1,4 @@
-defmodule Skate.Detours.Db do
+defmodule Skate.Detours.Detours do
   @moduledoc """
   The Detours.Db context.
   """
