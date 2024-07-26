@@ -79,7 +79,7 @@ defmodule Util.NearestPoint do
         #  SNE
         #
         # S->N is zero, so that's what we assign to nearest_vector.
-        0.0 ->
+        n when n in [+0.0, -0.0] ->
           Vector2d.zero()
 
         # If the start and end points don't coincide, then we can
