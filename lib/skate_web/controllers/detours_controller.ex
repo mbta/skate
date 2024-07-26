@@ -81,6 +81,9 @@ defmodule SkateWeb.DetoursController do
                route_segments: route_segments,
                detour_shape: ors_result
              }),
+           # credo:disable-for-next-line
+           # TODO: Revisit the idea of `TripModification`s without missed stops
+           false <- missed_stops == [],
            {:ok, modification} <-
              TripModification.new(%TripModification.Input{
                route_pattern: route_pattern,
