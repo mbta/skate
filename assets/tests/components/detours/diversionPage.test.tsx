@@ -7,7 +7,7 @@ import {
   waitFor,
   within,
 } from "@testing-library/react"
-import React, { ComponentProps } from "react"
+import React from "react"
 import "@testing-library/jest-dom/jest-globals"
 import {
   FetchDetourDirectionsError,
@@ -16,7 +16,10 @@ import {
   fetchNearestIntersection,
   fetchRoutePatterns,
 } from "../../../src/api"
-import { DiversionPage as DiversionPageDefault } from "../../../src/components/detours/diversionPage"
+import {
+  DiversionPage as DiversionPageDefault,
+  DiversionPageProps,
+} from "../../../src/components/detours/diversionPage"
 import stopFactory from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
@@ -35,30 +38,22 @@ import {
 import { Err, Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
-import { DeepPartial } from "fishery"
 import getTestGroups from "../../../src/userTestGroups"
 import { routePatternFactory } from "../../factories/routePattern"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import routeFactory from "../../factories/route"
 import { patternDisplayName } from "../../../src/components/mapPage/routePropertiesCard"
 import { RoutePattern } from "../../../src/schedule"
+import { createActor } from "xstate"
+import { createDetourMachine } from "../../../src/models/createDetourMachine"
+import { shapePointFactory } from "../../factories/shapePointFactory"
 
-const DiversionPage = (
-  props: Omit<
-    Partial<ComponentProps<typeof DiversionPageDefault>>,
-    "originalRoute"
-  > & {
-    originalRoute?: DeepPartial<
-      ComponentProps<typeof DiversionPageDefault>["originalRoute"]
-    >
-  }
-) => {
-  const { originalRoute, showConfirmCloseModal, ...otherProps } = props
+const DiversionPage = (props: Partial<DiversionPageProps>) => {
   return (
     <DiversionPageDefault
-      originalRoute={originalRouteFactory.build(originalRoute)}
-      showConfirmCloseModal={showConfirmCloseModal ?? false}
-      {...otherProps}
+      originalRoute={originalRouteFactory.build()}
+      showConfirmCloseModal={false}
+      {...props}
     />
   )
 }
@@ -1210,7 +1205,7 @@ describe("DiversionPage", () => {
     const connectionPoint = { lat: 10, lon: 10 }
     const { container } = render(
       <DiversionPage
-        originalRoute={{
+        originalRoute={originalRouteFactory.build({
           route: {
             name: routeName,
           },
@@ -1221,7 +1216,7 @@ describe("DiversionPage", () => {
               points: [connectionPoint],
             },
           },
-        }}
+        })}
       />
     )
 
@@ -1348,13 +1343,13 @@ describe("DiversionPage", () => {
   test("stop markers are visible", async () => {
     const { container } = render(
       <DiversionPage
-        originalRoute={{
+        originalRoute={originalRouteFactory.build({
           routePattern: {
             shape: {
               stops: stopFactory.buildList(11),
             },
           },
-        }}
+        })}
       />
     )
 
@@ -1375,13 +1370,13 @@ describe("DiversionPage", () => {
 
     const { container } = render(
       <DiversionPage
-        originalRoute={{
+        originalRoute={originalRouteFactory.build({
           routePattern: {
             shape: {
               stops: [stop1, stop2, stop3, stop4],
             },
           },
-        }}
+        })}
       />
     )
 
@@ -1405,7 +1400,11 @@ describe("DiversionPage", () => {
         .mockResolvedValue(routePatternFactory.buildList(1, { id: "66_666" }))
 
       render(
-        <DiversionPage originalRoute={{ routePattern: { id: "66_666" } }} />
+        <DiversionPage
+          originalRoute={originalRouteFactory.build({
+            routePattern: { id: "66_666" },
+          })}
+        />
       )
 
       expect(
@@ -1421,7 +1420,11 @@ describe("DiversionPage", () => {
       const [routePattern] = routePatterns
       jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
 
-      render(<DiversionPage originalRoute={{ routePattern }} />)
+      render(
+        <DiversionPage
+          originalRoute={originalRouteFactory.build({ routePattern })}
+        />
+      )
 
       await userEvent.click(
         await screen.findByRole("button", { name: "Change route or direction" })
@@ -1442,10 +1445,10 @@ describe("DiversionPage", () => {
       const { container } = render(
         <RoutesProvider routes={[route]}>
           <DiversionPage
-            originalRoute={{
+            originalRoute={originalRouteFactory.build({
               route,
               routePattern: routePatterns[0],
-            }}
+            })}
           />
         </RoutesProvider>
       )
@@ -1537,10 +1540,10 @@ describe("DiversionPage", () => {
       render(
         <RoutesProvider routes={routes}>
           <DiversionPage
-            originalRoute={{
+            originalRoute={originalRouteFactory.build({
               routePattern: initialRoutePattern,
               route: initialRoute,
-            }}
+            })}
           />
         </RoutesProvider>
       )
@@ -1579,7 +1582,10 @@ describe("DiversionPage", () => {
       render(
         <RoutesProvider routes={[route]}>
           <DiversionPage
-            originalRoute={{ routePattern: startingRoutePattern, route }}
+            originalRoute={originalRouteFactory.build({
+              routePattern: startingRoutePattern,
+              route,
+            })}
           />
         </RoutesProvider>
       )
@@ -1608,7 +1614,12 @@ describe("DiversionPage", () => {
 
       render(
         <RoutesProvider routes={[route]}>
-          <DiversionPage originalRoute={{ routePattern: rp1, route }} />
+          <DiversionPage
+            originalRoute={originalRouteFactory.build({
+              routePattern: rp1,
+              route,
+            })}
+          />
         </RoutesProvider>
       )
 
@@ -1640,7 +1651,10 @@ describe("DiversionPage", () => {
       render(
         <RoutesProvider routes={[route]}>
           <DiversionPage
-            originalRoute={{ route, routePattern: selectedRoutePattern }}
+            originalRoute={originalRouteFactory.build({
+              route,
+              routePattern: selectedRoutePattern,
+            })}
           />
         </RoutesProvider>
       )
@@ -1680,10 +1694,10 @@ describe("DiversionPage", () => {
       render(
         <RoutesProvider routes={routes}>
           <DiversionPage
-            originalRoute={{
+            originalRoute={originalRouteFactory.build({
               route: route1,
               routePattern: routePatternFactory.build({ routeId: route1.id }),
-            }}
+            })}
           />
         </RoutesProvider>
       )
@@ -1722,10 +1736,10 @@ describe("DiversionPage", () => {
       render(
         <RoutesProvider routes={[route]}>
           <DiversionPage
-            originalRoute={{
+            originalRoute={originalRouteFactory.build({
               route,
               routePattern,
-            }}
+            })}
           />
         </RoutesProvider>
       )
@@ -1778,10 +1792,10 @@ describe("DiversionPage", () => {
       render(
         <RoutesProvider routes={routes}>
           <DiversionPage
-            originalRoute={{
+            originalRoute={originalRouteFactory.build({
               route: route1,
               routePattern: routePatternFactory.build({ routeId: route1.id }),
-            }}
+            })}
           />
         </RoutesProvider>
       )
@@ -1812,10 +1826,10 @@ describe("DiversionPage", () => {
       render(
         <RoutesProvider routes={routes}>
           <DiversionPage
-            originalRoute={{
+            originalRoute={originalRouteFactory.build({
               routePattern: undefined,
               route: undefined,
-            }}
+            })}
           />
         </RoutesProvider>
       )
@@ -1861,7 +1875,9 @@ describe("DiversionPage", () => {
 
       const { container } = render(
         <RoutesProvider routes={[route]}>
-          <DiversionPage originalRoute={{ route, routePattern }} />
+          <DiversionPage
+            originalRoute={originalRouteFactory.build({ route, routePattern })}
+          />
         </RoutesProvider>
       )
 
@@ -1877,5 +1893,40 @@ describe("DiversionPage", () => {
       // Interactive route shape
       expect(originalRouteShape.interactive.getAll(container)).toHaveLength(0)
     })
+  })
+
+  test("can restore from snapshot", async () => {
+    const routes = routeFactory.buildList(2)
+
+    const machine = createActor(createDetourMachine, {
+      input: originalRouteFactory.build(),
+    }).start()
+
+    machine.send({
+      type: "detour.edit.place-waypoint-on-route",
+      location: shapePointFactory.build(),
+    })
+    machine.send({
+      type: "detour.edit.place-waypoint",
+      location: shapePointFactory.build(),
+    })
+    machine.send({
+      type: "detour.edit.place-waypoint-on-route",
+      location: shapePointFactory.build(),
+    })
+    machine.send({ type: "detour.edit.done" })
+
+    const snapshot = machine.getPersistedSnapshot()
+    machine.stop()
+
+    render(
+      <RoutesProvider routes={routes}>
+        <DiversionPage snapshot={snapshot} />
+      </RoutesProvider>
+    )
+
+    expect(
+      screen.getByRole("heading", { name: "Share Detour Details" })
+    ).toBeVisible()
   })
 })

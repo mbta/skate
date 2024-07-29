@@ -18,6 +18,7 @@ import { DetourFinishedPanel } from "./detourFinishedPanel"
 import { DetourRouteSelectionPanel } from "./detourRouteSelectionPanel"
 import { Route, RoutePattern } from "../../schedule"
 import RoutesContext from "../../contexts/routesContext"
+import { Snapshot } from "xstate"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -37,20 +38,35 @@ const displayFieldsFromRouteAndPattern = (
   return { routeName, routeDirection, routeOrigin, routeDescription, shape }
 }
 
-interface DiversionPageProps {
-  originalRoute: OriginalRoute
+interface DiversionPageFunctions {
   onClose?: () => void
   onConfirmClose?: () => void
   onCancelClose?: () => void
   showConfirmCloseModal: boolean
 }
 
+interface DiversionPageFromInput {
+  originalRoute: OriginalRoute
+}
+
+interface DiversionPageFromSnapshot {
+  /** A _validated_ snapshot from which to initialize {@linkcode createDetourMachine} with */
+  snapshot: Snapshot<unknown>
+}
+
+export type DiversionPageStateProps =
+  | DiversionPageFromInput
+  | DiversionPageFromSnapshot
+
+export type DiversionPageProps = DiversionPageStateProps &
+  DiversionPageFunctions
+
 export const DiversionPage = ({
-  originalRoute,
   onClose,
   onConfirmClose,
   onCancelClose,
   showConfirmCloseModal,
+  ...useDetourProps
 }: DiversionPageProps) => {
   const {
     snapshot,
@@ -78,7 +94,11 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
-  } = useDetour(originalRoute)
+  } = useDetour(
+    "snapshot" in useDetourProps
+      ? useDetourProps
+      : { input: useDetourProps.originalRoute }
+  )
 
   const [textArea, setTextArea] = useState("")
 
@@ -232,8 +252,16 @@ export const DiversionPage = ({
           {routingError?.type === "unknown" && <RoutingErrorAlert />}
           <DetourMap
             originalShape={shape?.points ?? []}
-            center={originalRoute.center}
-            zoom={originalRoute.zoom}
+            center={
+              "originalRoute" in useDetourProps
+                ? useDetourProps.originalRoute.center
+                : undefined
+            }
+            zoom={
+              "originalRoute" in useDetourProps
+                ? useDetourProps.originalRoute.zoom
+                : undefined
+            }
             detourShape={detourShape}
             startPoint={startPoint ?? undefined}
             endPoint={endPoint ?? undefined}
