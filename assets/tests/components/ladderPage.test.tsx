@@ -554,7 +554,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(container.querySelector(".c-new-route-ladder__header")).toBeVisible()
+    expect(container.querySelector(".c-route-ladder__header")).toBeVisible()
 
     expect(
       container.querySelector(".c-route-ladder__dropdown-button")

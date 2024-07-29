@@ -61,7 +61,7 @@ export const Header = ({
   const routePillId = "route-pill" + useId()
   const routeOptionsToggleId = "route-options-toggle" + useId()
   return (
-    <Card className="c-new-route-ladder__header">
+    <Card className="c-route-ladder__header">
       <Card.Body>
         <div className="c-route-ladder__header__action-container">
           {showDropdown && (
