@@ -11,9 +11,14 @@
   }
 }
 
-.c-detour_map--original-route-shape-after-start-point,
 .c-detour_map--original-route-shape-core {
   stroke: $color-kiwi-500;
+  opacity: 50%;
+}
+
+.c-detour_map--original-route-shape-after-start-point {
+  stroke: $color-kiwi-500;
+  stroke-dasharray: 10 10;
   opacity: 50%;
 }
 
