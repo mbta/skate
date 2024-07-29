@@ -3,6 +3,7 @@ import {
   fetchDetourDirections,
   fetchFinishedDetour,
   fetchNearestIntersection,
+  fetchUnfinishedDetour,
 } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
 import { useDetour } from "../../src/hooks/useDetour"
@@ -10,10 +11,14 @@ import { act } from "react-dom/test-utils"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"
-import { finishedDetourFactory } from "../factories/finishedDetourFactory"
+import {
+  finishedDetourFactory,
+  unfinishedDetourFactory,
+} from "../factories/finishedDetourFactory"
 import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
 import { Err, Ok } from "../../src/util/result"
+import { neverPromise } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/api")
 
@@ -23,6 +28,8 @@ beforeEach(() => {
   jest
     .mocked(fetchFinishedDetour)
     .mockResolvedValue(finishedDetourFactory.build())
+
+  jest.mocked(fetchUnfinishedDetour).mockReturnValue(neverPromise())
 
   jest.mocked(fetchNearestIntersection).mockReturnValue(new Promise(() => {}))
 })
@@ -155,6 +162,10 @@ describe("useDetour", () => {
   test("when `endPoint` is undone, `routeSegments` is cleared", async () => {
     const { result } = renderDetourHook()
 
+    const promise = Promise.resolve(unfinishedDetourFactory.build())
+
+    jest.mocked(fetchUnfinishedDetour).mockReturnValue(promise)
+
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
     act(() => result.current.addConnectionPoint?.({ lat: 0, lon: 0 }))
 
@@ -164,8 +175,10 @@ describe("useDetour", () => {
 
     act(() => result.current.undo?.())
 
-    await waitFor(() => {
-      expect(result.current.routeSegments).toBeUndefined()
+    await act(async () => {
+      await promise
     })
+
+    expect(result.current.routeSegments).toBeUndefined()
   })
 })

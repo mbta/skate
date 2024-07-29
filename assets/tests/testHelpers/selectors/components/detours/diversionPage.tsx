@@ -20,6 +20,22 @@ export const originalRouteShape = {
         ".c-detour_map--original-route-shape-diverted"
       ),
   },
+  afterStartPoint: {
+    interactive: {
+      getAll: (container: HTMLElement) =>
+        container.querySelectorAll(
+          ".c-detour_map--original-route-shape-after-start-point--interactive"
+        ),
+    },
+    not: {
+      interactive: {
+        getAll: (container: HTMLElement) =>
+          container.querySelectorAll(
+            ".c-detour_map--original-route-shape-after-start-point"
+          ),
+      },
+    },
+  },
 
   get(container: HTMLElement): Element {
     const maybeShape = container.querySelector(

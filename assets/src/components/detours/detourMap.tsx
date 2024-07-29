@@ -18,7 +18,7 @@ import {
 } from "../../util/pointLiterals"
 import { MapTooltip } from "../map/tooltip"
 import { joinClasses } from "../../helpers/dom"
-import { RouteSegments } from "../../models/detour"
+import { RouteSegments, UnfinishedRouteSegments } from "../../models/detour"
 import { MapButton } from "../map/controls/mapButton"
 import { ArrowLeftSquare, XSquare } from "../../helpers/bsIcons"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
@@ -62,6 +62,11 @@ interface DetourMapProps {
    * Coordinates to display as the waypoints.
    */
   waypoints: ShapePoint[]
+
+  /**
+   * Two partial route-shape segments: before and after the start point
+   */
+  unfinishedRouteSegments?: UnfinishedRouteSegments
 
   /**
    * Three partial route-shape segments: before, during, and after the detour
@@ -116,6 +121,8 @@ export const DetourMap = ({
 
   onClickOriginalShape,
   onAddWaypoint,
+
+  unfinishedRouteSegments,
 
   routeSegments,
 
@@ -228,7 +235,15 @@ export const DetourMap = ({
         />
 
         {routeSegments ? (
-          <DivertedRouteShape segments={routeSegments}></DivertedRouteShape>
+          <DivertedRouteShape segments={routeSegments} />
+        ) : unfinishedRouteSegments ? (
+          <UnfinishedDiversionRouteShape
+            interactive={!streetViewEnabled}
+            segments={unfinishedRouteSegments}
+            onClick={(e) => {
+              onClickOriginalShape(latLngLiteralToShapePoint(e.latlng))
+            }}
+          />
         ) : (
           <OriginalRouteShape
             positions={originalShape.map(shapePointToLatLngLiteral)}
@@ -383,6 +398,47 @@ const OriginalRouteShape = ({
       >
         {children}
       </Polyline>
+    )}
+  </>
+)
+
+interface UnfinishedDiversionRouteShapeProps {
+  interactive: boolean
+  segments: UnfinishedRouteSegments
+  onClick: (e: LeafletMouseEvent) => void
+}
+
+const UnfinishedDiversionRouteShape = ({
+  interactive,
+  segments: { beforeStartPoint, afterStartPoint },
+  onClick,
+}: UnfinishedDiversionRouteShapeProps) => (
+  <>
+    <Polyline
+      weight={6}
+      interactive={false}
+      positions={beforeStartPoint.map(shapePointToLatLngLiteral)}
+      className="c-detour_map--original-route-shape-core"
+    />
+    <Polyline
+      weight={6}
+      interactive={false}
+      positions={afterStartPoint.map(shapePointToLatLngLiteral)}
+      className="c-detour_map--original-route-shape-after-start-point"
+    />
+    {interactive && (
+      <Polyline
+        positions={afterStartPoint.map(shapePointToLatLngLiteral)}
+        weight={16}
+        className={joinClasses([
+          "c-detour_map--original-route-shape-after-start-point--interactive",
+          "c-detour_map--original-route-shape__unfinished",
+        ])}
+        bubblingMouseEvents={false}
+        eventHandlers={{
+          click: onClick,
+        }}
+      />
     )}
   </>
 )

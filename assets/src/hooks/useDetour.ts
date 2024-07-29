@@ -1,4 +1,7 @@
+import { useCallback } from "react"
 import { ShapePoint } from "../schedule"
+import { fetchUnfinishedDetour } from "../api"
+import { useApiCall } from "./useApiCall"
 import { isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
 import { useMachine } from "@xstate/react"
@@ -42,6 +45,16 @@ export const useDetour = (input: UseDetourInput) => {
     finishedDetour,
     detourShape,
   } = snapshot.context
+
+  const { result: unfinishedDetour } = useApiCall({
+    apiCall: useCallback(async () => {
+      if (startPoint && routePattern?.id) {
+        return fetchUnfinishedDetour(routePattern.id, startPoint)
+      } else {
+        return null
+      }
+    }, [startPoint, routePattern]),
+  })
 
   const { result: nearestIntersection } = useNearestIntersection({
     latitude: startPoint?.lat,
@@ -146,6 +159,8 @@ export const useDetour = (input: UseDetourInput) => {
      */
     routingError:
       detourShape && isErr(detourShape) ? detourShape.err : undefined,
+
+    unfinishedRouteSegments: unfinishedDetour?.unfinishedRouteSegments,
 
     /**
      * Stops that are not missed by the detour (starts out as all of the stops)

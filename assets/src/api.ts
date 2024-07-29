@@ -51,13 +51,17 @@ import {
 } from "./models/locationSearchSuggestionData"
 import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
 import { DetourShapeData, detourShapeFromData } from "./models/detourShapeData"
-import { DetourShape, FinishedDetour } from "./models/detour"
+import { DetourShape, FinishedDetour, UnfinishedDetour } from "./models/detour"
 import {
   FinishedDetourData,
   finishedDetourFromData,
 } from "./models/finishedDetour"
 import { FetchResult, ok, fetchError } from "./util/fetchResult"
 import { Ok, Err, Result, map } from "./util/result"
+import {
+  UnfinishedDetourData,
+  unfinishedDetourFromData,
+} from "./models/unfinishedDetour"
 
 export interface RouteData {
   id: string
@@ -248,6 +252,21 @@ export const fetchDetourDirections = (
       coordinates,
     })
   ).then((v) => map(v, detourShapeFromData))
+
+export const fetchUnfinishedDetour = (
+  routePatternId: RoutePatternId,
+  connectionStart: ShapePoint
+): Promise<UnfinishedDetour | null> =>
+  checkedApiCall<UnfinishedDetourData, UnfinishedDetour | null>({
+    url: "/api/detours/unfinished_detour",
+    parser: unfinishedDetourFromData,
+    dataStruct: UnfinishedDetourData,
+    defaultResult: null,
+    fetchArgs: postJsonParameter({
+      route_pattern_id: routePatternId,
+      connection_start: connectionStart,
+    }),
+  })
 
 export const fetchFinishedDetour = (
   routePatternId: RoutePatternId,

@@ -97,6 +97,7 @@ const meta = {
     startPoint,
     waypoints: [waypoint],
     endPoint,
+    unfinishedRouteSegments: undefined,
     routeSegments: {
       beforeDetour: shape.slice(0, startPointIndex),
       detour: shape.slice(startPointIndex, endPointIndex),
@@ -138,6 +139,10 @@ export const WithSomeWaypoints: Story = {
   args: {
     stops: allStops,
     endPoint: undefined,
+    unfinishedRouteSegments: {
+      beforeStartPoint: shape.slice(0, startPointIndex),
+      afterStartPoint: shape.slice(startPointIndex, -1),
+    },
     routeSegments: undefined,
     detourShape: [startPoint, waypoint],
     waypoints: [waypoint],
