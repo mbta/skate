@@ -93,7 +93,12 @@ defmodule SkateWeb.DetoursController do
                last_modified_time: DateTime.utc_now(),
                shape_id: shape_id
              }) do
-        trip_modification_publisher().publish_modification(modification, shape, is_draft?: true)
+        try do
+          trip_modification_publisher().publish_modification(modification, shape, is_draft?: true)
+        catch
+          # May throw if the publishing server doesn't exist, which we can ignore.
+          :exit, {:noproc, _} -> nil
+        end
       end
 
       json(conn, %{
