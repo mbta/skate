@@ -13,7 +13,7 @@ exports[`routeLadder displays loading if we are fetching the timepoints 1`] = `
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:rl:"
+        id="route-pill:rv:"
       >
         28
       </div>
@@ -59,7 +59,7 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:rh:"
+        id="route-pill:rp:"
       >
         28
       </div>
@@ -328,7 +328,7 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:rj:"
+        id="route-pill:rs:"
       >
         28
       </div>
@@ -540,7 +540,7 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:rf:"
+        id="route-pill:rm:"
       >
         28
       </div>
@@ -856,7 +856,7 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:rd:"
+        id="route-pill:rj:"
       >
         28
       </div>
@@ -1129,7 +1129,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:rb:"
+        id="route-pill:rg:"
       >
         28
       </div>
@@ -1344,14 +1344,14 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
         >
           <button
             aria-expanded="false"
-            aria-labelledby="route-pill:r4: route-options-toggle:r5:"
+            aria-labelledby="route-pill:r6: route-options-toggle:r7:"
             class="c-route-ladder__dropdown-button dropdown-toggle btn btn-primary"
-            id="react-aria-:r6:"
+            id="react-aria-:r9:"
             type="button"
           >
             <span
               class="visually-hidden"
-              id="route-options-toggle:r5:"
+              id="route-options-toggle:r7:"
             >
               Route Options
             </span>
@@ -1360,7 +1360,7 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
       </div>
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:r4:"
+        id="route-pill:r6:"
       >
         28
       </div>
@@ -1497,7 +1497,7 @@ exports[`routeLadder renders a route ladder with the new header format 1`] = `
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:r2:"
+        id="route-pill:r3:"
       >
         28
       </div>
@@ -1634,7 +1634,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:r7:"
+        id="route-pill:ra:"
       >
         28
       </div>
@@ -1938,7 +1938,7 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
       />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-        id="route-pill:r9:"
+        id="route-pill:rd:"
       >
         28
       </div>
