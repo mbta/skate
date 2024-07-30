@@ -28,15 +28,13 @@ beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
-const DiversionPage = (props: Partial<DiversionPageProps>) => {
-  return (
-    <DiversionPageDefault
-      originalRoute={originalRouteFactory.build()}
-      showConfirmCloseModal={false}
-      {...props}
-    />
-  )
-}
+const DiversionPage = (props: Partial<DiversionPageProps>) => (
+  <DiversionPageDefault
+    originalRoute={originalRouteFactory.build()}
+    showConfirmCloseModal={false}
+    {...props}
+  />
+)
 
 jest.mock("../../../src/api")
 jest.mock("../../../src/userTestGroups")
@@ -53,33 +51,33 @@ beforeEach(() => {
     .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
 })
 
+const diversionPageOnReviewScreen = async (
+  props: Partial<DiversionPageProps>
+) => {
+  const { container } = render(<DiversionPage {...props} />)
+
+  act(() => {
+    fireEvent.click(originalRouteShape.get(container))
+  })
+  act(() => {
+    fireEvent.click(originalRouteShape.get(container))
+  })
+  await userEvent.click(reviewDetourButton.get())
+
+  return { container }
+}
+
 describe("DiversionPage activate workflow", () => {
   test("does not have an activate button on the review details screen if not in the detours-list test group", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-    await userEvent.click(reviewDetourButton.get())
+    await diversionPageOnReviewScreen()
 
     expect(activateDetourButton.query()).not.toBeInTheDocument()
   })
 
   test("has an activate button on the review details screen", async () => {
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-    await userEvent.click(reviewDetourButton.get())
+    await diversionPageOnReviewScreen()
 
     expect(activateDetourButton.get()).toBeVisible()
   })
