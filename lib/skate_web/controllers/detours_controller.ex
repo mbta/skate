@@ -4,9 +4,11 @@ defmodule SkateWeb.DetoursController do
   alias Skate.OpenRouteServiceAPI
   use SkateWeb, :controller
 
+  alias Skate.Detours.Detours
   alias Skate.Detours.MissedStops
   alias Skate.Detours.RouteSegments
-  alias Util.Location
+  alias SkateWeb.AuthManager
+  alias Util.Location  
 
   @spec unfinished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def unfinished_detour(conn, %{
@@ -49,6 +51,7 @@ defmodule SkateWeb.DetoursController do
          shape_with_stops <-
            shape_with_stops(route_pattern.representative_trip_id),
          false <- is_nil(shape_with_stops) do
+      %{id: user_id} = AuthManager.Plug.current_resource(conn)
       connection_start_location = Location.new(connection_start["lat"], connection_start["lon"])
       connection_end_location = Location.new(connection_end["lat"], connection_end["lon"])
 
@@ -101,14 +104,21 @@ defmodule SkateWeb.DetoursController do
         end
       end
 
-      json(conn, %{
-        data: %{
+      data = %{
           missed_stops: missed_stops,
           route_segments: format(route_segments),
           connection_stop_start: connection_stop_start,
           connection_stop_end: connection_stop_end,
           detour_shape: ors_result
         }
+
+      Detours.create_detour(%{
+        state: data,
+        #author: user_id
+      })
+
+      json(conn, %{
+        data: data
       })
     else
       _ -> send_resp(conn, :bad_request, "bad request")
