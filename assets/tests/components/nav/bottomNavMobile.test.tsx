@@ -57,7 +57,7 @@ describe("BottomNavMobile", () => {
     expect(screen.queryByTitle("Search Map")).toBeInTheDocument()
   })
 
-  test("does not render nav item with title 'Detours' even if in test group", () => {
+  test("renders nav item with title 'Detours' if in test group", () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
     render(
