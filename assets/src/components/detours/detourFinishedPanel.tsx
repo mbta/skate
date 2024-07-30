@@ -7,10 +7,12 @@ export const DetourFinishedPanel = ({
   onNavigateBack,
   detourText,
   onChangeDetourText,
+  onActivateDetour,
 }: {
   onNavigateBack: () => void
   detourText: string
   onChangeDetourText: (value: string) => void
+  onActivateDetour?: () => void
 }) => (
   <Panel as="article">
     <Panel.Header className="">
@@ -58,12 +60,14 @@ export const DetourFinishedPanel = ({
             Copy Details
           </Button>
         </OverlayTrigger>
-        <Button
-          className="m-3 flex-grow-1 c-diversion-panel__activate-button"
-          onClick={() => alert("Activate!")}
-        >
-          Activate Detour
-        </Button>
+        {onActivateDetour && (
+          <Button
+            className="m-3 flex-grow-1 c-diversion-panel__activate-button"
+            onClick={onActivateDetour}
+          >
+            Activate Detour
+          </Button>
+        )}
       </Panel.Body.Footer>
     </Panel.Body>
   </Panel>
