@@ -52,7 +52,7 @@ beforeEach(() => {
 })
 
 const diversionPageOnReviewScreen = async (
-  props: Partial<DiversionPageProps>
+  props?: Partial<DiversionPageProps>
 ) => {
   const { container } = render(<DiversionPage {...props} />)
 
