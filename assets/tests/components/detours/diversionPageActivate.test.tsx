@@ -5,9 +5,10 @@ import {
 } from "../../../src/components/detours/diversionPage"
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
-import { render } from "@testing-library/react"
+import { act, fireEvent, render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {
   activateDetourButton,
@@ -58,20 +59,28 @@ describe("DiversionPage activate workflow", () => {
 
     const { container } = render(<DiversionPage />)
 
-    await userEvent.click(originalRouteShape.get(container))
-    await userEvent.click(originalRouteShape.get(container))
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
     await userEvent.click(reviewDetourButton.get())
 
-    expect(activateDetourButton.get()).not.toBeInTheDocument()
+    expect(activateDetourButton.query()).not.toBeInTheDocument()
   })
 
-  // test.skip("has an activate button on the review details screen", async () => {
-  //   const { container } = render(<DiversionPage />)
+  test("has an activate button on the review details screen", async () => {
+    const { container } = render(<DiversionPage />)
 
-  //   await userEvent.click(originalRouteShape.get(container))
-  //   await userEvent.click(originalRouteShape.get(container))
-  //   await userEvent.click(reviewDetourButton.get())
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+    await userEvent.click(reviewDetourButton.get())
 
-  //   expect(activateDetourButton.get()).toBeVisible()
-  // })
+    expect(activateDetourButton.get()).toBeVisible()
+  })
 })

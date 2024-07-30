@@ -1,3 +1,5 @@
+@use "./color/definitions" as semantic;
+
 .l-diversion-page {
   display: grid;
   // Default layout is linear
@@ -106,4 +108,8 @@
 
 .c-diversion-panel__help-text {
   line-height: 1.5;
+}
+
+.c-diversion-panel__activate-button {
+  background-color: semantic.$missed-stop;
 }

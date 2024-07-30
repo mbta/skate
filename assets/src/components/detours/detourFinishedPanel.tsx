@@ -39,7 +39,7 @@ export const DetourFinishedPanel = ({
         />
       </Panel.Body.ScrollArea>
 
-      <Panel.Body.Footer className="d-flex">
+      <Panel.Body.Footer className="d-flex flex-column">
         <OverlayTrigger
           placement="top"
           trigger="click"
@@ -58,6 +58,12 @@ export const DetourFinishedPanel = ({
             Copy Details
           </Button>
         </OverlayTrigger>
+        <Button
+          className="m-3 flex-grow-1 c-diversion-panel__activate-button"
+          onClick={() => alert("Activate!")}
+        >
+          Activate Detour
+        </Button>
       </Panel.Body.Footer>
     </Panel.Body>
   </Panel>
