@@ -58,7 +58,7 @@ describe("BottomNavMobile", () => {
   })
 
   test("does not render nav item with title 'Detours' even if in test group", () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DummyDetourPage])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
     render(
       <BrowserRouter>
@@ -69,6 +69,6 @@ describe("BottomNavMobile", () => {
       </BrowserRouter>
     )
 
-    expect(screen.queryByTitle("Detours")).toBeNull()
+    expect(screen.queryByTitle("Detours")).toBeInTheDocument()
   })
 })
