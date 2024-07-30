@@ -62,7 +62,8 @@ export const DetourFinishedPanel = ({
         </OverlayTrigger>
         {onActivateDetour && (
           <Button
-            className="m-3 flex-grow-1 c-diversion-panel__activate-button"
+            className="m-3 flex-grow-1"
+            variant="missed-stop"
             onClick={onActivateDetour}
           >
             Activate Detour
