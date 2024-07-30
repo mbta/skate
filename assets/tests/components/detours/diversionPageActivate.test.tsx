@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
-import { act, fireEvent, render } from "@testing-library/react"
+import { act, fireEvent, render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {
   activateDetourButton,
@@ -80,5 +80,15 @@ describe("DiversionPage activate workflow", () => {
     await diversionPageOnReviewScreen()
 
     expect(activateDetourButton.get()).toBeVisible()
+  })
+
+  test("clicking the activate button shows the 'Active Detour' screen", async () => {
+    await diversionPageOnReviewScreen()
+
+    await userEvent.click(activateDetourButton.get())
+
+    expect(
+      screen.queryByRole("heading", { name: "Share Detour Details" })
+    ).not.toBeInTheDocument()
   })
 })
