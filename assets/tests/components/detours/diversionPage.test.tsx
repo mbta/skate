@@ -24,6 +24,7 @@ import {
 import stopFactory from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
+  activateDetourButton,
   originalRouteShape,
   reviewDetourButton,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
