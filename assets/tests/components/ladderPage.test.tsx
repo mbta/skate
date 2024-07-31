@@ -564,6 +564,34 @@ describe("LadderPage", () => {
 
     expect(screen.getByRole("heading", { name: "Create Detour" })).toBeVisible()
   })
+
+  test("detour dropdown is not visible to users outside of the test group", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    const mockState = stateFactory.build({
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["1"],
+          isCurrentTab: true,
+        }),
+      ],
+    })
+    const { container } = render(
+      <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(container.querySelector(".c-route-ladder__header")).toBeVisible()
+
+    expect(
+      screen.queryByRole("button", { name: "1 Route Options" })
+    ).not.toBeInTheDocument()
+  })
 })
 
 const routes: Route[] = [
