@@ -27,6 +27,7 @@ import { ExclamationTriangleFill, PlusSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinTruthy } from "../helpers/dom"
+import useScreenSize from "../hooks/useScreenSize"
 
 interface Props {
   route: Route
@@ -213,6 +214,11 @@ const RouteLadder = ({
 
   const displayCrowding = someVehicleHasCrowding(vehiclesAndGhosts, route.id)
 
+  const screenSize = useScreenSize()
+  const showDropdown =
+    inTestGroup(TestGroups.DetoursPilot) &&
+    ["desktop", "tablet"].includes(screenSize)
+
   return (
     <>
       <Header
@@ -221,7 +227,7 @@ const RouteLadder = ({
         onClose={() => {
           deselectRoute(route.id)
         }}
-        showDropdown={inTestGroup(TestGroups.DetoursPilot)}
+        showDropdown={showDropdown}
         onClickAddDetour={() => {
           onAddDetour?.(route)
         }}

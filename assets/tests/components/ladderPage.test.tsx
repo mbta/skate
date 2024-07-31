@@ -33,6 +33,7 @@ import { fullStoryEvent } from "../../src/helpers/fullStory"
 import useAlerts from "../../src/hooks/useAlerts"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { mockScreenSize } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -569,6 +570,35 @@ describe("LadderPage", () => {
     await userEvent.click(screen.getByRole("button", { name: "Add detour" }))
 
     expect(screen.getByRole("heading", { name: "Create Detour" })).toBeVisible()
+  })
+
+  test("detour dropdown is not visible on mobile", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+    mockScreenSize("mobile")
+
+    const mockState = stateFactory.build({
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["1"],
+          isCurrentTab: true,
+        }),
+      ],
+    })
+    const { container } = render(
+      <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(container.querySelector(".c-route-ladder__header")).toBeVisible()
+
+    expect(
+      screen.queryByRole("button", { name: "1 Route Options" })
+    ).not.toBeInTheDocument()
   })
 })
 
