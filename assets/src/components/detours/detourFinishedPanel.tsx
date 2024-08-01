@@ -7,10 +7,12 @@ export const DetourFinishedPanel = ({
   onNavigateBack,
   detourText,
   onChangeDetourText,
+  onActivateDetour,
 }: {
   onNavigateBack: () => void
   detourText: string
   onChangeDetourText: (value: string) => void
+  onActivateDetour?: () => void
 }) => (
   <Panel as="article">
     <Panel.Header className="">
@@ -39,7 +41,7 @@ export const DetourFinishedPanel = ({
         />
       </Panel.Body.ScrollArea>
 
-      <Panel.Body.Footer className="d-flex">
+      <Panel.Body.Footer className="d-flex flex-column">
         <OverlayTrigger
           placement="top"
           trigger="click"
@@ -58,6 +60,15 @@ export const DetourFinishedPanel = ({
             Copy Details
           </Button>
         </OverlayTrigger>
+        {onActivateDetour && (
+          <Button
+            className="m-3 flex-grow-1"
+            variant="missed-stop"
+            onClick={onActivateDetour}
+          >
+            Activate Detour
+          </Button>
+        )}
       </Panel.Body.Footer>
     </Panel.Body>
   </Panel>
