@@ -185,7 +185,7 @@ defmodule Realtime.VehicleTest do
                  via_variant: "_",
                  timepoint_status: %{
                    timepoint_id: "tp1",
-                   fraction_until_timepoint: 0.0
+                   fraction_until_timepoint: +0.0
                  }
                },
                route_status: :on_route,
