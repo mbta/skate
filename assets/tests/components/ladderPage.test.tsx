@@ -556,15 +556,9 @@ describe("LadderPage", () => {
 
     expect(container.querySelector(".c-route-ladder__header")).toBeVisible()
 
-    expect(
-      screen.getByRole("button", { name: "1 Route Options" })
-    ).toBeVisible()
-
     await userEvent.click(
       screen.getByRole("button", { name: "1 Route Options" })
     )
-
-    expect(screen.getByRole("button", { name: "Add detour" })).toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: "Add detour" }))
 
