@@ -5,6 +5,7 @@
   background: $white;
   border: 1px solid $color-gray-400;
   border-radius: 6px;
+  box-sizing: border-box;
 
   &:hover {
     border: 1px solid $color-eggplant-400;

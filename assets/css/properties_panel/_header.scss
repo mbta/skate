@@ -3,6 +3,7 @@
 
   .c-route-variant-name {
     @include font-header;
+    line-height: 1.5rem;
   }
 }
 
@@ -11,6 +12,7 @@
   padding: 1rem;
   text-align: center;
   width: 4rem;
+  box-sizing: content-box;
 }
 
 .c-properties-panel__variant {
@@ -24,11 +26,13 @@
 .c-properties-panel__inbound-outbound {
   @include font-emph;
   margin-bottom: 0.4rem;
+  line-height: 1.1rem;
 }
 
 .c-properties-panel__schedule-adherence {
   @include font-small;
   margin-top: 0.7rem;
+  line-height: .9rem;
 }
 
 .c-properties-panel__schedule-adherence {
@@ -37,6 +41,9 @@
 
 .c-properties-panel__schedule-adherence-status-icon {
   margin-right: 0.4rem;
+  svg {
+    vertical-align: unset;
+  }
 
   .on-time & {
     fill: $color-vehicle-ontime;
@@ -84,6 +91,7 @@
     padding-bottom: 1rem;
     padding-right: 1rem;
     padding-top: 1rem;
+    box-sizing: content-box;
   }
 }
 
