@@ -33,7 +33,6 @@ import { fullStoryEvent } from "../../src/helpers/fullStory"
 import useAlerts from "../../src/hooks/useAlerts"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
-import { mockScreenSize } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
