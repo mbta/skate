@@ -92,4 +92,28 @@ describe("DiversionPage activate workflow", () => {
     ).not.toBeInTheDocument()
     expect(screen.getByRole("heading", { name: "Active Detour" })).toBeVisible()
   })
+
+  test("'Active Detour' screen has a 'Deactivate Detour' button", async () => {
+    await diversionPageOnReviewScreen()
+
+    await userEvent.click(activateDetourButton.get())
+
+    expect(
+      screen.getByRole("button", { name: "Deactivate Detour" })
+    ).toBeVisible()
+  })
+
+  test("clicking the 'Deactivate Detour' button shows the 'Past Detour' screen", async () => {
+    await diversionPageOnReviewScreen()
+
+    await userEvent.click(activateDetourButton.get())
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Deactivate Detour" })
+    )
+    expect(
+      screen.queryByRole("heading", { name: "Active Detour" })
+    ).not.toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "Past Detour" })).toBeVisible()
+  })
 })
