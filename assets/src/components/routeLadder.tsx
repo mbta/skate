@@ -27,7 +27,6 @@ import { ExclamationTriangleFill, PlusSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinTruthy } from "../helpers/dom"
-import useScreenSize from "../hooks/useScreenSize"
 
 interface Props {
   route: Route
@@ -68,7 +67,7 @@ export const Header = ({
           {showDropdown && (
             <Dropdown className="border-box inherit-box">
               <Dropdown.Toggle
-                className="c-route-ladder__dropdown-button"
+                className="c-route-ladder__dropdown-button d-none d-sm-block"
                 aria-labelledby={joinTruthy([
                   routePillId,
                   routeOptionsToggleId,
@@ -214,11 +213,6 @@ const RouteLadder = ({
 
   const displayCrowding = someVehicleHasCrowding(vehiclesAndGhosts, route.id)
 
-  const screenSize = useScreenSize()
-  const showDropdown =
-    inTestGroup(TestGroups.DetoursPilot) &&
-    ["desktop", "tablet"].includes(screenSize)
-
   return (
     <>
       <Header
@@ -227,7 +221,7 @@ const RouteLadder = ({
         onClose={() => {
           deselectRoute(route.id)
         }}
-        showDropdown={showDropdown}
+        showDropdown={inTestGroup(TestGroups.DetoursPilot)}
         onClickAddDetour={() => {
           onAddDetour?.(route)
         }}
