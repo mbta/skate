@@ -13,7 +13,7 @@ defmodule SkateWeb.RedirectTest do
   end
 
   test "an exception is raised when `external` isn't defined" do
-    assert_raise Plug.Conn.WrapperError, ~R[Missing required external: option in redirect], fn ->
+    assert_raise Plug.Conn.WrapperError, ~r/Missing required external: option in redirect/, fn ->
       call(Router, :get, "/exceptional")
     end
   end
