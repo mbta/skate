@@ -148,6 +148,17 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
 
       assert {:error, "error"} = AwsLocationRequest.search("search text")
     end
+
+    test "truncates search query to 200 chars" do
+      reassign_env(:skate, :aws_request_fn, fn %{
+                                                 body: %{Text: text}
+                                               } ->
+        assert Kernel.byte_size(text) == 200
+        {:error, "error"}
+      end)
+
+      assert {:error, "error"} = AwsLocationRequest.search(String.duplicate("search text", 200))
+    end
   end
 
   describe "suggest/1" do
@@ -207,6 +218,17 @@ defmodule Skate.LocationSearch.AwsLocationRequestTest do
       end)
 
       assert {:error, "error"} = AwsLocationRequest.suggest("search text")
+    end
+
+    test "truncates suggestion query to 200 chars" do
+      reassign_env(:skate, :aws_request_fn, fn %{
+                                                 body: %{Text: text}
+                                               } ->
+        assert Kernel.byte_size(text) == 200
+        {:error, "error"}
+      end)
+
+      assert {:error, "error"} = AwsLocationRequest.search(String.duplicate("search text", 200))
     end
   end
 end
