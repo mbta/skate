@@ -7,7 +7,6 @@ import * as BsIcon from "../../helpers/bsIcons"
 import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
 import { LoggedInAs } from "../loggedInAs"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import getEmailAddress from "../../userEmailAddress"
 
 interface Props {
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
-  const keycloakEnabled = inTestGroup(TestGroups.KeycloakSso)
+  const keycloakEnabled = true
   const email = getEmailAddress()
 
   return (

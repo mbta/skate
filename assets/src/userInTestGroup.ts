@@ -5,7 +5,6 @@ export enum TestGroups {
   DemoMode = "demo-mode",
   DetoursList = "detours-list",
   DetoursPilot = "detours-pilot",
-  KeycloakSso = "keycloak-sso",
   MinimalLadderPage = "minimal-ladder-page",
   LateView = "late-view",
 }

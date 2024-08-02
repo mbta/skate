@@ -8,13 +8,12 @@ import { LoggedInAs } from "../loggedInAs"
 import getEmailAddress from "../../userEmailAddress"
 import { CircleButton } from "../circleButton"
 import { UserAvatar } from "../userAvatar"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 const TopNav = (): JSX.Element => {
   const email = getEmailAddress()
   const [showUserPopover, setShowUserPopover] = useState<boolean>(false)
   const userButtonRef = useRef(null)
-  const showLoggedInUser = inTestGroup(TestGroups.KeycloakSso)
+  const showLoggedInUser = true
 
   return (
     <div className="c-top-nav">
