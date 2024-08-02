@@ -42,7 +42,7 @@ interface Props {
   onAddDetour?: (route: Route) => void
 }
 
-export const NewHeader = ({
+export const Header = ({
   routeName,
   onClose,
   hasAlert,
@@ -61,7 +61,7 @@ export const NewHeader = ({
   const routePillId = "route-pill" + useId()
   const routeOptionsToggleId = "route-options-toggle" + useId()
   return (
-    <Card className="c-new-route-ladder__header">
+    <Card className="c-route-ladder__header">
       <Card.Body>
         <div className="c-route-ladder__header__action-container">
           {showDropdown && (
@@ -215,7 +215,7 @@ const RouteLadder = ({
 
   return (
     <>
-      <NewHeader
+      <Header
         routeName={route.name}
         hasAlert={hasAlert}
         onClose={() => {

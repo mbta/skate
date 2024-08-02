@@ -1,50 +1,9 @@
 .c-route-ladder__header,
-.c-new-route-ladder__header,
 .c-route-ladder__controls {
   margin: 0 0.5rem;
 }
 
 .c-route-ladder__header {
-  @include font-header;
-  background-color: $color-primary-legacy;
-  border-radius: 4px;
-  color: $color-font-light;
-  grid-row-start: c-route-ladder__header;
-  padding: 0.4rem 0;
-  position: relative;
-  text-align: center;
-
-  .c-route-ladder__close-button-container {
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0.1875rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .c-route-ladder__alert-icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0.375rem;
-
-    height: 100%;
-    width: 1.6rem;
-
-    cursor: pointer;
-
-    svg {
-      height: 1.6rem;
-      width: 1.6rem;
-    }
-  }
-}
-
-.c-new-route-ladder__header {
   min-width: max-content;
 
   .card-body {

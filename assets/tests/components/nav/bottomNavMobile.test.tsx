@@ -57,8 +57,8 @@ describe("BottomNavMobile", () => {
     expect(screen.queryByTitle("Search Map")).toBeInTheDocument()
   })
 
-  test("does not render nav item with title 'Detours' even if in test group", () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DummyDetourPage])
+  test("renders nav item with title 'Detours' if in test group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
     render(
       <BrowserRouter>
@@ -69,6 +69,21 @@ describe("BottomNavMobile", () => {
       </BrowserRouter>
     )
 
-    expect(screen.queryByTitle("Detours")).toBeNull()
+    expect(screen.queryByTitle("Detours")).toBeVisible()
+  })
+
+  test("does not render nav item with title 'Detours' if not in test group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    render(
+      <BrowserRouter>
+        <BottomNavMobile
+          mobileMenuIsOpen={initialState.mobileMenuIsOpen}
+          openSwingsView={jest.fn()}
+        />
+      </BrowserRouter>
+    )
+
+    expect(screen.queryByTitle("Detours")).not.toBeInTheDocument()
   })
 })

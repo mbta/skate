@@ -290,7 +290,7 @@ exports[`LadderPage renders with alerts 1`] = `
         data-testid="route-ladders-div"
       >
         <div
-          class="c-new-route-ladder__header card"
+          class="c-route-ladder__header card"
         >
           <div
             class="card-body"
@@ -331,7 +331,7 @@ exports[`LadderPage renders with alerts 1`] = `
         </div>
         loading...
         <div
-          class="c-new-route-ladder__header card"
+          class="c-route-ladder__header card"
         >
           <div
             class="card-body"
@@ -600,7 +600,7 @@ exports[`LadderPage renders with route tabs 1`] = `
         data-testid="route-ladders-div"
       >
         <div
-          class="c-new-route-ladder__header card"
+          class="c-route-ladder__header card"
         >
           <div
             class="card-body"
@@ -820,7 +820,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         data-testid="route-ladders-div"
       >
         <div
-          class="c-new-route-ladder__header card"
+          class="c-route-ladder__header card"
         >
           <div
             class="card-body"
@@ -861,7 +861,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         </div>
         loading...
         <div
-          class="c-new-route-ladder__header card"
+          class="c-route-ladder__header card"
         >
           <div
             class="card-body"
@@ -1081,7 +1081,7 @@ exports[`LadderPage renders with timepoints 1`] = `
         data-testid="route-ladders-div"
       >
         <div
-          class="c-new-route-ladder__header card"
+          class="c-route-ladder__header card"
         >
           <div
             class="card-body"
@@ -1240,7 +1240,7 @@ exports[`LadderPage renders with timepoints 1`] = `
           class="c-incoming-box"
         />
         <div
-          class="c-new-route-ladder__header card"
+          class="c-route-ladder__header card"
         >
           <div
             class="card-body"

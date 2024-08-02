@@ -87,7 +87,7 @@ defmodule Skate.MixProject do
       {:server_sent_event_stage, "~> 1.1.0"},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:ssl_verify_fun, "~> 1.1"},
-      {:stream_data, "~> 0.6.0", only: :test},
+      {:stream_data, "~> 1.1.1", only: :test},
       {:timex, "~> 3.7.5"},
       {:ueberauth_cognito, "~> 0.4.0"},
       {:ueberauth_oidcc, "~> 0.4.0"},

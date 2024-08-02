@@ -10,7 +10,7 @@ exports[`MinimalLadders renders route ladders 1`] = `
       data-testid="route-ladders-div"
     >
       <div
-        class="c-new-route-ladder__header card"
+        class="c-route-ladder__header card"
       >
         <div
           class="card-body"
@@ -169,7 +169,7 @@ exports[`MinimalLadders renders route ladders 1`] = `
         class="c-incoming-box"
       />
       <div
-        class="c-new-route-ladder__header card"
+        class="c-route-ladder__header card"
       >
         <div
           class="card-body"

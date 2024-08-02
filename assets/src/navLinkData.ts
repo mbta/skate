@@ -19,13 +19,12 @@ export interface LinkData {
 }
 
 export const getNavLinkData: () => LinkData[] = () => {
-  const maybeDetours = inTestGroup(TestGroups.DummyDetourPage)
+  const maybeDetours = inTestGroup(TestGroups.DetoursList)
     ? [
         {
           title: "Detours",
           path: "/detours",
           navIcon: DiamondTurnRightIcon,
-          hideOnMobile: true,
         },
       ]
     : []

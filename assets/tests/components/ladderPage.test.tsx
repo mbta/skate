@@ -554,17 +554,11 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(container.querySelector(".c-new-route-ladder__header")).toBeVisible()
-
-    expect(
-      container.querySelector(".c-route-ladder__dropdown-button")
-    ).toBeVisible()
+    expect(container.querySelector(".c-route-ladder__header")).toBeVisible()
 
     await userEvent.click(
-      container.querySelector(".c-route-ladder__dropdown-button")!
+      screen.getByRole("button", { name: "1 Route Options" })
     )
-
-    expect(screen.getByRole("button", { name: "Add detour" })).toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: "Add detour" }))
 

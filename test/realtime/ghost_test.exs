@@ -171,7 +171,7 @@ defmodule Realtime.GhostTest do
                layover_departure_time: 1_546_318_806,
                scheduled_timepoint_status: %{
                  timepoint_id: "t1",
-                 fraction_until_timepoint: 0.0
+                 fraction_until_timepoint: +0.0
                },
                route_status: :pulling_out,
                block_waivers: [
@@ -333,7 +333,7 @@ defmodule Realtime.GhostTest do
                layover_departure_time: 1_546_318_900,
                scheduled_timepoint_status: %{
                  timepoint_id: "t1",
-                 fraction_until_timepoint: 0.0
+                 fraction_until_timepoint: +0.0
                },
                scheduled_logon: 1_546_318_850,
                route_status: :pulling_out,
@@ -381,7 +381,7 @@ defmodule Realtime.GhostTest do
                layover_departure_time: nil,
                scheduled_timepoint_status: %{
                  timepoint_id: "t1",
-                 fraction_until_timepoint: 0.0
+                 fraction_until_timepoint: +0.0
                },
                scheduled_logon: 1_546_318_850,
                route_status: :on_route,

@@ -106,7 +106,7 @@ export const AppRoutes = () => {
                   element={<ShuttleMapPage />}
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
-                {inTestGroup(TestGroups.DummyDetourPage) && (
+                {inTestGroup(TestGroups.DetoursList) && (
                   <BrowserRoute path="/detours" element={<DummyDetourPage />} />
                 )}
               </Route>
