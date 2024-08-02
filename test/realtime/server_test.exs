@@ -631,7 +631,7 @@ defmodule Realtime.ServerTest do
       }
 
       operator_search_params = %{
-        text: String.slice(@vehicle.operator_last_name, 0..-3),
+        text: String.slice(@vehicle.operator_last_name, 0..-3//1),
         property: :all
       }
 
@@ -660,7 +660,7 @@ defmodule Realtime.ServerTest do
 
     test "searches all vehicles by operator name", %{ets: ets} do
       search_params = %{
-        text: String.slice(@vehicle.operator_first_name, 0..-3),
+        text: String.slice(@vehicle.operator_first_name, 0..-3//1),
         property: :operator
       }
 
