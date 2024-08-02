@@ -4,7 +4,7 @@ import { RoutePill } from "./routePill"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
 
-export const DummyDetourPage = () => {
+export const DetourListPage = () => {
   const fakeData = [
     {
       number: 45,
