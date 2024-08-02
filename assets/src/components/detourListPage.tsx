@@ -42,8 +42,8 @@ export const DetourListPage = () => {
           </tr>
         </thead>
         <tbody>
-          {fakeData.map((detour) => (
-            <tr>
+          {fakeData.map((detour, index) => (
+            <tr key={index}>
               <td className="align-middle">
                 <div className="c-detour-table__route-info-cell">
                   <RoutePill routeName={detour.number.toString()} />
