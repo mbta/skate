@@ -20,6 +20,7 @@ import { Route, RoutePattern } from "../../schedule"
 import RoutesContext from "../../contexts/routesContext"
 import { Snapshot } from "xstate"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import { ActiveDetourPanel } from "./activeDetourPanel"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -241,6 +242,8 @@ export const DiversionPage = ({
                   : undefined
               }
             />
+          ) : snapshot.matches({ "Detour Drawing": "Active" }) ? (
+            <ActiveDetourPanel />
           ) : null}
         </div>
         <div className="l-diversion-page__map position-relative">

@@ -90,5 +90,6 @@ describe("DiversionPage activate workflow", () => {
     expect(
       screen.queryByRole("heading", { name: "Share Detour Details" })
     ).not.toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "Active Detour" })).toBeVisible()
   })
 })
