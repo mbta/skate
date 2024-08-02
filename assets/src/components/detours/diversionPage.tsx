@@ -234,7 +234,11 @@ export const DiversionPage = ({
               detourText={textArea}
               onChangeDetourText={setTextArea}
               onActivateDetour={
-                inTestGroup(TestGroups.DetoursList) ? () => {} : undefined
+                inTestGroup(TestGroups.DetoursList)
+                  ? () => {
+                      send({ type: "detour.share.activate" })
+                    }
+                  : undefined
               }
             />
           ) : null}
