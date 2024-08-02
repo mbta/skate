@@ -3,6 +3,7 @@ import { Table } from "react-bootstrap"
 import { RoutePill } from "./routePill"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
+import useScreenSize from "../hooks/useScreenSize"
 
 export const DetourListPage = () => {
   const fakeData = [
@@ -27,18 +28,65 @@ export const DetourListPage = () => {
       intersection: "Pearl Street & Clearwell Ave",
       activeSince: 1721361948,
     },
+    {
+      number: 45,
+      direction: "Outbound",
+      name: "Franklin Park via Ruggles Station",
+      intersection: "John F. Kennedy St & Memorial Drive",
+      activeSince: 1722372950,
+    },
+    {
+      number: 83,
+      direction: "Inbound",
+      name: "Central Square",
+      intersection: "Pearl Street & Clearwell Ave",
+      activeSince: 1722361948,
+    },
+    {
+      number: 83,
+      direction: "Outbound",
+      name: "Rindge Ave",
+      intersection: "Pearl Street & Clearwell Ave",
+      activeSince: 1721361948,
+    },
+    {
+      number: 45,
+      direction: "Outbound",
+      name: "Franklin Park via Ruggles Station",
+      intersection: "John F. Kennedy St & Memorial Drive",
+      activeSince: 1722372950,
+    },
+    {
+      number: 83,
+      direction: "Inbound",
+      name: "Central Square",
+      intersection: "Pearl Street & Clearwell Ave",
+      activeSince: 1722361948,
+    },
+    {
+      number: 83,
+      direction: "Outbound",
+      name: "Rindge Ave",
+      intersection: "Pearl Street & Clearwell Ave",
+      activeSince: 1721361948,
+    },
   ]
 
   const epochNowInSeconds = useCurrentTimeSeconds()
+  const screenSize = useScreenSize()
 
   return (
     <>
-      <Table bordered hover className="c-detour-table">
+      <Table hover className="c-detour-table">
         <thead>
           <tr>
             <th>Route</th>
-            <th>Starting Intersection</th>
-            <th>On detour since</th>
+            {["desktop", "tablet"].includes(screenSize) && (
+              <>
+                <th>Starting Intersection</th>
+                <th>On detour since</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -55,10 +103,14 @@ export const DetourListPage = () => {
                   </div>
                 </div>
               </td>
-              <td className="align-middle">{detour.intersection}</td>
-              <td className="align-middle">
-                {timeAgoLabel(epochNowInSeconds, detour.activeSince)}
-              </td>
+              {["desktop", "tablet"].includes(screenSize) && (
+                <>
+                  <td className="align-middle">{detour.intersection}</td>
+                  <td className="align-middle">
+                    {timeAgoLabel(epochNowInSeconds, detour.activeSince)}
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>
