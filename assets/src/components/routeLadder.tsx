@@ -67,7 +67,7 @@ export const Header = ({
           {showDropdown && (
             <Dropdown className="border-box inherit-box">
               <Dropdown.Toggle
-                className="c-route-ladder__dropdown-button"
+                className="c-route-ladder__dropdown-button d-none d-sm-block"
                 aria-labelledby={joinTruthy([
                   routePillId,
                   routeOptionsToggleId,
