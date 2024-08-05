@@ -49,7 +49,7 @@ config :logger, level: :info
 
 config :logger, :console,
   format: "$time $metadata[$level] node=$node $message\n",
-  metadata: [:request_id]
+  metadata: [:mfa, :request_id]
 
 # Configure Ueberauth to use Cognito / Keycloak
 config :ueberauth, Ueberauth,

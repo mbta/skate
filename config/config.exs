@@ -140,7 +140,7 @@ config :skate, Oban,
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  metadata: [:mfa, :request_id]
 
 # "code" is the secret value returned by AWS to /auth/cognito/callback
 log_filter_params =
