@@ -60,7 +60,8 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
       | { type: "detour.share.copy-detour"; detourText: string }
-      | { type: "detour.share.activate" },
+      | { type: "detour.share.activate" }
+      | { type: "detour.active.deactivate" },
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -417,7 +418,14 @@ export const createDetourMachine = setup({
             },
           },
         },
-        Active: {},
+        Active: {
+          on: {
+            "detour.active.deactivate": {
+              target: "Past",
+            },
+          },
+        },
+        Past: {},
       },
     },
   },
