@@ -48,7 +48,7 @@ config :skate, Skate.Repo,
 config :logger, level: :info
 
 config :logger, :console,
-  format: "$time $metadata[$level] node=$node $message\n",
+  format: "$time [$level] node=$node $metadata$message\n",
   metadata: [:mfa, :request_id]
 
 # Configure Ueberauth to use Cognito / Keycloak
