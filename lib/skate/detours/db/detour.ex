@@ -7,6 +7,7 @@ defmodule Skate.Detours.Db.Detour do
   alias Skate.Settings.Db.User
 
   schema "detours" do
+    field :uuid, :string
     field :state, :map
     belongs_to :author, User
 
@@ -15,7 +16,7 @@ defmodule Skate.Detours.Db.Detour do
 
   def changeset(detour, attrs) do
     detour
-    |> cast(attrs, [:state, :author_id])
+    |> cast(attrs, [:state])
     |> validate_required([:state])
   end
 end

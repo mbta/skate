@@ -9,10 +9,12 @@ import {
   fetchRoutePatterns,
 } from "../api"
 import { DetourShape, FinishedDetour } from "./detour"
+import { v4 as uuidv4 } from "uuid"
 
 export const createDetourMachine = setup({
   types: {
     context: {} as {
+      uuid: string | undefined
       route?: Route
       routePattern?: RoutePattern
 
@@ -159,6 +161,7 @@ export const createDetourMachine = setup({
   context: ({ input }) => ({
     ...input,
     waypoints: [],
+    uuid: undefined,
     startPoint: undefined,
     endPoint: undefined,
     finishedDetour: undefined,
@@ -231,6 +234,8 @@ export const createDetourMachine = setup({
                           ) ??
                           // Otherwise fallback to the first pattern in the list (which _could_ be empty)
                           event.output.at(0),
+                    uuid: ({ context }) =>
+                      context.uuid ? context.uuid : uuidv4(),
                   }),
                 },
               },

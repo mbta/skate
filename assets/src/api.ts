@@ -441,6 +441,17 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
     body: JSON.stringify({ route_tabs: routeTabs }),
   })
 
+export const putDetourUpdate = (snapshot: any): void => {
+  fetch(`/api/detours/update_snapshot`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-csrf-token": getCsrfToken(),
+    },
+    body: JSON.stringify({ snapshot: snapshot })
+  })
+}
+
 const getCsrfToken = (): string => appData()?.csrfToken || ""
 
 export const nullableParser =

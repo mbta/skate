@@ -10,6 +10,19 @@ defmodule SkateWeb.DetoursController do
   alias SkateWeb.AuthManager
   alias Util.Location  
 
+  @spec update_snapshot(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def update_snapshot(conn, %{"snapshot" => snapshot} = _params) do
+    uuid = Map.get(snapshot, "uuid")
+    
+    %{id: user_id} = AuthManager.Plug.current_resource(conn)
+
+    Detours.update_or_create_detour_for_user(user_id, uuid, %{
+      state: snapshot
+    })
+    
+    send_resp(conn, 200, "")
+  end
+  
   @spec unfinished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def unfinished_detour(conn, %{
         "route_pattern_id" => route_pattern_id,
@@ -51,7 +64,6 @@ defmodule SkateWeb.DetoursController do
          shape_with_stops <-
            shape_with_stops(route_pattern.representative_trip_id),
          false <- is_nil(shape_with_stops) do
-      %{id: user_id} = AuthManager.Plug.current_resource(conn)
       connection_start_location = Location.new(connection_start["lat"], connection_start["lon"])
       connection_end_location = Location.new(connection_end["lat"], connection_end["lon"])
 
@@ -104,21 +116,14 @@ defmodule SkateWeb.DetoursController do
         end
       end
 
-      data = %{
+      json(conn, %{
+        data: %{
           missed_stops: missed_stops,
           route_segments: format(route_segments),
           connection_stop_start: connection_stop_start,
           connection_stop_end: connection_stop_end,
           detour_shape: ors_result
         }
-
-      Detours.create_detour(%{
-        state: data,
-        #author: user_id
-      })
-
-      json(conn, %{
-        data: data
       })
     else
       _ -> send_resp(conn, :bad_request, "bad request")

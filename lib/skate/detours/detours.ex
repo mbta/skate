@@ -7,6 +7,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Repo
 
   alias Skate.Detours.Db.Detour
+  alias Skate.Settings.User
 
   @doc """
   Returns the list of detours.
@@ -28,14 +29,14 @@ defmodule Skate.Detours.Detours do
 
   ## Examples
 
-      iex> get_detour!(123)
+      iex> get_detour_by_uuid!(123)
       %Detour{}
 
-      iex> get_detour!(456)
+      iex> get_detour_by_uuid!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_detour!(id), do: Repo.get!(Detour, id)
+  def get_detour_by_uuid!(uuid), do: Repo.get_by(Detour, uuid: uuid)
 
   @doc """
   Creates a detour.
@@ -53,6 +54,32 @@ defmodule Skate.Detours.Detours do
     %Detour{}
     |> Detour.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Creates a detour given a user id & detour id.
+  """
+  def create_detour_for_user(user_id, uuid, attrs \\ %{}) do
+    user = User.get_by_id!(user_id)
+
+    %Detour{
+      author: user,
+      uuid: uuid
+    }
+    |> Detour.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Update or create a detour given a user id & detour id.
+  """
+  def update_or_create_detour_for_user(user_id, uuid, attrs \\ %{}) do
+    case get_detour_by_uuid!(uuid) do
+      # If there isn't a detour with this uuid, create one.
+      nil -> create_detour_for_user(user_id, uuid, attrs)
+
+      existing_detour -> update_detour(existing_detour, attrs)
+    end
   end
 
   @doc """
