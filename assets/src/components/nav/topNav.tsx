@@ -13,7 +13,6 @@ const TopNav = (): JSX.Element => {
   const email = getEmailAddress()
   const [showUserPopover, setShowUserPopover] = useState<boolean>(false)
   const userButtonRef = useRef(null)
-  const showLoggedInUser = true
 
   return (
     <div className="c-top-nav">
