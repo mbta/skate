@@ -36,15 +36,13 @@ defmodule Geonames do
 
     case result do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        Logger.info(
-          "#{__MODULE__} got_intersection_response url=#{sanitized_url} time=#{time_in_ms}"
-        )
+        Logger.info("got_intersection_response url=#{sanitized_url} time=#{time_in_ms}")
 
         Jason.decode!(body, strings: :copy)
 
       response ->
         Logger.warning(
-          "#{__MODULE__} unexpected_response url=#{sanitized_url} response=#{inspect(response)} time=#{time_in_ms} retry=#{retry?}"
+          "unexpected_response url=#{sanitized_url} response=#{inspect(response)} time=#{time_in_ms} retry=#{retry?}"
         )
 
         if retry? do

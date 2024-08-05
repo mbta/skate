@@ -48,7 +48,7 @@ defmodule Skate.WarmUp do
 
       {:error, error} ->
         Logger.warning(
-          "#{__MODULE__} warmup query failed. attempt=#{attempt} query_number=#{index} reason=#{inspect(error)}"
+          "warmup query failed. attempt=#{attempt} query_number=#{index} reason=#{inspect(error)}"
         )
 
         {:error, error}
@@ -106,6 +106,6 @@ defmodule Skate.WarmUp do
          total_count: total_count,
          attempt: attempt
        }) do
-    "#{__MODULE__} Repo warm-up attempt complete. status=#{status} count_query_success=#{count_success} total_query_count=#{total_count} attempt=#{attempt}"
+    "Repo warm-up attempt complete. status=#{status} count_query_success=#{count_success} total_query_count=#{total_count} attempt=#{attempt}"
   end
 end

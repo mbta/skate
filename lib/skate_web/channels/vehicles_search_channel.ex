@@ -39,7 +39,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
     }
 
     Logger.info(fn ->
-      "#{__MODULE__} limited_search User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text}"
+      "limited_search User=#{username} searched for property=#{subscribe_args.property}, text=#{subscribe_args.text}"
     end)
 
     {lookup_key, result} =
@@ -77,7 +77,7 @@ defmodule SkateWeb.VehiclesSearchChannel do
       ])
 
     Logger.info(fn ->
-      "#{__MODULE__} limited_search User=#{username} updated limit for property=#{property}limit=#{limit}"
+      "limited_search User=#{username} updated limit for property=#{property}limit=#{limit}"
     end)
 
     {:reply, {:ok, %{data: result}}, Phoenix.Socket.assign(socket, lookup_key: lookup_key)}

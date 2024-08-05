@@ -16,7 +16,7 @@ defmodule Schedule.Health.Checkers.RoutesChecker do
     pass? = length >= min_length
 
     if !pass? do
-      Logger.warning("#{__MODULE__} failed. min_length=#{min_length} length=#{length}")
+      Logger.warning("failed. min_length=#{min_length} length=#{length}")
     end
 
     pass?

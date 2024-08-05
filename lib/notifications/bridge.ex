@@ -65,7 +65,7 @@ defmodule Notifications.Bridge do
   end
 
   def handle_info(msg, state) do
-    Logger.warning("#{__MODULE__} unknown message: #{inspect(msg)}")
+    Logger.warning("unknown message: #{inspect(msg)}")
     {:noreply, state}
   end
 

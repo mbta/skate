@@ -82,9 +82,7 @@ defmodule SkateWeb.AuthController do
         } = conn,
         _params
       ) do
-    Logger.error(
-      "#{__MODULE__} keycloak callback csrf ueberauth_failure struct=#{Kernel.inspect(auth_struct)}"
-    )
+    Logger.error("keycloak callback csrf ueberauth_failure struct=#{Kernel.inspect(auth_struct)}")
 
     if get_session(conn, :keycloak_csrf_retry) == 1 do
       conn
@@ -102,9 +100,7 @@ defmodule SkateWeb.AuthController do
         %{assigns: %{ueberauth_failure: %{provider: :keycloak} = auth_struct}} = conn,
         _params
       ) do
-    Logger.error(
-      "#{__MODULE__} keycloak callback ueberauth_failure struct=#{Kernel.inspect(auth_struct)}"
-    )
+    Logger.error("keycloak callback ueberauth_failure struct=#{Kernel.inspect(auth_struct)}")
 
     send_resp(conn, :unauthorized, "unauthenticated")
   end
