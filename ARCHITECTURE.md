@@ -35,4 +35,4 @@ Skate is read-only, so it only needs to ingest data and present it. Skate uses t
 
 ## Authentication
 
-Skate's authentication uses AWS Cognito as a middleman to manage interaction with Active Directory (using federated services). The actual login page the user interacts with is hosted by Active Directory, you use your same username and password as your email. We could someday add levels of authorization using groups in Cognito, but don't at this time.
+Skate's authentication uses Keycloak as a middleman to manage interaction with Active Directory (using federated services). The actual login page the user interacts with is hosted by Active Directory, you use your same username and password as your email. We could someday add levels of authorization using groups in Keycloak and/or Active Directory, but don't at this time.

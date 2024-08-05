@@ -51,19 +51,12 @@ config :logger, :console,
   format: "$time [$level] node=$node $metadata$message\n",
   metadata: [:mfa, :request_id]
 
-# Configure Ueberauth to use Cognito / Keycloak
+# Configure Ueberauth to use Keycloak
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Ueberauth.Strategy.Cognito, []},
     keycloak:
       {Ueberauth.Strategy.Oidcc, userinfo: true, uid_field: "email", scopes: ~w(openid email)}
   ]
-
-config :ueberauth, Ueberauth.Strategy.Cognito,
-  auth_domain: {System, :get_env, ["COGNITO_DOMAIN"]},
-  client_id: {System, :get_env, ["COGNITO_CLIENT_ID"]},
-  user_pool_id: {System, :get_env, ["COGNITO_USER_POOL_ID"]},
-  aws_region: {System, :get_env, ["COGNITO_AWS_REGION"]}
 
 config :ex_aws, json_codec: Jason
 
