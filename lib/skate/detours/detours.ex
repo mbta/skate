@@ -77,7 +77,6 @@ defmodule Skate.Detours.Detours do
     case get_detour_by_uuid!(uuid) do
       # If there isn't a detour with this uuid, create one.
       nil -> create_detour_for_user(user_id, uuid, attrs)
-
       existing_detour -> update_detour(existing_detour, attrs)
     end
   end
