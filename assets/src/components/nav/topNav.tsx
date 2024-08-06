@@ -8,13 +8,11 @@ import { LoggedInAs } from "../loggedInAs"
 import getEmailAddress from "../../userEmailAddress"
 import { CircleButton } from "../circleButton"
 import { UserAvatar } from "../userAvatar"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 const TopNav = (): JSX.Element => {
   const email = getEmailAddress()
   const [showUserPopover, setShowUserPopover] = useState<boolean>(false)
   const userButtonRef = useRef(null)
-  const showLoggedInUser = inTestGroup(TestGroups.KeycloakSso)
 
   return (
     <div className="c-top-nav">
@@ -31,46 +29,41 @@ const TopNav = (): JSX.Element => {
             <RefreshIcon className="c-top-nav__icon" />
           </button>
         </li>
-        {showLoggedInUser && (
-          <li>
-            <div ref={userButtonRef}>
-              <CircleButton
-                isActive={showUserPopover}
-                onClick={() => {
-                  setShowUserPopover(!showUserPopover)
-                }}
-                title="User Info"
-              >
-                <UserAvatar userName={email} />
-              </CircleButton>
-            </div>
-            <Overlay
-              target={userButtonRef.current}
-              show={showUserPopover}
-              placement="bottom"
+        <li>
+          <div ref={userButtonRef}>
+            <CircleButton
+              isActive={showUserPopover}
+              onClick={() => {
+                setShowUserPopover(!showUserPopover)
+              }}
+              title="User Info"
             >
-              <Popover className="c-top-nav__popover inherit-box border-box">
-                <Popover.Body className="p-0">
-                  <Dropdown.Menu
-                    show
-                    className="position-static border border-0"
+              <UserAvatar userName={email} />
+            </CircleButton>
+          </div>
+          <Overlay
+            target={userButtonRef.current}
+            show={showUserPopover}
+            placement="bottom"
+          >
+            <Popover className="c-top-nav__popover inherit-box border-box">
+              <Popover.Body className="p-0">
+                <Dropdown.Menu show className="position-static border border-0">
+                  <Dropdown.ItemText>
+                    <LoggedInAs email={email} />
+                  </Dropdown.ItemText>
+                  <Dropdown.Divider />
+                  <Dropdown.Item
+                    href="/auth/keycloak/logout"
+                    className="icon-link"
                   >
-                    <Dropdown.ItemText>
-                      <LoggedInAs email={email} />
-                    </Dropdown.ItemText>
-                    <Dropdown.Divider />
-                    <Dropdown.Item
-                      href="/auth/keycloak/logout"
-                      className="icon-link"
-                    >
-                      <BsIcon.BoxArrowRight className="me-2" /> Log out
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Popover.Body>
-              </Popover>
-            </Overlay>
-          </li>
-        )}
+                    <BsIcon.BoxArrowRight className="me-2" /> Log out
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Popover.Body>
+            </Popover>
+          </Overlay>
+        </li>
       </ul>
     </div>
   )

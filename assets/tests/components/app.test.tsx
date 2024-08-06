@@ -26,8 +26,6 @@ import { OpenView, PagePath } from "../../src/state/pagePanelState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
 import userEvent from "@testing-library/user-event"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
-import getTestGroups from "../../src/userTestGroups"
-import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -52,7 +50,6 @@ beforeEach(() => {
 
 describe("App", () => {
   test("renders", () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
     const result = render(<App />)
     expect(result.asFragment()).toMatchSnapshot()
   })
