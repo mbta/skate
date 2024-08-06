@@ -14,13 +14,13 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "returns page with test groups listed", %{conn: conn, user: user} do
-      {:ok, test_group} = TestGroup.create("test group name")
+      {:ok, test_group} = TestGroup.create("test-group-name")
 
       TestGroup.update(%{test_group | users: [user]})
 
       conn = get(conn, ~p"/test_groups")
 
-      assert html_response(conn, 200) =~ "test group name"
+      assert html_response(conn, 200) =~ "test-group-name"
     end
   end
 
@@ -37,13 +37,13 @@ defmodule SkateWeb.TestGroupControllerTest do
       conn =
         post(conn, ~p"/test_groups/create", %{
           "test_group" => %{
-            "name" => "group to create"
+            "name" => "group-to-create"
           }
         })
 
       assert redirected_to(conn) == ~p"/test_groups"
 
-      assert [%TestGroup{name: "group to create"}] = TestGroup.get_all()
+      assert [%TestGroup{name: "group-to-create"}] = TestGroup.get_all()
     end
 
     @tag :authenticated_admin
@@ -67,12 +67,12 @@ defmodule SkateWeb.TestGroupControllerTest do
          %{
            conn: conn
          } do
-      TestGroup.create("duplicate group")
+      TestGroup.create("duplicate-group")
 
       conn =
         post(conn, ~p"/test_groups/create", %{
           "test_group" => %{
-            "name" => "duplicate group"
+            "name" => "duplicate-group"
           }
         })
 
@@ -92,7 +92,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "renders a test group", %{conn: conn, user: user} do
-      {:ok, test_group} = TestGroup.create("group to show")
+      {:ok, test_group} = TestGroup.create("group-to-show")
       test_group_with_user = TestGroup.update(%TestGroup{test_group | users: [user]})
 
       html =
@@ -100,13 +100,13 @@ defmodule SkateWeb.TestGroupControllerTest do
         |> get(~p"/test_groups/#{test_group_with_user.id}")
         |> html_response(200)
 
-      assert html =~ "group to show"
+      assert html =~ "group-to-show"
       assert html =~ user.email
     end
 
     @tag :authenticated_admin
     test "includes a button for setting the enabled override", %{conn: conn} do
-      {:ok, test_group} = TestGroup.create("group to show")
+      {:ok, test_group} = TestGroup.create("group-to-show")
 
       html =
         conn
@@ -121,7 +121,7 @@ defmodule SkateWeb.TestGroupControllerTest do
     test "includes a button for removing the override when the override is already there", %{
       conn: conn
     } do
-      {:ok, test_group} = TestGroup.create("group to show")
+      {:ok, test_group} = TestGroup.create("group-to-show")
       test_group = TestGroup.update(%{test_group | override: :enabled})
 
       html =
@@ -156,7 +156,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       user1 = User.upsert("user1", "user1@test.com")
       user2 = User.upsert("user2", "user2@test.com")
 
-      {:ok, test_group} = TestGroup.create("group to add users to")
+      {:ok, test_group} = TestGroup.create("group-to-add-users-to")
       test_group_with_user = TestGroup.update(%TestGroup{test_group | users: [user1]})
 
       html =
@@ -188,7 +188,7 @@ defmodule SkateWeb.TestGroupControllerTest do
     test "adds user to test group", %{conn: conn} do
       user = User.upsert("user", "user@test.com")
 
-      {:ok, test_group} = TestGroup.create("group to add user to")
+      {:ok, test_group} = TestGroup.create("group-to-add-user-to")
 
       conn =
         post(conn, ~p"/test_groups/#{test_group.id}/add_user", %{
@@ -214,7 +214,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "handles case where no user is found", %{conn: conn} do
-      {:ok, test_group} = TestGroup.create("group to add user to")
+      {:ok, test_group} = TestGroup.create("group-to-add-user-to")
 
       conn =
         post(conn, ~p"/test_groups/#{test_group.id}/add_user", %{
@@ -238,7 +238,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       user1 = User.upsert("user1", "user1@test.com")
       user2 = User.upsert("user2", "user2@test.com")
 
-      {:ok, test_group} = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test-group")
       test_group_with_users = TestGroup.update(%TestGroup{test_group | users: [user1, user2]})
 
       conn =
@@ -257,7 +257,7 @@ defmodule SkateWeb.TestGroupControllerTest do
       user1 = User.upsert("user1", "user1@test.com")
       user2 = User.upsert("user2", "user2@test.com")
 
-      {:ok, test_group} = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test-group")
       TestGroup.update(%TestGroup{test_group | users: [user1]})
 
       conn =
@@ -289,7 +289,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "redirects to test groups index page", %{conn: conn} do
-      {:ok, test_group} = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test-group")
       conn = delete(conn, ~p"/test_groups/#{test_group.id}")
 
       assert redirected_to(conn) == ~p"/test_groups"
@@ -297,7 +297,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "deletes the test group", %{conn: conn} do
-      {:ok, test_group} = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test-group")
       delete(conn, ~p"/test_groups/#{test_group.id}")
 
       assert Enum.empty?(TestGroup.get_all())
@@ -307,7 +307,7 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "enable_override/2" do
     @tag :authenticated_admin
     test "redirects to the test group page", %{conn: conn} do
-      {:ok, test_group} = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test-group")
       conn = post(conn, ~p"/test_groups/#{test_group.id}/enable_override")
 
       assert redirected_to(conn) == ~p"/test_groups/#{test_group.id}"
@@ -315,7 +315,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "sets the override to enabled", %{conn: conn} do
-      {:ok, test_group} = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test-group")
       post(conn, ~p"/test_groups/#{test_group.id}/enable_override")
 
       test_group = TestGroup.get(test_group.id)
@@ -326,7 +326,7 @@ defmodule SkateWeb.TestGroupControllerTest do
   describe "remove_override/2" do
     @tag :authenticated_admin
     test "redirects to the test group page", %{conn: conn} do
-      {:ok, test_group} = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test-group")
       test_group = TestGroup.update(%{test_group | override: :enabled})
       conn = post(conn, ~p"/test_groups/#{test_group.id}/remove_override")
 
@@ -335,7 +335,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
     @tag :authenticated_admin
     test "sets the override to :none", %{conn: conn} do
-      {:ok, test_group} = TestGroup.create("test group")
+      {:ok, test_group} = TestGroup.create("test-group")
       test_group = TestGroup.update(%{test_group | override: :enabled})
       post(conn, ~p"/test_groups/#{test_group.id}/remove_override")
 

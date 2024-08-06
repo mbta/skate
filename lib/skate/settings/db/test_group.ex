@@ -23,6 +23,7 @@ defmodule Skate.Settings.Db.TestGroup do
     |> cast(attrs, [:name, :override])
     |> cast_assoc(:test_group_users)
     |> validate_required([:name])
+    |> validate_format(:name, ~r/^[^\s]*$/, message: "can't have spaces")
     |> unique_constraint(:name, name: :test_groups_unique_index)
   end
 end
