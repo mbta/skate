@@ -10,11 +10,7 @@ interface DetoursTableProps {
   data: Detour[]
 }
 
-export const DetoursTable= ({
-  className,
-  data
-}: DetoursTableProps) => {
-
+export const DetoursTable = ({ className, data }: DetoursTableProps) => {
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   return (
@@ -40,7 +36,9 @@ export const DetoursTable= ({
                 </div>
               </div>
             </td>
-            <td className="align-middle u-hide-for-mobile">{detour.intersection}</td>
+            <td className="align-middle u-hide-for-mobile">
+              {detour.intersection}
+            </td>
             <td className="align-middle u-hide-for-mobile">
               {timeAgoLabel(epochNowInSeconds, detour.activeSince)}
             </td>

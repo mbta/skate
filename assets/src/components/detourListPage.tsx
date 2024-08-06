@@ -76,7 +76,6 @@ export const DetourListPage = () => {
     },
   ]
 
-
   return (
     <>
       <DetoursTable className="active" data={fakeData} />
