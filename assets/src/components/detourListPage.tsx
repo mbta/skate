@@ -1,9 +1,13 @@
 import React from "react"
-import { Table } from "react-bootstrap"
-import { RoutePill } from "./routePill"
-import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
-import { timeAgoLabel } from "../util/dateTime"
-import useScreenSize from "../hooks/useScreenSize"
+import { DetourTable } from "./detourTable"
+
+export interface Detour {
+  number: number
+  direction: string
+  name: string
+  intersection: string
+  activeSince: number
+}
 
 export const DetourListPage = () => {
   const fakeData = [
@@ -72,49 +76,11 @@ export const DetourListPage = () => {
     },
   ]
 
-  const epochNowInSeconds = useCurrentTimeSeconds()
-  const screenSize = useScreenSize()
 
   return (
     <>
-      <Table hover className="c-detour-table">
-        <thead>
-          <tr>
-            <th>Route</th>
-            {["desktop", "tablet"].includes(screenSize) && (
-              <>
-                <th>Starting Intersection</th>
-                <th>On detour since</th>
-              </>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {fakeData.map((detour, index) => (
-            <tr key={index}>
-              <td className="align-middle">
-                <div className="c-detour-table__route-info-cell">
-                  <RoutePill routeName={detour.number.toString()} />
-                  <div className="c-detour-table__route-info-text">
-                    <span>{detour.direction}</span>
-                    <span className="c-detour-table__route-info-text--bold">
-                      {detour.name}
-                    </span>
-                  </div>
-                </div>
-              </td>
-              {["desktop", "tablet"].includes(screenSize) && (
-                <>
-                  <td className="align-middle">{detour.intersection}</td>
-                  <td className="align-middle">
-                    {timeAgoLabel(epochNowInSeconds, detour.activeSince)}
-                  </td>
-                </>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <DetourTable className="active" data={fakeData} />
+      <DetourTable className="past" data={fakeData} />
     </>
   )
 }
