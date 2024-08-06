@@ -1,21 +1,21 @@
-.c-detour-table {
+.c-detours-table {
   thead {
     text-align: left;
     font-weight: 600;
   }
 }
 
-.c-detour-table__route-info-cell {
+.c-detours-table__route-info-cell {
   display: flex;
   align-items: center;
 }
 
-.c-detour-table__route-info-text {
+.c-detours-table__route-info-text {
   display: flex;
   flex-direction: column;
   margin-left: 10px;
 }
 
-.c-detour-table__route-info-text--bold {
+.c-detours-table__route-info-text--bold {
   font-weight: var(--font-weight-bold);
 }

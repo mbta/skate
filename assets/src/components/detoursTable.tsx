@@ -5,20 +5,20 @@ import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
 import { Detour } from "./detourListPage"
 
-interface DetourTableProps {
+interface DetoursTableProps {
   className: string
   data: Detour[]
 }
 
-export const DetourTable= ({
+export const DetoursTable= ({
   className,
   data
-}: DetourTableProps) => {
+}: DetoursTableProps) => {
 
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   return (
-    <Table hover className={`c-detour-table ${className}`}>
+    <Table hover className={`c-detours-table ${className}`}>
       <thead>
         <tr>
           <th>Route</th>
@@ -30,11 +30,11 @@ export const DetourTable= ({
         {data.map((detour, index) => (
           <tr key={index}>
             <td className="align-middle">
-              <div className="c-detour-table__route-info-cell">
+              <div className="c-detours-table__route-info-cell">
                 <RoutePill routeName={detour.number.toString()} />
-                <div className="c-detour-table__route-info-text">
+                <div className="c-detours-table__route-info-text">
                   <span>{detour.direction}</span>
-                  <span className="c-detour-table__route-info-text--bold">
+                  <span className="c-detours-table__route-info-text--bold">
                     {detour.name}
                   </span>
                 </div>

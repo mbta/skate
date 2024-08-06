@@ -1,5 +1,5 @@
 import React from "react"
-import { DetourTable } from "./detourTable"
+import { DetoursTable } from "./detoursTable"
 
 export interface Detour {
   number: number
@@ -79,8 +79,8 @@ export const DetourListPage = () => {
 
   return (
     <>
-      <DetourTable className="active" data={fakeData} />
-      <DetourTable className="past" data={fakeData} />
+      <DetoursTable className="active" data={fakeData} />
+      <DetoursTable className="past" data={fakeData} />
     </>
   )
 }
