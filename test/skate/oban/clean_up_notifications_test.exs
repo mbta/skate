@@ -25,10 +25,10 @@ defmodule Skate.Oban.CleanUpNotificationsTest do
                    perform_job(CleanUpNotifications, %{"limit" => total, "cutoff_days" => -1})
         end)
 
-      assert log =~ "#{Skate.Oban.CleanUpNotifications} starting cleanup"
+      assert log =~ "starting cleanup"
 
       assert log =~
-               ~r/#{Skate.Oban.CleanUpNotifications} finished cleanup deleted=#{total} time_in_ms=\d+/
+               ~r/finished cleanup deleted=#{total} time_in_ms=\d+/
 
       assert 0 == Skate.Repo.aggregate(Notification, :count, :id)
     end

@@ -69,18 +69,14 @@ defmodule Realtime.AlertsFetcher do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case parse_and_update_alerts(body, update_fn) do
           :ok ->
-            Logger.info("#{__MODULE__}: updated_alerts url=#{inspect(url)}")
+            Logger.info("updated_alerts url=#{inspect(url)}")
 
           {:error, error} ->
-            Logger.warning(
-              "#{__MODULE__}: unable_to_parse_alerts url=#{inspect(url)} error=#{inspect(error)}"
-            )
+            Logger.warning("unable_to_parse_alerts url=#{inspect(url)} error=#{inspect(error)}")
         end
 
       response ->
-        Logger.warning(
-          "#{__MODULE__}: unexpected_response url=#{inspect(url)} response=#{inspect(response)}"
-        )
+        Logger.warning("unexpected_response url=#{inspect(url)} response=#{inspect(response)}")
     end
 
     {:noreply, state}

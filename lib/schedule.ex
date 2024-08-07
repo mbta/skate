@@ -268,7 +268,7 @@ defmodule Schedule do
     %{count: count, memory: memory} = :persistent_term.info()
 
     Logger.info(
-      "#{__MODULE__} wrote state to persistent term time_in_ms=#{System.convert_time_unit(time, :microsecond, :millisecond)} count=#{count} memory=#{memory}"
+      "wrote state to persistent term time_in_ms=#{System.convert_time_unit(time, :microsecond, :millisecond)} count=#{count} memory=#{memory}"
     )
 
     :ok
