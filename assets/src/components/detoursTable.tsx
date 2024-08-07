@@ -6,15 +6,14 @@ import { timeAgoLabel } from "../util/dateTime"
 import { Detour } from "./detourListPage"
 
 interface DetoursTableProps {
-  className: string
   data: Detour[]
 }
 
-export const DetoursTable = ({ className, data }: DetoursTableProps) => {
+export const DetoursTable = ({ data }: DetoursTableProps) => {
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   return (
-    <Table hover className={`c-detours-table ${className}`}>
+    <Table hover className="c-detours-table">
       <thead>
         <tr>
           <th>Route</th>

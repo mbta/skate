@@ -78,8 +78,7 @@ export const DetourListPage = () => {
 
   return (
     <>
-      <DetoursTable className="active" data={fakeData} />
-      <DetoursTable className="past" data={fakeData} />
+      <DetoursTable data={fakeData} />
     </>
   )
 }
