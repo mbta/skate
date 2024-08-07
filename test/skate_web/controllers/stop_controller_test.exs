@@ -21,10 +21,10 @@ defmodule SkateWeb.StopControllerTest do
       reassign_env(:skate_web, :stations_fn, fn -> @stations end)
     end
 
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       conn = get(conn, ~p"/api/stops/stations")
 
-      assert redirected_to(conn) == ~p"/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated
@@ -87,10 +87,10 @@ defmodule SkateWeb.StopControllerTest do
       reassign_env(:skate_web, :version_fn, fn -> "latest_version" end)
     end
 
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       conn = get(conn, ~p"/api/stops")
 
-      assert redirected_to(conn) == ~p"/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated
