@@ -49,10 +49,10 @@ defmodule Skate.WarmUpTest do
       assert :ignore = result
 
       assert log =~
-               "[warning] Repo warm-up attempt complete. status=failure count_query_success=0 total_query_count=10 attempt=1"
+               "Repo warm-up attempt complete. status=failure count_query_success=0 total_query_count=10 attempt=1"
 
       assert log =~
-               "[info] Repo warm-up attempt complete. status=success count_query_success=10 total_query_count=10 attempt=2"
+               "Repo warm-up attempt complete. status=success count_query_success=10 total_query_count=10 attempt=2"
     end
 
     test "retries on failure the configured number of times before returning stop" do
@@ -75,10 +75,10 @@ defmodule Skate.WarmUpTest do
                result
 
       assert log =~
-               "[warning] Repo warm-up attempt complete. status=failure count_query_success=4 total_query_count=10 attempt=1"
+               "Repo warm-up attempt complete. status=failure count_query_success=4 total_query_count=10 attempt=1"
 
       assert log =~
-               "[error] Repo warm-up attempt complete. status=failure count_query_success=4 total_query_count=10 attempt=2"
+               "Repo warm-up attempt complete. status=failure count_query_success=4 total_query_count=10 attempt=2"
     end
   end
 end
