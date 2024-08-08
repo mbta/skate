@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { ShapePoint } from "../schedule"
-import { fetchUnfinishedDetour } from "../api"
+import { fetchUnfinishedDetour, putDetourUpdate } from "../api"
 import { useApiCall } from "./useApiCall"
 import { isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
@@ -28,8 +28,12 @@ export const useDetour = (input: UseDetourInput) => {
   // Record snapshots when changed
   useEffect(() => {
     const snapshotSubscription = actorRef.subscribe(() => {
-      const serializedSnapshot = JSON.stringify(actorRef.getPersistedSnapshot())
+      const persistedSnapshot = actorRef.getPersistedSnapshot()
+      const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
+      if (persistedSnapshot.context.uuid) {
+        putDetourUpdate(persistedSnapshot.context)
+      }
     })
 
     return () => {
