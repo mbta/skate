@@ -418,7 +418,7 @@ export const createDetourMachine = setup({
         },
       },
     },
-    "UUID": {
+    UUID: {
       initial: "Unset",
       states: {
         Unset: {
@@ -428,8 +428,8 @@ export const createDetourMachine = setup({
               actions: assign({
                 uuid: ({ event }) => event.uuid,
               }),
-            }
-          }
+            },
+          },
         },
         Set: {},
       },

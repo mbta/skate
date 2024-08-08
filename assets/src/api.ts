@@ -454,7 +454,7 @@ export const putDetourUpdate = (snapshot: any): Promise<string | null> =>
         "x-csrf-token": getCsrfToken(),
       },
       body: JSON.stringify({ snapshot: snapshot }),
-    }
+    },
   })
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""
