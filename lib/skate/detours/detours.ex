@@ -29,14 +29,14 @@ defmodule Skate.Detours.Detours do
 
   ## Examples
 
-      iex> get_detour_by_uuid!(123)
+      iex> get_detour!(123)
       %Detour{}
 
-      iex> get_detour_by_uuid!(456)
+      iex> get_detour!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_detour_by_uuid!(uuid), do: Repo.get_by(Detour, uuid: uuid)
+  def get_detour!(id), do: Repo.get!(Detour, id)
 
   @doc """
   Creates a detour.
@@ -59,12 +59,11 @@ defmodule Skate.Detours.Detours do
   @doc """
   Creates a detour given a user id & detour id.
   """
-  def create_detour_for_user(user_id, uuid, attrs \\ %{}) do
+  def create_detour_for_user(user_id, attrs \\ %{}) do
     user = User.get_by_id!(user_id)
 
     %Detour{
-      author: user,
-      uuid: uuid
+      author: user
     }
     |> Detour.changeset(attrs)
     |> Repo.insert()
@@ -74,10 +73,19 @@ defmodule Skate.Detours.Detours do
   Update or create a detour given a user id & detour id.
   """
   def update_or_create_detour_for_user(user_id, uuid, attrs \\ %{}) do
-    case get_detour_by_uuid!(uuid) do
-      # If there isn't a detour with this uuid, create one.
-      nil -> create_detour_for_user(user_id, uuid, attrs)
-      existing_detour -> update_detour(existing_detour, attrs)
+    user = User.get_by_id!(user_id)
+
+    case uuid do
+      nil ->
+        create_detour_for_user(user_id, attrs)
+
+      _ ->
+        Repo.insert(
+          Detour.changeset(%Detour{author: user, id: uuid}, attrs),
+          returning: true,
+          conflict_target: [:id],
+          on_conflict: {:replace, [:state, :updated_at]}
+        )
     end
   end
 

@@ -9,7 +9,6 @@ import {
   fetchRoutePatterns,
 } from "../api"
 import { DetourShape, FinishedDetour } from "./detour"
-import { v4 as uuidv4 } from "uuid"
 
 export const createDetourMachine = setup({
   types: {
@@ -61,6 +60,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
+      | { type: "detour.set.uuid"; uuid: string }
       | { type: "detour.share.copy-detour"; detourText: string },
   },
   actors: {
@@ -167,7 +167,7 @@ export const createDetourMachine = setup({
     finishedDetour: undefined,
     detourShape: undefined,
   }),
-
+  type: "parallel",
   initial: "Detour Drawing",
   states: {
     "Detour Drawing": {
@@ -234,8 +234,6 @@ export const createDetourMachine = setup({
                           ) ??
                           // Otherwise fallback to the first pattern in the list (which _could_ be empty)
                           event.output.at(0),
-                    uuid: ({ context }) =>
-                      context.uuid ? context.uuid : uuidv4(),
                   }),
                 },
               },
@@ -418,6 +416,22 @@ export const createDetourMachine = setup({
             },
           },
         },
+      },
+    },
+    "UUID": {
+      initial: "Unset",
+      states: {
+        Unset: {
+          on: {
+            "detour.set.uuid": {
+              target: "Set",
+              actions: assign({
+                uuid: ({ event }) => event.uuid,
+              }),
+            }
+          }
+        },
+        Set: {},
       },
     },
   },

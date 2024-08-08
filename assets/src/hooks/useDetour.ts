@@ -27,13 +27,15 @@ export const useDetour = (input: UseDetourInput) => {
 
   // Record snapshots when changed
   useEffect(() => {
-    const snapshotSubscription = actorRef.subscribe(() => {
+    const snapshotSubscription = actorRef.subscribe((snap) => {
       const persistedSnapshot = actorRef.getPersistedSnapshot()
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
-      if (persistedSnapshot.context.uuid) {
-        putDetourUpdate(persistedSnapshot.context)
-      }
+      putDetourUpdate(persistedSnapshot).then((uuid: string | null) => {
+        if (uuid && snap.matches({ "UUID": "Unset"})) {
+          send({ type: "detour.set.uuid", uuid })
+        }
+      })
     })
 
     return () => {

@@ -7,7 +7,6 @@ defmodule Skate.Detours.Db.Detour do
   alias Skate.Settings.Db.User
 
   schema "detours" do
-    field :uuid, :string
     field :state, :map
     belongs_to :author, User
 
