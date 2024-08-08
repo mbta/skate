@@ -1,5 +1,8 @@
 import React from "react"
 import { DetoursTable } from "./detoursTable"
+import userInTestGroup, { TestGroups } from "../userInTestGroup"
+import { Button } from "react-bootstrap"
+import { PlusSquare } from "../helpers/bsIcons"
 
 export interface Detour {
   route: string
@@ -78,6 +81,12 @@ export const DetourListPage = () => {
 
   return (
     <div className="h-100 overflow-y-auto">
+      {userInTestGroup(TestGroups.DetoursPilot) && (
+        <Button className="icon-link">
+          <PlusSquare />
+          Add detour
+        </Button>
+      )}
       <DetoursTable data={fakeData} />
     </div>
   )
