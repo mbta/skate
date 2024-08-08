@@ -41,7 +41,7 @@ export const useDetour = (input: UseDetourInput) => {
     return () => {
       snapshotSubscription.unsubscribe()
     }
-  }, [actorRef])
+  }, [actorRef, send])
 
   const {
     routePattern,
