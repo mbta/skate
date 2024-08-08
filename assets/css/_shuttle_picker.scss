@@ -55,6 +55,7 @@
 .c-shuttle-picker__route-list-button-name,
 .c-shuttle-picker__route-list-button-count {
   padding: 0.3125rem 0.5rem;
+  box-sizing: content-box;
 }
 
 .c-shuttle-picker__route-list-button-name {
