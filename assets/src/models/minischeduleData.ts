@@ -94,7 +94,7 @@ const pieceFromData = (pieceData: PieceData): Piece => ({
   startTime: pieceData.start_time,
   startPlace: pieceData.start_place,
   trips: pieceData.trips.map((data) =>
-    isTripData(data) ? tripFromData(data) : asDirectedFromData(data)
+    isAsDirectedData(data) ? asDirectedFromData(data) : tripFromData(data)
   ),
   endTime: pieceData.end_time,
   endPlace: pieceData.end_place,
@@ -129,5 +129,6 @@ const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({
   endTime: asDirectedData.end_time,
 })
 
-const isTripData = (data: TripData | AsDirectedData): data is TripData =>
-  Object.prototype.hasOwnProperty.call(data, "id")
+const isAsDirectedData = (
+  data: TripData | AsDirectedData
+): data is AsDirectedData => Object.prototype.hasOwnProperty.call(data, "kind")
