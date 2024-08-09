@@ -151,20 +151,13 @@ defmodule Schedule.Hastus.Activity do
       end)
     end
 
-    as_directeds_and_schedule_trips =
-      if operator_is_as_directed?(activity) do
-        [as_directed_from_trips(trips_in_piece)]
-      else
-        Enum.map(trips_in_piece, &Map.fetch!(schedule_trips_by_id, &1.trip_id))
-      end
-
     %Piece{
       schedule_id: activity.schedule_id,
       run_id: activity.run_id,
       block_id: block_id_from_trips(trips_in_piece),
       start_time: activity.start_time,
       start_place: activity.start_place,
-      trips: as_directeds_and_schedule_trips,
+      trips: as_directeds_and_schedule_trips_from_trips(trips_in_piece, schedule_trips_by_id),
       end_time: activity.end_time,
       end_place: activity.end_place,
       start_mid_route?:
@@ -175,27 +168,77 @@ defmodule Schedule.Hastus.Activity do
 
   defp operator_activity_to_piece(activity, _, _, _), do: activity
 
-  @spec as_directed_from_trips([Hastus.Trip.t()]) :: AsDirected.t()
-  defp as_directed_from_trips(trips_in_piece) do
-    [
-      %Hastus.Trip{route_id: nil} = _pullout,
-      as_directed_trip,
-      %Hastus.Trip{route_id: nil} = _pull_back
-    ] = trips_in_piece
+  defp as_directeds_and_schedule_trips_from_trips(trips, schedule_trips_by_id) do
+    trips
+    |> Enum.map(&convert_as_directed/1)
+    |> strip_surrounding_pulls_from_as_directeds()
+    |> lookup_schedule_trips(schedule_trips_by_id)
+  end
 
-    kind =
-      case as_directed_trip.route_id do
-        "rad" -> :rad
-        "wad" -> :wad
-      end
+  defp convert_as_directed(%Hastus.Trip{route_id: "wad"} = trip) do
+    as_directed(trip, :wad)
+  end
 
+  defp convert_as_directed(%Hastus.Trip{route_id: "rad"} = trip) do
+    as_directed(trip, :rad)
+  end
+
+  defp convert_as_directed(trip) do
+    trip
+  end
+
+  defp as_directed(trip, kind) do
     %AsDirected{
+      id: trip.trip_id,
       kind: kind,
-      start_time: as_directed_trip.start_time,
-      end_time: as_directed_trip.end_time,
-      start_place: as_directed_trip.start_place,
-      end_place: as_directed_trip.end_place
+      start_time: trip.start_time,
+      end_time: trip.end_time,
+      start_place: trip.start_place,
+      end_place: trip.end_place
     }
+  end
+
+  defp strip_surrounding_pulls_from_as_directeds([]) do
+    []
+  end
+
+  defp strip_surrounding_pulls_from_as_directeds([
+         %Hastus.Trip{route_id: nil} = _pullout,
+         %Schedule.AsDirected{} = as_directed_trip,
+         %Hastus.Trip{route_id: nil} = _pull_back
+         | rest
+       ]) do
+    [
+      as_directed_trip | strip_surrounding_pulls_from_as_directeds(rest)
+    ]
+  end
+
+  defp strip_surrounding_pulls_from_as_directeds([trip | rest]) do
+    [
+      trip
+      | strip_surrounding_pulls_from_as_directeds(rest)
+    ]
+  end
+
+  defp lookup_schedule_trips(
+         [],
+         _schedule_trips_by_id
+       ) do
+    []
+  end
+
+  defp lookup_schedule_trips(
+         [%Schedule.AsDirected{} = as_directed_trip | rest],
+         schedule_trips_by_id
+       ) do
+    [as_directed_trip | lookup_schedule_trips(rest, schedule_trips_by_id)]
+  end
+
+  defp lookup_schedule_trips([%Hastus.Trip{} = trip | rest], schedule_trips_by_id) do
+    [
+      Map.get(schedule_trips_by_id, trip.trip_id, trip)
+      | lookup_schedule_trips(rest, schedule_trips_by_id)
+    ]
   end
 
   @spec as_directed_activities_to_pieces([__MODULE__.t() | Piece.t()]) :: [
@@ -230,6 +273,7 @@ defmodule Schedule.Hastus.Activity do
       start_place: activity.start_place,
       trips: [
         %AsDirected{
+          id: nil,
           kind:
             case activity.activity_type do
               "wad" -> :wad
@@ -325,11 +369,6 @@ defmodule Schedule.Hastus.Activity do
     String.contains?(trip.block_id, activity.partial_block_id) and
       trip.start_time >= activity.start_time and
       trip.start_time <= activity.end_time
-  end
-
-  @spec operator_is_as_directed?(__MODULE__.t()) :: boolean()
-  defp operator_is_as_directed?(%__MODULE__{activity_type: "Operator"} = activity) do
-    activity.partial_block_id =~ ~r/^[r|w]ad/i
   end
 
   @spec start_mid_route?(
