@@ -4,7 +4,7 @@ defmodule Schedule.BlockTest do
   import Skate.Factory
 
   alias Schedule.Block
-  alias Schedule.{Block, Trip}
+  alias Schedule.{Block, Trip, AsDirected}
   alias Schedule.Gtfs.StopTime
 
   @pullout %Trip{
@@ -80,6 +80,31 @@ defmodule Schedule.BlockTest do
            pieces: [@piece]
          )
 
+  @as_directed %AsDirected{
+    id: "ad1",
+    kind: :wap,
+    start_time: 7,
+    end_time: 8,
+    start_place: "garage",
+    end_place: "route"
+  }
+
+  @piece_with_as_directed build(:piece,
+                            block_id: @pullout.block_id,
+                            start_time: 1,
+                            end_time: 19,
+                            trips: [@pullout, @trip1, @as_directed, @deadhead, @trip2, @pullback]
+                          )
+
+  @block_with_as_directed build(
+                            :block,
+                            id: "b",
+                            schedule_id: "schedule",
+                            start_time: 1,
+                            end_time: 19,
+                            pieces: [@piece_with_as_directed]
+                          )
+
   describe "blocks_from_trips/ and get/3 " do
     test "can create blocks and then get them" do
       by_id = Block.blocks_from_pieces([@piece])
@@ -132,6 +157,12 @@ defmodule Schedule.BlockTest do
 
     test "returns :err if the given trip isn't found" do
       assert Block.next_revenue_trip(@block, "t3") == :err
+    end
+
+    test "works if there are as-directed trips in the block" do
+      assert Block.next_revenue_trip(@block_with_as_directed, @trip1.id) == {:trip, @as_directed}
+      assert Block.next_revenue_trip(@block_with_as_directed, @as_directed.id) == {:trip, @trip2}
+      assert Block.next_revenue_trip(@block_with_as_directed, @trip2.id) == :last
     end
   end
 

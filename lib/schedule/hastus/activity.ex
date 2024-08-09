@@ -189,6 +189,7 @@ defmodule Schedule.Hastus.Activity do
 
   defp as_directed(trip, kind) do
     %AsDirected{
+      id: trip.trip_id,
       kind: kind,
       start_time: trip.start_time,
       end_time: trip.end_time,
@@ -272,6 +273,7 @@ defmodule Schedule.Hastus.Activity do
       start_place: activity.start_place,
       trips: [
         %AsDirected{
+          id: nil,
           kind:
             case activity.activity_type do
               "wad" -> :wad

@@ -1,9 +1,11 @@
 defmodule Schedule.AsDirected do
   @moduledoc false
 
+  alias Schedule.Trip
   alias Schedule.Hastus.Place
 
   @type t :: %__MODULE__{
+          id: Trip.id() | nil,
           kind: :wad | :rad,
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
@@ -12,6 +14,7 @@ defmodule Schedule.AsDirected do
         }
 
   @enforce_keys [
+    :id,
     :kind,
     :start_time,
     :end_time,
@@ -22,6 +25,7 @@ defmodule Schedule.AsDirected do
   @derive Jason.Encoder
 
   defstruct [
+    :id,
     :kind,
     :start_time,
     :end_time,
