@@ -544,27 +544,25 @@ const TripSchedule = ({
           activeStatus={layoverActiveStatus}
         />
       ) : null}
-      {isTrip(trip) ? (
-        isDeadhead(trip) ? (
-          <DeadheadTrip
-            trip={trip}
-            status={sequenceToNonRevenueStatus(sequence)}
-            timeBasedStyle={deadheadTimeBasedStyle}
-            activeStatus={deadheadActiveStatus}
-            overloadOffset={overloadOffset}
-          />
-        ) : (
-          <RevenueTrip
-            trip={trip}
-            timeBasedStyle={onRouteTimeBasedStyle}
-            activeStatus={onRouteActiveStatus}
-            overloadOffset={overloadOffset}
-          />
-        )
-      ) : (
+      {isAsDirected(trip) ? (
         <AsDirectedRow
           asDirected={trip}
           timeBasedStyle={onRouteTimeBasedStyle}
+          overloadOffset={overloadOffset}
+        />
+      ) : isDeadhead(trip) ? (
+        <DeadheadTrip
+          trip={trip}
+          status={sequenceToNonRevenueStatus(sequence)}
+          timeBasedStyle={deadheadTimeBasedStyle}
+          activeStatus={deadheadActiveStatus}
+          overloadOffset={overloadOffset}
+        />
+      ) : (
+        <RevenueTrip
+          trip={trip}
+          timeBasedStyle={onRouteTimeBasedStyle}
+          activeStatus={onRouteActiveStatus}
           overloadOffset={overloadOffset}
         />
       )}
@@ -839,7 +837,10 @@ const isBreak = (activity: Piece | Break): activity is Break =>
   Object.prototype.hasOwnProperty.call(activity, "breakType")
 
 const isTrip = (trip: Trip | AsDirected): trip is Trip =>
-  Object.prototype.hasOwnProperty.call(trip, "id")
+  !Object.prototype.hasOwnProperty.call(trip, "kind")
+
+const isAsDirected = (trip: Trip | AsDirected): trip is AsDirected =>
+  Object.prototype.hasOwnProperty.call(trip, "kind")
 
 const isDeadhead = (trip: Trip | AsDirected): boolean =>
   isTrip(trip) && trip.routeId == null

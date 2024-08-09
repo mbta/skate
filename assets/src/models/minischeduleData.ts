@@ -23,6 +23,7 @@ interface BlockData {
 }
 
 interface AsDirectedData {
+  id: TripId | null
   kind: "wad" | "rad"
   start_time: Time
   end_time: Time
@@ -122,6 +123,7 @@ const tripFromData = (tripData: TripData): Trip => ({
 })
 
 const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({
+  id: asDirectedData.id,
   kind: asDirectedData.kind,
   startTime: asDirectedData.start_time,
   endTime: asDirectedData.end_time,
