@@ -544,27 +544,25 @@ const TripSchedule = ({
           activeStatus={layoverActiveStatus}
         />
       ) : null}
-      {isTrip(trip) ? (
-        isDeadhead(trip) ? (
-          <DeadheadTrip
-            trip={trip}
-            status={sequenceToNonRevenueStatus(sequence)}
-            timeBasedStyle={deadheadTimeBasedStyle}
-            activeStatus={deadheadActiveStatus}
-            overloadOffset={overloadOffset}
-          />
-        ) : (
-          <RevenueTrip
-            trip={trip}
-            timeBasedStyle={onRouteTimeBasedStyle}
-            activeStatus={onRouteActiveStatus}
-            overloadOffset={overloadOffset}
-          />
-        )
-      ) : (
+      {isAsDirected(trip) ? (
         <AsDirectedRow
           asDirected={trip}
           timeBasedStyle={onRouteTimeBasedStyle}
+          overloadOffset={overloadOffset}
+        />
+      ) : isDeadhead(trip) ? (
+        <DeadheadTrip
+          trip={trip}
+          status={sequenceToNonRevenueStatus(sequence)}
+          timeBasedStyle={deadheadTimeBasedStyle}
+          activeStatus={deadheadActiveStatus}
+          overloadOffset={overloadOffset}
+        />
+      ) : (
+        <RevenueTrip
+          trip={trip}
+          timeBasedStyle={onRouteTimeBasedStyle}
+          activeStatus={onRouteActiveStatus}
           overloadOffset={overloadOffset}
         />
       )}
