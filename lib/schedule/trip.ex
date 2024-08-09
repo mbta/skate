@@ -177,7 +177,7 @@ defmodule Schedule.Trip do
   def set_pretty_names(trip, _), do: trip
 
   @spec revenue_trip?(t() | AsDirected.t()) :: boolean()
-  def revenue_trip?(%AsDirected{}), do: false
+  def revenue_trip?(%AsDirected{}), do: true
 
   def revenue_trip?(%__MODULE__{service_id: service_id, route_id: route_id}) do
     !is_nil(service_id) && !is_nil(route_id)
