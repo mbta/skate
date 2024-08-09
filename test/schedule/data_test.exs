@@ -1769,8 +1769,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "abc44011",
           run_id: "123-1113",
-          start_time: 68220,
-          end_time: 68220,
+          start_time: 68_220,
+          end_time: 68_220,
           start_place: "cabot",
           end_place: "cabot",
           activity_type: "Sign-on"
@@ -1778,8 +1778,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "abc44011",
           run_id: "123-1113",
-          start_time: 68220,
-          end_time: 84600,
+          start_time: 68_220,
+          end_time: 84_600,
           start_place: "cabot",
           end_place: "cabot",
           activity_type: "Operator",
@@ -1792,8 +1792,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc44011",
           run_id: "123-1113",
           block_id: "Cwad-294",
-          start_time: 68220,
-          end_time: 68820,
+          start_time: 68_220,
+          end_time: 68_820,
           start_place: "cabot",
           end_place: "ctypt",
           route_id: nil,
@@ -1803,8 +1803,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc44011",
           run_id: "123-1113",
           block_id: "Cwad-294",
-          start_time: 68820,
-          end_time: 70860,
+          start_time: 68_820,
+          end_time: 70_860,
           start_place: "ctypt",
           end_place: "copst",
           route_id: "09",
@@ -1814,8 +1814,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc44011",
           run_id: "123-1113",
           block_id: "Cwad-294",
-          start_time: 71280,
-          end_time: 73020,
+          start_time: 71_280,
+          end_time: 73_020,
           start_place: "copst",
           end_place: "ctypt",
           route_id: "09",
@@ -1825,8 +1825,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc44011",
           run_id: "123-1113",
           block_id: "Cwad-294",
-          start_time: 73020,
-          end_time: 73560,
+          start_time: 73_020,
+          end_time: 73_560,
           start_place: "ctypt",
           end_place: "cabot",
           route_id: nil,
@@ -1836,8 +1836,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc44011",
           run_id: "123-1113",
           block_id: "Cwad-294",
-          start_time: 73800,
-          end_time: 84600,
+          start_time: 73_800,
+          end_time: 84_600,
           start_place: "cabot",
           end_place: "cabot",
           route_id: "wad",
@@ -1847,8 +1847,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc44011",
           run_id: "123-1113",
           block_id: "Cwad-294",
-          start_time: 84600,
-          end_time: 84600,
+          start_time: 84_600,
+          end_time: 84_600,
           start_place: "cabot",
           end_place: "cabot",
           route_id: nil,
@@ -1869,18 +1869,18 @@ defmodule Schedule.DataTest do
                activities: [
                  %Piece{
                    block_id: "Cwad-294",
-                   start_time: 68220,
+                   start_time: 68_220,
                    trips: [
                      %Schedule.Trip{id: "64466045"},
                      %Schedule.Trip{id: "64464840"},
                      %Schedule.Trip{id: "64463084"},
                      %Schedule.AsDirected{
                        kind: :wad,
-                       start_time: 73800,
-                       end_time: 84600
+                       start_time: 73_800,
+                       end_time: 84_600
                      }
                    ],
-                   end_time: 84600
+                   end_time: 84_600
                  }
                ]
              } = Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id, %{})
