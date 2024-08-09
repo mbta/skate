@@ -885,6 +885,7 @@ describe("fetchScheduleBlock", () => {
                 end_place: "end place",
               },
               {
+                id: "as-directed",
                 kind: "rad",
                 start_time: 567,
                 end_time: 1000,
@@ -923,6 +924,7 @@ describe("fetchScheduleBlock", () => {
                 endPlace: "end place",
               },
               {
+                id: "as-directed",
                 kind: "rad",
                 startTime: 567,
                 endTime: 1000,
