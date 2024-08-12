@@ -60,8 +60,8 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
-      | { type: "detour.set.uuid"; uuid: string }
-      | { type: "detour.share.copy-detour"; detourText: string },
+      | { type: "detour.share.copy-detour"; detourText: string }
+      | { type: "detour.uuid.set"; uuid: string },
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -423,7 +423,7 @@ export const createDetourMachine = setup({
       states: {
         Unset: {
           on: {
-            "detour.set.uuid": {
+            "detour.uuid.set": {
               target: "Set",
               actions: assign({
                 uuid: ({ event }) => event.uuid,

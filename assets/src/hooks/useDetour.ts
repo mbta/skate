@@ -33,7 +33,7 @@ export const useDetour = (input: UseDetourInput) => {
       localStorage.setItem("snapshot", serializedSnapshot)
       putDetourUpdate(persistedSnapshot).then((uuid: string | null) => {
         if (uuid && snap.matches({ UUID: "Unset" })) {
-          send({ type: "detour.set.uuid", uuid })
+          send({ type: "detou.uuid.set", uuid })
         }
       })
     })
