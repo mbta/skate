@@ -90,6 +90,8 @@ const checkResponseStatus = (response: Response) => {
 const parseJson = (response: Response) => response.json() as unknown
 
 /**
+ * @depcreated use {@linkcode apiCallResult}
+ *
  * A small wrapper around fetch which checks for valid responses and parses
  * JSON from the result body. It processes the resulting object with
  * {@linkcode parser}
@@ -114,6 +116,8 @@ export const apiCall = <T>({
     .catch(() => defaultResult)
 
 /**
+ * @depcreated use {@linkcode apiCallResult}
+ *
  * A slightly larger (than {@linkcode apiCall}) wrapper around
  * {@linkcode fetch} which checks for valid responses and then parses JSON from
  * the body, and asserts it's validity with `superstruct`.
@@ -151,6 +155,8 @@ export const checkedApiCall = <T, U>({
     })
 
 /**
+ * @depcreated use {@linkcode apiCallResult}
+ *
  * A wrapper around {@linkcode fetch} which returns a {@linkcode FetchResult}.
  *
  * This does mainly the same thing as {@linkcode checkedApiCall} but returns
