@@ -214,8 +214,13 @@ export const apiCallResult = async <T, E>(
 ): Promise<Result<T, E>> =>
   fetch(url, requestInit)
     .then(async (response) => {
+      // If the fetch does not error and returns something from the endpoint,
+      // parse as json.
       const json: unknown = await response.json()
 
+      // Then check if the response is `ok` and try to return `Ok(OkStruct)`
+      // Otherwise, return `Err(ErrStruct)` and attempt to return the data
+      // according to JSONAPI specifications
       if (response.ok && is(json, object({ data: any() }))) {
         return Ok(create(json.data, OkStruct))
       } else {
