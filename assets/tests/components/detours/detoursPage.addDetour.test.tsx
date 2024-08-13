@@ -5,6 +5,7 @@ import React from "react"
 import { screen } from "@testing-library/dom"
 import "@testing-library/jest-dom/jest-globals"
 import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 import { DetourListPage } from "../../../src/components/detourListPage"
 import { TestGroups } from "../../../src/userInTestGroup"
@@ -33,5 +34,35 @@ describe("Detours Page: Create Detour", () => {
     expect(
       screen.queryByRole("button", { name: "Add detour" })
     ).not.toBeInTheDocument()
+  })
+
+  test("Opens Detour Modal when clicked", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    renderDetourListPage()
+
+    await userEvent.click(screen.getByRole("button", { name: "Add detour" }))
+
+    expect(
+      await screen.findByRole("heading", { name: "Create Detour" })
+    ).toBeVisible()
+  })
+
+  test("Returns to page when modal is closed", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    renderDetourListPage()
+
+    await userEvent.click(screen.getByRole("button", { name: "Add detour" }))
+
+    const createDetourHeading = await screen.findByRole("heading", {
+      name: "Create Detour",
+    })
+    expect(createDetourHeading).toBeVisible()
+
+    await userEvent.click(screen.getByRole("button", { name: "Close" }))
+    await userEvent.click(screen.getByRole("button", { name: "Yes, I'm sure" }))
+
+    expect(createDetourHeading).not.toBeInTheDocument()
   })
 })
