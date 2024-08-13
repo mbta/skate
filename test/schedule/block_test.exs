@@ -82,7 +82,7 @@ defmodule Schedule.BlockTest do
 
   @as_directed %AsDirected{
     id: "ad1",
-    kind: :wap,
+    kind: :wad,
     start_time: 7,
     end_time: 8,
     start_place: "garage",
