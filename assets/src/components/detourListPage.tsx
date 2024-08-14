@@ -77,8 +77,8 @@ export const DetourListPage = () => {
   ]
 
   return (
-    <>
+    <div className="h-100 overflow-y-auto">
       <DetoursTable data={fakeData} />
-    </>
+    </div>
   )
 }

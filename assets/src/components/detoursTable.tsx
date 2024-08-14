@@ -29,7 +29,7 @@ export const DetoursTable = ({ data }: DetoursTableProps) => {
                 <RoutePill routeName={detour.number.toString()} />
                 <div className="c-detours-table__route-info-text">
                   <span>{detour.direction}</span>
-                  <span className="c-detours-table__route-info-text--bold">
+                  <span className="fw-bold">
                     {detour.name}
                   </span>
                 </div>
