@@ -441,21 +441,21 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
     body: JSON.stringify({ route_tabs: routeTabs }),
   })
 
-export const putDetourUpdate = (snapshot: any): Promise<string | null> =>
-  checkedApiCall({
-    url: `/api/detours/update_snapshot`,
-    parser: nullableParser((id: string) => id),
-    dataStruct: any(),
-    defaultResult: null,
-    fetchArgs: {
+export const putDetourUpdate = (snapshot: any): Promise<Result<string, Error>> =>
+  apiCallResult(
+    `/api/detours/update_snapshot`,
+    // todo: improve typing
+    any(),
+    any(),
+    {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "x-csrf-token": getCsrfToken(),
       },
       body: JSON.stringify({ snapshot: snapshot }),
-    },
-  })
+    }
+  )
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""
 
