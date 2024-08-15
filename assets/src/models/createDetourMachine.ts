@@ -36,12 +36,12 @@ export const createDetourMachine = setup({
       | {
           // Caller has target route
           route: Route
-          routePattern: undefined
+          routePattern?: undefined
         }
       | {
           // Caller has no prior selection
-          route: undefined
-          routePattern: undefined
+          route?: undefined
+          routePattern?: undefined
         },
 
     events: {} as
