@@ -23,7 +23,10 @@ export type UseDetourInput =
     }
 
 export const useDetour = (input: UseDetourInput) => {
-  const [snapshot, send, actorRef] = useMachine(createDetourMachine, input)
+  const [snapshot, send, actorRef] = useMachine(createDetourMachine, {
+    ...input,
+    inspect: console.debug
+  })
 
   // Record snapshots when changed
   useEffect(() => {
