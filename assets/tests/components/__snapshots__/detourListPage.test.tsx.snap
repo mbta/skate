@@ -1,0 +1,364 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DetourListPage renders detour list page with dummy data 1`] = `
+<div
+  className="h-100 overflow-y-auto"
+>
+  <table
+    className="c-detours-table table table-hover"
+  >
+    <thead>
+      <tr>
+        <th>
+          Route
+        </th>
+        <th
+          className="u-hide-for-mobile"
+        >
+          Starting Intersection
+        </th>
+        <th
+          className="u-hide-for-mobile"
+        >
+          On detour since
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              45
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Outbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Franklin Park via Ruggles Station
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          John F. Kennedy St & Memorial Drive
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          400 hours ago
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              83
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Inbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Central Square
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          Pearl Street & Clearwell Ave
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          403 hours ago
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              83
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Outbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Rindge Ave
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          Pearl Street & Clearwell Ave
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          681 hours ago
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              45
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Outbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Franklin Park via Ruggles Station
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          John F. Kennedy St & Memorial Drive
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          400 hours ago
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              83
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Inbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Central Square
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          Pearl Street & Clearwell Ave
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          403 hours ago
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              83
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Outbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Rindge Ave
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          Pearl Street & Clearwell Ave
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          681 hours ago
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              45
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Outbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Franklin Park via Ruggles Station
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          John F. Kennedy St & Memorial Drive
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          400 hours ago
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              83
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Inbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Central Square
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          Pearl Street & Clearwell Ave
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          403 hours ago
+        </td>
+      </tr>
+      <tr>
+        <td
+          className="align-middle"
+        >
+          <div
+            className="c-detours-table__route-info-cell"
+          >
+            <div
+              className="c-route-pill c-route-pill--bus"
+            >
+              83
+            </div>
+            <div
+              className="c-detours-table__route-info-text"
+            >
+              <span>
+                Outbound
+              </span>
+              <span
+                className="fw-bold"
+              >
+                Rindge Ave
+              </span>
+            </div>
+          </div>
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          Pearl Street & Clearwell Ave
+        </td>
+        <td
+          className="align-middle u-hide-for-mobile"
+        >
+          681 hours ago
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
