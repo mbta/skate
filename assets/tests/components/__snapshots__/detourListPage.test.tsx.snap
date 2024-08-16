@@ -133,7 +133,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
         <td
           className="align-middle u-hide-for-mobile"
         >
-          681 hours ago
+          680 hours ago
         </td>
       </tr>
       <tr>
@@ -244,7 +244,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
         <td
           className="align-middle u-hide-for-mobile"
         >
-          681 hours ago
+          680 hours ago
         </td>
       </tr>
       <tr>
@@ -355,7 +355,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
         <td
           className="align-middle u-hide-for-mobile"
         >
-          681 hours ago
+          680 hours ago
         </td>
       </tr>
     </tbody>
