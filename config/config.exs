@@ -137,6 +137,10 @@ config :skate, Oban,
     }
   ]
 
+# Include 2 logger backends
+  config :logger,
+  backends: [:console, Sentry.LoggerBackend]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time [$level] $metadata$message\n",
