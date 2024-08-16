@@ -138,7 +138,7 @@ config :skate, Oban,
   ]
 
 # Include 2 logger backends
-  config :logger,
+config :logger,
   backends: [:console, Sentry.LoggerBackend]
 
 # Configures Elixir's Logger
