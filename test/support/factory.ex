@@ -157,7 +157,6 @@ defmodule Skate.Factory do
 
   def as_directed_factory do
     %Schedule.AsDirected{
-      id: sequence("Schedule.AsDirected.id:"),
       kind: :wad,
       start_time: 1,
       end_time: 2,

@@ -23,7 +23,6 @@ interface BlockData {
 }
 
 interface AsDirectedData {
-  id: TripId | null
   kind: "wad" | "rad"
   start_time: Time
   end_time: Time
@@ -94,7 +93,7 @@ const pieceFromData = (pieceData: PieceData): Piece => ({
   startTime: pieceData.start_time,
   startPlace: pieceData.start_place,
   trips: pieceData.trips.map((data) =>
-    isAsDirectedData(data) ? asDirectedFromData(data) : tripFromData(data)
+    isTripData(data) ? tripFromData(data) : asDirectedFromData(data)
   ),
   endTime: pieceData.end_time,
   endPlace: pieceData.end_place,
@@ -123,12 +122,10 @@ const tripFromData = (tripData: TripData): Trip => ({
 })
 
 const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({
-  id: asDirectedData.id,
   kind: asDirectedData.kind,
   startTime: asDirectedData.start_time,
   endTime: asDirectedData.end_time,
 })
 
-const isAsDirectedData = (
-  data: TripData | AsDirectedData
-): data is AsDirectedData => Object.prototype.hasOwnProperty.call(data, "kind")
+const isTripData = (data: TripData | AsDirectedData): data is TripData =>
+  Object.prototype.hasOwnProperty.call(data, "id")

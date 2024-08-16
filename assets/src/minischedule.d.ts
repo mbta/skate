@@ -21,7 +21,6 @@ export interface Break {
 }
 
 export interface AsDirected {
-  id: TripId | null
   kind: "wad" | "rad"
   startTime: Time
   endTime: Time
