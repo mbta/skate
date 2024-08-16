@@ -441,7 +441,9 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
     body: JSON.stringify({ route_tabs: routeTabs }),
   })
 
-export const putDetourUpdate = (snapshot: any): Promise<Result<string, Error>> =>
+export const putDetourUpdate = (
+  snapshot: any
+): Promise<Result<string, Error>> =>
   apiCallResult(
     `/api/detours/update_snapshot`,
     // todo: improve typing

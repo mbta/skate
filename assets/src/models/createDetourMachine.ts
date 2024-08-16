@@ -61,7 +61,9 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
       | { type: "detour.share.copy-detour"; detourText: string }
-      | { type: "detour.uuid.set"; uuid: string },
+      | { type: "detour.uuid.set"; uuid: string }
+      | { type: "detour.uuid.begin-save" },
+    tags: "no-save",
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -174,6 +176,7 @@ export const createDetourMachine = setup({
       initial: "Begin",
       states: {
         Begin: {
+          tags: "no-save",
           always: [
             {
               guard: ({ context }) =>
@@ -186,6 +189,8 @@ export const createDetourMachine = setup({
         },
         "Pick Route Pattern": {
           initial: "Pick Route ID",
+
+          tags: "no-save",
           on: {
             "detour.route-pattern.select-route": {
               target: ".Pick Route ID",
@@ -296,6 +301,7 @@ export const createDetourMachine = setup({
           },
           states: {
             "Pick Start Point": {
+              tags: "no-save",
               on: {
                 "detour.edit.place-waypoint-on-route": {
                   target: "Place Waypoint",
@@ -418,10 +424,18 @@ export const createDetourMachine = setup({
         },
       },
     },
-    UUID: {
-      initial: "Unset",
+    SaveState: {
+      initial: "UnSaved",
       states: {
-        Unset: {
+        UnSaved: {
+          on: {
+            "detour.uuid.begin-save": {
+              target: "Saving",
+            },
+          },
+        },
+        Saving: {
+          tags: "no-save",
           on: {
             "detour.uuid.set": {
               target: "Set",

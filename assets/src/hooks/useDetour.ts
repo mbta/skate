@@ -25,20 +25,36 @@ export type UseDetourInput =
 export const useDetour = (input: UseDetourInput) => {
   const [snapshot, send, actorRef] = useMachine(createDetourMachine, {
     ...input,
-    inspect: console.debug
+    inspect: (...args) => {
+      console.debug(...args)
+      // debugger
+    },
   })
 
   // Record snapshots when changed
   useEffect(() => {
     const snapshotSubscription = actorRef.subscribe((snap) => {
       const persistedSnapshot = actorRef.getPersistedSnapshot()
+
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
-      console.debug("Within snapshot subscription")
+
       // check for no-save tag before
+      if (snap.hasTag("no-save")) {
+        return
+      }
+
+      console.debug("Within snapshot subscription")
+
+      actorRef.getSnapshot().can({ type: "detour.uuid.begin-save" }) &&
+        actorRef.send({ type: "detour.uuid.begin-save" })
+
       putDetourUpdate(persistedSnapshot).then((uuid) => {
-        if (isOk(uuid) && snap.can({type: "detour.uuid.set", uuid: uuid.ok})) {
-          send({ type: "detour.uuid.set", uuid: uuid.ok })
+        if (
+          isOk(uuid) &&
+          actorRef.getSnapshot().can({ type: "detour.uuid.set", uuid: uuid.ok })
+        ) {
+          actorRef.send({ type: "detour.uuid.set", uuid: uuid.ok })
         }
       })
     })
@@ -46,7 +62,7 @@ export const useDetour = (input: UseDetourInput) => {
     return () => {
       snapshotSubscription.unsubscribe()
     }
-  }, [actorRef, send])
+  }, [actorRef])
 
   const {
     routePattern,
