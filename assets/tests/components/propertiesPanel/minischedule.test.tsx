@@ -116,7 +116,6 @@ const asDirectedPiece: Piece = {
   startPlace: "place",
   trips: [
     {
-      id: "asDirected1",
       kind: "rad",
       startTime: 16200,
       endTime: 44400,
