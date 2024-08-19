@@ -176,7 +176,7 @@ defmodule Schedule.Hastus.Activity do
 
   defp operator_activity_to_piece(activity, _, _, _), do: activity
 
-  @spec as_directed_from_trips([Hastus.Trip.t()]) :: AsDirected.t()
+  @spec as_directed_from_trips([Hastus.Trip.t()]) :: {:ok, AsDirected.t()} | :error
   defp as_directed_from_trips(trips_in_piece) do
     case trips_in_piece do
       [
