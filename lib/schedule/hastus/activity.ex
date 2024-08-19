@@ -152,10 +152,11 @@ defmodule Schedule.Hastus.Activity do
     end
 
     as_directeds_and_schedule_trips =
-      if operator_is_as_directed?(activity) do
-        [as_directed_from_trips(trips_in_piece)]
+      with true <- operator_is_as_directed?(activity),
+           {:ok, as_directed} <- as_directed_from_trips(trips_in_piece) do
+        [as_directed]
       else
-        Enum.map(trips_in_piece, &Map.fetch!(schedule_trips_by_id, &1.trip_id))
+        _ -> Enum.map(trips_in_piece, &Map.fetch!(schedule_trips_by_id, &1.trip_id))
       end
 
     %Piece{
@@ -177,25 +178,30 @@ defmodule Schedule.Hastus.Activity do
 
   @spec as_directed_from_trips([Hastus.Trip.t()]) :: AsDirected.t()
   defp as_directed_from_trips(trips_in_piece) do
-    [
-      %Hastus.Trip{route_id: nil} = _pullout,
-      as_directed_trip,
-      %Hastus.Trip{route_id: nil} = _pull_back
-    ] = trips_in_piece
+    case trips_in_piece do
+      [
+        %Hastus.Trip{route_id: nil} = _pullout,
+        as_directed_trip,
+        %Hastus.Trip{route_id: nil} = _pull_back
+      ] ->
+        kind =
+          case as_directed_trip.route_id do
+            "rad" -> :rad
+            "wad" -> :wad
+          end
 
-    kind =
-      case as_directed_trip.route_id do
-        "rad" -> :rad
-        "wad" -> :wad
-      end
+        {:ok,
+         %AsDirected{
+           kind: kind,
+           start_time: as_directed_trip.start_time,
+           end_time: as_directed_trip.end_time,
+           start_place: as_directed_trip.start_place,
+           end_place: as_directed_trip.end_place
+         }}
 
-    %AsDirected{
-      kind: kind,
-      start_time: as_directed_trip.start_time,
-      end_time: as_directed_trip.end_time,
-      start_place: as_directed_trip.start_place,
-      end_place: as_directed_trip.end_place
-    }
+      _ ->
+        :error
+    end
   end
 
   @spec as_directed_activities_to_pieces([__MODULE__.t() | Piece.t()]) :: [
