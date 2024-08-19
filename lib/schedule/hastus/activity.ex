@@ -177,32 +177,28 @@ defmodule Schedule.Hastus.Activity do
   defp operator_activity_to_piece(activity, _, _, _), do: activity
 
   @spec as_directed_from_trips([Hastus.Trip.t()]) :: {:ok, AsDirected.t()} | :error
-  defp as_directed_from_trips(trips_in_piece) do
-    case trips_in_piece do
-      [
-        %Hastus.Trip{route_id: nil} = _pullout,
-        as_directed_trip,
-        %Hastus.Trip{route_id: nil} = _pull_back
-      ] ->
-        kind =
-          case as_directed_trip.route_id do
-            "rad" -> :rad
-            "wad" -> :wad
-          end
+  defp as_directed_from_trips([
+         %Hastus.Trip{route_id: nil} = _pullout,
+         as_directed_trip,
+         %Hastus.Trip{route_id: nil} = _pull_back
+       ]) do
+    kind =
+      case as_directed_trip.route_id do
+        "rad" -> :rad
+        "wad" -> :wad
+      end
 
-        {:ok,
-         %AsDirected{
-           kind: kind,
-           start_time: as_directed_trip.start_time,
-           end_time: as_directed_trip.end_time,
-           start_place: as_directed_trip.start_place,
-           end_place: as_directed_trip.end_place
-         }}
-
-      _ ->
-        :error
-    end
+    {:ok,
+     %AsDirected{
+       kind: kind,
+       start_time: as_directed_trip.start_time,
+       end_time: as_directed_trip.end_time,
+       start_place: as_directed_trip.start_place,
+       end_place: as_directed_trip.end_place
+     }}
   end
+
+  defp as_directed_from_trips(_trips_in_piece), do: :error
 
   @spec as_directed_activities_to_pieces([__MODULE__.t() | Piece.t()]) :: [
           __MODULE__.t() | Piece.t()
