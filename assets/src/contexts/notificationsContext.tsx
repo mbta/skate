@@ -16,7 +16,11 @@ import useNotificationsReducer, {
 } from "../hooks/useNotificationsReducer"
 import useSocket from "../hooks/useSocket"
 import useVehicleForNotification from "../hooks/useVehicleForNotification"
-import { NotificationId, NotificationState } from "../realtime"
+import {
+  isBlockWaiverNotification,
+  NotificationId,
+  NotificationState,
+} from "../realtime"
 import { selectVehicleFromNotification } from "../state/pagePanelState"
 import { StateDispatchContext } from "./stateDispatchContext"
 
@@ -75,7 +79,9 @@ export const NotificationsProvider = ({
 
   const { socket } = useSocket()
   const vehicleForNotification = useVehicleForNotification(
-    selectedNotification,
+    selectedNotification && isBlockWaiverNotification(selectedNotification)
+      ? selectedNotification
+      : undefined,
     socket
   )
 
