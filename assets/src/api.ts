@@ -446,19 +446,14 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
 export const putDetourUpdate = (
   snapshot: any
 ): Promise<Result<string, never>> =>
-  apiCallResult(
-    `/api/detours/update_snapshot`,
-    string(),
-    never(),
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        "x-csrf-token": getCsrfToken(),
-      },
-      body: JSON.stringify({ snapshot: snapshot }),
-    }
-  )
+  apiCallResult(`/api/detours/update_snapshot`, string(), never(), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-csrf-token": getCsrfToken(),
+    },
+    body: JSON.stringify({ snapshot: snapshot }),
+  })
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""
 
