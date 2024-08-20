@@ -2,7 +2,7 @@ import { useCallback } from "react"
 import { ShapePoint } from "../schedule"
 import { fetchUnfinishedDetour, putDetourUpdate } from "../api"
 import { useApiCall } from "./useApiCall"
-import { isErr, isOk, Ok } from "../util/result"
+import { isErr, isOk } from "../util/result"
 import { useNearestIntersection } from "./useNearestIntersection"
 import { useMachine } from "@xstate/react"
 import {
@@ -31,11 +31,23 @@ export const useDetour = (input: UseDetourInput) => {
       const persistedSnapshot = actorRef.getPersistedSnapshot()
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
-      console.debug("Within snapshot subscription")
+
       // check for no-save tag before
+      if (snap.hasTag("no-save")) {
+        return
+      }
+
+      actorRef.getSnapshot().can({ type: "detour.save.begin-save" }) &&
+        actorRef.send({ type: "detour.save.begin-save" })
+
       putDetourUpdate(persistedSnapshot).then((uuid) => {
-        if (isOk(uuid) && snap.can({type: "detour.uuid.set", uuid: uuid.ok})) {
-          send({ type: "detour.uuid.set", uuid: uuid.ok })
+        if (
+          isOk(uuid) &&
+          actorRef
+            .getSnapshot()
+            .can({ type: "detour.save.set-uuid", uuid: uuid.ok })
+        ) {
+          actorRef.send({ type: "detour.save.set-uuid", uuid: uuid.ok })
         }
       })
     })
@@ -43,7 +55,7 @@ export const useDetour = (input: UseDetourInput) => {
     return () => {
       snapshotSubscription.unsubscribe()
     }
-  }, [actorRef, send])
+  }, [actorRef])
 
   const {
     routePattern,
