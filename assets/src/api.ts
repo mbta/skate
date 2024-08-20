@@ -28,7 +28,9 @@ import {
   enums,
   Infer,
   is,
+  never,
   object,
+  string,
   Struct,
   StructError,
 } from "superstruct"
@@ -441,12 +443,13 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
     body: JSON.stringify({ route_tabs: routeTabs }),
   })
 
-export const putDetourUpdate = (snapshot: any): Promise<Result<string, Error>> =>
+export const putDetourUpdate = (
+  snapshot: any
+): Promise<Result<string, never>> =>
   apiCallResult(
     `/api/detours/update_snapshot`,
-    // todo: improve typing
-    any(),
-    any(),
+    string(),
+    never(),
     {
       method: "PUT",
       headers: {
