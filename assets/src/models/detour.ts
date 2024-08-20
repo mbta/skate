@@ -1,5 +1,6 @@
 import { LatLngLiteral } from "leaflet"
-import { Route, RoutePattern, ShapePoint, Stop } from "../schedule"
+import { ShapePoint, Stop } from "../schedule"
+import { CreateDetourMachineInput } from "./createDetourMachine"
 
 export interface DetourShape {
   coordinates: ShapePoint[]
@@ -10,12 +11,12 @@ export type DetourDirection = {
   instruction: string
 }
 
-export interface OriginalRoute {
-  route: Route
-  routePattern?: RoutePattern
+export interface MapLocation {
   center?: LatLngLiteral
   zoom?: number
 }
+
+export type OriginalRoute = CreateDetourMachineInput & MapLocation
 
 export interface UnfinishedRouteSegments {
   beforeStartPoint: ShapePoint[]

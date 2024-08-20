@@ -1,5 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import { DetoursTable } from "./detoursTable"
+import userInTestGroup, { TestGroups } from "../userInTestGroup"
+import { Button } from "react-bootstrap"
+import { PlusSquare } from "../helpers/bsIcons"
+import { DetourModal } from "./detours/detourModal"
 
 export interface Detour {
   route: string
@@ -76,9 +80,24 @@ export const DetourListPage = () => {
     },
   ]
 
+  const [showDetourModal, setShowDetourModal] = useState(false)
+
   return (
     <div className="h-100 overflow-y-auto">
+      {userInTestGroup(TestGroups.DetoursPilot) && (
+        <Button className="icon-link" onClick={() => setShowDetourModal(true)}>
+          <PlusSquare />
+          Add detour
+        </Button>
+      )}
       <DetoursTable data={fakeData} />
+      {showDetourModal && (
+        <DetourModal
+          onClose={() => setShowDetourModal(false)}
+          show
+          originalRoute={{}}
+        />
+      )}
     </div>
   )
 }
