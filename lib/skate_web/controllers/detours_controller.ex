@@ -16,12 +16,10 @@ defmodule SkateWeb.DetoursController do
 
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
-    {:ok, returned_detour} =
+    {:ok, %Skate.Detours.Db.Detour{id: returned_uuid}} =
       Detours.update_or_create_detour_for_user(user_id, uuid, %{
         state: snapshot
       })
-
-    returned_uuid = Map.get(returned_detour, :id)
 
     json(conn, %{data: returned_uuid})
   end
