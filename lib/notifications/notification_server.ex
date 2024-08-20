@@ -1,5 +1,10 @@
 defmodule Notifications.NotificationServer do
-  @moduledoc false
+  @moduledoc """
+  GenServer which manages a realtime Notifications "PubSub".
+
+  It receives new messages via functions like `new_block_waivers/2` and manages
+  new subscribers via `subscribe/2`.
+  """
 
   use GenServer
 
@@ -181,17 +186,56 @@ defmodule Notifications.NotificationServer do
     %{status: bridge_status, lowering_time: lowering_time}
   end
 
-  defp broadcast(notification, registry_key) do
-    Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
-      user_ids = User.user_ids_for_route_ids(notification.route_ids)
-
-      Enum.each(entries, fn {pid, user_id} ->
-        if Enum.member?(user_ids, user_id) do
-          send(pid, {:notification, notification})
-        end
-      end)
-    end)
+  @chelsea_bridge_route_ids [
+    "112",
+    # 743 is the SL3
+    "743"
+  ]
+  defp broadcast(
+         %Notifications.Notification{content: %Notifications.Db.BridgeMovement{}} = notification,
+         registry_key
+       ) do
+    broadcast(notification, User.user_ids_for_route_ids(@chelsea_bridge_route_ids), registry_key)
   end
+
+  defp broadcast(
+         %Notifications.Notification{
+           content: %Notifications.Db.BlockWaiver{
+             route_ids: route_ids
+           }
+         } = notification,
+         registry_key
+       ) do
+    broadcast(notification, User.user_ids_for_route_ids(route_ids), registry_key)
+  end
+
+  defp broadcast(
+         %Notifications.Notification{} = notification,
+         user_ids,
+         registry_key
+       ) do
+    # Frontend expects the :status not to be `nil`, and when broadcasting, the
+    # broadcasted notification is new and therefore unread.
+    payload = {:notification, default_unread(notification)}
+
+    Registry.dispatch(
+      Notifications.Supervisor.registry_name(),
+      registry_key,
+      fn entries ->
+        for(
+          {pid, user_id} <- entries,
+          Enum.member?(user_ids, user_id),
+          do: send(pid, payload)
+        )
+      end
+    )
+  end
+
+  defp default_unread(%Notifications.Notification{state: nil} = notification),
+    do: %{notification | state: :unread}
+
+  defp default_unread(%Notifications.Notification{} = notification),
+    do: notification
 
   @impl true
   def handle_call(:subscribe, _from, state) do

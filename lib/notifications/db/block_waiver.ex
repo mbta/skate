@@ -5,6 +5,23 @@ defmodule Notifications.Db.BlockWaiver do
   import Ecto.Changeset
   alias Notifications.NotificationReason
 
+  @derive {Jason.Encoder,
+           only: [
+             :"$type",
+             :created_at,
+             :reason,
+             :route_ids,
+             :run_ids,
+             :trip_ids,
+             :operator_id,
+             :operator_name,
+             :route_id_at_creation,
+             :block_id,
+             :service_id,
+             :start_time,
+             :end_time
+           ]}
+
   typed_schema "block_waivers" do
     field(:created_at, :integer)
     field(:reason, NotificationReason)
@@ -19,6 +36,8 @@ defmodule Notifications.Db.BlockWaiver do
     field(:start_time, :integer)
     field(:end_time, :integer)
     timestamps()
+
+    field(:"$type", :any, virtual: true, default: __MODULE__)
   end
 
   def changeset(block_waiver, attrs \\ %{}) do
