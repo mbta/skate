@@ -243,7 +243,7 @@ defmodule Notifications.Notification do
   end
 
   @spec convert_from_db_notification(DbNotification.t()) :: __MODULE__.t()
-  defp convert_from_db_notification(db_notification) do
+  defp convert_from_db_notification(%DbNotification{} = db_notification) do
     basic_fields = %{
       id: db_notification.id,
       created_at: db_notification.created_at,
