@@ -1257,8 +1257,8 @@ describe("DiversionPage", () => {
       })
     )
 
-    const intersection = "Avenue 1 & Street 2"
-    jest.mocked(fetchNearestIntersection).mockResolvedValue(intersection)
+    const intersectionPromise = Promise.resolve("Avenue 1 & Street 2")
+    jest.mocked(fetchNearestIntersection).mockReturnValue(intersectionPromise)
 
     userEvent.setup() // Configure the clipboard API
 
@@ -1286,6 +1286,10 @@ describe("DiversionPage", () => {
 
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await act(async () => {
+      await intersectionPromise
     })
 
     act(() => {
