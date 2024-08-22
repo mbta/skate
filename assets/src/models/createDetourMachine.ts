@@ -63,6 +63,15 @@ export const createDetourMachine = setup({
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: string },
+
+    // We're making an assumption that we'll never want to save detour edits to the database when in particular stages
+    // of detour drafting:
+    // -- when starting a detour, before any user input
+    // -- when the route id / route pattern is getting selected
+    // -- right after the route pattern is finalized, before any waypoints are added
+    // That leads to the following interface: if the user begins drafting a detour, adds waypoints, and then changes the route,
+    // the database will reflect the old route and old waypoints up until the point where a new waypoint is added.
+    // If that UX assumption isn't the right one, we can iterate in the future!
     tags: "no-save",
   },
   actors: {
@@ -437,7 +446,7 @@ export const createDetourMachine = setup({
           tags: "no-save",
           on: {
             "detour.save.set-uuid": {
-              target: "Set",
+              target: "Saved",
               actions: assign({
                 uuid: ({ event }) => event.uuid,
               }),
