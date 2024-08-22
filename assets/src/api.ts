@@ -29,8 +29,8 @@ import {
   Infer,
   is,
   never,
+  number,
   object,
-  string,
   Struct,
   StructError,
 } from "superstruct"
@@ -446,8 +446,8 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
 
 export const putDetourUpdate = (
   snapshot: Snapshot<unknown>
-): Promise<Result<string, never>> =>
-  apiCallResult(`/api/detours/update_snapshot`, string(), never(), {
+): Promise<Result<number, never>> =>
+  apiCallResult(`/api/detours/update_snapshot`, number(), never(), {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

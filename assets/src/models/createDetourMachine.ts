@@ -13,7 +13,7 @@ import { DetourShape, FinishedDetour } from "./detour"
 export const createDetourMachine = setup({
   types: {
     context: {} as {
-      uuid: string | undefined
+      uuid: number | undefined
       route?: Route
       routePattern?: RoutePattern
 
@@ -62,7 +62,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.undo" }
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.save.begin-save" }
-      | { type: "detour.save.set-uuid"; uuid: string },
+      | { type: "detour.save.set-uuid"; uuid: number },
 
     // We're making an assumption that we'll never want to save detour edits to the database when in particular stages
     // of detour drafting:
