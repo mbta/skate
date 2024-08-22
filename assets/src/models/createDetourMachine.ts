@@ -62,7 +62,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.undo" }
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.share.activate" }
-      | { type: "detour.active.deactivate" }    
+      | { type: "detour.active.deactivate" }
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: number },
 
@@ -75,7 +75,6 @@ export const createDetourMachine = setup({
     // the database will reflect the old route and old waypoints up until the point where a new waypoint is added.
     // If that UX assumption isn't the right one, we can iterate in the future!
     tags: "no-save",
-
   },
   actors: {
     "fetch-route-patterns": fromPromise<
