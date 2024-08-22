@@ -28,7 +28,7 @@ import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 import PropertiesPanel from "./propertiesPanel"
 import { isGhost, isVehicle } from "../models/vehicle"
 import { TabMode } from "./propertiesPanel/tabPanels"
-import { DummyDetourPage } from "./dummyDetourPage"
+import { DetourListPage } from "./detourListPage"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { MinimalLadderPage } from "./minimalLadderPage"
 import { MinimalLadder } from "./minimalLadder"
@@ -106,8 +106,8 @@ export const AppRoutes = () => {
                   element={<ShuttleMapPage />}
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
-                {inTestGroup(TestGroups.DummyDetourPage) && (
-                  <BrowserRoute path="/detours" element={<DummyDetourPage />} />
+                {inTestGroup(TestGroups.DetoursList) && (
+                  <BrowserRoute path="/detours" element={<DetourListPage />} />
                 )}
               </Route>
               <Route

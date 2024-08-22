@@ -32,7 +32,7 @@ import {
   finishedDetourFactory,
   routeSegmentsFactory,
   unfinishedDetourFactory,
-} from "../../factories/finishedDetourFactory"
+} from "../../factories/detourFactory"
 import { detourShapeFactory } from "../../factories/detourShapeFactory"
 import {
   missedStopIcon,

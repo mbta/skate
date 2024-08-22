@@ -42,7 +42,7 @@ interface Props {
   onAddDetour?: (route: Route) => void
 }
 
-export const NewHeader = ({
+export const Header = ({
   routeName,
   onClose,
   hasAlert,
@@ -61,13 +61,13 @@ export const NewHeader = ({
   const routePillId = "route-pill" + useId()
   const routeOptionsToggleId = "route-options-toggle" + useId()
   return (
-    <Card className="c-new-route-ladder__header">
+    <Card className="c-route-ladder__header">
       <Card.Body>
         <div className="c-route-ladder__header__action-container">
           {showDropdown && (
             <Dropdown className="border-box inherit-box">
               <Dropdown.Toggle
-                className="c-route-ladder__dropdown-button"
+                className="c-route-ladder__dropdown-button d-none d-sm-block"
                 aria-labelledby={joinTruthy([
                   routePillId,
                   routeOptionsToggleId,
@@ -215,7 +215,7 @@ const RouteLadder = ({
 
   return (
     <>
-      <NewHeader
+      <Header
         routeName={route.name}
         hasAlert={hasAlert}
         onClose={() => {

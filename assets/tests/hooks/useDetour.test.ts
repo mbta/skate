@@ -13,9 +13,9 @@ import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"
 import {
   finishedDetourFactory,
+  routeSegmentsFactory,
   unfinishedDetourFactory,
-} from "../factories/finishedDetourFactory"
-import { routeSegmentsFactory } from "../factories/finishedDetourFactory"
+} from "../factories/detourFactory"
 import { originalRouteFactory } from "../factories/originalRouteFactory"
 import { Err, Ok } from "../../src/util/result"
 import { neverPromise } from "../testHelpers/mockHelpers"

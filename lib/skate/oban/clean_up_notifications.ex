@@ -23,7 +23,7 @@ defmodule Skate.Oban.CleanUpNotifications do
 
     oldest_date = DateTime.add(DateTime.utc_now(), -cutoff_days * @seconds_per_day)
 
-    Logger.notice("#{__MODULE__} starting cleanup")
+    Logger.notice("starting cleanup")
 
     {time, {count, nil}} =
       :timer.tc(fn ->
@@ -41,9 +41,7 @@ defmodule Skate.Oban.CleanUpNotifications do
         )
       end)
 
-    Logger.notice(
-      "#{__MODULE__} finished cleanup deleted=#{count} time_in_ms=#{time / :timer.seconds(1)}"
-    )
+    Logger.notice("finished cleanup deleted=#{count} time_in_ms=#{time / :timer.seconds(1)}")
 
     {:ok, count}
   end

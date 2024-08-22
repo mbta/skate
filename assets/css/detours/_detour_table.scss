@@ -1,0 +1,17 @@
+.c-detours-table {
+  thead {
+    text-align: left;
+    font-weight: 600;
+  }
+}
+
+.c-detours-table__route-info-cell {
+  display: flex;
+  align-items: center;
+}
+
+.c-detours-table__route-info-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}

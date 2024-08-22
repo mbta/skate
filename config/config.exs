@@ -137,14 +137,17 @@ config :skate, Oban,
     }
   ]
 
+# Include 2 logger backends
+config :logger,
+  backends: [:console, Sentry.LoggerBackend]
+
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  format: "$time [$level] $metadata$message\n",
+  metadata: [:mfa, :request_id]
 
-# "code" is the secret value returned by AWS to /auth/cognito/callback
 log_filter_params =
-  ~w(password code token guardian_default_claims guardian_default_resource guardian_default_token)
+  ~w(password token guardian_default_claims guardian_default_resource guardian_default_token)
 
 config :logster, :filter_parameters, log_filter_params
 
@@ -153,10 +156,9 @@ config :phoenix, :filter_parameters, log_filter_params
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Fake Cognito authentication
+# Fake Keycloak authentication
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: nil,
     keycloak: nil
   ]
 

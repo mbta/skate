@@ -84,8 +84,8 @@ defmodule Skate.MigrateTest do
         end)
 
       assert {:stop, :normal, _opts} = result
-      assert log =~ "Elixir.Skate.Migrate async migrations starting"
-      assert log =~ "Elixir.Skate.Migrate async migrations finished"
+      assert log =~ "async migrations starting"
+      assert log =~ "async migrations finished"
     end
 
     test "when async migrations raises an exception, logs & returns normal stop" do
@@ -100,10 +100,10 @@ defmodule Skate.MigrateTest do
 
       assert {:stop, :normal, _opts} = result
 
-      assert log =~ "Elixir.Skate.Migrate async migrations starting"
+      assert log =~ "async migrations starting"
 
       assert log =~
-               "Elixir.Skate.Migrate async migrations failed. error=%RuntimeError{message: \"migration error\"}"
+               "async migrations failed. error=%RuntimeError{message: \"migration error\"}"
     end
   end
 

@@ -9,3 +9,9 @@
     transition-delay: $transition-slide-duration;
   }
 }
+
+.u-hide-for-mobile {
+  @media screen and (max-width: map-get($breakpoints, "max-mobile-landscape-tablet-portrait-width")) {
+    display: none;
+  }
+}

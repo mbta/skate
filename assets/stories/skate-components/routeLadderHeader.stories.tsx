@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { NewHeader as RouteLadderHeader } from "../../src/components/routeLadder"
+import { Header } from "../../src/components/routeLadder"
 
 const meta = {
-  component: RouteLadderHeader,
+  component: Header,
   args: {
     routeName: "39",
     onClose: () => {},
@@ -13,10 +13,10 @@ const meta = {
   argTypes: {
     onClose: { table: { disable: true } },
   },
-} satisfies Meta<typeof RouteLadderHeader>
+} satisfies Meta<typeof Header>
 
 export default meta
-type Story = StoryObj<typeof RouteLadderHeader>
+type Story = StoryObj<typeof Header>
 
 export const Default: Story = {}
 export const WithAlert: Story = {

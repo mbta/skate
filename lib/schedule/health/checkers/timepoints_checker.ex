@@ -23,9 +23,7 @@ defmodule Schedule.Health.Checkers.TimepointsChecker do
     pass? = length >= min_length
 
     if !pass? do
-      Logger.warning(
-        "#{__MODULE__} failed on route_id=#{route_id}. min_length=#{min_length} length=#{length}"
-      )
+      Logger.warning("failed on route_id=#{route_id}. min_length=#{min_length} length=#{length}")
     end
 
     pass?

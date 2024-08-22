@@ -1,6 +1,5 @@
 defmodule Realtime.ShapeTest do
   alias Skate.OpenRouteServiceAPI.DirectionsResponse
-  alias Util.Location
   alias Realtime.Shape
   alias Skate.Detours.RouteSegments
   use ExUnit.Case

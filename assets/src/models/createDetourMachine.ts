@@ -37,12 +37,12 @@ export const createDetourMachine = setup({
       | {
           // Caller has target route
           route: Route
-          routePattern: undefined
+          routePattern?: undefined
         }
       | {
           // Caller has no prior selection
-          route: undefined
-          routePattern: undefined
+          route?: undefined
+          routePattern?: undefined
         },
 
     events: {} as
@@ -61,6 +61,8 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
       | { type: "detour.share.copy-detour"; detourText: string }
+      | { type: "detour.share.activate" }
+      | { type: "detour.active.deactivate" }    
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: number },
 
@@ -73,6 +75,7 @@ export const createDetourMachine = setup({
     // the database will reflect the old route and old waypoints up until the point where a new waypoint is added.
     // If that UX assumption isn't the right one, we can iterate in the future!
     tags: "no-save",
+
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -428,8 +431,19 @@ export const createDetourMachine = setup({
             "detour.edit.resume": {
               target: "Editing.Finished Drawing",
             },
+            "detour.share.activate": {
+              target: "Active",
+            },
           },
         },
+        Active: {
+          on: {
+            "detour.active.deactivate": {
+              target: "Past",
+            },
+          },
+        },
+        Past: {},
       },
     },
     SaveState: {
