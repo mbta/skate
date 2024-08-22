@@ -200,7 +200,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("calls the API several times with different endpoints when a waypoint is added and then the detour is finished", async () => {
+  test("calls the API twice with different endpoints when a waypoint is added and then the detour is finished", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
