@@ -1290,15 +1290,15 @@ describe("DiversionPage", () => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    await act(async () => {
-      await intersectionPromise
-    })
-
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
     await userEvent.click(reviewDetourButton.get())
+
+    await act(async () => {
+      await intersectionPromise
+    })
 
     await userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
 
