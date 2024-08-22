@@ -1126,7 +1126,7 @@ describe("putRouteTabs", () => {
   })
 })
 
-describe("putUserSetting", () => {
+describe("putDetourUpdate", () => {
   const testToggleMachine = createMachine({
     id: "testToggle",
     initial: "inactive",
