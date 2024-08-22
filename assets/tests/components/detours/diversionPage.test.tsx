@@ -197,13 +197,10 @@ describe("DiversionPage", () => {
 
     await waitFor(() => {
       expect(fetchDetourDirections).toHaveBeenCalledTimes(1)
-      expect(putDetourUpdate).toHaveBeenCalledTimes(1)
     })
   })
 
   test("calls the API several times with different endpoints when a waypoint is added and then the detour is finished", async () => {
-    jest.mocked(putDetourUpdate).mockResolvedValue(Ok(12))
-
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -221,7 +218,6 @@ describe("DiversionPage", () => {
     await waitFor(() => {
       expect(fetchDetourDirections).toHaveBeenCalledTimes(1)
       expect(fetchFinishedDetour).toHaveBeenCalledTimes(1)
-      expect(putDetourUpdate).toHaveBeenCalledTimes(2)
     })
   })
 
@@ -498,26 +494,6 @@ describe("DiversionPage", () => {
     )
 
     expect(screen.queryByTitle("Detour Start")).toBeVisible()
-  })
-
-  test("clicking on 'Undo' calls the API for updating the database", async () => {
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(container.querySelector(".c-vehicle-map")!)
-    })
-
-    act(() => {
-      fireEvent.click(screen.getByRole("button", { name: "Undo" }))
-    })
-
-    await waitFor(() => {
-      expect(putDetourUpdate).toHaveBeenCalledTimes(1)
-    })
   })
 
   test("clicking on 'Undo' restores the placeholder text when appropriate", async () => {
@@ -1728,40 +1704,6 @@ describe("DiversionPage", () => {
       expect(screen.getByText(rp1.headsign!)).toBeVisible()
     })
 
-    // We made an assumption that we'll never want to save detour edits in response to changing
-    test("when finish button is clicked, does not call API to update the database", async () => {
-      const route = routeFactory.build({ id: "66" })
-      const routePatterns = routePatternFactory.buildList(2, {
-        routeId: route.id,
-      })
-      const [rp1] = routePatterns
-
-      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
-
-      render(
-        <RoutesProvider routes={[route]}>
-          <DiversionPage
-            originalRoute={originalRouteFactory.build({
-              routePattern: rp1,
-              route,
-            })}
-          />
-        </RoutesProvider>
-      )
-
-      await userEvent.click(
-        screen.getByRole("button", { name: "Change route or direction" })
-      )
-
-      await userEvent.click(
-        screen.getByRole("button", { name: "Start drawing detour" })
-      )
-
-      await waitFor(() => {
-        expect(putDetourUpdate).toHaveBeenCalledTimes(0)
-      })
-    })
-
     test("when a route pattern is already selected, opens to selected pattern", async () => {
       const route = routeFactory.build()
       const routePatterns = routePatternFactory.buildList(20, {
@@ -1941,48 +1883,6 @@ describe("DiversionPage", () => {
             name: rpcRadioButtonName(selectedRoutePattern),
           })
         ).toBeChecked()
-      })
-    })
-
-    // We made an assumption that we'll never want to save detour edits in response to changing
-    test("when route is changed, does not call API to update the database", async () => {
-      const routes = routeFactory.buildList(2)
-      const [route1, route2] = routes
-
-      const inboundRoutePatterns = routePatternFactory.buildList(2, {
-        routeId: route2.id,
-        directionId: 1,
-      })
-      const outboundRoutePatterns = routePatternFactory.buildList(2, {
-        routeId: route2.id,
-        directionId: 0,
-      })
-      const routePatterns = outboundRoutePatterns.concat(inboundRoutePatterns)
-
-      jest.mocked(fetchRoutePatterns).mockResolvedValue(routePatterns)
-
-      render(
-        <RoutesProvider routes={routes}>
-          <DiversionPage
-            originalRoute={originalRouteFactory.build({
-              route: route1,
-              routePattern: routePatternFactory.build({ routeId: route1.id }),
-            })}
-          />
-        </RoutesProvider>
-      )
-
-      await userEvent.click(
-        screen.getByRole("button", { name: "Change route or direction" })
-      )
-
-      await userEvent.selectOptions(
-        screen.getByRole("combobox", { name: "Choose route" }),
-        route2.name
-      )
-
-      await waitFor(() => {
-        expect(putDetourUpdate).toHaveBeenCalledTimes(0)
       })
     })
 

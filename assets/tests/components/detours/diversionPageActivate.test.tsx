@@ -21,6 +21,7 @@ import {
   fetchNearestIntersection,
   fetchRoutePatterns,
   fetchUnfinishedDetour,
+  putDetourUpdate,
 } from "../../../src/api"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 
@@ -45,6 +46,7 @@ beforeEach(() => {
   jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
+  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 
   jest
     .mocked(getTestGroups)
