@@ -64,6 +64,7 @@ import {
   UnfinishedDetourData,
   unfinishedDetourFromData,
 } from "./models/unfinishedDetour"
+import { Snapshot } from "xstate"
 
 export interface RouteData {
   id: string
@@ -444,7 +445,7 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
   })
 
 export const putDetourUpdate = (
-  snapshot: any
+  snapshot: Snapshot<unknown>
 ): Promise<Result<string, never>> =>
   apiCallResult(`/api/detours/update_snapshot`, string(), never(), {
     method: "PUT",
