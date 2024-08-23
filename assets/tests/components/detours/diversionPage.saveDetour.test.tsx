@@ -76,7 +76,7 @@ describe("DiversionPage autosave flow", () => {
     })
   })
 
-  // We made an assumption that we'll never want to save detour edits in response to changing
+  // We made an assumption that we'll never want to save detour edits in response to changing route/variant
   test("when finish button is clicked, does not call API to update the database", async () => {
     const route = routeFactory.build({ id: "66" })
     const routePatterns = routePatternFactory.buildList(2, {
@@ -108,7 +108,7 @@ describe("DiversionPage autosave flow", () => {
     })
   })
 
-  // We made an assumption that we'll never want to save detour edits in response to changing
+  // We made an assumption that we'll never want to save detour edits in response to changing route/variant
   test("when route is changed, does not call API to update the database", async () => {
     const routes = routeFactory.buildList(2)
     const [route1, route2] = routes
