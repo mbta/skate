@@ -4,31 +4,22 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState, setNotification } from "../../../src/state"
-import { Notification, NotificationState } from "../../../src/realtime"
 import ChelseaRaisedNotificationModal from "../../../src/components/notificationModals/chelseaRaisedNotificationModal"
+import { bridgeRaisedNotificationFactory } from "../../factories/notification"
 
 describe("ChelseaRaisedNotificationModal", () => {
-  const notification: Notification = {
-    id: "123",
-    createdAt: new Date(),
-    reason: "chelsea_st_bridge_raised",
-    routeIds: [],
-    runIds: [],
-    tripIds: ["111", "743"],
-    operatorName: null,
-    operatorId: null,
-    routeIdAtCreation: null,
-    startTime: new Date("2020-10-05 07:34"),
-    endTime: new Date("2020-10-06 07:45"),
-    state: "unread" as NotificationState,
-  }
+  const notification = bridgeRaisedNotificationFactory.build({
+    content: {
+      loweringTime: new Date("2020-10-06 07:45"),
+    },
+  })
 
   const mockDispatch = jest.fn()
 
   test("renders notification message", () => {
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <ChelseaRaisedNotificationModal notification={notification} />
+        <ChelseaRaisedNotificationModal notification={notification.content} />
       </StateDispatchProvider>
     )
 
@@ -42,7 +33,7 @@ describe("ChelseaRaisedNotificationModal", () => {
   test("close button unsets notification", async () => {
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <ChelseaRaisedNotificationModal notification={notification} />
+        <ChelseaRaisedNotificationModal notification={notification.content} />
       </StateDispatchProvider>
     )
 
