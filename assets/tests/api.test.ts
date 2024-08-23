@@ -1150,8 +1150,14 @@ describe("putDetourUpdate", () => {
     mockFetch(200, { data: 1 })
     putDetourUpdate(persistedSnapshot)
     expect(window.fetch).toHaveBeenCalledTimes(1)
-    const args = jest.mocked(window.fetch).mock.calls[0][1]
-    expect(args!.method).toEqual("PUT")
-    expect(args!.headers).toHaveProperty("x-csrf-token")
+    expect(jest.mocked(window.fetch)).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        method: "PUT",
+        headers: expect.objectContaining({
+          "x-csrf-token": expect.any(String),
+        }),
+      })
+    )
   })
 })
