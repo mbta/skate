@@ -28,6 +28,8 @@ import {
   enums,
   Infer,
   is,
+  never,
+  number,
   object,
   Struct,
   StructError,
@@ -62,6 +64,7 @@ import {
   UnfinishedDetourData,
   unfinishedDetourFromData,
 } from "./models/unfinishedDetour"
+import { Snapshot } from "xstate"
 
 export interface RouteData {
   id: string
@@ -439,6 +442,18 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
       "x-csrf-token": getCsrfToken(),
     },
     body: JSON.stringify({ route_tabs: routeTabs }),
+  })
+
+export const putDetourUpdate = (
+  snapshot: Snapshot<unknown>
+): Promise<Result<number, never>> =>
+  apiCallResult(`/api/detours/update_snapshot`, number(), never(), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-csrf-token": getCsrfToken(),
+    },
+    body: JSON.stringify({ snapshot: snapshot }),
   })
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""

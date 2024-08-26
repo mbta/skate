@@ -8,6 +8,7 @@ defmodule SkateWeb.DetoursControllerTest do
   import Mox
   import Skate.Factory
 
+  alias Skate.Detours.Detours
   alias Skate.Detours.MissedStops
 
   setup do
@@ -24,6 +25,38 @@ defmodule SkateWeb.DetoursControllerTest do
   end
 
   setup :verify_on_exit!
+
+  describe "update_snapshot/2" do
+    @tag :authenticated
+    test "adds new detour to database", %{conn: conn} do
+      conn =
+        put(conn, "/api/detours/update_snapshot", %{
+          "snapshot" => %{"context" => %{}}
+        })
+
+      assert %{"data" => number} = json_response(conn, 200)
+
+      assert %Skate.Detours.Db.Detour{
+               id: ^number,
+               state: %{"context" => %{}}
+             } = Detours.get_detour!(number)
+    end
+
+    @tag :authenticated
+    test "updates detour in database if detour uuid provided", %{conn: conn} do
+      conn =
+        put(conn, "/api/detours/update_snapshot", %{
+          "snapshot" => %{"context" => %{"uuid" => 8}}
+        })
+
+      assert %{"data" => 8} = json_response(conn, 200)
+
+      assert %Skate.Detours.Db.Detour{
+               id: 8,
+               state: %{"context" => %{"uuid" => 8}}
+             } = Detours.get_detour!(8)
+    end
+  end
 
   describe "unfinished_detour/2" do
     @tag :authenticated

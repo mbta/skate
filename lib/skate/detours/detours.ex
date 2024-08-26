@@ -7,6 +7,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Repo
 
   alias Skate.Detours.Db.Detour
+  alias Skate.Settings.User
 
   @doc """
   Returns the list of detours.
@@ -53,6 +54,39 @@ defmodule Skate.Detours.Detours do
     %Detour{}
     |> Detour.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Creates a detour given a user id & detour id.
+  """
+  def create_detour_for_user(user_id, attrs \\ %{}) do
+    user = User.get_by_id!(user_id)
+
+    %Detour{
+      author: user
+    }
+    |> Detour.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Update or create a detour given a user id & detour id.
+  """
+  def update_or_create_detour_for_user(user_id, uuid, attrs \\ %{}) do
+    user = User.get_by_id!(user_id)
+
+    case uuid do
+      nil ->
+        create_detour_for_user(user_id, attrs)
+
+      _ ->
+        Repo.insert(
+          Detour.changeset(%Detour{author: user, id: uuid}, attrs),
+          returning: true,
+          conflict_target: [:id],
+          on_conflict: {:replace, [:state, :updated_at]}
+        )
+    end
   end
 
   @doc """

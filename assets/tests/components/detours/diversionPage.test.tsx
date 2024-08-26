@@ -16,6 +16,7 @@ import {
   fetchNearestIntersection,
   fetchRoutePatterns,
   fetchUnfinishedDetour,
+  putDetourUpdate,
 } from "../../../src/api"
 import {
   DiversionPage as DiversionPageDefault,
@@ -81,6 +82,7 @@ beforeEach(() => {
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
   jest.mocked(getTestGroups).mockReturnValue([])
+  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 })
 
 describe("DiversionPage", () => {

@@ -13,6 +13,7 @@ import { DetourShape, FinishedDetour } from "./detour"
 export const createDetourMachine = setup({
   types: {
     context: {} as {
+      uuid: number | undefined
       route?: Route
       routePattern?: RoutePattern
 
@@ -61,7 +62,19 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.undo" }
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.share.activate" }
-      | { type: "detour.active.deactivate" },
+      | { type: "detour.active.deactivate" }
+      | { type: "detour.save.begin-save" }
+      | { type: "detour.save.set-uuid"; uuid: number },
+
+    // We're making an assumption that we'll never want to save detour edits to the database when in particular stages
+    // of detour drafting:
+    // -- when starting a detour, before any user input
+    // -- when the route id / route pattern is getting selected
+    // -- right after the route pattern is finalized, before any waypoints are added
+    // That leads to the following interface: if the user begins drafting a detour, adds waypoints, and then changes the route,
+    // the database will reflect the old route and old waypoints up until the point where a new waypoint is added.
+    // If that UX assumption isn't the right one, we can iterate in the future!
+    tags: "no-save",
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -161,18 +174,20 @@ export const createDetourMachine = setup({
   context: ({ input }) => ({
     ...input,
     waypoints: [],
+    uuid: undefined,
     startPoint: undefined,
     endPoint: undefined,
     finishedDetour: undefined,
     detourShape: undefined,
   }),
-
+  type: "parallel",
   initial: "Detour Drawing",
   states: {
     "Detour Drawing": {
       initial: "Begin",
       states: {
         Begin: {
+          tags: "no-save",
           always: [
             {
               guard: ({ context }) =>
@@ -185,6 +200,7 @@ export const createDetourMachine = setup({
         },
         "Pick Route Pattern": {
           initial: "Pick Route ID",
+          tags: "no-save",
           on: {
             "detour.route-pattern.select-route": {
               target: ".Pick Route ID",
@@ -295,6 +311,7 @@ export const createDetourMachine = setup({
           },
           states: {
             "Pick Start Point": {
+              tags: "no-save",
               on: {
                 "detour.edit.place-waypoint-on-route": {
                   target: "Place Waypoint",
@@ -426,6 +443,30 @@ export const createDetourMachine = setup({
           },
         },
         Past: {},
+      },
+    },
+    SaveState: {
+      initial: "Unsaved",
+      states: {
+        Unsaved: {
+          on: {
+            "detour.save.begin-save": {
+              target: "Saving",
+            },
+          },
+        },
+        Saving: {
+          tags: "no-save",
+          on: {
+            "detour.save.set-uuid": {
+              target: "Saved",
+              actions: assign({
+                uuid: ({ event }) => event.uuid,
+              }),
+            },
+          },
+        },
+        Saved: {},
       },
     },
   },

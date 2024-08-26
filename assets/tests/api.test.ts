@@ -29,6 +29,7 @@ import {
   fetchAllStops,
   fetchFinishedDetour,
   apiCallWithError,
+  putDetourUpdate,
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
@@ -50,6 +51,7 @@ import stopDataFactory from "./factories/stopData"
 import { shapePointFactory } from "./factories/shapePointFactory"
 import { ok, fetchError } from "../src/util/fetchResult"
 import { directionsFactory } from "./factories/detourShapeFactory"
+import { createActor, createMachine } from "xstate"
 
 jest.mock("@sentry/react", () => ({
   __esModule: true,
@@ -67,6 +69,7 @@ const mockFetch = (status: number, json: any): void => {
     Promise.resolve({
       json: () => json,
       status,
+      ok: status == 200 ? true : false,
     } as Response)
   )
 }
@@ -1120,5 +1123,41 @@ describe("putRouteTabs", () => {
     expect(args!.method).toEqual("PUT")
     expect(args!.headers).toHaveProperty("x-csrf-token")
     expect(args!.body).toEqual(JSON.stringify({ route_tabs: routeTabs }))
+  })
+})
+
+describe("putDetourUpdate", () => {
+  const testToggleMachine = createMachine({
+    id: "testToggle",
+    initial: "inactive",
+    states: {
+      inactive: {
+        on: {
+          TOGGLE: "active",
+        },
+      },
+      active: {
+        on: {
+          TOGGLE: "inactive",
+        },
+      },
+    },
+  })
+  const actor = createActor(testToggleMachine).start()
+  const persistedSnapshot = actor.getPersistedSnapshot()
+
+  test("uses PUT and CSRF token", () => {
+    mockFetch(200, { data: 1 })
+    putDetourUpdate(persistedSnapshot)
+    expect(window.fetch).toHaveBeenCalledTimes(1)
+    expect(jest.mocked(window.fetch)).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        method: "PUT",
+        headers: expect.objectContaining({
+          "x-csrf-token": expect.any(String),
+        }),
+      })
+    )
   })
 })
