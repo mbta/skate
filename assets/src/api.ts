@@ -92,6 +92,15 @@ const checkResponseStatus = (response: Response) => {
 
 const parseJson = (response: Response) => response.json() as unknown
 
+/**
+ * @depcreated use {@linkcode apiCallResult}
+ *
+ * A small wrapper around fetch which checks for valid responses and parses
+ * JSON from the result body. It processes the resulting object with
+ * {@linkcode parser}
+ *
+ * If there is _any_ error, returns {@linkcode defaultResult}.
+ */
 export const apiCall = <T>({
   url,
   parser,
@@ -109,6 +118,17 @@ export const apiCall = <T>({
     .then(({ data: data }: { data: any }) => parser(data))
     .catch(() => defaultResult)
 
+/**
+ * @depcreated use {@linkcode apiCallResult}
+ *
+ * A slightly larger (than {@linkcode apiCall}) wrapper around
+ * {@linkcode fetch} which checks for valid responses and then parses JSON from
+ * the body, and asserts it's validity with `superstruct`.
+ *
+ * It then transforms the input with {@linkcode parser}
+ *
+ * If there are any errors, returns {@linkcode defaultResult}
+ */
 export const checkedApiCall = <T, U>({
   url,
   dataStruct,
@@ -137,6 +157,14 @@ export const checkedApiCall = <T, U>({
       return defaultResult
     })
 
+/**
+ * @depcreated use {@linkcode apiCallResult}
+ *
+ * A wrapper around {@linkcode fetch} which returns a {@linkcode FetchResult}.
+ *
+ * This does mainly the same thing as {@linkcode checkedApiCall} but returns
+ * errors and successes separately using {@linkcode FetchResult}.
+ */
 export const apiCallWithError = <T, U>({
   url,
   dataStruct,
@@ -163,6 +191,30 @@ export const apiCallWithError = <T, U>({
       return fetchError()
     })
 
+/**
+ * A wrapper around {@linkcode fetch} which returns a {@linkcode Result}.
+ *
+ * This function returns a {@linkcode Result} so that it's easy to differentiate
+ * between different error states.
+ *
+ * For example, previous implementations,
+ * e.g. {@linkcode checkedApiCall} and {@linkcode apiCall}, provided a
+ * `defaultResult` parameter which was returned if there was _any_ issue;
+ * If a successful {@linkcode fetch} to an endpoint _also_ returned the same
+ * value as `defaultResult`, say `null`, then there isn't a way to tell if the
+ * `null` was because of an error or because of a successful request.
+ * This _also_ happened if there was an unrelated error when fetching, so there
+ * was not an easy way to tell the difference between an errored endpoint or an
+ * errored fetch call.
+ *
+ * Diverging from {@linkcode apiCall}, this does not handle errors such as
+ * network issues and deals only with json response bodies. That is left up to
+ * the caller to add a `.catch` handler to the returned {@linkcode Promise},
+ * because there may not be a generic way that those kind of errors should be
+ * handled. (This API could be opinionated or extended to return something like
+ * `Promise<Result<Result<T, E>, FetchError>>`, but instead that is left up to
+ * callers to implement instead of assuming any requirements.
+ */
 export const apiCallResult = async <T, E>(
   url: Parameters<typeof fetch>[0],
   OkStruct: Struct<T, unknown>,
@@ -171,8 +223,13 @@ export const apiCallResult = async <T, E>(
 ): Promise<Result<T, E>> =>
   fetch(url, requestInit)
     .then(async (response) => {
+      // If the fetch does not error and returns something from the endpoint,
+      // parse as json.
       const json: unknown = await response.json()
 
+      // Then check if the response is `ok` and try to return `Ok(OkStruct)`
+      // Otherwise, return `Err(ErrStruct)` and attempt to return the data
+      // according to JSONAPI specifications
       if (response.ok && is(json, object({ data: any() }))) {
         return Ok(create(json.data, OkStruct))
       } else {
