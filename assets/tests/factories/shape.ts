@@ -1,6 +1,6 @@
 import { Factory } from "fishery"
 import { Shape } from "../../src/schedule"
-import stopFactory from "./stop"
+import { stopFactory } from "./stop"
 
 const shapeFactory = Factory.define<Shape>(({ sequence }) => ({
   id: `shape${sequence}`,

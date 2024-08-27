@@ -33,7 +33,7 @@ import {
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
-import stopFactory from "./factories/stop"
+import { stopFactory } from "./factories/stop"
 import * as browser from "../src/models/browser"
 import { string, unknown } from "superstruct"
 import {

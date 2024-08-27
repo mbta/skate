@@ -27,7 +27,7 @@ import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
 import { routePatternFactory } from "../../factories/routePattern"
 import { runIdFactory } from "../../factories/run"
-import stopFactory from "../../factories/stop"
+import { stopFactory } from "../../factories/stop"
 import {
   vehicleFactory,
   randomLocationVehicle,
