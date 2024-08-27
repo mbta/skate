@@ -10,7 +10,7 @@ import {
   defaultUserSettings,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 
 describe("onTimeStatus", () => {
   test("returns on-time", () => {

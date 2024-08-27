@@ -6,7 +6,7 @@ import routeFactory from "../factories/route"
 import { RouteVariantName } from "../../src/components/routeVariantName"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { Route } from "../../src/schedule"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 
 describe("RouteVariantName", () => {
   test("renders for a vehicle with variant and headsign", () => {

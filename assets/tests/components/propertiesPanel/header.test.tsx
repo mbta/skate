@@ -18,7 +18,7 @@ import {
 } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import { initialState } from "../../../src/state"
-import vehicleFactory from "../../factories/vehicle"
+import { vehicleFactory } from "../../factories/vehicle"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
 import routeTabFactory from "../../factories/routeTab"

@@ -15,7 +15,7 @@ import * as dateTime from "../../src/util/dateTime"
 import "@testing-library/jest-dom/jest-globals"
 
 import ghostFactory from "../factories/ghost"
-import vehicleFactory, { shuttleFactory } from "../factories/vehicle"
+import { vehicleFactory, shuttleFactory } from "../factories/vehicle"
 import { searchPageStateFactory } from "../factories/searchPageState"
 
 jest.mock("userTestGroups", () => ({
