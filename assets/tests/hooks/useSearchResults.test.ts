@@ -5,7 +5,7 @@ import { VehiclePropertyQuery } from "../../src/models/searchQuery"
 import { VehicleData, vehicleFromData } from "../../src/models/vehicleData"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 
 describe("useSearchResults", () => {
   test("when query given and loading, returns loading", () => {
