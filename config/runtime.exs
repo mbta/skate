@@ -16,6 +16,12 @@ config :skate,
   swiftly_authorization_key: System.get_env("SWIFTLY_AUTHORIZATION_KEY"),
   swiftly_realtime_vehicles_url: System.get_env("SWIFTLY_REALTIME_VEHICLES_URL")
 
+# Chelsea Bridge API
+config :skate,
+  bridge_api_password: System.get_env("BRIDGE_API_PASSWORD"),
+  bridge_api_username: System.get_env("BRIDGE_API_USERNAME"),
+  bridge_url: System.get_env("BRIDGE_URL")
+
 if System.get_env("SECRET_KEY_BASE") do
   config :skate, SkateWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
 end
