@@ -46,4 +46,16 @@ defmodule Schedule.Gtfs.Direction do
   @spec id_from_string(String.t()) :: id()
   def id_from_string("0"), do: 0
   def id_from_string("1"), do: 1
+
+  @doc """
+  Returns a inbound / outbound terms from a Direction ID
+
+  iex> Schedule.Gtfs.Direction.id_from_string(0)
+  "Outbound"
+  iex> Schedule.Gtfs.Direction.id_from_string(1)
+  "Inbound"
+  """
+  @spec id_to_string(id()) :: String.t()
+  def id_to_string(0), do: "Outbound"
+  def id_to_string(1), do: "Inbound"
 end

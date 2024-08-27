@@ -53,6 +53,7 @@ import {
 } from "./models/locationSearchSuggestionData"
 import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
 import { DetourShapeData, detourShapeFromData } from "./models/detourShapeData"
+import { SimpleDetourData } from "./models/detour"
 import { DetourShape, FinishedDetour, UnfinishedDetour } from "./models/detour"
 import {
   FinishedDetourData,
@@ -456,8 +457,8 @@ export const putDetourUpdate = (
     body: JSON.stringify({ snapshot: snapshot }),
   })
 
-export const fetchDetours = (): Promise<Result<any, any>> =>
-  apiCallResult(`/api/detours/get_detours`, any(), any())
+export const fetchDetours = (): Promise<Result<SimpleDetourData, never>> =>
+  apiCallResult(`/api/detours/get_detours`, SimpleDetourData, never())
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""
 
