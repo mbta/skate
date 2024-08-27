@@ -11,6 +11,11 @@ config :skate,
   aws_place_index: System.get_env("AWS_PLACE_INDEX"),
   environment_name: System.get_env("ENVIRONMENT_NAME", "missing-env")
 
+# MBTA API
+config :skate,
+  api_key: System.get_env("API_KEY"),
+  api_url: System.get_env("API_URL")
+
 # Swiftly API
 config :skate,
   swiftly_authorization_key: System.get_env("SWIFTLY_AUTHORIZATION_KEY"),
