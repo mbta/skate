@@ -7,7 +7,7 @@ import { Ghost, Vehicle } from "../../src/realtime.d"
 import { RouteId } from "../../src/schedule.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import ghostFactory from "../factories/ghost"
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
 import * as Sentry from "@sentry/react"
 

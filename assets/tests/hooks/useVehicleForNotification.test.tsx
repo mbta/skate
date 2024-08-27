@@ -16,7 +16,7 @@ import {
   makeMockOneShotChannel,
   makeMockSocket,
 } from "../testHelpers/socketHelpers"
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { fullStoryEvent } from "../../src/helpers/fullStory"

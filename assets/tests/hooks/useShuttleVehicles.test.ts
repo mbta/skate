@@ -3,7 +3,7 @@ import { renderHook } from "@testing-library/react"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import { Vehicle } from "../../src/realtime.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 import { vehicleFromData } from "../../src/models/vehicleData"
 
 const shuttle = vehicleDataFactory.build({ is_shuttle: true })

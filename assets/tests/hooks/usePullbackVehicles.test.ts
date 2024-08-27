@@ -3,7 +3,7 @@ import { renderHook } from "@testing-library/react"
 import usePullbackVehicles from "../../src/hooks/usePullbackVehicles"
 import { Vehicle } from "../../src/realtime.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 import { vehicleFromData } from "../../src/models/vehicleData"
 
 const pullBackVehicle = vehicleDataFactory.build({

@@ -2,7 +2,7 @@ import { describe, test, expect } from "@jest/globals"
 import { ghostFromData, vehicleFromData } from "../../src/models/vehicleData"
 import { dateFromEpochSeconds } from "../../src/util/dateTime"
 import ghostDataFactory from "../factories/ghost_data"
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 
 describe("vehicleFromData", () => {
   test("returns vehicle data in expected format", () => {

@@ -2,7 +2,7 @@ import { describe, test, expect } from "@jest/globals"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
 import { renderHook } from "@testing-library/react"
 import { makeMockSocket, makeMockChannel } from "../testHelpers/socketHelpers"
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 import { searchFiltersFactory } from "../factories/searchProperties"
 
 describe("useAutocompleteResults", () => {
