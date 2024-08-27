@@ -40,7 +40,7 @@ import {
   mockUsePatternsByIdForVehicles,
 } from "../../testHelpers/mockHelpers"
 
-import shapeFactory from "../../factories/shape"
+import { shapeFactory } from "../../factories/shape"
 import { zoomInButton } from "../../testHelpers/selectors/components/map"
 import { stopIcon } from "../../testHelpers/selectors/components/map/markers/stopIcon"
 import { routePropertiesCard } from "../../testHelpers/selectors/components/mapPage/routePropertiesCard"

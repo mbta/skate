@@ -5,7 +5,7 @@ import {
   shapesFromData,
 } from "../../src/models/shapeData"
 import { shapeDataFactory } from "../factories/shape_data"
-import shapeFactory from "../factories/shape"
+import { shapeFactory } from "../factories/shape"
 import { stopDataFactory } from "../factories/stopData"
 import { stopsFromData } from "../../src/models/stopData"
 
