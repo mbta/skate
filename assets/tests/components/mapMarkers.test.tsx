@@ -11,7 +11,7 @@ import {
 } from "../../src/components/mapMarkers"
 import stopFactory from "../factories/stop"
 import { vehicleFactory } from "../factories/vehicle"
-import trainVehicleFactory from "../factories/trainVehicle"
+import { trainVehicleFactory } from "../factories/trainVehicle"
 import { render, screen } from "@testing-library/react"
 import React from "react"
 import { MapContainer } from "react-leaflet"
