@@ -5,12 +5,11 @@ import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
 import { DraftDetours } from "../models/detours"
 
-interface DetoursTableProps {
+interface DraftDetoursTableProps {
   data: DraftDetours
 }
 
-export const DraftDetoursTable = ({ data }: DetoursTableProps) => {
-  console.log("DATA", data)
+export const DraftDetoursTable = ({ data }: DraftDetoursTableProps) => {
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   return (

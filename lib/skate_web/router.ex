@@ -163,7 +163,7 @@ defmodule SkateWeb.Router do
     put "/detours/update_snapshot", DetoursController, :update_snapshot
     post "/detours/unfinished_detour", DetoursController, :unfinished_detour
     post "/detours/finished_detour", DetoursController, :finished_detour
-    get "/detours/drafts/", DetoursController, :drafts
+    get "/detours/drafts", DetoursController, :drafts
   end
 
   defp put_user_token(conn, _) do
