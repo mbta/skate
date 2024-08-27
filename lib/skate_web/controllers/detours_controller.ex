@@ -24,32 +24,22 @@ defmodule SkateWeb.DetoursController do
     json(conn, %{data: returned_uuid})
   end
 
-  @type detour_type :: :active | :draft | :past  
-
   @spec get_detours(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def get_detours(conn, _params) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
-    IO.inspect(user_id, label: "user id")
-
-    detours = Detours.list_detours()
-      |> Enum.group_by(&categorize_detour(&1, user_id))
-      |> IO.inspect(label: "categorized detours")
+    detours =
+      Detours.list_detours(user_id)
+      |> Enum.group_by(fn detour -> detour.status end)
 
     json(conn, %{
       data: %{
-        active_detours: Map.get(detours, :active),
-        draft_detours: Map.get(detours, :draft),
-        past_detours: Map.get(detours, :past)
+        active: Map.get(detours, :active),
+        draft: Map.get(detours, :draft),
+        past: Map.get(detours, :past)
       }
     })
   end
-
-  @spec categorize_detour(map(), integer()) :: detour_type
-  defp categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Active"}}}, _user_id), do: :active
-  defp categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}, _user_id), do: :past
-  defp categorize_detour(%{author_id: author_id}, user_id) when author_id == user_id, do: :draft
-  defp categorize_detour(_, _), do: nil
 
   @spec unfinished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def unfinished_detour(conn, %{

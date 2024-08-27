@@ -1,6 +1,25 @@
 import { LatLngLiteral } from "leaflet"
 import { ShapePoint, Stop } from "../schedule"
 import { CreateDetourMachineInput } from "./createDetourMachine"
+import { array, Infer, nullable, number, string, type } from "superstruct"
+
+export const SimpleDetour = type({
+  route: string(),
+  direction: string(),
+  name: string(),
+  intersection: string(),
+  updated_at: number(),
+})
+
+export type SimpleDetour = Infer<typeof SimpleDetour>
+
+export const SimpleDetourData = type({
+  active: nullable(array(SimpleDetour)),
+  draft: nullable(array(SimpleDetour)),
+  past: nullable(array(SimpleDetour)),
+})
+
+export type SimpleDetourData = Infer<typeof SimpleDetourData>
 
 export interface DetourShape {
   coordinates: ShapePoint[]
