@@ -4,6 +4,7 @@ import userInTestGroup, { TestGroups } from "../userInTestGroup"
 import { Button } from "react-bootstrap"
 import { PlusSquare } from "../helpers/bsIcons"
 import { DetourModal } from "./detours/detourModal"
+import { useAllDetours } from "../hooks/useAllDetours"
 
 export interface Detour {
   route: string
@@ -81,6 +82,9 @@ export const DetourListPage = () => {
   ]
 
   const [showDetourModal, setShowDetourModal] = useState(false)
+
+  const detours = useAllDetours()
+  console.debug("detours: ", detours)
 
   return (
     <div className="h-100 overflow-y-auto">
