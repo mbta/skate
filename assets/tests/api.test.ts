@@ -47,7 +47,7 @@ import locationSearchResultDataFactory from "./factories/locationSearchResultDat
 import locationSearchResultFactory from "./factories/locationSearchResult"
 import locationSearchSuggestionDataFactory from "./factories/locationSearchSuggestionData"
 import locationSearchSuggestionFactory from "./factories/locationSearchSuggestion"
-import stopDataFactory from "./factories/stopData"
+import { stopDataFactory } from "./factories/stopData"
 import { shapePointFactory } from "./factories/shapePointFactory"
 import { ok, fetchError } from "../src/util/fetchResult"
 import { directionsFactory } from "./factories/detourShapeFactory"
