@@ -28,8 +28,8 @@ defmodule SkateWeb.DetoursController do
   def get_detours(conn, _params) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
-    detours =
-      Detours.list_detours(user_id)
+    detours = user_id
+      |> Detours.list_detours()
       |> Enum.group_by(fn detour -> detour.status end)
 
     json(conn, %{
