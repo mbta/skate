@@ -11,7 +11,11 @@ defmodule Skate.MixProject do
       aliases: aliases(),
       deps: deps(),
       test_coverage: [tool: LcovEx],
-      elixirc_options: [warnings_as_errors: true],
+      elixirc_options:
+        cond do
+          Mix.shell() == ElixirLS.LanguageServer.MixShell -> []
+          true -> [warnings_as_errors: true]
+        end,
       consolidate_protocols: Mix.env() != :test,
       dialyzer: [
         plt_add_apps: [:mix]
