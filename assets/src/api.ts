@@ -513,6 +513,9 @@ export const putDetourUpdate = (
     body: JSON.stringify({ snapshot: snapshot }),
   })
 
+export const fetchDetours = (): Promise<Result<any, any>> =>
+  apiCallResult(`/api/detours/get_detours`, any(), any())
+
 const getCsrfToken = (): string => appData()?.csrfToken || ""
 
 export const nullableParser =
