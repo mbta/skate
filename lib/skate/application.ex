@@ -74,8 +74,6 @@ defmodule Skate.Application do
       :gtfs_url,
       :hastus_url,
       :busloc_url,
-      :swiftly_authorization_key,
-      :swiftly_realtime_vehicles_url,
       :trip_updates_url,
       :geonames_url_base,
       :geonames_token,

@@ -11,6 +11,11 @@ config :skate,
   aws_place_index: System.get_env("AWS_PLACE_INDEX"),
   environment_name: System.get_env("ENVIRONMENT_NAME", "missing-env")
 
+# Swiftly API
+config :skate,
+  swiftly_authorization_key: System.get_env("SWIFTLY_AUTHORIZATION_KEY"),
+  swiftly_realtime_vehicles_url: System.get_env("SWIFTLY_REALTIME_VEHICLES_URL")
+
 if System.get_env("SECRET_KEY_BASE") do
   config :skate, SkateWeb.Endpoint, secret_key_base: System.get_env("SECRET_KEY_BASE")
 end
