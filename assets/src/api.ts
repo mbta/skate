@@ -65,6 +65,8 @@ import {
   unfinishedDetourFromData,
 } from "./models/unfinishedDetour"
 import { Snapshot } from "xstate"
+import { DraftDetours } from "./models/detours"
+import { DraftDetoursData, draftDetoursFromData } from "./detoursData"
 
 export interface RouteData {
   id: string
@@ -292,6 +294,21 @@ const postJsonParameter = (content: unknown): Parameters<typeof fetch>[1] => ({
   },
   body: JSON.stringify(content),
 })
+
+const FetchDraftDetoursError = object({
+  type: enums(["unknown"]),
+})
+
+export type FetchDraftDetoursError = Infer<typeof FetchDraftDetoursError>
+
+export const fetchDraftDetours = (): Promise<
+  Result<DraftDetours, FetchDraftDetoursError>
+> =>
+  apiCallResult(
+    "/api/detours/drafts",
+    DraftDetoursData,
+    FetchDraftDetoursError
+  ).then((v) => map(v, draftDetoursFromData))
 
 const FetchDetourDirectionsError = object({
   type: enums(["unknown", "no_route"]),

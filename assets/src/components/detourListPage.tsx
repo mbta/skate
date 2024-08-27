@@ -1,9 +1,12 @@
-import React, { useState } from "react"
-import { DetoursTable } from "./detoursTable"
+import React, { useCallback, useState } from "react"
+import { DraftDetoursTable } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
 import { Button } from "react-bootstrap"
 import { PlusSquare } from "../helpers/bsIcons"
 import { DetourModal } from "./detours/detourModal"
+import { useApiCall } from "../hooks/useApiCall"
+import { fetchDraftDetours } from "../api"
+import { isOk } from "../util/result"
 
 export interface Detour {
   route: string
@@ -14,73 +17,13 @@ export interface Detour {
 }
 
 export const DetourListPage = () => {
-  const fakeData = [
-    {
-      route: "45",
-      direction: "Outbound",
-      name: "Franklin Park via Ruggles Station",
-      intersection: "John F. Kennedy St & Memorial Drive",
-      activeSince: 1722372950,
-    },
-    {
-      route: "83",
-      direction: "Inbound",
-      name: "Central Square",
-      intersection: "Pearl Street & Clearwell Ave",
-      activeSince: 1722361948,
-    },
-    {
-      route: "83",
-      direction: "Outbound",
-      name: "Rindge Ave",
-      intersection: "Pearl Street & Clearwell Ave",
-      activeSince: 1721361948,
-    },
-    {
-      route: "45",
-      direction: "Outbound",
-      name: "Franklin Park via Ruggles Station",
-      intersection: "John F. Kennedy St & Memorial Drive",
-      activeSince: 1722372950,
-    },
-    {
-      route: "83",
-      direction: "Inbound",
-      name: "Central Square",
-      intersection: "Pearl Street & Clearwell Ave",
-      activeSince: 1722361948,
-    },
-    {
-      route: "83",
-      direction: "Outbound",
-      name: "Rindge Ave",
-      intersection: "Pearl Street & Clearwell Ave",
-      activeSince: 1721361948,
-    },
-    {
-      route: "45",
-      direction: "Outbound",
-      name: "Franklin Park via Ruggles Station",
-      intersection: "John F. Kennedy St & Memorial Drive",
-      activeSince: 1722372950,
-    },
-    {
-      route: "83",
-      direction: "Inbound",
-      name: "Central Square",
-      intersection: "Pearl Street & Clearwell Ave",
-      activeSince: 1722361948,
-    },
-    {
-      route: "83",
-      direction: "Outbound",
-      name: "Rindge Ave",
-      intersection: "Pearl Street & Clearwell Ave",
-      activeSince: 1721361948,
-    },
-  ]
-
   const [showDetourModal, setShowDetourModal] = useState(false)
+
+  const { result: draftDetours } = useApiCall({
+    apiCall: useCallback(async () => {
+      return fetchDraftDetours()
+    }, []),
+  })
 
   return (
     <div className="h-100 overflow-y-auto">
@@ -90,7 +33,9 @@ export const DetourListPage = () => {
           Add detour
         </Button>
       )}
-      <DetoursTable data={fakeData} />
+      {draftDetours && isOk(draftDetours) && (
+        <DraftDetoursTable data={draftDetours.ok} />
+      )}
       {showDetourModal && (
         <DetourModal
           onClose={() => setShowDetourModal(false)}

@@ -3,13 +3,14 @@ import { Table } from "react-bootstrap"
 import { RoutePill } from "./routePill"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
-import { Detour } from "./detourListPage"
+import { DraftDetours } from "../models/detours"
 
 interface DetoursTableProps {
-  data: Detour[]
+  data: DraftDetours
 }
 
-export const DetoursTable = ({ data }: DetoursTableProps) => {
+export const DraftDetoursTable = ({ data }: DetoursTableProps) => {
+  console.log("DATA", data)
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   return (

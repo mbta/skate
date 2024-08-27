@@ -24,6 +24,80 @@ defmodule SkateWeb.DetoursController do
     json(conn, %{data: returned_uuid})
   end
 
+  @spec drafts(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def drafts(conn, _) do
+    fake_data = [
+      %{
+        route: "45",
+        direction: "Outbound",
+        name: "Franklin Park via Ruggles Station",
+        intersection: "John F. Kennedy St & Memorial Drive",
+        active_since: 1_722_372_950
+      },
+      %{
+        route: "83",
+        direction: "Inbound",
+        name: "Central Square",
+        intersection: "Pearl Street & Clearwell Ave",
+        active_since: 1_722_361_948
+      },
+      %{
+        route: "83",
+        direction: "Outbound",
+        name: "Rindge Ave",
+        intersection: "Pearl Street & Clearwell Ave",
+        active_since: 1_721_361_948
+      },
+      %{
+        route: "45",
+        direction: "Outbound",
+        name: "Franklin Park via Ruggles Station",
+        intersection: "John F. Kennedy St & Memorial Drive",
+        active_since: 1_722_372_950
+      },
+      %{
+        route: "83",
+        direction: "Inbound",
+        name: "Central Square",
+        intersection: "Pearl Street & Clearwell Ave",
+        active_since: 1_722_361_948
+      },
+      %{
+        route: "83",
+        direction: "Outbound",
+        name: "Rindge Ave",
+        intersection: "Pearl Street & Clearwell Ave",
+        active_since: 1_721_361_948
+      },
+      %{
+        route: "45",
+        direction: "Outbound",
+        name: "Franklin Park via Ruggles Station",
+        intersection: "John F. Kennedy St & Memorial Drive",
+        active_since: 1_722_372_950
+      },
+      %{
+        route: "83",
+        direction: "Inbound",
+        name: "Central Square",
+        intersection: "Pearl Street & Clearwell Ave",
+        active_since: 1_722_361_948
+      },
+      %{
+        route: "83",
+        direction: "Outbound",
+        name: "Rindge Ave",
+        intersection: "Pearl Street & Clearwell Ave",
+        active_since: 1_721_361_948
+      }
+    ]
+
+    json(
+      conn,
+      %{data: fake_data}
+    )
+  end
+
   @spec unfinished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def unfinished_detour(conn, %{
         "route_pattern_id" => route_pattern_id,
