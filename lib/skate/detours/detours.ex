@@ -44,7 +44,7 @@ defmodule Skate.Detours.Detours do
       }
   """
   def grouped_detours(user_id) do
-    Detour
+    detours = Detour
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour(&1, user_id))
     |> Enum.group_by(fn detour -> detour.status end)
@@ -72,7 +72,7 @@ defmodule Skate.Detours.Detours do
 
     date =
       db_detour.updated_at
-      |> DateTime.from_naive!("America/New_York")
+      |> DateTime.from_naive!("Etc/UTC")
       |> DateTime.to_unix()
 
     %__MODULE__{
