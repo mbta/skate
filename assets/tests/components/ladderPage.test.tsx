@@ -25,7 +25,7 @@ import {
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import routeFactory from "../factories/route"
 import routeTabFactory, { routeTabPresetFactory } from "../factories/routeTab"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
 import { VehiclesByRouteIdProvider } from "../../src/contexts/vehiclesByRouteIdContext"
 import stateFactory from "../factories/applicationState"

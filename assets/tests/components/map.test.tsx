@@ -21,7 +21,7 @@ import Map, {
 } from "../../src/components/map"
 import { autoCenter } from "../../src/components/map/follower"
 import { TrainVehicle, VehicleInScheduledService } from "../../src/realtime"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import stopFactory from "../factories/stop"
 
 import userEvent from "@testing-library/user-event"

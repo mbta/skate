@@ -93,9 +93,7 @@ export const centerLocationVehicle = randomLocationVehicle.params({
   longitude: defaultCenter.lng,
 })
 
-const vehicleFactory = centerLocationVehicle
-
-export default vehicleFactory
+export const vehicleFactory = centerLocationVehicle
 
 export const shuttleFactory = vehicleFactory.params({
   isShuttle: true,

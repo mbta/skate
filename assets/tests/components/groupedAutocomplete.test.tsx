@@ -18,7 +18,7 @@ import {
   SearchProperties,
   searchPropertyDisplayConfig,
 } from "../../src/models/searchQuery"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import { formatOperatorNameFromVehicle } from "../../src/util/operatorFormatting"
 import {
   listbox,
