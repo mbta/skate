@@ -6,6 +6,7 @@ import {
   FetchDetourDirectionsError,
   fetchDetourDirections,
   fetchFinishedDetour,
+  fetchNearestIntersection,
   fetchRoutePatterns,
 } from "../api"
 import { DetourShape, FinishedDetour } from "./detour"
@@ -22,6 +23,8 @@ export const createDetourMachine = setup({
       waypoints: ShapePoint[]
       startPoint: ShapePoint | undefined
       endPoint: ShapePoint | undefined
+
+      nearestIntersection: string | null
 
       detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
 
@@ -89,6 +92,18 @@ export const createDetourMachine = setup({
         // the context types but it's not letting me
         throw "No Route ID"
       }
+    }),
+
+    "fetch-nearest-intersection": fromPromise<
+      Awaited<ReturnType<typeof fetchNearestIntersection>>,
+      {
+        startPoint?: ShapePoint
+      }
+    >(async ({ input: { startPoint } }) => {
+      if (!startPoint) {
+        throw "Missing nearest intersection inputs"
+      }
+      return fetchNearestIntersection(startPoint.lat, startPoint.lon)
     }),
 
     "fetch-detour-directions": fromPromise<
@@ -177,6 +192,7 @@ export const createDetourMachine = setup({
     uuid: undefined,
     startPoint: undefined,
     endPoint: undefined,
+    nearestIntersection: null,
     finishedDetour: undefined,
     detourShape: undefined,
   }),
@@ -325,22 +341,38 @@ export const createDetourMachine = setup({
               },
             },
             "Place Waypoint": {
-              invoke: {
-                src: "fetch-detour-directions",
-                input: ({ context: { startPoint, waypoints } }) => ({
-                  points: (startPoint ? [startPoint] : []).concat(
-                    waypoints || []
-                  ),
-                }),
-
-                onDone: {
-                  actions: assign({
-                    detourShape: ({ event }) => event.output,
+              invoke: [
+                {
+                  src: "fetch-nearest-intersection",
+                  input: ({ context: { startPoint } }) => ({
+                    startPoint,
                   }),
-                },
 
-                onError: {},
-              },
+                  onDone: {
+                    actions: assign({
+                      nearestIntersection: ({ event }) => event.output,
+                    }),
+                  },
+
+                  onError: {},
+                },
+                {
+                  src: "fetch-detour-directions",
+                  input: ({ context: { startPoint, waypoints } }) => ({
+                    points: (startPoint ? [startPoint] : []).concat(
+                      waypoints || []
+                    ),
+                  }),
+
+                  onDone: {
+                    actions: assign({
+                      detourShape: ({ event }) => event.output,
+                    }),
+                  },
+
+                  onError: {},
+                },
+              ],
               on: {
                 "detour.edit.place-waypoint": {
                   target: "Place Waypoint",
