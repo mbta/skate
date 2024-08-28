@@ -5,7 +5,7 @@ import {
   StopData,
   stopsFromData,
 } from "../../src/models/stopData"
-import stopDataFactory from "../factories/stopData"
+import { stopDataFactory } from "../factories/stopData"
 
 describe("stopsFromData", () => {
   test("transforms list of stopData to stops", () => {

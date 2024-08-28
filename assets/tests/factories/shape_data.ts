@@ -1,6 +1,6 @@
 import { Factory } from "fishery"
 import { ShapeData } from "../../src/models/shapeData"
-import stopDataFactory from "./stopData"
+import { stopDataFactory } from "./stopData"
 
 export default Factory.define<ShapeData>(({ sequence }) => ({
   id: `shape${sequence}`,
