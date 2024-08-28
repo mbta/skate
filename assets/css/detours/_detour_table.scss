@@ -1,7 +1,33 @@
+@use "../color/tokens_2024" as tokens;
+
 .c-detours-table {
+  border: 1px solid tokens.$gray-500;
+  border-radius: 0.5rem;
+  border-spacing: 0;
+
   thead {
     text-align: left;
     font-weight: 600;
+  }
+
+  th {
+    background-color: tokens.$gray-50;
+    color: tokens.$gray-700;
+
+    padding-left: 1rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+
+    white-space: nowrap;
+  }
+
+  th,
+  tr:not(:last-child) > td {
+    border-bottom: 1px solid tokens.$gray-500;
+  }
+
+  td {
+    padding-left: 1rem;
   }
 }
 
