@@ -83,9 +83,12 @@ export const DetourListPage = () => {
   const [showDetourModal, setShowDetourModal] = useState(false)
 
   return (
-    <div className="h-100 overflow-y-auto">
+    <div className="c-detour-list-page h-100 overflow-y-auto p-4 bg-white">
       {userInTestGroup(TestGroups.DetoursPilot) && (
-        <Button className="icon-link" onClick={() => setShowDetourModal(true)}>
+        <Button
+          className="c-detour-list-page__button icon-link fw-light px-3 py-2"
+          onClick={() => setShowDetourModal(true)}
+        >
           <PlusSquare />
           Add detour
         </Button>
