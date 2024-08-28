@@ -6,7 +6,7 @@ defmodule Skate.Detours.Detours do
   import Ecto.Query, warn: false
   alias Skate.Repo
   alias Schedule.Gtfs.Direction
-  alias Skate.Detours.Db.Detour, as: DbDetour
+  alias Skate.Detours.Db.Detour
   alias Skate.Settings.User
 
   @type t :: %__MODULE__{
@@ -37,16 +37,16 @@ defmodule Skate.Detours.Detours do
   ## Examples
 
       iex> list_detours()
-      [%DbDetour{}, ...]
+      [%Detour{}, ...]
 
   """
   def list_detours(user_id) do
-    DbDetour
+    Detour
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour(&1, user_id))
   end
 
-  @spec db_detour_to_detour(DbDetour.t(), integer()) :: t()
+  @spec db_detour_to_detour(Detour.t(), integer()) :: t()
   defp db_detour_to_detour(
          %{
            state: %{
@@ -91,18 +91,18 @@ defmodule Skate.Detours.Detours do
   @doc """
   Gets a single detour.
 
-  Raises `Ecto.NoResultsError` if the DbDetour does not exist.
+  Raises `Ecto.NoResultsError` if the Detour does not exist.
 
   ## Examples
 
       iex> get_detour!(123)
-      %DbDetour{}
+      %Detour{}
 
       iex> get_detour!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_detour!(id), do: Repo.get!(DbDetour, id)
+  def get_detour!(id), do: Repo.get!(Detour, id)
 
   @doc """
   Creates a detour.
@@ -110,15 +110,15 @@ defmodule Skate.Detours.Detours do
   ## Examples
 
       iex> create_detour(%{field: value})
-      {:ok, %DbDetour{}}
+      {:ok, %Detour{}}
 
       iex> create_detour(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
   def create_detour(attrs \\ %{}) do
-    %DbDetour{}
-    |> DbDetour.changeset(attrs)
+    %Detour{}
+    |> Detour.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -128,10 +128,10 @@ defmodule Skate.Detours.Detours do
   def create_detour_for_user(user_id, attrs \\ %{}) do
     user = User.get_by_id!(user_id)
 
-    %DbDetour{
+    %Detour{
       author: user
     }
-    |> DbDetour.changeset(attrs)
+    |> Detour.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -147,7 +147,7 @@ defmodule Skate.Detours.Detours do
 
       _ ->
         Repo.insert(
-          DbDetour.changeset(%DbDetour{author: user, id: uuid}, attrs),
+          Detour.changeset(%Detour{author: user, id: uuid}, attrs),
           returning: true,
           conflict_target: [:id],
           on_conflict: {:replace, [:state, :updated_at]}
@@ -161,15 +161,15 @@ defmodule Skate.Detours.Detours do
   ## Examples
 
       iex> update_detour(detour, %{field: new_value})
-      {:ok, %DbDetour{}}
+      {:ok, %Detour{}}
 
       iex> update_detour(detour, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_detour(%DbDetour{} = detour, attrs) do
+  def update_detour(%Detour{} = detour, attrs) do
     detour
-    |> DbDetour.changeset(attrs)
+    |> Detour.changeset(attrs)
     |> Repo.update()
   end
 
@@ -179,13 +179,13 @@ defmodule Skate.Detours.Detours do
   ## Examples
 
       iex> delete_detour(detour)
-      {:ok, %DbDetour{}}
+      {:ok, %Detour{}}
 
       iex> delete_detour(detour)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_detour(%DbDetour{} = detour) do
+  def delete_detour(%Detour{} = detour) do
     Repo.delete(detour)
   end
 
@@ -195,10 +195,10 @@ defmodule Skate.Detours.Detours do
   ## Examples
 
       iex> change_detour(detour)
-      %Ecto.Changeset{data: %DbDetour{}}
+      %Ecto.Changeset{data: %Detour{}}
 
   """
-  def change_detour(%DbDetour{} = detour, attrs \\ %{}) do
-    DbDetour.changeset(detour, attrs)
+  def change_detour(%Detour{} = detour, attrs \\ %{}) do
+    Detour.changeset(detour, attrs)
   end
 end
