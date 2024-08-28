@@ -32,18 +32,28 @@ defmodule Skate.Detours.Detours do
   ]
 
   @doc """
-  Returns the list of detours.
+  Returns the detours grouped by active, draft, and past.
 
   ## Examples
 
-      iex> list_detours()
-      [%Detour{}, ...]
-
+      iex> grouped_detours()
+      %{
+        active: [%Detour{}, ...],
+        draft: [%Detour{}, ...],
+        past: [%Detour{}, ...]
+      }
   """
-  def list_detours(user_id) do
+  def grouped_detours(user_id) do
     Detour
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour(&1, user_id))
+    |> Enum.group_by(fn detour -> detour.status end)
+
+    %{
+      active: Map.get(detours, :active),
+      draft: Map.get(detours, :draft),
+      past: Map.get(detours, :past)
+    }
   end
 
   @spec db_detour_to_detour(Detour.t(), integer()) :: t()
