@@ -3,7 +3,7 @@ import { LocationType } from "../../src/models/stopData"
 import { Stop } from "../../src/schedule"
 import { localGeoCoordinateFactory } from "./geoCoordinate"
 
-const stopFactory = Factory.define<Stop>(({ sequence }) => {
+export const stopFactory = Factory.define<Stop>(({ sequence }) => {
   const coord = localGeoCoordinateFactory.build()
   return {
     id: `stop${sequence}`,
@@ -15,5 +15,3 @@ const stopFactory = Factory.define<Stop>(({ sequence }) => {
     routes: undefined,
   }
 })
-
-export default stopFactory

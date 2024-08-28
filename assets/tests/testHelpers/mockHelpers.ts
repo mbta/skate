@@ -5,7 +5,7 @@ import useScreenSize from "../../src/hooks/useScreenSize"
 import { DeviceType } from "../../src/skate"
 import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { routePatternFactory } from "../factories/routePattern"
-import stopFactory from "../factories/stop"
+import { stopFactory } from "../factories/stop"
 
 import shape from "../factories/shape"
 import { TileType, tilesetUrlForType } from "../../src/tilesetUrls"

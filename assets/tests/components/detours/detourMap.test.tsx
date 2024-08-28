@@ -10,7 +10,7 @@ import { RealDispatchWrapper } from "../../testHelpers/wrappers"
 import { layersControlButton } from "../../testHelpers/selectors/components/map"
 import { mockTileUrls } from "../../testHelpers/mockHelpers"
 import { tilesetUrlForType } from "../../../src/tilesetUrls"
-import stopFactory from "../../factories/stop"
+import { stopFactory } from "../../factories/stop"
 import {
   missedStopIcon,
   stopIcon,

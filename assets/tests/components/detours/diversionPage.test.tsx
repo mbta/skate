@@ -22,7 +22,7 @@ import {
   DiversionPage as DiversionPageDefault,
   DiversionPageProps,
 } from "../../../src/components/detours/diversionPage"
-import stopFactory from "../../factories/stop"
+import { stopFactory } from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
   originalRouteShape,
