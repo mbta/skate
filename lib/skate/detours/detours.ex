@@ -5,7 +5,6 @@ defmodule Skate.Detours.Detours do
 
   import Ecto.Query, warn: false
   alias Skate.Repo
-  alias Schedule.Gtfs.Direction
   alias Skate.Detours.Db.Detour
   alias Skate.Settings.User
 
@@ -61,7 +60,7 @@ defmodule Skate.Detours.Detours do
          %{
            state: %{
              "context" => %{
-               "route" => %{"name" => route_name},
+               "route" => %{"name" => route_name, "directionNames" => direction_names},
                "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
                "nearestIntersection" => nearest_intersection
              }
@@ -69,7 +68,7 @@ defmodule Skate.Detours.Detours do
          } = db_detour,
          user_id
        ) do
-    direction = Direction.id_to_string(direction_id)
+    direction = Map.get(direction_names, Integer.to_string(direction_id))
 
     date =
       db_detour.updated_at
