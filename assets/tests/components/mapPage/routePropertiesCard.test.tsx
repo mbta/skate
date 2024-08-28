@@ -8,7 +8,7 @@ import RoutePropertiesCard, {
 } from "../../../src/components/mapPage/routePropertiesCard"
 import { routePatternFactory } from "../../factories/routePattern"
 import routeFactory from "../../factories/route"
-import shapeFactory from "../../factories/shape"
+import { shapeFactory } from "../../factories/shape"
 import { stopFactory } from "../../factories/stop"
 
 import { RoutesProvider } from "../../../src/contexts/routesContext"

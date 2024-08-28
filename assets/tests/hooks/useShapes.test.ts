@@ -4,7 +4,7 @@ import * as Api from "../../src/api"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import { Shape, Stop } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
-import shapeFactory from "../factories/shape"
+import { shapeFactory } from "../factories/shape"
 import { stopFactory } from "../factories/stop"
 
 jest.mock("../../src/api", () => ({

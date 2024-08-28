@@ -6,7 +6,7 @@ import { routePatternFactory } from "../../tests/factories/routePattern"
 import routeFactory from "../../tests/factories/route"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { stopFactory } from "../../tests/factories/stop"
-import shapeFactory from "../../tests/factories/shape"
+import { shapeFactory } from "../../tests/factories/shape"
 
 const outboundStops = [
   stopFactory.build({ name: "Watertown Square" }),

@@ -7,7 +7,7 @@ import { VehicleInScheduledService, Ghost } from "../../src/realtime"
 import { routePatternFactory } from "../factories/routePattern"
 import { stopFactory } from "../factories/stop"
 
-import shape from "../factories/shape"
+import { shapeFactory } from "../factories/shape"
 import { TileType, tilesetUrlForType } from "../../src/tilesetUrls"
 
 /**
@@ -66,7 +66,7 @@ export const mockUsePatternsByIdForVehicles = (
           id: routePatternId!,
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           routeId: routeId!,
-          shape: shape.build({
+          shape: shapeFactory.build({
             stops: stopFactory.buildList(params?.stopCount || 2),
           }),
         })

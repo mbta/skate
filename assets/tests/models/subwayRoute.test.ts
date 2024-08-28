@@ -4,7 +4,7 @@ import {
   isASubwayRoute,
   subwayRoutes,
 } from "../../src/models/subwayRoute"
-import shapeFactory from "../factories/shape"
+import { shapeFactory } from "../factories/shape"
 import { stopFactory } from "../factories/stop"
 
 const subwayLineIds = ["Blue", "Green", "Orange", "Red", "Mattapan"]
