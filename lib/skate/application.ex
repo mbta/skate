@@ -67,8 +67,6 @@ defmodule Skate.Application do
   @spec load_runtime_config() :: :ok
   def load_runtime_config() do
     application_keys = [
-      :api_url,
-      :api_key,
       :google_tag_manager_id,
       :tileset_url,
       :gtfs_url,
