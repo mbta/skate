@@ -9,7 +9,7 @@ import PropertiesList, {
 } from "../../src/components/propertiesList"
 import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { render } from "@testing-library/react"
 

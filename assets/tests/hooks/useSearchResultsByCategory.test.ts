@@ -2,7 +2,7 @@ import { jest, describe, test, expect, afterEach } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import { useSearchResults } from "../../src/hooks/useSearchResults"
 import { makeMockSocket } from "../testHelpers/socketHelpers"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import useSearchResultsByCategory, {
   VehicleResultType,
 } from "../../src/hooks/useSearchResultsByCategory"

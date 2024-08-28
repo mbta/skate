@@ -17,7 +17,7 @@ import {
 } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
-import vehicleFactory, { invalidVehicleFactory } from "../../factories/vehicle"
+import { vehicleFactory, invalidVehicleFactory } from "../../factories/vehicle"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"

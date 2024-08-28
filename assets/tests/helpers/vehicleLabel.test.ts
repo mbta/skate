@@ -5,7 +5,7 @@ import vehicleLabel, {
 } from "../../src/helpers/vehicleLabel"
 import { VehicleInScheduledService } from "../../src/realtime"
 import { UserSettings, VehicleLabelSetting } from "../../src/userSettings"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build({

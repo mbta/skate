@@ -33,7 +33,7 @@ import {
 } from "../src/api"
 import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
-import stopFactory from "./factories/stop"
+import { stopFactory } from "./factories/stop"
 import * as browser from "../src/models/browser"
 import { string, unknown } from "superstruct"
 import {
@@ -47,7 +47,7 @@ import locationSearchResultDataFactory from "./factories/locationSearchResultDat
 import locationSearchResultFactory from "./factories/locationSearchResult"
 import locationSearchSuggestionDataFactory from "./factories/locationSearchSuggestionData"
 import locationSearchSuggestionFactory from "./factories/locationSearchSuggestion"
-import stopDataFactory from "./factories/stopData"
+import { stopDataFactory } from "./factories/stopData"
 import { shapePointFactory } from "./factories/shapePointFactory"
 import { ok, fetchError } from "../src/util/fetchResult"
 import { directionsFactory } from "./factories/detourShapeFactory"

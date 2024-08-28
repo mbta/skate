@@ -21,7 +21,7 @@ import { initialState } from "../../../src/state"
 import pieceFactory from "../../factories/piece"
 import { RunFactory } from "../../factories/run"
 import { DeadheadTripFactory, TripFactory } from "../../factories/trip"
-import vehicleFactory from "../../factories/vehicle"
+import { vehicleFactory } from "../../factories/vehicle"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({

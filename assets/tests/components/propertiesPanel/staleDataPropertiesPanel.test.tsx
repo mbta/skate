@@ -2,7 +2,7 @@ import { describe, test, expect, jest } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import StaleDataPropertiesPanel from "../../../src/components/propertiesPanel/staleDataPropertiesPanel"
-import vehicleFactory from "../../factories/vehicle"
+import { vehicleFactory } from "../../factories/vehicle"
 import blockWaiverFactory from "../../factories/blockWaiver"
 import {
   useMinischeduleBlock,

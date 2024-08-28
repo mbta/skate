@@ -67,21 +67,14 @@ defmodule Skate.Application do
   @spec load_runtime_config() :: :ok
   def load_runtime_config() do
     application_keys = [
-      :api_url,
-      :api_key,
       :google_tag_manager_id,
       :tileset_url,
       :gtfs_url,
       :hastus_url,
       :busloc_url,
-      :swiftly_authorization_key,
-      :swiftly_realtime_vehicles_url,
       :trip_updates_url,
       :geonames_url_base,
       :geonames_token,
-      :bridge_url,
-      :bridge_api_username,
-      :bridge_api_password,
       :sentry_frontend_dsn,
       :sentry_environment,
       :sentry_org_slug,

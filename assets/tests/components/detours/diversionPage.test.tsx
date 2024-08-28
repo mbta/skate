@@ -22,7 +22,7 @@ import {
   DiversionPage as DiversionPageDefault,
   DiversionPageProps,
 } from "../../../src/components/detours/diversionPage"
-import stopFactory from "../../factories/stop"
+import { stopFactory } from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
   originalRouteShape,
@@ -1259,8 +1259,8 @@ describe("DiversionPage", () => {
       })
     )
 
-    const intersection = "Avenue 1 & Street 2"
-    jest.mocked(fetchNearestIntersection).mockResolvedValue(intersection)
+    const intersectionPromise = Promise.resolve("Avenue 1 & Street 2")
+    jest.mocked(fetchNearestIntersection).mockReturnValue(intersectionPromise)
 
     userEvent.setup() // Configure the clipboard API
 
@@ -1288,6 +1288,10 @@ describe("DiversionPage", () => {
 
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await act(async () => {
+      await intersectionPromise
     })
 
     act(() => {

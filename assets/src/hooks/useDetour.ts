@@ -3,7 +3,6 @@ import { ShapePoint } from "../schedule"
 import { fetchUnfinishedDetour, putDetourUpdate } from "../api"
 import { useApiCall } from "./useApiCall"
 import { isErr, isOk } from "../util/result"
-import { useNearestIntersection } from "./useNearestIntersection"
 import { useMachine } from "@xstate/react"
 import {
   CreateDetourMachineInput,
@@ -64,6 +63,7 @@ export const useDetour = (input: UseDetourInput) => {
     waypoints,
     finishedDetour,
     detourShape,
+    nearestIntersection,
   } = snapshot.context
 
   const { result: unfinishedDetour } = useApiCall({
@@ -74,11 +74,6 @@ export const useDetour = (input: UseDetourInput) => {
         return null
       }
     }, [startPoint, routePattern]),
-  })
-
-  const { result: nearestIntersection } = useNearestIntersection({
-    latitude: startPoint?.lat,
-    longitude: startPoint?.lon,
   })
 
   const coordinates =

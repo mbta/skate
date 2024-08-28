@@ -6,7 +6,7 @@ import {
   Ghost,
   VehicleInScheduledService,
 } from "../../src/realtime.d"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 
 describe("groupByPosition", () => {
