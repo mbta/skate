@@ -62,7 +62,8 @@ defmodule Skate.Detours.Detours do
            state: %{
              "context" => %{
                "route" => %{"name" => route_name},
-               "routePattern" => %{"headsign" => headsign, "directionId" => direction_id}
+               "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
+               "nearestIntersection" => nearest_intersection
              }
            }
          } = db_detour,
@@ -79,7 +80,7 @@ defmodule Skate.Detours.Detours do
       route: route_name,
       direction: direction,
       name: headsign,
-      intersection: "TBD",
+      intersection: nearest_intersection,
       updated_at: date,
       author_id: db_detour.author_id,
       status: categorize_detour(db_detour, user_id)
