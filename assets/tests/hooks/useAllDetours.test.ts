@@ -1,18 +1,18 @@
-import { describe, test, expect, jest } from "@jest/globals"
-import React from "react"
-import renderer from "react-test-renderer"
-import { DetourListPage } from "../../src/components/detourListPage"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
+import { renderHook, waitFor } from "@testing-library/react"
+import { fetchDetours } from "../../src/api"
 import { useAllDetours } from "../../src/hooks/useAllDetours"
+import { Ok } from "../../src/util/result"
 
-jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
+jest.mock("../../src/api")
 
-jest.mock("../../src/hooks/useAllDetours", () => ({
-  useAllDetours: jest.fn(() => {}),
-}))
+beforeEach(() => {
+  jest.mocked(fetchDetours).mockReturnValue(new Promise(() => {}))
+})
 
-describe("DetourListPage", () => {
-  test("renders detour list page", () => {
-    jest.mocked(useAllDetours).mockReturnValue({
+describe("useAllDetours", () => {
+  test("returns detours", async () => {
+    const detours = {
       active: [
         {
           route: "1",
@@ -46,9 +46,23 @@ describe("DetourListPage", () => {
           updated_at: 1724866392,
         },
       ],
+    }
+
+    jest.mocked(fetchDetours).mockResolvedValue(Ok(detours))
+
+    const { result } = renderHook(() => {
+      return useAllDetours()
     })
 
-    const tree = renderer.create(<DetourListPage />).toJSON()
-    expect(tree).toMatchSnapshot()
+    expect(jest.mocked(fetchDetours)).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(result.current).toEqual(detours))
+  })
+
+  test("returns null when data not fetched", () => {
+    const { result } = renderHook(() => {
+      return useAllDetours()
+    })
+
+    expect(result.current).toEqual(null)
   })
 })

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DetourListPage renders detour list page with dummy data 1`] = `
+exports[`DetourListPage renders detour list page 1`] = `
 <div
   className="h-100 overflow-y-auto"
 >
@@ -35,44 +35,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
             <div
               className="c-route-pill c-route-pill--bus"
             >
-              45
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
-            >
-              <span>
-                Outbound
-              </span>
-              <span
-                className="fw-bold"
-              >
-                Franklin Park via Ruggles Station
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          John F. Kennedy St & Memorial Drive
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          400 hours ago
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
-            >
-              83
+              1
             </div>
             <div
               className="c-detours-table__route-info-text"
@@ -83,7 +46,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               <span
                 className="fw-bold"
               >
-                Central Square
+                Headsign A
               </span>
             </div>
           </div>
@@ -91,12 +54,12 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
         <td
           className="align-middle u-hide-for-mobile"
         >
-          Pearl Street & Clearwell Ave
+          Street A & Avenue B
         </td>
         <td
           className="align-middle u-hide-for-mobile"
         >
-          403 hours ago
+          26 hours ago
         </td>
       </tr>
       <tr>
@@ -109,7 +72,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
             <div
               className="c-route-pill c-route-pill--bus"
             >
-              83
+              2
             </div>
             <div
               className="c-detours-table__route-info-text"
@@ -120,7 +83,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               <span
                 className="fw-bold"
               >
-                Rindge Ave
+                Headsign B
               </span>
             </div>
           </div>
@@ -128,14 +91,37 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
         <td
           className="align-middle u-hide-for-mobile"
         >
-          Pearl Street & Clearwell Ave
+          Street C & Avenue D
         </td>
         <td
           className="align-middle u-hide-for-mobile"
         >
-          680 hours ago
+          29 hours ago
         </td>
       </tr>
+    </tbody>
+  </table>
+  <table
+    className="c-detours-table table table-hover"
+  >
+    <thead>
+      <tr>
+        <th>
+          Route
+        </th>
+        <th
+          className="u-hide-for-mobile"
+        >
+          Starting Intersection
+        </th>
+        <th
+          className="u-hide-for-mobile"
+        >
+          On detour since
+        </th>
+      </tr>
+    </thead>
+    <tbody>
       <tr>
         <td
           className="align-middle"
@@ -146,44 +132,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
             <div
               className="c-route-pill c-route-pill--bus"
             >
-              45
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
-            >
-              <span>
-                Outbound
-              </span>
-              <span
-                className="fw-bold"
-              >
-                Franklin Park via Ruggles Station
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          John F. Kennedy St & Memorial Drive
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          400 hours ago
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
-            >
-              83
+              1
             </div>
             <div
               className="c-detours-table__route-info-text"
@@ -194,7 +143,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               <span
                 className="fw-bold"
               >
-                Central Square
+                Headsign A
               </span>
             </div>
           </div>
@@ -202,12 +151,12 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
         <td
           className="align-middle u-hide-for-mobile"
         >
-          Pearl Street & Clearwell Ave
+          Street E & Avenue F
         </td>
         <td
           className="align-middle u-hide-for-mobile"
         >
-          403 hours ago
+          26 hours ago
         </td>
       </tr>
       <tr>
@@ -220,7 +169,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
             <div
               className="c-route-pill c-route-pill--bus"
             >
-              83
+              1
             </div>
             <div
               className="c-detours-table__route-info-text"
@@ -231,7 +180,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               <span
                 className="fw-bold"
               >
-                Rindge Ave
+                Headsign Z
               </span>
             </div>
           </div>
@@ -239,123 +188,12 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
         <td
           className="align-middle u-hide-for-mobile"
         >
-          Pearl Street & Clearwell Ave
+          Street C & Avenue D
         </td>
         <td
           className="align-middle u-hide-for-mobile"
         >
-          680 hours ago
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
-            >
-              45
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
-            >
-              <span>
-                Outbound
-              </span>
-              <span
-                className="fw-bold"
-              >
-                Franklin Park via Ruggles Station
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          John F. Kennedy St & Memorial Drive
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          400 hours ago
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
-            >
-              83
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
-            >
-              <span>
-                Inbound
-              </span>
-              <span
-                className="fw-bold"
-              >
-                Central Square
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          Pearl Street & Clearwell Ave
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          403 hours ago
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
-            >
-              83
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
-            >
-              <span>
-                Outbound
-              </span>
-              <span
-                className="fw-bold"
-              >
-                Rindge Ave
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          Pearl Street & Clearwell Ave
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          680 hours ago
+          26 hours ago
         </td>
       </tr>
     </tbody>
