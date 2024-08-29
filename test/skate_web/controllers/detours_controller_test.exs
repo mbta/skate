@@ -58,6 +58,57 @@ defmodule SkateWeb.DetoursControllerTest do
     end
   end
 
+  describe "get_detours/2" do
+    @tag :authenticated
+    test "fetches detours from database and groups by active, past, draft", %{conn: conn} do
+      conn =
+        put(conn, "/api/detours/update_snapshot", %{
+          "snapshot" => %{
+            "context" => %{
+              "route" => %{
+                "name" => "23",
+                "directionNames" => %{
+                  "0" => "Outbound",
+                  "1" => "Inbound"
+                }
+              },
+              "routePattern" => %{
+                "headsign" => "Headsign",
+                "directionId" => 0
+              },
+              "nearestIntersection" => "Street A & Avenue B",
+              "uuid" => 1
+            }
+          }
+        })
+
+      assert %{"data" => 1} = json_response(conn, 200)
+
+      conn = get(conn, "/api/detours/get_detours")
+
+      assert %{
+               "data" => %{
+                 "active" => nil,
+                 "draft" => [
+                  %{
+                    "direction" => "Outbound",
+                    "intersection" => "Street A & Avenue B",
+                    "name" => "Headsign",
+                    "route" => "23",
+                    "status" => "draft",
+                    "author_id" => some_number,
+                    "updated_at" => other_number
+                  }
+                 ],
+                 "past" => nil
+               }
+             } = json_response(conn, 200)
+
+      assert is_integer(some_number)
+      assert is_integer(other_number)
+    end
+  end
+
   describe "unfinished_detour/2" do
     @tag :authenticated
     test "returns unfinished route segments", %{conn: conn} do

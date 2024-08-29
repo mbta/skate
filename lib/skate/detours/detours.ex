@@ -43,10 +43,11 @@ defmodule Skate.Detours.Detours do
       }
   """
   def grouped_detours(user_id) do
-    detours = Detour
-    |> Repo.all()
-    |> Enum.map(&db_detour_to_detour(&1, user_id))
-    |> Enum.group_by(fn detour -> detour.status end)
+    detours =
+      Detour
+      |> Repo.all()
+      |> Enum.map(&db_detour_to_detour(&1, user_id))
+      |> Enum.group_by(fn detour -> detour.status end)
 
     %{
       active: Map.get(detours, :active),
@@ -57,6 +58,8 @@ defmodule Skate.Detours.Detours do
 
   @spec db_detour_to_detour(Detour.t(), integer()) :: t()
   defp db_detour_to_detour(
+         # If the schema isn't like this, the state machine shape has changed.
+         # How do we want to handle that possibility?
          %{
            state: %{
              "context" => %{
