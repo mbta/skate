@@ -34,7 +34,7 @@ defmodule Skate.Detours.Detours do
   Returns the list of detours.
 
   ## Examples
-  
+
       iex> list_detours()
       [%Detour{}, ...]
   """
