@@ -13,6 +13,10 @@ import getTestGroups from "../../../src/userTestGroups"
 
 jest.mock("../../../src/userTestGroups")
 
+jest.mock("../../../src/hooks/useAllDetours", () => ({
+  useAllDetours: jest.fn(() => {}),
+}))
+
 const renderDetourListPage = () => {
   return render(<DetourListPage></DetourListPage>)
 }
