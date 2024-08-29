@@ -90,15 +90,15 @@ defmodule SkateWeb.DetoursControllerTest do
                "data" => %{
                  "active" => nil,
                  "draft" => [
-                  %{
-                    "direction" => "Outbound",
-                    "intersection" => "Street A & Avenue B",
-                    "name" => "Headsign",
-                    "route" => "23",
-                    "status" => "draft",
-                    "author_id" => some_number,
-                    "updated_at" => other_number
-                  }
+                   %{
+                     "direction" => "Outbound",
+                     "intersection" => "Street A & Avenue B",
+                     "name" => "Headsign",
+                     "route" => "23",
+                     "status" => "draft",
+                     "author_id" => some_number,
+                     "updated_at" => other_number
+                   }
                  ],
                  "past" => nil
                }

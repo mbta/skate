@@ -31,6 +31,18 @@ defmodule Skate.Detours.Detours do
   ]
 
   @doc """
+  Returns the list of detours.
+
+  ## Examples
+  
+      iex> list_detours()
+      [%Detour{}, ...]
+  """
+  def list_detours do
+    Repo.all(Detour)
+  end
+
+  @doc """
   Returns the detours grouped by active, draft, and past.
 
   ## Examples
