@@ -1,14 +1,20 @@
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import { DetoursTable } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
 import { Button } from "react-bootstrap"
 import { PlusSquare } from "../helpers/bsIcons"
 import { DetourModal } from "./detours/detourModal"
-import { useAllDetours } from "../hooks/useAllDetours"
+import { fetchDetours } from "../api"
+import { useApiCall } from "../hooks/useApiCall"
+import { isOk } from "../util/result"
 
 export const DetourListPage = () => {
   const [showDetourModal, setShowDetourModal] = useState(false)
-  const detours = useAllDetours()
+
+  const { result } = useApiCall({
+    apiCall: useCallback(async () => fetchDetours(), []),
+  })
+  const detours = result && isOk(result) && result.ok
 
   return (
     <div className="h-100 overflow-y-auto">
