@@ -1,202 +1,206 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DetourListPage renders detour list page 1`] = `
-<div
-  className="h-100 overflow-y-auto"
->
-  <table
-    className="c-detours-table table table-hover"
-  >
-    <thead>
-      <tr>
-        <th>
-          Route
-        </th>
-        <th
-          className="u-hide-for-mobile"
-        >
-          Starting Intersection
-        </th>
-        <th
-          className="u-hide-for-mobile"
-        >
-          On detour since
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
+<body>
+  <div>
+    <div
+      class="h-100 overflow-y-auto"
+    >
+      <table
+        class="c-detours-table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th>
+              Route
+            </th>
+            <th
+              class="u-hide-for-mobile"
             >
-              1
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
+              Starting Intersection
+            </th>
+            <th
+              class="u-hide-for-mobile"
             >
-              <span>
-                Inbound
-              </span>
-              <span
-                className="fw-bold"
+              On detour since
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="align-middle"
+            >
+              <div
+                class="c-detours-table__route-info-cell"
               >
-                Headsign A
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          Street A & Avenue B
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          26 hours ago
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  1
+                </div>
+                <div
+                  class="c-detours-table__route-info-text"
+                >
+                  <span>
+                    Inbound
+                  </span>
+                  <span
+                    class="fw-bold"
+                  >
+                    Headsign A
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle u-hide-for-mobile"
             >
-              2
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
+              Street A & Avenue B
+            </td>
+            <td
+              class="align-middle u-hide-for-mobile"
             >
-              <span>
-                Outbound
-              </span>
-              <span
-                className="fw-bold"
+              26 hours ago
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="align-middle"
+            >
+              <div
+                class="c-detours-table__route-info-cell"
               >
-                Headsign B
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          Street C & Avenue D
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          29 hours ago
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <table
-    className="c-detours-table table table-hover"
-  >
-    <thead>
-      <tr>
-        <th>
-          Route
-        </th>
-        <th
-          className="u-hide-for-mobile"
-        >
-          Starting Intersection
-        </th>
-        <th
-          className="u-hide-for-mobile"
-        >
-          On detour since
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  2
+                </div>
+                <div
+                  class="c-detours-table__route-info-text"
+                >
+                  <span>
+                    Outbound
+                  </span>
+                  <span
+                    class="fw-bold"
+                  >
+                    Headsign B
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle u-hide-for-mobile"
             >
-              1
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
+              Street C & Avenue D
+            </td>
+            <td
+              class="align-middle u-hide-for-mobile"
             >
-              <span>
-                Inbound
-              </span>
-              <span
-                className="fw-bold"
+              29 hours ago
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table
+        class="c-detours-table table table-hover"
+      >
+        <thead>
+          <tr>
+            <th>
+              Route
+            </th>
+            <th
+              class="u-hide-for-mobile"
+            >
+              Starting Intersection
+            </th>
+            <th
+              class="u-hide-for-mobile"
+            >
+              On detour since
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="align-middle"
+            >
+              <div
+                class="c-detours-table__route-info-cell"
               >
-                Headsign A
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          Street E & Avenue F
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          26 hours ago
-        </td>
-      </tr>
-      <tr>
-        <td
-          className="align-middle"
-        >
-          <div
-            className="c-detours-table__route-info-cell"
-          >
-            <div
-              className="c-route-pill c-route-pill--bus"
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  1
+                </div>
+                <div
+                  class="c-detours-table__route-info-text"
+                >
+                  <span>
+                    Inbound
+                  </span>
+                  <span
+                    class="fw-bold"
+                  >
+                    Headsign A
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle u-hide-for-mobile"
             >
-              1
-            </div>
-            <div
-              className="c-detours-table__route-info-text"
+              Street E & Avenue F
+            </td>
+            <td
+              class="align-middle u-hide-for-mobile"
             >
-              <span>
-                Outbound
-              </span>
-              <span
-                className="fw-bold"
+              26 hours ago
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="align-middle"
+            >
+              <div
+                class="c-detours-table__route-info-cell"
               >
-                Headsign Z
-              </span>
-            </div>
-          </div>
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          Street C & Avenue D
-        </td>
-        <td
-          className="align-middle u-hide-for-mobile"
-        >
-          26 hours ago
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  1
+                </div>
+                <div
+                  class="c-detours-table__route-info-text"
+                >
+                  <span>
+                    Outbound
+                  </span>
+                  <span
+                    class="fw-bold"
+                  >
+                    Headsign Z
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle u-hide-for-mobile"
+            >
+              Street C & Avenue D
+            </td>
+            <td
+              class="align-middle u-hide-for-mobile"
+            >
+              26 hours ago
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
 `;
