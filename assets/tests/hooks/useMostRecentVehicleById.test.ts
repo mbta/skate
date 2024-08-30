@@ -3,7 +3,7 @@ import { makeMockSocket } from "../testHelpers/socketHelpers"
 import { renderHook } from "@testing-library/react"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
 import useMostRecentVehicleById from "../../src/hooks/useMostRecentVehicleById"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import { Ghost, Vehicle, VehicleId } from "../../src/realtime"
 
 jest.mock("../../src/hooks/useVehicleForId", () => ({

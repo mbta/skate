@@ -41,8 +41,9 @@ import {
   searchQueryRunFactory,
   searchQueryVehicleFactory,
 } from "../factories/searchQuery"
-import stopFactory from "../factories/stop"
-import vehicleFactory, {
+import { stopFactory } from "../factories/stop"
+import {
+  vehicleFactory,
   randomLocationVehicle,
   shuttleFactory,
 } from "../factories/vehicle"

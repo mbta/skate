@@ -7,7 +7,7 @@ import { LadderDirection } from "../../src/models/ladderDirection"
 import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import { initialState } from "../../src/state"
 
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"

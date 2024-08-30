@@ -1762,6 +1762,250 @@ defmodule Schedule.DataTest do
              } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
     end
 
+    test "allows as directed trips and regular trips in the same piece named like a regular block" do
+      run_key = {"abc20011", "123-9073"}
+
+      activities = [
+        %Activity{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          start_time: 68_220,
+          end_time: 68_220,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Sign-on"
+        },
+        %Activity{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          start_time: 68_220,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Operator",
+          partial_block_id: "block_id"
+        }
+      ]
+
+      trips = [
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 68_220,
+          end_time: 68_820,
+          start_place: "cabot",
+          end_place: "ctypt",
+          route_id: nil,
+          trip_id: "64466045"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 68_820,
+          end_time: 70_860,
+          start_place: "ctypt",
+          end_place: "copst",
+          route_id: "09",
+          trip_id: "64464840"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 71_280,
+          end_time: 73_020,
+          start_place: "copst",
+          end_place: "ctypt",
+          route_id: "09",
+          trip_id: "64463084"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 73_020,
+          end_time: 73_560,
+          start_place: "ctypt",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "64465819"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 73_800,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: "wad",
+          trip_id: "64463012"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 84_600,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "64466123"
+        }
+      ]
+
+      schedule_trips_by_id = %{
+        "64466045" => build(:trip, id: "64466045"),
+        "64464840" => build(:trip, id: "64464840"),
+        "64463084" => build(:trip, id: "64463084"),
+        "64465819" => build(:trip, id: "64465819"),
+        "64463012" => build(:trip, id: "64463012"),
+        "64466123" => build(:trip, id: "64466123")
+      }
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   block_id: "block_id",
+                   start_time: 68_220,
+                   trips: [
+                     %Schedule.Trip{id: "64466045"},
+                     %Schedule.Trip{id: "64464840"},
+                     %Schedule.Trip{id: "64463084"},
+                     %Schedule.Trip{id: "64465819"},
+                     %Schedule.Trip{id: "64463012"},
+                     %Schedule.Trip{id: "64466123"}
+                   ],
+                   end_time: 84_600
+                 }
+               ]
+             } = Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id, %{})
+    end
+
+    test "allows as directed trips and regular trips in the same piece named like an as-directed block" do
+      run_key = {"abc20011", "123-9073"}
+
+      activities = [
+        %Activity{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          start_time: 68_220,
+          end_time: 68_220,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Sign-on"
+        },
+        %Activity{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          start_time: 68_220,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Operator",
+          partial_block_id: "wad-294"
+        }
+      ]
+
+      trips = [
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 68_220,
+          end_time: 68_820,
+          start_place: "cabot",
+          end_place: "ctypt",
+          route_id: nil,
+          trip_id: "64466045"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 68_820,
+          end_time: 70_860,
+          start_place: "ctypt",
+          end_place: "copst",
+          route_id: "09",
+          trip_id: "64464840"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 71_280,
+          end_time: 73_020,
+          start_place: "copst",
+          end_place: "ctypt",
+          route_id: "09",
+          trip_id: "64463084"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 73_020,
+          end_time: 73_560,
+          start_place: "ctypt",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "64465819"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 73_800,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: "wad",
+          trip_id: "64463012"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 84_600,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "64466123"
+        }
+      ]
+
+      schedule_trips_by_id = %{
+        "64466045" => build(:trip, id: "64466045"),
+        "64464840" => build(:trip, id: "64464840"),
+        "64463084" => build(:trip, id: "64463084"),
+        "64465819" => build(:trip, id: "64465819"),
+        "64463012" => build(:trip, id: "64463012"),
+        "64466123" => build(:trip, id: "64466123")
+      }
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   block_id: "Cwad-294",
+                   start_time: 68_220,
+                   trips: [
+                     %Schedule.Trip{id: "64466045"},
+                     %Schedule.Trip{id: "64464840"},
+                     %Schedule.Trip{id: "64463084"},
+                     %Schedule.Trip{id: "64465819"},
+                     %Schedule.Trip{id: "64463012"},
+                     %Schedule.Trip{id: "64466123"}
+                   ],
+                   end_time: 84_600
+                 }
+               ]
+             } = Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id, %{})
+    end
+
     test "makes breaks" do
       run_key = {"schedule", "run"}
 

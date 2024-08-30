@@ -14,16 +14,16 @@ defmodule Skate.Migrate do
 
   @impl GenServer
   def init(opts) do
-    Logger.info("#{__MODULE__} synchronous migrations starting")
+    Logger.info("synchronous migrations starting")
     Keyword.get(opts, :sync_migrate_fn, &default_migrate_fn/1).("migrations")
 
-    Logger.info("#{__MODULE__} synchronous migrations finished")
+    Logger.info("synchronous migrations finished")
     {:ok, opts, {:continue, :async_migrations}}
   end
 
   @impl GenServer
   def handle_continue(:async_migrations, opts) do
-    Logger.info("#{__MODULE__} async migrations starting")
+    Logger.info("async migrations starting")
 
     try do
       Keyword.get(
@@ -32,10 +32,10 @@ defmodule Skate.Migrate do
         &default_migrate_fn/1
       ).("async_migrations")
 
-      Logger.info("#{__MODULE__} async migrations finished")
+      Logger.info("async migrations finished")
     rescue
       e ->
-        Logger.warning("#{__MODULE__} async migrations failed. error=#{inspect(e)}")
+        Logger.warning("async migrations failed. error=#{inspect(e)}")
         :ok
     end
 

@@ -4,10 +4,10 @@ defmodule SkateWeb.PageControllerTest do
   import Test.Support.Helpers
 
   describe "GET /" do
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       conn = get(conn, "/")
 
-      assert redirected_to(conn) == ~p"/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated

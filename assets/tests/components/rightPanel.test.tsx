@@ -8,7 +8,7 @@ import RightPanel from "../../src/components/rightPanel"
 import * as dateTime from "../../src/util/dateTime"
 
 import ghostFactory from "../factories/ghost"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import { RunFactory } from "../factories/run"
 import { OpenView } from "../../src/state/pagePanelState"
 

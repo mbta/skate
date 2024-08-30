@@ -60,8 +60,8 @@ defmodule SkateWeb.Router do
   scope "/auth", SkateWeb do
     pipe_through([:redirect_prod_http, :accepts_html, :browser])
 
-    get("/:provider", AuthController, :request)
-    get("/:provider/callback", AuthController, :callback)
+    get("/keycloak", AuthController, :request)
+    get("/keycloak/callback", AuthController, :callback)
   end
 
   scope "/auth", SkateWeb do
@@ -160,6 +160,7 @@ defmodule SkateWeb.Router do
     get "/location_search/search", LocationSearchController, :search
     get "/location_search/suggest", LocationSearchController, :suggest
     post "/detours/directions/", DetourRouteController, :directions
+    put "/detours/update_snapshot", DetoursController, :update_snapshot
     post "/detours/unfinished_detour", DetoursController, :unfinished_detour
     post "/detours/finished_detour", DetoursController, :finished_detour
   end

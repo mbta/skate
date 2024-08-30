@@ -62,7 +62,7 @@ defmodule Schedule.Fetcher do
   def do_poll(state, notify_health_server?) do
     start_time = Time.utc_now()
 
-    Logger.info("#{__MODULE__}: Polling for new schedule data")
+    Logger.info("Polling for new schedule data")
 
     case fetch_gtfs(
            state[:files_source],
@@ -76,11 +76,11 @@ defmodule Schedule.Fetcher do
         :ok = state[:updater_function].(schedule_state)
 
         Logger.info(
-          "#{__MODULE__}: Sent updated schedule data to receiving process, time_in_ms=#{Time.diff(Time.utc_now(), update_start_time, :millisecond)}"
+          "Sent updated schedule data to receiving process, time_in_ms=#{Time.diff(Time.utc_now(), update_start_time, :millisecond)}"
         )
 
         Logger.info(
-          "#{__MODULE__}: Successfully loaded schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
+          "Successfully loaded schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
         )
 
         if notify_health_server? && state[:health_server] do
@@ -108,7 +108,7 @@ defmodule Schedule.Fetcher do
         Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
 
         Logger.error(fn ->
-          "#{__MODULE__}: Error loading schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)} error=#{inspect(error)}"
+          "Error loading schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)} error=#{inspect(error)}"
         end)
 
         {:noreply, state}
@@ -130,7 +130,7 @@ defmodule Schedule.Fetcher do
 
   defp fetch_gtfs(:remote, latest_gtfs_timestamp, latest_hastus_timestamp) do
     if CacheFile.should_use_file?() do
-      Logger.info("#{__MODULE__}: Loading schedule data from cached file")
+      Logger.info("Loading schedule data from cached file")
 
       case CacheFile.load_gtfs() do
         {:ok, data} ->
@@ -159,11 +159,11 @@ defmodule Schedule.Fetcher do
           | :no_update
           | {:error, any()}
   defp gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
-    Logger.info("#{__MODULE__}: Querying schedule data remote files")
+    Logger.info("Querying schedule data remote files")
 
     case fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
       {:files, files, gtfs_timestamp, hastus_timestamp} ->
-        Logger.info("#{__MODULE__}: Updated schedule data found, parsing")
+        Logger.info("Updated schedule data found, parsing")
 
         try do
           data = Data.parse_files(files)
@@ -269,7 +269,7 @@ defmodule Schedule.Fetcher do
 
       response ->
         Logger.warning(fn ->
-          "#{__MODULE__}: Unexpected response from #{url} : #{inspect(response)}"
+          "Unexpected response from #{url} : #{inspect(response)}"
         end)
 
         {:error, response}

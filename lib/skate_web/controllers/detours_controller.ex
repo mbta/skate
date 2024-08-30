@@ -4,9 +4,25 @@ defmodule SkateWeb.DetoursController do
   alias Skate.OpenRouteServiceAPI
   use SkateWeb, :controller
 
+  alias Skate.Detours.Detours
   alias Skate.Detours.MissedStops
   alias Skate.Detours.RouteSegments
+  alias SkateWeb.AuthManager
   alias Util.Location
+
+  @spec update_snapshot(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def update_snapshot(conn, %{"snapshot" => %{"context" => context} = snapshot}) do
+    uuid = Map.get(context, "uuid")
+
+    %{id: user_id} = AuthManager.Plug.current_resource(conn)
+
+    {:ok, %Skate.Detours.Db.Detour{id: returned_uuid}} =
+      Detours.update_or_create_detour_for_user(user_id, uuid, %{
+        state: snapshot
+      })
+
+    json(conn, %{data: returned_uuid})
+  end
 
   @spec unfinished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def unfinished_detour(conn, %{

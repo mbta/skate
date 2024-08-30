@@ -13,7 +13,7 @@ import {
 import { Timepoint } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"

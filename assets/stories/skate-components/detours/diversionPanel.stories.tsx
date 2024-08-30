@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
 import { DiversionPanel } from "../../../src/components/detours/diversionPanel"
-import stopFactory from "../../../tests/factories/stop"
+import { stopFactory } from "../../../tests/factories/stop"
 
 const meta = {
   component: DiversionPanel,

@@ -3,7 +3,7 @@ import React from "react"
 import { render } from "@testing-library/react"
 import TabPanels from "../../../src/components/propertiesPanel/tabPanels"
 import { VehicleInScheduledService } from "../../../src/realtime"
-import vehicleFactory from "../../factories/vehicle"
+import { vehicleFactory } from "../../factories/vehicle"
 
 const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "vehicleId",

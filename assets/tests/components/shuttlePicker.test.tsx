@@ -18,7 +18,7 @@ import {
   selectShuttleRoute,
   selectShuttleRun,
 } from "../../src/state"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 

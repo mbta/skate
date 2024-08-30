@@ -7,7 +7,8 @@ import { VehicleRouteSummary } from "../../src/components/vehicleRouteSummary"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
-import vehicleFactory, {
+import {
+  vehicleFactory,
   invalidVehicleFactory,
   shuttleFactory,
 } from "../factories/vehicle"

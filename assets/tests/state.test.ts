@@ -7,7 +7,7 @@ import {
 } from "../src/userSettings"
 import { RouteTab } from "../src/models/routeTab"
 
-import vehicleFactory from "./factories/vehicle"
+import { vehicleFactory } from "./factories/vehicle"
 import routeTabFactory from "./factories/routeTab"
 import stateFactory from "./factories/applicationState"
 import {

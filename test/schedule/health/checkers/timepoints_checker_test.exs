@@ -30,7 +30,7 @@ defmodule Schedule.Health.Checkers.TimepointsCheckerTest do
                  %{route_id: "1", min_length: 3},
                  %{route_id: "2", min_length: 4}
                ])
-             end) =~ "TimepointsChecker failed on route_id=2. min_length=4 length=3"
+             end) =~ "failed on route_id=2. min_length=4 length=3"
     end
   end
 end

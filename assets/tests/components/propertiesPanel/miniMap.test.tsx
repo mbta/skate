@@ -8,7 +8,7 @@ import {
 } from "@jest/globals"
 import React from "react"
 import { VehicleInScheduledService } from "../../../src/realtime"
-import vehicleFactory from "../../factories/vehicle"
+import { vehicleFactory } from "../../factories/vehicle"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import MiniMap from "../../../src/components/propertiesPanel/miniMap"

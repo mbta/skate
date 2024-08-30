@@ -3,7 +3,7 @@ import {
   usePanelStateForViewState,
   usePanelStateFromStateDispatchContext,
 } from "../../src/hooks/usePanelState"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import {
   OpenView,
   PagePath,

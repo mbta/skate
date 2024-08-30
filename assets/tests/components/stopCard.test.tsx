@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { within } from "@testing-library/dom"
 import StopCard from "../../src/components/stopCard"
-import stopFactory from "../factories/stop"
+import { stopFactory } from "../factories/stop"
 
 jest.mock("react-leaflet", () => ({
   __esModule: true,

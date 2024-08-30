@@ -36,7 +36,7 @@ import {
   option as autocompleteOption,
 } from "../testHelpers/selectors/components/groupedAutocomplete"
 import { useAutocompleteResults } from "../../src/hooks/useAutocompleteResults"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import { SearchPropertyQuery } from "../../src/models/searchQuery"
 import { formatOperatorName } from "../../src/util/operatorFormatting"
 import locationSearchSuggestionFactory from "../factories/locationSearchSuggestion"

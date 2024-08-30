@@ -11,21 +11,14 @@ config :skate, ecto_repos: [Skate.Repo]
 
 config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
-  api_url: {:system, "API_URL"},
-  api_key: {:system, "API_KEY"},
   restrict_environment_access?: false,
   google_tag_manager_id: {:system, "GOOGLE_TAG_MANAGER_ID"},
   tileset_url: {:system, "TILESET_URL"},
   gtfs_url: {:system, "GTFS_URL"},
   hastus_url: {:system, "SKATE_HASTUS_URL"},
   busloc_url: {:system, "BUSLOC_URL"},
-  swiftly_authorization_key: {:system, "SWIFTLY_AUTHORIZATION_KEY"},
-  swiftly_realtime_vehicles_url: {:system, "SWIFTLY_REALTIME_VEHICLES_URL"},
   trip_updates_url: {:system, "TRIP_UPDATES_URL"},
   bridge_requester: Bridge.Request,
-  bridge_url: {:system, "BRIDGE_URL"},
-  bridge_api_username: {:system, "BRIDGE_API_USERNAME"},
-  bridge_api_password: {:system, "BRIDGE_API_PASSWORD"},
   start_data_processes: true,
   record_appcues: false,
   record_fullstory: false,
@@ -137,14 +130,17 @@ config :skate, Oban,
     }
   ]
 
+# Include 2 logger backends
+config :logger,
+  backends: [:console, Sentry.LoggerBackend]
+
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  metadata: [:request_id]
+  format: "$time [$level] $metadata$message\n",
+  metadata: [:mfa, :request_id]
 
-# "code" is the secret value returned by AWS to /auth/cognito/callback
 log_filter_params =
-  ~w(password code token guardian_default_claims guardian_default_resource guardian_default_token)
+  ~w(password token guardian_default_claims guardian_default_resource guardian_default_token)
 
 config :logster, :filter_parameters, log_filter_params
 
@@ -153,10 +149,9 @@ config :phoenix, :filter_parameters, log_filter_params
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Fake Cognito authentication
+# Fake Keycloak authentication
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: nil,
     keycloak: nil
   ]
 

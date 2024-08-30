@@ -55,7 +55,7 @@ defmodule Schedule.Health.Checkers.TripStopTimesCheckerTest do
                  %{route_id: "2", min_length: 4}
                ])
              end) =~
-               "TripStopTimesChecker failed on trip_id=39984755 of route_id=2. min_length=4 length=3"
+               "failed on trip_id=39984755 of route_id=2. min_length=4 length=3"
     end
   end
 end

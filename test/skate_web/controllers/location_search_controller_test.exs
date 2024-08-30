@@ -6,13 +6,13 @@ defmodule SkateWeb.LocationSearchControllerTest do
   alias Skate.LocationSearch.Suggestion
 
   describe "GET /api/location_search/place" do
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       conn =
         conn
         |> api_headers()
         |> get("/api/location_search/place/place_id")
 
-      assert redirected_to(conn) == ~p"/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated
@@ -42,13 +42,13 @@ defmodule SkateWeb.LocationSearchControllerTest do
   end
 
   describe "GET /api/location_search/search" do
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       conn =
         conn
         |> api_headers()
         |> get("/api/location_search/search?query=test")
 
-      assert redirected_to(conn) == ~p"/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated
@@ -79,13 +79,13 @@ defmodule SkateWeb.LocationSearchControllerTest do
   end
 
   describe "GET /api/location_search/suggest" do
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       conn =
         conn
         |> api_headers()
         |> get("/api/location_search/suggest?query=test")
 
-      assert redirected_to(conn) == ~p"/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated

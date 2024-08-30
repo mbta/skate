@@ -20,6 +20,8 @@ import { Route, RoutePattern } from "../../schedule"
 import RoutesContext from "../../contexts/routesContext"
 import { Snapshot } from "xstate"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import { ActiveDetourPanel } from "./activeDetourPanel"
+import { PastDetourPanel } from "./pastDetourPanel"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -233,7 +235,22 @@ export const DiversionPage = ({
               onNavigateBack={editDetour}
               detourText={textArea}
               onChangeDetourText={setTextArea}
+              onActivateDetour={
+                inTestGroup(TestGroups.DetoursList)
+                  ? () => {
+                      send({ type: "detour.share.activate" })
+                    }
+                  : undefined
+              }
             />
+          ) : snapshot.matches({ "Detour Drawing": "Active" }) ? (
+            <ActiveDetourPanel
+              onDeactivateDetour={() => {
+                send({ type: "detour.active.deactivate" })
+              }}
+            />
+          ) : snapshot.matches({ "Detour Drawing": "Past" }) ? (
+            <PastDetourPanel />
           ) : null}
         </div>
         <div className="l-diversion-page__map position-relative">

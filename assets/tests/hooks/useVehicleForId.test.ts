@@ -3,7 +3,7 @@ import {
   makeMockOneShotChannel,
   makeMockSocket,
 } from "../testHelpers/socketHelpers"
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 import { renderHook } from "@testing-library/react"
 import useVehicleForId from "../../src/hooks/useVehicleForId"
 

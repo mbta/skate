@@ -23,7 +23,7 @@ import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
 import { shuttleFactory } from "../factories/vehicle"
 import userEvent from "@testing-library/user-event"
-import shapeFactory from "../factories/shape"
+import { shapeFactory } from "../factories/shape"
 import {
   layersControlButton,
   zoomInButton,

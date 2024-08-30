@@ -1345,7 +1345,7 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
           <button
             aria-expanded="false"
             aria-labelledby="route-pill:r4: route-options-toggle:r5:"
-            class="c-route-ladder__dropdown-button dropdown-toggle btn btn-primary"
+            class="c-route-ladder__dropdown-button d-none d-sm-block dropdown-toggle btn btn-primary"
             id="react-aria-:r6:"
             type="button"
           >

@@ -1,5 +1,5 @@
 import { expect, describe, test } from "@jest/globals"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import {
   OpenView,
   PagePath,

@@ -5,7 +5,7 @@ import {
   initialPageViewState,
 } from "../../src/state/pagePanelState"
 import { DeepPartial, Factory } from "fishery"
-import vehicleFactory from "./vehicle"
+import { vehicleFactory } from "./vehicle"
 
 class ViewFactory extends Factory<ViewState> {
   currentState(currentState: DeepPartial<PageViewState>) {

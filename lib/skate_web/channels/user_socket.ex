@@ -33,13 +33,13 @@ defmodule SkateWeb.UserSocket do
 
     case Guardian.Phoenix.Socket.authenticate(socket, SkateWeb.AuthManager, token) do
       {:ok, authed_socket} ->
-        Logger.info("#{__MODULE__} socket_authenticated user_id=#{unverified_user_id}")
+        Logger.info("socket_authenticated user_id=#{unverified_user_id}")
 
         {:ok, authed_socket}
 
       {:error, _reason} ->
         if !is_nil(unverified_user_id) do
-          Logger.info("#{__MODULE__} socket_auth_rejected user_id=#{unverified_user_id}")
+          Logger.info("socket_auth_rejected user_id=#{unverified_user_id}")
         end
 
         :error

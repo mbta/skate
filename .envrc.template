@@ -55,14 +55,6 @@ export SECRET_KEY_BASE=$(openssl rand -base64 48)
 ## Used by Erlang (only required in production)
 # export RELEASE_COOKIE=
 
-## AWS Cognito Authentication/authorization details (only required in production)
-# export COGNITO_DOMAIN
-# export COGNITO_CLIENT_ID
-# export COGNITO_CLIENT_SECRET
-# export COGNITO_USER_POOL_ID
-# export COGNITO_AWS_REGION
-# export GUARDIAN_SECRET_KEY
-
 ## CDN details (only required in production)
 # export STATIC_SCHEME
 # export STATIC_HOST

@@ -4,6 +4,7 @@ import {
   fetchFinishedDetour,
   fetchNearestIntersection,
   fetchUnfinishedDetour,
+  putDetourUpdate,
 } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
 import { useDetour } from "../../src/hooks/useDetour"
@@ -24,14 +25,12 @@ jest.mock("../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockReturnValue(new Promise(() => {}))
-
   jest
     .mocked(fetchFinishedDetour)
     .mockResolvedValue(finishedDetourFactory.build())
-
   jest.mocked(fetchUnfinishedDetour).mockReturnValue(neverPromise())
-
   jest.mocked(fetchNearestIntersection).mockReturnValue(new Promise(() => {}))
+  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 })
 
 const renderDetourHook = () =>

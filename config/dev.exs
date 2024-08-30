@@ -47,7 +47,6 @@ config :ex_aws,
 
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Skate.Ueberauth.Strategy.Fake, [groups: ["skate-dispatcher", "skate-admin"]]},
     keycloak:
       {Skate.Ueberauth.Strategy.Fake,
        [groups: ["skate-readonly", "skate-dispatcher", "skate-admin"]]}
@@ -77,7 +76,9 @@ config :skate, SkateWeb.Endpoint,
 config :skate, Skate.Repo, database: "skate_dev"
 
 # Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
+config :logger, :console,
+  format: "[$level] $metadata$message\n",
+  metadata: [:mfa]
 
 # Set a higher stacktrace during development. Avoid configuring such
 # in production as building large stacktraces may be expensive.

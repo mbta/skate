@@ -289,7 +289,7 @@ defmodule Realtime.VehiclesTest do
                    layover_departure_time: nil,
                    scheduled_timepoint_status: %{
                      timepoint_id: "timepoint",
-                     fraction_until_timepoint: 0.0
+                     fraction_until_timepoint: +0.0
                    },
                    route_status: :on_route,
                    block_waivers: [
@@ -392,7 +392,7 @@ defmodule Realtime.VehiclesTest do
                layover_departure_time: 1_576_818_001,
                scheduled_timepoint_status: %{
                  timepoint_id: "timepoint",
-                 fraction_until_timepoint: 0.0
+                 fraction_until_timepoint: +0.0
                },
                route_status: :pulling_out,
                block_waivers: [

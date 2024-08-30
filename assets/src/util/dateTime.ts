@@ -93,3 +93,14 @@ export const secondsAgoLabel = (
   epochNowInSeconds: number,
   epochTime: number
 ): string => `${epochNowInSeconds - epochTime}s ago`
+
+export const timeAgoLabel = (
+  epochNowInSeconds: number,
+  epochTime: number
+): string => {
+  const duration = epochNowInSeconds - epochTime
+  const diffHours = Math.floor(duration / 3_600)
+  const diffMinutes = Math.floor((duration % 3_600) / 60)
+
+  return diffHours >= 1 ? `${diffHours} hours ago` : `${diffMinutes} min ago`
+}

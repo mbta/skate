@@ -18,7 +18,7 @@ import {
 } from "../../src/realtime.d"
 import { Route } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"

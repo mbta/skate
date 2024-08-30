@@ -7,7 +7,6 @@ import * as BsIcon from "../../helpers/bsIcons"
 import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
 import { LoggedInAs } from "../loggedInAs"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import getEmailAddress from "../../userEmailAddress"
 
 interface Props {
@@ -16,7 +15,6 @@ interface Props {
 }
 
 const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
-  const keycloakEnabled = inTestGroup(TestGroups.KeycloakSso)
   const email = getEmailAddress()
 
   return (
@@ -49,7 +47,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
           </button>
         </div>
         <div className="p-3">
-          {keycloakEnabled && email && (
+          {email && (
             <>
               <LoggedInAs email={email} className="px-3" />
               <hr />
@@ -96,22 +94,18 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
                 <BsIcon.GearFill /> Settings
               </Nav.Link>
             </Nav.Item>
-            {keycloakEnabled && (
-              <>
-                <Nav.Item>
-                  <hr />
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link
-                    className="icon-link"
-                    as="a"
-                    href="/auth/keycloak/logout"
-                  >
-                    <BsIcon.BoxArrowRight /> Logout
-                  </Nav.Link>
-                </Nav.Item>
-              </>
-            )}
+            <Nav.Item>
+              <hr />
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                className="icon-link"
+                as="a"
+                href="/auth/keycloak/logout"
+              >
+                <BsIcon.BoxArrowRight /> Logout
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </div>
       </div>

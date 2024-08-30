@@ -4,7 +4,7 @@ import {
   formatOperatorName,
   formatOperatorNameFromVehicle,
 } from "../../src/util/operatorFormatting"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 
 describe("formatOperatorName", () => {
   test("when given non-null data, should return formatted operator name", () => {

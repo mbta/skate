@@ -6,7 +6,7 @@ import {
   UnfinishedRouteSegments,
 } from "../../src/models/detour"
 import { shapePointFactory } from "./shapePointFactory"
-import stopFactory from "./stop"
+import { stopFactory } from "./stop"
 import { detourShapeFactory } from "./detourShapeFactory"
 
 export const unfinishedRouteSegmentsFactory =

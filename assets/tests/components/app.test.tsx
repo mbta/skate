@@ -18,7 +18,7 @@ import { ConnectionStatus } from "../../src/hooks/useSocket"
 import { initialState } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import { MemoryRouter } from "react-router-dom"
 import { vehiclePropertiesPanelHeader } from "../testHelpers/selectors/components/vehiclePropertiesPanel"
 import stateFactory from "../factories/applicationState"
@@ -26,8 +26,6 @@ import { OpenView, PagePath } from "../../src/state/pagePanelState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
 import userEvent from "@testing-library/user-event"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
-import getTestGroups from "../../src/userTestGroups"
-import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
@@ -52,7 +50,6 @@ beforeEach(() => {
 
 describe("App", () => {
   test("renders", () => {
-    jest.mocked(getTestGroups).mockReturnValue([TestGroups.KeycloakSso])
     const result = render(<App />)
     expect(result.asFragment()).toMatchSnapshot()
   })

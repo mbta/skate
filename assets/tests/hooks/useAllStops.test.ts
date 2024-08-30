@@ -5,7 +5,7 @@ import { LocationType } from "../../src/models/stopData"
 import { Stop } from "../../src/schedule"
 import { instantPromise } from "../testHelpers/mockHelpers"
 import { useAllStops } from "../../src/hooks/useAllStops"
-import stopFactory from "../factories/stop"
+import { stopFactory } from "../factories/stop"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
