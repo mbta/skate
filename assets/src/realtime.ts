@@ -7,7 +7,7 @@ import {
   TimepointId,
   TripId,
   ViaVariant,
-} from "./schedule.d"
+} from "./schedule"
 
 import { Crowding } from "./models/crowding"
 

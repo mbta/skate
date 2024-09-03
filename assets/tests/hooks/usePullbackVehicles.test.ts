@@ -1,7 +1,7 @@
 import { describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import usePullbackVehicles from "../../src/hooks/usePullbackVehicles"
-import { Vehicle } from "../../src/realtime.d"
+import { Vehicle } from "../../src/realtime"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import { vehicleDataFactory } from "../factories/vehicle_data"
 import { vehicleFromData } from "../../src/models/vehicleData"

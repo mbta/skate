@@ -1,5 +1,5 @@
 import React from "react"
-import { Notification } from "../../realtime.d"
+import { Notification } from "../../realtime"
 import { formattedTime } from "../../util/dateTime"
 import BasicNotificationModal from "./basicNotificationModal"
 

@@ -4,7 +4,7 @@ import { render } from "@testing-library/react"
 import InactiveNotificationModal from "../../../src/components/notificationModals/inactiveNotificationModal"
 import { Break, Piece, Run, Trip } from "../../../src/minischedule"
 import { useMinischeduleRuns } from "../../../src/hooks/useMinischedule"
-import { Notification, NotificationState } from "../../../src/realtime.d"
+import { Notification, NotificationState } from "../../../src/realtime"
 import * as dateTime from "../../../src/util/dateTime"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({

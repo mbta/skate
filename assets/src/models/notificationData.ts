@@ -7,7 +7,7 @@ import {
   type,
   string,
 } from "superstruct"
-import { Notification } from "../realtime.d"
+import { Notification } from "../realtime"
 import { dateFromEpochSeconds } from "../util/dateTime"
 
 export const NotificationData = type({

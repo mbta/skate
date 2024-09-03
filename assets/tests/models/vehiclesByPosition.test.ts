@@ -5,7 +5,7 @@ import {
   BlockWaiver,
   Ghost,
   VehicleInScheduledService,
-} from "../../src/realtime.d"
+} from "../../src/realtime"
 import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 

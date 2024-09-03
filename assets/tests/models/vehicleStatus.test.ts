@@ -5,7 +5,7 @@ import {
   onTimeStatus,
   statusClasses,
 } from "../../src/models/vehicleStatus"
-import { Vehicle, VehicleInScheduledService } from "../../src/realtime.d"
+import { Vehicle, VehicleInScheduledService } from "../../src/realtime"
 import {
   defaultUserSettings,
   VehicleAdherenceColorsSetting,

@@ -1,6 +1,6 @@
 import React, { useContext, useRef, WheelEventHandler } from "react"
 import { VehiclesByRouteIdContext } from "../contexts/vehiclesByRouteIdContext"
-import { VehicleId, VehicleInScheduledService, Ghost } from "../realtime.d"
+import { VehicleId, VehicleInScheduledService, Ghost } from "../realtime"
 import { ByRouteId, Route, TimepointsByRouteId, RouteId } from "../schedule.d"
 import RouteLadder from "./routeLadder"
 import { LadderDirections } from "../models/ladderDirection"

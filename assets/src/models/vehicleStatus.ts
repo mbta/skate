@@ -1,4 +1,4 @@
-import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime.d"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
 import {
   isActivelyPullingBack,
   isGhost,

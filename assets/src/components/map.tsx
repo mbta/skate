@@ -21,7 +21,7 @@ import {
 import { createControlComponent } from "@react-leaflet/core"
 
 import { joinClasses } from "../helpers/dom"
-import { TrainVehicle, Vehicle, VehicleId } from "../realtime.d"
+import { TrainVehicle, Vehicle, VehicleId } from "../realtime"
 import { Shape, Stop } from "../schedule"
 import {
   GarageMarkers,
