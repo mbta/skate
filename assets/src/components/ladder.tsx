@@ -28,7 +28,7 @@ import {
   VehicleInScheduledService,
   VehicleId,
   VehicleTimepointStatus,
-} from "../realtime.d"
+} from "../realtime"
 import { Timepoint } from "../schedule.d"
 import { CrowdingIconSvgNode } from "./crowdingIcon"
 import {

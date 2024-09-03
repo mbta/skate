@@ -15,7 +15,7 @@ import {
   Ghost,
   RouteStatus,
   VehicleInScheduledService,
-} from "../../src/realtime.d"
+} from "../../src/realtime"
 import { Route } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
 import { vehicleFactory } from "../factories/vehicle"

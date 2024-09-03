@@ -16,7 +16,7 @@ import useNotificationsReducer, {
 } from "../hooks/useNotificationsReducer"
 import useSocket from "../hooks/useSocket"
 import useVehicleForNotification from "../hooks/useVehicleForNotification"
-import { NotificationId, NotificationState } from "../realtime.d"
+import { NotificationId, NotificationState } from "../realtime"
 import { selectVehicleFromNotification } from "../state/pagePanelState"
 import { StateDispatchContext } from "./stateDispatchContext"
 

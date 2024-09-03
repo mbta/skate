@@ -9,7 +9,7 @@ import { putNotificationReadState } from "../api"
 import { otherNotificationReadState } from "../contexts/notificationsContext"
 import { SocketContext } from "../contexts/socketContext"
 import { tagManagerEvent } from "../helpers/googleTagManager"
-import { Notification } from "../realtime.d"
+import { Notification } from "../realtime"
 import { isChelseaBridgeNotification } from "../util/notifications"
 import {
   InitialNotifications,

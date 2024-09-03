@@ -10,7 +10,7 @@ import {
   hideLatestNotification,
   toggleReadState,
 } from "../../src/hooks/useNotificationsReducer"
-import { Notification } from "../../src/realtime.d"
+import { Notification } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import { render } from "@testing-library/react"

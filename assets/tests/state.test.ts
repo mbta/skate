@@ -1,5 +1,5 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import { NotificationReason, NotificationState } from "../src/realtime.d"
+import { NotificationReason, NotificationState } from "../src/realtime"
 import * as State from "../src/state"
 import {
   VehicleLabelSetting,

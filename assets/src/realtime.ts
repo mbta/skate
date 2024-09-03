@@ -7,7 +7,7 @@ import {
   TimepointId,
   TripId,
   ViaVariant,
-} from "./schedule.d"
+} from "./schedule"
 
 import { Crowding } from "./models/crowding"
 
@@ -24,7 +24,7 @@ export interface DataDiscrepancy {
   sources: DataDiscrepancySource[]
 }
 
-interface DataDiscrepancySource {
+export interface DataDiscrepancySource {
   id: SourceId
   value: string | null
 }

@@ -9,7 +9,7 @@ import {
   BlockWaiver,
   Ghost,
   VehicleInScheduledService,
-} from "../../src/realtime.d"
+} from "../../src/realtime"
 import { Timepoint } from "../../src/schedule.d"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"

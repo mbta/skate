@@ -1,6 +1,6 @@
 import { Socket } from "phoenix"
 import useVehiclesForRunIds from "./useVehiclesForRunIds"
-import { Notification, VehicleInScheduledService, Ghost } from "../realtime.d"
+import { Notification, VehicleInScheduledService, Ghost } from "../realtime"
 import { useEffect, useState } from "react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import { fullStoryEvent } from "../helpers/fullStory"

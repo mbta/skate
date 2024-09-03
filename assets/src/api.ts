@@ -4,7 +4,7 @@ import { Block, Run } from "./minischedule"
 import { reload } from "./models/browser"
 import { blockFromData, runFromData } from "./models/minischeduleData"
 import { SwingData, swingsFromData } from "./models/swingsData"
-import { NotificationId, NotificationState, RunId } from "./realtime.d"
+import { NotificationId, NotificationState, RunId } from "./realtime"
 import {
   DirectionName,
   GarageName,

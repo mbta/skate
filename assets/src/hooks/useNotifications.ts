@@ -4,7 +4,7 @@ import {
   NotificationData,
   notificationFromData,
 } from "../models/notificationData"
-import { Notification } from "../realtime.d"
+import { Notification } from "../realtime"
 import { useCheckedChannel } from "./useChannel"
 
 const InitialNotificationData = type({

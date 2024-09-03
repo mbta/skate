@@ -2,7 +2,7 @@ import { describe, test, expect } from "@jest/globals"
 import {
   VehicleInScheduledService,
   VehicleScheduledLocation,
-} from "../../src/realtime.d"
+} from "../../src/realtime"
 import {
   byLayoverDeparture,
   ladderVehiclesForLayovers,

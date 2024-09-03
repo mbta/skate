@@ -5,7 +5,7 @@ import {
 } from "../models/ladderDirection"
 import { isVehicleInScheduledService } from "../models/vehicle"
 import { onTimeStatus } from "../models/vehicleStatus"
-import { Ghost, RunId, VehicleInScheduledService } from "../realtime.d"
+import { Ghost, RunId, VehicleInScheduledService } from "../realtime"
 import { RouteId } from "../schedule.d"
 
 /**
