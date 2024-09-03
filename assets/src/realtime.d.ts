@@ -24,7 +24,7 @@ export interface DataDiscrepancy {
   sources: DataDiscrepancySource[]
 }
 
-interface DataDiscrepancySource {
+export interface DataDiscrepancySource {
   id: SourceId
   value: string | null
 }
