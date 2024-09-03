@@ -243,8 +243,7 @@ export const DiversionPage = ({
                   : undefined
               }
             />
-          ) : snapshot.matches({ "Detour Drawing": "Active" }) &&
-            extendedDirections ? (
+          ) : snapshot.matches({ "Detour Drawing": "Active" }) ? (
             <ActiveDetourPanel
               directions={extendedDirections}
               connectionPoints={[

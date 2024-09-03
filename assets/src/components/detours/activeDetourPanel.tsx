@@ -8,7 +8,7 @@ import { uniqBy } from "../../helpers/array"
 import { ArrowLeft } from "../../helpers/bsIcons"
 
 export interface ActiveDetourPanelProps {
-  directions: DetourDirection[]
+  directions?: DetourDirection[]
   connectionPoints?: string[]
   missedStops?: Stop[]
   routeName: string
@@ -71,9 +71,8 @@ export const ActiveDetourPanel = ({
           <section className="pb-3">
             <h2 className="c-diversion-panel__h2">Connection Points</h2>
             <ListGroup as="ul">
-              {connectionPoints.map((point) => (
-                <ListGroup.Item key={point}>{point}</ListGroup.Item>
-              ))}
+              <ListGroup.Item>{connectionPoints[0]}</ListGroup.Item>
+              <ListGroup.Item>{connectionPoints[1]}</ListGroup.Item>
             </ListGroup>
           </section>
         )}
@@ -95,6 +94,7 @@ export const ActiveDetourPanel = ({
 
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Detour Directions</h2>
+          {directions ? (
           <ListGroup as="ol">
             {directions.map((d) => (
               <ListGroup.Item key={d.instruction} as="li">
@@ -106,12 +106,13 @@ export const ActiveDetourPanel = ({
               </ListGroup.Item>
             ))}
           </ListGroup>
+          ): null}
         </section>
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer>
         <Button className="flex-grow-1 m-3" onClick={onDeactivateDetour}>
-          Return to Regular Route
+          Deactivate Detour
         </Button>
       </Panel.Body.Footer>
     </Panel.Body>
