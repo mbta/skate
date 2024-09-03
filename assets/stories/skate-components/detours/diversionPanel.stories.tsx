@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { DiversionPanel } from "../../../src/components/detours/diversionPanel"
+import { DrawDetourPanel } from "../../../src/components/detours/drawDetourPanel"
 import { stopFactory } from "../../../tests/factories/stop"
 
 const meta = {
-  component: DiversionPanel,
+  component: DrawDetourPanel,
   parameters: {
     layout: "fullscreen",
     stretch: true,
@@ -22,7 +22,7 @@ const meta = {
     directions: { table: { disable: true } },
     missedStops: { table: { disable: true } },
   },
-} satisfies Meta<typeof DiversionPanel>
+} satisfies Meta<typeof DrawDetourPanel>
 export default meta
 
 type Story = StoryObj<typeof meta>
