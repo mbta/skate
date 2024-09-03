@@ -6,7 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react"
-import { DiversionPanel } from "./diversionPanel"
+import { DrawDetourPanel } from "./drawDetourPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
 import { Alert, Button, CloseButton, Modal } from "react-bootstrap"
@@ -218,7 +218,7 @@ export const DiversionPage = ({
             />
           ) : snapshot.matches({ "Detour Drawing": "Editing" }) &&
             routePattern ? (
-            <DiversionPanel
+            <DrawDetourPanel
               directions={extendedDirections}
               missedStops={missedStops}
               routeName={routeName ?? "??"}
