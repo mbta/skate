@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react"
 
 import React from "react"
 import { ActiveDetourPanel } from "../../../src/components/detours/activeDetourPanel"
+import { stopFactory } from "../../../tests/factories/stop"
 
 const meta = {
   component: ActiveDetourPanel,
@@ -9,7 +10,27 @@ const meta = {
     layout: "fullscreen",
     stretch: true,
   },
-  args: {},
+  args: {
+    directions: [
+      { instruction: "Start at Centre St & John St" },
+      { instruction: "Right on John St" },
+      { instruction: "Left on Abbotsford Rd" },
+      { instruction: "Right on Boston St" },
+      { instruction: "Regular Route" },
+    ],
+    connectionPoints: ["Centre St & John St", "Boston St"],
+    missedStops: [
+      stopFactory.build({ name: "Example St @ Sample Ave" }),
+      stopFactory.build({ name: "Example St opp Random Way" }),
+      stopFactory.build({ name: "Example St @ Fake Blvd" }),
+    ],
+    routeName: "66",
+    routeDescription: "Harvard via Allston",
+    routeOrigin: "from Andrew Station",
+    routeDirection: "Outbound",
+    onDeactivateDetour: undefined,
+    onNavigateBack: undefined
+  },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by
   // default, we should be able to remove this after that is added
   decorators: [
