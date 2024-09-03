@@ -243,8 +243,20 @@ export const DiversionPage = ({
                   : undefined
               }
             />
-          ) : snapshot.matches({ "Detour Drawing": "Active" }) ? (
+          ) : snapshot.matches({ "Detour Drawing": "Active" }) &&
+            extendedDirections ? (
             <ActiveDetourPanel
+              directions={extendedDirections}
+              connectionPoints={[
+                connectionPoints?.start?.name ?? "N/A",
+                connectionPoints?.end?.name ?? "N/A",
+              ]}
+              missedStops={missedStops}
+              routeName={routeName ?? "??"}
+              routeDescription={routeDescription ?? "??"}
+              routeOrigin={routeOrigin ?? "??"}
+              routeDirection={routeDirection ?? "??"}
+              onNavigateBack={() => onConfirmClose}
               onDeactivateDetour={() => {
                 send({ type: "detour.active.deactivate" })
               }}
