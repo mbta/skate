@@ -1,11 +1,10 @@
 import React from "react"
-import { RoutePill } from "../routePill"
 import { DetourShape } from "../../models/detour"
-import { Badge, Button, ListGroup } from "react-bootstrap"
+import { Button, ListGroup } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import { Stop } from "../../schedule"
-import { uniqBy } from "../../helpers/array"
 import { ArrowLeft } from "../../helpers/bsIcons"
+import { AffectedRoute, MissedStops } from "./detourPanelComponents"
 
 export interface DrawDetourPanelProps {
   directions?: DetourShape["directions"]
@@ -35,7 +34,7 @@ export const DrawDetourPanel = ({
       <h1 className="c-diversion-panel__h1 my-3">Create Detour</h1>
     </Panel.Header>
 
-    <Panel.Body className="c-diversion-panel__body d-flex flex-column">
+    <Panel.Body className="d-flex flex-column">
       <Panel.Body.ScrollArea>
         {onChangeRoute && (
           <Button
@@ -48,24 +47,12 @@ export const DrawDetourPanel = ({
           </Button>
         )}
 
-        <section className="pb-3 border-bottom">
-          <h2 className="c-diversion-panel__h2">Affected route</h2>
-          <div className="d-flex">
-            <RoutePill className="me-2 align-top" routeName={routeName} />
-
-            <div className="d-inline-block">
-              <p className="my-0 c-diversion-panel__description">
-                {routeDescription}
-              </p>
-              <p className="my-0 text-muted c-diversion-panel__origin py-1">
-                {routeOrigin}
-              </p>
-              <p className="my-0 small c-diversion-panel__direction py-1">
-                {routeDirection}
-              </p>
-            </div>
-          </div>
-        </section>
+        <AffectedRoute
+          routeName={routeName}
+          routeDescription={routeDescription}
+          routeOrigin={routeOrigin}
+          routeDirection={routeDirection}
+        />
 
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Detour Directions</h2>
@@ -86,20 +73,7 @@ export const DrawDetourPanel = ({
           )}
         </section>
 
-        {missedStops && (
-          <section className="pb-3">
-            <h2 className="c-diversion-panel__h2">
-              Missed Stops <Badge bg="missed-stop">{missedStops.length}</Badge>
-            </h2>
-            <ListGroup as="ul">
-              {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
-                <ListGroup.Item key={missedStop.id}>
-                  {missedStop.name}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </section>
-        )}
+        <MissedStops missedStops={missedStops} />
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer hidden={!detourFinished}>
