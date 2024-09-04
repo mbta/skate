@@ -70,8 +70,6 @@ defmodule Skate.Detours.Detours do
 
   @spec db_detour_to_detour(Detour.t(), integer()) :: t()
   defp db_detour_to_detour(
-         # If the schema isn't like this, the state machine shape has changed.
-         # How do we want to handle that possibility?
          %{
            state: %{
              "context" => %{
