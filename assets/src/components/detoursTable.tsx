@@ -37,7 +37,7 @@ export const DetoursTable = ({ data }: DetoursTableProps) => {
               {detour.intersection}
             </td>
             <td className="align-middle u-hide-for-mobile">
-              {timeAgoLabel(epochNowInSeconds, detour.updated_at)}
+              {timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
             </td>
           </tr>
         ))}

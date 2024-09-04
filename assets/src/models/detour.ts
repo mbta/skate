@@ -8,10 +8,30 @@ export const SimpleDetour = type({
   direction: string(),
   name: string(),
   intersection: string(),
-  updated_at: number(),
+  updatedAt: number(),
 })
 
 export type SimpleDetour = Infer<typeof SimpleDetour>
+
+export const SimpleDetourFromApi = type({
+  route: string(),
+  direction: string(),
+  name: string(),
+  intersection: string(),
+  updated_at: number(),
+})
+
+export type SimpleDetourFromApi = Infer<typeof SimpleDetourFromApi>
+
+const simpleDetourFromData = (
+  detourData: SimpleDetourFromApi
+): SimpleDetour => ({
+  route: detourData.route,
+  direction: detourData.direction,
+  name: detourData.name,
+  intersection: detourData.name,
+  updatedAt: detourData.updated_at,
+})
 
 export const GroupedSimpleDetours = type({
   active: nullable(array(SimpleDetour)),
@@ -20,6 +40,26 @@ export const GroupedSimpleDetours = type({
 })
 
 export type GroupedSimpleDetours = Infer<typeof GroupedSimpleDetours>
+
+export const GroupedDetoursFromApi = type({
+  active: nullable(array(SimpleDetourFromApi)),
+  draft: nullable(array(SimpleDetourFromApi)),
+  past: nullable(array(SimpleDetourFromApi)),
+})
+
+export type GroupedDetoursFromApi = Infer<typeof GroupedDetoursFromApi>
+
+export const groupedDetoursFromData = (
+  groupedDetours: GroupedDetoursFromApi
+): GroupedSimpleDetours => ({
+  active:
+    groupedDetours.active?.map((detour) => simpleDetourFromData(detour)) ||
+    null,
+  draft:
+    groupedDetours.draft?.map((detour) => simpleDetourFromData(detour)) || null,
+  past:
+    groupedDetours.past?.map((detour) => simpleDetourFromData(detour)) || null,
+})
 
 export interface DetourShape {
   coordinates: ShapePoint[]
