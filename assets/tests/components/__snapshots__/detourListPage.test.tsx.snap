@@ -43,7 +43,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Franklin Park via Ruggles Station
               </div>
@@ -82,7 +82,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Central Square
               </div>
@@ -121,7 +121,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Rindge Ave
               </div>
@@ -160,7 +160,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Franklin Park via Ruggles Station
               </div>
@@ -199,7 +199,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Central Square
               </div>
@@ -238,7 +238,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Rindge Ave
               </div>
@@ -277,7 +277,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Franklin Park via Ruggles Station
               </div>
@@ -316,7 +316,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Central Square
               </div>
@@ -355,7 +355,7 @@ exports[`DetourListPage renders detour list page with dummy data 1`] = `
               className="c-detours-table__route-info-text d-inline-block"
             >
               <div
-                className="pb-1 fs-4 fw-bold"
+                className="pb-1 fs-4 fw-semibold"
               >
                 Rindge Ave
               </div>
