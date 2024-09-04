@@ -13,13 +13,13 @@ export const SimpleDetour = type({
 
 export type SimpleDetour = Infer<typeof SimpleDetour>
 
-export const SimpleDetourData = type({
+export const GroupedSimpleDetours = type({
   active: nullable(array(SimpleDetour)),
   draft: nullable(array(SimpleDetour)),
   past: nullable(array(SimpleDetour)),
 })
 
-export type SimpleDetourData = Infer<typeof SimpleDetourData>
+export type GroupedSimpleDetours = Infer<typeof GroupedSimpleDetours>
 
 export interface DetourShape {
   coordinates: ShapePoint[]
