@@ -2,14 +2,16 @@ import React from "react"
 import { fullStoryEvent } from "./helpers/fullStory"
 import { LadderIcon, MapIcon, SearchMapIcon } from "./helpers/icon"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
-import { DetourNavIcon } from "./helpers/navIcons"
+import { DetourNavIcon, NavIconProps } from "./helpers/navIcons"
 
 type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 
 export interface LinkData {
   title: string
   path: string
-  navIcon: React.JSXElementConstructor<HTMLElementProps>
+  navIcon:
+    | React.JSXElementConstructor<HTMLElementProps>
+    | ((props: NavIconProps) => React.JSX.Element)
   onClick?: () => void
   hideOnMobile?: boolean
 }
@@ -25,7 +27,7 @@ export const getNavLinkData: () => LinkData[] = () => {
       ]
     : []
 
-  return [
+  const alwaysPresentItems: LinkData[] = [
     {
       title: "Route Ladders",
       path: "/",
@@ -42,5 +44,7 @@ export const getNavLinkData: () => LinkData[] = () => {
       navIcon: SearchMapIcon,
       onClick: () => fullStoryEvent("Search Map nav entry clicked", {}),
     },
-  ].concat(maybeDetours)
+  ]
+
+  return alwaysPresentItems.concat(maybeDetours)
 }

@@ -1,8 +1,8 @@
 import React, { ComponentPropsWithoutRef } from "react"
 
-type SvgProps = ComponentPropsWithoutRef<"span">
+export type NavIconProps = ComponentPropsWithoutRef<"span">
 
-export const DetourNavIcon = (props: SvgProps) => (
+export const DetourNavIcon = (props: NavIconProps) => (
   <span {...props}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,10 +16,10 @@ export const DetourNavIcon = (props: SvgProps) => (
       />
       <path
         d="M7 23L20 10"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-dasharray="2 3"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeDasharray="2 3"
         stroke="currentColor"
       />
     </svg>
