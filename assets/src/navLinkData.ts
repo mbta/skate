@@ -1,12 +1,8 @@
 import React from "react"
 import { fullStoryEvent } from "./helpers/fullStory"
-import {
-  DiamondTurnRightIcon,
-  LadderIcon,
-  MapIcon,
-  SearchMapIcon,
-} from "./helpers/icon"
+import { LadderIcon, MapIcon, SearchMapIcon } from "./helpers/icon"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
+import { DetourNavIcon } from "./helpers/navIcons"
 
 type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 
@@ -24,7 +20,7 @@ export const getNavLinkData: () => LinkData[] = () => {
         {
           title: "Detours",
           path: "/detours",
-          navIcon: DiamondTurnRightIcon,
+          navIcon: DetourNavIcon,
         },
       ]
     : []
