@@ -1,7 +1,64 @@
+@use "../color/tokens_2024" as tokens;
+
+$table-border: 1px solid tokens.$gray-400;
+$table-border-radius: 0.5rem;
+
 .c-detours-table {
+  border-spacing: 0;
+
   thead {
     text-align: left;
     font-weight: 600;
+  }
+
+  th {
+    background-color: tokens.$gray-50;
+    color: tokens.$gray-700;
+
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+
+    white-space: nowrap;
+  }
+
+  th,
+  td {
+    border-bottom: $table-border;
+    padding-left: 1rem;
+  }
+
+  tr {
+    th:first-child,
+    td:first-child {
+      border-left: $table-border;
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: $table-border;
+    }
+  }
+
+  tr:first-child {
+    th {
+      border-top: $table-border;
+    }
+
+    th:first-child {
+      border-top-left-radius: $table-border-radius;
+    }
+    th:last-child {
+      border-top-right-radius: $table-border-radius;
+    }
+  }
+
+  tr:last-child {
+    td:first-child {
+      border-bottom-left-radius: $table-border-radius;
+    }
+    td:last-child {
+      border-bottom-right-radius: $table-border-radius;
+    }
   }
 }
 
