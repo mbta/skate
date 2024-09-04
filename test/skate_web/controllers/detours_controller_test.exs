@@ -82,6 +82,8 @@ defmodule SkateWeb.DetoursControllerTest do
           }
         })
 
+      %Skate.Detours.Db.Detour{author_id: author_id_on_put} = Detours.get_detour!(1)
+
       assert %{"data" => 1} = json_response(conn, 200)
 
       conn = get(conn, "/api/detours/get_detours")
@@ -96,16 +98,16 @@ defmodule SkateWeb.DetoursControllerTest do
                      "name" => "Headsign",
                      "route" => "23",
                      "status" => "draft",
-                     "author_id" => some_number,
-                     "updated_at" => other_number
+                     "author_id" => author_id_on_get,
+                     "updated_at" => updated_at
                    }
                  ],
                  "past" => nil
                }
              } = json_response(conn, 200)
 
-      assert is_integer(some_number)
-      assert is_integer(other_number)
+      assert author_id_on_get == author_id_on_put
+      assert is_integer(updated_at)
     end
   end
 
