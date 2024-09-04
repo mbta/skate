@@ -28,7 +28,7 @@ export const DetoursTable = ({ data }: DetoursTableProps) => {
               <div className="d-flex">
                 <RoutePill routeName={detour.route} />
                 <div className="c-detours-table__route-info-text d-inline-block">
-                  <div className="pb-1 fs-4 fw-bold">{detour.name}</div>
+                  <div className="pb-1 fs-4 fw-semibold">{detour.name}</div>
                   <div className="c-detours-table__route-info-direction fs-6">
                     {detour.direction}
                   </div>
