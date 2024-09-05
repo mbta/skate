@@ -29,11 +29,8 @@ export const DetourListPage = () => {
       )}
       {detours && (
         <>
-          <h2>Active detours</h2>
           {detours.active && <DetoursTable data={detours.active} />}
-          <h2>Draft detours</h2>
           {detours.draft && <DetoursTable data={detours.draft} />}
-          <h2>Closed detours</h2>
           {detours.past && <DetoursTable data={detours.past} />}
         </>
       )}
