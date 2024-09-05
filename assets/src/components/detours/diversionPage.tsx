@@ -43,7 +43,7 @@ const displayFieldsFromRouteAndPattern = (
 
 interface DiversionPageFunctions {
   onClose?: () => void
-  onConfirmClose?: () => void
+  onConfirmClose: () => void
   onCancelClose?: () => void
   showConfirmCloseModal: boolean
 }
@@ -255,7 +255,7 @@ export const DiversionPage = ({
               routeDescription={routeDescription ?? "??"}
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
-              onNavigateBack={() => onConfirmClose}
+              onNavigateBack={onConfirmClose}
               onDeactivateDetour={() => {
                 send({ type: "detour.active.deactivate" })
               }}
