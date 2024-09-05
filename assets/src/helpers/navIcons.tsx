@@ -19,20 +19,20 @@ export const DetourNavIcon = (props: NavIconProps) => (
     <path
       d="M6.52809 17.457L7.9423 16.0428"
       stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
     />
     <path
       d="M9.79289 14.207L11.2071 12.7928"
       stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
     />
     <path
       d="M13.0577 10.957L14.4719 9.54282"
       stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
     />
   </svg>
 )
