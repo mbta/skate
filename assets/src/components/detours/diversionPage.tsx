@@ -255,7 +255,7 @@ export const DiversionPage = ({
               routeDescription={routeDescription ?? "??"}
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
-              onNavigateBack={() => onConfirmClose}
+              onNavigateBack={onConfirmClose}
               onDeactivateDetour={() => {
                 send({ type: "detour.active.deactivate" })
               }}
