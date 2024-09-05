@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ComponentProps } from "react"
 import { fullStoryEvent } from "./helpers/fullStory"
 import { LadderIcon, MapIcon, SearchMapIcon } from "./helpers/icon"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
@@ -22,7 +22,11 @@ export const getNavLinkData: () => LinkData[] = () => {
         {
           title: "Detours",
           path: "/detours",
-          navIcon: DetourNavIcon,
+          navIcon: (props: ComponentProps<"span">) => (
+            <span {...props}>
+              <DetourNavIcon />
+            </span>
+          ),
         },
       ]
     : []
