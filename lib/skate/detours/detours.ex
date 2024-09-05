@@ -58,7 +58,16 @@ defmodule Skate.Detours.Detours do
     detours =
       Detour
       |> Repo.all()
-      |> Enum.map(&db_detour_to_detour(&1, user_id))
+      |> Enum.map(fn detour -> 
+          try do
+            db_detour_to_detour(detour, user_id)
+          rescue
+            e in FunctionClauseError -> 
+              Sentry.capture_exception(e, stacktrace: __STACKTRACE__)
+              nil
+          end
+        end)
+      |> Enum.filter(& &1)
       |> Enum.group_by(fn detour -> detour.status end)
 
     %{
@@ -70,8 +79,6 @@ defmodule Skate.Detours.Detours do
 
   @spec db_detour_to_detour(Detour.t(), integer()) :: t()
   defp db_detour_to_detour(
-         # If the schema isn't like this, the state machine shape has changed.
-         # How do we want to handle that possibility?
          %{
            state: %{
              "context" => %{
