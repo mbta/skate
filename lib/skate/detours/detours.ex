@@ -58,15 +58,15 @@ defmodule Skate.Detours.Detours do
     detours =
       Detour
       |> Repo.all()
-      |> Enum.map(fn detour -> 
-          try do
-            db_detour_to_detour(detour, user_id)
-          rescue
-            e in FunctionClauseError -> 
-              Sentry.capture_exception(e, stacktrace: __STACKTRACE__)
-              nil
-          end
-        end)
+      |> Enum.map(fn detour ->
+        try do
+          db_detour_to_detour(detour, user_id)
+        rescue
+          e in FunctionClauseError ->
+            Sentry.capture_exception(e, stacktrace: __STACKTRACE__)
+            nil
+        end
+      end)
       |> Enum.filter(& &1)
       |> Enum.group_by(fn detour -> detour.status end)
 
