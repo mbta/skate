@@ -8,7 +8,7 @@ import {
 } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
-import { Notification, NotificationState } from "../../src/realtime.d"
+import { Notification, NotificationState } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import { vehicleFactory } from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"

@@ -4,7 +4,7 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState, setNotification } from "../../../src/state"
-import { Notification, NotificationState } from "../../../src/realtime.d"
+import { Notification, NotificationState } from "../../../src/realtime"
 import ChelseaRaisedNotificationModal from "../../../src/components/notificationModals/chelseaRaisedNotificationModal"
 
 describe("ChelseaRaisedNotificationModal", () => {

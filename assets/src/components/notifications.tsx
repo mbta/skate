@@ -7,7 +7,7 @@ import {
   hideLatestNotification,
   toggleReadState,
 } from "../hooks/useNotificationsReducer"
-import { Notification } from "../realtime.d"
+import { Notification } from "../realtime"
 import { Dispatch as StateDispatch, setNotification } from "../state"
 import { NotificationCard } from "./notificationCard"
 

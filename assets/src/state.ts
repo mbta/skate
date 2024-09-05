@@ -16,7 +16,7 @@ import {
   saveEditedPreset,
   selectTabByUUID,
 } from "./models/routeTab"
-import { Notification, RunId } from "./realtime.d"
+import { Notification, RunId } from "./realtime"
 import { RouteId } from "./schedule.d"
 import {
   MapLayersAction,

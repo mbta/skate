@@ -7,7 +7,7 @@ import { Stop } from "../../schedule"
 import { uniqBy } from "../../helpers/array"
 import { ArrowLeft } from "../../helpers/bsIcons"
 
-export interface DiversionPanelProps {
+export interface DrawDetourPanelProps {
   directions?: DetourShape["directions"]
   missedStops?: Stop[]
   routeName: string
@@ -19,7 +19,7 @@ export interface DiversionPanelProps {
   onChangeRoute: () => void
 }
 
-export const DiversionPanel = ({
+export const DrawDetourPanel = ({
   directions,
   missedStops,
   routeName,
@@ -29,7 +29,7 @@ export const DiversionPanel = ({
   detourFinished,
   onReviewDetour,
   onChangeRoute,
-}: DiversionPanelProps) => (
+}: DrawDetourPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header>
       <h1 className="c-diversion-panel__h1 my-3">Create Detour</h1>

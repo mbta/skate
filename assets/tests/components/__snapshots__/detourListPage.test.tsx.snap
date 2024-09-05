@@ -4,7 +4,7 @@ exports[`DetourListPage renders detour list page 1`] = `
 <body>
   <div>
     <div
-      class="h-100 overflow-y-auto"
+      class="c-detour-list-page h-100 overflow-y-auto p-4 bg-white"
     >
       <table
         class="c-detours-table table table-hover"

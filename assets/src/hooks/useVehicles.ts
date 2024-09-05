@@ -7,7 +7,7 @@ import {
   VehicleInScheduledServiceData,
   GhostData,
 } from "../models/vehicleData"
-import { VehicleInScheduledService, Ghost } from "../realtime.d"
+import { VehicleInScheduledService, Ghost } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule.d"
 import * as Sentry from "@sentry/react"
 

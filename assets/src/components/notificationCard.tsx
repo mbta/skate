@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
-import { Notification, NotificationReason } from "../realtime.d"
+import { Notification, NotificationReason } from "../realtime"
 import { isChelseaBridgeNotification } from "../util/notifications"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"

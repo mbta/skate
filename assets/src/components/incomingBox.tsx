@@ -10,7 +10,7 @@ import {
 } from "../models/ladderDirection"
 import { isVehicleInScheduledService } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
-import { VehicleInScheduledService, VehicleId, Ghost } from "../realtime.d"
+import { VehicleInScheduledService, VehicleId, Ghost } from "../realtime"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
 import VehicleIcon, { Orientation, Size, VehicleTooltip } from "./vehicleIcon"

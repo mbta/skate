@@ -18,7 +18,7 @@ import {
   VehicleScheduledLocation,
   VehicleStopStatus,
   VehicleTimepointStatus,
-} from "../realtime.d"
+} from "../realtime"
 import { dateFromEpochSeconds } from "../util/dateTime"
 import { DirectionIdData } from "./miscData"
 

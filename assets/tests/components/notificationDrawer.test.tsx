@@ -11,7 +11,7 @@ import {
   markAllAsRead,
   toggleReadState,
 } from "../../src/hooks/useNotificationsReducer"
-import { Notification, NotificationState } from "../../src/realtime.d"
+import { Notification, NotificationState } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import {
   initialState,

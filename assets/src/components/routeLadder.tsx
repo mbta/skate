@@ -15,7 +15,7 @@ import {
   groupByPosition,
   VehiclesByPosition,
 } from "../models/vehiclesByPosition"
-import { VehicleId, VehicleInScheduledService, Ghost } from "../realtime.d"
+import { VehicleId, VehicleInScheduledService, Ghost } from "../realtime"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
