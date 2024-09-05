@@ -29,7 +29,7 @@ const simpleDetourFromData = (
   route: detourData.route,
   direction: detourData.direction,
   name: detourData.name,
-  intersection: detourData.name,
+  intersection: detourData.intersection,
   updatedAt: detourData.updated_at,
 })
 
