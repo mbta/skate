@@ -39,7 +39,9 @@ defmodule Skate.Detours.Detours do
       [%Detour{}, ...]
   """
   def list_detours do
-    Repo.all(Detour)
+    Detour
+    |> Repo.all()
+    |> Repo.preload(:author)
   end
 
   @doc """
@@ -67,7 +69,7 @@ defmodule Skate.Detours.Detours do
             nil
         end
       end)
-      |> Enum.filter(& &1)
+      |> Enum.filter(&(&1 != :ignored))
       |> Enum.group_by(fn detour -> detour.status end)
 
     %{
@@ -106,6 +108,12 @@ defmodule Skate.Detours.Detours do
       author_id: db_detour.author_id,
       status: categorize_detour(db_detour, user_id)
     }
+  end
+
+  defp db_detour_to_detour(invalid_detour, _) do
+    Sentry.capture_message("Detour error: the detour has an outdated schema",
+      extra: %{error: invalid_detour}
+    )
   end
 
   @type detour_type :: :active | :draft | :past
