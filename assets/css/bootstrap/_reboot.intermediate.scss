@@ -13,11 +13,12 @@
 //
 // Change from `box-sizing: content-box` so that `width` is not affected by `padding` or `border`.
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/// Skate has been majorly built expecting that this is not set, so we're disabling for now
+// *,
+// *::before,
+// *::after {
+//   box-sizing: border-box;
+// }
 
 
 // Root
