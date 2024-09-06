@@ -10,6 +10,7 @@ import {
 } from "./schedule"
 
 import { Crowding } from "./models/crowding"
+import { DetourNotificationData } from "./models/notificationData"
 
 export interface BlockWaiver {
   startTime: Date
@@ -59,6 +60,7 @@ export type NotificationId = string
 export enum NotificationType {
   BridgeMovement = "Elixir.Notifications.Db.BridgeMovement",
   BlockWaiver = "Elixir.Notifications.Db.BlockWaiver",
+  Detour = "Elixir.Notifications.Db.Detour",
 }
 
 export interface BridgeLoweredNotification {
@@ -90,9 +92,19 @@ export type BlockWaiverNotification = {
   endTime: Date | null
 }
 
+export type DetourNotification = {
+  $type: NotificationType.Detour
+  headsign: string
+  route: string
+  direction: string
+  origin: string
+}
+
 export type NotificationContentTypes =
   | BridgeNotification
   | BlockWaiverNotification
+  | DetourNotification
+
 export interface Notification<
   TNotification extends NotificationContentTypes = NotificationContentTypes
 > {

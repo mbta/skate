@@ -16,10 +16,15 @@ defmodule SkateWeb.DetoursController do
 
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
-    {:ok, %Skate.Detours.Db.Detour{id: returned_uuid}} =
+    {:ok, %Skate.Detours.Db.Detour{id: returned_uuid} = detour} =
       Detours.update_or_create_detour_for_user(user_id, uuid, %{
         state: snapshot
       })
+
+    # TODO: Skate.Detours.Detour.categorize_detour/2?
+    if Kernel.get_in(snapshot["value"]["Detour Drawing"]) == "Active" do
+      Notifications.NotificationServer.detour_activated(detour)
+    end
 
     json(conn, %{data: returned_uuid})
   end

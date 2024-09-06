@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement, ReactNode } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import {
   BlockWaiverNotification,
@@ -11,6 +11,7 @@ import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
 import { CardBody, CardProperties, CardReadable } from "./card"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { RoutePill } from "./routePill"
 
 export const NotificationCard = ({
   notification,
@@ -95,6 +96,10 @@ export const title = (notification: Notification) => {
           return "Chelsea St Bridge Raised"
       }
     }
+
+    case NotificationType.Detour: {
+      return "Detour - Active"
+    }
   }
 }
 export const blockWaiverNotificationTitle = (
@@ -156,7 +161,7 @@ const description = (
   notification: Notification,
   routes: Route[],
   routeAtCreation: Route | null
-): string => {
+): ReactNode => {
   switch (notification.content.$type) {
     case NotificationType.BlockWaiver: {
       return blockWaiverDescription(
@@ -175,6 +180,23 @@ const description = (
         case "lowered":
           return "OCC reported that the Chelsea St bridge has been lowered."
       }
+    }
+
+    case NotificationType.Detour: {
+      return (
+        <>
+          <div className="d-flex flex-row gap-2">
+            <RoutePill routeName={notification.content.route} />
+            <div>
+              <div className="fw-semibold">{notification.content.headsign}</div>
+              <div className="fw-normal text-body-secondary">
+                From {notification.content.origin.split(" - ")[0]}
+              </div>
+              <div className="fw-normal">{notification.content.direction}</div>
+            </div>
+          </div>
+        </>
+      )
     }
   }
 }
