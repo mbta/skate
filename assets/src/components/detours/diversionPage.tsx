@@ -43,7 +43,7 @@ const displayFieldsFromRouteAndPattern = (
 
 interface DiversionPageFunctions {
   onClose?: () => void
-  onConfirmClose?: () => void
+  onConfirmClose: () => void
   onCancelClose?: () => void
   showConfirmCloseModal: boolean
 }
@@ -245,6 +245,17 @@ export const DiversionPage = ({
             />
           ) : snapshot.matches({ "Detour Drawing": "Active" }) ? (
             <ActiveDetourPanel
+              directions={extendedDirections}
+              connectionPoints={[
+                connectionPoints?.start?.name ?? "N/A",
+                connectionPoints?.end?.name ?? "N/A",
+              ]}
+              missedStops={missedStops}
+              routeName={routeName ?? "??"}
+              routeDescription={routeDescription ?? "??"}
+              routeOrigin={routeOrigin ?? "??"}
+              routeDirection={routeDirection ?? "??"}
+              onNavigateBack={onConfirmClose}
               onDeactivateDetour={() => {
                 send({ type: "detour.active.deactivate" })
               }}
