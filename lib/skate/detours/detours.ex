@@ -49,7 +49,7 @@ defmodule Skate.Detours.Detours do
 
   ## Examples
 
-      iex> grouped_detours()
+      iex> grouped_detours(my_user_id)
       %{
         active: [%Detour{}, ...],
         draft: nil,
