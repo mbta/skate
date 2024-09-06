@@ -69,7 +69,7 @@ export const NotificationData = type({
   id: coerce(string(), number(), (i) => i.toString()),
   created_at: dateFromSeconds,
   state: enums(["unread", "read", "deleted"]),
-  // Requires a field named `$type` to be present as the discriminator
+  // Requires a field named `__struct__` to be present as the discriminator
   content: union([BridgeNotificationData, BlockWaiverNotificationData]),
 })
 export type NotificationData = Infer<typeof NotificationData>
