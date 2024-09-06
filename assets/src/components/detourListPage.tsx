@@ -24,7 +24,7 @@ export const DetourListPage = () => {
           onClick={() => setShowDetourModal(true)}
         >
           <PlusSquare />
-          Add detour
+          <span className="c-detour-list-page__button-text">Add detour</span>
         </Button>
       )}
       {detours && (

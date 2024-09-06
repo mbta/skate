@@ -1,19 +1,17 @@
-import React from "react"
+import React, { ComponentProps } from "react"
 import { fullStoryEvent } from "./helpers/fullStory"
-import {
-  DiamondTurnRightIcon,
-  LadderIcon,
-  MapIcon,
-  SearchMapIcon,
-} from "./helpers/icon"
+import { LadderIcon, MapIcon, SearchMapIcon } from "./helpers/icon"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
+import { DetourNavIcon, NavIconProps } from "./helpers/navIcons"
 
 type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 
 export interface LinkData {
   title: string
   path: string
-  navIcon: React.JSXElementConstructor<HTMLElementProps>
+  navIcon:
+    | React.JSXElementConstructor<HTMLElementProps>
+    | ((props: NavIconProps) => React.JSX.Element)
   onClick?: () => void
   hideOnMobile?: boolean
 }
@@ -24,12 +22,16 @@ export const getNavLinkData: () => LinkData[] = () => {
         {
           title: "Detours",
           path: "/detours",
-          navIcon: DiamondTurnRightIcon,
+          navIcon: (props: ComponentProps<"span">) => (
+            <span {...props}>
+              <DetourNavIcon />
+            </span>
+          ),
         },
       ]
     : []
 
-  return [
+  const alwaysPresentItems: LinkData[] = [
     {
       title: "Route Ladders",
       path: "/",
@@ -46,5 +48,7 @@ export const getNavLinkData: () => LinkData[] = () => {
       navIcon: SearchMapIcon,
       onClick: () => fullStoryEvent("Search Map nav entry clicked", {}),
     },
-  ].concat(maybeDetours)
+  ]
+
+  return alwaysPresentItems.concat(maybeDetours)
 }

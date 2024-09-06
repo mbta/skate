@@ -11,16 +11,18 @@ exports[`DetourListPage renders detour list page 1`] = `
       >
         <thead>
           <tr>
-            <th>
-              Route
+            <th
+              class="px-3 py-4"
+            >
+              Route and direction
             </th>
             <th
-              class="u-hide-for-mobile"
+              class="px-3 py-4 u-hide-for-mobile"
             >
               Starting Intersection
             </th>
             <th
-              class="u-hide-for-mobile"
+              class="px-3 py-4 u-hide-for-mobile"
             >
               On detour since
             </th>
@@ -29,10 +31,10 @@ exports[`DetourListPage renders detour list page 1`] = `
         <tbody>
           <tr>
             <td
-              class="align-middle"
+              class="align-middle p-3"
             >
               <div
-                class="c-detours-table__route-info-cell"
+                class="d-flex"
               >
                 <div
                   class="c-route-pill c-route-pill--bus"
@@ -40,36 +42,38 @@ exports[`DetourListPage renders detour list page 1`] = `
                   1
                 </div>
                 <div
-                  class="c-detours-table__route-info-text"
+                  class="c-detours-table__route-info-text d-inline-block"
                 >
-                  <span>
-                    Inbound
-                  </span>
-                  <span
-                    class="fw-bold"
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
                   >
                     Headsign A
-                  </span>
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Inbound
+                  </div>
                 </div>
               </div>
             </td>
             <td
-              class="align-middle u-hide-for-mobile"
+              class="align-middle p-3 u-hide-for-mobile"
             >
               Street A & Avenue B
             </td>
             <td
-              class="align-middle u-hide-for-mobile"
+              class="align-middle p-3 u-hide-for-mobile"
             >
               26 hours ago
             </td>
           </tr>
           <tr>
             <td
-              class="align-middle"
+              class="align-middle p-3"
             >
               <div
-                class="c-detours-table__route-info-cell"
+                class="d-flex"
               >
                 <div
                   class="c-route-pill c-route-pill--bus"
@@ -77,26 +81,28 @@ exports[`DetourListPage renders detour list page 1`] = `
                   2
                 </div>
                 <div
-                  class="c-detours-table__route-info-text"
+                  class="c-detours-table__route-info-text d-inline-block"
                 >
-                  <span>
-                    Outbound
-                  </span>
-                  <span
-                    class="fw-bold"
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
                   >
                     Headsign B
-                  </span>
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Outbound
+                  </div>
                 </div>
               </div>
             </td>
             <td
-              class="align-middle u-hide-for-mobile"
+              class="align-middle p-3 u-hide-for-mobile"
             >
               Street C & Avenue D
             </td>
             <td
-              class="align-middle u-hide-for-mobile"
+              class="align-middle p-3 u-hide-for-mobile"
             >
               29 hours ago
             </td>
@@ -108,16 +114,18 @@ exports[`DetourListPage renders detour list page 1`] = `
       >
         <thead>
           <tr>
-            <th>
-              Route
+            <th
+              class="px-3 py-4"
+            >
+              Route and direction
             </th>
             <th
-              class="u-hide-for-mobile"
+              class="px-3 py-4 u-hide-for-mobile"
             >
               Starting Intersection
             </th>
             <th
-              class="u-hide-for-mobile"
+              class="px-3 py-4 u-hide-for-mobile"
             >
               On detour since
             </th>
@@ -126,10 +134,10 @@ exports[`DetourListPage renders detour list page 1`] = `
         <tbody>
           <tr>
             <td
-              class="align-middle"
+              class="align-middle p-3"
             >
               <div
-                class="c-detours-table__route-info-cell"
+                class="d-flex"
               >
                 <div
                   class="c-route-pill c-route-pill--bus"
@@ -137,36 +145,38 @@ exports[`DetourListPage renders detour list page 1`] = `
                   1
                 </div>
                 <div
-                  class="c-detours-table__route-info-text"
+                  class="c-detours-table__route-info-text d-inline-block"
                 >
-                  <span>
-                    Inbound
-                  </span>
-                  <span
-                    class="fw-bold"
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
                   >
                     Headsign A
-                  </span>
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Inbound
+                  </div>
                 </div>
               </div>
             </td>
             <td
-              class="align-middle u-hide-for-mobile"
+              class="align-middle p-3 u-hide-for-mobile"
             >
               Street E & Avenue F
             </td>
             <td
-              class="align-middle u-hide-for-mobile"
+              class="align-middle p-3 u-hide-for-mobile"
             >
               26 hours ago
             </td>
           </tr>
           <tr>
             <td
-              class="align-middle"
+              class="align-middle p-3"
             >
               <div
-                class="c-detours-table__route-info-cell"
+                class="d-flex"
               >
                 <div
                   class="c-route-pill c-route-pill--bus"
@@ -174,26 +184,28 @@ exports[`DetourListPage renders detour list page 1`] = `
                   1
                 </div>
                 <div
-                  class="c-detours-table__route-info-text"
+                  class="c-detours-table__route-info-text d-inline-block"
                 >
-                  <span>
-                    Outbound
-                  </span>
-                  <span
-                    class="fw-bold"
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
                   >
                     Headsign Z
-                  </span>
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Outbound
+                  </div>
                 </div>
               </div>
             </td>
             <td
-              class="align-middle u-hide-for-mobile"
+              class="align-middle p-3 u-hide-for-mobile"
             >
               Street C & Avenue D
             </td>
             <td
-              class="align-middle u-hide-for-mobile"
+              class="align-middle p-3 u-hide-for-mobile"
             >
               26 hours ago
             </td>
