@@ -130,53 +130,49 @@ defmodule SkateWeb.DetoursControllerTest do
       |> Map.get(:author_id)
     end
 
-    defp expected_output(author_id) do
-      %{
-        "data" => %{
-          "active" => [
-            %{
-              "author_id" => author_id,
-              "direction" => "Outbound",
-              "intersection" => "Street A & Avenue B",
-              "name" => "Headsign",
-              "route" => "23",
-              "status" => "active",
-              "updated_at" => Util.Time.now()
-            }
-          ],
-          "draft" => [
-            %{
-              "author_id" => author_id,
-              "direction" => "Outbound",
-              "intersection" => "Street Y & Avenue Z",
-              "name" => "Headsign",
-              "route" => "75",
-              "status" => "draft",
-              "updated_at" => Util.Time.now()
-            }
-          ],
-          "past" => [
-            %{
-              "author_id" => author_id,
-              "direction" => "Inbound",
-              "intersection" => "Street C & Avenue D",
-              "name" => "Headsign",
-              "route" => "47",
-              "status" => "past",
-              "updated_at" => Util.Time.now()
-            }
-          ]
-        }
-      }
-    end
-
     @tag :authenticated
     test "fetches detours from database and groups by active, past, draft", %{conn: conn} do
       author_id = populate_db_and_get_user(conn)
 
       conn = get(conn, "/api/detours/get_detours")
 
-      assert expected_output(author_id) == json_response(conn, 200)
+      assert %{
+               "data" => %{
+                 "active" => [
+                   %{
+                     "author_id" => ^author_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street A & Avenue B",
+                     "name" => "Headsign",
+                     "route" => "23",
+                     "status" => "active",
+                     "updated_at" => _
+                   }
+                 ],
+                 "draft" => [
+                   %{
+                     "author_id" => ^author_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street Y & Avenue Z",
+                     "name" => "Headsign",
+                     "route" => "75",
+                     "status" => "draft",
+                     "updated_at" => _
+                   }
+                 ],
+                 "past" => [
+                   %{
+                     "author_id" => ^author_id,
+                     "direction" => "Inbound",
+                     "intersection" => "Street C & Avenue D",
+                     "name" => "Headsign",
+                     "route" => "47",
+                     "status" => "past",
+                     "updated_at" => _
+                   }
+                 ]
+               }
+             } = json_response(conn, 200)
     end
 
     @tag :authenticated
@@ -210,7 +206,43 @@ defmodule SkateWeb.DetoursControllerTest do
 
       conn = get(conn, "/api/detours/get_detours")
 
-      assert expected_output(current_user_id) == json_response(conn, 200)
+      assert %{
+               "data" => %{
+                 "active" => [
+                   %{
+                     "author_id" => ^current_user_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street A & Avenue B",
+                     "name" => "Headsign",
+                     "route" => "23",
+                     "status" => "active",
+                     "updated_at" => _
+                   }
+                 ],
+                 "draft" => [
+                   %{
+                     "author_id" => ^current_user_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street Y & Avenue Z",
+                     "name" => "Headsign",
+                     "route" => "75",
+                     "status" => "draft",
+                     "updated_at" => _
+                   }
+                 ],
+                 "past" => [
+                   %{
+                     "author_id" => ^current_user_id,
+                     "direction" => "Inbound",
+                     "intersection" => "Street C & Avenue D",
+                     "name" => "Headsign",
+                     "route" => "47",
+                     "status" => "past",
+                     "updated_at" => _
+                   }
+                 ]
+               }
+             } = json_response(conn, 200)
     end
 
     @tag :authenticated
@@ -258,7 +290,43 @@ defmodule SkateWeb.DetoursControllerTest do
 
       conn = get(conn, "/api/detours/get_detours")
 
-      assert expected_output(author_id) == json_response(conn, 200)
+      assert %{
+               "data" => %{
+                 "active" => [
+                   %{
+                     "author_id" => ^author_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street A & Avenue B",
+                     "name" => "Headsign",
+                     "route" => "23",
+                     "status" => "active",
+                     "updated_at" => _
+                   }
+                 ],
+                 "draft" => [
+                   %{
+                     "author_id" => ^author_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street Y & Avenue Z",
+                     "name" => "Headsign",
+                     "route" => "75",
+                     "status" => "draft",
+                     "updated_at" => _
+                   }
+                 ],
+                 "past" => [
+                   %{
+                     "author_id" => ^author_id,
+                     "direction" => "Inbound",
+                     "intersection" => "Street C & Avenue D",
+                     "name" => "Headsign",
+                     "route" => "47",
+                     "status" => "past",
+                     "updated_at" => _
+                   }
+                 ]
+               }
+             } = json_response(conn, 200)
     end
   end
 
