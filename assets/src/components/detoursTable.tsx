@@ -6,7 +6,8 @@ import { timeAgoLabel } from "../util/dateTime"
 import { SimpleDetour } from "../models/detour"
 
 interface DetoursTableProps {
-  data: SimpleDetour[]
+  data: SimpleDetour[] | null
+  status: DetourStatus
 }
 
 export enum DetourStatus {
@@ -28,44 +29,78 @@ export const timestampLabelFromStatus = (status: DetourStatus) => {
   }
 }
 
-export const DetoursTable = ({ data }: DetoursTableProps) => {
+export const DetoursTable = ({ data, status }: DetoursTableProps) => (
+  <Table hover={data !== null} className="c-detours-table">
+    <thead className="u-hide-for-mobile">
+      <tr>
+        <th className="px-3 py-4">Route and direction</th>
+        <th className="px-3 py-4 u-hide-for-mobile">Starting Intersection</th>
+        <th className="px-3 py-4 u-hide-for-mobile">
+          {timestampLabelFromStatus(status)}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <DetourRows data={data} status={status} />
+    </tbody>
+  </Table>
+)
+
+const DetourRows = ({
+  data,
+  status,
+}: {
+  data: SimpleDetour[] | null
+  status: DetourStatus
+}) =>
+  data === null ? (
+    <EmptyDetourRows message={`No ${status} detours.`} />
+  ) : (
+    <PopulatedDetourRows data={data} />
+  )
+
+const PopulatedDetourRows = ({ data }: { data: SimpleDetour[] }) => {
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   return (
-    <Table hover className="c-detours-table">
-      <thead className="u-hide-for-mobile">
-        <tr>
-          <th className="px-3 py-4">Route and direction</th>
-          <th className="px-3 py-4 u-hide-for-mobile">Starting Intersection</th>
-          <th className="px-3 py-4 u-hide-for-mobile">On detour since</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((detour, index) => (
-          <tr key={index}>
-            <td className="align-middle p-3">
-              <div className="d-flex">
-                <RoutePill routeName={detour.route} />
-                <div className="c-detours-table__route-info-text d-inline-block">
-                  <div className="pb-1 fs-4 fw-semibold">{detour.name}</div>
-                  <div className="c-detours-table__route-info-direction fs-6">
-                    {detour.direction}
-                  </div>
+    <>
+      {data.map((detour, index) => (
+        <tr key={index}>
+          <td className="align-middle p-3">
+            <div className="d-flex">
+              <RoutePill routeName={detour.route} />
+              <div className="c-detours-table__route-info-text d-inline-block">
+                <div className="pb-1 fs-4 fw-semibold">{detour.name}</div>
+                <div className="c-detours-table__route-info-direction fs-6">
+                  {detour.direction}
                 </div>
               </div>
-            </td>
-            <td className="align-middle p-3 u-hide-for-mobile">
-              {detour.intersection}
-            </td>
-            <td className="align-middle p-3 u-hide-for-mobile">
-              {timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+            </div>
+          </td>
+          <td className="align-middle p-3 u-hide-for-mobile">
+            {detour.intersection}
+          </td>
+          <td className="align-middle p-3 u-hide-for-mobile">
+            {timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
+          </td>
+        </tr>
+      ))}
+    </>
   )
 }
+
+const EmptyDetourRows = ({ message }: { message: string }) => (
+  <tr>
+    <td colSpan={3} className="p-3 p-md-4">
+      <div className="d-flex justify-content-center mb-3">
+        <EmptyDetourTableIcon height="100px" width="100px" />
+      </div>
+      <div className="d-flex justify-content-center">
+        <p className="fs-3 fw-light m-0">{message}</p>
+      </div>
+    </td>
+  </tr>
+)
 
 export const EmptyDetourTableIcon = (props: ComponentProps<"svg">) => (
   <svg

@@ -5,7 +5,6 @@ const meta = {
   component: EmptyDetourTableIcon,
   parameters: {
     layout: "centered",
-    stretch: false,
   },
 } satisfies Meta<typeof EmptyDetourTableIcon>
 

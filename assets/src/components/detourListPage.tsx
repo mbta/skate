@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react"
-import { DetoursTable } from "./detoursTable"
+import { DetoursTable, DetourStatus } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
 import { Button } from "react-bootstrap"
 import { PlusSquare } from "../helpers/bsIcons"
@@ -29,9 +29,9 @@ export const DetourListPage = () => {
       )}
       {detours && (
         <>
-          {detours.active && <DetoursTable data={detours.active} />}
-          {detours.draft && <DetoursTable data={detours.draft} />}
-          {detours.past && <DetoursTable data={detours.past} />}
+          <DetoursTable data={detours.active} status={DetourStatus.Active} />
+          <DetoursTable data={detours.draft} status={DetourStatus.Draft} />
+          <DetoursTable data={detours.past} status={DetourStatus.Closed} />
         </>
       )}
 
