@@ -19,6 +19,7 @@ defmodule Notifications.Db.Notification do
 
     belongs_to(:block_waiver, DbBlockWaiver)
     belongs_to(:bridge_movement, DbBridgeMovement)
+    belongs_to(:detour, Notifications.Db.Detour)
   end
 
   def block_waiver_changeset(notification, attrs \\ %{}) do
