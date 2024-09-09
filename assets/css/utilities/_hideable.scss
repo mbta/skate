@@ -11,7 +11,7 @@
 }
 
 .u-hide-for-mobile {
-  @media screen and (max-width: map-get($breakpoints, "max-mobile-landscape-tablet-portrait-width")) {
+  @include media-breakpoint-down(md) {
     display: none;
   }
 }
