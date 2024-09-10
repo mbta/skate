@@ -92,6 +92,9 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  &.active-detour {
+    background-color: $color-lemon-100;
+  }
 }
 
 .c-diversion-panel__h1 {
