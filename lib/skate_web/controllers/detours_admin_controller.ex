@@ -33,4 +33,10 @@ defmodule SkateWeb.DetoursAdminController do
       title: "Skate Detours"
     )
   end
+
+  @spec delete_all(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete_all(conn, _params) do
+    Detours.delete_all_detours()
+    redirect(conn, to: ~p"/detours_admin")
+  end
 end
