@@ -106,6 +106,7 @@ defmodule Skate.Detours.Detours do
     Sentry.capture_message("Detour error: the detour has an outdated schema",
       extra: %{error: invalid_detour}
     )
+
     nil
   end
 
