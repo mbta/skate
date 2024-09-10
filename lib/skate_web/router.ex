@@ -124,6 +124,7 @@ defmodule SkateWeb.Router do
     ]
 
     get "/admin", AdminController, :index
+    get "/detours_admin", DetoursAdminController, :index
     get "/reports", ReportController, :index
     get "/reports/:short_name", ReportController, :run
     get "/test_groups", TestGroupController, :index
