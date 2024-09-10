@@ -14,7 +14,7 @@ export const DetoursTable = ({ data }: DetoursTableProps) => {
 
   return (
     <Table hover className="c-detours-table">
-      <thead>
+      <thead className="u-hide-for-mobile">
         <tr>
           <th className="px-3 py-4">Route and direction</th>
           <th className="px-3 py-4 u-hide-for-mobile">Starting Intersection</th>

@@ -30,7 +30,9 @@ $table-border-radius: 0.5rem;
   tr {
     th:first-child,
     td:first-child {
-      border-left: $table-border;
+      @include media-breakpoint-up(md) {
+        border-left: $table-border;
+      }
     }
 
     th:last-child,
