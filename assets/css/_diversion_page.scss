@@ -107,3 +107,17 @@
 .c-diversion-panel__help-text {
   line-height: 1.5;
 }
+
+.c-diversion-panel .icon-button {
+  display: flex;
+  align-items: center;
+  color: white;
+  > svg {
+    margin-right: .5rem;
+  }
+}
+
+.c-active-detour__alert-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+}

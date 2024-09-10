@@ -3,7 +3,7 @@ import { DetourDirection } from "../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import { Stop } from "../../schedule"
-import { ArrowLeft } from "../../helpers/bsIcons"
+import { ArrowLeft, ExclamationTriangleFill, StopCircle } from "../../helpers/bsIcons"
 import { AffectedRoute, MissedStops } from "./detourPanelComponents"
 
 export interface ActiveDetourPanelProps {
@@ -36,17 +36,19 @@ export const ActiveDetourPanel = ({
 
     <Panel.Body className="d-flex flex-column">
       <Panel.Body.ScrollArea>
-        {onNavigateBack && (
-          <Button
-            className="icon-link my-3"
-            variant="outline-primary"
-            onClick={onNavigateBack}
-          >
-            <ArrowLeft />
-            Back
-          </Button>
-        )}
-
+        <div className="d-flex flex-rown justify-content-between align-items-center">
+          {onNavigateBack && (
+            <Button
+              className="icon-link my-3"
+              variant="outline-primary"
+              onClick={onNavigateBack}
+            >
+              <ArrowLeft />
+              Back
+            </Button>
+          )}
+          <ExclamationTriangleFill className="c-active-detour__alert-icon" />
+        </div>
         <AffectedRoute
           routeName={routeName}
           routeDescription={routeDescription}
@@ -85,8 +87,13 @@ export const ActiveDetourPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer>
-        <Button className="flex-grow-1 m-3" onClick={onDeactivateDetour}>
-          Deactivate Detour
+        <Button
+          variant="ui-alert"
+          className="flex-grow-1 m-3 icon-button"
+          onClick={onDeactivateDetour}
+        >
+          <StopCircle />
+          Return to regular route
         </Button>
       </Panel.Body.Footer>
     </Panel.Body>
