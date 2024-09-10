@@ -58,8 +58,11 @@ defmodule Skate.Detours.Detours do
   """
   def grouped_detours(user_id) do
     detours =
-      Detour
-      |> Repo.all()
+      Repo.all(
+        from(d in Detour,
+          order_by: [desc: d.updated_at]
+        )
+      )
       |> Enum.map(fn detour -> db_detour_to_detour(detour, user_id) end)
       |> Enum.filter(& &1)
       |> Enum.group_by(fn detour -> detour.status end)
