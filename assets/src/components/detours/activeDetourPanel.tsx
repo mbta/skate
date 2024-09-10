@@ -3,7 +3,11 @@ import { DetourDirection } from "../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
 import { Panel } from "./diversionPage"
 import { Stop } from "../../schedule"
-import { ArrowLeft, ExclamationTriangleFill, StopCircle } from "../../helpers/bsIcons"
+import {
+  ArrowLeft,
+  ExclamationTriangleFill,
+  StopCircle,
+} from "../../helpers/bsIcons"
 import { AffectedRoute, MissedStops } from "./detourPanelComponents"
 
 export interface ActiveDetourPanelProps {
