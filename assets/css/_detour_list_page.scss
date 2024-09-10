@@ -1,3 +1,5 @@
+@use "./color/tokens_2021" as old_tokens;
+
 .c-detour-list-page {
   box-sizing: border-box;
 
@@ -8,4 +10,9 @@
 
 .c-detour-list-page__button-text {
   font-size: 1.25rem;
+}
+
+.c-detour-list-page__header-visibility,
+.c-detour-list-page__header-icon {
+  color: old_tokens.$gray-500;
 }
