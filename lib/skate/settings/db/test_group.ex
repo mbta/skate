@@ -7,9 +7,7 @@ defmodule Skate.Settings.Db.TestGroup do
   alias Skate.Settings.Db.TestGroupUser, as: DbTestGroupUser
   alias Skate.Settings.TestGroupOverride
 
-  @type t() :: %__MODULE__{}
-
-  schema "test_groups" do
+  typed_schema "test_groups" do
     field(:name, :string)
     field(:override, TestGroupOverride, default: :none)
     timestamps()

@@ -6,9 +6,7 @@ defmodule Notifications.Db.BridgeMovement do
 
   alias Notifications.BridgeStatus
 
-  @type t() :: %__MODULE__{}
-
-  schema "bridge_movements" do
+  typed_schema "bridge_movements" do
     field(:status, BridgeStatus)
     field(:lowering_time, :integer)
     timestamps()

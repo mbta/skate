@@ -6,11 +6,9 @@ defmodule Skate.Settings.Db.RouteTab do
 
   alias Skate.Settings.Db.User
 
-  @type t :: %__MODULE__{}
-
   @primary_key {:uuid, :binary_id, autogenerate: false}
 
-  schema "route_tabs" do
+  typed_schema "route_tabs" do
     belongs_to(:user, User)
     field(:preset_name, :string)
     field(:selected_route_ids, {:array, :string})

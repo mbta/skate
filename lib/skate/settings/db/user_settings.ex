@@ -10,9 +10,7 @@ defmodule Skate.Settings.Db.UserSettings do
 
   @primary_key false
 
-  @type t :: %__MODULE__{}
-
-  schema "user_settings" do
+  typed_schema "user_settings" do
     belongs_to(:user, User, primary_key: true)
     field(:ladder_page_vehicle_label, VehicleLabel)
     field(:shuttle_page_vehicle_label, VehicleLabel)

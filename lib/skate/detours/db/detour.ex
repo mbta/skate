@@ -6,9 +6,7 @@ defmodule Skate.Detours.Db.Detour do
 
   alias Skate.Settings.Db.User
 
-  @type t :: %__MODULE__{}
-
-  schema "detours" do
+  typed_schema "detours" do
     field :state, :map
     belongs_to :author, User
 
