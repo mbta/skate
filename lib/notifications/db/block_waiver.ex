@@ -1,7 +1,7 @@
 defmodule Notifications.Db.BlockWaiver do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
   alias Notifications.NotificationReason
 

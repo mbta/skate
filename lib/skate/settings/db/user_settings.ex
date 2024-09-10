@@ -1,7 +1,7 @@
 defmodule Skate.Settings.Db.UserSettings do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Skate.Settings.Db.User

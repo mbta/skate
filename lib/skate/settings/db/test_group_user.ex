@@ -1,7 +1,7 @@
 defmodule Skate.Settings.Db.TestGroupUser do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Skate.Settings.Db.TestGroup, as: DbTestGroup

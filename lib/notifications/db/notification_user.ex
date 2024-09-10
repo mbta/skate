@@ -1,7 +1,7 @@
 defmodule Notifications.Db.NotificationUser do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
 
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.NotificationState

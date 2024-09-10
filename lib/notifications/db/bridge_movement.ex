@@ -1,7 +1,7 @@
 defmodule Notifications.Db.BridgeMovement do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Notifications.BridgeStatus

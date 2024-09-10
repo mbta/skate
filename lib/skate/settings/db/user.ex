@@ -1,7 +1,7 @@
 defmodule Skate.Settings.Db.User do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Notifications.Db.Notification, as: DbNotification
