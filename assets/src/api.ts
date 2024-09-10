@@ -53,6 +53,7 @@ import {
 } from "./models/locationSearchSuggestionData"
 import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
 import { DetourShapeData, detourShapeFromData } from "./models/detourShapeData"
+import { groupedDetoursFromData, GroupedSimpleDetours } from "./models/detour"
 import { DetourShape, FinishedDetour, UnfinishedDetour } from "./models/detour"
 import {
   FinishedDetourData,
@@ -93,7 +94,7 @@ const checkResponseStatus = (response: Response) => {
 const parseJson = (response: Response) => response.json() as unknown
 
 /**
- * @depcreated use {@linkcode apiCallResult}
+ * @deprecated use {@linkcode apiCallResult}
  *
  * A small wrapper around fetch which checks for valid responses and parses
  * JSON from the result body. It processes the resulting object with
@@ -119,7 +120,7 @@ export const apiCall = <T>({
     .catch(() => defaultResult)
 
 /**
- * @depcreated use {@linkcode apiCallResult}
+ * @deprecated use {@linkcode apiCallResult}
  *
  * A slightly larger (than {@linkcode apiCall}) wrapper around
  * {@linkcode fetch} which checks for valid responses and then parses JSON from
@@ -158,7 +159,7 @@ export const checkedApiCall = <T, U>({
     })
 
 /**
- * @depcreated use {@linkcode apiCallResult}
+ * @deprecated use {@linkcode apiCallResult}
  *
  * A wrapper around {@linkcode fetch} which returns a {@linkcode FetchResult}.
  *
@@ -215,12 +216,19 @@ export const apiCallWithError = <T, U>({
  * `Promise<Result<Result<T, E>, FetchError>>`, but instead that is left up to
  * callers to implement instead of assuming any requirements.
  */
-export const apiCallResult = async <T, E>(
-  url: Parameters<typeof fetch>[0],
-  OkStruct: Struct<T, unknown>,
-  ErrStruct: Struct<E, unknown>,
+export const apiCallResult = async <T, E>({
+  url,
+  OkStruct,
+  ErrStruct,
+  parser,
+  requestInit,
+}: {
+  url: Parameters<typeof fetch>[0]
+  OkStruct: Struct<T, unknown>
+  ErrStruct: Struct<E, unknown>
+  parser?: (data: any) => T
   requestInit?: Parameters<typeof fetch>[1]
-): Promise<Result<T, E>> =>
+}): Promise<Result<T, E>> =>
   fetch(url, requestInit)
     .then(async (response) => {
       // If the fetch does not error and returns something from the endpoint,
@@ -231,7 +239,8 @@ export const apiCallResult = async <T, E>(
       // Otherwise, return `Err(ErrStruct)` and attempt to return the data
       // according to JSONAPI specifications
       if (response.ok && is(json, object({ data: any() }))) {
-        return Ok(create(json.data, OkStruct))
+        const parsed = parser ? parser(json.data) : json.data
+        return Ok(create(parsed, OkStruct))
       } else {
         assert(json, object({ error: any() }))
         return Err(create(json.error, ErrStruct))
@@ -304,14 +313,14 @@ export type FetchDetourDirectionsError = Infer<
 export const fetchDetourDirections = (
   coordinates: ShapePoint[]
 ): Promise<Result<DetourShape, FetchDetourDirectionsError>> =>
-  apiCallResult(
-    "/api/detours/directions",
-    DetourShapeData,
-    FetchDetourDirectionsError,
-    postJsonParameter({
+  apiCallResult({
+    url: "/api/detours/directions",
+    OkStruct: DetourShapeData,
+    ErrStruct: FetchDetourDirectionsError,
+    requestInit: postJsonParameter({
       coordinates,
-    })
-  ).then((v) => map(v, detourShapeFromData))
+    }),
+  }).then((v) => map(v, detourShapeFromData))
 
 export const fetchUnfinishedDetour = (
   routePatternId: RoutePatternId,
@@ -504,13 +513,26 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
 export const putDetourUpdate = (
   snapshot: Snapshot<unknown>
 ): Promise<Result<number, never>> =>
-  apiCallResult(`/api/detours/update_snapshot`, number(), never(), {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      "x-csrf-token": getCsrfToken(),
+  apiCallResult({
+    url: `/api/detours/update_snapshot`,
+    OkStruct: number(),
+    ErrStruct: never(),
+    requestInit: {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": getCsrfToken(),
+      },
+      body: JSON.stringify({ snapshot: snapshot }),
     },
-    body: JSON.stringify({ snapshot: snapshot }),
+  })
+
+export const fetchDetours = (): Promise<Result<GroupedSimpleDetours, never>> =>
+  apiCallResult({
+    url: `/api/detours/get_detours`,
+    OkStruct: GroupedSimpleDetours,
+    ErrStruct: never(),
+    parser: groupedDetoursFromData,
   })
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""

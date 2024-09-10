@@ -24,6 +24,17 @@ defmodule SkateWeb.DetoursController do
     json(conn, %{data: returned_uuid})
   end
 
+  @spec get_detours(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def get_detours(conn, _params) do
+    %{id: user_id} = AuthManager.Plug.current_resource(conn)
+
+    detours = Detours.grouped_detours(user_id)
+
+    json(conn, %{
+      data: detours
+    })
+  end
+
   @spec unfinished_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def unfinished_detour(conn, %{
         "route_pattern_id" => route_pattern_id,

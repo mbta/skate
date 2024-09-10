@@ -5,9 +5,30 @@ defmodule Skate.Detours.Detours do
 
   import Ecto.Query, warn: false
   alias Skate.Repo
-
   alias Skate.Detours.Db.Detour
   alias Skate.Settings.User
+
+  @type t :: %__MODULE__{
+          route: String.t(),
+          direction: String.t(),
+          name: String.t(),
+          intersection: String.t(),
+          updated_at: integer(),
+          author_id: integer(),
+          status: :active | :draft | :past
+        }
+
+  @derive Jason.Encoder
+
+  defstruct [
+    :route,
+    :direction,
+    :name,
+    :intersection,
+    :updated_at,
+    :author_id,
+    :status
+  ]
 
   @doc """
   Returns the list of detours.
@@ -16,11 +37,90 @@ defmodule Skate.Detours.Detours do
 
       iex> list_detours()
       [%Detour{}, ...]
-
   """
   def list_detours do
-    Repo.all(Detour)
+    Detour
+    |> Repo.all()
+    |> Repo.preload(:author)
   end
+
+  @doc """
+  Returns the detours grouped by active, draft, and past.
+
+  ## Examples
+
+      iex> grouped_detours(my_user_id)
+      %{
+        active: [%Detour{}, ...],
+        draft: nil,
+        past: [%Detour{}, ...]
+      }
+  """
+  def grouped_detours(user_id) do
+    detours =
+      Detour
+      |> Repo.all()
+      |> Enum.map(fn detour -> db_detour_to_detour(detour, user_id) end)
+      |> Enum.filter(& &1)
+      |> Enum.group_by(fn detour -> detour.status end)
+
+    %{
+      active: Map.get(detours, :active),
+      draft: Map.get(detours, :draft),
+      past: Map.get(detours, :past)
+    }
+  end
+
+  @spec db_detour_to_detour(Detour.t(), integer()) :: t()
+  defp db_detour_to_detour(
+         %{
+           state: %{
+             "context" => %{
+               "route" => %{"name" => route_name, "directionNames" => direction_names},
+               "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
+               "nearestIntersection" => nearest_intersection
+             }
+           }
+         } = db_detour,
+         user_id
+       ) do
+    direction = Map.get(direction_names, Integer.to_string(direction_id))
+
+    date =
+      db_detour.updated_at
+      |> DateTime.from_naive!("Etc/UTC")
+      |> DateTime.to_unix()
+
+    %__MODULE__{
+      route: route_name,
+      direction: direction,
+      name: headsign,
+      intersection: nearest_intersection,
+      updated_at: date,
+      author_id: db_detour.author_id,
+      status: categorize_detour(db_detour, user_id)
+    }
+  end
+
+  defp db_detour_to_detour(invalid_detour, _) do
+    Sentry.capture_message("Detour error: the detour has an outdated schema",
+      extra: %{error: invalid_detour}
+    )
+
+    nil
+  end
+
+  @type detour_type :: :active | :draft | :past
+
+  @spec categorize_detour(map(), integer()) :: detour_type
+  defp categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Active"}}}, _user_id),
+    do: :active
+
+  defp categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}, _user_id),
+    do: :past
+
+  defp categorize_detour(%{author_id: author_id}, user_id) when author_id == user_id, do: :draft
+  defp categorize_detour(_, _), do: nil
 
   @doc """
   Gets a single detour.

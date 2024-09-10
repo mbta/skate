@@ -1,4 +1,4 @@
-import { describe, expect, jest, test } from "@jest/globals"
+import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 
 import React from "react"
 
@@ -10,8 +10,16 @@ import userEvent from "@testing-library/user-event"
 import { DetourListPage } from "../../../src/components/detourListPage"
 import { TestGroups } from "../../../src/userInTestGroup"
 import getTestGroups from "../../../src/userTestGroups"
+import { neverPromise } from "../../testHelpers/mockHelpers"
+import { fetchDetours } from "../../../src/api"
 
 jest.mock("../../../src/userTestGroups")
+
+jest.mock("../../../src/api")
+
+beforeEach(() => {
+  jest.mocked(fetchDetours).mockReturnValue(neverPromise())
+})
 
 const renderDetourListPage = () => {
   return render(<DetourListPage></DetourListPage>)

@@ -3,10 +3,10 @@ import { Table } from "react-bootstrap"
 import { RoutePill } from "./routePill"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
-import { Detour } from "./detourListPage"
+import { SimpleDetour } from "../models/detour"
 
 interface DetoursTableProps {
-  data: Detour[]
+  data: SimpleDetour[]
 }
 
 export const DetoursTable = ({ data }: DetoursTableProps) => {
@@ -39,7 +39,7 @@ export const DetoursTable = ({ data }: DetoursTableProps) => {
               {detour.intersection}
             </td>
             <td className="align-middle p-3 u-hide-for-mobile">
-              {timeAgoLabel(epochNowInSeconds, detour.activeSince)}
+              {timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
             </td>
           </tr>
         ))}
