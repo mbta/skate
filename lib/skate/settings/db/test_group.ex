@@ -1,15 +1,13 @@
 defmodule Skate.Settings.Db.TestGroup do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Skate.Settings.Db.TestGroupUser, as: DbTestGroupUser
   alias Skate.Settings.TestGroupOverride
 
-  @type t() :: %__MODULE__{}
-
-  schema "test_groups" do
+  typed_schema "test_groups" do
     field(:name, :string)
     field(:override, TestGroupOverride, default: :none)
     timestamps()

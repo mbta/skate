@@ -1,7 +1,7 @@
 defmodule Notifications.Db.Notification do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
@@ -9,9 +9,7 @@ defmodule Notifications.Db.Notification do
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.Db.User, as: DbUser
 
-  @type t() :: %__MODULE__{}
-
-  schema "notifications" do
+  typed_schema "notifications" do
     field(:created_at, :integer)
     field(:state, :string, virtual: true)
     timestamps()

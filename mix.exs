@@ -55,6 +55,7 @@ defmodule Skate.MixProject do
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:diskusage_logger, "~> 0.2.0"},
       {:ecto_sql, "~> 3.4"},
+      {:typed_ecto_schema, "~> 0.4.1"},
       {:ehmon, github: "mbta/ehmon", only: :prod},
       {:emqtt_failover, "~> 0.3.0"},
       {:ex_aws_rds, "~> 2.0.2"},

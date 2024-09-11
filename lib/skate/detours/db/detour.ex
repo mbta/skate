@@ -1,14 +1,12 @@
 defmodule Skate.Detours.Db.Detour do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Skate.Settings.Db.User
 
-  @type t :: %__MODULE__{}
-
-  schema "detours" do
+  typed_schema "detours" do
     field :state, :map
     belongs_to :author, User
 

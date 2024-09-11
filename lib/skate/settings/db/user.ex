@@ -1,7 +1,7 @@
 defmodule Skate.Settings.Db.User do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Notifications.Db.Notification, as: DbNotification
@@ -11,10 +11,9 @@ defmodule Skate.Settings.Db.User do
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
   alias Skate.Detours.Db.Detour
 
-  @type t :: %__MODULE__{}
   @type id :: integer()
 
-  schema "users" do
+  typed_schema "users" do
     field(:username, :string)
     field(:uuid, :binary_id)
     field(:email, :string)

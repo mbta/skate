@@ -1,7 +1,7 @@
 defmodule Notifications.Db.NotificationUser do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
 
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.NotificationState
@@ -9,9 +9,7 @@ defmodule Notifications.Db.NotificationUser do
 
   @primary_key false
 
-  @type t() :: %__MODULE__{}
-
-  schema "notifications_users" do
+  typed_schema "notifications_users" do
     belongs_to(:notification, DbNotification)
     belongs_to(:user, DbUser)
     field(:state, NotificationState)

@@ -1,14 +1,12 @@
 defmodule Notifications.Db.BridgeMovement do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Notifications.BridgeStatus
 
-  @type t() :: %__MODULE__{}
-
-  schema "bridge_movements" do
+  typed_schema "bridge_movements" do
     field(:status, BridgeStatus)
     field(:lowering_time, :integer)
     timestamps()

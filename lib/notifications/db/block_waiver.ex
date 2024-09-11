@@ -1,13 +1,11 @@
 defmodule Notifications.Db.BlockWaiver do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
   alias Notifications.NotificationReason
 
-  @type t() :: %__MODULE__{}
-
-  schema "block_waivers" do
+  typed_schema "block_waivers" do
     field(:created_at, :integer)
     field(:reason, NotificationReason)
     field(:route_ids, {:array, :string})

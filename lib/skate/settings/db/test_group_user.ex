@@ -1,15 +1,13 @@
 defmodule Skate.Settings.Db.TestGroupUser do
   @moduledoc false
 
-  use Ecto.Schema
+  use Skate.Schema
   import Ecto.Changeset
 
   alias Skate.Settings.Db.TestGroup, as: DbTestGroup
   alias Skate.Settings.Db.User, as: DbUser
 
-  @type t() :: %__MODULE__{}
-
-  schema "test_groups_users" do
+  typed_schema "test_groups_users" do
     belongs_to(:test_group, DbTestGroup)
     belongs_to(:user, DbUser)
     timestamps()
