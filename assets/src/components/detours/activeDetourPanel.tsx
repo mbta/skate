@@ -40,7 +40,7 @@ export const ActiveDetourPanel = ({
 
     <Panel.Body className="d-flex flex-column">
       <Panel.Body.ScrollArea>
-        <div className="d-flex flex-rown justify-content-between align-items-center">
+        <div className="d-flex justify-content-between align-items-center">
           {onNavigateBack && (
             <Button
               className="icon-link my-3"
