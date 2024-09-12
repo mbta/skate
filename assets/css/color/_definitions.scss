@@ -23,6 +23,7 @@ $service-alert: tokens.$lemon-500;
 $light: tokens.$gray-100;
 $dark: tokens.$gray-900;
 $missed-stop: new_tokens.$missed-stop;
+$active-detour: new_tokens.$lemon-100;
 
 @mixin theme-colors {
   --color-primary: #{$primary};

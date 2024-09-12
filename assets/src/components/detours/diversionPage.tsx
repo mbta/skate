@@ -178,7 +178,15 @@ export const DiversionPage = ({
           <CloseButton className="p-4" onClick={onClose} />
         </header>
 
-        <div className="l-diversion-page__panel">
+        <div
+          className={joinClasses([
+            "l-diversion-page__panel",
+            snapshot.matches({ "Detour Drawing": "Active" }) &&
+            userInTestGroup(TestGroups.DetoursPilot)
+              ? "active-detour"
+              : "text-bg-light",
+          ])}
+        >
           {snapshot.matches({ "Detour Drawing": "Pick Route Pattern" }) ? (
             <DetourRouteSelectionPanel
               isLoadingRoutePatterns={snapshot.matches({
