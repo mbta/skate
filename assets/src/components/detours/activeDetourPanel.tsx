@@ -93,7 +93,7 @@ export const ActiveDetourPanel = ({
       <Panel.Body.Footer>
         <Button
           variant="ui-alert"
-          className="flex-grow-1 m-3 icon-button"
+          className="flex-grow-1 m-3 icon-link text-light"
           onClick={onDeactivateDetour}
         >
           <StopCircle />
