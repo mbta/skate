@@ -29,6 +29,9 @@ export const createDetourMachine = setup({
       detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
 
       finishedDetour: FinishedDetour | undefined | null
+
+      selectedDuration?: string
+      selectedReason?: string
     },
 
     input: {} as
@@ -64,7 +67,19 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
       | { type: "detour.share.copy-detour"; detourText: string }
-      | { type: "detour.share.activate" }
+      | { type: "detour.share.open-activate-modal" }
+      | {
+          type: "detour.share.activate-modal.select-duration"
+          duration: string
+        }
+      | {
+          type: "detour.share.activate-modal.select-reason"
+          reason: string
+        }
+      | { type: "detour.share.activate-modal.next" }
+      | { type: "detour.share.activate-modal.cancel" }
+      | { type: "detour.share.activate-modal.back" }
+      | { type: "detour.share.activate-modal.activate" }
       | { type: "detour.active.deactivate" }
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: number },
@@ -458,6 +473,7 @@ export const createDetourMachine = setup({
           },
         },
         "Share Detour": {
+          initial: "Reviewing",
           on: {
             "detour.edit.resume": {
               target: "Editing.Finished Drawing",
@@ -465,6 +481,121 @@ export const createDetourMachine = setup({
             "detour.share.activate": {
               target: "Active",
             },
+          },
+          states: {
+            Reviewing: {
+              on: {
+                "detour.share.open-activate-modal": {
+                  target: "Activating",
+                },
+              },
+            },
+            Activating: {
+              initial: "Selecting Duration",
+              on: {
+                "detour.share.activate-modal.cancel": {
+                  target: "Reviewing",
+                },
+              },
+              states: {
+                "Selecting Duration": {
+                  initial: "Begin",
+                  states: {
+                    Begin: {
+                      always: [
+                        {
+                          guard: ({ context: { selectedDuration } }) =>
+                            selectedDuration === undefined,
+                          target: "No Duration Selected",
+                        },
+                        { target: "Duration Selected" },
+                      ],
+                    },
+                    "No Duration Selected": {},
+                    "Duration Selected": {
+                      on: {
+                        "detour.share.activate-modal.next": {
+                          target: "Done",
+                        },
+                      },
+                    },
+                    Done: {
+                      type: "final",
+                    },
+                  },
+
+                  on: {
+                    "detour.share.activate-modal.select-duration": {
+                      target: "Selecting Duration",
+                      actions: assign({
+                        selectedDuration: ({ event }) => event.duration,
+                      }),
+                    },
+                  },
+                  onDone: {
+                    target: "Selecting Reason",
+                  },
+                },
+                "Selecting Reason": {
+                  initial: "Begin",
+                  states: {
+                    Begin: {
+                      always: [
+                        {
+                          guard: ({ context: { selectedReason } }) =>
+                            selectedReason === undefined,
+                          target: "No Reason Selected",
+                        },
+                        { target: "Reason Selected" },
+                      ],
+                    },
+                    "No Reason Selected": {},
+                    "Reason Selected": {
+                      on: {
+                        "detour.share.activate-modal.next": {
+                          target: "Done",
+                        },
+                      },
+                    },
+                    Done: {
+                      type: "final",
+                    },
+                  },
+                  on: {
+                    "detour.share.activate-modal.back": {
+                      target: "Selecting Duration",
+                    },
+                    "detour.share.activate-modal.select-reason": {
+                      target: "Selecting Reason",
+                      actions: assign({
+                        selectedReason: ({ event }) => event.reason,
+                      }),
+                    },
+                  },
+                  onDone: {
+                    target: "Confirming",
+                  },
+                },
+                Confirming: {
+                  on: {
+                    "detour.share.activate-modal.back": {
+                      target: "Selecting Reason",
+                    },
+                    "detour.share.activate-modal.activate": {
+                      target: "Done",
+                    },
+                  },
+                },
+                Done: { type: "final" },
+              },
+              onDone: {
+                target: "Done",
+              },
+            },
+            Done: { type: "final" },
+          },
+          onDone: {
+            target: "Active",
           },
         },
         Active: {

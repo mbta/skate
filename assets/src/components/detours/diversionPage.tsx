@@ -23,6 +23,7 @@ import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { ActiveDetourPanel } from "./activeDetourPanel"
 import { PastDetourPanel } from "./pastDetourPanel"
 import userInTestGroup from "../../userInTestGroup"
+import { ActivateDetour } from "./activateDetourModal"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -100,6 +101,9 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
+
+    selectedDuration,
+    selectedReason,
   } = useDetour(
     "snapshot" in useDetourProps
       ? { snapshot: useDetourProps.snapshot }
@@ -256,11 +260,82 @@ export const DiversionPage = ({
               onActivateDetour={
                 inTestGroup(TestGroups.DetoursList)
                   ? () => {
-                      send({ type: "detour.share.activate" })
+                      send({ type: "detour.share.open-activate-modal" })
                     }
                   : undefined
               }
-            />
+            >
+              {snapshot.matches({
+                "Detour Drawing": {
+                  "Share Detour": "Activating",
+                },
+              }) ? (
+                <ActivateDetour.Modal
+                  onCancel={() => {
+                    send({ type: "detour.share.activate-modal.cancel" })
+                  }}
+                  onBack={
+                    snapshot.can({ type: "detour.share.activate-modal.back" })
+                      ? () => {
+                          send({ type: "detour.share.activate-modal.back" })
+                        }
+                      : undefined
+                  }
+                  onNext={
+                    snapshot.can({ type: "detour.share.activate-modal.next" })
+                      ? () => {
+                          send({ type: "detour.share.activate-modal.next" })
+                        }
+                      : undefined
+                  }
+                  onActivate={
+                    snapshot.can({
+                      type: "detour.share.activate-modal.activate",
+                    })
+                      ? () => {
+                          send({ type: "detour.share.activate-modal.activate" })
+                        }
+                      : undefined
+                  }
+                >
+                  {snapshot.matches({
+                    "Detour Drawing": {
+                      "Share Detour": { Activating: "Selecting Duration" },
+                    },
+                  }) ? (
+                    <ActivateDetour.SelectingDuration
+                      onSelectDuration={(selectedDuration: string) => {
+                        send({
+                          type: "detour.share.activate-modal.select-duration",
+                          duration: selectedDuration,
+                        })
+                      }}
+                      selectedDuration={selectedDuration}
+                    />
+                  ) : snapshot.matches({
+                      "Detour Drawing": {
+                        "Share Detour": { Activating: "Selecting Reason" },
+                      },
+                    }) ? (
+                    <ActivateDetour.SelectingReason
+                      onSelectReason={(selectedReason: string) => {
+                        send({
+                          type: "detour.share.activate-modal.select-reason",
+                          reason: selectedReason,
+                        })
+                      }}
+                      selectedReason={selectedReason}
+                    />
+                  ) : snapshot.matches({
+                      "Detour Drawing": {
+                        "Share Detour": { Activating: "Confirming" },
+                      },
+                    }) ? (
+                    <ActivateDetour.Confirming />
+                  ) : null}
+                </ActivateDetour.Modal>
+              ) : null}
+            </DetourFinishedPanel>
           ) : snapshot.matches({ "Detour Drawing": "Active" }) ? (
             <ActiveDetourPanel
               directions={extendedDirections}
