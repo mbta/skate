@@ -4,6 +4,7 @@ import { CreateDetourMachineInput } from "./createDetourMachine"
 import { array, Infer, nullable, number, string, type } from "superstruct"
 
 export const SimpleDetour = type({
+  uuid: number(),
   route: string(),
   direction: string(),
   name: string(),
@@ -14,6 +15,7 @@ export const SimpleDetour = type({
 export type SimpleDetour = Infer<typeof SimpleDetour>
 
 export const SimpleDetourFromApi = type({
+  uuid: number(),
   route: string(),
   direction: string(),
   name: string(),
@@ -26,6 +28,7 @@ export type SimpleDetourFromApi = Infer<typeof SimpleDetourFromApi>
 const simpleDetourFromData = (
   detourData: SimpleDetourFromApi
 ): SimpleDetour => ({
+  uuid: detourData.uuid,
   route: detourData.route,
   direction: detourData.direction,
   name: detourData.name,

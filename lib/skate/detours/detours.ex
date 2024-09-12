@@ -9,6 +9,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Settings.User
 
   @type t :: %__MODULE__{
+          uuid: integer(),
           route: String.t(),
           direction: String.t(),
           name: String.t(),
@@ -21,6 +22,7 @@ defmodule Skate.Detours.Detours do
   @derive Jason.Encoder
 
   defstruct [
+    :uuid,
     :route,
     :direction,
     :name,
@@ -95,6 +97,7 @@ defmodule Skate.Detours.Detours do
       |> DateTime.to_unix()
 
     %__MODULE__{
+      uuid: db_detour.id,
       route: route_name,
       direction: direction,
       name: headsign,
