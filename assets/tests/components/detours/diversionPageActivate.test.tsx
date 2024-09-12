@@ -96,23 +96,23 @@ describe("DiversionPage activate workflow", () => {
     expect(screen.getByRole("heading", { name: "Active Detour" })).toBeVisible()
   })
 
-  test("'Active Detour' screen has a 'Deactivate Detour' button", async () => {
+  test("'Active Detour' screen has a 'Return to regular route' button", async () => {
     await diversionPageOnReviewScreen()
 
     await userEvent.click(activateDetourButton.get())
 
     expect(
-      screen.getByRole("button", { name: "Deactivate Detour" })
+      screen.getByRole("button", { name: "Return to regular route" })
     ).toBeVisible()
   })
 
-  test("clicking the 'Deactivate Detour' button shows the 'Past Detour' screen", async () => {
+  test("clicking the 'Return to regular route' button shows the 'Past Detour' screen", async () => {
     await diversionPageOnReviewScreen()
 
     await userEvent.click(activateDetourButton.get())
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Deactivate Detour" })
+      screen.getByRole("button", { name: "Return to regular route" })
     )
     expect(
       screen.queryByRole("heading", { name: "Active Detour" })
