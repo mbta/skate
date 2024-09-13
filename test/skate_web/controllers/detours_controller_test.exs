@@ -58,78 +58,108 @@ defmodule SkateWeb.DetoursControllerTest do
     end
   end
 
-  describe "detours/2" do
-    defp populate_db_and_get_user(conn) do
-      # Active detour
-      put(conn, "/api/detours/update_snapshot", %{
-        "snapshot" => %{
-          "context" => %{
-            "route" => %{
-              "name" => "23",
-              "directionNames" => %{
-                "0" => "Outbound",
-                "1" => "Inbound"
-              }
-            },
-            "routePattern" => %{
-              "headsign" => "Headsign",
-              "directionId" => 0
-            },
-            "nearestIntersection" => "Street A & Avenue B",
-            "uuid" => 1
+  defp populate_db_and_get_user(conn) do
+    # Active detour
+    put(conn, "/api/detours/update_snapshot", %{
+      "snapshot" => %{
+        "context" => %{
+          "route" => %{
+            "name" => "23",
+            "directionNames" => %{
+              "0" => "Outbound",
+              "1" => "Inbound"
+            }
           },
-          "value" => %{"Detour Drawing" => "Active"}
-        }
-      })
-
-      # Past detour
-      put(conn, "/api/detours/update_snapshot", %{
-        "snapshot" => %{
-          "context" => %{
-            "route" => %{
-              "name" => "47",
-              "directionNames" => %{
-                "0" => "Outbound",
-                "1" => "Inbound"
-              }
-            },
-            "routePattern" => %{
-              "headsign" => "Headsign",
-              "directionId" => 1
-            },
-            "nearestIntersection" => "Street C & Avenue D",
-            "uuid" => 2
+          "routePattern" => %{
+            "headsign" => "Headsign",
+            "directionId" => 0
           },
-          "value" => %{"Detour Drawing" => "Past"}
-        }
-      })
+          "nearestIntersection" => "Street A & Avenue B",
+          "uuid" => 1
+        },
+        "value" => %{"Detour Drawing" => "Active"}
+      }
+    })
 
-      # Draft detour
-      put(conn, "/api/detours/update_snapshot", %{
-        "snapshot" => %{
-          "context" => %{
-            "route" => %{
-              "name" => "75",
-              "directionNames" => %{
-                "0" => "Outbound",
-                "1" => "Inbound"
-              }
-            },
-            "routePattern" => %{
-              "headsign" => "Headsign",
-              "directionId" => 0
-            },
-            "nearestIntersection" => "Street Y & Avenue Z",
-            "uuid" => 3
-          }
-        }
-      })
+    # Past detour
+    put(conn, "/api/detours/update_snapshot", %{
+      "snapshot" => %{
+        "context" => %{
+          "route" => %{
+            "name" => "47",
+            "directionNames" => %{
+              "0" => "Outbound",
+              "1" => "Inbound"
+            }
+          },
+          "routePattern" => %{
+            "headsign" => "Headsign",
+            "directionId" => 1
+          },
+          "nearestIntersection" => "Street C & Avenue D",
+          "uuid" => 2
+        },
+        "value" => %{"Detour Drawing" => "Past"}
+      }
+    })
 
-      1
-      |> Detours.get_detour!()
-      |> Map.get(:author_id)
+    # Draft detour
+    put(conn, "/api/detours/update_snapshot", %{
+      "snapshot" => %{
+        "context" => %{
+          "route" => %{
+            "name" => "75",
+            "directionNames" => %{
+              "0" => "Outbound",
+              "1" => "Inbound"
+            }
+          },
+          "routePattern" => %{
+            "headsign" => "Headsign",
+            "directionId" => 0
+          },
+          "nearestIntersection" => "Street Y & Avenue Z",
+          "uuid" => 3
+        }
+      }
+    })
+
+    1
+    |> Detours.get_detour!()
+    |> Map.get(:author_id)
+  end
+
+  describe "detour/2" do
+    @tag :authenticated
+    test "fetches single detour with its state from database", %{conn: conn} do
+      populate_db_and_get_user(conn)
+
+      conn = get(conn, "/api/detours/1")
+
+      json_response(conn, 200)
+
+      assert %{
+               "data" => %{
+                 "author" => "test_user@test.com",
+                 "state" => %{
+                   "context" => %{
+                     "nearestIntersection" => "Street A & Avenue B",
+                     "route" => %{
+                       "directionNames" => %{"0" => "Outbound", "1" => "Inbound"},
+                       "name" => "23"
+                     },
+                     "routePattern" => %{"directionId" => 0, "headsign" => "Headsign"},
+                     "uuid" => 1
+                   },
+                   "value" => %{"Detour Drawing" => "Active"}
+                 },
+                 "updated_at" => _
+               }
+             } = json_response(conn, 200)
     end
+  end
 
+  describe "detours/2" do
     @tag :authenticated
     test "fetches detours from database and groups by active, past, draft", %{conn: conn} do
       author_id = populate_db_and_get_user(conn)
