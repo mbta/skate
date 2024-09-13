@@ -6,7 +6,7 @@ import { any, Infer, number, string, type } from "superstruct"
 export const DetourWithState = type({
   author: string(),
   state: any(),
-  updatedAt: number()
+  updatedAt: number(),
 })
 
 export type DetourWithState = Infer<typeof DetourWithState>
@@ -14,7 +14,7 @@ export type DetourWithState = Infer<typeof DetourWithState>
 export const DetourWithStateFromApi = type({
   author: string(),
   state: any(),
-  updated_at: number()
+  updated_at: number(),
 })
 
 export type DetourWithStateFromApi = Infer<typeof DetourWithStateFromApi>
@@ -24,7 +24,7 @@ export const detourStateFromData = (
 ): DetourWithState => ({
   author: detourWithState.author,
   state: detourWithState.state,
-  updatedAt: detourWithState.updated_at
+  updatedAt: detourWithState.updated_at,
 })
 
 export interface DetourShape {
