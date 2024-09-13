@@ -41,23 +41,14 @@ export const DetoursTable = ({ data, status }: DetoursTableProps) => (
       </tr>
     </thead>
     <tbody>
-      <DetourRows data={data} status={status} />
+      {data === null ? (
+        <EmptyDetourRows message={`No ${status} detours.`} />
+      ) : (
+        <PopulatedDetourRows data={data} />
+      )}
     </tbody>
   </Table>
 )
-
-const DetourRows = ({
-  data,
-  status,
-}: {
-  data: SimpleDetour[] | null
-  status: DetourStatus
-}) =>
-  data === null ? (
-    <EmptyDetourRows message={`No ${status} detours.`} />
-  ) : (
-    <PopulatedDetourRows data={data} />
-  )
 
 const PopulatedDetourRows = ({ data }: { data: SimpleDetour[] }) => {
   const epochNowInSeconds = useCurrentTimeSeconds()
