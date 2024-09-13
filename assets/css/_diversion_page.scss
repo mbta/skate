@@ -1,3 +1,5 @@
+@use "./color/definitions" as semantic;
+
 .l-diversion-page {
   display: grid;
   // Default layout is linear
@@ -92,6 +94,13 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+}
+
+.l-diversion-page__header,
+.l-diversion-page__panel {
+  &.active-detour {
+    background-color: semantic.$active-detour;
+  }
 }
 
 .c-diversion-panel__h1 {
