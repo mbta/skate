@@ -8,7 +8,7 @@ import { render, screen } from "@testing-library/react"
 
 jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
 
-jest.mock("../../src/api")
+jest.mock("../../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetours).mockReturnValue(neverPromise())
