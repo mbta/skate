@@ -75,6 +75,7 @@ defmodule Skate.Detours.Detours do
     direction = Map.get(direction_names, Integer.to_string(direction_id))
 
     %DetailedDetour{
+      uuid: db_detour.id,
       route: route_name,
       direction: direction,
       name: headsign,

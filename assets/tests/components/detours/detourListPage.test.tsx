@@ -1,9 +1,9 @@
 import { describe, test, expect, jest, beforeEach } from "@jest/globals"
 import React from "react"
-import { DetourListPage } from "../../src/components/detourListPage"
-import { fetchDetours } from "../../src/api"
-import { neverPromise } from "../testHelpers/mockHelpers"
-import { Ok } from "../../src/util/result"
+import { DetourListPage } from "../../../src/components/detourListPage"
+import { fetchDetours } from "../../../src/api"
+import { neverPromise } from "../../testHelpers/mockHelpers"
+import { Ok } from "../../../src/util/result"
 import { render, screen } from "@testing-library/react"
 
 jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
@@ -20,6 +20,7 @@ describe("DetourListPage", () => {
       Ok({
         active: [
           {
+            uuid: 1,
             route: "1",
             direction: "Inbound",
             name: "Headsign A",
@@ -27,6 +28,7 @@ describe("DetourListPage", () => {
             updatedAt: 1724866392,
           },
           {
+            uuid: 8,
             route: "2",
             direction: "Outbound",
             name: "Headsign B",
@@ -37,6 +39,7 @@ describe("DetourListPage", () => {
         draft: null,
         past: [
           {
+            uuid: 10,
             route: "1",
             direction: "Inbound",
             name: "Headsign A",
@@ -44,6 +47,7 @@ describe("DetourListPage", () => {
             updatedAt: 1724866392,
           },
           {
+            uuid: 7,
             route: "1",
             direction: "Outbound",
             name: "Headsign Z",
