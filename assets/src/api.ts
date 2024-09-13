@@ -53,8 +53,8 @@ import {
 } from "./models/locationSearchSuggestionData"
 import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
 import { DetourShapeData, detourShapeFromData } from "./models/detourShapeData"
-import { groupedDetoursFromData, GroupedSimpleDetours } from "./models/detour"
-import { DetourShape, FinishedDetour, UnfinishedDetour } from "./models/detour"
+import { groupedDetoursFromData, GroupedSimpleDetours } from "./models/detoursList"
+import { DetourShape, detourStateFromData, DetourWithState, FinishedDetour, UnfinishedDetour } from "./models/detour"
 import {
   FinishedDetourData,
   finishedDetourFromData,
@@ -510,6 +510,8 @@ export const putRouteTabs = (routeTabs: RouteTab[]): Promise<Response> =>
     body: JSON.stringify({ route_tabs: routeTabs }),
   })
 
+// #region Detour API functions
+
 export const putDetourUpdate = (
   snapshot: Snapshot<unknown>
 ): Promise<Result<number, never>> =>
@@ -529,11 +531,21 @@ export const putDetourUpdate = (
 
 export const fetchDetours = (): Promise<Result<GroupedSimpleDetours, never>> =>
   apiCallResult({
-    url: `/api/detours/get_detours`,
+    url: `/api/detours`,
     OkStruct: GroupedSimpleDetours,
     ErrStruct: never(),
     parser: groupedDetoursFromData,
   })
+
+export const fetchDetour = (id: number): Promise<Result<DetourWithState, never>> =>
+  apiCallResult({
+    url: `/api/detours/${id}`,
+    OkStruct: DetourWithState,
+    ErrStruct: never(),
+    parser: detourStateFromData
+  })
+
+// #endregion Detour API functions
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""
 
