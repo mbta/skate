@@ -4,6 +4,7 @@ import { RoutePill } from "./routePill"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
 import { SimpleDetour } from "../models/detour"
+import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 
 interface DetoursTableProps {
   data: SimpleDetour[] | null
