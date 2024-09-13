@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 
 import React from "react"
 
-import { screen } from "@testing-library/dom"
+import { screen, waitFor } from "@testing-library/dom"
 import "@testing-library/jest-dom/jest-globals"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
@@ -11,7 +11,7 @@ import { DetourListPage } from "../../../src/components/detourListPage"
 import { TestGroups } from "../../../src/userInTestGroup"
 import getTestGroups from "../../../src/userTestGroups"
 import { neverPromise } from "../../testHelpers/mockHelpers"
-import { fetchDetours } from "../../../src/api"
+import { fetchDetour, fetchDetours } from "../../../src/api"
 
 jest.mock("../../../src/userTestGroups")
 
@@ -19,6 +19,7 @@ jest.mock("../../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetours).mockReturnValue(neverPromise())
+  jest.mocked(fetchDetour).mockReturnValue(neverPromise())
 })
 
 const renderDetourListPage = () => {
@@ -26,22 +27,26 @@ const renderDetourListPage = () => {
 }
 
 describe("Detours Page: Create Detour", () => {
-  test("Shows the add detour button when in test group", () => {
+  test("Shows the add detour button when in test group", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 
     renderDetourListPage()
 
-    expect(screen.getByRole("button", { name: "Add detour" })).toBeVisible()
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Add detour" })).toBeVisible()
+    })
   })
 
-  test("Does not show add detour button when not in test group", () => {
+  test("Does not show add detour button when not in test group", async () => {
     jest.mocked(getTestGroups).mockReturnValue([])
 
     renderDetourListPage()
 
-    expect(
-      screen.queryByRole("button", { name: "Add detour" })
-    ).not.toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("button", { name: "Add detour" })
+      ).not.toBeInTheDocument()
+    })
   })
 
   test("Opens Detour Modal when clicked", async () => {

@@ -7,9 +7,10 @@ import { SimpleDetour } from "../models/detoursList"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
+  onOpenDetour: (detourId: number) => void
 }
 
-export const DetoursTable = ({ data }: DetoursTableProps) => {
+export const DetoursTable = ({ data, onOpenDetour }: DetoursTableProps) => {
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   return (
@@ -23,7 +24,7 @@ export const DetoursTable = ({ data }: DetoursTableProps) => {
       </thead>
       <tbody>
         {data.map((detour, index) => (
-          <tr key={index}>
+          <tr key={index} onClick={() => onOpenDetour(detour.uuid)}>
             <td className="align-middle p-3">
               <div className="d-flex">
                 <RoutePill routeName={detour.route} />

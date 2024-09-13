@@ -101,7 +101,7 @@ export const DiversionPage = ({
     editDetour,
   } = useDetour(
     "snapshot" in useDetourProps
-      ? useDetourProps
+      ? { snapshot: useDetourProps.snapshot }
       : { input: useDetourProps.originalRoute }
   )
 
