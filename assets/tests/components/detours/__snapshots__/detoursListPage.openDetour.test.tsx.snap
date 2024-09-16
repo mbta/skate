@@ -1,0 +1,646 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Detours Page: Open a Detour renders detour list page 1`] = `
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 1024px;"
+>
+  <div>
+    <div
+      class="c-detour-list-page h-100 overflow-y-auto p-0 p-md-4 bg-white"
+    >
+      <button
+        class="c-detour-list-page__button icon-link fw-light px-3 py-2 u-hide-for-mobile btn btn-primary"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="bi bi-plus-square"
+          fill="currentColor"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+          />
+          <path
+            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+          />
+        </svg>
+        <span
+          class="c-detour-list-page__button-text"
+        >
+          Add detour
+        </span>
+      </button>
+      <table
+        class="c-detours-table table table-hover"
+      >
+        <thead
+          class="u-hide-for-mobile"
+        >
+          <tr>
+            <th
+              class="px-3 py-4"
+            >
+              Route and direction
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Starting Intersection
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              On detour since
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="align-middle p-3"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  1
+                </div>
+                <div
+                  class="c-detours-table__route-info-text d-inline-block"
+                >
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
+                  >
+                    Headsign A
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Inbound
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Street A & Avenue B
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              459 hours ago
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="align-middle p-3"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  2
+                </div>
+                <div
+                  class="c-detours-table__route-info-text d-inline-block"
+                >
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
+                  >
+                    Headsign B
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Outbound
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Street C & Avenue D
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              462 hours ago
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table
+        class="c-detours-table table table-hover"
+      >
+        <thead
+          class="u-hide-for-mobile"
+        >
+          <tr>
+            <th
+              class="px-3 py-4"
+            >
+              Route and direction
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Starting Intersection
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              On detour since
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="align-middle p-3"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  1
+                </div>
+                <div
+                  class="c-detours-table__route-info-text d-inline-block"
+                >
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
+                  >
+                    Headsign A
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Inbound
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Street E & Avenue F
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              459 hours ago
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="align-middle p-3"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  1
+                </div>
+                <div
+                  class="c-detours-table__route-info-text d-inline-block"
+                >
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
+                  >
+                    Headsign Z
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Outbound
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Street C & Avenue D
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              459 hours ago
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div />
+  <div
+    aria-modal="true"
+    class="c-detour-modal c-detour-modal__transition-appear c-detour-modal__transition-appear-active"
+    role="dialog"
+    tabindex="-1"
+  >
+    <article
+      class="l-diversion-page h-100 border-box inherit-box"
+    >
+      <header
+        class="l-diversion-page__header text-bg-light border-bottom"
+      >
+        <button
+          aria-label="Close"
+          class="btn-close p-4"
+          type="button"
+        />
+      </header>
+      <div
+        class="l-diversion-page__panel bg-light"
+      >
+        <article
+          class="l-diversion-page-panel bg-light border-end"
+        >
+          <header
+            class="l-diversion-page-panel__header border-bottom px-3"
+          >
+            <h1
+              class="c-diversion-panel__h1 my-3"
+            >
+              Share Detour Details
+            </h1>
+          </header>
+          <div
+            class="l-diversion-page-panel__body d-flex flex-column"
+          >
+            <div
+              class="l-diversion-page-panel__scroll-area px-3 d-flex flex-column"
+            >
+              <button
+                class="align-self-start icon-link my-3 btn btn-outline-primary"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="bi bi-arrow-left"
+                  fill="currentColor"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                 Edit Detour
+              </button>
+              <textarea
+                class="flex-grow-1 mb-3 form-control"
+                style="resize: none;"
+              />
+            </div>
+            <div
+              class="border-top d-flex mt-auto d-flex flex-column"
+            >
+              <button
+                class="m-3 flex-grow-1 btn btn-primary"
+                type="button"
+              >
+                Copy Details
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div
+        class="l-diversion-page__map position-relative"
+      >
+        <div
+          class="fade position-absolute top-0 left-0 m-2 icon-link z-1 alert alert-info show"
+          role="alert"
+        >
+          <svg
+            aria-hidden="true"
+            class="bi bi-exclamation-circle-fill"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"
+            />
+          </svg>
+          Detour shape is not editable from this screen.
+        </div>
+        <div
+          class="h-100"
+        >
+          <div
+            class="c-vehicle-map-state"
+          />
+          <div
+            class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+            id="id-vehicle-map"
+            style="position: relative;"
+            tabindex="0"
+          >
+            <div
+              class="leaflet-pane leaflet-map-pane"
+              style="left: 0px; top: 0px;"
+            >
+              <div
+                class="leaflet-pane leaflet-tile-pane"
+              >
+                <div
+                  class="leaflet-layer "
+                  style="z-index: 1;"
+                >
+                  <div
+                    class="leaflet-tile-container leaflet-zoom-animated"
+                    style="z-index: 21; left: 0px; top: 0px;"
+                  >
+                    <img
+                      alt=""
+                      class="leaflet-tile"
+                      src="undefined"
+                      style="width: 256px; height: 256px; left: -4px; top: -239px;"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                class="leaflet-pane leaflet-overlay-pane"
+              >
+                <svg
+                  height="0"
+                  pointer-events="none"
+                  style="left: 0px; top: 0px;"
+                  viewBox="0 0 0 0"
+                  width="0"
+                >
+                  <g>
+                    <path
+                      class="c-detour_map--detour-route-shape"
+                      d="M0 0"
+                      fill="none"
+                      stroke="#3388ff"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-opacity="1"
+                      stroke-width="6"
+                    />
+                    <path
+                      class="c-detour_map--original-route-shape-core"
+                      d="M0 0"
+                      fill="none"
+                      stroke="#3388ff"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-opacity="1"
+                      stroke-width="6"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div
+                class="leaflet-pane leaflet-shadow-pane"
+              />
+              <div
+                class="leaflet-pane leaflet-marker-pane"
+              >
+                <div
+                  class="leaflet-pane leaflet-primaryVehicles-pane"
+                  style="z-index: 499;"
+                />
+                <div
+                  class="leaflet-pane leaflet-secondaryVehicles-pane"
+                  style="z-index: 400;"
+                />
+                <div
+                  class="leaflet-pane leaflet-notableLocationMarkers-pane"
+                  style="z-index: 410;"
+                />
+                <div
+                  class="leaflet-marker-icon leaflet-zoom-hide"
+                  role="button"
+                  style="margin-left: -8px; margin-top: -8px; width: 16px; height: 16px; left: 0px; top: 0px; z-index: 0;"
+                  tabindex="0"
+                  title="Detour Start"
+                >
+                  <div
+                    class="w-100 h-100"
+                  >
+                    <svg
+                      class="c-detour_map-circle-marker--start"
+                      height="100%"
+                      viewBox="0 0 16 16"
+                      width="100%"
+                    >
+                      <circle
+                        cx="8"
+                        cy="8"
+                        opacity="0.5"
+                        r="7.5"
+                      />
+                      <circle
+                        cx="8"
+                        cy="8"
+                        r="6"
+                        stroke="white"
+                        stroke-width="2"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  class="leaflet-marker-icon leaflet-zoom-hide"
+                  role="button"
+                  style="margin-left: -5px; margin-top: -5px; width: 10px; height: 10px; left: 0px; top: 0px; z-index: 0;"
+                  tabindex="0"
+                >
+                  <div
+                    class="w-100 h-100"
+                  >
+                    <svg
+                      class="c-detour_map-circle-marker--detour-point"
+                      fill="none"
+                      height="100%"
+                      viewBox="0 0 10 10"
+                      width="100%"
+                    >
+                      <circle
+                        cx="5"
+                        cy="5"
+                        r="4.5"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  class="leaflet-marker-icon leaflet-zoom-hide"
+                  role="button"
+                  style="margin-left: -8px; margin-top: -8px; width: 16px; height: 16px; left: 0px; top: -1px; z-index: -1;"
+                  tabindex="0"
+                  title="Detour End"
+                >
+                  <div
+                    class="w-100 h-100"
+                  >
+                    <svg
+                      class="c-detour_map-circle-marker--end"
+                      height="100%"
+                      viewBox="0 0 16 16"
+                      width="100%"
+                    >
+                      <circle
+                        cx="8"
+                        cy="8"
+                        opacity="0.5"
+                        r="7.5"
+                      />
+                      <circle
+                        cx="8"
+                        cy="8"
+                        r="6"
+                        stroke="white"
+                        stroke-width="2"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  class="leaflet-marker-icon c-stop-icon-container c-vehicle-map__stop leaflet-zoom-hide leaflet-interactive"
+                  role="button"
+                  style="margin-left: -7px; margin-top: -7px; width: 14px; height: 14px; left: 0px; top: 0px; z-index: 0;"
+                  tabindex="0"
+                >
+                  <div
+                    class="w-100 h-100"
+                  >
+                    <svg
+                      class="c-stop-icon"
+                      height="100%"
+                      width="100%"
+                    >
+                      <svg
+                        fill="none"
+                        viewBox="0 0 14 14"
+                      >
+                        <circle
+                          class="c-stop-icon__focus-circle"
+                          cx="7"
+                          cy="7"
+                          r="8"
+                        />
+                        <circle
+                          class="c-stop-icon__circle c-stop-icon__circle--small"
+                          cx="7"
+                          cy="7"
+                          r="5"
+                        />
+                      </svg>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="leaflet-pane leaflet-tooltip-pane"
+              />
+              <div
+                class="leaflet-pane leaflet-popup-pane"
+              />
+            </div>
+            <div
+              class="leaflet-control-container"
+            >
+              <div
+                class="leaflet-top leaflet-left"
+              />
+              <div
+                class="leaflet-top leaflet-right"
+              >
+                <div
+                  class="leaflet-control-zoom leaflet-bar leaflet-control"
+                >
+                  <a
+                    aria-disabled="false"
+                    aria-label="Zoom in"
+                    class="leaflet-control-zoom-in"
+                    href="#"
+                    role="button"
+                    title="Zoom in"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      +
+                    </span>
+                  </a>
+                  <a
+                    aria-disabled="false"
+                    aria-label="Zoom out"
+                    class="leaflet-control-zoom-out"
+                    href="#"
+                    role="button"
+                    title="Zoom out"
+                  >
+                    <span
+                      aria-hidden="true"
+                    >
+                      −
+                    </span>
+                  </a>
+                </div>
+                <div
+                  class="leaflet-bar leaflet-control"
+                >
+                  <a
+                    aria-label="Full Screen"
+                    class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                    href="#"
+                    role="button"
+                    title="Full Screen"
+                  />
+                </div>
+              </div>
+              <div
+                class="leaflet-bottom leaflet-left"
+              />
+              <div
+                class="leaflet-bottom leaflet-right"
+              >
+                <div
+                  class="leaflet-control-attribution leaflet-control"
+                >
+                  © 
+                  <a
+                    href="http://osm.org/copyright"
+                  >
+                    OpenStreetMap
+                  </a>
+                   contributors
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</body>
+`;
