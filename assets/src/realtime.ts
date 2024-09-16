@@ -53,7 +53,9 @@ export interface Ghost {
 
 export type NotificationId = string
 
-// Matches the Module in which this notification was created by
+// A Notification's `content` is populated with an Elixir struct and the
+// `__struct__` field is serialized so that the type can be discerned on the
+// frontend.
 export enum NotificationType {
   BridgeMovement = "Elixir.Notifications.Db.BridgeMovement",
   BlockWaiver = "Elixir.Notifications.Db.BlockWaiver",

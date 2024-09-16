@@ -27,7 +27,7 @@ const dateFromSeconds = coerce(
 )
 
 export const BlockWaiverNotificationData = type({
-  $type: literal(NotificationType.BlockWaiver),
+  __struct__: literal(NotificationType.BlockWaiver),
   reason: enums([
     "manpower",
     "disabled",
@@ -55,12 +55,12 @@ export type BlockWaiverNotificationData = Infer<
 
 export const BridgeNotificationData = union([
   type({
-    $type: literal(NotificationType.BridgeMovement),
+    __struct__: literal(NotificationType.BridgeMovement),
     status: literal("raised"),
     lowering_time: dateFromSeconds,
   }),
   type({
-    $type: literal(NotificationType.BridgeMovement),
+    __struct__: literal(NotificationType.BridgeMovement),
     status: literal("lowered"),
   }),
 ])
@@ -79,7 +79,7 @@ export const notificationFromData = (
 ): Notification => {
   let content: NotificationContentTypes
 
-  switch (notificationData.content.$type) {
+  switch (notificationData.content.__struct__) {
     case NotificationType.BlockWaiver: {
       content = {
         $type: NotificationType.BlockWaiver,
@@ -99,7 +99,10 @@ export const notificationFromData = (
     case NotificationType.BridgeMovement: {
       switch (notificationData.content.status) {
         case "lowered": {
-          content = notificationData.content
+          content = {
+            $type: NotificationType.BridgeMovement,
+            status: "lowered",
+          }
           break
         }
         case "raised": {

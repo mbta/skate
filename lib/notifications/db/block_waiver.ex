@@ -7,7 +7,7 @@ defmodule Notifications.Db.BlockWaiver do
 
   @derive {Jason.Encoder,
            only: [
-             :"$type",
+             :__struct__,
              :created_at,
              :reason,
              :route_ids,
@@ -36,8 +36,6 @@ defmodule Notifications.Db.BlockWaiver do
     field(:start_time, :integer)
     field(:end_time, :integer)
     timestamps()
-
-    field(:"$type", :any, virtual: true, default: __MODULE__)
   end
 
   def changeset(block_waiver, attrs \\ %{}) do
