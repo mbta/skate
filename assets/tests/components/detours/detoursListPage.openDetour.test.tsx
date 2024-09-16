@@ -98,13 +98,11 @@ describe("Detours Page: Open a Detour", () => {
     
     const { baseElement } = render(<DetourListPage />)
 
-    await userEvent.click(screen.getByText("Headsign Z"))
+    await userEvent.click(await screen.findByText("Headsign Z"))
 
-    await waitFor(() => {
-      expect(
-        screen.getByRole("heading", { name: "Share Detour Details" })
-      ).toBeVisible()
-    })
+    expect(
+      await screen.findByRole("heading", { name: "Share Detour Details" })
+    ).toBeVisible()
 
     await waitFor(() => expect(baseElement).toMatchSnapshot())
   })
