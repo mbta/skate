@@ -16,7 +16,7 @@ describe("notificationFromData", () => {
       created_at: new Date(0),
       state: "unread",
       content: {
-        $type: NotificationType.BlockWaiver,
+        __struct__: NotificationType.BlockWaiver,
         created_at: new Date(0),
         reason: "manpower",
         route_ids: [],

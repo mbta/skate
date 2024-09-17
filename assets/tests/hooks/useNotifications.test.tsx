@@ -28,7 +28,7 @@ const notification1Data = {
   created_at: 0,
   state: "unread",
   content: {
-    $type: NotificationType.BlockWaiver,
+    __struct__: NotificationType.BlockWaiver,
     reason: "manpower",
     created_at: 0,
     route_ids: ["route1", "route2"],
@@ -65,7 +65,7 @@ const notification2Data = {
   state: "unread",
   created_at: 0,
   content: {
-    $type: NotificationType.BlockWaiver,
+    __struct__: NotificationType.BlockWaiver,
     reason: "accident",
     created_at: 0,
     route_ids: ["route1", "route2"],

@@ -56,7 +56,7 @@ const notification1Data = {
   created_at: 0,
   state: "unread",
   content: {
-    $type: NotificationType.BlockWaiver,
+    __struct__: NotificationType.BlockWaiver,
     reason: "manpower",
     created_at: 0,
     route_ids: ["route1", "route2"],
