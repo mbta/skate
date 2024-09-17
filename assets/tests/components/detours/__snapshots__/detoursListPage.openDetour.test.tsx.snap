@@ -70,7 +70,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              480 hours ago
+              26 hours ago
             </td>
           </tr>
         </tbody>
@@ -136,7 +136,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              480 hours ago
+              26 hours ago
             </td>
           </tr>
         </tbody>

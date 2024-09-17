@@ -6,7 +6,6 @@ import { screen, waitFor } from "@testing-library/dom"
 import "@testing-library/jest-dom/jest-globals"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import * as dateTime from "../../../src/util/dateTime"
 
 import { DetourListPage } from "../../../src/components/detourListPage"
 import { fetchDetour, fetchDetours } from "../../../src/api"
@@ -18,7 +17,7 @@ import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { shapePointFactory } from "../../factories/shapePointFactory"
 import getTestGroups from "../../../src/userTestGroups"
 
-jest.spyOn(dateTime, "now").mockReturnValue(new Date("2024-08-29T20:00:00"))
+jest.spyOn(Date, "now").mockImplementation(() => 1724961600000)
 
 jest.mock("../../../src/userTestGroups")
 

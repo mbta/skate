@@ -5,9 +5,8 @@ import { fetchDetours } from "../../../src/api"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import { Ok } from "../../../src/util/result"
 import { render, screen } from "@testing-library/react"
-import * as dateTime from "../../../src/util/dateTime"
 
-jest.spyOn(dateTime, "now").mockReturnValue(new Date("2024-08-29T20:00:00"))
+jest.spyOn(Date, "now").mockImplementation(() => 1724961600000)
 
 jest.mock("../../../src/api")
 
