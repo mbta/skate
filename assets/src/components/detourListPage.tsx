@@ -24,14 +24,12 @@ export const DetourListPage = () => {
 
   const { result: detourResult } = useApiCall({
     apiCall: useCallback(
-      async () => detourId ? fetchDetour(detourId) : undefined,
+      async () => (detourId ? fetchDetour(detourId) : undefined),
       [detourId]
     ),
   })
   const detour =
     detourResult && isOk(detourResult) ? detourResult.ok : undefined
-  
-    console.log(detour)
 
   useEffect(() => {
     const state = isValidSnapshot(createDetourMachine, detour?.state)

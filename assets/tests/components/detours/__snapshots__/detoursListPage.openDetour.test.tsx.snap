@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Detours Page: Open a Detour renders detour list page 1`] = `
+exports[`Detours Page: Open a Detour renders detour details modal to match mocked fetchDetour 1`] = `
 <body
   data-rr-ui-modal-open=""
   style="padding-right: 1024px;"
@@ -9,32 +9,6 @@ exports[`Detours Page: Open a Detour renders detour list page 1`] = `
     <div
       class="c-detour-list-page h-100 overflow-y-auto p-0 p-md-4 bg-white"
     >
-      <button
-        class="c-detour-list-page__button icon-link fw-light px-3 py-2 u-hide-for-mobile btn btn-primary"
-        type="button"
-      >
-        <svg
-          aria-hidden="true"
-          class="bi bi-plus-square"
-          fill="currentColor"
-          height="16"
-          viewBox="0 0 16 16"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
-          />
-          <path
-            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
-          />
-        </svg>
-        <span
-          class="c-detour-list-page__button-text"
-        >
-          Add detour
-        </span>
-      </button>
       <table
         class="c-detours-table table table-hover"
       >
@@ -96,46 +70,7 @@ exports[`Detours Page: Open a Detour renders detour list page 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              459 hours ago
-            </td>
-          </tr>
-          <tr>
-            <td
-              class="align-middle p-3"
-            >
-              <div
-                class="d-flex"
-              >
-                <div
-                  class="c-route-pill c-route-pill--bus"
-                >
-                  2
-                </div>
-                <div
-                  class="c-detours-table__route-info-text d-inline-block"
-                >
-                  <div
-                    class="pb-1 fs-4 fw-semibold"
-                  >
-                    Headsign B
-                  </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
-                  >
-                    Outbound
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            >
-              Street C & Avenue D
-            </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            >
-              462 hours ago
+              480 hours ago
             </td>
           </tr>
         </tbody>
@@ -183,45 +118,6 @@ exports[`Detours Page: Open a Detour renders detour list page 1`] = `
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign A
-                  </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
-                  >
-                    Inbound
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            >
-              Street E & Avenue F
-            </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            >
-              459 hours ago
-            </td>
-          </tr>
-          <tr>
-            <td
-              class="align-middle p-3"
-            >
-              <div
-                class="d-flex"
-              >
-                <div
-                  class="c-route-pill c-route-pill--bus"
-                >
-                  1
-                </div>
-                <div
-                  class="c-detours-table__route-info-text d-inline-block"
-                >
-                  <div
-                    class="pb-1 fs-4 fw-semibold"
-                  >
                     Headsign Z
                   </div>
                   <div
@@ -240,7 +136,7 @@ exports[`Detours Page: Open a Detour renders detour list page 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              459 hours ago
+              480 hours ago
             </td>
           </tr>
         </tbody>
