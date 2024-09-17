@@ -44,7 +44,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  1
+                  4
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -52,7 +52,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign A
+                    Headsign 4
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"
@@ -65,7 +65,46 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A & Avenue B
+              Street A4 & Avenue B4
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              26 hours ago
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="align-middle p-3"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  5
+                </div>
+                <div
+                  class="c-detours-table__route-info-text d-inline-block"
+                >
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
+                  >
+                    Headsign 5
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Outbound
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Street A5 & Avenue B5
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -110,7 +149,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  1
+                  6
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -123,7 +162,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="c-detours-table__route-info-direction fs-6"
                   >
-                    Outbound
+                    Inbound
                   </div>
                 </div>
               </div>
@@ -131,7 +170,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street C & Avenue D
+              Street A6 & Avenue B6
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"

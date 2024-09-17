@@ -16,6 +16,7 @@ import { createDetourMachine } from "../../../src/models/createDetourMachine"
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { shapePointFactory } from "../../factories/shapePointFactory"
 import getTestGroups from "../../../src/userTestGroups"
+import { detourListFactory } from "../../factories/detourListFactory"
 
 jest.spyOn(Date, "now").mockImplementation(() => 1724961600000)
 
@@ -32,62 +33,18 @@ beforeEach(() => {
 describe("Detours Page: Open a Detour", () => {
   test("calls API with correct detour ID", async () => {
     jest.mocked(fetchDetours).mockResolvedValue(
-      Ok({
-        active: [
-          {
-            uuid: 1,
-            route: "1",
-            direction: "Inbound",
-            name: "Headsign A",
-            intersection: "Street A & Avenue B",
-            updatedAt: 1724866392,
-          },
-        ],
-        draft: null,
-        past: [
-          {
-            uuid: 7,
-            route: "1",
-            direction: "Outbound",
-            name: "Headsign Z",
-            intersection: "Street C & Avenue D",
-            updatedAt: 1724866392,
-          },
-        ],
-      })
+      Ok(detourListFactory.build())
     )
 
     render(<DetourListPage />)
 
-    await userEvent.click(await screen.findByText("Headsign Z"))
-    expect(fetchDetour).toHaveBeenCalledWith(7)
+    await userEvent.click(await screen.findByText("Headsign 1"))
+    expect(fetchDetour).toHaveBeenCalledWith(1)
   })
 
   test("renders detour details modal to match mocked fetchDetour", async () => {
     jest.mocked(fetchDetours).mockResolvedValue(
-      Ok({
-        active: [
-          {
-            uuid: 1,
-            route: "1",
-            direction: "Inbound",
-            name: "Headsign A",
-            intersection: "Street A & Avenue B",
-            updatedAt: 1724866392,
-          },
-        ],
-        draft: null,
-        past: [
-          {
-            uuid: 7,
-            route: "1",
-            direction: "Outbound",
-            name: "Headsign Z",
-            intersection: "Street C & Avenue D",
-            updatedAt: 1724866392,
-          },
-        ],
-      })
+      Ok(detourListFactory.build())
     )
 
     // Stub out a detour machine, and start a detour-in-progress
