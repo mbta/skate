@@ -67,20 +67,12 @@ export const DetourListPage = () => {
         </>
       )}
 
-      {/* Need to be separate modals to force the modal's state machine to refresh */}
-      {showDetourModal && !detourId && (
-        <DetourModal
-          onClose={() => setShowDetourModal(false)}
-          show
-          originalRoute={{}}
-        />
-      )}
-
-      {showDetourModal && stateOfDetourModal && (
+      {showDetourModal && (!detourId || stateOfDetourModal) && (
         <DetourModal
           onClose={onCloseDetour}
           show
           originalRoute={{}}
+          key={detourId ?? ""}
           {...(stateOfDetourModal ? { snapshot: stateOfDetourModal } : {})}
         />
       )}
