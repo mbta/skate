@@ -75,7 +75,7 @@ defmodule Skate.Detours.Detours do
     direction = Map.get(direction_names, Integer.to_string(direction_id))
 
     %DetailedDetour{
-      uuid: db_detour.id,
+      id: db_detour.id,
       route: route_name,
       direction: direction,
       name: headsign,
@@ -139,8 +139,8 @@ defmodule Skate.Detours.Detours do
   @spec get_detour_with_state!(integer()) :: DetourWithState.t()
   def get_detour_with_state!(id) do
     detour =
-      Detour
-      |> Repo.get!(id)
+      id
+      |> get_detour!()
       |> Repo.preload(:author)
 
     %DetourWithState{

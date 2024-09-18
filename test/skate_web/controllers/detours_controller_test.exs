@@ -164,7 +164,7 @@ defmodule SkateWeb.DetoursControllerTest do
     test "fetches detours from database and groups by active, past, draft", %{conn: conn} do
       author_id = populate_db_and_get_user(conn)
 
-      conn = get(conn, "/api/detours")
+      conn = get(conn, ~p"/api/detours")
 
       assert %{
                "data" => %{
@@ -234,7 +234,7 @@ defmodule SkateWeb.DetoursControllerTest do
         }
       })
 
-      conn = get(conn, "/api/detours")
+      conn = get(conn, ~p"/api/detours")
 
       assert %{
                "data" => %{
@@ -318,7 +318,7 @@ defmodule SkateWeb.DetoursControllerTest do
         }
       })
 
-      conn = get(conn, "/api/detours")
+      conn = get(conn, ~p"/api/detours")
 
       assert %{
                "data" => %{

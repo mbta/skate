@@ -8,7 +8,7 @@ defmodule Skate.Detours.Detour do
     Detailed detours have had the db detour state parsed into attributes
     """
     @type t :: %__MODULE__{
-            uuid: integer(),
+            id: integer(),
             route: String.t(),
             direction: String.t(),
             name: String.t(),
@@ -21,7 +21,7 @@ defmodule Skate.Detours.Detour do
     @derive Jason.Encoder
 
     defstruct [
-      :uuid,
+      :id,
       :route,
       :direction,
       :name,
