@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { DetoursTable } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
 import { Button } from "react-bootstrap"
@@ -6,35 +6,31 @@ import { PlusSquare } from "../helpers/bsIcons"
 import { DetourModal } from "./detours/detourModal"
 import { fetchDetour, fetchDetours } from "../api"
 import { useApiCall } from "../hooks/useApiCall"
-import { isOk } from "../util/result"
+import { isErr, isOk } from "../util/result"
 import { isValidSnapshot } from "../util/isValidSnapshot"
 import { createDetourMachine } from "../models/createDetourMachine"
-import { Snapshot } from "xstate"
 
 export const DetourListPage = () => {
   const [showDetourModal, setShowDetourModal] = useState(false)
   const [detourId, setDetourId] = useState<number | undefined>()
-  const [stateOfDetourModal, setStateOfDetourModal] =
-    useState<Snapshot<unknown> | null>()
-
   const { result } = useApiCall({
     apiCall: useCallback(async () => fetchDetours(), []),
   })
   const detours = result && isOk(result) && result.ok
-
-  const { result: detourResult } = useApiCall({
+  
+  const { result: stateOfDetourModal } = useApiCall({
     apiCall: useCallback(
-      async () => (detourId ? fetchDetour(detourId) : undefined),
+      async () => {
+        if (detourId === undefined) { return undefined }
+        const detourResponse = await fetchDetour(detourId)
+        if (isErr(detourResponse)) { return undefined }
+        const snapshot = isValidSnapshot(createDetourMachine, detourResponse.ok.state)
+        if (isErr(snapshot)) { return undefined }
+        return snapshot.ok
+      },
       [detourId]
     ),
   })
-  const detour =
-    detourResult && isOk(detourResult) ? detourResult.ok : undefined
-
-  useEffect(() => {
-    const state = isValidSnapshot(createDetourMachine, detour?.state)
-    if (isOk(state)) setStateOfDetourModal(state.ok)
-  }, [detour])
 
   const onOpenDetour = (detourId: number) => {
     setDetourId(detourId)
@@ -43,7 +39,6 @@ export const DetourListPage = () => {
 
   const onCloseDetour = () => {
     setDetourId(undefined)
-    setStateOfDetourModal(null)
     setShowDetourModal(false)
   }
 
