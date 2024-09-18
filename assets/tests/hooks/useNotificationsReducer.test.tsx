@@ -15,12 +15,16 @@ import {
   useNotificationsReducer,
 } from "../../src/hooks/useNotificationsReducer"
 import { ConnectionStatus } from "../../src/hooks/useSocket"
-import { NotificationData } from "../../src/models/notificationData"
-import { Notification, NotificationState } from "../../src/realtime"
+import {
+  Notification,
+  NotificationState,
+  NotificationType,
+} from "../../src/realtime"
 import { initialState } from "../../src/state"
 import { mockUseReducerOnce } from "../testHelpers/mockHelpers"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { blockWaiverNotificationFactory } from "../factories/notification"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -29,50 +33,59 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
 
 jest.mock("@fullstory/browser")
 
-const notification1: Notification = {
+const notification1: Notification = blockWaiverNotificationFactory.build({
   id: "0",
   createdAt: new Date(0),
-  reason: "manpower",
-  routeIds: ["route1", "route2"],
-  runIds: ["run1", "run2"],
-  tripIds: ["trip1", "trip2"],
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
-  startTime: new Date(0),
-  endTime: new Date(100_000),
-  state: "unread" as NotificationState,
-}
+  state: "unread",
+  content: {
+    reason: "manpower",
+    createdAt: new Date(0),
+    routeIds: ["route1", "route2"],
+    runIds: ["run1", "run2"],
+    tripIds: ["trip1", "trip2"],
+    operatorName: null,
+    operatorId: null,
+    routeIdAtCreation: null,
+    startTime: new Date(0),
+    endTime: new Date(100_000),
+  },
+})
 
-const notification1Data: NotificationData = {
+const notification1Data = {
   id: 0,
   created_at: 0,
-  reason: "manpower",
-  route_ids: ["route1", "route2"],
-  run_ids: ["run1", "run2"],
-  trip_ids: ["trip1", "trip2"],
-  operator_name: null,
-  operator_id: null,
-  route_id_at_creation: null,
-  start_time: 0,
-  end_time: 100,
   state: "unread",
+  content: {
+    __struct__: NotificationType.BlockWaiver,
+    reason: "manpower",
+    created_at: 0,
+    route_ids: ["route1", "route2"],
+    run_ids: ["run1", "run2"],
+    trip_ids: ["trip1", "trip2"],
+    operator_name: null,
+    operator_id: null,
+    route_id_at_creation: null,
+    start_time: 0,
+    end_time: 100,
+  },
 }
 
-const notification2: Notification = {
+const notification2: Notification = blockWaiverNotificationFactory.build({
   id: "1",
   createdAt: new Date(1),
-  reason: "accident",
-  routeIds: ["route1", "route2"],
-  runIds: ["run1", "run2"],
-  tripIds: [],
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
-  startTime: new Date(1),
-  endTime: new Date(100),
-  state: "unread" as NotificationState,
-}
+  state: "unread",
+  content: {
+    reason: "accident",
+    routeIds: ["route1", "route2"],
+    runIds: ["run1", "run2"],
+    tripIds: [],
+    operatorName: null,
+    operatorId: null,
+    routeIdAtCreation: null,
+    startTime: new Date(1),
+    endTime: new Date(100),
+  },
+})
 
 const expectPut = (url: string) =>
   expect(window.fetch).toHaveBeenCalledWith(url, {

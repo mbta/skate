@@ -9,7 +9,6 @@ import {
   VehicleData,
   vehicleFromData,
 } from "../../src/models/vehicleData"
-import { NotificationReason, NotificationState } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import {
   makeMockChannel,
@@ -20,6 +19,7 @@ import { vehicleDataFactory } from "../factories/vehicle_data"
 import ghostDataFactory from "../factories/ghost_data"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import { blockWaiverNotificationFactory } from "../factories/notification"
 
 jest.mock("../../src/helpers/googleTagManager", () => ({
   __esModule: true,
@@ -41,20 +41,23 @@ const wrapper = ({ children }: { children: ReactElement<HTMLElement> }) => (
 )
 
 describe("useVehicleForNotification", () => {
-  const notification = {
+  const notification = blockWaiverNotificationFactory.build({
     id: "123",
     createdAt: new Date(),
-    tripIds: ["123", "456", "789"],
-    reason: "other" as NotificationReason,
-    routeIds: [],
-    runIds: [runId],
-    operatorName: null,
-    operatorId: null,
-    routeIdAtCreation: null,
-    startTime: new Date(),
-    endTime: new Date(),
-    state: "unread" as NotificationState,
-  }
+    state: "unread",
+    content: {
+      reason: "other",
+      routeIds: [],
+      tripIds: ["123", "456", "789"],
+      runIds: [runId],
+
+      operatorName: null,
+      operatorId: null,
+      routeIdAtCreation: null,
+      startTime: new Date(),
+      endTime: new Date(),
+    },
+  })
 
   test("parses vehicle data from channel", () => {
     const mockSocket = makeMockSocket()
@@ -127,15 +130,15 @@ describe("useVehicleForNotification", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     const mockedFSEvent = jest.mocked(fullStoryEvent)
 
+    const notification = blockWaiverNotificationFactory.build({
+      content: {
+        startTime: new Date("2019-10-06"),
+      },
+    })
+
     const { result } = renderHook(
       () => {
-        return useVehicleForNotification(
-          {
-            ...notification,
-            startTime: new Date("2019-10-06"),
-          },
-          mockSocket
-        )
+        return useVehicleForNotification(notification, mockSocket)
       },
       { wrapper }
     )
@@ -155,15 +158,15 @@ describe("useVehicleForNotification", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
     const mockedFSEvent = jest.mocked(fullStoryEvent)
 
+    const notification = blockWaiverNotificationFactory.build({
+      content: {
+        startTime: new Date("2019-10-06"),
+      },
+    })
+
     const { result } = renderHook(
       () => {
-        return useVehicleForNotification(
-          {
-            ...notification,
-            startTime: new Date("2019-10-06"),
-          },
-          mockSocket
-        )
+        return useVehicleForNotification(notification, mockSocket)
       },
       { wrapper }
     )
