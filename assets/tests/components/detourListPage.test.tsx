@@ -36,7 +36,7 @@ describe("DetourListPage", () => {
             updatedAt: 1724856392,
           },
         ],
-        draft: null,
+        draft: undefined,
         past: [
           {
             uuid: 10,

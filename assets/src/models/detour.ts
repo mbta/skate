@@ -3,24 +3,22 @@ import { ShapePoint, Stop } from "../schedule"
 import { CreateDetourMachineInput } from "./createDetourMachine"
 import { any, Infer, number, string, type } from "superstruct"
 
-export const DetourWithState = type({
-  author: string(),
-  state: any(),
-  updatedAt: number(),
-})
+export interface DetourWithState {
+  author: string
+  state: any
+  updatedAt: number
+}
 
-export type DetourWithState = Infer<typeof DetourWithState>
-
-export const DetourWithStateFromApi = type({
+export const DetourWithStateData = type({
   author: string(),
   state: any(),
   updated_at: number(),
 })
 
-export type DetourWithStateFromApi = Infer<typeof DetourWithStateFromApi>
+export type DetourWithStateData = Infer<typeof DetourWithStateData>
 
 export const detourStateFromData = (
-  detourWithState: DetourWithStateFromApi
+  detourWithState: DetourWithStateData
 ): DetourWithState => ({
   author: detourWithState.author,
   state: detourWithState.state,

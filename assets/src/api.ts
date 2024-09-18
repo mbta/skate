@@ -54,6 +54,7 @@ import {
 import { LocationSearchSuggestion } from "./models/locationSearchSuggestion"
 import { DetourShapeData, detourShapeFromData } from "./models/detourShapeData"
 import {
+  GroupedDetoursData,
   groupedDetoursFromData,
   GroupedSimpleDetours,
 } from "./models/detoursList"
@@ -61,6 +62,7 @@ import {
   DetourShape,
   detourStateFromData,
   DetourWithState,
+  DetourWithStateData,
   FinishedDetour,
   UnfinishedDetour,
 } from "./models/detour"
@@ -541,20 +543,18 @@ export const putDetourUpdate = (
 export const fetchDetours = (): Promise<Result<GroupedSimpleDetours, never>> =>
   apiCallResult({
     url: `/api/detours`,
-    OkStruct: GroupedSimpleDetours,
+    OkStruct: GroupedDetoursData,
     ErrStruct: never(),
-    parser: groupedDetoursFromData,
-  })
+  }).then((v) => map(v, groupedDetoursFromData))
 
 export const fetchDetour = (
   id: number
 ): Promise<Result<DetourWithState, never>> =>
   apiCallResult({
     url: `/api/detours/${id}`,
-    OkStruct: DetourWithState,
+    OkStruct: DetourWithStateData,
     ErrStruct: never(),
-    parser: detourStateFromData,
-  })
+  }).then((v) => map(v, detourStateFromData))
 
 // #endregion Detour API functions
 
