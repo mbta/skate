@@ -139,7 +139,8 @@ defmodule Skate.Detours.Detours do
   @spec get_detour_with_state!(integer()) :: DetourWithState.t()
   def get_detour_with_state!(id) do
     detour =
-      get_detour!(id)
+      id
+      |> get_detour!()
       |> Repo.preload(:author)
 
     %DetourWithState{
