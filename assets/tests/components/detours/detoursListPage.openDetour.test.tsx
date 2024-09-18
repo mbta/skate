@@ -18,7 +18,9 @@ import { shapePointFactory } from "../../factories/shapePointFactory"
 import getTestGroups from "../../../src/userTestGroups"
 import { detourListFactory } from "../../factories/detourListFactory"
 
-jest.spyOn(Date, "now").mockImplementation(() => 1724961600000)
+jest
+  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .setSystemTime(new Date("2024-08-29T20:00:00"))
 
 jest.mock("../../../src/userTestGroups")
 
@@ -32,9 +34,7 @@ beforeEach(() => {
 
 describe("Detours Page: Open a Detour", () => {
   test("calls API with correct detour ID", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(
-      Ok(detourListFactory.build())
-    )
+    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
 
     render(<DetourListPage />)
 
@@ -43,9 +43,7 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("renders detour details modal to match mocked fetchDetour", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(
-      Ok(detourListFactory.build())
-    )
+    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
 
     // Stub out a detour machine, and start a detour-in-progress
     const machine = createActor(createDetourMachine, {

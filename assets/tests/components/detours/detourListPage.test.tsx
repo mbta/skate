@@ -6,7 +6,7 @@ import { neverPromise } from "../../testHelpers/mockHelpers"
 import { Ok } from "../../../src/util/result"
 import { render, screen } from "@testing-library/react"
 
-jest.spyOn(Date, "now").mockImplementation(() => 1724961600000)
+jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
 
 jest.mock("../../../src/api")
 
