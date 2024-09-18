@@ -10,13 +10,13 @@ export const detourListFactory = Factory.define<GroupedSimpleDetours>(() => {
       simpleDetourFactory.build(),
       simpleDetourFactory.build({ direction: "Outbound" }),
     ],
-    draft: null,
+    draft: undefined,
     past: [simpleDetourFactory.build({ name: "Headsign Z" })],
   }
 })
 
 const simpleDetourFactory = Factory.define<SimpleDetour>(({ sequence }) => ({
-  uuid: sequence,
+  id: sequence,
   route: `${sequence}`,
   direction: "Inbound",
   name: `Headsign ${sequence}`,

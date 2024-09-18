@@ -24,7 +24,7 @@ export const DetoursTable = ({ data, onOpenDetour }: DetoursTableProps) => {
       </thead>
       <tbody>
         {data.map((detour, index) => (
-          <tr key={index} onClick={() => onOpenDetour(detour.uuid)}>
+          <tr key={index} onClick={() => onOpenDetour(detour.id)}>
             <td className="align-middle p-3">
               <div className="d-flex">
                 <RoutePill routeName={detour.route} />
