@@ -20,7 +20,7 @@ describe("DetourListPage", () => {
       Ok({
         active: [
           {
-            uuid: 1,
+            id: 1,
             route: "1",
             direction: "Inbound",
             name: "Headsign A",
@@ -28,7 +28,7 @@ describe("DetourListPage", () => {
             updatedAt: 1724866392,
           },
           {
-            uuid: 8,
+            id: 8,
             route: "2",
             direction: "Outbound",
             name: "Headsign B",
@@ -39,7 +39,7 @@ describe("DetourListPage", () => {
         draft: undefined,
         past: [
           {
-            uuid: 10,
+            id: 10,
             route: "1",
             direction: "Inbound",
             name: "Headsign A",
@@ -47,7 +47,7 @@ describe("DetourListPage", () => {
             updatedAt: 1724866392,
           },
           {
-            uuid: 7,
+            id: 7,
             route: "1",
             direction: "Outbound",
             name: "Headsign Z",

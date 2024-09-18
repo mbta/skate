@@ -1,7 +1,7 @@
 import { array, Infer, nullable, number, string, type } from "superstruct"
 
 export interface SimpleDetour {
-  id: number 
+  id: number
   route: string
   direction: string
   name: string
