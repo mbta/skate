@@ -17,19 +17,25 @@ export const DetourListPage = () => {
     apiCall: useCallback(async () => fetchDetours(), []),
   })
   const detours = result && isOk(result) && result.ok
-  
+
   const { result: stateOfDetourModal } = useApiCall({
-    apiCall: useCallback(
-      async () => {
-        if (detourId === undefined) { return undefined }
-        const detourResponse = await fetchDetour(detourId)
-        if (isErr(detourResponse)) { return undefined }
-        const snapshot = isValidSnapshot(createDetourMachine, detourResponse.ok.state)
-        if (isErr(snapshot)) { return undefined }
-        return snapshot.ok
-      },
-      [detourId]
-    ),
+    apiCall: useCallback(async () => {
+      if (detourId === undefined) {
+        return undefined
+      }
+      const detourResponse = await fetchDetour(detourId)
+      if (isErr(detourResponse)) {
+        return undefined
+      }
+      const snapshot = isValidSnapshot(
+        createDetourMachine,
+        detourResponse.ok.state
+      )
+      if (isErr(snapshot)) {
+        return undefined
+      }
+      return snapshot.ok
+    }, [detourId]),
   })
 
   const onOpenDetour = (detourId: number) => {
@@ -67,6 +73,10 @@ export const DetourListPage = () => {
         </>
       )}
 
+      {/* `detourId` exists before `stateOfDetourModal` does, so need this conditional
+       * to ensure that either there's no `detourId` selected (i.e. make a new detour)
+       * or the state has been successfully fetched from the api
+       */}
       {showDetourModal && (!detourId || stateOfDetourModal) && (
         <DetourModal
           onClose={onCloseDetour}
