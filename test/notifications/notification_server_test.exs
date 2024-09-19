@@ -168,15 +168,16 @@ defmodule Notifications.NotificationServerTest do
             {:notification,
              %Notifications.Notification{
                id: ^notification_id,
-               created_at: _,
-               reason: ^cause_atom,
-               route_ids: ["39", "2"],
-               run_ids: ["run1", "run2"],
-               trip_ids: ["trip1", "trip2"],
-               operator_name: ^operator_name,
-               operator_id: ^operator_id,
-               route_id_at_creation: ^route_id_at_creation,
-               start_time: ^start_time
+               content: %Notifications.Db.BlockWaiver{
+                 reason: ^cause_atom,
+                 route_ids: ["39", "2"],
+                 run_ids: ["run1", "run2"],
+                 trip_ids: ["trip1", "trip2"],
+                 operator_name: ^operator_name,
+                 operator_id: ^operator_id,
+                 route_id_at_creation: ^route_id_at_creation,
+                 start_time: ^start_time
+               }
              }},
             5000
           )
@@ -184,15 +185,16 @@ defmodule Notifications.NotificationServerTest do
           assert_receive(
             {:notification,
              %Notifications.Notification{
-               created_at: _,
-               reason: ^cause_atom,
-               route_ids: ["39", "2"],
-               run_ids: ["run1", "run2"],
-               trip_ids: ["trip1", "trip2"],
-               operator_name: ^operator_name,
-               operator_id: ^operator_id,
-               route_id_at_creation: ^route_id_at_creation,
-               start_time: ^start_time
+               content: %Notifications.Db.BlockWaiver{
+                 reason: ^cause_atom,
+                 route_ids: ["39", "2"],
+                 run_ids: ["run1", "run2"],
+                 trip_ids: ["trip1", "trip2"],
+                 operator_name: ^operator_name,
+                 operator_id: ^operator_id,
+                 route_id_at_creation: ^route_id_at_creation,
+                 start_time: ^start_time
+               }
              }},
             5000
           )
@@ -475,14 +477,8 @@ defmodule Notifications.NotificationServerTest do
 
       assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
 
-      expected_route_ids_value =
-        Enum.map_join(@chelsea_bridge_route_ids, ", ", &("\"" <> &1 <> "\""))
-
-      assert String.contains?(log, "reason: :chelsea_st_bridge_lowered")
-      assert String.contains?(log, "route_ids: [#{expected_route_ids_value}]")
-      assert String.contains?(log, "start_time: #{start_time}")
-      assert String.contains?(log, "run_ids: []")
-      assert String.contains?(log, "trip_ids: []")
+      assert String.contains?(log, "status: :lowered")
+      assert String.contains?(log, "created_at: #{start_time}")
     end
 
     test "broadcasts, saves to the DB, and logs new notifications for users looking at routes affected by the Chelsea drawbridge when bridge is raised" do
@@ -517,9 +513,10 @@ defmodule Notifications.NotificationServerTest do
       assert_receive(
         {:notification,
          %Notification{
-           reason: :chelsea_st_bridge_raised,
-           created_at: start_time,
-           route_ids: @chelsea_bridge_route_ids
+           content: %Notifications.Db.BridgeMovement{
+             status: :raised
+           },
+           created_at: start_time
          }}
       )
 
@@ -527,14 +524,8 @@ defmodule Notifications.NotificationServerTest do
 
       assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
 
-      expected_route_ids_value =
-        Enum.map_join(@chelsea_bridge_route_ids, ", ", &("\"" <> &1 <> "\""))
-
-      assert String.contains?(log, "reason: :chelsea_st_bridge_raised")
-      assert String.contains?(log, "route_ids: [#{expected_route_ids_value}]")
-      assert String.contains?(log, "start_time: #{start_time}")
-      assert String.contains?(log, "run_ids: []")
-      assert String.contains?(log, "trip_ids: []")
+      assert String.contains?(log, "status: :raised")
+      assert String.contains?(log, "lowering_time: #{start_time}")
     end
 
     test "doesn't send notifications to a user not looking at the Chelsea bridge routes" do
@@ -565,14 +556,8 @@ defmodule Notifications.NotificationServerTest do
 
       assert Enum.empty?(db_notification_users)
 
-      expected_route_ids_value =
-        Enum.map_join(@chelsea_bridge_route_ids, ", ", &("\"" <> &1 <> "\""))
-
-      assert String.contains?(log, "reason: :chelsea_st_bridge_raised")
-      assert String.contains?(log, "route_ids: [#{expected_route_ids_value}]")
-      assert String.contains?(log, "start_time: #{start_time}")
-      assert String.contains?(log, "run_ids: []")
-      assert String.contains?(log, "trip_ids: []")
+      assert String.contains?(log, "status: :raised")
+      assert String.contains?(log, "lowering_time: #{start_time}")
     end
 
     test "doesn't log or save a notification within a blackout period after one was created, but does broadcast" do
@@ -599,7 +584,11 @@ defmodule Notifications.NotificationServerTest do
 
       assert_receive(
         {:notification,
-         %Notification{reason: :chelsea_st_bridge_lowered, route_ids: @chelsea_bridge_route_ids}}
+         %Notification{
+           content: %Notifications.Db.BridgeMovement{
+             status: :lowered
+           }
+         }}
       )
 
       log =
@@ -610,7 +599,11 @@ defmodule Notifications.NotificationServerTest do
 
       assert_receive(
         {:notification,
-         %Notification{reason: :chelsea_st_bridge_lowered, route_ids: @chelsea_bridge_route_ids}}
+         %Notification{
+           content: %Notifications.Db.BridgeMovement{
+             status: :lowered
+           }
+         }}
       )
 
       db_notification_users = Skate.Repo.all(DbNotificationUser)

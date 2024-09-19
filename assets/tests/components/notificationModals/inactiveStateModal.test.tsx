@@ -1,39 +1,30 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import InactiveNotificationModal from "../../../src/components/notificationModals/inactiveNotificationModal"
-import { Break, Piece, Run, Trip } from "../../../src/minischedule"
+import { Break, Piece, Trip } from "../../../src/minischedule"
 import { useMinischeduleRuns } from "../../../src/hooks/useMinischedule"
-import { Notification, NotificationState } from "../../../src/realtime"
 import * as dateTime from "../../../src/util/dateTime"
+import { blockWaiverNotificationFactory } from "../../factories/notification"
 
-jest.mock("../../../src/hooks/useMinischedule", () => ({
-  __esModule: true,
-  useMinischeduleRuns: jest.fn(),
-}))
+jest.mock("../../../src/hooks/useMinischedule")
+
+beforeEach(() => {
+  jest.mocked(useMinischeduleRuns).mockReturnValue(undefined)
+})
 
 jest.spyOn(dateTime, "serviceDaySeconds").mockImplementation(() => 1000)
 
-describe("InactiveNotificationModal", () => {
-  const notification: Notification = {
-    id: "123",
-    createdAt: new Date(),
-    reason: "other",
-    routeIds: [],
-    runIds: [],
-    tripIds: ["123", "456", "789"],
-    operatorName: null,
-    operatorId: null,
-    routeIdAtCreation: null,
-    startTime: new Date("2020-10-05"),
-    endTime: new Date("2020-10-06"),
-    state: "unread" as NotificationState,
-  }
-  const futureNotification = {
-    ...notification,
-    startTime: new Date("20200-10-05"),
-  }
+const otherNotificationFactory = blockWaiverNotificationFactory.params({
+  content: { reason: "other" },
+})
 
+const futureNotificationFactory = otherNotificationFactory.params({
+  // `100_000`ms _should_ be longer than it takes to execute the test?..
+  content: { startTime: new Date(Date.now() + 100_000) },
+})
+
+describe("InactiveNotificationModal", () => {
   const revenueTrip: Trip = {
     id: "trip",
     blockId: "block",
@@ -70,7 +61,9 @@ describe("InactiveNotificationModal", () => {
   test("renders loading message", () => {
     jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => undefined)
     const { baseElement } = render(
-      <InactiveNotificationModal notification={notification} />
+      <InactiveNotificationModal
+        notification={blockWaiverNotificationFactory.build()}
+      />
     )
     expect(baseElement).toMatchSnapshot()
   })
@@ -78,40 +71,58 @@ describe("InactiveNotificationModal", () => {
   test("renders for a notification with no runs", () => {
     jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [])
     const { baseElement } = render(
-      <InactiveNotificationModal notification={notification} />
+      <InactiveNotificationModal
+        notification={otherNotificationFactory.build({
+          content: {
+            runIds: [],
+          },
+        })}
+      />
     )
     expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with one current run", () => {
-    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockReturnValue([
       {
         id: "111",
         activities: [piece],
-      } as Run,
+      },
     ])
     const { baseElement } = render(
       <InactiveNotificationModal
-        notification={{ ...notification, runIds: ["111"] }}
+        notification={otherNotificationFactory.build({
+          content: {
+            runIds: ["111"],
+            startTime: new Date(0),
+            endTime: new Date(1),
+          },
+        })}
       />
     )
     expect(baseElement).toMatchSnapshot()
   })
 
   test("renders for a notification with multiple current runs", () => {
-    jest.mocked(useMinischeduleRuns).mockImplementationOnce(() => [
+    jest.mocked(useMinischeduleRuns).mockReturnValue([
       {
         id: "111",
         activities: [piece],
-      } as Run,
+      },
       {
         id: "222",
         activities: [{ ...piece, startTime: 1200, endTime: 1400 }],
-      } as Run,
+      },
     ])
     const { baseElement } = render(
       <InactiveNotificationModal
-        notification={{ ...notification, runIds: ["111", "222"] }}
+        notification={otherNotificationFactory.build({
+          content: {
+            runIds: ["111", "222"],
+            startTime: new Date(0),
+            endTime: new Date(1),
+          },
+        })}
       />
     )
     expect(baseElement).toMatchSnapshot()
@@ -122,11 +133,13 @@ describe("InactiveNotificationModal", () => {
       {
         id: "111",
         activities: [{ ...piece, startTime: 1100, endTime: 1300 }],
-      } as Run,
+      },
     ])
     const { baseElement } = render(
       <InactiveNotificationModal
-        notification={{ ...futureNotification, runIds: ["111"] }}
+        notification={futureNotificationFactory.build({
+          content: { runIds: ["111"] },
+        })}
       />
     )
     expect(baseElement).toMatchSnapshot()
@@ -137,15 +150,17 @@ describe("InactiveNotificationModal", () => {
       {
         id: "111",
         activities: [{ ...piece, startTime: 1100, endTime: 1300 }],
-      } as Run,
+      },
       {
         id: "222",
         activities: [{ ...piece, startTime: 1400, endTime: 1600 }],
-      } as Run,
+      },
     ])
     const { baseElement } = render(
       <InactiveNotificationModal
-        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+        notification={futureNotificationFactory.build({
+          content: { runIds: ["111", "222"] },
+        })}
       />
     )
     expect(baseElement).toMatchSnapshot()
@@ -156,11 +171,13 @@ describe("InactiveNotificationModal", () => {
       {
         id: "111",
         activities: [breakk],
-      } as Run,
+      },
     ])
     const { baseElement } = render(
       <InactiveNotificationModal
-        notification={{ ...notification, runIds: ["111"] }}
+        notification={otherNotificationFactory.build({
+          content: { runIds: ["111"] },
+        })}
       />
     )
     expect(baseElement).toMatchSnapshot()
@@ -178,7 +195,7 @@ describe("InactiveNotificationModal", () => {
             trips: [{ ...revenueTrip, startTime: 500, endTime: 700 }],
           },
         ],
-      } as Run,
+      },
       {
         id: "222",
         activities: [
@@ -189,11 +206,13 @@ describe("InactiveNotificationModal", () => {
             trips: [{ ...revenueTrip, startTime: 700, endTime: 900 }],
           },
         ],
-      } as Run,
+      },
     ])
     const { baseElement } = render(
       <InactiveNotificationModal
-        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+        notification={futureNotificationFactory.build({
+          content: { runIds: ["111", "222"] },
+        })}
       />
     )
     expect(baseElement).toMatchSnapshot()
@@ -214,11 +233,13 @@ describe("InactiveNotificationModal", () => {
             ],
           },
         ],
-      } as Run,
+      },
     ])
     const { baseElement } = render(
       <InactiveNotificationModal
-        notification={{ ...futureNotification, runIds: ["111", "222"] }}
+        notification={futureNotificationFactory.build({
+          content: { runIds: ["111", "222"] },
+        })}
       />
     )
     expect(baseElement).toMatchSnapshot()

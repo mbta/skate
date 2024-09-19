@@ -1,9 +1,17 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
-import { NotificationCard } from "../../src/components/notificationCard"
-import { Notification, NotificationReason } from "../../src/realtime"
-import notificationFactory from "../factories/notification"
+import { NotificationCard, title } from "../../src/components/notificationCard"
+import {
+  BlockWaiverReason,
+  BridgeNotification,
+  Notification,
+} from "../../src/realtime"
+import {
+  blockWaiverNotificationFactory,
+  bridgeLoweredNotificationFactory,
+  bridgeRaisedNotificationFactory,
+} from "../factories/notification"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
 import { hideLatestNotification } from "../../src/hooks/useNotificationsReducer"
@@ -11,18 +19,6 @@ import { RoutesProvider } from "../../src/contexts/routesContext"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 
 jest.mock("../../src/helpers/fullStory")
-
-const notification = notificationFactory.build({
-  routeIds: ["route1", "route2"],
-  routeIdAtCreation: null,
-})
-
-const notificationWithMatchedVehicle: Notification = {
-  ...notification,
-  operatorName: "operatorName",
-  operatorId: "operatorId",
-  routeIdAtCreation: "route1",
-}
 
 const routes = [
   routeFactory.build({
@@ -41,7 +37,11 @@ const routes = [
 
 describe("NotificationCard", () => {
   test("transforms reasons into human-readable titles", () => {
-    const n: Notification = { ...notification, reason: "operator_error" }
+    const n: Notification = blockWaiverNotificationFactory.build({
+      content: {
+        reason: "operator_error",
+      },
+    })
     const result = render(
       <RoutesProvider routes={routes}>
         <NotificationCard
@@ -55,7 +55,11 @@ describe("NotificationCard", () => {
   })
 
   test("uses custom titles if available", () => {
-    const n: Notification = { ...notification, reason: "manpower" }
+    const n: Notification = blockWaiverNotificationFactory.build({
+      content: {
+        reason: "manpower",
+      },
+    })
     const result = render(
       <RoutesProvider routes={routes}>
         <NotificationCard
@@ -69,7 +73,11 @@ describe("NotificationCard", () => {
   })
 
   test("renders a notification with an unexpected reason", () => {
-    const n: Notification = { ...notification, reason: "other" }
+    const n: Notification = blockWaiverNotificationFactory.build({
+      content: {
+        reason: "other",
+      },
+    })
     const result = render(
       <RoutesProvider routes={routes}>
         <NotificationCard
@@ -84,12 +92,13 @@ describe("NotificationCard", () => {
   })
 
   test("routeIdAtCreation shows when relevant", () => {
-    const n: Notification = {
-      ...notificationWithMatchedVehicle,
-      reason: "accident",
-      routeIds: ["route2", "route3"],
-      routeIdAtCreation: "route1",
-    }
+    const n = blockWaiverNotificationFactory.build({
+      content: {
+        reason: "accident",
+        routeIds: ["route2", "route3"],
+        routeIdAtCreation: "route1",
+      },
+    })
     const result = render(
       <RoutesProvider routes={routes}>
         <NotificationCard
@@ -103,12 +112,13 @@ describe("NotificationCard", () => {
   })
 
   test("falls back to affected routeIds if routeIdAtCreation is missing", () => {
-    const n: Notification = {
-      ...notification,
-      reason: "accident",
-      routeIds: ["route2", "route3"],
-      routeIdAtCreation: null,
-    }
+    const n = blockWaiverNotificationFactory.build({
+      content: {
+        reason: "accident",
+        routeIds: ["route2", "route3"],
+        routeIdAtCreation: null,
+      },
+    })
     const result = render(
       <RoutesProvider routes={routes}>
         <NotificationCard
@@ -122,12 +132,13 @@ describe("NotificationCard", () => {
   })
 
   test("shows affected routeIds if routeIdAtCreation isn't relevant", () => {
-    const n: Notification = {
-      ...notificationWithMatchedVehicle,
-      reason: "diverted",
-      routeIds: ["route2", "route3"],
-      routeIdAtCreation: "route1",
-    }
+    const n = blockWaiverNotificationFactory.build({
+      content: {
+        reason: "diverted",
+        routeIds: ["route2", "route3"],
+        routeIdAtCreation: "route1",
+      },
+    })
     const result = render(
       <RoutesProvider routes={routes}>
         <NotificationCard
@@ -140,7 +151,7 @@ describe("NotificationCard", () => {
     expect(result.getByText(/r2, r3/)).not.toBeNull()
   })
 
-  const reasons: Record<NotificationReason, RegExp> = {
+  const reasons: Record<BlockWaiverReason, RegExp> = {
     manpower: /No Operator/,
     disabled: /Disabled/,
     diverted: /Diversion/,
@@ -149,20 +160,16 @@ describe("NotificationCard", () => {
     adjusted: /Adjusted/,
     operator_error: /Operator Error/,
     traffic: /Traffic/,
-    chelsea_st_bridge_raised: /Chelsea St Bridge Raised/,
-    chelsea_st_bridge_lowered: /Chelsea St Bridge Lowered/,
   }
 
-  test.each(Object.keys(reasons) as NotificationReason[])(
-    "renders notification with reason %s",
+  test.each(Object.keys(reasons) as BlockWaiverReason[])(
+    "renders block waiver notification with reason %s",
     (reason) => {
-      const runIds =
-        reason === "chelsea_st_bridge_raised" ||
-        reason === "chelsea_st_bridge_lowered"
-          ? []
-          : notification.runIds
-
-      const n: Notification = { ...notification, reason, runIds }
+      const n = blockWaiverNotificationFactory.build({
+        content: {
+          reason,
+        },
+      })
       const result = render(
         <RoutesProvider routes={routes}>
           <NotificationCard
@@ -177,11 +184,41 @@ describe("NotificationCard", () => {
     }
   )
 
-  test("clicking through opens VPP and hides notification", async () => {
-    const updatedNotification = {
-      ...notification,
-      tripIds: ["123", "456", "789"],
+  test.each<{
+    notification: Notification<BridgeNotification>
+    text: RegExp
+  }>([
+    {
+      notification: bridgeLoweredNotificationFactory.build(),
+      text: /Chelsea St Bridge Lowered/,
+    },
+    {
+      notification: bridgeRaisedNotificationFactory.build(),
+      text: /Chelsea St Bridge Raised/,
+    },
+  ])(
+    "renders bridge notification with reason $status",
+    ({ notification, text }) => {
+      const result = render(
+        <RoutesProvider routes={routes}>
+          <NotificationCard
+            notification={notification}
+            currentTime={new Date()}
+            openVPPForCurrentVehicle={jest.fn()}
+          />
+        </RoutesProvider>
+      )
+
+      expect(result.queryByText(text)).not.toBeNull()
     }
+  )
+
+  test("clicking through opens VPP and hides notification", async () => {
+    const updatedNotification = blockWaiverNotificationFactory.build({
+      content: {
+        runIds: ["run1"],
+      },
+    })
     const dispatch = jest.fn()
     const currentTime = new Date()
     const openVPPForCurrentVehicle = jest.fn()
@@ -208,26 +245,86 @@ describe("NotificationCard", () => {
   })
 
   test.each<{
-    reason: NotificationReason
+    notification: Notification
     should_fire_fs_event: boolean
   }>([
-    { should_fire_fs_event: true, reason: "chelsea_st_bridge_raised" },
-    { should_fire_fs_event: true, reason: "chelsea_st_bridge_lowered" },
-    { should_fire_fs_event: false, reason: "other" },
-    { should_fire_fs_event: false, reason: "manpower" },
-    { should_fire_fs_event: false, reason: "disabled" },
-    { should_fire_fs_event: false, reason: "diverted" },
-    { should_fire_fs_event: false, reason: "accident" },
-    { should_fire_fs_event: false, reason: "adjusted" },
-    { should_fire_fs_event: false, reason: "operator_error" },
-    { should_fire_fs_event: false, reason: "traffic" },
+    {
+      should_fire_fs_event: true,
+      notification: bridgeRaisedNotificationFactory.build(),
+    },
+    {
+      should_fire_fs_event: true,
+      notification: bridgeLoweredNotificationFactory.build(),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "other",
+        },
+      }),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "manpower",
+        },
+      }),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "disabled",
+        },
+      }),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "diverted",
+        },
+      }),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "accident",
+        },
+      }),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "adjusted",
+        },
+      }),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "operator_error",
+        },
+      }),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "traffic",
+        },
+      }),
+    },
   ])(
-    "clicking bridge notification should trigger FS event: %s",
-    async ({ reason, should_fire_fs_event }) => {
+    "clicking bridge notification should trigger FS event: $notification.content.reason",
+    async ({ notification, should_fire_fs_event }) => {
       const mockedFSEvent = jest.mocked(fullStoryEvent)
-      const updatedNotification = notificationFactory.build({
-        reason,
-      })
+      const updatedNotification = notification
       const dispatch = jest.fn()
       const currentTime = new Date()
       const openVPPForCurrentVehicle = jest.fn()
@@ -247,7 +344,9 @@ describe("NotificationCard", () => {
       expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
       expect(dispatch).not.toHaveBeenCalled()
 
-      await user.click(result.getByText(/run1/))
+      // I don't _want_ to use `title`, but there's nothing else consistent to
+      // match on for _all_ notifications
+      await user.click(result.getByText(title(notification)))
 
       if (should_fire_fs_event) {
         // eslint-disable-next-line jest/no-conditional-expect

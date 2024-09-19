@@ -2,7 +2,7 @@ import React from "react"
 import Loading from "../loading"
 import { useMinischeduleRuns } from "../../hooks/useMinischedule"
 import { Activity, Run, Piece, Trip } from "../../minischedule"
-import { Notification, RunId } from "../../realtime"
+import { BlockWaiverNotification, Notification, RunId } from "../../realtime"
 import { now, serviceDaySeconds } from "../../util/dateTime"
 import { title } from "../notificationCard"
 import BasicNotificationModal from "./basicNotificationModal"
@@ -12,10 +12,10 @@ type RunScheduleRelationship = "current" | "break" | "past"
 const InactiveNotificationModal = ({
   notification,
 }: {
-  notification: Notification
+  notification: Notification<BlockWaiverNotification>
 }) => {
   const runs: (Run | null)[] | undefined = useMinischeduleRuns(
-    notification.tripIds
+    notification.content.tripIds
   )
 
   if (runs !== undefined) {
@@ -31,8 +31,8 @@ const InactiveNotificationModal = ({
 
     return (
       <BasicNotificationModal
-        title={title(notification.reason) + " NOTIFICATION"}
-        body={bodyCopy(notification, uniqueRuns)}
+        title={title(notification) + " NOTIFICATION"}
+        body={bodyCopy(notification.content, uniqueRuns)}
       />
     )
   }
@@ -104,7 +104,10 @@ const runScheduleRelationshipForRuns = (
   return ["current", null]
 }
 
-const bodyCopy = (notification: Notification, runs: (Run | null)[]): string => {
+const bodyCopy = (
+  notification: BlockWaiverNotification,
+  runs: (Run | null)[]
+): string => {
   if (notification.runIds.length === 0) {
     return "Sorry, there's no additional information that we can provide you about this notification."
   }
@@ -123,7 +126,9 @@ const bodyCopy = (notification: Notification, runs: (Run | null)[]): string => {
   }
 }
 
-const pastNotificationBodyCopy = (notification: Notification): string => {
+const pastNotificationBodyCopy = (
+  notification: BlockWaiverNotification
+): string => {
   if (notification.runIds.length === 1) {
     return `Sorry, we can't show you details for run ${notification.runIds[0]} because nobody is logged into it.`
   }
@@ -133,7 +138,9 @@ const pastNotificationBodyCopy = (notification: Notification): string => {
   )} because nobody is logged into them.`
 }
 
-const futureNotificationBodyCopy = (notification: Notification): string => {
+const futureNotificationBodyCopy = (
+  notification: BlockWaiverNotification
+): string => {
   if (notification.runIds.length === 1) {
     return `Run ${notification.runIds[0]} is upcoming and not yet active in Skate. Please check back later to see details for this run.`
   }

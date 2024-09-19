@@ -1,5 +1,4 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import { NotificationReason, NotificationState } from "../src/realtime"
 import * as State from "../src/state"
 import {
   VehicleLabelSetting,
@@ -14,7 +13,7 @@ import {
   OpenView,
   selectVehicleFromNotification,
 } from "../src/state/pagePanelState"
-import notificationFactory from "./factories/notification"
+import { blockWaiverNotificationFactory } from "./factories/notification"
 import { usePanelStateForViewState } from "../src/hooks/usePanelState"
 import { viewFactory } from "./factories/pagePanelStateFactory"
 
@@ -220,20 +219,23 @@ describe("reducer", () => {
   })
 
   test("setNotification", () => {
-    const notification = {
+    const notification = blockWaiverNotificationFactory.build({
       id: "123",
       createdAt: new Date(),
-      tripIds: ["123", "456", "789"],
-      reason: "other" as NotificationReason,
-      routeIds: [],
-      runIds: [],
-      operatorName: null,
-      operatorId: null,
-      routeIdAtCreation: null,
-      startTime: new Date(),
-      endTime: new Date(),
-      state: "unread" as NotificationState,
-    }
+      state: "unread",
+      content: {
+        createdAt: new Date(),
+        tripIds: ["123", "456", "789"],
+        reason: "other",
+        routeIds: [],
+        runIds: [],
+        operatorName: null,
+        operatorId: null,
+        routeIdAtCreation: null,
+        startTime: new Date(),
+        endTime: new Date(),
+      },
+    })
     const newState = reducer(initialState, State.setNotification(notification))
     const expectedState = {
       ...initialState,
@@ -284,7 +286,7 @@ describe("reducer", () => {
 
     test("openLateView deselects current notification", () => {
       const state = stateFactory.build({
-        selectedNotification: notificationFactory.build(),
+        selectedNotification: blockWaiverNotificationFactory.build(),
       })
 
       const { openLateView } = usePanelStateForViewState(
@@ -300,7 +302,7 @@ describe("reducer", () => {
 
     test("openSwingsView deselects current notification", () => {
       const state = stateFactory.build({
-        selectedNotification: notificationFactory.build(),
+        selectedNotification: blockWaiverNotificationFactory.build(),
       })
 
       const { openSwingsView: openSwingsView } = usePanelStateForViewState(
@@ -318,7 +320,7 @@ describe("reducer", () => {
       const previousView = OpenView.Late
 
       const state = stateFactory.build({
-        selectedNotification: notificationFactory.build(),
+        selectedNotification: blockWaiverNotificationFactory.build(),
         view: viewFactory
           .withVehicle()
           .currentState({

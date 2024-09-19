@@ -59,19 +59,19 @@ defmodule Skate.Detours.Detours do
     }
   end
 
-  @spec db_detour_to_detour(Detour.t(), integer()) :: DetailedDetour.t()
-  defp db_detour_to_detour(
-         %{
-           state: %{
-             "context" => %{
-               "route" => %{"name" => route_name, "directionNames" => direction_names},
-               "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
-               "nearestIntersection" => nearest_intersection
-             }
-           }
-         } = db_detour,
-         user_id
-       ) do
+  @spec db_detour_to_detour(Detour.t(), integer() | nil) :: t() | nil
+  def db_detour_to_detour(
+        %{
+          state: %{
+            "context" => %{
+              "route" => %{"name" => route_name, "directionNames" => direction_names},
+              "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
+              "nearestIntersection" => nearest_intersection
+            }
+          }
+        } = db_detour,
+        user_id
+      ) do
     direction = Map.get(direction_names, Integer.to_string(direction_id))
 
     %DetailedDetour{
@@ -86,7 +86,7 @@ defmodule Skate.Detours.Detours do
     }
   end
 
-  defp db_detour_to_detour(invalid_detour, _) do
+  def db_detour_to_detour(invalid_detour, _) do
     Sentry.capture_message("Detour error: the detour has an outdated schema",
       extra: %{error: invalid_detour}
     )
@@ -103,6 +103,7 @@ defmodule Skate.Detours.Detours do
   defp categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}, _user_id),
     do: :past
 
+  defp categorize_detour(_detour_context, nil = _user_id), do: :draft
   defp categorize_detour(%{author_id: author_id}, user_id) when author_id == user_id, do: :draft
   defp categorize_detour(_, _), do: nil
 
@@ -215,6 +216,13 @@ defmodule Skate.Detours.Detours do
   """
   def delete_detour(%Detour{} = detour) do
     Repo.delete(detour)
+  end
+
+  @doc """
+  Deletes all detours.
+  """
+  def delete_all_detours() do
+    Repo.delete_all(Detour)
   end
 
   @doc """

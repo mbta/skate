@@ -33,6 +33,7 @@ import { fullStoryEvent } from "../../src/helpers/fullStory"
 import useAlerts from "../../src/hooks/useAlerts"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { blockWaiverNotificationFactory } from "../factories/notification"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -502,7 +503,11 @@ describe("LadderPage", () => {
   })
 
   test("if a vehicle from a notification is loading, show nothing", () => {
-    const notification: Notification = { runIds: ["run_id"] } as Notification
+    const notification: Notification = blockWaiverNotificationFactory.build({
+      content: {
+        runIds: ["run_id"],
+      },
+    })
     const state: State = {
       ...initialState,
       selectedNotification: notification,
@@ -518,7 +523,11 @@ describe("LadderPage", () => {
   })
 
   test("if a vehicle from a notification failed to load, show nothing", () => {
-    const notification: Notification = { runIds: ["run_id"] } as Notification
+    const notification: Notification = blockWaiverNotificationFactory.build({
+      content: {
+        runIds: ["run_id"],
+      },
+    })
     const state: State = {
       ...initialState,
       selectedNotification: notification,

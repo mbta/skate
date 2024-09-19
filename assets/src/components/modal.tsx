@@ -12,6 +12,7 @@ import SavePresetModal from "./inputModals/savePresetModal"
 import DeletePresetModal from "./inputModals/deletePresetModal"
 import OverwritePresetModal from "./inputModals/overwritePresetModal"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
+import { isBlockWaiverNotification, NotificationType } from "../realtime"
 
 const Modal = (): ReactElement | null => {
   const { connectionStatus } = useContext(SocketContext)
@@ -24,24 +25,27 @@ const Modal = (): ReactElement | null => {
     return <DisconnectedModal />
   }
 
-  if (selectedNotification && selectedVehicleOrGhost === null) {
+  if (
+    selectedNotification &&
+    isBlockWaiverNotification(selectedNotification) &&
+    selectedVehicleOrGhost === null
+  ) {
     return <InactiveNotificationModal notification={selectedNotification} />
   }
 
-  if (
-    selectedNotification &&
-    selectedNotification.reason == "chelsea_st_bridge_raised"
-  ) {
-    return (
-      <ChelseaRaisedNotificationModal notification={selectedNotification} />
-    )
-  }
-
-  if (
-    selectedNotification &&
-    selectedNotification.reason == "chelsea_st_bridge_lowered"
-  ) {
-    return <ChelseaLoweredNotificationModal />
+  if (selectedNotification?.content.$type === NotificationType.BridgeMovement) {
+    switch (selectedNotification.content.status) {
+      case "lowered": {
+        return <ChelseaLoweredNotificationModal />
+      }
+      case "raised": {
+        return (
+          <ChelseaRaisedNotificationModal
+            notification={selectedNotification.content}
+          />
+        )
+      }
+    }
   }
 
   if (selectedNotification && selectedVehicleOrGhost === undefined) {

@@ -15,23 +15,27 @@ import { Route } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { blockWaiverNotificationFactory } from "../factories/notification"
 
 const baselineTime = new Date(123_456_789)
 
-const notification: Notification = {
+const notification: Notification = blockWaiverNotificationFactory.build({
   id: "0",
-  createdAt: new Date(baselineTime),
-  reason: "manpower",
-  routeIds: ["route1", "route2"],
-  runIds: ["run1", "run2"],
-  tripIds: [],
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
-  startTime: baselineTime,
-  endTime: baselineTime,
+  createdAt: baselineTime,
   state: "unread",
-}
+  content: {
+    reason: "manpower",
+    createdAt: baselineTime,
+    routeIds: ["route1", "route2"],
+    runIds: ["run1", "run2"],
+    tripIds: [],
+    operatorName: null,
+    operatorId: null,
+    routeIdAtCreation: null,
+    startTime: baselineTime,
+    endTime: baselineTime,
+  },
+})
 
 const routes: Route[] = [
   routeFactory.build({

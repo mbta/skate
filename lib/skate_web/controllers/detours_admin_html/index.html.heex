@@ -1,0 +1,34 @@
+<.form for={@conn} action={~p"/detours_admin"} method="DELETE">
+  <%= submit("Clear all detours",
+    onclick: "return confirm('Are you sure? This cannot be undone.')"
+  ) %>
+</.form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Route and direction</th>
+      <th>Starting intersection</th>
+      <th>Status</th>
+      <th>Author</th>
+      <th>Last Modified</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for %{route: route, direction: direction, name: name, intersection: intersection, author_email: author_email, updated_at: updated_at, status: status} <- @detours do %>
+      <tr>
+        <td><%= route %>: <%= direction %> to <%= name %></td>
+        <td><%= intersection %></td>
+        <td><%= status %></td>
+        <td><%= author_email %></td>
+        <td>
+          <%= updated_at
+          |> DateTime.from_unix!()
+          |> DateTime.shift_zone!("America/New_York")
+          |> DateTime.to_string() %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
