@@ -59,19 +59,19 @@ defmodule Skate.Detours.Detours do
     }
   end
 
-  @spec db_detour_to_detour(Detour.t(), integer() | nil) :: t() | nil
+  @spec db_detour_to_detour(Detour.t(), integer() | nil) :: DetailedDetour.t() | nil
   def db_detour_to_detour(
-        %{
-          state: %{
-            "context" => %{
-              "route" => %{"name" => route_name, "directionNames" => direction_names},
-              "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
-              "nearestIntersection" => nearest_intersection
-            }
-          }
-        } = db_detour,
-        user_id
-      ) do
+         %{
+           state: %{
+             "context" => %{
+               "route" => %{"name" => route_name, "directionNames" => direction_names},
+               "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
+               "nearestIntersection" => nearest_intersection
+             }
+           }
+         } = db_detour,
+         user_id
+       ) do
     direction = Map.get(direction_names, Integer.to_string(direction_id))
 
     %DetailedDetour{
