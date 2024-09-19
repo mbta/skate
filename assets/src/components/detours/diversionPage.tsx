@@ -23,6 +23,9 @@ import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { ActiveDetourPanel } from "./activeDetourPanel"
 import { PastDetourPanel } from "./pastDetourPanel"
 import userInTestGroup from "../../userInTestGroup"
+import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
+import { timeAgoLabel } from "../../util/dateTime"
+import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -56,6 +59,8 @@ interface DiversionPageFromInput {
 interface DiversionPageFromSnapshot {
   /** A _validated_ snapshot from which to initialize {@linkcode createDetourMachine} with */
   snapshot: Snapshot<unknown>
+  author: string
+  updatedAt: number
 }
 
 export type DiversionPageStateProps =
@@ -161,6 +166,17 @@ export const DiversionPage = ({
   ])
 
   const routes = useContext(RoutesContext)
+  const epochNowInSeconds = useCurrentTimeSeconds()
+
+  const timestampLabelFromMachineState = (): string => {
+    if (snapshot.matches({ "Detour Drawing": "Active" })) {
+      return timestampLabelFromStatus(DetourStatus.Active)
+    } else if (snapshot.matches({ "Detour Drawing": "Past" })) {
+      return timestampLabelFromStatus(DetourStatus.Closed)
+    } else {
+      return timestampLabelFromStatus(DetourStatus.Draft)
+    }
+  }
 
   return (
     <>
@@ -175,6 +191,20 @@ export const DiversionPage = ({
               : "text-bg-light",
           ])}
         >
+          {"snapshot" in useDetourProps ? (
+            <>
+              <span className="l-diversion-page__header-details">
+                <strong className="font-m-semi me-2">
+                  {timestampLabelFromMachineState()}
+                </strong>
+                {timeAgoLabel(epochNowInSeconds, useDetourProps.updatedAt)}
+              </span>
+              <span className="l-diversion-page__header-details">
+                <strong className="font-m-semi me-2">Created by</strong>
+                {useDetourProps.author}
+              </span>
+            </>
+          ) : null}
           <CloseButton className="p-4" onClick={onClose} />
         </header>
 
