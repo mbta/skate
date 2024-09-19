@@ -1,3 +1,5 @@
+@use "./color/tokens_2024" as new_tokens;
+
 .c-route-ladder__header,
 .c-route-ladder__controls {
   margin: 0 0.5rem;
@@ -12,7 +14,7 @@
     padding: 6px 8px;
   }
 
-  .c-route-ladder__header__action-container {
+  .c-route-ladder__dropdown {
     display: inline-flex;
     .dropdown,
     .c-route-ladder__alert-icon {
@@ -22,12 +24,38 @@
 
   .c-route-ladder__dropdown-button {
     height: 2.25rem;
-    width: 2.25rem;
+    width: 1.8125rem;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    color: black;
+    border-radius: 0.25rem;
+
+    &:active {
+      background-color: unset;
+      color: unset;
+    }
 
     &.dropdown-toggle::after {
-      // Force bootstrap carat to center even with hidden text
-      margin-left: 0;
+      // Hide bootstrap carat
+      display: none;
     }
+  }
+
+  .c-route-ladder__dropdown.non-skate-alert .dropdown-menu {
+    width: 20.5rem;
+  }
+
+  .c-route-ladder__dropdown .dropdown-menu {
+    border-radius: 0.25rem;
+    max-width: 20.5rem;
+  }
+
+  .c-route-ladder__dropdown-header-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: new_tokens.$gray-800;
   }
 
   .c-route-ladder__alert-icon {

@@ -23,10 +23,14 @@ import Loading from "./loading"
 import Tippy from "@tippyjs/react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
-import { ExclamationTriangleFill, PlusSquare } from "../helpers/bsIcons"
+import {
+  ExclamationTriangleFill,
+  PlusSquare,
+  ThreeDotsVertical,
+} from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
-import { joinTruthy } from "../helpers/dom"
+import { joinClasses, joinTruthy } from "../helpers/dom"
 
 interface Props {
   route: Route
@@ -63,25 +67,50 @@ export const Header = ({
   return (
     <Card className="c-route-ladder__header">
       <Card.Body>
-        <div className="c-route-ladder__header__action-container">
+        <div
+          className={joinClasses([
+            "c-route-ladder__dropdown",
+            hasAlert && "non-skate-alert",
+          ])}
+        >
           {showDropdown && (
             <Dropdown className="border-box inherit-box">
               <Dropdown.Toggle
-                className="c-route-ladder__dropdown-button d-none d-sm-block"
+                className="c-route-ladder__dropdown-button d-none d-sm-flex"
                 aria-labelledby={joinTruthy([
                   routePillId,
                   routeOptionsToggleId,
                 ])}
               >
+                <ThreeDotsVertical />
                 <span className="visually-hidden" id={routeOptionsToggleId}>
                   Route Options
                 </span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
+                <Dropdown.Header>
+                  <div className="c-route-ladder__dropdown-header-text">
+                    Adjustments
+                  </div>
+                </Dropdown.Header>
                 <Dropdown.Item className="icon-link" onClick={onClickAddDetour}>
-                  <PlusSquare />
-                  Add detour
+                  <PlusSquare /> Add detour
                 </Dropdown.Item>
+                { hasAlert &&
+                  <>
+                    <Dropdown.Divider />
+                    <Dropdown.Header>
+                      <div className="c-route-ladder__dropdown-header-text">
+                        Active detours
+                      </div>
+                    </Dropdown.Header>
+                    <Dropdown.ItemText className="lh-base">
+                      This route has an active detour. View detour details on{" "}
+                      <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
+                    </Dropdown.ItemText>
+                  </>
+                }
+                
               </Dropdown.Menu>
             </Dropdown>
           )}
