@@ -7,7 +7,7 @@ import {
   afterEach,
 } from "@jest/globals"
 import React from "react"
-import { render, screen } from "@testing-library/react"
+import { act, fireEvent, render, screen } from "@testing-library/react"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
@@ -257,6 +257,89 @@ describe("routeLadder", () => {
     ).toBeVisible()
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("renders descriptive content in dropdown if there's a non-skate alert", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+      />
+    )
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "28 Route Options" }))
+    })
+
+      expect(
+      await screen.findByText("This route has an active detour.")
+    ).toBeVisible()
+
+    // expect(tree).toMatchSnapshot()
+  })
+
+  test("renders 'Add detour' in the dropdown", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "28 Route Options" }))
+    })
+
+    expect(
+      screen.findByText("This route has an active detour.")
+    ).not.toBeInTheDocument()
+
+
+      expect(
+      await screen.findByText("Add detour")
+    ).toBeVisible()
+
+    // expect(tree).toMatchSnapshot()
   })
 
   test("renders a route ladder with vehicles", () => {

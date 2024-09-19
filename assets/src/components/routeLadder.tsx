@@ -96,7 +96,7 @@ export const Header = ({
                 <Dropdown.Item className="icon-link" onClick={onClickAddDetour}>
                   <PlusSquare /> Add detour
                 </Dropdown.Item>
-                { hasAlert &&
+                {hasAlert && (
                   <>
                     <Dropdown.Divider />
                     <Dropdown.Header>
@@ -109,8 +109,7 @@ export const Header = ({
                       <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
                     </Dropdown.ItemText>
                   </>
-                }
-                
+                )}
               </Dropdown.Menu>
             </Dropdown>
           )}
