@@ -1,5 +1,7 @@
 defmodule Skate.Settings.Db.User do
-  @moduledoc false
+  @moduledoc """
+  Ecto Model for `users` Database table
+  """
 
   use Skate.Schema
   import Ecto.Changeset
