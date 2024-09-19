@@ -15,9 +15,17 @@ defmodule Skate.MixProject do
       consolidate_protocols: Mix.env() != :test,
       dialyzer: [
         plt_add_apps: [:mix]
-      ]
+      ],
+      docs: docs_config()
     ]
   end
+
+  def docs_config,
+    do: [
+      groups_for_modules: [
+        "Ecto Schemas": &(&1[:section] == :ecto)
+      ]
+    ]
 
   # Configuration for the OTP application.
   #
