@@ -95,6 +95,70 @@ defmodule Notifications.Db.Notification do
         }
       )
     end
+
+    @doc """
+    Joins associated `Notifications.Db.Detour`'s on
+    `Notifications.Db.Notification`'s and retrieves the Detour's
+    associated info.
+
+    ## Examples
+
+    There is a `base` query struct that can be provided at the
+    beginning of a query:
+
+        iex> :detour
+        ...> |> insert()
+        ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
+        ...>
+        iex> all_detour_notifications =
+        ...>   Notifications.Db.Notification.Queries.base()
+        ...>   |> Notifications.Db.Notification.Queries.select_detour_info()
+        ...>   |> Skate.Repo.all()
+        ...>   |> Skate.Repo.preload(:detour)
+        ...>
+        iex> match?(
+        ...>   [
+        ...>     %Notifications.Db.Notification{
+        ...>       detour: %Notifications.Db.Detour{}
+        ...>     }
+        ...>   ], all_detour_notifications
+        ...> )
+        true
+
+    If `base` is omitted, then it's inferred:
+
+        iex> :detour
+        ...> |> insert()
+        ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
+        ...>
+        iex> all_detour_notifications =
+        ...>   Notifications.Db.Notification.Queries.select_detour_info()
+        ...>   |> Skate.Repo.all()
+        ...>   |> Skate.Repo.preload(:detour)
+        ...>
+        iex> match?(
+        ...>   [
+        ...>     %Notifications.Db.Notification{
+        ...>       detour: %Notifications.Db.Detour{}
+        ...>     }
+        ...>   ],
+        ...>   all_detour_notifications
+        ...> )
+        true
+
+    """
+    @spec select_detour_info(Ecto.Query.t()) :: Ecto.Query.t()
+    @spec select_detour_info() :: Ecto.Query.t()
+    def select_detour_info(query \\ base()) do
+      from([notification: n] in query,
+        left_join: detour in subquery(Notifications.Db.Detour.Queries.get_derived_info()),
+        on: detour.id == n.detour_id,
+        select_merge: %{
+          detour: detour
+        }
+      )
+    end
+
     @doc """
     Joins associated `Notifications.Db.BridgeMovement`'s on
     `Notifications.Db.Notification`'s
