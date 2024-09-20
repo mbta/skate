@@ -141,26 +141,16 @@ defmodule Notifications.Notification do
 
   @spec unexpired_notifications_for_user(DbUser.id(), (-> Util.Time.timestamp())) :: [t()]
   def unexpired_notifications_for_user(user_id, now_fn \\ &Util.Time.now/0) do
+    import Notifications.Db.Notification.Queries
+
     cutoff_time = now_fn.() - @notification_expiration_threshold
 
-    query =
-      from(n in DbNotification,
-        join: nu in assoc(n, :notification_users),
-        join: u in assoc(nu, :user),
-        left_join: bw in assoc(n, :block_waiver),
-        left_join: bm in assoc(n, :bridge_movement),
-        select: %DbNotification{
-          id: n.id,
-          created_at: n.created_at,
-          state: nu.state,
-          block_waiver: bw,
-          bridge_movement: bm
-        },
-        where: n.created_at > ^cutoff_time and u.id == ^user_id,
-        order_by: [desc: n.created_at]
-      )
-
-    query
+    base()
+    |> select_user_read_state(user_id)
+    |> select_bridge_movements()
+    |> select_block_waivers()
+    |> where([notification: n], n.created_at > ^cutoff_time)
+    |> order_by([notification: n], desc: n.created_at)
     |> Skate.Repo.all()
     |> Enum.map(&from_db_notification/1)
   end
