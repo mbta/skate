@@ -205,18 +205,19 @@ defmodule Notifications.Notification do
       id: db_notification.id,
       created_at: db_notification.created_at,
       state: db_notification.state,
-      content:
-        case db_notification do
-          %DbNotification{
-            block_waiver: %BlockWaiver{} = bw
-          } ->
-            bw
-
-          %DbNotification{
-            bridge_movement: %BridgeMovement{} = bm
-          } ->
-            bm
-        end
+      content: content_from_db_notification(db_notification)
     }
+  end
+
+  defp content_from_db_notification(%DbNotification{
+         block_waiver: %BlockWaiver{} = bw
+       }) do
+    bw
+  end
+
+  defp content_from_db_notification(%DbNotification{
+         bridge_movement: %BridgeMovement{} = bm
+       }) do
+    bm
   end
 end
