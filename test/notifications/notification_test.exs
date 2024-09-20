@@ -10,14 +10,14 @@ defmodule Notifications.NotificationTest do
 
   import Ecto.Query
 
-  setup do
-    user1 = User.upsert("user1", "user1@test.com")
-    user2 = User.upsert("user2", "user2@test.com")
-    user3 = User.upsert("user3", "user3@test.com")
-    {:ok, %{user1: user1, user2: user2, user3: user3}}
-  end
-
   describe "get_or_create_from_block_waiver/1" do
+    setup do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+      user3 = User.upsert("user3", "user3@test.com")
+      {:ok, %{user1: user1, user2: user2, user3: user3}}
+    end
+
     test "associates a new notification with users subscribed to an affected route", %{
       user1: user1,
       user2: user2,
@@ -74,6 +74,13 @@ defmodule Notifications.NotificationTest do
   end
 
   describe "unexpired_notifications_for_user/2" do
+    setup do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+      user3 = User.upsert("user3", "user3@test.com")
+      {:ok, %{user1: user1, user2: user2, user3: user3}}
+    end
+
     test "returns all unexpired notifications for the given user, in chronological order by creation timestamp",
          %{user1: user1, user2: user2} do
       baseline_time = 1_000_000_000
