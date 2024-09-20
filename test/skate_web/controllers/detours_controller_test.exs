@@ -56,6 +56,10 @@ defmodule SkateWeb.DetoursControllerTest do
                state: %{"context" => %{"uuid" => 8}}
              } = Detours.get_detour!(8)
     end
+
+    @tag :authenticated
+    test "creates a new notification when detour is activated" do
+    end
   end
 
   defp populate_db_and_get_user(conn) do
