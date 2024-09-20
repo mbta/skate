@@ -322,4 +322,90 @@ defmodule Notifications.NotificationTest do
                |> Enum.sort_by(& &1.id)
     end
   end
+
+  describe "create_activated_detour_notification_from_detour/1" do
+    test "inserts new record into the database" do
+      count = 3
+
+      # create new notification
+      for _ <- 1..count do
+        :detour
+        |> insert(
+          state: %{
+            "value" => %{
+              "Detour Drawing" => "Active"
+            }
+          }
+        )
+        |> Notifications.Notification.create_activated_detour_notification_from_detour()
+      end
+
+      # assert it is in the database
+      assert count == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+    end
+
+    test "creates a unread notification for all users" do
+      number_of_users = 5
+      [user | _] = insert_list(number_of_users, :user)
+
+      # create new notification
+      detour =
+        :detour
+        |> insert(
+          # don't create a new user and affect the user count
+          author: user,
+          state: %{
+            "value" => %{
+              "Detour Drawing" => "Active"
+            }
+          }
+        )
+        |> Notifications.Notification.create_activated_detour_notification_from_detour()
+
+      detour =
+        Notifications.Db.Notification
+        |> Skate.Repo.get!(detour.id)
+        |> Skate.Repo.preload(:users)
+
+      # assert all users have a notification that is unread
+      assert Kernel.length(detour.users) == number_of_users
+    end
+
+    test "returns detour information" do
+      # create new notification
+      detour =
+        :detour
+        |> insert(
+          state: %{
+            "context" => %{
+              "route" => %{
+                "name" => "123",
+                "directionNames" => %{
+                  1 => "Inbound"
+                }
+              },
+              "routePattern" => %{
+                "name" => "Abc",
+                "headsign" => "Xyz",
+                "directionId" => 1
+              }
+            },
+            "value" => %{
+              "Detour Drawing" => "Active"
+            }
+          }
+        )
+        |> Notifications.Notification.create_activated_detour_notification_from_detour()
+
+      # assert fields are set
+      assert %Notifications.Notification{
+               content: %Notifications.Db.Detour{
+                 route: "123",
+                 origin: "Abc",
+                 headsign: "Xyz",
+                 direction: "Inbound"
+               }
+             } = detour
+    end
+  end
 end

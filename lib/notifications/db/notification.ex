@@ -95,6 +95,59 @@ defmodule Notifications.Db.Notification do
         }
       )
     end
+
+    @doc """
+    Joins associated `Notifications.Db.Detour`'s on
+    `Notifications.Db.Notification`'s and retrieves the Detour's
+    associated info.
+
+    ## Example
+
+    The `query` parameter defaults to
+    `Notifications.Db.Notification.Queries.base()`, but can be specified
+    explicitly
+
+        iex> Notifications.Db.Notification.Queries.base()
+        ...> |> Notifications.Db.Notification.Queries.select_detour_info()
+        ...> |> Skate.Repo.all()
+        [
+          %Notifications.Db.Notification{
+            detour: %Notifications.Db.Detour{}
+          },
+          %Notifications.Db.Notification{
+            detour_id: nil,
+            detour: nil
+          },
+          _
+        ]
+
+
+        iex> Notifications.Db.Notification.Queries.select_detour_info()
+        ...> |> Skate.Repo.all()
+        [
+          %Notifications.Db.Notification{
+            detour: %Notifications.Db.Detour{ ... }
+          },
+          %Notifications.Db.Notification{
+            detour_id: nil,
+            detour: nil
+          },
+          _
+        ]
+
+    """
+    @spec select_detour_info(Ecto.Query.t()) :: Ecto.Query.t()
+    @spec select_detour_info() :: Ecto.Query.t()
+    def select_detour_info(query \\ base()) do
+      from([notification: n] in query,
+        left_join: detour in subquery(Notifications.Db.Detour.Queries.get_derived_info()),
+        on: detour.id == n.detour_id,
+        select_merge: %{
+          detour: detour
+        }
+      )
+    end
+
     @doc """
     Joins associated `Notifications.Db.BridgeMovement`'s on
     `Notifications.Db.Notification`'s
