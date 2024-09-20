@@ -102,7 +102,8 @@ defmodule Skate.Detours.Detours do
   otherwise returns `nil` if it is a draft but does not belong to the provided
   user
   """
-  @spec categorize_detour(map(), integer()) :: detour_type
+  @spec categorize_detour(detour :: map(), user_id :: Skate.Settings.Db.User.id()) ::
+          detour_type() | nil
   def categorize_detour(
         %{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}},
         _user_id
@@ -197,19 +198,66 @@ defmodule Skate.Detours.Detours do
   def update_or_create_detour_for_user(user_id, uuid, attrs \\ %{}) do
     user = User.get_by_id!(user_id)
 
-    case uuid do
-      nil ->
-        create_detour_for_user(user_id, attrs)
+    previous_state = categorize_detour_by_id(uuid, user_id)
 
-      _ ->
-        Repo.insert(
-          Detour.changeset(%Detour{author: user, id: uuid}, attrs),
-          returning: true,
-          conflict_target: [:id],
-          on_conflict: {:replace, [:state, :updated_at]}
-        )
+    detour =
+      case uuid do
+        nil ->
+          create_detour_for_user(user_id, attrs)
+
+        _ ->
+          Repo.insert(
+            Detour.changeset(%Detour{author: user, id: uuid}, attrs),
+            returning: true,
+            conflict_target: [:id],
+            on_conflict: {:replace, [:state, :updated_at]}
+          )
+      end
+
+    send_notification(detour, previous_state, user_id)
+
+    detour
+  end
+
+  @doc """
+  Retrieves a `Skate.Detours.Db.Detour` from the database by it's ID and then resolves the
+  detour's category via `categorize_detour/2`
+  """
+  @spec categorize_detour_by_id(
+          detour_id :: nil | integer(),
+          user_id :: Skate.Settings.Db.User.id()
+        ) :: detour_type() | nil
+  def categorize_detour_by_id(nil = _detour_id, _user_id), do: nil
+
+  def categorize_detour_by_id(detour_id, user_id) do
+    case Skate.Repo.get(Detour, detour_id) do
+      %Detour{} = detour -> categorize_detour(detour, user_id)
+      _ -> nil
     end
   end
+
+  @spec send_notification(
+          detour_db_result :: {:ok, Skate.Detours.Db.Detour.t()},
+          previous_state :: detour_type(),
+          user_id :: Skate.Settings.Db.User.t()
+        ) :: :ok | nil
+  @spec send_notification(
+          detour_db_result :: any(),
+          previous_state :: detour_type(),
+          user_id :: Skate.Settings.Db.User.t()
+        ) :: nil
+  defp send_notification(
+         {:ok, %Skate.Detours.Db.Detour{} = detour},
+         previous_state,
+         user_id
+       )
+       when previous_state != :active do
+    if categorize_detour(detour, user_id) == :active do
+      Notifications.NotificationServer.detour_activated(detour)
+    end
+  end
+
+  defp send_notification(_, _, _), do: nil
 
   @doc """
   Deletes a detour.
