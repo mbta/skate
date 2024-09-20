@@ -36,6 +36,14 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:bridge_movement, bridge_movement})
   end
 
+  def detour_activated(
+        %Skate.Detours.Db.Detour{} = detour,
+        notify_finished \\ nil,
+        server \\ default_name()
+      ) do
+    GenServer.cast(server, {:detour_activated, detour, notify_finished})
+  end
+
   def subscribe(user_id, server \\ default_name()) do
     registry_key = GenServer.call(server, :subscribe)
 
@@ -68,6 +76,33 @@ defmodule Notifications.NotificationServer do
     |> broadcast(self())
 
     {:noreply, state}
+  end
+
+  @impl true
+  def handle_cast(
+        {
+          :detour_activated,
+          %Skate.Detours.Db.Detour{id: id} = detour,
+          notify_finished_caller_id
+        },
+        state
+      ) do
+    detour
+    |> Notifications.Notification.create_activated_detour_notification_from_detour()
+    |> broadcast(self())
+
+    notify_caller_new_notification(notify_finished_caller_id, detour: id)
+
+    {:noreply, state}
+  end
+
+  # Tell the caller when a notification is created
+  # Mainly useful for writing tests so that they don't require
+  # `Process.sleep(<N>)`
+  defp notify_caller_new_notification(nil = _caller_id, _value), do: nil
+
+  defp notify_caller_new_notification(caller_id, value) do
+    send(caller_id, {:new_notification, value})
   end
 
   @spec convert_new_block_waivers_to_notifications([BlockWaiver.t()]) :: [
@@ -196,6 +231,21 @@ defmodule Notifications.NotificationServer do
          registry_key
        ) do
     broadcast(notification, User.user_ids_for_route_ids(@chelsea_bridge_route_ids), registry_key)
+  end
+
+  defp broadcast(
+         %Notifications.Notification{
+           content: %Notifications.Db.Detour{}
+         } = notification,
+         registry_key
+       ) do
+    n = {:notification, default_unread(notification)}
+
+    Registry.dispatch(Notifications.Supervisor.registry_name(), registry_key, fn entries ->
+      for {pid, _user_id} <- entries do
+        send(pid, n)
+      end
+    end)
   end
 
   defp broadcast(
