@@ -19,6 +19,7 @@ import {
   NotificationContentTypes,
   NotificationType,
 } from "../realtime"
+import { detourId } from "./detoursList"
 
 const dateFromSeconds = coerce(
   date(),
@@ -65,12 +66,27 @@ export const BridgeNotificationData = union([
   }),
 ])
 
+export const DetourNotificationData = type({
+  __struct__: literal(NotificationType.Detour),
+  detour_id: detourId,
+  headsign: string(),
+  route: string(),
+  direction: string(),
+  origin: string(),
+})
+
+export type DetourNotificationData = Infer<typeof DetourNotificationData>
+
 export const NotificationData = type({
   id: coerce(string(), number(), (i) => i.toString()),
   created_at: dateFromSeconds,
   state: enums(["unread", "read", "deleted"]),
   // Requires a field named `__struct__` to be present as the discriminator
-  content: union([BridgeNotificationData, BlockWaiverNotificationData]),
+  content: union([
+    BridgeNotificationData,
+    BlockWaiverNotificationData,
+    DetourNotificationData,
+  ]),
 })
 export type NotificationData = Infer<typeof NotificationData>
 
@@ -113,6 +129,18 @@ export const notificationFromData = (
           } satisfies BridgeNotification
           break
         }
+      }
+      break
+    }
+
+    case NotificationType.Detour: {
+      content = {
+        $type: NotificationType.Detour,
+        detourId: notificationData.content.detour_id,
+        direction: notificationData.content.direction,
+        headsign: notificationData.content.headsign,
+        origin: notificationData.content.origin,
+        route: notificationData.content.route,
       }
       break
     }
