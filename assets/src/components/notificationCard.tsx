@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React, { ReactNode } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import {
   BlockWaiverNotification,
@@ -11,6 +11,8 @@ import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
 import { CardBody, CardProperties, CardReadable } from "./card"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { RoutePill } from "./routePill"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 export const NotificationCard = ({
   notification,
@@ -24,7 +26,7 @@ export const NotificationCard = ({
   openVPPForCurrentVehicle: (notification: Notification) => void
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
-}): ReactElement<HTMLElement> => {
+}) => {
   const routes = useRoutes(
     isBlockWaiverNotification(notification) ? notification.content.routeIds : []
   )
@@ -33,6 +35,14 @@ export const NotificationCard = ({
       ? notification.content.routeIdAtCreation
       : null
   )
+
+  if (
+    notification.content.$type === NotificationType.Detour &&
+    !inTestGroup(TestGroups.DetoursList)
+  ) {
+    return null
+  }
+
   const isUnread = notification.state === "unread"
   return (
     <CardReadable
@@ -87,6 +97,11 @@ export const title = (notification: Notification) => {
     case NotificationType.BlockWaiver: {
       return blockWaiverNotificationTitle(notification.content.reason)
     }
+
+    case NotificationType.Detour: {
+      return "Detour - Active"
+    }
+
     case NotificationType.BridgeMovement: {
       switch (notification.content.status) {
         case "lowered":
@@ -156,7 +171,7 @@ const description = (
   notification: Notification,
   routes: Route[],
   routeAtCreation: Route | null
-): string => {
+): ReactNode => {
   switch (notification.content.$type) {
     case NotificationType.BlockWaiver: {
       return blockWaiverDescription(
@@ -165,6 +180,24 @@ const description = (
         routeAtCreation
       )
     }
+
+    case NotificationType.Detour: {
+      return (
+        <>
+          <div className="d-flex flex-row gap-2">
+            <RoutePill routeName={notification.content.route} />
+            <div>
+              <div className="fw-semibold">{notification.content.headsign}</div>
+              <div className="fw-normal text-body-secondary">
+                From {notification.content.origin.split(" - ")[0]}
+              </div>
+              <div className="fw-normal">{notification.content.direction}</div>
+            </div>
+          </div>
+        </>
+      )
+    }
+
     case NotificationType.BridgeMovement: {
       switch (notification.content.status) {
         case "raised":

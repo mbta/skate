@@ -9,6 +9,7 @@ defmodule Notifications.Db.Detour do
   @derive {Jason.Encoder,
            only: [
              :__struct__,
+             :detour_id,
              :status,
              :headsign,
              :route,
