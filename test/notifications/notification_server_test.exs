@@ -218,7 +218,7 @@ defmodule Notifications.NotificationServerTest do
     start_supervised({Registry, keys: :duplicate, name: registry_name})
     reassign_env(:notifications, :registry, registry_name)
 
-    {:ok, server} = NotificationServer.start_link(name: :new_notifications)
+    {:ok, server} = NotificationServer.start_link(name: __MODULE__)
 
     if user_id do
       NotificationServer.subscribe(user_id, server)
@@ -611,6 +611,56 @@ defmodule Notifications.NotificationServerTest do
       assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
 
       refute String.contains?(log, "new_notification")
+    end
+  end
+
+  describe "detour_activated/2" do
+    setup do
+      {:ok, server} = setup_server()
+
+      %{server: server}
+    end
+
+    test "saves to database" do
+      notification_count = 3
+      # create new notification
+      for _ <- 1..notification_count do
+        %{id: id} =
+          detour =
+          insert(:detour)
+
+        NotificationServer.detour_activated(detour, notify_finished: self(), server: __MODULE__)
+
+        assert_receive {:new_notification, detour: ^id}
+      end
+
+      # assert database contains notification
+      assert_n_notifications_in_db(notification_count)
+    end
+
+    test "broadcasts to all connected users", %{server: server} do
+      notification_count = 3
+      # connect users to channel
+      for id <- 1..notification_count do
+        NotificationServer.subscribe(id, server)
+      end
+
+      # create new notification
+      %{id: id} =
+        detour =
+        insert(:detour)
+
+      NotificationServer.detour_activated(detour, notify_finished: self(), server: __MODULE__)
+
+      assert_receive {:new_notification, detour: ^id}
+
+      # assert channel sends notifications to each user
+      for _ <- 1..notification_count do
+        assert_receive {:notification,
+                        %Notification{
+                          content: %Notifications.Db.Detour{}
+                        }}
+      end
     end
   end
 end
