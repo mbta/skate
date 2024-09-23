@@ -37,24 +37,6 @@ defmodule Skate.Detours.DbTest do
       assert {:error, %Ecto.Changeset{}} = Detours.create_detour(@invalid_attrs)
     end
 
-    test "update_detour/2 with valid data updates the detour" do
-      detour = detour_fixture()
-      update_attrs = %{state: %{}}
-
-      assert {:ok, %Detour{} = detour} = Detours.update_detour(detour, update_attrs)
-      assert detour.state == %{}
-    end
-
-    test "update_detour/2 with invalid data returns error changeset" do
-      detour = detour_fixture()
-      assert {:error, %Ecto.Changeset{}} = Detours.update_detour(detour, @invalid_attrs)
-
-      assert detour ==
-               detour.id
-               |> Detours.get_detour!()
-               |> Skate.Repo.preload(:author)
-    end
-
     test "delete_detour/1 deletes the detour" do
       detour = detour_fixture()
       assert {:ok, %Detour{}} = Detours.delete_detour(detour)

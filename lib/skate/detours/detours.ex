@@ -6,29 +6,9 @@ defmodule Skate.Detours.Detours do
   import Ecto.Query, warn: false
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
+  alias Skate.Detours.Detour.Detailed, as: DetailedDetour
+  alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Settings.User
-
-  @type t :: %__MODULE__{
-          route: String.t(),
-          direction: String.t(),
-          name: String.t(),
-          intersection: String.t(),
-          updated_at: integer(),
-          author_id: integer(),
-          status: :active | :draft | :past
-        }
-
-  @derive Jason.Encoder
-
-  defstruct [
-    :route,
-    :direction,
-    :name,
-    :intersection,
-    :updated_at,
-    :author_id,
-    :status
-  ]
 
   @doc """
   Returns the list of detours.
@@ -51,11 +31,16 @@ defmodule Skate.Detours.Detours do
 
       iex> grouped_detours(my_user_id)
       %{
-        active: [%Detour{}, ...],
+        active: [%DetailedDetour{}, ...],
         draft: nil,
-        past: [%Detour{}, ...]
+        past: [%DetailedDetour{}, ...]
       }
   """
+  @spec grouped_detours(integer()) :: %{
+          active: list(DetailedDetour.t()) | nil,
+          draft: list(DetailedDetour.t()) | nil,
+          past: list(DetailedDetour.t()) | nil
+        }
   def grouped_detours(user_id) do
     detours =
       Repo.all(
@@ -74,7 +59,7 @@ defmodule Skate.Detours.Detours do
     }
   end
 
-  @spec db_detour_to_detour(Detour.t(), integer() | nil) :: t() | nil
+  @spec db_detour_to_detour(Detour.t(), integer() | nil) :: DetailedDetour.t() | nil
   def db_detour_to_detour(
         %{
           state: %{
@@ -89,17 +74,13 @@ defmodule Skate.Detours.Detours do
       ) do
     direction = Map.get(direction_names, Integer.to_string(direction_id))
 
-    date =
-      db_detour.updated_at
-      |> DateTime.from_naive!("Etc/UTC")
-      |> DateTime.to_unix()
-
-    %__MODULE__{
+    %DetailedDetour{
+      id: db_detour.id,
       route: route_name,
       direction: direction,
       name: headsign,
       intersection: nearest_intersection,
-      updated_at: date,
+      updated_at: timestamp_to_unix(db_detour.updated_at),
       author_id: db_detour.author_id,
       status: categorize_detour(db_detour, user_id)
     }
@@ -141,6 +122,34 @@ defmodule Skate.Detours.Detours do
 
   """
   def get_detour!(id), do: Repo.get!(Detour, id)
+
+  @doc """
+  Gets a single detour with state intact.
+
+  Raises `Ecto.NoResultsError` if the Detour does not exist.
+
+  ## Examples
+
+      iex> get_detour_with_state!(123)
+      %DetourWithState{}
+
+      iex> get_detour_with_state!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  @spec get_detour_with_state!(integer()) :: DetourWithState.t()
+  def get_detour_with_state!(id) do
+    detour =
+      id
+      |> get_detour!()
+      |> Repo.preload(:author)
+
+    %DetourWithState{
+      state: detour.state,
+      updated_at: timestamp_to_unix(detour.updated_at),
+      author: detour.author.email
+    }
+  end
 
   @doc """
   Creates a detour.
@@ -194,24 +203,6 @@ defmodule Skate.Detours.Detours do
   end
 
   @doc """
-  Updates a detour.
-
-  ## Examples
-
-      iex> update_detour(detour, %{field: new_value})
-      {:ok, %Detour{}}
-
-      iex> update_detour(detour, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_detour(%Detour{} = detour, attrs) do
-    detour
-    |> Detour.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
   Deletes a detour.
 
   ## Examples
@@ -245,5 +236,12 @@ defmodule Skate.Detours.Detours do
   """
   def change_detour(%Detour{} = detour, attrs \\ %{}) do
     Detour.changeset(detour, attrs)
+  end
+
+  # Converts the db timestamp to unix
+  defp timestamp_to_unix(db_date) do
+    db_date
+    |> DateTime.from_naive!("Etc/UTC")
+    |> DateTime.to_unix()
   end
 end
