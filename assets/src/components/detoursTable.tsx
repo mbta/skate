@@ -7,6 +7,7 @@ import { SimpleDetour } from "../models/detoursList"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
+  onOpenDetour: (detourId: number) => void
 }
 
 export enum DetourStatus {
@@ -28,7 +29,7 @@ export const timestampLabelFromStatus = (status: DetourStatus) => {
   }
 }
 
-export const DetoursTable = ({ data }: DetoursTableProps) => {
+export const DetoursTable = ({ data, onOpenDetour }: DetoursTableProps) => {
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   return (
@@ -42,7 +43,7 @@ export const DetoursTable = ({ data }: DetoursTableProps) => {
       </thead>
       <tbody>
         {data.map((detour, index) => (
-          <tr key={index}>
+          <tr key={index} onClick={() => onOpenDetour(detour.id)}>
             <td className="align-middle p-3">
               <div className="d-flex">
                 <RoutePill routeName={detour.route} />

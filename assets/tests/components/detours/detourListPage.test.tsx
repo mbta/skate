@@ -1,14 +1,14 @@
 import { describe, test, expect, jest, beforeEach } from "@jest/globals"
 import React from "react"
-import { DetourListPage } from "../../src/components/detourListPage"
-import { fetchDetours } from "../../src/api"
-import { neverPromise } from "../testHelpers/mockHelpers"
-import { Ok } from "../../src/util/result"
+import { DetourListPage } from "../../../src/components/detourListPage"
+import { fetchDetours } from "../../../src/api"
+import { neverPromise } from "../../testHelpers/mockHelpers"
+import { Ok } from "../../../src/util/result"
 import { render, screen } from "@testing-library/react"
 
 jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
 
-jest.mock("../../src/api")
+jest.mock("../../../src/api")
 
 beforeEach(() => {
   jest.mocked(fetchDetours).mockReturnValue(neverPromise())
