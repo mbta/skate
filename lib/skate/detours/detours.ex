@@ -19,7 +19,8 @@ defmodule Skate.Detours.Detours do
       [%Detour{}, ...]
   """
   def list_detours do
-    from(detour in Skate.Detours.Db.Detour,
+    (detour in Skate.Detours.Db.Detour)
+    |> from(
       preload: [:author],
       order_by: [desc: detour.updated_at]
     )
@@ -138,7 +139,8 @@ defmodule Skate.Detours.Detours do
   @spec get_detour_with_state!(integer()) :: DetourWithState.t()
   def get_detour_with_state!(id) do
     detour =
-      from(detour in Skate.Detours.Db.Detour, where: detour.id == ^id, preload: [:author])
+      (detour in Skate.Detours.Db.Detour)
+      |> from(where: detour.id == ^id, preload: [:author])
       |> Repo.one!()
 
     %DetourWithState{
