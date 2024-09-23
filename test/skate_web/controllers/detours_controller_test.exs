@@ -58,25 +58,24 @@ defmodule SkateWeb.DetoursControllerTest do
     end
   end
 
-  describe "detours/2" do
-    defp populate_db_and_get_user(conn) do
-      # Active detour
-      put(conn, "/api/detours/update_snapshot", %{
-        "snapshot" => %{
-          "context" => %{
-            "route" => %{
-              "name" => "23",
-              "directionNames" => %{
-                "0" => "Outbound",
-                "1" => "Inbound"
-              }
-            },
-            "routePattern" => %{
-              "headsign" => "Headsign",
-              "directionId" => 0
-            },
-            "nearestIntersection" => "Street A & Avenue B",
-            "uuid" => 1
+  defp populate_db_and_get_user(conn) do
+    # Active detour
+    put(conn, "/api/detours/update_snapshot", %{
+      "snapshot" => %{
+        "context" => %{
+          "route" => %{
+            "name" => "23",
+            "directionNames" => %{
+              "0" => "Outbound",
+              "1" => "Inbound"
+            }
+          },
+          "routePattern" => %{
+            "headsign" => "Headsign",
+            "directionId" => 0
+          },
+          "nearestIntersection" => "Street A & Avenue B",
+          "uuid" => 1
         },
         "value" => %{"Detour Drawing" => "Active"}
       }
