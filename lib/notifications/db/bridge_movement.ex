@@ -6,6 +6,14 @@ defmodule Notifications.Db.BridgeMovement do
 
   alias Notifications.BridgeStatus
 
+  @derive {Jason.Encoder,
+           only: [
+             :__struct__,
+             :status,
+             :lowering_time,
+             :inserted_at
+           ]}
+
   typed_schema "bridge_movements" do
     field(:status, BridgeStatus)
     field(:lowering_time, :integer)

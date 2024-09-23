@@ -22,6 +22,7 @@ import { Snapshot } from "xstate"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { ActiveDetourPanel } from "./activeDetourPanel"
 import { PastDetourPanel } from "./pastDetourPanel"
+import userInTestGroup from "../../userInTestGroup"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -164,11 +165,28 @@ export const DiversionPage = ({
   return (
     <>
       <article className="l-diversion-page h-100 border-box inherit-box">
-        <header className="l-diversion-page__header text-bg-light border-bottom">
+        <header
+          className={joinClasses([
+            "l-diversion-page__header",
+            "border-bottom",
+            snapshot.matches({ "Detour Drawing": "Active" }) &&
+            userInTestGroup(TestGroups.DetoursPilot)
+              ? "active-detour"
+              : "text-bg-light",
+          ])}
+        >
           <CloseButton className="p-4" onClick={onClose} />
         </header>
 
-        <div className="l-diversion-page__panel bg-light">
+        <div
+          className={joinClasses([
+            "l-diversion-page__panel",
+            snapshot.matches({ "Detour Drawing": "Active" }) &&
+            userInTestGroup(TestGroups.DetoursPilot)
+              ? "active-detour"
+              : "text-bg-light",
+          ])}
+        >
           {snapshot.matches({ "Detour Drawing": "Pick Route Pattern" }) ? (
             <DetourRouteSelectionPanel
               isLoadingRoutePatterns={snapshot.matches({
@@ -354,7 +372,6 @@ const DiversionPagePanel = <As extends React.ElementType = "article">({
     {...props}
     className={joinClasses([
       "l-diversion-page-panel",
-      "bg-light",
       "border-end",
       props.className,
     ])}
@@ -387,7 +404,11 @@ const DiversionPagePanelBody = ({
 }: PropsWithChildren<ComponentPropsWithoutRef<"div">>) => (
   <div
     {...props}
-    className={joinClasses(["l-diversion-page-panel__body", props.className])}
+    className={joinClasses([
+      "l-diversion-page-panel__body",
+      "bg-light",
+      props.className,
+    ])}
   >
     {children}
   </div>

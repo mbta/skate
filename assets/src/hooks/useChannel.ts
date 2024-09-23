@@ -1,6 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { useCallback, useEffect, useState } from "react"
-import { assert, Struct, StructError } from "superstruct"
+import { create, Struct, StructError } from "superstruct"
 import { reload } from "../models/browser"
 import * as Sentry from "@sentry/react"
 
@@ -122,8 +122,7 @@ export const useCheckedTwoWayChannel = <T, U, V>({
   const onOk = useCallback(
     ({ data: data }: { data: unknown }) => {
       try {
-        assert(data, dataStruct)
-        setState(parser(data))
+        setState(parser(create(data, dataStruct)))
       } catch (error) {
         if (error instanceof StructError) {
           Sentry.captureException(error)

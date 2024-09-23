@@ -10,8 +10,6 @@ defmodule Notifications.NotificationTest do
 
   import Ecto.Query
 
-  @chelsea_st_bridge_route_ids ["112", "743"]
-
   setup do
     user1 = User.upsert("user1", "user1@test.com")
     user2 = User.upsert("user2", "user2@test.com")
@@ -245,15 +243,11 @@ defmodule Notifications.NotificationTest do
         "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
       )
 
-      filled_in_bridge_lowered_unexpired = %Notification{
-        bridge_lowered_unexpired
-        | start_time: baseline_time - eight_hours + 1234,
-          end_time: baseline_time + 1234,
-          reason: :chelsea_st_bridge_lowered,
-          route_ids: @chelsea_st_bridge_route_ids,
-          run_ids: [],
-          trip_ids: []
-      }
+      filled_in_bridge_lowered_unexpired =
+        Kernel.update_in(
+          bridge_lowered_unexpired.content.inserted_at,
+          &NaiveDateTime.add(&1, -3, :hour)
+        )
 
       _bridge_lowered_expired =
         Notification.get_or_create_from_bridge_movement(%{
@@ -277,15 +271,11 @@ defmodule Notifications.NotificationTest do
         "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
       )
 
-      filled_in_bridge_raised_unexpired = %Notification{
-        bridge_raised_unexpired
-        | start_time: baseline_time - eight_hours + 2,
-          end_time: baseline_time - eight_hours + 999,
-          reason: :chelsea_st_bridge_raised,
-          route_ids: @chelsea_st_bridge_route_ids,
-          run_ids: [],
-          trip_ids: []
-      }
+      filled_in_bridge_raised_unexpired =
+        Kernel.update_in(
+          bridge_raised_unexpired.content.inserted_at,
+          &NaiveDateTime.add(&1, -1, :hour)
+        )
 
       _bridge_raised_expired =
         Notification.get_or_create_from_bridge_movement(%{

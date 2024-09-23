@@ -10,6 +10,25 @@ interface DetoursTableProps {
   onOpenDetour: (detourId: number) => void
 }
 
+export enum DetourStatus {
+  Draft = "draft",
+  Active = "active",
+  Closed = "closed",
+}
+
+export const timestampLabelFromStatus = (status: DetourStatus) => {
+  switch (status) {
+    case DetourStatus.Draft:
+      return "Last edited"
+    case DetourStatus.Active:
+      return "On detour since"
+    case DetourStatus.Closed:
+      return "Last used"
+    default:
+      throw "Invalid detour status"
+  }
+}
+
 export const DetoursTable = ({ data, onOpenDetour }: DetoursTableProps) => {
   const epochNowInSeconds = useCurrentTimeSeconds()
 

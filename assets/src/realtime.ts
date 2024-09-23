@@ -53,26 +53,61 @@ export interface Ghost {
 
 export type NotificationId = string
 
-export interface Notification {
-  id: NotificationId
+// A Notification's `content` is populated with an Elixir struct and the
+// `__struct__` field is serialized so that the type can be discerned on the
+// frontend.
+export enum NotificationType {
+  BridgeMovement = "Elixir.Notifications.Db.BridgeMovement",
+  BlockWaiver = "Elixir.Notifications.Db.BlockWaiver",
+}
+
+export interface BridgeLoweredNotification {
+  $type: NotificationType.BridgeMovement
+  status: "lowered"
+}
+
+export interface BridgeRaisedNotification {
+  $type: NotificationType.BridgeMovement
+  status: "raised"
+  loweringTime: Date
+}
+
+export type BridgeNotification =
+  | BridgeLoweredNotification
+  | BridgeRaisedNotification
+
+export type BlockWaiverNotification = {
+  $type: NotificationType.BlockWaiver
   createdAt: Date
-  reason: NotificationReason
+  reason: BlockWaiverReason
   routeIds: RouteId[]
   runIds: RunId[]
   tripIds: TripId[]
-  operatorName: string | null
   operatorId: string | null
+  operatorName: string | null
   routeIdAtCreation: string | null
   startTime: Date
   endTime: Date | null
-  state: NotificationState
 }
 
-export type ChelseaBridgeNotificationReason =
-  | "chelsea_st_bridge_raised"
-  | "chelsea_st_bridge_lowered"
+export type NotificationContentTypes =
+  | BridgeNotification
+  | BlockWaiverNotification
+export interface Notification<
+  TNotification extends NotificationContentTypes = NotificationContentTypes
+> {
+  id: NotificationId
+  createdAt: Date
+  state: NotificationState
+  content: TNotification
+}
 
-export type NotificationReason =
+export function isBlockWaiverNotification(
+  notification: Notification
+): notification is Notification<BlockWaiverNotification> {
+  return notification.content.$type === NotificationType.BlockWaiver
+}
+export type BlockWaiverReason =
   | "other"
   | "accident"
   | "adjusted"
@@ -81,7 +116,6 @@ export type NotificationReason =
   | "manpower"
   | "operator_error"
   | "traffic"
-  | ChelseaBridgeNotificationReason
 
 export type NotificationState = "unread" | "read" | "deleted"
 

@@ -1,7 +1,12 @@
 import React, { ReactElement } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
-import { Notification, NotificationReason } from "../realtime"
-import { isChelseaBridgeNotification } from "../util/notifications"
+import {
+  BlockWaiverNotification,
+  Notification,
+  BlockWaiverReason,
+  NotificationType,
+  isBlockWaiverNotification,
+} from "../realtime"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
 import { CardBody, CardProperties, CardReadable } from "./card"
@@ -20,13 +25,19 @@ export const NotificationCard = ({
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
 }): ReactElement<HTMLElement> => {
-  const routes = useRoutes(notification.routeIds)
-  const routeAtCreation = useRoute(notification.routeIdAtCreation)
+  const routes = useRoutes(
+    isBlockWaiverNotification(notification) ? notification.content.routeIds : []
+  )
+  const routeAtCreation = useRoute(
+    isBlockWaiverNotification(notification)
+      ? notification.content.routeIdAtCreation
+      : null
+  )
   const isUnread = notification.state === "unread"
   return (
     <CardReadable
       currentTime={currentTime}
-      title={<>{title(notification.reason)}</>}
+      title={<>{title(notification)}</>}
       style="kiwi"
       isActive={isUnread}
       openCallback={() => {
@@ -36,7 +47,7 @@ export const NotificationCard = ({
           hideLatestNotification()
         }
 
-        if (isChelseaBridgeNotification(notification.reason)) {
+        if (notification.content.$type === NotificationType.BridgeMovement) {
           fullStoryEvent("User clicked Chelsea Bridge Notification", {})
         }
       }}
@@ -45,40 +56,55 @@ export const NotificationCard = ({
       noFocusOrHover={noFocusOrHover}
     >
       <CardBody>{description(notification, routes, routeAtCreation)}</CardBody>
-      <CardProperties
-        properties={[
-          {
-            label: "Run",
-            value:
-              notification.runIds.length > 0
-                ? notification.runIds.join(", ")
-                : null,
-          },
-          {
-            label: "Operator",
-            value:
-              notification.operatorName !== null &&
-              notification.operatorId !== null
-                ? `${notification.operatorName} #${notification.operatorId}`
-                : null,
-            sensitive: true,
-          },
-        ]}
-      />
+      {isBlockWaiverNotification(notification) && (
+        <CardProperties
+          properties={[
+            {
+              label: "Run",
+              value:
+                notification.content.runIds.length > 0
+                  ? notification.content.runIds.join(", ")
+                  : null,
+            },
+            {
+              label: "Operator",
+              value:
+                notification.content.operatorName !== null &&
+                notification.content.operatorId !== null
+                  ? `${notification.content.operatorName} #${notification.content.operatorId}`
+                  : null,
+              sensitive: true,
+            },
+          ]}
+        />
+      )}
     </CardReadable>
   )
 }
 
-export const title = (reason: NotificationReason): string => {
+export const title = (notification: Notification) => {
+  switch (notification.content.$type) {
+    case NotificationType.BlockWaiver: {
+      return blockWaiverNotificationTitle(notification.content.reason)
+    }
+    case NotificationType.BridgeMovement: {
+      switch (notification.content.status) {
+        case "lowered":
+          return "Chelsea St Bridge Lowered"
+        case "raised":
+          return "Chelsea St Bridge Raised"
+      }
+    }
+  }
+}
+export const blockWaiverNotificationTitle = (
+  reason: BlockWaiverReason
+): string => {
   switch (reason) {
     case "manpower":
       return "No Operator"
     case "diverted":
       return "Diversion"
-    case "chelsea_st_bridge_raised":
-      return "Chelsea St Bridge Raised"
-    case "chelsea_st_bridge_lowered":
-      return "Chelsea St Bridge Lowered"
     default:
       return reason
         .replace("_", " ")
@@ -87,9 +113,8 @@ export const title = (reason: NotificationReason): string => {
         .join(" ")
   }
 }
-
-const description = (
-  notification: Notification,
+const blockWaiverDescription = (
+  notification: BlockWaiverNotification,
   routes: Route[],
   routeAtCreation: Route | null
 ): string => {
@@ -97,6 +122,7 @@ const description = (
   const routeNameAtCreation = routeAtCreation
     ? routeAtCreation.name
     : notification.routeIdAtCreation
+
   switch (notification.reason) {
     case "manpower":
       return `OCC reported that an operator is not available on the ${routeNames}.`
@@ -120,16 +146,35 @@ const description = (
       return `OCC created a dispatcher note due to traffic on the ${
         routeNameAtCreation || routeNames
       }.`
-    case "chelsea_st_bridge_raised":
-      /* eslint-disable @typescript-eslint/no-non-null-assertion */
-      return `OCC reported that the Chelsea St bridge will be raised until ${formattedTime(
-        notification.endTime!
-      )}.`
-    /* eslint-enable @typescript-eslint/no-non-null-assertion */
-    case "chelsea_st_bridge_lowered":
-      return "OCC reported that the Chelsea St bridge has been lowered."
     case "other":
     default:
       return `OCC created a dispatcher note for the ${routeNames}.`
+  }
+}
+
+const description = (
+  notification: Notification,
+  routes: Route[],
+  routeAtCreation: Route | null
+): string => {
+  switch (notification.content.$type) {
+    case NotificationType.BlockWaiver: {
+      return blockWaiverDescription(
+        notification.content,
+        routes,
+        routeAtCreation
+      )
+    }
+    case NotificationType.BridgeMovement: {
+      switch (notification.content.status) {
+        case "raised":
+          return `OCC reported that the Chelsea St bridge will be raised until ${formattedTime(
+            notification.content.loweringTime
+          )}.`
+
+        case "lowered":
+          return "OCC reported that the Chelsea St bridge has been lowered."
+      }
+    }
   }
 }

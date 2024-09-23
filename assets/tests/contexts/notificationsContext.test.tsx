@@ -8,14 +8,17 @@ import {
 } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
-import { Notification, NotificationState } from "../../src/realtime"
+import { Notification } from "../../src/realtime"
 import { initialState } from "../../src/state"
 import { vehicleFactory } from "../factories/vehicle"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { useNotifications } from "../../src/hooks/useNotifications"
-import notificationFactory from "../factories/notification"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import { selectVehicleFromNotification } from "../../src/state/pagePanelState"
+import {
+  blockWaiverNotificationFactory,
+  bridgeRaisedNotificationFactory,
+} from "../factories/notification"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
@@ -40,20 +43,17 @@ jest.mock("../../src/hooks/useNotifications", () => ({
 
 jest.mock("../../src/helpers/fullStory")
 
-const notification: Notification = {
-  id: "0",
+const notification: Notification = blockWaiverNotificationFactory.build({
   createdAt: new Date(0),
-  reason: "manpower",
-  routeIds: ["route1", "route2"],
-  runIds: ["run1", "run2"],
-  tripIds: [],
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
-  startTime: new Date(0),
-  endTime: new Date(100),
-  state: "unread" as NotificationState,
-}
+  content: {
+    reason: "manpower",
+    routeIds: ["route1", "route2"],
+    runIds: ["run1", "run2"],
+    tripIds: [],
+    startTime: new Date(0),
+    endTime: new Date(100),
+  },
+})
 
 describe("NotificationsProvider", () => {
   test("starts empty", () => {
@@ -108,9 +108,7 @@ describe("NotificationsProvider", () => {
     expect(result.current.notifications).toHaveLength(0)
     jest.mocked(useNotifications).mockImplementationOnce(() => ({
       type: "new",
-      payload: notificationFactory.build({
-        reason: "chelsea_st_bridge_raised",
-      }),
+      payload: bridgeRaisedNotificationFactory.build(),
     }))
 
     rerender()

@@ -12,21 +12,27 @@ import { initialState } from "../../src/state"
 import { OpenView } from "../../src/state/pagePanelState"
 import stateFactory from "../factories/applicationState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
+import { blockWaiverNotificationFactory } from "../factories/notification"
 
-const unreadNotification: Notification = {
-  id: "1",
+const unreadNotification: Notification = blockWaiverNotificationFactory.build({
   createdAt: new Date(0),
-  reason: "other",
-  routeIds: [],
-  runIds: [],
-  tripIds: [],
-  startTime: new Date(0),
-  endTime: new Date(100),
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
   state: "unread",
-}
+  content: {
+    reason: "other",
+    createdAt: new Date(0),
+
+    routeIds: [],
+    runIds: [],
+    tripIds: [],
+
+    startTime: new Date(0),
+    endTime: new Date(100),
+
+    operatorName: null,
+    operatorId: null,
+    routeIdAtCreation: null,
+  },
+})
 
 const readNotification: Notification = { ...unreadNotification, state: "read" }
 
