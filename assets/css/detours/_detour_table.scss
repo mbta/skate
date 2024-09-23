@@ -61,6 +61,12 @@ $table-border-radius: 0.5rem;
     td:last-child {
       border-bottom-right-radius: $table-border-radius;
     }
+
+    @include media-breakpoint-down(md) {
+      td {
+        border-bottom: none;
+      }
+    }
   }
 }
 
