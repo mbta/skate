@@ -374,17 +374,5 @@ describe("DiversionPage activate workflow", () => {
         screen.getByRole("button", { name: "Return to regular route" })
       ).toBeVisible()
     })
-
-    test("clicking the 'Return to regular route' button shows the 'Past Detour' screen", async () => {
-      await diversionPageOnActiveDetourScreen()
-
-      await userEvent.click(
-        screen.getByRole("button", { name: "Return to regular route" })
-      )
-      expect(
-        screen.queryByRole("heading", { name: "Active Detour" })
-      ).not.toBeInTheDocument()
-      expect(screen.getByRole("heading", { name: "Past Detour" })).toBeVisible()
-    })
   })
 })

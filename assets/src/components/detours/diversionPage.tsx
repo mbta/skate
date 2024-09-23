@@ -24,6 +24,7 @@ import { ActiveDetourPanel } from "./activeDetourPanel"
 import { PastDetourPanel } from "./pastDetourPanel"
 import userInTestGroup from "../../userInTestGroup"
 import { ActivateDetour } from "./activateDetourModal"
+import { DeactivateDetourModal } from "./deactivateDetourModal"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -349,10 +350,23 @@ export const DiversionPage = ({
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
               onNavigateBack={onConfirmClose}
-              onDeactivateDetour={() => {
-                send({ type: "detour.active.deactivate" })
+              onOpenDeactivateModal={() => {
+                send({ type: "detour.active.open-deactivate-modal" })
               }}
-            />
+            >
+              {snapshot.matches({
+                "Detour Drawing": { Active: "Deactivating" },
+              }) ? (
+                <DeactivateDetourModal
+                  onDeactivate={() =>
+                    send({ type: "detour.active.deactivate-modal.deactivate" })
+                  }
+                  onCancel={() =>
+                    send({ type: "detour.active.deactivate-modal.cancel" })
+                  }
+                />
+              ) : null}
+            </ActiveDetourPanel>
           ) : snapshot.matches({ "Detour Drawing": "Past" }) ? (
             <PastDetourPanel />
           ) : null}

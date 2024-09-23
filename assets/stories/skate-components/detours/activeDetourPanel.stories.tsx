@@ -28,7 +28,7 @@ const meta = {
     routeDescription: "Harvard via Allston",
     routeOrigin: "from Andrew Station",
     routeDirection: "Outbound",
-    onDeactivateDetour: undefined,
+    onOpenDeactivateModal: undefined,
     onNavigateBack: undefined,
   },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by

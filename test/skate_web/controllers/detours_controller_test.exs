@@ -77,7 +77,7 @@ defmodule SkateWeb.DetoursControllerTest do
           "nearestIntersection" => "Street A & Avenue B",
           "uuid" => 1
         },
-        "value" => %{"Detour Drawing" => "Active"}
+        "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
       }
     })
 
@@ -151,7 +151,7 @@ defmodule SkateWeb.DetoursControllerTest do
                      "routePattern" => %{"directionId" => 0, "headsign" => "Headsign"},
                      "uuid" => 1
                    },
-                   "value" => %{"Detour Drawing" => "Active"}
+                   "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
                  },
                  "updated_at" => _
                }
@@ -296,7 +296,7 @@ defmodule SkateWeb.DetoursControllerTest do
             "nearestIntersection" => "Street A & Avenue B",
             "uuid" => 4
           },
-          "value" => %{"Detour Drawing" => "Active"}
+          "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
         }
       })
 
@@ -314,7 +314,7 @@ defmodule SkateWeb.DetoursControllerTest do
             "nearestIntersection" => "Street A & Avenue B",
             "uuid" => 5
           },
-          "value" => %{"Detour Drawing" => "Active"}
+          "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
         }
       })
 
