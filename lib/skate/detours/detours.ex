@@ -11,7 +11,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Settings.User
 
   @doc """
-  Returns the list of detours.
+  Returns the list of detours with author, sorted by updated_at
 
   ## Examples
 
@@ -19,9 +19,12 @@ defmodule Skate.Detours.Detours do
       [%Detour{}, ...]
   """
   def list_detours do
-    Detour
+    (detour in Skate.Detours.Db.Detour)
+    |> from(
+      preload: [:author],
+      order_by: [desc: detour.updated_at]
+    )
     |> Repo.all()
-    |> Repo.preload(:author)
   end
 
   @doc """
@@ -43,11 +46,7 @@ defmodule Skate.Detours.Detours do
         }
   def grouped_detours(user_id) do
     detours =
-      Repo.all(
-        from(d in Detour,
-          order_by: [desc: d.updated_at]
-        )
-      )
+      list_detours()
       |> Enum.map(fn detour -> db_detour_to_detour(detour, user_id) end)
       |> Enum.filter(& &1)
       |> Enum.group_by(fn detour -> detour.status end)
@@ -140,9 +139,9 @@ defmodule Skate.Detours.Detours do
   @spec get_detour_with_state!(integer()) :: DetourWithState.t()
   def get_detour_with_state!(id) do
     detour =
-      id
-      |> get_detour!()
-      |> Repo.preload(:author)
+      (detour in Skate.Detours.Db.Detour)
+      |> from(where: detour.id == ^id, preload: [:author])
+      |> Repo.one!()
 
     %DetourWithState{
       state: detour.state,
