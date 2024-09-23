@@ -193,7 +193,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
       class="l-diversion-page h-100 border-box inherit-box"
     >
       <header
-        class="l-diversion-page__header text-bg-light border-bottom"
+        class="l-diversion-page__header border-bottom text-bg-light"
       >
         <button
           aria-label="Close"
@@ -202,10 +202,10 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
         />
       </header>
       <div
-        class="l-diversion-page__panel bg-light"
+        class="l-diversion-page__panel text-bg-light"
       >
         <article
-          class="l-diversion-page-panel bg-light border-end"
+          class="l-diversion-page-panel border-end"
         >
           <header
             class="l-diversion-page-panel__header border-bottom px-3"
@@ -217,7 +217,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             </h1>
           </header>
           <div
-            class="l-diversion-page-panel__body d-flex flex-column"
+            class="l-diversion-page-panel__body bg-light d-flex flex-column"
           >
             <div
               class="l-diversion-page-panel__scroll-area px-3 d-flex flex-column"
