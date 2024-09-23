@@ -3,7 +3,7 @@ import { Table } from "react-bootstrap"
 import { RoutePill } from "./routePill"
 import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
-import { SimpleDetour } from "../models/detour"
+import { SimpleDetour } from "../models/detoursList"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
