@@ -5,6 +5,23 @@ defmodule Notifications.Db.BlockWaiver do
   import Ecto.Changeset
   alias Notifications.NotificationReason
 
+  @derive {Jason.Encoder,
+           only: [
+             :__struct__,
+             :created_at,
+             :reason,
+             :route_ids,
+             :run_ids,
+             :trip_ids,
+             :operator_id,
+             :operator_name,
+             :route_id_at_creation,
+             :block_id,
+             :service_id,
+             :start_time,
+             :end_time
+           ]}
+
   typed_schema "block_waivers" do
     field(:created_at, :integer)
     field(:reason, NotificationReason)

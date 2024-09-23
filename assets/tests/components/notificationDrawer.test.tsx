@@ -21,6 +21,7 @@ import {
 import { now } from "../../src/util/dateTime"
 import userEvent from "@testing-library/user-event"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+import { blockWaiverNotificationFactory } from "../factories/notification"
 
 jest.mock("../../src/hooks/usePanelState")
 
@@ -28,20 +29,22 @@ beforeEach(() => {
   mockUsePanelState()
 })
 
-const notification: Notification = {
+const notification: Notification = blockWaiverNotificationFactory.build({
   id: "0",
   createdAt: now(),
-  reason: "manpower",
-  routeIds: ["route1", "route2"],
-  runIds: ["run1", "run2"],
-  tripIds: [],
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
-  startTime: now(),
-  endTime: now(),
-  state: "unread" as NotificationState,
-}
+  state: "unread",
+  content: {
+    reason: "manpower",
+    routeIds: ["route1", "route2"],
+    runIds: ["run1", "run2"],
+    tripIds: [],
+    operatorName: null,
+    operatorId: null,
+    routeIdAtCreation: null,
+    startTime: now(),
+    endTime: now(),
+  },
+})
 
 const readNotification: Notification = {
   ...notification,

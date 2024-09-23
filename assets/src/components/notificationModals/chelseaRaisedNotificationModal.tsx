@@ -1,12 +1,12 @@
 import React from "react"
-import { Notification } from "../../realtime"
+import { BridgeRaisedNotification } from "../../realtime"
 import { formattedTime } from "../../util/dateTime"
 import BasicNotificationModal from "./basicNotificationModal"
 
 const ChelseaRaisedNotificationModal = ({
   notification,
 }: {
-  notification: Notification
+  notification: BridgeRaisedNotification
 }) => {
   const contentString = (endDate: Date | null): string => {
     if (endDate)
@@ -21,7 +21,7 @@ const ChelseaRaisedNotificationModal = ({
   return (
     <BasicNotificationModal
       title="Chelsea St Bridge Raised"
-      body={contentString(notification.endTime)}
+      body={contentString(notification.loweringTime)}
     />
   )
 }
