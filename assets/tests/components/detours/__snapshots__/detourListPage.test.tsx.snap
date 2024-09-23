@@ -6,8 +6,13 @@ exports[`DetourListPage renders detour list page 1`] = `
     <div
       class="c-detour-list-page h-100 overflow-y-auto p-0 p-md-4 bg-white"
     >
+      <h2
+        class="fw-semibold fs-1 mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+      >
+        Active detours
+      </h2>
       <table
-        class="c-detours-table table table-hover"
+        class="mb-5 c-detours-table table table-hover"
       >
         <thead
           class="u-hide-for-mobile"
@@ -111,8 +116,13 @@ exports[`DetourListPage renders detour list page 1`] = `
           </tr>
         </tbody>
       </table>
+      <h2
+        class="fw-semibold fs-1 mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+      >
+        Draft detours
+      </h2>
       <table
-        class="c-detours-table table"
+        class="mb-5 c-detours-table table"
       >
         <thead
           class="u-hide-for-mobile"
@@ -180,6 +190,11 @@ exports[`DetourListPage renders detour list page 1`] = `
           </tr>
         </tbody>
       </table>
+      <h2
+        class="fw-semibold fs-1 mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+      >
+        Closed detours
+      </h2>
       <table
         class="c-detours-table table table-hover"
       >

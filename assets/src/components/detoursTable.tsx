@@ -5,11 +5,13 @@ import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
 import { timeAgoLabel } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
+import { joinClasses } from "../helpers/dom"
 
 interface DetoursTableProps {
   data: SimpleDetour[] | undefined
   onOpenDetour: (detourId: number) => void
   status: DetourStatus
+  classNames?: string[]
 }
 
 export enum DetourStatus {
@@ -35,8 +37,12 @@ export const DetoursTable = ({
   data,
   onOpenDetour,
   status,
+  classNames = [],
 }: DetoursTableProps) => (
-  <Table hover={!!data} className="c-detours-table">
+  <Table
+    hover={!!data}
+    className={joinClasses([...classNames, "c-detours-table"])}
+  >
     <thead className="u-hide-for-mobile">
       <tr>
         <th className="px-3 py-4">Route and direction</th>

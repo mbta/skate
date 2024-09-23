@@ -61,16 +61,21 @@ export const DetourListPage = () => {
       )}
       {detours && (
         <>
+          <Title title="Active detours" />
           <DetoursTable
             data={detours.active}
             status={DetourStatus.Active}
             onOpenDetour={onOpenDetour}
+            classNames={["mb-5"]}
           />
+          <Title title="Draft detours" />
           <DetoursTable
             data={detours.draft}
             status={DetourStatus.Draft}
             onOpenDetour={onOpenDetour}
+            classNames={["mb-5"]}
           />
+          <Title title="Closed detours" />
           <DetoursTable
             data={detours.past}
             status={DetourStatus.Closed}
@@ -95,3 +100,7 @@ export const DetourListPage = () => {
     </div>
   )
 }
+
+const Title = ({ title }: { title: string }) => (
+  <h2 className="fw-semibold fs-1 mt-3 mt-md-0 mb-3 mx-3 mx-md-0">{title}</h2>
+)
