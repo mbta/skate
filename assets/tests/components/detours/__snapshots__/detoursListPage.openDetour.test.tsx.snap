@@ -37,7 +37,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
         </span>
       </div>
       <table
-        class="mb-5 c-detours-table table-active-detour table table-hover"
+        class="mb-5 c-detours-table table table-active-detour table-hover"
       >
         <thead
           class="u-hide-for-mobile"
