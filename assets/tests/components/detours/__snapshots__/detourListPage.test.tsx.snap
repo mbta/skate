@@ -34,7 +34,7 @@ exports[`DetourListPage renders detour list page 1`] = `
         </span>
       </div>
       <table
-        class="mb-5 c-detours-table table table-hover"
+        class="mb-5 c-detours-table table table-active-detour table-hover"
       >
         <thead
           class="u-hide-for-mobile"
