@@ -142,7 +142,11 @@ export const DetourRouteSelectionPanel = ({
         </Panel.Body.ScrollArea>
 
         <Panel.Body.Footer className="d-flex">
-          <Button className="m-3 flex-grow-1" onClick={onConfirm}>
+          <Button
+            className="m-3 flex-grow-1"
+            onClick={onConfirm}
+            data-fs-element="Start Detour"
+          >
             Start drawing detour
           </Button>
         </Panel.Body.Footer>
