@@ -71,7 +71,7 @@ describe("Detours Page: Open a Detour", () => {
     jest
       .mocked(fetchDetour)
       .mockResolvedValue(
-        Ok({ updatedAt: 1726147775, author: "fake@email.com", state: snapshot })
+        Ok({ updatedAt: 1724834480, author: "fake@email.com", state: snapshot })
       )
 
     const { baseElement } = render(<DetourListPage />)
