@@ -1,5 +1,7 @@
 defmodule Skate.Settings.Db.RouteTab do
-  @moduledoc false
+  @moduledoc """
+  Ecto Model for `route_tabs` Database table
+  """
 
   use Skate.Schema
   import Ecto.Changeset

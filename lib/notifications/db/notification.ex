@@ -1,5 +1,7 @@
 defmodule Notifications.Db.Notification do
-  @moduledoc false
+  @moduledoc """
+  Ecto Model for `notifications` Database table
+  """
 
   use Skate.Schema
   import Ecto.Changeset

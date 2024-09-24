@@ -1,5 +1,7 @@
 defmodule Skate.Detours.Db.Detour do
-  @moduledoc false
+  @moduledoc """
+  Ecto Model for `detours` Database table
+  """
 
   use Skate.Schema
   import Ecto.Changeset

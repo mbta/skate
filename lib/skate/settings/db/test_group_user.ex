@@ -1,5 +1,7 @@
 defmodule Skate.Settings.Db.TestGroupUser do
-  @moduledoc false
+  @moduledoc """
+  Ecto Model for `test_groups_users` Database table
+  """
 
   use Skate.Schema
   import Ecto.Changeset

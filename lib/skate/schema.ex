@@ -5,6 +5,8 @@ defmodule Skate.Schema do
 
   defmacro __using__(_opts) do
     quote do
+      @moduledoc section: :ecto
+
       use TypedEctoSchema
     end
   end
