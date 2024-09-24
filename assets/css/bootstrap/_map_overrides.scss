@@ -10,10 +10,7 @@ $theme-colors: (
   "light": new_tokens.$gray-50,
   "dark": new_tokens.$gray-900,
   "missed-stop": semantic.$missed-stop,
-  "active-detour": semantic.$active-detour,
 );
-
-$table-variants: $theme-colors;
 
 $utilities: (
   // Shorthand for specifying utility classes `top-0 start-0 bottom-0 end-0`

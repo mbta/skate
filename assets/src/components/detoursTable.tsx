@@ -41,8 +41,11 @@ export const DetoursTable = ({
 }: DetoursTableProps) => (
   <Table
     hover={!!data}
-    className={joinClasses([...classNames, "c-detours-table"])}
-    variant={status === DetourStatus.Active ? "active-detour" : ""}
+    className={joinClasses([
+      ...classNames,
+      "c-detours-table",
+      status === DetourStatus.Active ? "c-detours-table--active" : null,
+    ])}
   >
     <thead className="u-hide-for-mobile">
       <tr>

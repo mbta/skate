@@ -68,6 +68,17 @@ $table-border-radius: 0.5rem;
       }
     }
   }
+
+  &.c-detours-table--active {
+    td {
+      background-color: tokens.$lemon-100;
+      border-color: tokens.$lemon-600 !important;
+    }
+
+    th {
+      border-bottom-color: tokens.$lemon-600 !important;
+    }
+  }
 }
 
 .c-detours-table__route-info-text {
