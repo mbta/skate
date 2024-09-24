@@ -291,9 +291,7 @@ describe("routeLadder", () => {
       screen.getByRole("button", { name: "28 Route Options" })
     )
 
-      expect(
-      screen.getByText(/This route has an active detour./)
-    ).toBeVisible()
+    expect(screen.getByText(/This route has an active detour./)).toBeVisible()
 
     // expect(tree).toMatchSnapshot()
   })
@@ -334,10 +332,7 @@ describe("routeLadder", () => {
       screen.findByText("This route has an active detour.")
     ).not.toBeInTheDocument()
 
-
-      expect(
-      await screen.findByText("Add detour")
-    ).toBeVisible()
+    expect(await screen.findByText("Add detour")).toBeVisible()
 
     // expect(tree).toMatchSnapshot()
   })
