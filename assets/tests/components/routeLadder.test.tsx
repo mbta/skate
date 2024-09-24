@@ -7,7 +7,7 @@ import {
   afterEach,
 } from "@jest/globals"
 import React from "react"
-import { act, fireEvent, render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
@@ -292,8 +292,6 @@ describe("routeLadder", () => {
     )
 
     expect(screen.getByText(/This route has an active detour./)).toBeVisible()
-
-    // expect(tree).toMatchSnapshot()
   })
 
   test("renders 'Add detour' in the dropdown", async () => {
@@ -324,17 +322,15 @@ describe("routeLadder", () => {
       />
     )
 
-    act(() => {
-      fireEvent.click(screen.getByRole("button", { name: "28 Route Options" }))
-    })
+    await userEvent.click(
+      screen.getByRole("button", { name: "28 Route Options" })
+    )
 
     expect(
-      screen.findByText("This route has an active detour.")
+      screen.queryByText(/This route has an active detour./)
     ).not.toBeInTheDocument()
 
-    expect(await screen.findByText("Add detour")).toBeVisible()
-
-    // expect(tree).toMatchSnapshot()
+    expect(screen.getByText("Add detour")).toBeVisible()
   })
 
   test("renders a route ladder with vehicles", () => {
