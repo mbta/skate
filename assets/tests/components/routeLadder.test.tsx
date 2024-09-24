@@ -287,12 +287,12 @@ describe("routeLadder", () => {
       />
     )
 
-    act(() => {
-      fireEvent.click(screen.getByRole("button", { name: "28 Route Options" }))
-    })
+    await userEvent.click(
+      screen.getByRole("button", { name: "28 Route Options" })
+    )
 
       expect(
-      await screen.findByText("This route has an active detour.")
+      screen.getByText(/This route has an active detour./)
     ).toBeVisible()
 
     // expect(tree).toMatchSnapshot()
