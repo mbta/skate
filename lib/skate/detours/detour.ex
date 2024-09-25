@@ -66,6 +66,33 @@ defmodule Skate.Detours.Detour do
       }
     end
 
+    def from(status, %{
+          id: id,
+          author_id: author_id,
+          updated_at: updated_at,
+          route_pattern_id: route_pattern_id,
+          route_name: route_name,
+          headsign: headsign,
+          nearest_intersection: nearest_intersection,
+          direction: direction
+        })
+        when not is_nil(headsign) and
+               not is_nil(direction) and
+               not is_nil(route_name) and
+               not is_nil(nearest_intersection) do
+      %__MODULE__{
+        id: id,
+        route: route_name,
+        via_variant: RoutePattern.via_variant(route_pattern_id),
+        direction: direction,
+        name: headsign,
+        intersection: nearest_intersection,
+        updated_at: timestamp_to_unix(updated_at),
+        author_id: author_id,
+        status: status
+      }
+    end
+
     def from(_status, _attrs), do: nil
 
     # Converts the db timestamp to unix
