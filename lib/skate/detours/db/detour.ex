@@ -21,6 +21,29 @@ defmodule Skate.Detours.Db.Detour do
     field :activated_at, :utc_datetime_usec
 
     timestamps()
+
+    ## Detour virtual fields
+    # -------------------------------------------------------
+
+    # Route properties
+    field :route_id, :string, virtual: true
+    field :route_name, :string, virtual: true
+    field :route_pattern_id, :string, virtual: true
+    field :route_pattern_name, :string, virtual: true
+    field :headsign, :string, virtual: true
+    field :direction, :string, virtual: true
+
+    # Default detour properties
+    field :nearest_intersection, :string, virtual: true
+
+    # Activated properties
+    field :estimated_duration, :string, virtual: true
+
+    # Temporary field to make querying the `:state` faster and avoid needing to
+    # pull the entire `:state` value
+    field :state_value, :map, virtual: true
+
+    # -------------------------------------------------------
   end
 
   def changeset(detour, attrs) do
@@ -54,6 +77,42 @@ defmodule Skate.Detours.Db.Detour do
       # Select nothing (`[]`) at first so further `select_merge`'s
       # don't have an issue
       from(Skate.Detours.Db.Detour, as: :detour, select: [])
+    end
+
+    def sorted_by_last_updated(query \\ base()) do
+      order_by(query, desc: :updated_at)
+    end
+
+    def with_author(query \\ base(), key \\ :author) do
+      from([detour: d] in query,
+        join: a in assoc(d, :author),
+        as: :author,
+        select_merge: %{^key => a}
+      )
+    end
+
+    def select_detour_list_info(query \\ base()) do
+      query
+      |> select_merge([
+        :author_id,
+        :updated_at,
+        :id,
+        :activated_at
+      ])
+      |> sorted_by_last_updated()
+      |> with_author()
+      |> select_state_value()
+      |> select_starting_intersection()
+      |> select_route_id()
+      |> select_route_name()
+      |> select_route_pattern_headsign()
+      |> select_direction()
+      |> select_estimated_duration()
+      |> select_route_pattern_id()
+    end
+
+    def select_route_id(query \\ base(), key \\ :route_id) do
+      select_merge(query, [detour: d], %{^key => d.state["context"]["route"]["id"]})
     end
 
     def select_route_name(query \\ base(), key \\ :route_name) do
@@ -99,6 +158,22 @@ defmodule Skate.Detours.Db.Detour do
             d.state["context"]["routePattern"]["directionId"]
           )
       })
+    end
+
+    def select_starting_intersection(query \\ base(), key \\ :nearest_intersection) do
+      select_merge(query, [detour: d], %{
+        ^key => d.state["context"]["nearestIntersection"]
+      })
+    end
+
+    def select_estimated_duration(query \\ base(), key \\ :estimated_duration) do
+      select_merge(query, [detour: d], %{
+        ^key => d.state["context"]["selectedDuration"]
+      })
+    end
+
+    def select_state_value(query \\ base(), key \\ :state_value) do
+      select_merge(query, [detour: d], %{^key => %{"value" => d.state["value"]}})
     end
   end
 end
