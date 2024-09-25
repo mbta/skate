@@ -72,7 +72,7 @@ export const DetourListPage = () => {
             title="Active detours"
             icon={GlobeAmericas}
             visibility="All Skate users"
-            classNames={["d-flex"]}
+            classNames="d-flex"
           />
           <DetoursTable
             data={detours.active}
