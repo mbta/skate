@@ -139,12 +139,10 @@ const Confirming = () => (
     <h5>Step 3 of 3 - Activate detour</h5>
     <p>Are you sure that you want to activate this detour?</p>
     <p>
-      Once activated, other Skate users, OIOs, and MBTA ridership will see this
-      detour information.
+      Once activated, other Skate users and OIOs will be able to see this detour
+      information in Skate.
     </p>
-    <p className="fst-italic">
-      You will still need to radio people / whatever is accurate.
-    </p>
+    <p>You still need to radio operators and create the log in IRIS.</p>
   </Modal.Body>
 )
 
