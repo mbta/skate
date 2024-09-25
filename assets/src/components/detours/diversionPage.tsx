@@ -366,7 +366,19 @@ export const DiversionPage = ({
               ) : null}
             </ActiveDetourPanel>
           ) : snapshot.matches({ "Detour Drawing": "Past" }) ? (
-            <PastDetourPanel />
+            <PastDetourPanel
+              directions={extendedDirections}
+              connectionPoints={[
+                connectionPoints?.start?.name ?? "N/A",
+                connectionPoints?.end?.name ?? "N/A",
+              ]}
+              missedStops={missedStops}
+              routeName={routeName ?? "??"}
+              routeDescription={routeDescription ?? "??"}
+              routeOrigin={routeOrigin ?? "??"}
+              routeDirection={routeDirection ?? "??"}
+              onNavigateBack={onConfirmClose}
+            />
           ) : null}
         </div>
         <div className="l-diversion-page__map position-relative">
