@@ -29,7 +29,7 @@ export const PastDetourPanel = ({
 }: PastDetourPanelProps) => (
   <Panel as="article">
     <Panel.Header className="">
-      <h1 className="c-diversion-panel__h1 my-3">Past Detour</h1>
+      <h1 className="c-diversion-panel__h1 my-3">View Past Detour</h1>
     </Panel.Header>
 
     <Panel.Body className="d-flex flex-column">
