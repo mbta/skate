@@ -28,7 +28,7 @@ const meta = {
   },
   argTypes: {
     originalRoute: { table: { disable: true } },
-    onConfirmClose: { table: { disable: true } },
+    onClose: { table: { disable: true } },
   },
 } satisfies Meta<typeof DiversionPage>
 export default meta

@@ -45,7 +45,7 @@ const displayFieldsFromRouteAndPattern = (
 }
 
 interface DiversionPageFunctions {
-  onConfirmClose: () => void
+  onClose: () => void
 }
 
 interface DiversionPageFromInput {
@@ -65,7 +65,7 @@ export type DiversionPageProps = DiversionPageStateProps &
   DiversionPageFunctions
 
 export const DiversionPage = ({
-  onConfirmClose,
+  onClose,
   ...useDetourProps
 }: DiversionPageProps) => {
   const {
@@ -174,7 +174,7 @@ export const DiversionPage = ({
               : "text-bg-light",
           ])}
         >
-          <CloseButton className="p-4" onClick={onConfirmClose} />
+          <CloseButton className="p-4" onClick={onClose} />
         </header>
 
         <div
@@ -343,7 +343,7 @@ export const DiversionPage = ({
               routeDescription={routeDescription ?? "??"}
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
-              onNavigateBack={onConfirmClose}
+              onNavigateBack={onClose}
               onOpenDeactivateModal={
                 userInTestGroup(TestGroups.DetoursPilot)
                   ? () => {

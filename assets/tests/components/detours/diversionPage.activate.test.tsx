@@ -33,7 +33,7 @@ beforeEach(() => {
 const DiversionPage = (props: Partial<DiversionPageProps>) => (
   <DiversionPageDefault
     originalRoute={originalRouteFactory.build()}
-    onConfirmClose={() => null}
+    onClose={() => null}
     {...props}
   />
 )

@@ -57,7 +57,7 @@ const DiversionPage = (props: Partial<DiversionPageProps>) => {
   return (
     <DiversionPageDefault
       originalRoute={originalRouteFactory.build()}
-      onConfirmClose={() => null}
+      onClose={() => null}
       {...props}
     />
   )
@@ -1330,16 +1330,16 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("Attempting to close the page calls the onConfirmClose callback", async () => {
-    const onConfirmClose = jest.fn()
+  test("Attempting to close the page calls the onClose callback", async () => {
+    const onClose = jest.fn()
 
-    render(<DiversionPage onConfirmClose={onConfirmClose} />)
+    render(<DiversionPage onClose={onClose} />)
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: "Close" }))
     })
 
-    await waitFor(() => expect(onConfirmClose).toHaveBeenCalled())
+    await waitFor(() => expect(onClose).toHaveBeenCalled())
   })
 
   test("stop markers are visible", async () => {

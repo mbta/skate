@@ -24,7 +24,7 @@ export const DetourModal = ({
 } & DiversionPageStateProps) => {
   return (
     <Modal className="c-detour-modal" show={show} transition={Fade}>
-      <DiversionPage {...useDetourProps} onConfirmClose={onClose} />
+      <DiversionPage {...useDetourProps} onClose={onClose} />
     </Modal>
   )
 }
