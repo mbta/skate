@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { DiversionPage, DiversionPageStateProps } from "./diversionPage"
 import { Modal } from "@restart/ui"
 import { ModalTransitionProps } from "@restart/ui/esm/Modal"
@@ -22,25 +22,9 @@ export const DetourModal = ({
   onClose: () => void
   show: boolean
 } & DiversionPageStateProps) => {
-  const [showConfirmCloseModal, setShowConfirmCloseModal] =
-    useState<boolean>(false)
-
   return (
-    <Modal
-      className="c-detour-modal"
-      show={show}
-      transition={Fade}
-      onHide={() => setShowConfirmCloseModal(true)}
-    >
-      <DiversionPage
-        {...useDetourProps}
-        onConfirmClose={() => {
-          setShowConfirmCloseModal(false)
-          onClose()
-        }}
-        onCancelClose={() => setShowConfirmCloseModal(false)}
-        showConfirmCloseModal={showConfirmCloseModal}
-      />
+    <Modal className="c-detour-modal" show={show} transition={Fade}>
+      <DiversionPage {...useDetourProps} onConfirmClose={onClose} />
     </Modal>
   )
 }
