@@ -34,7 +34,6 @@ export const DetourModal = ({
     >
       <DiversionPage
         {...useDetourProps}
-        onClose={() => setShowConfirmCloseModal(true)}
         onConfirmClose={() => {
           setShowConfirmCloseModal(false)
           onClose()

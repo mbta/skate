@@ -1331,16 +1331,16 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("Attempting to close the page calls the onClose callback", async () => {
-    const onClose = jest.fn()
+  test("Attempting to close the page calls the onConfirmClose callback", async () => {
+    const onConfirmClose = jest.fn()
 
-    render(<DiversionPage onClose={onClose} />)
+    render(<DiversionPage onConfirmClose={onConfirmClose} />)
 
     act(() => {
       fireEvent.click(screen.getByRole("button", { name: "Close" }))
     })
 
-    await waitFor(() => expect(onClose).toHaveBeenCalled())
+    await waitFor(() => expect(onConfirmClose).toHaveBeenCalled())
   })
 
   test("Displays a confirmation modal", async () => {

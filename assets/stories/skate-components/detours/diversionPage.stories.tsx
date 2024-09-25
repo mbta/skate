@@ -30,7 +30,6 @@ const meta = {
   argTypes: {
     originalRoute: { table: { disable: true } },
     showConfirmCloseModal: { table: { disable: true } },
-    onClose: { table: { disable: true } },
     onConfirmClose: { table: { disable: true } },
     onCancelClose: { table: { disable: true } },
   },

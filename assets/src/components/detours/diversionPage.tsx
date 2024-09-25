@@ -45,7 +45,6 @@ const displayFieldsFromRouteAndPattern = (
 }
 
 interface DiversionPageFunctions {
-  onClose?: () => void
   onConfirmClose: () => void
   onCancelClose?: () => void
   showConfirmCloseModal: boolean
@@ -68,7 +67,6 @@ export type DiversionPageProps = DiversionPageStateProps &
   DiversionPageFunctions
 
 export const DiversionPage = ({
-  onClose,
   onConfirmClose,
   onCancelClose,
   showConfirmCloseModal,
@@ -180,7 +178,7 @@ export const DiversionPage = ({
               : "text-bg-light",
           ])}
         >
-          <CloseButton className="p-4" onClick={onClose} />
+          <CloseButton className="p-4" onClick={onConfirmClose} />
         </header>
 
         <div
