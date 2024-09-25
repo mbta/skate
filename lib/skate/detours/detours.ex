@@ -96,8 +96,11 @@ defmodule Skate.Detours.Detours do
   @type detour_type :: :active | :draft | :past
 
   @spec categorize_detour(map(), integer()) :: detour_type
-  defp categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Active"}}}, _user_id),
-    do: :active
+  defp categorize_detour(
+         %{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}},
+         _user_id
+       ),
+       do: :active
 
   defp categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}, _user_id),
     do: :past

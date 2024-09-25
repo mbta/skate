@@ -80,7 +80,9 @@ export const createDetourMachine = setup({
       | { type: "detour.share.activate-modal.cancel" }
       | { type: "detour.share.activate-modal.back" }
       | { type: "detour.share.activate-modal.activate" }
-      | { type: "detour.active.deactivate" }
+      | { type: "detour.active.open-deactivate-modal" }
+      | { type: "detour.active.deactivate-modal.deactivate" }
+      | { type: "detour.active.deactivate-modal.cancel" }
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: number },
 
@@ -599,10 +601,29 @@ export const createDetourMachine = setup({
           },
         },
         Active: {
-          on: {
-            "detour.active.deactivate": {
-              target: "Past",
+          initial: "Reviewing",
+          states: {
+            Reviewing: {
+              on: {
+                "detour.active.open-deactivate-modal": {
+                  target: "Deactivating",
+                },
+              },
             },
+            Deactivating: {
+              on: {
+                "detour.active.deactivate-modal.deactivate": {
+                  target: "Done",
+                },
+                "detour.active.deactivate-modal.cancel": {
+                  target: "Reviewing",
+                },
+              },
+            },
+            Done: { type: "final" },
+          },
+          onDone: {
+            target: "Past",
           },
         },
         Past: {},
