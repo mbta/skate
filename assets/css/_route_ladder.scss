@@ -29,6 +29,10 @@
       border-radius: 0.25rem;
       max-width: 20.5rem;
     }
+
+    .dropdown-divider {
+      border-color: $color-gray-300;
+    }
   }
 
   .c-route-ladder__dropdown-button {

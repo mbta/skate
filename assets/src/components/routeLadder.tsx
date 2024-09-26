@@ -98,7 +98,7 @@ export const Header = ({
                 </Dropdown.Item>
                 {hasAlert && (
                   <>
-                    <Dropdown.Divider />
+                    <Dropdown.Divider className="border-top-0" />
                     <Dropdown.Header>
                       <div className="c-route-ladder__dropdown-header-text">
                         Active detours
