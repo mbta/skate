@@ -9,7 +9,7 @@ import React, {
 import { DrawDetourPanel } from "./drawDetourPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
-import { Alert, Button, CloseButton, Modal } from "react-bootstrap"
+import { Alert, CloseButton } from "react-bootstrap"
 import * as BsIcons from "../../helpers/bsIcons"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
@@ -45,10 +45,7 @@ const displayFieldsFromRouteAndPattern = (
 }
 
 interface DiversionPageFunctions {
-  onClose?: () => void
-  onConfirmClose: () => void
-  onCancelClose?: () => void
-  showConfirmCloseModal: boolean
+  onClose: () => void
 }
 
 interface DiversionPageFromInput {
@@ -69,9 +66,6 @@ export type DiversionPageProps = DiversionPageStateProps &
 
 export const DiversionPage = ({
   onClose,
-  onConfirmClose,
-  onCancelClose,
-  showConfirmCloseModal,
   ...useDetourProps
 }: DiversionPageProps) => {
   const {
@@ -349,7 +343,7 @@ export const DiversionPage = ({
               routeDescription={routeDescription ?? "??"}
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
-              onNavigateBack={onConfirmClose}
+              onNavigateBack={onClose}
               onOpenDeactivateModal={
                 userInTestGroup(TestGroups.DetoursPilot)
                   ? () => {
@@ -424,32 +418,6 @@ export const DiversionPage = ({
           />
         </div>
       </article>
-      <Modal
-        show={showConfirmCloseModal}
-        onHide={onCancelClose}
-        animation={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="fs-3 fw-medium">
-            Are you sure you want to exit detour mode?
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p className="lh-base mt-0 mb-3">
-            When you close out of this screen, you will not be able to access
-            the details of your detour again. You may want to copy and paste
-            these details to another application.
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={onConfirmClose} variant="primary">
-            Yes, I&apos;m sure
-          </Button>
-          <Button onClick={onCancelClose} variant="outline-primary">
-            Back to Detour
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </>
   )
 }

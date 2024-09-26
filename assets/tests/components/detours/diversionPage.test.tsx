@@ -57,8 +57,7 @@ const DiversionPage = (props: Partial<DiversionPageProps>) => {
   return (
     <DiversionPageDefault
       originalRoute={originalRouteFactory.build()}
-      showConfirmCloseModal={false}
-      onConfirmClose={() => null}
+      onClose={() => null}
       {...props}
     />
   )
@@ -1341,74 +1340,6 @@ describe("DiversionPage", () => {
     })
 
     await waitFor(() => expect(onClose).toHaveBeenCalled())
-  })
-
-  test("Displays a confirmation modal", async () => {
-    render(<DiversionPage showConfirmCloseModal={true} />)
-
-    await waitFor(() => {
-      expect(screen.getByRole("dialog")).toBeVisible()
-      expect(screen.getByRole("button", { name: /yes/i })).toBeVisible()
-      expect(screen.getByRole("button", { name: /back/i })).toBeVisible()
-    })
-  })
-
-  test("calls the onConfirmClose callback from the confirmation modal", async () => {
-    const onConfirmClose = jest.fn()
-
-    render(
-      <DiversionPage
-        showConfirmCloseModal={true}
-        onConfirmClose={onConfirmClose}
-      />
-    )
-
-    await act(async () => {
-      fireEvent.click(screen.getByRole("button", { name: /yes/i }))
-    })
-
-    expect(onConfirmClose).toHaveBeenCalled()
-  })
-
-  test("canceling close from the confirmation modal calls onCancelClose", async () => {
-    const onCancelClose = jest.fn()
-    const onConfirmClose = jest.fn()
-
-    render(
-      <DiversionPage
-        showConfirmCloseModal={true}
-        onCancelClose={onCancelClose}
-        onConfirmClose={onConfirmClose}
-      />
-    )
-
-    await act(async () => {
-      fireEvent.click(screen.getByRole("button", { name: /back/i }))
-    })
-
-    expect(onCancelClose).toHaveBeenCalled()
-    expect(onConfirmClose).not.toHaveBeenCalled()
-  })
-
-  test("closing the confirmation modal calls onCancelClose", async () => {
-    const onCancelClose = jest.fn()
-    const onConfirmClose = jest.fn()
-
-    render(
-      <DiversionPage
-        showConfirmCloseModal={true}
-        onCancelClose={onCancelClose}
-        onConfirmClose={onConfirmClose}
-      />
-    )
-
-    await act(async () => {
-      const modal = screen.getByRole("dialog")
-      fireEvent.click(within(modal).getByRole("button", { name: "Close" }))
-    })
-
-    expect(onCancelClose).toHaveBeenCalled()
-    expect(onConfirmClose).not.toHaveBeenCalled()
   })
 
   test("stop markers are visible", async () => {
