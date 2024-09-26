@@ -14,11 +14,10 @@ export const StepperBar = ({
 
   const stepWidth = width / totalSteps
 
-  let stepper
-  if (currentStep == totalSteps) {
-    stepper = <FilledStepper stepWidth={stepWidth} stepCount={currentStep} />
-  } else {
-    stepper = (
+  const stepper =
+    currentStep == totalSteps ? (
+      <FilledStepper stepWidth={stepWidth} stepCount={currentStep} />
+    ) : (
       <>
         <FilledStepper
           stepWidth={stepWidth}
@@ -31,7 +30,6 @@ export const StepperBar = ({
         />
       </>
     )
-  }
 
   return (
     <div className="c-stepper-bar d-grid" ref={stepperRef}>
@@ -101,7 +99,7 @@ const StopDots = ({
   stepWidth: number
   numDots: number
 }) => {
-  let dots = []
+  const dots = []
   for (let i = 1; i < numDots + 1; i++) {
     dots.push(
       <ellipse
