@@ -104,7 +104,7 @@ export const Header = ({
                         Active detours
                       </div>
                     </Dropdown.Header>
-                    <Dropdown.ItemText className="lh-base">
+                    <Dropdown.ItemText className="lh-base pb-4">
                       This route has an active detour. View detour details on{" "}
                       <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
                     </Dropdown.ItemText>
