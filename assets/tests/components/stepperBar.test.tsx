@@ -6,13 +6,17 @@ import { StepperBar } from "../../src/components/stepperBar"
 
 describe("StepperBar", () => {
   test("renders 1/3rd of the way", () => {
-    const {baseElement} = render(<StepperBar totalSteps={3} currentStep={1} />)
+    const { baseElement } = render(
+      <StepperBar totalSteps={3} currentStep={1} />
+    )
 
     expect(baseElement).toMatchSnapshot()
   })
 
   test("renders when stepper bar is complete", () => {
-    const {baseElement} = render(<StepperBar totalSteps={3} currentStep={1} />)
+    const { baseElement } = render(
+      <StepperBar totalSteps={3} currentStep={1} />
+    )
 
     expect(baseElement).toMatchSnapshot()
   })
