@@ -74,7 +74,6 @@ describe("Detours Page: Create Detour", () => {
     expect(createDetourHeading).toBeVisible()
 
     await userEvent.click(screen.getByRole("button", { name: "Close" }))
-    await userEvent.click(screen.getByRole("button", { name: "Yes, I'm sure" }))
 
     expect(createDetourHeading).not.toBeInTheDocument()
   })
