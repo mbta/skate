@@ -20,6 +20,15 @@
     .c-route-ladder__alert-icon {
       padding-right: 0.5rem;
     }
+
+    &.non-skate-alert .dropdown-menu {
+      width: 20.5rem;
+    }
+
+    .dropdown-menu {
+      border-radius: 0.25rem;
+      max-width: 20.5rem;
+    }
   }
 
   .c-route-ladder__dropdown-button {
@@ -41,15 +50,6 @@
       // Hide bootstrap carat
       display: none;
     }
-  }
-
-  .c-route-ladder__dropdown.non-skate-alert .dropdown-menu {
-    width: 20.5rem;
-  }
-
-  .c-route-ladder__dropdown .dropdown-menu {
-    border-radius: 0.25rem;
-    max-width: 20.5rem;
   }
 
   .c-route-ladder__dropdown-header-text {
