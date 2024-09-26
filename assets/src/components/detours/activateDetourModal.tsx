@@ -51,8 +51,8 @@ const SurroundingModal = ({
   onActivate,
   children,
 }: SurroundingModalProps) => (
-  <Modal show animation={false}>
-    <Modal.Header>
+  <Modal show animation={false} onHide={onCancel}>
+    <Modal.Header closeButton>
       <h3 className="fs-3 fw-semibold lh-sm my-1">Start detour</h3>
     </Modal.Header>
     <Modal.Body>{children}</Modal.Body>
