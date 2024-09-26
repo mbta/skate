@@ -70,7 +70,7 @@ export const Header = ({
         <div
           className={joinClasses([
             "c-route-ladder__dropdown",
-            hasAlert && "non-skate-alert",
+            hasAlert && "c-route-ladder__dropdown--non-skate-alert",
           ])}
         >
           {showDropdown && (

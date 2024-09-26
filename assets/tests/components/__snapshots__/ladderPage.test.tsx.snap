@@ -337,7 +337,7 @@ exports[`LadderPage renders with alerts 1`] = `
             class="card-body"
           >
             <div
-              class="c-route-ladder__dropdown non-skate-alert"
+              class="c-route-ladder__dropdown c-route-ladder__dropdown--non-skate-alert"
             >
               <div
                 class="mock-tippy"
