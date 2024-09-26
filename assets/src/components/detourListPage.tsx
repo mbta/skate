@@ -80,30 +80,34 @@ export const DetourListPage = () => {
             onOpenDetour={onOpenDetour}
             classNames={["mb-5"]}
           />
-          <Title
-            title="Draft detours"
-            icon={LockFill}
-            visibility="Only you"
-            classNames={["u-hide-for-mobile", "d-md-flex"]}
-          />
-          <DetoursTable
-            data={detours.draft}
-            status={DetourStatus.Draft}
-            onOpenDetour={onOpenDetour}
-            classNames={["mb-5", "u-hide-for-mobile"]}
-          />
-          <Title
-            title="Closed detours"
-            icon={PeopleFill}
-            visibility="Dispatchers and supervisors"
-            classNames={["u-hide-for-mobile", "d-md-flex"]}
-          />
-          <DetoursTable
-            data={detours.past}
-            status={DetourStatus.Closed}
-            onOpenDetour={onOpenDetour}
-            classNames={["u-hide-for-mobile"]}
-          />
+          {userInTestGroup(TestGroups.DetoursPilot) && (
+            <>
+              <Title
+                title="Draft detours"
+                icon={LockFill}
+                visibility="Only you"
+                classNames={["u-hide-for-mobile", "d-md-flex"]}
+              />
+              <DetoursTable
+                data={detours.draft}
+                status={DetourStatus.Draft}
+                onOpenDetour={onOpenDetour}
+                classNames={["mb-5", "u-hide-for-mobile"]}
+              />
+              <Title
+                title="Closed detours"
+                icon={PeopleFill}
+                visibility="Dispatchers and supervisors"
+                classNames={["u-hide-for-mobile", "d-md-flex"]}
+              />
+              <DetoursTable
+                data={detours.past}
+                status={DetourStatus.Closed}
+                onOpenDetour={onOpenDetour}
+                classNames={["u-hide-for-mobile"]}
+              />
+            </>
+          )}
         </>
       )}
 

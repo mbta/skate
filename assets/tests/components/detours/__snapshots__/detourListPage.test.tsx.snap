@@ -1,11 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DetourListPage renders detour list page 1`] = `
+exports[`DetourListPage renders detour list page for dispatchers 1`] = `
 <body>
   <div>
     <div
       class="c-detour-list-page h-100 overflow-y-auto p-0 p-md-4 bg-white"
     >
+      <button
+        class="c-detour-list-page__button icon-link fw-light px-3 py-2 u-hide-for-mobile btn btn-primary"
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          class="bi bi-plus-square"
+          fill="currentColor"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+          />
+          <path
+            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"
+          />
+        </svg>
+        <span
+          class="c-detour-list-page__button-text"
+        >
+          Add detour
+        </span>
+      </button>
       <div
         class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
       >
@@ -362,6 +388,149 @@ exports[`DetourListPage renders detour list page 1`] = `
               class="align-middle p-3 u-hide-for-mobile"
             >
               26 hours ago
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`DetourListPage renders limited detour list page for non-dispatchers 1`] = `
+<body>
+  <div>
+    <div
+      class="c-detour-list-page h-100 overflow-y-auto p-0 p-md-4 bg-white"
+    >
+      <div
+        class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+      >
+        <h2
+          class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+        >
+          Active detours
+        </h2>
+        <svg
+          aria-hidden="true"
+          class="c-detour-list-page__header-icon my-auto me-1"
+          fill="currentColor"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"
+          />
+        </svg>
+        <span
+          class="c-detour-list-page__header-visibility my-auto"
+        >
+          All Skate users
+        </span>
+      </div>
+      <table
+        class="mb-5 c-detours-table table table-active-detour table-hover"
+      >
+        <thead
+          class="u-hide-for-mobile"
+        >
+          <tr>
+            <th
+              class="px-3 py-4"
+            >
+              Route and direction
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Starting Intersection
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              On detour since
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              class="align-middle p-3"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  1
+                </div>
+                <div
+                  class="c-detours-table__route-info-text d-inline-block"
+                >
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
+                  >
+                    Headsign A
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Inbound
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Street A & Avenue B
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              26 hours ago
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="align-middle p-3"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  2
+                </div>
+                <div
+                  class="c-detours-table__route-info-text d-inline-block"
+                >
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
+                  >
+                    Headsign B
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Outbound
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Street C & Avenue D
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              29 hours ago
             </td>
           </tr>
         </tbody>
