@@ -82,7 +82,7 @@ const threeHoursRadio = byRole("radio", { name: "3 hours" })
 const constructionRadio = byRole("radio", { name: "Construction" })
 
 const activeDetourHeading = byRole("heading", { name: "Active Detour" })
-const pastDetourHeading = byRole("heading", { name: "Past Detour" })
+const pastDetourHeading = byRole("heading", { name: "View Past Detour" })
 const returnModalHeading = byRole("heading", {
   name: "Return to regular route?",
 })
