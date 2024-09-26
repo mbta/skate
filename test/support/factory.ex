@@ -415,8 +415,31 @@ defmodule Skate.Factory do
 
   def detour_factory do
     %Skate.Detours.Db.Detour{
-      state: %{},
-      author: build(:user)
+      author: build(:user),
+      state: %{
+        "context" => %{
+          "route" => %{
+            "name" => sequence("detour_route_name:"),
+            "directionNames" => %{
+              "0" => "Outbound",
+              "1" => "Inbound"
+            }
+          },
+          "routePattern" => %{
+            "name" => sequence("detour_route_pattern_name:"),
+            "headsign" => sequence("detour_route_pattern_headsign:"),
+            "directionId" => sequence(:detour_route_pattern_direction, [0, 1])
+          }
+        }
+      }
     }
+  end
+
+  def with_direction(%Skate.Detours.Db.Detour{} = detour, :inbound) do
+    put_in(detour.state["context"]["routePattern"]["directionId"], 1)
+  end
+
+  def with_direction(%Skate.Detours.Db.Detour{} = detour, :outbound) do
+    put_in(detour.state["context"]["routePattern"]["directionId"], 0)
   end
 end

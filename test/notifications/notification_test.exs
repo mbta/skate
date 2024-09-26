@@ -10,14 +10,14 @@ defmodule Notifications.NotificationTest do
 
   import Ecto.Query
 
-  setup do
-    user1 = User.upsert("user1", "user1@test.com")
-    user2 = User.upsert("user2", "user2@test.com")
-    user3 = User.upsert("user3", "user3@test.com")
-    {:ok, %{user1: user1, user2: user2, user3: user3}}
-  end
-
   describe "get_or_create_from_block_waiver/1" do
+    setup do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+      user3 = User.upsert("user3", "user3@test.com")
+      {:ok, %{user1: user1, user2: user2, user3: user3}}
+    end
+
     test "associates a new notification with users subscribed to an affected route", %{
       user1: user1,
       user2: user2,
@@ -74,6 +74,13 @@ defmodule Notifications.NotificationTest do
   end
 
   describe "unexpired_notifications_for_user/2" do
+    setup do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+      user3 = User.upsert("user3", "user3@test.com")
+      {:ok, %{user1: user1, user2: user2, user3: user3}}
+    end
+
     test "returns all unexpired notifications for the given user, in chronological order by creation timestamp",
          %{user1: user1, user2: user2} do
       baseline_time = 1_000_000_000
@@ -313,6 +320,79 @@ defmodule Notifications.NotificationTest do
                ]
                |> Enum.map(&%Notification{&1 | state: :unread})
                |> Enum.sort_by(& &1.id)
+    end
+  end
+
+  describe "create_activated_detour_notification_from_detour/1" do
+    test "inserts new record into the database" do
+      count = 3
+
+      # create new notification
+      for _ <- 1..count do
+        :detour
+        |> insert()
+        |> Notifications.Notification.create_activated_detour_notification_from_detour()
+      end
+
+      # assert it is in the database
+      assert count == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+    end
+
+    test "creates an unread notification for all users" do
+      number_of_users = 5
+      [user | _] = insert_list(number_of_users, :user)
+
+      # create new notification
+      detour =
+        :detour
+        |> insert(
+          # don't create a new user and affect the user count
+          author: user
+        )
+        |> Notifications.Notification.create_activated_detour_notification_from_detour()
+
+      detour_notification =
+        Notifications.Db.Notification
+        |> Skate.Repo.get!(detour.id)
+        |> Skate.Repo.preload(:users)
+
+      # assert all users have a notification that is unread
+      assert Kernel.length(detour_notification.users) == number_of_users
+    end
+
+    test "returns detour information" do
+      # create new notification
+      %{
+        state: %{
+          "context" => %{
+            "route" => %{
+              "name" => route_name
+            },
+            "routePattern" => %{
+              "name" => route_pattern_name,
+              "headsign" => headsign
+            }
+          }
+        }
+      } =
+        detour =
+        :detour
+        |> build()
+        |> with_direction(:inbound)
+        |> insert()
+
+      detour_notification =
+        Notifications.Notification.create_activated_detour_notification_from_detour(detour)
+
+      # assert fields are set
+      assert %Notifications.Notification{
+               content: %Notifications.Db.Detour{
+                 route: ^route_name,
+                 origin: ^route_pattern_name,
+                 headsign: ^headsign,
+                 direction: "Inbound"
+               }
+             } = detour_notification
     end
   end
 end
