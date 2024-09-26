@@ -350,9 +350,13 @@ export const DiversionPage = ({
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
               onNavigateBack={onConfirmClose}
-              onOpenDeactivateModal={() => {
-                send({ type: "detour.active.open-deactivate-modal" })
-              }}
+              onOpenDeactivateModal={
+                userInTestGroup(TestGroups.DetoursPilot)
+                  ? () => {
+                      send({ type: "detour.active.open-deactivate-modal" })
+                    }
+                  : undefined
+              }
             >
               {snapshot.matches({
                 "Detour Drawing": { Active: "Deactivating" },

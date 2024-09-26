@@ -130,4 +130,12 @@ describe("DiversionPage deactivate workflow", () => {
 
     expect(returnModalHeading.query()).not.toBeInTheDocument()
   })
+
+  test("does not have a 'Return to regular route' button for users who are not dispatchers", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+
+    await diversionPageOnActiveDetourScreen()
+
+    expect(regularRouteButton.query()).not.toBeInTheDocument()
+  })
 })

@@ -92,14 +92,16 @@ export const ActiveDetourPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer>
-        <Button
-          variant="ui-alert"
-          className="flex-grow-1 m-3 icon-link text-light"
-          onClick={onOpenDeactivateModal}
-        >
-          <StopCircle />
-          Return to regular route
-        </Button>
+        {onOpenDeactivateModal && (
+          <Button
+            variant="ui-alert"
+            className="flex-grow-1 m-3 icon-link text-light"
+            onClick={onOpenDeactivateModal}
+          >
+            <StopCircle />
+            Return to regular route
+          </Button>
+        )}
       </Panel.Body.Footer>
     </Panel.Body>
     {children}
