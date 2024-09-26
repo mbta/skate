@@ -4,6 +4,7 @@ import {
   BlockWaiverReason,
   BridgeLoweredNotification,
   BridgeRaisedNotification,
+  DetourNotification,
   Notification,
   NotificationType,
 } from "../../src/realtime"
@@ -83,4 +84,24 @@ export const bridgeLoweredNotificationFactory = Factory.define<
   createdAt: new Date(),
   state: "unread",
   content: bridgeLoweredNotificationContentFactory.build(),
+}))
+
+const detourActivatedNotificationContentFactory =
+  Factory.define<DetourNotification>(() => ({
+    $type: NotificationType.Detour,
+    status: "activated",
+    detourId: 79,
+    headsign: "79 - Wooded Mountains",
+    route: "79",
+    direction: "Inbound",
+    origin: "Maple Knoll",
+  }))
+
+export const detourActivatedNotificationFactory = Factory.define<
+  Notification<DetourNotification>
+>(({ sequence }) => ({
+  id: sequence.toString(),
+  createdAt: new Date(),
+  state: "unread",
+  content: detourActivatedNotificationContentFactory.build(),
 }))
