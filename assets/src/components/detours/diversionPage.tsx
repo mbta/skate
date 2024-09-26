@@ -377,7 +377,7 @@ export const DiversionPage = ({
               routeDescription={routeDescription ?? "??"}
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
-              onNavigateBack={onConfirmClose}
+              onNavigateBack={onClose}
             />
           ) : null}
         </div>
