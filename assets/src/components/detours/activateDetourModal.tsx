@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from "react"
 import { Button, Form, Modal } from "react-bootstrap"
+import { StepperBar } from "../stepperBar"
 
 const possibleDurations = [
   "1 hour",
@@ -87,6 +88,7 @@ const SelectingDuration = ({
   selectedDuration?: string
 }) => (
   <Modal.Body>
+    <StepperBar totalSteps={3} currentStep={1} />
     <h5>Step 1 of 3 - Select detour duration</h5>
     <p>
       <span>Time length</span> <span>(estimate)</span>
@@ -116,6 +118,7 @@ const SelectingReason = ({
   selectedReason?: string
 }) => (
   <Modal.Body>
+    <StepperBar totalSteps={3} currentStep={2} />
     <h5>Step 2 of 3 - Select reason for detour</h5>
     <Form>
       {possibleReasons.map((reason) => (
@@ -136,6 +139,7 @@ const SelectingReason = ({
 
 const Confirming = () => (
   <Modal.Body>
+    <StepperBar totalSteps={3} currentStep={3} />
     <h5>Step 3 of 3 - Activate detour</h5>
     <p>Are you sure that you want to activate this detour?</p>
     <p>
