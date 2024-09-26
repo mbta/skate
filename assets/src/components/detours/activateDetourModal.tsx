@@ -51,8 +51,10 @@ const SurroundingModal = ({
   onActivate,
   children,
 }: SurroundingModalProps) => (
-  <Modal show animation={false}>
-    <Modal.Header>Start detour</Modal.Header>
+  <Modal show animation={false} onHide={onCancel}>
+    <Modal.Header closeButton>
+      <h3 className="fs-3 fw-semibold lh-sm my-1">Start detour</h3>
+    </Modal.Header>
     <Modal.Body>{children}</Modal.Body>
     <Modal.Footer>
       {onBack && (
@@ -80,6 +82,11 @@ const SurroundingModal = ({
   </Modal>
 )
 
+interface StepSubtitleProps extends PropsWithChildren {}
+const StepSubtitle = ({ children }: StepSubtitleProps) => (
+  <h5 className="fs-5 fw-semibold mb-3 mt-1">{children}</h5>
+)
+
 const SelectingDuration = ({
   onSelectDuration,
   selectedDuration,
@@ -87,15 +94,16 @@ const SelectingDuration = ({
   onSelectDuration: (duration: string) => void
   selectedDuration?: string
 }) => (
-  <Modal.Body>
+  <>
     <StepperBar totalSteps={3} currentStep={1} />
-    <h5>Step 1 of 3 - Select detour duration</h5>
+    <StepSubtitle>Step 1 of 3 - Select detour duration</StepSubtitle>
     <p>
-      <span>Time length</span> <span>(estimate)</span>
+      <span className="fw-bold">Time length</span> <span>(estimate)</span>
     </p>
     <Form>
       {possibleDurations.map((duration) => (
         <Form.Check
+          className="mb-2"
           onChange={() => {
             onSelectDuration(duration)
           }}
@@ -107,7 +115,7 @@ const SelectingDuration = ({
         />
       ))}
     </Form>
-  </Modal.Body>
+  </>
 )
 
 const SelectingReason = ({
@@ -117,12 +125,13 @@ const SelectingReason = ({
   onSelectReason: (reason: string) => void
   selectedReason?: string
 }) => (
-  <Modal.Body>
+  <>
     <StepperBar totalSteps={3} currentStep={2} />
-    <h5>Step 2 of 3 - Select reason for detour</h5>
+    <StepSubtitle>Step 2 of 3 - Select reason for detour</StepSubtitle>
     <Form>
       {possibleReasons.map((reason) => (
         <Form.Check
+          className="mb-2"
           onChange={() => {
             onSelectReason(reason)
           }}
@@ -134,20 +143,20 @@ const SelectingReason = ({
         />
       ))}
     </Form>
-  </Modal.Body>
+  </>
 )
 
 const Confirming = () => (
-  <Modal.Body>
+  <>
     <StepperBar totalSteps={3} currentStep={3} />
-    <h5>Step 3 of 3 - Activate detour</h5>
+    <StepSubtitle>Step 3 of 3 - Activate detour</StepSubtitle>
     <p>Are you sure that you want to activate this detour?</p>
     <p>
       Once activated, other Skate users and OIOs will be able to see this detour
       information in Skate.
     </p>
     <p>You still need to radio operators and create the log in IRIS.</p>
-  </Modal.Body>
+  </>
 )
 
 export const ActivateDetour = {
