@@ -139,7 +139,7 @@ exports[`DetourListPage renders detour list page 1`] = `
         </tbody>
       </table>
       <div
-        class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+        class="u-hide-for-mobile d-md-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
       >
         <h2
           class="my-auto fw-semibold fs-1 me-3 text-nowrap"
@@ -166,7 +166,7 @@ exports[`DetourListPage renders detour list page 1`] = `
         </span>
       </div>
       <table
-        class="mb-5 c-detours-table table"
+        class="mb-5 u-hide-for-mobile c-detours-table table"
       >
         <thead
           class="u-hide-for-mobile"
@@ -235,7 +235,7 @@ exports[`DetourListPage renders detour list page 1`] = `
         </tbody>
       </table>
       <div
-        class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+        class="u-hide-for-mobile d-md-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
       >
         <h2
           class="my-auto fw-semibold fs-1 me-3 text-nowrap"
@@ -262,7 +262,7 @@ exports[`DetourListPage renders detour list page 1`] = `
         </span>
       </div>
       <table
-        class="c-detours-table table table-hover"
+        class="u-hide-for-mobile c-detours-table table table-hover"
       >
         <thead
           class="u-hide-for-mobile"

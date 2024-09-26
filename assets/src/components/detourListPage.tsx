@@ -15,6 +15,7 @@ import { useApiCall } from "../hooks/useApiCall"
 import { isErr, isOk } from "../util/result"
 import { isValidSnapshot } from "../util/isValidSnapshot"
 import { createDetourMachine } from "../models/createDetourMachine"
+import { joinClasses } from "../helpers/dom"
 
 export const DetourListPage = () => {
   const [showDetourModal, setShowDetourModal] = useState(false)
@@ -71,6 +72,7 @@ export const DetourListPage = () => {
             title="Active detours"
             icon={GlobeAmericas}
             visibility="All Skate users"
+            classNames={["d-flex"]}
           />
           <DetoursTable
             data={detours.active}
@@ -78,22 +80,29 @@ export const DetourListPage = () => {
             onOpenDetour={onOpenDetour}
             classNames={["mb-5"]}
           />
-          <Title title="Draft detours" icon={LockFill} visibility="Only you" />
+          <Title
+            title="Draft detours"
+            icon={LockFill}
+            visibility="Only you"
+            classNames={["u-hide-for-mobile", "d-md-flex"]}
+          />
           <DetoursTable
             data={detours.draft}
             status={DetourStatus.Draft}
             onOpenDetour={onOpenDetour}
-            classNames={["mb-5"]}
+            classNames={["mb-5", "u-hide-for-mobile"]}
           />
           <Title
             title="Closed detours"
             icon={PeopleFill}
             visibility="Dispatchers and supervisors"
+            classNames={["u-hide-for-mobile", "d-md-flex"]}
           />
           <DetoursTable
             data={detours.past}
             status={DetourStatus.Closed}
             onOpenDetour={onOpenDetour}
+            classNames={["u-hide-for-mobile"]}
           />
         </>
       )}
@@ -119,8 +128,18 @@ const Title = (args: {
   title: string
   icon: (props: SvgProps) => React.JSX.Element
   visibility: string
+  classNames?: string[]
 }) => (
-  <div className="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0">
+  <div
+    className={joinClasses([
+      ...(args.classNames || []),
+      "mt-3",
+      "mt-md-0",
+      "mb-3",
+      "mx-3",
+      "mx-md-0",
+    ])}
+  >
     <h2 className="my-auto fw-semibold fs-1 me-3 text-nowrap">{args.title}</h2>
     <args.icon className="c-detour-list-page__header-icon my-auto me-1" />
     <span className="c-detour-list-page__header-visibility my-auto">
