@@ -84,7 +84,7 @@ const SurroundingModal = ({
 
 interface StepSubtitleProps extends PropsWithChildren {}
 const StepSubtitle = ({ children }: StepSubtitleProps) => (
-  <h5 className="fs-5 fw-semibold mb-3 mt-0">{children}</h5>
+  <h5 className="fs-5 fw-semibold mb-3 mt-1">{children}</h5>
 )
 
 const SelectingDuration = ({
@@ -103,6 +103,7 @@ const SelectingDuration = ({
     <Form>
       {possibleDurations.map((duration) => (
         <Form.Check
+          className="mb-2"
           onChange={() => {
             onSelectDuration(duration)
           }}
@@ -130,6 +131,7 @@ const SelectingReason = ({
     <Form>
       {possibleReasons.map((reason) => (
         <Form.Check
+          className="mb-2"
           onChange={() => {
             onSelectReason(reason)
           }}
