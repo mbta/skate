@@ -46,6 +46,7 @@ defmodule Notifications.NotificationServer do
 
   If the `:notify_finished` option is present, a `{:new_notification, detour: detour.id}` message
   is sent to the process referred to by the `:notify_finished` value.
+  This option has mainly been useful for testing code to avoid `Process.sleep()` calls.
   """
   @spec detour_activated(detour :: Skate.Detours.Db.Detour.t(), keyword()) :: :ok
   def detour_activated(
