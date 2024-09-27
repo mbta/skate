@@ -21,10 +21,7 @@ import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
-import {
-  PlusSquare,
-  ThreeDotsVertical,
-} from "../helpers/bsIcons"
+import { PlusSquare, ThreeDotsVertical } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinClasses, joinTruthy } from "../helpers/dom"
