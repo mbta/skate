@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
-import { act, fireEvent, render } from "@testing-library/react"
+import { act, fireEvent, render, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {
   activateDetourButton,
@@ -88,7 +88,6 @@ const returnModalHeading = byRole("heading", {
 })
 
 const regularRouteButton = byRole("button", { name: "Return to regular route" })
-const confirmButton = byRole("button", { name: "Confirm" })
 const cancelButton = byRole("button", { name: "Cancel" })
 
 describe("DiversionPage deactivate workflow", () => {
@@ -112,7 +111,17 @@ describe("DiversionPage deactivate workflow", () => {
     await diversionPageOnActiveDetourScreen()
 
     await userEvent.click(regularRouteButton.get())
-    await userEvent.click(confirmButton.get())
+
+    // We need to query this button in a different way from other
+    // buttons because it's not the only button with the label "Return
+    // to regular route" on the page, so we need to deterministically
+    // ensure that we're querying the right one.
+    const modal = returnModalHeading.get().parentElement
+      ?.parentElement as HTMLElement
+    const confirmButton = within(modal!).getByRole("button", {
+      name: "Return to regular route",
+    })
+    await userEvent.click(confirmButton)
 
     expect(activeDetourHeading.query()).not.toBeInTheDocument()
     expect(pastDetourHeading.get()).toBeVisible()
