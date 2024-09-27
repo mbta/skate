@@ -296,7 +296,7 @@ exports[`LadderPage renders with alerts 1`] = `
             class="card-body"
           >
             <div
-              class="c-route-ladder__header__action-container"
+              class="c-route-ladder__dropdown"
             />
             <div
               class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
@@ -337,7 +337,7 @@ exports[`LadderPage renders with alerts 1`] = `
             class="card-body"
           >
             <div
-              class="c-route-ladder__header__action-container"
+              class="c-route-ladder__dropdown c-route-ladder__dropdown--non-skate-alert"
             >
               <div
                 class="mock-tippy"
@@ -606,7 +606,7 @@ exports[`LadderPage renders with route tabs 1`] = `
             class="card-body"
           >
             <div
-              class="c-route-ladder__header__action-container"
+              class="c-route-ladder__dropdown"
             />
             <div
               class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
@@ -826,7 +826,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             class="card-body"
           >
             <div
-              class="c-route-ladder__header__action-container"
+              class="c-route-ladder__dropdown"
             />
             <div
               class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
@@ -867,7 +867,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
             class="card-body"
           >
             <div
-              class="c-route-ladder__header__action-container"
+              class="c-route-ladder__dropdown"
             />
             <div
               class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
@@ -1087,7 +1087,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             class="card-body"
           >
             <div
-              class="c-route-ladder__header__action-container"
+              class="c-route-ladder__dropdown"
             />
             <div
               class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
@@ -1246,7 +1246,7 @@ exports[`LadderPage renders with timepoints 1`] = `
             class="card-body"
           >
             <div
-              class="c-route-ladder__header__action-container"
+              class="c-route-ladder__dropdown"
             />
             <div
               class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"

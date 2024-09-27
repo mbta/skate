@@ -259,6 +259,80 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders descriptive content in dropdown if there's a non-skate alert", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+      />
+    )
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "28 Route Options" })
+    )
+
+    expect(screen.getByText(/This route has an active detour./)).toBeVisible()
+  })
+
+  test("renders 'Add detour' in the dropdown", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "28 Route Options" })
+    )
+
+    expect(
+      screen.queryByText(/This route has an active detour./)
+    ).not.toBeInTheDocument()
+
+    expect(screen.getByText("Add detour")).toBeVisible()
+  })
+
   test("renders a route ladder with vehicles", () => {
     const route: Route = routeFactory.build({
       id: "28",
