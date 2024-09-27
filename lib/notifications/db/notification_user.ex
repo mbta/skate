@@ -1,5 +1,7 @@
 defmodule Notifications.Db.NotificationUser do
-  @moduledoc false
+  @moduledoc """
+  Ecto Model for `notification_users` Database table
+  """
 
   use Skate.Schema
 

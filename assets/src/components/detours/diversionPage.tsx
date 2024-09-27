@@ -9,7 +9,7 @@ import React, {
 import { DrawDetourPanel } from "./drawDetourPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
-import { Alert, Button, CloseButton, Modal } from "react-bootstrap"
+import { Alert, CloseButton } from "react-bootstrap"
 import * as BsIcons from "../../helpers/bsIcons"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
@@ -26,6 +26,8 @@ import userInTestGroup from "../../userInTestGroup"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { timeAgoLabel } from "../../util/dateTime"
 import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
+import { ActivateDetour } from "./activateDetourModal"
+import { DeactivateDetourModal } from "./deactivateDetourModal"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -46,10 +48,7 @@ const displayFieldsFromRouteAndPattern = (
 }
 
 interface DiversionPageFunctions {
-  onClose?: () => void
-  onConfirmClose: () => void
-  onCancelClose?: () => void
-  showConfirmCloseModal: boolean
+  onClose: () => void
 }
 
 interface DiversionPageFromInput {
@@ -72,9 +71,6 @@ export type DiversionPageProps = DiversionPageStateProps &
 
 export const DiversionPage = ({
   onClose,
-  onConfirmClose,
-  onCancelClose,
-  showConfirmCloseModal,
   ...useDetourProps
 }: DiversionPageProps) => {
   const {
@@ -105,6 +101,9 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
+
+    selectedDuration,
+    selectedReason,
   } = useDetour(
     "snapshot" in useDetourProps
       ? { snapshot: useDetourProps.snapshot }
@@ -286,11 +285,82 @@ export const DiversionPage = ({
               onActivateDetour={
                 inTestGroup(TestGroups.DetoursList)
                   ? () => {
-                      send({ type: "detour.share.activate" })
+                      send({ type: "detour.share.open-activate-modal" })
                     }
                   : undefined
               }
-            />
+            >
+              {snapshot.matches({
+                "Detour Drawing": {
+                  "Share Detour": "Activating",
+                },
+              }) ? (
+                <ActivateDetour.Modal
+                  onCancel={() => {
+                    send({ type: "detour.share.activate-modal.cancel" })
+                  }}
+                  onBack={
+                    snapshot.can({ type: "detour.share.activate-modal.back" })
+                      ? () => {
+                          send({ type: "detour.share.activate-modal.back" })
+                        }
+                      : undefined
+                  }
+                  onNext={
+                    snapshot.can({ type: "detour.share.activate-modal.next" })
+                      ? () => {
+                          send({ type: "detour.share.activate-modal.next" })
+                        }
+                      : undefined
+                  }
+                  onActivate={
+                    snapshot.can({
+                      type: "detour.share.activate-modal.activate",
+                    })
+                      ? () => {
+                          send({ type: "detour.share.activate-modal.activate" })
+                        }
+                      : undefined
+                  }
+                >
+                  {snapshot.matches({
+                    "Detour Drawing": {
+                      "Share Detour": { Activating: "Selecting Duration" },
+                    },
+                  }) ? (
+                    <ActivateDetour.SelectingDuration
+                      onSelectDuration={(selectedDuration: string) => {
+                        send({
+                          type: "detour.share.activate-modal.select-duration",
+                          duration: selectedDuration,
+                        })
+                      }}
+                      selectedDuration={selectedDuration}
+                    />
+                  ) : snapshot.matches({
+                      "Detour Drawing": {
+                        "Share Detour": { Activating: "Selecting Reason" },
+                      },
+                    }) ? (
+                    <ActivateDetour.SelectingReason
+                      onSelectReason={(selectedReason: string) => {
+                        send({
+                          type: "detour.share.activate-modal.select-reason",
+                          reason: selectedReason,
+                        })
+                      }}
+                      selectedReason={selectedReason}
+                    />
+                  ) : snapshot.matches({
+                      "Detour Drawing": {
+                        "Share Detour": { Activating: "Confirming" },
+                      },
+                    }) ? (
+                    <ActivateDetour.Confirming />
+                  ) : null}
+                </ActivateDetour.Modal>
+              ) : null}
+            </DetourFinishedPanel>
           ) : snapshot.matches({ "Detour Drawing": "Active" }) ? (
             <ActiveDetourPanel
               directions={extendedDirections}
@@ -303,13 +373,42 @@ export const DiversionPage = ({
               routeDescription={routeDescription ?? "??"}
               routeOrigin={routeOrigin ?? "??"}
               routeDirection={routeDirection ?? "??"}
-              onNavigateBack={onConfirmClose}
-              onDeactivateDetour={() => {
-                send({ type: "detour.active.deactivate" })
-              }}
-            />
+              onNavigateBack={onClose}
+              onOpenDeactivateModal={
+                userInTestGroup(TestGroups.DetoursPilot)
+                  ? () => {
+                      send({ type: "detour.active.open-deactivate-modal" })
+                    }
+                  : undefined
+              }
+            >
+              {snapshot.matches({
+                "Detour Drawing": { Active: "Deactivating" },
+              }) ? (
+                <DeactivateDetourModal
+                  onDeactivate={() =>
+                    send({ type: "detour.active.deactivate-modal.deactivate" })
+                  }
+                  onCancel={() =>
+                    send({ type: "detour.active.deactivate-modal.cancel" })
+                  }
+                />
+              ) : null}
+            </ActiveDetourPanel>
           ) : snapshot.matches({ "Detour Drawing": "Past" }) ? (
-            <PastDetourPanel />
+            <PastDetourPanel
+              directions={extendedDirections}
+              connectionPoints={[
+                connectionPoints?.start?.name ?? "N/A",
+                connectionPoints?.end?.name ?? "N/A",
+              ]}
+              missedStops={missedStops}
+              routeName={routeName ?? "??"}
+              routeDescription={routeDescription ?? "??"}
+              routeOrigin={routeOrigin ?? "??"}
+              routeDirection={routeDirection ?? "??"}
+              onNavigateBack={onClose}
+            />
           ) : null}
         </div>
         <div className="l-diversion-page__map position-relative">
@@ -361,32 +460,6 @@ export const DiversionPage = ({
           />
         </div>
       </article>
-      <Modal
-        show={showConfirmCloseModal}
-        onHide={onCancelClose}
-        animation={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="fs-3 fw-medium">
-            Are you sure you want to exit detour mode?
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p className="lh-base mt-0 mb-3">
-            When you close out of this screen, you will not be able to access
-            the details of your detour again. You may want to copy and paste
-            these details to another application.
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={onConfirmClose} variant="primary">
-            Yes, I&apos;m sure
-          </Button>
-          <Button onClick={onCancelClose} variant="outline-primary">
-            Back to Detour
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </>
   )
 }

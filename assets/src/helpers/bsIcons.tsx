@@ -17,7 +17,7 @@ import React, { ComponentPropsWithoutRef } from "react"
  *  6. Add a doc comment with a link to the icon
  */
 
-type SvgProps = ComponentPropsWithoutRef<"svg">
+export type SvgProps = ComponentPropsWithoutRef<"svg">
 
 /**
  * @returns https://icons.getbootstrap.com/icons/arrow-clockwise/
@@ -249,6 +249,60 @@ export const GearFill = (props: SvgProps) => (
 )
 
 /**
+ * @returns https://icons.getbootstrap.com/icons/globe-americas/
+ */
+export const GlobeAmericas = (props: SvgProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-globe-americas"
+    viewBox="0 0 16 16"
+    aria-hidden
+    {...props}
+  >
+    <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z" />
+  </svg>
+)
+
+/**
+ * @returns https://icons.getbootstrap.com/icons/lock-fill/
+ */
+export const LockFill = (props: SvgProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-lock-fill"
+    viewBox="0 0 16 16"
+    aria-hidden
+    {...props}
+  >
+    <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2" />
+  </svg>
+)
+
+/**
+ * @returns https://icons.getbootstrap.com/icons/people-fill/
+ */
+export const PeopleFill = (props: SvgProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-people-fill"
+    viewBox="0 0 16 16"
+    aria-hidden
+    {...props}
+  >
+    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+  </svg>
+)
+
+/**
  * @returns https://icons.getbootstrap.com/icons/plus-square/
  */
 export const PlusSquare = (props: SvgProps) => (
@@ -301,6 +355,24 @@ export const StopCircle = (props: SvgProps) => (
   >
     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
     <path d="M5 6.5A1.5 1.5 0 0 1 6.5 5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5z" />
+  </svg>
+)
+
+/**
+ * @returns https://icons.getbootstrap.com/icons/three-dots-vertical/
+ */
+export const ThreeDotsVertical = (props: SvgProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-three-dots-vertical"
+    viewBox="0 0 16 16"
+    aria-hidden
+    {...props}
+  >
+    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0" />
   </svg>
 )
 

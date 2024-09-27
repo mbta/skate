@@ -2,13 +2,20 @@ import React, { useCallback, useState } from "react"
 import { DetoursTable, DetourStatus } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
 import { Button } from "react-bootstrap"
-import { PlusSquare } from "../helpers/bsIcons"
+import {
+  GlobeAmericas,
+  LockFill,
+  PeopleFill,
+  PlusSquare,
+  SvgProps,
+} from "../helpers/bsIcons"
 import { DetourModal } from "./detours/detourModal"
 import { fetchDetour, fetchDetours } from "../api"
 import { useApiCall } from "../hooks/useApiCall"
 import { isErr, isOk } from "../util/result"
 import { isValidSnapshot } from "../util/isValidSnapshot"
 import { createDetourMachine } from "../models/createDetourMachine"
+import { joinClasses } from "../helpers/dom"
 
 export const DetourListPage = () => {
   const [showDetourModal, setShowDetourModal] = useState(false)
@@ -61,21 +68,46 @@ export const DetourListPage = () => {
       )}
       {detours && (
         <>
+          <Title
+            title="Active detours"
+            icon={GlobeAmericas}
+            visibility="All Skate users"
+            classNames={["d-flex"]}
+          />
           <DetoursTable
             data={detours.active}
             status={DetourStatus.Active}
             onOpenDetour={onOpenDetour}
+            classNames={["mb-5"]}
           />
-          <DetoursTable
-            data={detours.draft}
-            status={DetourStatus.Draft}
-            onOpenDetour={onOpenDetour}
-          />
-          <DetoursTable
-            data={detours.past}
-            status={DetourStatus.Closed}
-            onOpenDetour={onOpenDetour}
-          />
+          {userInTestGroup(TestGroups.DetoursPilot) && (
+            <>
+              <Title
+                title="Draft detours"
+                icon={LockFill}
+                visibility="Only you"
+                classNames={["u-hide-for-mobile", "d-md-flex"]}
+              />
+              <DetoursTable
+                data={detours.draft}
+                status={DetourStatus.Draft}
+                onOpenDetour={onOpenDetour}
+                classNames={["mb-5", "u-hide-for-mobile"]}
+              />
+              <Title
+                title="Closed detours"
+                icon={PeopleFill}
+                visibility="Dispatchers and supervisors"
+                classNames={["u-hide-for-mobile", "d-md-flex"]}
+              />
+              <DetoursTable
+                data={detours.past}
+                status={DetourStatus.Closed}
+                onOpenDetour={onOpenDetour}
+                classNames={["u-hide-for-mobile"]}
+              />
+            </>
+          )}
         </>
       )}
 
@@ -101,3 +133,27 @@ export const DetourListPage = () => {
     </div>
   )
 }
+
+const Title = (args: {
+  title: string
+  icon: (props: SvgProps) => React.JSX.Element
+  visibility: string
+  classNames?: string[]
+}) => (
+  <div
+    className={joinClasses([
+      ...(args.classNames || []),
+      "mt-3",
+      "mt-md-0",
+      "mb-3",
+      "mx-3",
+      "mx-md-0",
+    ])}
+  >
+    <h2 className="my-auto fw-semibold fs-1 me-3 text-nowrap">{args.title}</h2>
+    <args.icon className="c-detour-list-page__header-icon my-auto me-1" />
+    <span className="c-detour-list-page__header-visibility my-auto">
+      {args.visibility}
+    </span>
+  </div>
+)

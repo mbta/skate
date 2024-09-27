@@ -1,19 +1,22 @@
-import React from "react"
+import React, { PropsWithChildren } from "react"
 import { Button, Form, OverlayTrigger, Popover } from "react-bootstrap"
 import * as BsIcons from "../../helpers/bsIcons"
 import { Panel } from "./diversionPage"
+
+interface DetourFinishedPanelProps extends PropsWithChildren {
+  onNavigateBack: () => void
+  detourText: string
+  onChangeDetourText: (value: string) => void
+  onActivateDetour?: () => void
+}
 
 export const DetourFinishedPanel = ({
   onNavigateBack,
   detourText,
   onChangeDetourText,
   onActivateDetour,
-}: {
-  onNavigateBack: () => void
-  detourText: string
-  onChangeDetourText: (value: string) => void
-  onActivateDetour?: () => void
-}) => (
+  children,
+}: DetourFinishedPanelProps) => (
   <Panel as="article">
     <Panel.Header className="">
       <h1 className="c-diversion-panel__h1 my-3">Share Detour Details</h1>
@@ -71,5 +74,6 @@ export const DetourFinishedPanel = ({
         )}
       </Panel.Body.Footer>
     </Panel.Body>
+    {children}
   </Panel>
 )

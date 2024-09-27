@@ -1,5 +1,7 @@
 defmodule Notifications.Db.BlockWaiver do
-  @moduledoc false
+  @moduledoc """
+  Ecto Model for `block_waivers` Database table
+  """
 
   use Skate.Schema
   import Ecto.Changeset

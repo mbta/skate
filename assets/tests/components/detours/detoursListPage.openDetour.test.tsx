@@ -17,6 +17,7 @@ import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { shapePointFactory } from "../../factories/shapePointFactory"
 import getTestGroups from "../../../src/userTestGroups"
 import { detourListFactory } from "../../factories/detourListFactory"
+import { TestGroups } from "../../../src/userInTestGroup"
 
 jest
   .useFakeTimers({ doNotFake: ["setTimeout"] })
@@ -29,7 +30,7 @@ jest.mock("../../../src/api")
 beforeEach(() => {
   jest.mocked(fetchDetours).mockReturnValue(neverPromise())
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
-  jest.mocked(getTestGroups).mockReturnValue([])
+  jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 })
 
 describe("Detours Page: Open a Detour", () => {

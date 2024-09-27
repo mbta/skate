@@ -22,8 +22,7 @@ const DiversionPage = (props: Partial<DiversionPageProps>) => {
   return (
     <DiversionPageDefault
       originalRoute={originalRouteFactory.build()}
-      showConfirmCloseModal={false}
-      onConfirmClose={() => null}
+      onClose={() => null}
       {...props}
     />
   )

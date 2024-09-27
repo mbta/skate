@@ -1,5 +1,7 @@
 defmodule Notifications.Db.BridgeMovement do
-  @moduledoc false
+  @moduledoc """
+  Ecto Model for `bridge_movements` Database table
+  """
 
   use Skate.Schema
   import Ecto.Changeset

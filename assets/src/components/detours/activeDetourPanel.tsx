@@ -1,4 +1,4 @@
-import React from "react"
+import React, { PropsWithChildren } from "react"
 import { DetourDirection } from "../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
 import { Panel } from "./diversionPage"
@@ -10,7 +10,7 @@ import {
 } from "../../helpers/bsIcons"
 import { AffectedRoute, MissedStops } from "./detourPanelComponents"
 
-export interface ActiveDetourPanelProps {
+export interface ActiveDetourPanelProps extends PropsWithChildren {
   directions?: DetourDirection[]
   connectionPoints?: string[]
   missedStops?: Stop[]
@@ -18,7 +18,7 @@ export interface ActiveDetourPanelProps {
   routeDescription: string
   routeOrigin: string
   routeDirection: string
-  onDeactivateDetour?: () => void
+  onOpenDeactivateModal?: () => void
   onNavigateBack: () => void
 }
 
@@ -30,8 +30,9 @@ export const ActiveDetourPanel = ({
   routeDescription,
   routeOrigin,
   routeDirection,
-  onDeactivateDetour,
+  onOpenDeactivateModal,
   onNavigateBack,
+  children,
 }: ActiveDetourPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header>
@@ -91,15 +92,18 @@ export const ActiveDetourPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer>
-        <Button
-          variant="ui-alert"
-          className="flex-grow-1 m-3 icon-link text-light"
-          onClick={onDeactivateDetour}
-        >
-          <StopCircle />
-          Return to regular route
-        </Button>
+        {onOpenDeactivateModal && (
+          <Button
+            variant="ui-alert"
+            className="flex-grow-1 m-3 icon-link text-light"
+            onClick={onOpenDeactivateModal}
+          >
+            <StopCircle />
+            Return to regular route
+          </Button>
+        )}
       </Panel.Body.Footer>
     </Panel.Body>
+    {children}
   </Panel>
 )

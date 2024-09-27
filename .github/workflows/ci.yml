@@ -110,16 +110,6 @@ jobs:
           POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
           POSTGRES_HOSTNAME: ${{env.DATABASE_HOST}}
           GUARDIAN_SECRET_KEY: ${{env.GUARDIAN_SECRET_KEY}}
-      - name: Save PR information
-        run: |
-          echo "${{ github.event.pull_request.number }}" > cover/PR_NUMBER
-          echo "${{ github.event.pull_request.head.sha }}" > cover/PR_SHA
-        if: github.event.pull_request
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: elixir-lcov
-          path: cover/
       - uses: mbta/actions/dialyzer@v1
 
   build_typescript:
