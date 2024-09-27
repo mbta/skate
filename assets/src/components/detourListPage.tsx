@@ -41,7 +41,7 @@ export const DetourListPage = () => {
       if (isErr(snapshot)) {
         return undefined
       }
-      return detourResponse
+      return detourResponse.ok
     }, [detourId]),
   })
 
@@ -123,9 +123,9 @@ export const DetourListPage = () => {
           key={detourId ?? ""}
           {...(detour
             ? {
-                snapshot: detour.ok.state,
-                author: detour.ok.author,
-                updatedAt: detour.ok.updatedAt,
+                snapshot: detour.state,
+                author: detour.author,
+                updatedAt: detour.updatedAt,
               }
             : {})}
         />
