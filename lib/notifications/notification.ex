@@ -31,7 +31,10 @@ defmodule Notifications.Notification do
             id: id(),
             created_at: Util.Time.timestamp(),
             state: NotificationState.t(),
-            content: Notifications.Db.BlockWaiver.t() | Notifications.Db.BridgeMovement.t()
+            content:
+              Notifications.Db.BlockWaiver.t()
+              | Notifications.Db.BridgeMovement.t()
+              | Notifications.Db.Detour.t()
           }
 
   @derive Jason.Encoder

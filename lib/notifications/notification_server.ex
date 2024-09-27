@@ -22,8 +22,8 @@ defmodule Notifications.NotificationServer do
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
-    name = Keyword.get(opts, :name, __MODULE__)
-    GenServer.start_link(__MODULE__, nil, name: name)
+    opts = Keyword.put_new(opts, :name, default_name())
+    GenServer.start_link(__MODULE__, opts, name: opts[:name])
   end
 
   @spec new_block_waivers(BlockWaiver.block_waivers_by_block_key(), GenServer.server()) :: :ok
@@ -91,9 +91,11 @@ defmodule Notifications.NotificationServer do
 
   # Server
 
+  @enforce_keys [:name]
+  defstruct [:name]
   @impl GenServer
-  def init(_) do
-    {:ok, nil}
+  def init(opts \\ []) do
+    {:ok, struct(__MODULE__, opts)}
   end
 
   @impl true
@@ -125,11 +127,31 @@ defmodule Notifications.NotificationServer do
         },
         state
       ) do
-    detour
-    |> Notifications.Notification.create_activated_detour_notification_from_detour()
-    |> broadcast(self())
+    notification =
+      Notifications.Notification.create_activated_detour_notification_from_detour(detour)
+
+    broadcast(notification, self())
 
     notify_caller_new_notification(notify_finished_caller_id, detour: id)
+    # Send to processes with same name on other nodes
+    broadcast_notification_to_other_instances(notification, state.name)
+
+    {:noreply, state}
+  end
+
+  @impl true
+  # "Private" method for fetching and sending notifications from distributed
+  # Elixir
+  def handle_cast(
+        {
+          :broadcast_new_detour_notification,
+          notification_id
+        },
+        state
+      ) do
+    notification_id
+    |> Notifications.Notification.get_detour_notification()
+    |> broadcast(self())
 
     {:noreply, state}
   end
@@ -149,6 +171,7 @@ defmodule Notifications.NotificationServer do
     broadcast(notification, self())
 
     notify_caller_new_notification(notify_finished_caller_id, detour: id)
+    broadcast_notification_to_other_instances(notification, state.name)
 
     {:noreply, state}
   end
@@ -160,6 +183,33 @@ defmodule Notifications.NotificationServer do
 
   defp notify_caller_new_notification(caller_id, value) do
     send(caller_id, {:new_notification, value})
+  end
+
+  defp broadcast_notification_to_other_instances(
+         %Notifications.Notification{
+           id: notification_id,
+           content: %Notifications.Db.Detour{}
+         },
+         server
+       )
+       when not is_nil(notification_id) do
+    # Currently, we've implemented our own "PubSub" for notifications and we
+    # are not using the provided `Phoenix.PubSub` that comes with Phoenix
+    # channels. This means we don't benefit from Phoenix PubSub's ability to
+    # send messages using distributed Elixir, and that we need to implement
+    # this ourselves at this current time.
+    # Ideally, Notifications would be delivered using
+    # `Phoenix.Channel.broadcast` instead of our custom `broadcast` function
+    #  in `NotificationServer`. To do this, we'd need to implement the same
+    # filtering mechanism that this module has implemented. For now, we'll
+    # send messages to other Skate instances letting them know about new
+    # Notifications.
+
+    # Skate instances currently do not "specialize", and therefore we need to
+    # send the notification to all instances
+    for node <- Node.list() do
+      GenServer.cast({server, node}, {:broadcast_new_detour_notification, notification_id})
+    end
   end
 
   @spec convert_new_block_waivers_to_notifications([BlockWaiver.t()]) :: [
