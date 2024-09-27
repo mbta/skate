@@ -20,11 +20,8 @@ import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
-import Tippy from "@tippyjs/react"
-import { tagManagerEvent } from "../helpers/googleTagManager"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import {
-  ExclamationTriangleFill,
   PlusSquare,
   ThreeDotsVertical,
 } from "../helpers/bsIcons"
@@ -75,6 +72,7 @@ export const Header = ({
         >
           {showDropdown && (
             <Dropdown className="border-box inherit-box">
+              {/* This is the thing getting labeled!! */}
               <Dropdown.Toggle
                 className="c-route-ladder__dropdown-button d-none d-sm-flex"
                 aria-labelledby={joinTruthy([
@@ -113,26 +111,13 @@ export const Header = ({
               </Dropdown.Menu>
             </Dropdown>
           )}
-          {hasAlert && (
-            <Tippy
-              content="Active detour"
-              trigger="click"
-              onShow={() => tagManagerEvent("alert_tooltip_clicked")}
-            >
-              <div
-                className="c-route-ladder__alert-icon"
-                aria-label="Route Alert"
-              >
-                <ExclamationTriangleFill />
-              </div>
-            </Tippy>
-          )}
         </div>
         <RoutePill
           id={routePillId}
           routeName={routeName}
           largeFormat
-          className="c-route-ladder__route-pill c-route-pill"
+          className="c-route-pill--dynamic-size"
+          hasAlert={hasAlert}
         />
         <div className="c-route-ladder__close-button-container">
           <CloseButton className="p-2" onClick={onClose} />

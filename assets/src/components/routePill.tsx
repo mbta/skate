@@ -1,15 +1,20 @@
 import React, { ComponentPropsWithoutRef } from "react"
 import { joinClasses } from "../helpers/dom"
+import Tippy from "@tippyjs/react"
+import { ExclamationTriangleFill } from "../helpers/bsIcons"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 export const RoutePill = ({
   routeName,
   largeFormat,
   className,
+  hasAlert,
   ...props
 }: {
   routeName: string
   largeFormat?: boolean
   className?: string
+  hasAlert?: boolean
 } & ComponentPropsWithoutRef<"div">): JSX.Element => {
   const classes = joinClasses([
     "c-route-pill",
@@ -20,6 +25,17 @@ export const RoutePill = ({
 
   return (
     <div {...props} className={classes}>
+      {hasAlert && (
+        <Tippy
+          content="Active detour"
+          trigger="click"
+          onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+        >
+          <div className="c-route-ladder__alert-icon" aria-label="Route Alert">
+            <ExclamationTriangleFill />
+          </div>
+        </Tippy>
+      )}
       {routeNameTransform(routeName)}
     </div>
   )
