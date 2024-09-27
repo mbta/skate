@@ -513,7 +513,14 @@ export const createDetourMachine = setup({
                         { target: "Duration Selected" },
                       ],
                     },
-                    "No Duration Selected": {},
+                    "No Duration Selected": {
+                      on: {
+                        "detour.share.activate-modal.next": {
+                          target: "No Duration Selected - Error",
+                        },
+                      },
+                    },
+                    "No Duration Selected - Error": {},
                     "Duration Selected": {
                       on: {
                         "detour.share.activate-modal.next": {

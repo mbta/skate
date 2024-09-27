@@ -50,37 +50,39 @@ const SurroundingModal = ({
   onBack,
   onActivate,
   children,
-}: SurroundingModalProps) => (
-  <Modal show animation={false} onHide={onCancel}>
-    <Modal.Header closeButton>
-      <h3 className="fs-3 fw-semibold lh-sm my-1">Start detour</h3>
-    </Modal.Header>
-    <Modal.Body>{children}</Modal.Body>
-    <Modal.Footer>
-      {onBack && (
-        <Button variant="outline-primary" className="me-auto" onClick={onBack}>
-          Back
+}: SurroundingModalProps) => {
+  return (
+    <Modal show animation={false} onHide={onCancel}>
+      <Modal.Header closeButton>
+        <h3 className="fs-3 fw-semibold lh-sm my-1">Start detour</h3>
+      </Modal.Header>
+      <Modal.Body>{children}</Modal.Body>
+      <Modal.Footer>
+        {onBack && (
+          <Button
+            variant="outline-primary"
+            className="me-auto"
+            onClick={onBack}
+          >
+            Back
+          </Button>
+        )}
+        <Button variant="outline-primary" onClick={onCancel}>
+          Cancel
         </Button>
-      )}
-      <Button variant="outline-primary" onClick={onCancel}>
-        Cancel
-      </Button>
-      {onActivate ? (
-        <Button variant="primary" onClick={onActivate}>
-          Activate detour
-        </Button>
-      ) : (
-        <Button
-          variant="primary"
-          disabled={onNext === undefined}
-          onClick={onNext}
-        >
-          Next
-        </Button>
-      )}
-    </Modal.Footer>
-  </Modal>
-)
+        {onActivate ? (
+          <Button variant="primary" onClick={onActivate}>
+            Activate detour
+          </Button>
+        ) : (
+          <Button variant="primary" onClick={onNext}>
+            Next
+          </Button>
+        )}
+      </Modal.Footer>
+    </Modal>
+  )
+}
 
 interface StepSubtitleProps extends PropsWithChildren {}
 const StepSubtitle = ({ children }: StepSubtitleProps) => (
@@ -90,9 +92,11 @@ const StepSubtitle = ({ children }: StepSubtitleProps) => (
 const SelectingDuration = ({
   onSelectDuration,
   selectedDuration,
+  isError,
 }: {
   onSelectDuration: (duration: string) => void
   selectedDuration?: string
+  isError: boolean
 }) => (
   <>
     <StepperBar totalSteps={3} currentStep={1} />
@@ -100,20 +104,25 @@ const SelectingDuration = ({
     <p>
       <span className="fw-bold">Time length</span> <span>(estimate)</span>
     </p>
-    <Form>
-      {possibleDurations.map((duration) => (
-        <Form.Check
-          className="mb-2"
-          onChange={() => {
-            onSelectDuration(duration)
-          }}
-          id={`duration-${duration}`}
-          key={`duration-${duration}`}
-          type="radio"
-          label={duration}
-          checked={selectedDuration === duration}
-        />
-      ))}
+    <Form noValidate validated>
+      <Form.Group>
+        {possibleDurations.map((duration) => (
+          <Form.Check
+            className="mb-2"
+            onChange={() => {
+              onSelectDuration(duration)
+            }}
+            id={`duration-${duration}`}
+            key={`duration-${duration}`}
+            type="radio"
+            label={duration}
+            checked={selectedDuration === duration}
+          />
+        ))}
+        <Form.Control.Feedback type="invalid">
+          Time length is required
+        </Form.Control.Feedback>
+      </Form.Group>
     </Form>
   </>
 )
