@@ -621,7 +621,7 @@ defmodule Notifications.NotificationServerTest do
       %{server: server}
     end
 
-    test "saves to database" do
+    test "saves to database", %{server: server} do
       notification_count = 3
       # create new notification
       for _ <- 1..notification_count do
@@ -629,7 +629,7 @@ defmodule Notifications.NotificationServerTest do
           detour =
           insert(:detour)
 
-        NotificationServer.detour_activated(detour, notify_finished: self(), server: __MODULE__)
+        NotificationServer.detour_activated(detour, notify_finished: self(), server: server)
 
         assert_receive {:new_notification, detour: ^id}
       end
