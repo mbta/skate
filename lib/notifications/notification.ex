@@ -64,8 +64,14 @@ defmodule Notifications.Notification do
 
     # We need the associated values in the Detour JSON, so query the DB with the
     # id to load the extra data.
+    get_detour_notification(notification.id)
+  end
+
+  def get_detour_notification(notification_id) do
+    import Notifications.Db.Notification.Queries
+
     select_detour_info()
-    |> where([notification: n], n.id == ^notification.id)
+    |> where([notification: n], n.id == ^notification_id)
     |> Skate.Repo.one!()
     |> from_db_notification()
   end
