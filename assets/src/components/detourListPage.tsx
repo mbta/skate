@@ -25,7 +25,7 @@ export const DetourListPage = () => {
   })
   const detours = result && isOk(result) && result.ok
 
-  const { result: stateOfDetourModal } = useApiCall({
+  const { result: detour } = useApiCall({
     apiCall: useCallback(async () => {
       if (detourId === undefined) {
         return undefined
@@ -41,7 +41,7 @@ export const DetourListPage = () => {
       if (isErr(snapshot)) {
         return undefined
       }
-      return snapshot.ok
+      return detourResponse.ok
     }, [detourId]),
   })
 
@@ -115,13 +115,19 @@ export const DetourListPage = () => {
        * to ensure that either there's no `detourId` selected (i.e. make a new detour)
        * or the state has been successfully fetched from the api
        */}
-      {showDetourModal && (!detourId || stateOfDetourModal) && (
+      {showDetourModal && (!detourId || detour) && (
         <DetourModal
           onClose={onCloseDetour}
           show
           originalRoute={{}}
           key={detourId ?? ""}
-          {...(stateOfDetourModal ? { snapshot: stateOfDetourModal } : {})}
+          {...(detour
+            ? {
+                snapshot: detour.state,
+                author: detour.author,
+                updatedAt: detour.updatedAt,
+              }
+            : {})}
         />
       )}
     </div>

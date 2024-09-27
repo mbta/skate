@@ -9,10 +9,6 @@
     "map" 80vh
     / 1fr;
 
-  &__header {
-    grid-area: heading;
-  }
-
   &__panel {
     grid-area: panel;
   }
@@ -92,8 +88,15 @@
 
 .l-diversion-page__header {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  padding-left: 1rem;
+
+  &-details {
+    margin-right: 1.125rem;
+  }
+  button {
+    margin-left: auto;
+  }
 }
 
 .l-diversion-page__header,

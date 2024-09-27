@@ -371,6 +371,26 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
       <header
         class="l-diversion-page__header border-bottom text-bg-light"
       >
+        <span
+          class="l-diversion-page__header-details"
+        >
+          <strong
+            class="font-m-semi me-2"
+          >
+            Last edited
+          </strong>
+          35 hours ago
+        </span>
+        <span
+          class="l-diversion-page__header-details"
+        >
+          <strong
+            class="font-m-semi me-2"
+          >
+            Created by
+          </strong>
+          fake@email.com
+        </span>
         <button
           aria-label="Close"
           class="btn-close p-4"
