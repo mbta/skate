@@ -100,9 +100,11 @@ const StepSubtitle = ({ children }: StepSubtitleProps) => (
 const SelectingDuration = ({
   onSelectDuration,
   selectedDuration,
+  isError,
 }: {
   onSelectDuration: (duration: string) => void
   selectedDuration?: string
+  isError: boolean
 }) => (
   <>
     <StepperBar totalSteps={3} currentStep={1} />
@@ -110,20 +112,25 @@ const SelectingDuration = ({
     <p>
       <span className="fw-bold">Time length</span> <span>(estimate)</span>
     </p>
-    <Form>
-      {possibleDurations.map((duration) => (
-        <Form.Check
-          className="mb-2"
-          onChange={() => {
-            onSelectDuration(duration)
-          }}
-          id={`duration-${duration}`}
-          key={`duration-${duration}`}
-          type="radio"
-          label={duration}
-          checked={selectedDuration === duration}
-        />
-      ))}
+    <Form noValidate validated>
+      <Form.Group>
+        {possibleDurations.map((duration) => (
+          <Form.Check
+            className="mb-2"
+            onChange={() => {
+              onSelectDuration(duration)
+            }}
+            id={`duration-${duration}`}
+            key={`duration-${duration}`}
+            type="radio"
+            label={duration}
+            checked={selectedDuration === duration}
+          />
+        ))}
+        <Form.Control.Feedback type="invalid">
+          Time length is required
+        </Form.Control.Feedback>
+      </Form.Group>
     </Form>
   </>
 )
