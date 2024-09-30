@@ -411,4 +411,93 @@ defmodule Notifications.NotificationTest do
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
     end
   end
+
+  describe "create_deactivated_detour_notification_from_detour/1" do
+    test "inserts new record into the database" do
+      count = 3
+
+      # create new notification
+      for _ <- 1..count do
+        :detour
+        |> insert()
+        |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
+      end
+
+      # assert it is in the database
+      assert count == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+    end
+
+    test "creates an unread notification for all users" do
+      number_of_users = 5
+      [user | _] = insert_list(number_of_users, :user)
+
+      # create new notification
+      detour =
+        :detour
+        |> insert(
+          # don't create a new user and affect the user count
+          author: user
+        )
+        |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
+
+      detour_notification =
+        Notifications.Db.Notification
+        |> Skate.Repo.get!(detour.id)
+        |> Skate.Repo.preload(:users)
+
+      # assert all users have a notification that is unread
+      assert Kernel.length(detour_notification.users) == number_of_users
+    end
+
+    test "returns detour information" do
+      # create new notification
+      %{
+        state: %{
+          "context" => %{
+            "route" => %{
+              "name" => route_name
+            },
+            "routePattern" => %{
+              "name" => route_pattern_name,
+              "headsign" => headsign
+            }
+          }
+        }
+      } =
+        detour =
+        :detour
+        |> build()
+        |> with_direction(:inbound)
+        |> insert()
+
+      detour_notification =
+        Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
+
+      # assert fields are set
+      assert %Notifications.Notification{
+               content: %Notifications.Db.Detour{
+                 status: :deactivated,
+                 route: ^route_name,
+                 origin: ^route_pattern_name,
+                 headsign: ^headsign,
+                 direction: "Inbound"
+               }
+             } = detour_notification
+    end
+
+    test "deletes associated detour notifications when detour is deleted" do
+      # create new notification and detour
+      detour = insert(:detour)
+
+      Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
+
+      # assert it is in the database
+      assert 1 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+
+      Skate.Repo.delete!(detour)
+
+      assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+      assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
+    end
+  end
 end
