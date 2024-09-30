@@ -21,4 +21,14 @@ defmodule Notifications.Detour do
       | status: :activated
     }
   end
+
+  @doc """
+  Creates a activated detour notification struct to insert into the database
+  """
+  def deactivated_detour(%Skate.Detours.Db.Detour{} = detour) do
+    %{
+      detour_notification(detour)
+      | status: :deactivated
+    }
+  end
 end

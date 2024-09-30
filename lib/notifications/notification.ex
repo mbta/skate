@@ -51,6 +51,23 @@ defmodule Notifications.Notification do
   ]
 
   @doc """
+  Inserts a new notification for an deactivated detour into the database
+  and returns the detour notification with notification info.
+  """
+  def create_deactivated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
+    import Notifications.Db.Notification.Queries
+
+    notification =
+      deactivated_detour_notification(detour)
+      |> unread_notifications_for_users(Skate.Settings.User.get_all())
+      |> Skate.Repo.insert!()
+
+    # We need the associated values in the Detour JSON, so query the DB with the
+    # id to load the extra data.
+    get_detour_notification(notification.id)
+  end
+
+  @doc """
   Inserts a new notification for an activated detour into the database
   and returns the detour notification with notification info.
   """
@@ -88,6 +105,14 @@ defmodule Notifications.Notification do
     %Notifications.Db.Notification{
       new_notification_now()
       | detour: Notifications.Detour.activated_detour(detour)
+    }
+  end
+
+  # Adds a deactivated detour notification relation to a `Notifications.Db.Notification`
+  defp deactivated_detour_notification(%Skate.Detours.Db.Detour{} = detour) do
+    %Notifications.Db.Notification{
+      new_notification_now()
+      | detour: Notifications.Detour.deactivated_detour(detour)
     }
   end
 
