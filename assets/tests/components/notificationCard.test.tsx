@@ -254,7 +254,7 @@ describe("NotificationCard", () => {
 
   test("renders detour notification if user is in DetoursList group", () => {
     const n: Notification = detourActivatedNotificationFactory.build()
-    const {baseElement} = render(
+    const { baseElement } = render(
       <RoutesProvider routes={routes}>
         <NotificationCard
           notification={n}
