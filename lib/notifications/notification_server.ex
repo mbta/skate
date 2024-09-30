@@ -59,6 +59,29 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:detour_activated, detour, notify_finished})
   end
 
+  @doc """
+  Creates a new Detour Deactivated Notification for a `Skate.Detours.Db.Detour`.
+
+  ## Options
+
+  If the `:server` option is present, the notification is sent to the process
+  referred to by the `:server` value.
+
+  If the `:notify_finished` option is present, a `{:new_notification, detour: detour.id}` message
+  is sent to the process referred to by the `:notify_finished` value.
+  This option has mainly been useful for testing code to avoid `Process.sleep()` calls.
+  """
+  @spec detour_deactivated(detour :: Skate.Detours.Db.Detour.t(), keyword()) :: :ok
+  def detour_deactivated(
+        %Skate.Detours.Db.Detour{} = detour,
+        options \\ []
+      ) do
+    server = Keyword.get(options, :server, default_name())
+    notify_finished = Keyword.get(options, :notify_finished, nil)
+
+    GenServer.cast(server, {:detour_deactivated, detour, notify_finished})
+  end
+
   def subscribe(user_id, server \\ default_name()) do
     registry_key = GenServer.call(server, :subscribe)
 
@@ -105,6 +128,25 @@ defmodule Notifications.NotificationServer do
     detour
     |> Notifications.Notification.create_activated_detour_notification_from_detour()
     |> broadcast(self())
+
+    notify_caller_new_notification(notify_finished_caller_id, detour: id)
+
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_cast(
+        {
+          :detour_deactivated,
+          %Skate.Detours.Db.Detour{id: id} = detour,
+          notify_finished_caller_id
+        },
+        state
+      ) do
+    notification =
+      Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
+
+    broadcast(notification, self())
 
     notify_caller_new_notification(notify_finished_caller_id, detour: id)
 
