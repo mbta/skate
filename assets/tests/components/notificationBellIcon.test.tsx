@@ -12,16 +12,18 @@ import { initialState } from "../../src/state"
 import { OpenView } from "../../src/state/pagePanelState"
 import stateFactory from "../factories/applicationState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
-import { blockWaiverNotificationFactory, detourActivatedNotificationFactory } from "../factories/notification"
+import {
+  blockWaiverNotificationFactory,
+  detourActivatedNotificationFactory,
+} from "../factories/notification"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { render } from "@testing-library/react"
 
 jest.mock("../../src/userTestGroups")
 
 beforeEach(() => {
-  jest
-    .mocked(getTestGroups)
-    .mockReturnValue([])
+  jest.mocked(getTestGroups).mockReturnValue([])
 })
 
 const unreadNotification: Notification = blockWaiverNotificationFactory.build({
@@ -44,10 +46,11 @@ const unreadNotification: Notification = blockWaiverNotificationFactory.build({
   },
 })
 
-const unreadDetourNotification: Notification = detourActivatedNotificationFactory.build({
-  createdAt: new Date(0),
-  state: "unread"
-})
+const unreadDetourNotification: Notification =
+  detourActivatedNotificationFactory.build({
+    createdAt: new Date(0),
+    state: "unread",
+  })
 
 const readNotification: Notification = { ...unreadNotification, state: "read" }
 
@@ -137,34 +140,29 @@ describe("NotificationBellIcon", () => {
   })
 
   test("renders when there are new detour notifications and user is part of DetoursList group", () => {
-    jest
-      .mocked(getTestGroups)
-      .mockReturnValue([TestGroups.DetoursList])
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
     const state = { ...initialState, openView: OpenView.None }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <NotificationsContext.Provider value={unreadDetourNotificationState}>
-            <NotificationBellIcon />
-          </NotificationsContext.Provider>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <NotificationsContext.Provider value={unreadDetourNotificationState}>
+          <NotificationBellIcon />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders when there are new detour notifications and user is not part of DetoursList", () => {
     const state = { ...initialState, openView: OpenView.None }
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <NotificationsContext.Provider value={unreadDetourNotificationState}>
-            <NotificationBellIcon />
-          </NotificationsContext.Provider>
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <NotificationsContext.Provider value={unreadDetourNotificationState}>
+          <NotificationBellIcon />
+        </NotificationsContext.Provider>
+      </StateDispatchProvider>
+    )
+    expect(baseElement).toMatchSnapshot()
   })
 })
