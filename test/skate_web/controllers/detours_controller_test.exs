@@ -42,6 +42,14 @@ defmodule SkateWeb.DetoursControllerTest do
              } = Detours.get_detour!(number)
     end
 
+    defp setup_notification_server do
+      registry_name = :new_notifications_registry
+      start_supervised({Registry, keys: :duplicate, name: registry_name})
+      reassign_env(:notifications, :registry, registry_name)
+
+      start_link_supervised!(Notifications.NotificationServer)
+    end
+
     @tag :authenticated
     test "updates detour in database if detour uuid provided", %{conn: conn} do
       conn =
@@ -55,6 +63,35 @@ defmodule SkateWeb.DetoursControllerTest do
                id: 8,
                state: %{"context" => %{"uuid" => 8}}
              } = Detours.get_detour!(8)
+    end
+
+    @tag :authenticated
+    test "creates a new notification when detour is activated", %{conn: conn} do
+      setup_notification_server()
+
+      %Skate.Detours.Db.Detour{id: id, state: snapshot} = insert(:detour)
+
+      put(conn, ~p"/api/detours/update_snapshot", %{
+        "snapshot" => snapshot |> activated |> with_id(id)
+      })
+
+      Process.sleep(10)
+      assert Skate.Repo.aggregate(Notifications.Db.Detour, :count) == 1
+    end
+
+    @tag :authenticated
+    test "does not create a new notification if detour was already activated", %{conn: conn} do
+      setup_notification_server()
+
+      %Skate.Detours.Db.Detour{id: id, state: snapshot} =
+        :detour |> build |> activated |> insert
+
+      put(conn, ~p"/api/detours/update_snapshot", %{
+        "snapshot" => with_id(snapshot, id)
+      })
+
+      Process.sleep(10)
+      assert Skate.Repo.aggregate(Notifications.Db.Detour, :count) == 0
     end
   end
 
