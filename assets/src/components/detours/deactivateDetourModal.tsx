@@ -18,8 +18,8 @@ export const DeactivateDetourModal = ({
   routeDirection: string
 }) => {
   return (
-    <Modal show animation={false}>
-      <Modal.Header>
+    <Modal show animation={false} onHide={onCancel}>
+      <Modal.Header closeButton>
         <h3 className="fs-3 fw-semibold lh-sm my-1">
           Return to regular route?
         </h3>
