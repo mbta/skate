@@ -95,7 +95,7 @@ export const ActiveDetourPanel = ({
         {onOpenDeactivateModal && (
           <Button
             variant="ui-alert"
-            className="flex-grow-1 m-3 icon-link text-light"
+            className="flex-grow-1 m-3 icon-link text-light justify-content-center"
             onClick={onOpenDeactivateModal}
           >
             <StopCircle />
