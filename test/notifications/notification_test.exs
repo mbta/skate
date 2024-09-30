@@ -394,5 +394,20 @@ defmodule Notifications.NotificationTest do
                }
              } = detour_notification
     end
+
+    test "deletes associated detour notifications when detour is deleted" do
+      # create new notification and detour
+      detour = insert(:detour)
+
+      Notifications.Notification.create_activated_detour_notification_from_detour(detour)
+
+      # assert it is in the database
+      assert 1 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+
+      Skate.Repo.delete!(detour)
+
+      assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+      assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
+    end
   end
 end
