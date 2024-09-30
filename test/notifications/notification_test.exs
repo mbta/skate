@@ -387,6 +387,7 @@ defmodule Notifications.NotificationTest do
       # assert fields are set
       assert %Notifications.Notification{
                content: %Notifications.Db.Detour{
+                 status: :activated,
                  route: ^route_name,
                  origin: ^route_pattern_name,
                  headsign: ^headsign,
