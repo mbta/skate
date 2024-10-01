@@ -8,7 +8,6 @@ import {
 } from "../../src/contexts/notificationsContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Notification } from "../../src/realtime"
-import { initialState } from "../../src/state"
 import { OpenView } from "../../src/state/pagePanelState"
 import stateFactory from "../factories/applicationState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
@@ -74,10 +73,12 @@ const readNotificationState: NotificationsState = {
 
 describe("NotificationBellIcon", () => {
   test("renders when the drawer is closed and there are new notifications", () => {
-    const state = { ...initialState, openView: OpenView.None }
     const tree = renderer
       .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <StateDispatchProvider
+          state={stateFactory.build()}
+          dispatch={jest.fn()}
+        >
           <NotificationsContext.Provider value={unreadNotificationState}>
             <NotificationBellIcon />
           </NotificationsContext.Provider>
@@ -108,10 +109,12 @@ describe("NotificationBellIcon", () => {
   })
 
   test("renders when the drawer is closed and there are not new notifications", () => {
-    const state = { ...initialState, openView: OpenView.None }
     const tree = renderer
       .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <StateDispatchProvider
+          state={stateFactory.build()}
+          dispatch={jest.fn()}
+        >
           <NotificationsContext.Provider value={readNotificationState}>
             <NotificationBellIcon />
           </NotificationsContext.Provider>
@@ -142,9 +145,8 @@ describe("NotificationBellIcon", () => {
   test("renders when there are new detour notifications and user is part of DetoursList group", () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
-    const state = { ...initialState, openView: OpenView.None }
     const { baseElement } = render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <NotificationsContext.Provider value={unreadDetourNotificationState}>
           <NotificationBellIcon />
         </NotificationsContext.Provider>
@@ -155,9 +157,8 @@ describe("NotificationBellIcon", () => {
   })
 
   test("renders when there are new detour notifications and user is not part of DetoursList", () => {
-    const state = { ...initialState, openView: OpenView.None }
     const { baseElement } = render(
-      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <NotificationsContext.Provider value={unreadDetourNotificationState}>
           <NotificationBellIcon />
         </NotificationsContext.Provider>
