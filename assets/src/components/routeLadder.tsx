@@ -20,13 +20,17 @@ import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
+import Tippy from "@tippyjs/react"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
-import { ExclamationTriangleFill, PlusSquare, ThreeDotsVertical } from "../helpers/bsIcons"
+import {
+  ExclamationTriangleFill,
+  PlusSquare,
+  ThreeDotsVertical,
+} from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinClasses, joinTruthy } from "../helpers/dom"
-import Tippy from "@tippyjs/react"
-import { tagManagerEvent } from "../helpers/googleTagManager"
 
 interface Props {
   route: Route
@@ -71,7 +75,6 @@ export const Header = ({
         >
           {showDropdown && (
             <Dropdown className="border-box inherit-box">
-              {/* This is the thing getting labeled!! */}
               <Dropdown.Toggle
                 className="c-route-ladder__dropdown-button d-none d-sm-flex"
                 aria-labelledby={joinTruthy([
@@ -124,7 +127,10 @@ export const Header = ({
               trigger="click"
               onShow={() => tagManagerEvent("alert_tooltip_clicked")}
             >
-              <div className="c-route-ladder__alert-icon" aria-label="Route Alert">
+              <div
+                className="c-route-ladder__alert-icon"
+                aria-label="Route Alert"
+              >
                 <ExclamationTriangleFill />
               </div>
             </Tippy>
