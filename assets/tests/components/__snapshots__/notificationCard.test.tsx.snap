@@ -43,19 +43,19 @@ exports[`NotificationCard renders detour notification if user is in DetoursList 
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  3
+                  2
                 </div>
                 <div>
                   <div
                     class="fw-semibold"
                   >
-                    Headsign 3
+                    Headsign 2
                   </div>
                   <div
                     class="fw-normal text-body-secondary"
                   >
                     From 
-                    Origin station 3
+                    Origin station 2
                   </div>
                   <div
                     class="fw-normal"
