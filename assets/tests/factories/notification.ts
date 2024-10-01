@@ -105,15 +105,3 @@ export const detourActivatedNotificationFactory = Factory.define<
   state: "unread",
   content: detourActivatedNotificationContentFactory.build(),
 }))
-
-const detourDeactivatedNotificationContentFactory =
-  detourActivatedNotificationContentFactory.params({ status: "deactivated" })
-
-export const detourDeactivatedNotificationFactory = Factory.define<
-  Notification<DetourNotification>
->(({ sequence }) => ({
-  id: sequence.toString(),
-  createdAt: new Date(),
-  state: "unread",
-  content: detourDeactivatedNotificationContentFactory,
-}))
