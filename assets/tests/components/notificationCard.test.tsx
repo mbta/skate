@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import { render } from "@testing-library/react"
 import { NotificationCard, title } from "../../src/components/notificationCard"
@@ -11,14 +11,22 @@ import {
   blockWaiverNotificationFactory,
   bridgeLoweredNotificationFactory,
   bridgeRaisedNotificationFactory,
+  detourActivatedNotificationFactory,
 } from "../factories/notification"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
 import { hideLatestNotification } from "../../src/hooks/useNotificationsReducer"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
+import getTestGroups from "../../src/userTestGroups"
+import { TestGroups } from "../../src/userInTestGroup"
 
 jest.mock("../../src/helpers/fullStory")
+jest.mock("../../src/userTestGroups")
+
+beforeEach(() => {
+  jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+})
 
 const routes = [
   routeFactory.build({
@@ -244,6 +252,36 @@ describe("NotificationCard", () => {
     expect(dispatch).toHaveBeenCalledWith({ type: "HIDE_LATEST_NOTIFICATION" })
   })
 
+  test("renders detour notification if user is in DetoursList group", () => {
+    const n: Notification = detourActivatedNotificationFactory.build()
+    const { baseElement } = render(
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          currentTime={new Date()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
+    )
+    expect(baseElement).toMatchSnapshot()
+  })
+
+  test("does not render detour notification if user not in DetoursList group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    const n: Notification = detourActivatedNotificationFactory.build()
+    const result = render(
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          currentTime={new Date()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
+    )
+    expect(result.queryByText(/Detour - Active/)).toBeNull()
+  })
+
   test.each<{
     notification: Notification
     should_fire_fs_event: boolean
@@ -319,6 +357,10 @@ describe("NotificationCard", () => {
           reason: "traffic",
         },
       }),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: detourActivatedNotificationFactory.build({}),
     },
   ])(
     "clicking bridge notification should trigger FS event: $notification.content.reason",

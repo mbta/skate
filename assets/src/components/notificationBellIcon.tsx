@@ -4,6 +4,8 @@ import { joinClasses } from "../helpers/dom"
 import { NotificationBellIcon as NotificationBellIconSvg } from "../helpers/icon"
 import { OpenView } from "../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { NotificationType } from "../realtime"
 
 const NotificationBellIcon = ({
   extraClasses,
@@ -14,8 +16,14 @@ const NotificationBellIcon = ({
     currentView: { openView },
   } = usePanelStateFromStateDispatchContext()
   const { notifications } = useContext(NotificationsContext)
+
+  const inDetoursList = inTestGroup(TestGroups.DetoursList)
   const unreadNotifications = (notifications || []).filter(
-    (notification) => notification.state === "unread"
+    (notification) =>
+      notification.state === "unread" &&
+      !(
+        notification.content.$type === NotificationType.Detour && !inDetoursList
+      )
   )
   const unreadBadge: boolean = unreadNotifications.length > 0
 

@@ -1,7 +1,8 @@
 import { array, Infer, nullable, number, string, type } from "superstruct"
 
+export type DetourId = number
 export interface SimpleDetour {
-  id: number
+  id: DetourId
   route: string
   direction: string
   name: string
@@ -9,8 +10,9 @@ export interface SimpleDetour {
   updatedAt: number
 }
 
+export const detourId = number()
 export const SimpleDetourData = type({
-  id: number(),
+  id: detourId,
   route: string(),
   direction: string(),
   name: string(),
