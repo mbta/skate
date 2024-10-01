@@ -119,7 +119,6 @@ export const Header = ({
           routeName={routeName}
           largeFormat
           className="c-route-pill--dynamic-size"
-          hasAlert={hasAlert}
         >
           {hasAlert && (
             <Tippy

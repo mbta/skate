@@ -6,14 +6,12 @@ export const RoutePill = ({
   routeName,
   largeFormat,
   className,
-  hasAlert,
   ...props
 }: {
   children?: React.ReactNode
   routeName: string
   largeFormat?: boolean
   className?: string
-  hasAlert?: boolean
 } & ComponentPropsWithoutRef<"div">): JSX.Element => {
   const classes = joinClasses([
     "c-route-pill",
