@@ -21,10 +21,12 @@ import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
-import { PlusSquare, ThreeDotsVertical } from "../helpers/bsIcons"
+import { ExclamationTriangleFill, PlusSquare, ThreeDotsVertical } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinClasses, joinTruthy } from "../helpers/dom"
+import Tippy from "@tippyjs/react"
+import { tagManagerEvent } from "../helpers/googleTagManager"
 
 interface Props {
   route: Route
@@ -115,7 +117,19 @@ export const Header = ({
           largeFormat
           className="c-route-pill--dynamic-size"
           hasAlert={hasAlert}
-        />
+        >
+          {hasAlert && (
+            <Tippy
+              content="Active detour"
+              trigger="click"
+              onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+            >
+              <div className="c-route-ladder__alert-icon" aria-label="Route Alert">
+                <ExclamationTriangleFill />
+              </div>
+            </Tippy>
+          )}
+        </RoutePill>
         <div className="c-route-ladder__close-button-container">
           <CloseButton className="p-2" onClick={onClose} />
         </div>
