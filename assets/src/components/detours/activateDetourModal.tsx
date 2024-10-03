@@ -81,7 +81,7 @@ const SurroundingModal = ({
       ) : (
         <Button
           variant="primary"
-          disabled={onNext === undefined}
+          className={onNext ? "" : "disabled"}
           onClick={onNext}
           data-fs-element={nextStepLabel}
         >
@@ -112,7 +112,7 @@ const SelectingDuration = ({
     <p>
       <span className="fw-bold">Time length</span> <span>(estimate)</span>
     </p>
-    <Form noValidate validated>
+    <Form noValidate>
       <Form.Group>
         {possibleDurations.map((duration) => (
           <Form.Check
@@ -125,9 +125,13 @@ const SelectingDuration = ({
             type="radio"
             label={duration}
             checked={selectedDuration === duration}
+            isInvalid={isError}
           />
         ))}
-        <Form.Control.Feedback type="invalid">
+        <Form.Control.Feedback
+          type="invalid"
+          className={isError ? "d-block" : ""}
+        >
           Time length is required
         </Form.Control.Feedback>
       </Form.Group>
