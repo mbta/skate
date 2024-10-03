@@ -299,7 +299,7 @@ exports[`LadderPage renders with alerts 1`] = `
               class="c-route-ladder__dropdown"
             />
             <div
-              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
               id="route-pill:rq:"
             >
               28
@@ -338,6 +338,10 @@ exports[`LadderPage renders with alerts 1`] = `
           >
             <div
               class="c-route-ladder__dropdown c-route-ladder__dropdown--non-skate-alert"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
+              id="route-pill:rs:"
             >
               <div
                 class="mock-tippy"
@@ -366,11 +370,6 @@ exports[`LadderPage renders with alerts 1`] = `
                   </svg>
                 </div>
               </div>
-            </div>
-            <div
-              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
-              id="route-pill:rs:"
-            >
               1
             </div>
             <div
@@ -609,7 +608,7 @@ exports[`LadderPage renders with route tabs 1`] = `
               class="c-route-ladder__dropdown"
             />
             <div
-              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
               id="route-pill:r0:"
             >
               1
@@ -829,7 +828,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
               class="c-route-ladder__dropdown"
             />
             <div
-              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
               id="route-pill:ri:"
             >
               28
@@ -870,7 +869,7 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
               class="c-route-ladder__dropdown"
             />
             <div
-              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
               id="route-pill:rk:"
             >
               1
@@ -1090,7 +1089,7 @@ exports[`LadderPage renders with timepoints 1`] = `
               class="c-route-ladder__dropdown"
             />
             <div
-              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
               id="route-pill:rm:"
             >
               28
@@ -1249,7 +1248,7 @@ exports[`LadderPage renders with timepoints 1`] = `
               class="c-route-ladder__dropdown"
             />
             <div
-              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
               id="route-pill:ro:"
             >
               1

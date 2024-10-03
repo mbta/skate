@@ -12,7 +12,7 @@ exports[`routeLadder displays loading if we are fetching the timepoints 1`] = `
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:rr:"
       >
         28
@@ -58,7 +58,7 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:rn:"
       >
         28
@@ -327,7 +327,7 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:rp:"
       >
         28
@@ -539,7 +539,7 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:rl:"
       >
         28
@@ -718,7 +718,7 @@ exports[`routeLadder renders a route ladder 1`] = `
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:r0:"
       >
         28
@@ -855,7 +855,7 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:rj:"
       >
         28
@@ -1128,7 +1128,7 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:rh:"
       >
         28
@@ -1372,7 +1372,7 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
         </div>
       </div>
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:r4:"
       >
         28
@@ -1509,7 +1509,7 @@ exports[`routeLadder renders a route ladder with the new header format 1`] = `
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:r2:"
       >
         28
@@ -1646,7 +1646,7 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:rd:"
       >
         28
@@ -1950,7 +1950,7 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
         class="c-route-ladder__dropdown"
       />
       <div
-        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+        class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:rf:"
       >
         28

@@ -113,6 +113,13 @@ export const Header = ({
               </Dropdown.Menu>
             </Dropdown>
           )}
+        </div>
+        <RoutePill
+          id={routePillId}
+          routeName={routeName}
+          largeFormat
+          className="c-route-pill--dynamic-size"
+        >
           {hasAlert && (
             <Tippy
               content="Active detour"
@@ -127,13 +134,7 @@ export const Header = ({
               </div>
             </Tippy>
           )}
-        </div>
-        <RoutePill
-          id={routePillId}
-          routeName={routeName}
-          largeFormat
-          className="c-route-ladder__route-pill c-route-pill"
-        />
+        </RoutePill>
         <div className="c-route-ladder__close-button-container">
           <CloseButton className="p-2" onClick={onClose} />
         </div>
