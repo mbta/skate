@@ -10,12 +10,9 @@ import { RoutesProvider } from "../../src/contexts/routesContext"
 import { fetchDetour, fetchDetours } from "../../src/api"
 import { Ok } from "../../src/util/result"
 import { detourListFactory } from "../factories/detourListFactory"
-import { createActor } from "xstate"
-import { createDetourMachine } from "../../src/models/createDetourMachine"
-import { originalRouteFactory } from "../factories/originalRouteFactory"
-import { shapePointFactory } from "../factories/shapePointFactory"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { detourStateMachineFactory } from "../factories/detourStateMachineFactory"
 
 jest.mock("../../src/api")
 jest.mock("../../src/helpers/fullStory")
@@ -43,37 +40,9 @@ describe("NotificationCard", () => {
       .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
 
     jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
-
-    // Stub out a detour machine, and start a detour-in-progress
-    const machine = createActor(createDetourMachine, {
-      input: originalRouteFactory.build(),
-    }).start()
-    machine.send({
-      type: "detour.edit.place-waypoint-on-route",
-      location: shapePointFactory.build(),
-    })
-    machine.send({
-      type: "detour.edit.place-waypoint",
-      location: shapePointFactory.build(),
-    })
-    machine.send({
-      type: "detour.edit.place-waypoint-on-route",
-      location: shapePointFactory.build(),
-    })
-    machine.send({ type: "detour.edit.done" })
-
-    const snapshot = machine.getPersistedSnapshot()
-    machine.stop()
-
-    // Return the state of the machine as the fetchDetour mocked value,
-    // even if it doesn't match the detour clicked
-    jest.mocked(fetchDetour).mockResolvedValue(
-      Ok({
-        updatedAt: 1726147775,
-        author: "fake@email.com",
-        state: snapshot,
-      })
-    )
+    jest
+      .mocked(fetchDetour)
+      .mockResolvedValue(Ok(detourStateMachineFactory.build()))
 
     const n = detourActivatedNotificationFactory.build()
 
@@ -87,7 +56,6 @@ describe("NotificationCard", () => {
       </RoutesProvider>
     )
 
-    // await userEvent.click(screen.getByText(/run1/))
     await userEvent.click(screen.getByRole("button", { name: /Detour/ }))
     // Render modal based on mocked value, which is a detour-in-progress
 

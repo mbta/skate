@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, waitFor } from "@testing-library/react"
 import { NotificationCard, title } from "../../src/components/notificationCard"
 import {
   BlockWaiverReason,
@@ -20,12 +20,21 @@ import { RoutesProvider } from "../../src/contexts/routesContext"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { fetchDetour, fetchDetours } from "../../src/api"
+import { Ok } from "../../src/util/result"
+import { detourStateMachineFactory } from "../factories/detourStateMachineFactory"
+import { detourListFactory } from "../factories/detourListFactory"
 
+jest.mock("../../src/api")
 jest.mock("../../src/helpers/fullStory")
 jest.mock("../../src/userTestGroups")
 
 beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+  jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
+  jest
+    .mocked(fetchDetour)
+    .mockResolvedValue(Ok(detourStateMachineFactory.build()))
 })
 
 const routes = [
@@ -252,7 +261,7 @@ describe("NotificationCard", () => {
     expect(dispatch).toHaveBeenCalledWith({ type: "HIDE_LATEST_NOTIFICATION" })
   })
 
-  test("renders detour notification if user is in DetoursList group", () => {
+  test("renders detour notification if user is in DetoursList group", async () => {
     const n: Notification = detourActivatedNotificationFactory.build()
     const { baseElement } = render(
       <RoutesProvider routes={routes}>
@@ -263,7 +272,7 @@ describe("NotificationCard", () => {
         />
       </RoutesProvider>
     )
-    expect(baseElement).toMatchSnapshot()
+    await waitFor(() => expect(baseElement).toMatchSnapshot())
   })
 
   test("does not render detour notification if user not in DetoursList group", () => {
