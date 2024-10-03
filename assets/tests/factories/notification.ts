@@ -106,3 +106,13 @@ export const detourActivatedNotificationFactory = Factory.define<
   state: "unread",
   content: detourActivatedNotificationContentFactory.build(),
 }))
+
+const detourDeactivatedNotificationContentFactory =
+  detourActivatedNotificationContentFactory.params({
+    status: DetourNotificationStatus.Deactivated,
+  })
+
+export const detourDeactivatedNotificationFactory =
+  detourActivatedNotificationFactory.params({
+    content: detourDeactivatedNotificationContentFactory.build(),
+  })
