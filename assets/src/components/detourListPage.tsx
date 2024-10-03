@@ -119,7 +119,6 @@ export const DetourListPage = () => {
         <DetourModal
           onClose={onCloseDetour}
           show
-          originalRoute={{}}
           key={detourId ?? ""}
           {...(detour
             ? {
@@ -127,7 +126,7 @@ export const DetourListPage = () => {
                 author: detour.author,
                 updatedAt: detour.updatedAt,
               }
-            : {})}
+            : { originalRoute: {} })}
         />
       )}
     </div>

@@ -57,7 +57,7 @@ export const NotificationCard = ({
     return null
   }
 
-  const onClose = () => {
+  const onCloseDetour = () => {
     setShowDetourModal(false)
   }
   const isUnread = notification.state === "unread"
@@ -119,7 +119,7 @@ export const NotificationCard = ({
         <DetourNotificationModal
           show={showDetourModal}
           detourId={detourId}
-          onClose={onClose}
+          onClose={onCloseDetour}
         />
       )}
     </>
@@ -135,7 +135,7 @@ const DetourNotificationModal = ({
   show: boolean
   onClose: () => void
 }) => {
-  const { result: stateOfDetourModal } = useApiCall({
+  const { result: detour } = useApiCall({
     apiCall: useCallback(async () => {
       if (detourId === undefined) {
         return undefined
@@ -151,7 +151,7 @@ const DetourNotificationModal = ({
       if (isErr(snapshot)) {
         return undefined
       }
-      return snapshot.ok
+      return detourResponse.ok
     }, [detourId]),
   })
 
@@ -159,9 +159,14 @@ const DetourNotificationModal = ({
     <DetourModal
       onClose={onClose}
       show={show}
-      originalRoute={{}}
       key={detourId ?? ""}
-      {...(stateOfDetourModal ? { snapshot: stateOfDetourModal } : {})}
+      {...(detour
+        ? {
+            snapshot: detour.state,
+            author: detour.author,
+            updatedAt: detour.updatedAt,
+          }
+        : { originalRoute: {} })}
     />
   )
 }
