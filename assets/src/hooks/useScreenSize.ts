@@ -37,4 +37,7 @@ const useScreenSize = (): DeviceType => {
   }
 }
 
+export const isMobile = (deviceType: string) =>
+  deviceType === "mobile" || deviceType === "mobile_landscape_tablet_portrait"
+
 export default useScreenSize

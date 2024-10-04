@@ -9,6 +9,10 @@
     "map" 80vh
     / 1fr;
 
+  &__header {
+    grid-area: heading;
+  }
+
   &__panel {
     grid-area: panel;
   }
@@ -18,6 +22,33 @@
 
     > * {
       contain: paint;
+    }
+  }
+
+  &--mobile,
+  &--mobile_landscape_tablet_portrait {
+    grid-template:
+      "heading" min-content
+      "panel" 0
+      "map" auto
+      / 1fr;
+
+    .l-diversion-page__panel {
+      grid-area: map;
+    }
+
+    .l-diversion-page-panel__scroll-area {
+      padding-top: 1rem;
+    }
+
+    .l-diversion-page__header {
+      border-bottom: none;
+    }
+    .c-diversion-panel__header_text,
+    .c-detour-panel__subheader,
+    .c-diversion-panel__back-button-container,
+    .c-active-detour__alert-icon {
+      display: none !important;
     }
   }
 
@@ -54,6 +85,10 @@
           grid-row: 2/-1;
         }
       }
+    }
+
+    .l-diversion-page-panel__header .c-diversion-panel__back-button {
+      display: none;
     }
   }
 }
