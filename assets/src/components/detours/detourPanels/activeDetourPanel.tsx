@@ -1,14 +1,14 @@
 import React, { PropsWithChildren } from "react"
-import { DetourDirection } from "../../models/detour"
+import { DetourDirection } from "../../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
-import { Panel } from "./diversionPage"
-import { Stop } from "../../schedule"
+import { Panel } from "../diversionPage"
+import { Stop } from "../../../schedule"
 import {
   ArrowLeft,
   ExclamationTriangleFill,
   StopCircle,
-} from "../../helpers/bsIcons"
-import { AffectedRoute, MissedStops } from "./detourPanelComponents"
+} from "../../../helpers/bsIcons"
+import { AffectedRoute, MissedStops } from "../detourPanelComponents"
 
 export interface ActiveDetourPanelProps extends PropsWithChildren {
   directions?: DetourDirection[]

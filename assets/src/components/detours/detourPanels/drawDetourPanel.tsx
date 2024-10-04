@@ -1,10 +1,10 @@
 import React from "react"
-import { DetourShape } from "../../models/detour"
+import { DetourShape } from "../../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
-import { Panel } from "./diversionPage"
-import { Stop } from "../../schedule"
-import { ArrowLeft } from "../../helpers/bsIcons"
-import { AffectedRoute, MissedStops } from "./detourPanelComponents"
+import { Panel } from "../diversionPage"
+import { Stop } from "../../../schedule"
+import { ArrowLeft } from "../../../helpers/bsIcons"
+import { AffectedRoute, MissedStops } from "../detourPanelComponents"
 
 export interface DrawDetourPanelProps {
   directions?: DetourShape["directions"]
