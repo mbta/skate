@@ -71,7 +71,8 @@ COPY --from=app-builder --chown=skate:skate /root/_build/prod/rel/skate .
 
 COPY --from=app-builder --chown=skate:skate /root/aws-cert-bundle.pem ./priv/aws-cert-bundle.pem
 
-EXPOSE 4000
+# Expose HTTP, EPMD, and Erlang RPC
+EXPOSE 4000 4369 57195
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 

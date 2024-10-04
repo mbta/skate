@@ -8,6 +8,8 @@ defmodule Notifications.NotificationServer do
 
   use GenServer
 
+  require Logger
+
   alias Notifications.Bridge
   alias Notifications.Notification
   alias Notifications.NotificationReason
@@ -164,7 +166,13 @@ defmodule Notifications.NotificationServer do
 
     # Skate instances currently do not "specialize", and therefore we need to
     # send the notification to all instances
-    for node <- Node.list() do
+    nodes = Node.list()
+
+    Logger.info(
+      "notifying other instances of detour notification_id=#{notification_id} nodes=#{inspect(nodes)}"
+    )
+
+    for node <- nodes do
       GenServer.cast({server, node}, {:broadcast_new_detour_notification, notification_id})
     end
   end
