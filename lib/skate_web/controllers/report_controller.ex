@@ -36,7 +36,6 @@ defmodule SkateWeb.ReportController do
         |> DateTime.truncate(:second)
         |> DateTime.to_iso8601(:basic)
 
-
       send_download(conn, {:binary, results},
         filename: report.short_name() <> "-" <> timestamp <> ".csv"
       )
