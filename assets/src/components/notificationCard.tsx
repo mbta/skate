@@ -115,9 +115,9 @@ export const NotificationCard = ({
           />
         )}
       </CardReadable>
-      {detourId && (
+      {showDetourModal && detourId && (
         <DetourNotificationModal
-          show={showDetourModal}
+          show
           detourId={detourId}
           onClose={onCloseDetour}
         />
@@ -155,20 +155,14 @@ const DetourNotificationModal = ({
     }, [detourId]),
   })
 
-  return (
-    <DetourModal
+  return detour ? <DetourModal
       onClose={onClose}
       show={show}
       key={detourId ?? ""}
-      {...(detour
-        ? {
-            snapshot: detour.state,
-            author: detour.author,
-            updatedAt: detour.updatedAt,
-          }
-        : { originalRoute: {} })}
-    />
-  )
+      snapshot={detour.state}
+      author={detour.author}
+      updatedAt={detour.updatedAt}
+    /> : null
 }
 
 export const title = (notification: Notification) => {

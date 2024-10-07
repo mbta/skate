@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
-import { render, waitFor } from "@testing-library/react"
+import { render } from "@testing-library/react"
 import { NotificationCard, title } from "../../src/components/notificationCard"
 import {
   BlockWaiverReason,
@@ -272,7 +272,7 @@ describe("NotificationCard", () => {
         />
       </RoutesProvider>
     )
-    await waitFor(() => expect(baseElement).toMatchSnapshot())
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("does not render detour notification if user not in DetoursList group", () => {
