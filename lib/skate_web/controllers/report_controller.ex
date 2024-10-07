@@ -30,13 +30,12 @@ defmodule SkateWeb.ReportController do
     else
       {:ok, results} = Report.to_csv(report)
 
-      {:ok, dt} =
-        FastLocalDatetime.unix_to_datetime(
-          Util.Time.now(),
-          Application.get_env(:skate, :timezone)
-        )
+      timestamp =
+        Application.get_env(:skate, :timezone)
+        |> DateTime.now!()
+        |> DateTime.truncate(:second)
+        |> DateTime.to_iso8601(:basic)
 
-      timestamp = DateTime.to_iso8601(dt, :basic)
 
       send_download(conn, {:binary, results},
         filename: report.short_name() <> "-" <> timestamp <> ".csv"
