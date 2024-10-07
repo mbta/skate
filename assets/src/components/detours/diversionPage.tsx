@@ -177,9 +177,226 @@ export const DiversionPage = ({
     }
   }
 
+  const detourPanel = () => {
+    if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
+      return (
+        <DetourRouteSelectionPanel
+          isLoadingRoutePatterns={snapshot.matches({
+            "Detour Drawing": {
+              "Pick Route Pattern": { "Pick Route ID": "Loading" },
+            },
+          })}
+          isRouteInvalid={snapshot.matches({
+            "Detour Drawing": {
+              "Pick Route Pattern": {
+                "Pick Route ID": "Error: No Route",
+              },
+            },
+          })}
+          allRoutes={routes ?? []}
+          selectedRouteInfo={
+            route && routePatterns && routePatternsById
+              ? {
+                  routePatterns: routePatternsById,
+                  selectedRoute: route,
+                  selectedRoutePatternId: routePattern?.id ?? null,
+                }
+              : {
+                  selectedRoute: route ?? null,
+                }
+          }
+          onSelectRoute={(route) => {
+            if (route) {
+              send({
+                type: "detour.route-pattern.select-route",
+                route,
+              })
+            } else {
+              send({
+                type: "detour.route-pattern.delete-route",
+              })
+            }
+          }}
+          onSelectRoutePattern={(routePattern) => {
+            routePattern &&
+              send({
+                type: "detour.route-pattern.select-pattern",
+                routePattern,
+              })
+          }}
+          onConfirm={() => send({ type: "detour.route-pattern.done" })}
+        />
+      )
+    } else if (
+      snapshot.matches({ "Detour Drawing": "Editing" }) &&
+      routePattern
+    ) {
+      return (
+        <DrawDetourPanel
+          directions={extendedDirections}
+          missedStops={missedStops}
+          routeName={routeName ?? "??"}
+          routeDescription={routeDescription ?? "??"}
+          routeOrigin={routeOrigin ?? "??"}
+          routeDirection={routeDirection ?? "??"}
+          detourFinished={reviewDetour !== undefined}
+          onReviewDetour={reviewDetour}
+          onChangeRoute={() => send({ type: "detour.route-pattern.open" })}
+        />
+      )
+    } else if (
+      snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
+      editDetour
+    ) {
+      return (
+        <DetourFinishedPanel
+          onNavigateBack={editDetour}
+          detourText={textArea}
+          onChangeDetourText={setTextArea}
+          onActivateDetour={
+            inTestGroup(TestGroups.DetoursList)
+              ? () => {
+                  send({ type: "detour.share.open-activate-modal" })
+                }
+              : undefined
+          }
+        >
+          {snapshot.matches({
+            "Detour Drawing": {
+              "Share Detour": "Activating",
+            },
+          }) ? (
+            <ActivateDetour.Modal
+              onCancel={() => {
+                send({ type: "detour.share.activate-modal.cancel" })
+              }}
+              onBack={
+                snapshot.can({ type: "detour.share.activate-modal.back" })
+                  ? () => {
+                      send({ type: "detour.share.activate-modal.back" })
+                    }
+                  : undefined
+              }
+              onNext={
+                snapshot.can({ type: "detour.share.activate-modal.next" })
+                  ? () => {
+                      send({ type: "detour.share.activate-modal.next" })
+                    }
+                  : undefined
+              }
+              onActivate={
+                snapshot.can({
+                  type: "detour.share.activate-modal.activate",
+                })
+                  ? () => {
+                      send({ type: "detour.share.activate-modal.activate" })
+                    }
+                  : undefined
+              }
+            >
+              {snapshot.matches({
+                "Detour Drawing": {
+                  "Share Detour": { Activating: "Selecting Duration" },
+                },
+              }) ? (
+                <ActivateDetour.SelectingDuration
+                  onSelectDuration={(selectedDuration: string) => {
+                    send({
+                      type: "detour.share.activate-modal.select-duration",
+                      duration: selectedDuration,
+                    })
+                  }}
+                  selectedDuration={selectedDuration}
+                />
+              ) : snapshot.matches({
+                  "Detour Drawing": {
+                    "Share Detour": { Activating: "Selecting Reason" },
+                  },
+                }) ? (
+                <ActivateDetour.SelectingReason
+                  onSelectReason={(selectedReason: string) => {
+                    send({
+                      type: "detour.share.activate-modal.select-reason",
+                      reason: selectedReason,
+                    })
+                  }}
+                  selectedReason={selectedReason}
+                />
+              ) : snapshot.matches({
+                  "Detour Drawing": {
+                    "Share Detour": { Activating: "Confirming" },
+                  },
+                }) ? (
+                <ActivateDetour.Confirming />
+              ) : null}
+            </ActivateDetour.Modal>
+          ) : null}
+        </DetourFinishedPanel>
+      )
+    } else if (snapshot.matches({ "Detour Drawing": "Active" })) {
+      return (
+        <ActiveDetourPanel
+          directions={extendedDirections}
+          connectionPoints={[
+            connectionPoints?.start?.name ?? "N/A",
+            connectionPoints?.end?.name ?? "N/A",
+          ]}
+          missedStops={missedStops}
+          routeName={routeName ?? "??"}
+          routeDescription={routeDescription ?? "??"}
+          routeOrigin={routeOrigin ?? "??"}
+          routeDirection={routeDirection ?? "??"}
+          onNavigateBack={onClose}
+          onOpenDeactivateModal={
+            userInTestGroup(TestGroups.DetoursPilot)
+              ? () => {
+                  send({ type: "detour.active.open-deactivate-modal" })
+                }
+              : undefined
+          }
+        >
+          {snapshot.matches({
+            "Detour Drawing": { Active: "Deactivating" },
+          }) ? (
+            <DeactivateDetourModal
+              onDeactivate={() =>
+                send({ type: "detour.active.deactivate-modal.deactivate" })
+              }
+              onCancel={() =>
+                send({ type: "detour.active.deactivate-modal.cancel" })
+              }
+              routeName={routeName || "??"}
+              routeDescription={routeDescription || "??"}
+              routeOrigin={routeOrigin || "??"}
+              routeDirection={routeDirection || "??"}
+            />
+          ) : null}
+        </ActiveDetourPanel>
+      )
+    } else if (snapshot.matches({ "Detour Drawing": "Past" })) {
+      return (
+        <PastDetourPanel
+          directions={extendedDirections}
+          connectionPoints={[
+            connectionPoints?.start?.name ?? "N/A",
+            connectionPoints?.end?.name ?? "N/A",
+          ]}
+          missedStops={missedStops}
+          routeName={routeName ?? "??"}
+          routeDescription={routeDescription ?? "??"}
+          routeOrigin={routeOrigin ?? "??"}
+          routeDirection={routeDirection ?? "??"}
+          onNavigateBack={onClose}
+        />
+      )
+    } else {
+      return <></>
+    }
+  }
+
   return (
     <>
-      <article className="l-diversion-page h-100 border-box inherit-box">
+      <article className={`l-diversion-page h-100 border-box inherit-box`}>
         <header
           className={joinClasses([
             "l-diversion-page__header",
@@ -190,7 +407,7 @@ export const DiversionPage = ({
               : "text-bg-light",
           ])}
         >
-          {"snapshot" in useDetourProps ? (
+          {"snapshot" in useDetourProps && (
             <>
               <span className="l-diversion-page__header-details">
                 <strong className="font-m-semi me-2">
@@ -203,7 +420,7 @@ export const DiversionPage = ({
                 {useDetourProps.author}
               </span>
             </>
-          ) : null}
+          )}
           <CloseButton className="p-4" onClick={onClose} />
         </header>
 
@@ -216,204 +433,7 @@ export const DiversionPage = ({
               : "text-bg-light",
           ])}
         >
-          {snapshot.matches({ "Detour Drawing": "Pick Route Pattern" }) ? (
-            <DetourRouteSelectionPanel
-              isLoadingRoutePatterns={snapshot.matches({
-                "Detour Drawing": {
-                  "Pick Route Pattern": { "Pick Route ID": "Loading" },
-                },
-              })}
-              isRouteInvalid={snapshot.matches({
-                "Detour Drawing": {
-                  "Pick Route Pattern": {
-                    "Pick Route ID": "Error: No Route",
-                  },
-                },
-              })}
-              allRoutes={routes ?? []}
-              selectedRouteInfo={
-                route && routePatterns && routePatternsById
-                  ? {
-                      routePatterns: routePatternsById,
-                      selectedRoute: route,
-                      selectedRoutePatternId: routePattern?.id ?? null,
-                    }
-                  : {
-                      selectedRoute: route ?? null,
-                    }
-              }
-              onSelectRoute={(route) => {
-                if (route) {
-                  send({
-                    type: "detour.route-pattern.select-route",
-                    route,
-                  })
-                } else {
-                  send({
-                    type: "detour.route-pattern.delete-route",
-                  })
-                }
-              }}
-              onSelectRoutePattern={(routePattern) => {
-                routePattern &&
-                  send({
-                    type: "detour.route-pattern.select-pattern",
-                    routePattern,
-                  })
-              }}
-              onConfirm={() => send({ type: "detour.route-pattern.done" })}
-            />
-          ) : snapshot.matches({ "Detour Drawing": "Editing" }) &&
-            routePattern ? (
-            <DrawDetourPanel
-              directions={extendedDirections}
-              missedStops={missedStops}
-              routeName={routeName ?? "??"}
-              routeDescription={routeDescription ?? "??"}
-              routeOrigin={routeOrigin ?? "??"}
-              routeDirection={routeDirection ?? "??"}
-              detourFinished={reviewDetour !== undefined}
-              onReviewDetour={reviewDetour}
-              onChangeRoute={() => send({ type: "detour.route-pattern.open" })}
-            />
-          ) : snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
-            editDetour ? (
-            <DetourFinishedPanel
-              onNavigateBack={editDetour}
-              detourText={textArea}
-              onChangeDetourText={setTextArea}
-              onActivateDetour={
-                inTestGroup(TestGroups.DetoursList)
-                  ? () => {
-                      send({ type: "detour.share.open-activate-modal" })
-                    }
-                  : undefined
-              }
-            >
-              {snapshot.matches({
-                "Detour Drawing": {
-                  "Share Detour": "Activating",
-                },
-              }) ? (
-                <ActivateDetour.Modal
-                  onCancel={() => {
-                    send({ type: "detour.share.activate-modal.cancel" })
-                  }}
-                  onBack={
-                    snapshot.can({ type: "detour.share.activate-modal.back" })
-                      ? () => {
-                          send({ type: "detour.share.activate-modal.back" })
-                        }
-                      : undefined
-                  }
-                  onNext={
-                    snapshot.can({ type: "detour.share.activate-modal.next" })
-                      ? () => {
-                          send({ type: "detour.share.activate-modal.next" })
-                        }
-                      : undefined
-                  }
-                  onActivate={
-                    snapshot.can({
-                      type: "detour.share.activate-modal.activate",
-                    })
-                      ? () => {
-                          send({ type: "detour.share.activate-modal.activate" })
-                        }
-                      : undefined
-                  }
-                >
-                  {snapshot.matches({
-                    "Detour Drawing": {
-                      "Share Detour": { Activating: "Selecting Duration" },
-                    },
-                  }) ? (
-                    <ActivateDetour.SelectingDuration
-                      onSelectDuration={(selectedDuration: string) => {
-                        send({
-                          type: "detour.share.activate-modal.select-duration",
-                          duration: selectedDuration,
-                        })
-                      }}
-                      selectedDuration={selectedDuration}
-                    />
-                  ) : snapshot.matches({
-                      "Detour Drawing": {
-                        "Share Detour": { Activating: "Selecting Reason" },
-                      },
-                    }) ? (
-                    <ActivateDetour.SelectingReason
-                      onSelectReason={(selectedReason: string) => {
-                        send({
-                          type: "detour.share.activate-modal.select-reason",
-                          reason: selectedReason,
-                        })
-                      }}
-                      selectedReason={selectedReason}
-                    />
-                  ) : snapshot.matches({
-                      "Detour Drawing": {
-                        "Share Detour": { Activating: "Confirming" },
-                      },
-                    }) ? (
-                    <ActivateDetour.Confirming />
-                  ) : null}
-                </ActivateDetour.Modal>
-              ) : null}
-            </DetourFinishedPanel>
-          ) : snapshot.matches({ "Detour Drawing": "Active" }) ? (
-            <ActiveDetourPanel
-              directions={extendedDirections}
-              connectionPoints={[
-                connectionPoints?.start?.name ?? "N/A",
-                connectionPoints?.end?.name ?? "N/A",
-              ]}
-              missedStops={missedStops}
-              routeName={routeName ?? "??"}
-              routeDescription={routeDescription ?? "??"}
-              routeOrigin={routeOrigin ?? "??"}
-              routeDirection={routeDirection ?? "??"}
-              onNavigateBack={onClose}
-              onOpenDeactivateModal={
-                userInTestGroup(TestGroups.DetoursPilot)
-                  ? () => {
-                      send({ type: "detour.active.open-deactivate-modal" })
-                    }
-                  : undefined
-              }
-            >
-              {snapshot.matches({
-                "Detour Drawing": { Active: "Deactivating" },
-              }) ? (
-                <DeactivateDetourModal
-                  onDeactivate={() =>
-                    send({ type: "detour.active.deactivate-modal.deactivate" })
-                  }
-                  onCancel={() =>
-                    send({ type: "detour.active.deactivate-modal.cancel" })
-                  }
-                  routeName={routeName || "??"}
-                  routeDescription={routeDescription || "??"}
-                  routeOrigin={routeOrigin || "??"}
-                  routeDirection={routeDirection || "??"}
-                />
-              ) : null}
-            </ActiveDetourPanel>
-          ) : snapshot.matches({ "Detour Drawing": "Past" }) ? (
-            <PastDetourPanel
-              directions={extendedDirections}
-              connectionPoints={[
-                connectionPoints?.start?.name ?? "N/A",
-                connectionPoints?.end?.name ?? "N/A",
-              ]}
-              missedStops={missedStops}
-              routeName={routeName ?? "??"}
-              routeDescription={routeDescription ?? "??"}
-              routeOrigin={routeOrigin ?? "??"}
-              routeDirection={routeDirection ?? "??"}
-              onNavigateBack={onClose}
-            />
-          ) : null}
+          {detourPanel()}
         </div>
         <div className="l-diversion-page__map position-relative">
           {snapshot.matches({ "Detour Drawing": "Share Detour" }) && (
