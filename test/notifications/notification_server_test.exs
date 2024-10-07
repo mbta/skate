@@ -658,7 +658,7 @@ defmodule Notifications.NotificationServerTest do
       for _ <- 1..notification_count do
         assert_receive {:notification,
                         %Notification{
-                          content: %Notifications.Db.Detour{}
+                          content: %Notifications.Db.Detour{status: :activated}
                         }}
       end
     end
