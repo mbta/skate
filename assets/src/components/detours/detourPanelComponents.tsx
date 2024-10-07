@@ -40,8 +40,10 @@ export const AffectedRoute = ({
   routeOrigin,
   routeDirection,
 }: AffectedRouteProps) => (
-  <section className="pb-3 border-bottom">
-    <h2 className="c-diversion-panel__h2">Affected route</h2>
+  <section className="pb-3">
+    <h2 className="c-diversion-panel__h2 c-detour-panel__subheader">
+      Affected route
+    </h2>
     <div className="d-flex">
       <RoutePill className="me-2 align-top" routeName={routeName} />
 
