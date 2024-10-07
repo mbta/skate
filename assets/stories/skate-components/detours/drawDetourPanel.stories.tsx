@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
-import { DrawDetourPanel } from "../../../src/components/detours/drawDetourPanel"
+import { DrawDetourPanel } from "../../../src/components/detours/detourPanels/drawDetourPanel"
 import { stopFactory } from "../../../tests/factories/stop"
 
 const meta = {
