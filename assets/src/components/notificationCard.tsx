@@ -155,14 +155,16 @@ const DetourNotificationModal = ({
     }, [detourId]),
   })
 
-  return detour ? <DetourModal
+  return detour ? (
+    <DetourModal
       onClose={onClose}
       show={show}
       key={detourId ?? ""}
       snapshot={detour.state}
       author={detour.author}
       updatedAt={detour.updatedAt}
-    /> : null
+    />
+  ) : null
 }
 
 export const title = (notification: Notification) => {
