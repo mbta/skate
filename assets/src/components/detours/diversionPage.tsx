@@ -396,7 +396,7 @@ export const DiversionPage = ({
 
   return (
     <>
-      <article className={`l-diversion-page h-100 border-box inherit-box`}>
+      <article className="l-diversion-page h-100 border-box inherit-box">
         <header
           className={joinClasses([
             "l-diversion-page__header",
