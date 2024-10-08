@@ -19,7 +19,7 @@ config :skate, Skate.Detours.TripModificationPublisher, start: false
 config :skate, SkateWeb.Endpoint,
   https: [
     ip: {0, 0, 0, 0},
-    port: 4000,
+    port: System.get_env("PORT") || 4000,
     cipher_suite: :strong,
     keyfile: "priv/cert/selfsigned_key.pem",
     certfile: "priv/cert/selfsigned.pem",
