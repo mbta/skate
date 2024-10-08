@@ -15,6 +15,7 @@ import {
 import {
   BlockWaiverNotification,
   BridgeNotification,
+  DetourNotificationStatus,
   Notification,
   NotificationContentTypes,
   NotificationType,
@@ -68,6 +69,10 @@ export const BridgeNotificationData = union([
 
 export const DetourNotificationData = type({
   __struct__: literal(NotificationType.Detour),
+  status: enums([
+    DetourNotificationStatus.Activated,
+    DetourNotificationStatus.Deactivated,
+  ]),
   detour_id: detourId,
   headsign: string(),
   route: string(),
@@ -136,6 +141,7 @@ export const notificationFromData = (
     case NotificationType.Detour: {
       content = {
         $type: NotificationType.Detour,
+        status: notificationData.content.status,
         detourId: notificationData.content.detour_id,
         direction: notificationData.content.direction,
         headsign: notificationData.content.headsign,

@@ -58,6 +58,14 @@ defmodule Skate.DetourFactory do
         put_in(state["value"], %{"Detour Drawing" => %{"Active" => "Reviewing"}})
       end
 
+      def deactivated(%Skate.Detours.Db.Detour{} = detour) do
+        %{detour | state: deactivated(detour.state)}
+      end
+
+      def deactivated(%{"value" => %{}} = state) do
+        put_in(state["value"], %{"Detour Drawing" => "Past"})
+      end
+
       def with_direction(%Skate.Detours.Db.Detour{} = detour, direction) do
         %{
           detour

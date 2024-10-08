@@ -92,8 +92,14 @@ export type BlockWaiverNotification = {
   endTime: Date | null
 }
 
+export enum DetourNotificationStatus {
+  Activated = "activated",
+  Deactivated = "deactivated",
+}
+
 export type DetourNotification = {
   $type: NotificationType.Detour
+  status: DetourNotificationStatus
   detourId: DetourId
   headsign: string
   route: string
