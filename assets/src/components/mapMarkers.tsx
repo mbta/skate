@@ -12,7 +12,7 @@ import { Marker, Polyline, Popup, Tooltip } from "react-leaflet"
 
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
-import vehicleLabelString from "../helpers/vehicleLabel"
+import { vehicleLabel } from "../helpers/vehicleLabel"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
 import { TrainVehicle, Vehicle } from "../realtime"
 import { Shape, Stop } from "../schedule"
@@ -77,7 +77,7 @@ const makeLabelIcon = (
   settings: UserSettings,
   isSelected: boolean
 ): Leaflet.DivIcon => {
-  const labelString = vehicleLabelString(vehicle, settings)
+  const labelString = vehicleLabel(vehicle, settings)
   const labelBackgroundHeight = isPrimary ? 16 : 12
   const labelBackgroundWidth =
     labelString.length <= 4 ? (isPrimary ? 40 : 30) : isPrimary ? 62 : 40

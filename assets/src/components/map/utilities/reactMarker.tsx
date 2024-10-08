@@ -1,9 +1,10 @@
-import React, { ReactNode } from "react"
+import React, { forwardRef, ReactNode } from "react"
 import { createPortal } from "react-dom"
 
 import { Marker, MarkerProps } from "react-leaflet"
 
 import { DivIconOptions, useReactDivIcon } from "./reactDivIcon"
+import { Marker as LeafletMarker } from "leaflet"
 
 /**
  * Component Props for {@link ReactMarker}
@@ -31,30 +32,27 @@ export interface ReactMarkerProps extends Omit<MarkerProps, "icon"> {
  *
  * @param {ReactMarkerProps} props Component Props with {@link DivIconOptions `divIconSettings`}
  */
-export const ReactMarker = ({
-  icon,
-  divIconSettings,
-  children,
-  ...markerProps
-}: ReactMarkerProps) => {
-  const { divIcon, iconContainer } = useReactDivIcon(divIconSettings)
+export const ReactMarker = forwardRef<LeafletMarker<any>, ReactMarkerProps>(
+  ({ icon, divIconSettings, children, ...markerProps }, ref) => {
+    const { divIcon, iconContainer } = useReactDivIcon(divIconSettings)
 
-  return (
-    <Marker {...(markerProps as MarkerProps)} icon={divIcon}>
-      <>
-        {
-          /*
-          React Events bubble up the React Virtual DOM,
-          so any Events to `icon` should bubble up to `Marker` first
-          */
-          createPortal(icon, iconContainer)
-        }
+    return (
+      <Marker {...(markerProps as MarkerProps)} icon={divIcon} ref={ref}>
+        <>
+          {
+            /*
+            React Events bubble up the React Virtual DOM,
+            so any Events to `icon` should bubble up to `Marker` first
+            */
+            createPortal(icon, iconContainer)
+          }
 
-        {
-          /* Provide children after portal so react has a stable virtual DOM reference */
-          children
-        }
-      </>
-    </Marker>
-  )
-}
+          {
+            /* Provide children after portal so react has a stable virtual DOM reference */
+            children
+          }
+        </>
+      </Marker>
+    )
+  }
+)
