@@ -104,4 +104,6 @@ if config_env() == :prod do
     # Configure TripModifications to publish if the env var is present
     config :skate, Skate.Detours.TripModificationPublisher, start: true
   end
+
+  config :skate, DNSCluster, query: System.get_env("DNS_CLUSTER_QUERY") || :ignore
 end

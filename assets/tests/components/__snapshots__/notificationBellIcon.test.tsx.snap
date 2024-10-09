@@ -1,5 +1,53 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`NotificationBellIcon activated detour notification renders when there are new detour notifications and user is not part of DetoursList 1`] = `
+<body>
+  <div>
+    <span
+      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--read"
+    >
+      <svg />
+    </span>
+  </div>
+</body>
+`;
+
+exports[`NotificationBellIcon activated detour notification renders when there are new detour notifications and user is part of DetoursList group 1`] = `
+<body>
+  <div>
+    <span
+      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--unread"
+    >
+      <svg />
+    </span>
+  </div>
+</body>
+`;
+
+exports[`NotificationBellIcon deactivated detour notification renders when there are new detour notifications and user is not part of DetoursList 1`] = `
+<body>
+  <div>
+    <span
+      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--read"
+    >
+      <svg />
+    </span>
+  </div>
+</body>
+`;
+
+exports[`NotificationBellIcon deactivated detour notification renders when there are new detour notifications and user is part of DetoursList group 1`] = `
+<body>
+  <div>
+    <span
+      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--unread"
+    >
+      <svg />
+    </span>
+  </div>
+</body>
+`;
+
 exports[`NotificationBellIcon renders when the drawer is closed and there are new notifications 1`] = `
 <span
   className="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--unread"
@@ -42,28 +90,4 @@ exports[`NotificationBellIcon renders when the drawer is open and there are not 
     }
   }
 />
-`;
-
-exports[`NotificationBellIcon renders when there are new detour notifications and user is not part of DetoursList 1`] = `
-<body>
-  <div>
-    <span
-      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--read"
-    >
-      <svg />
-    </span>
-  </div>
-</body>
-`;
-
-exports[`NotificationBellIcon renders when there are new detour notifications and user is part of DetoursList group 1`] = `
-<body>
-  <div>
-    <span
-      class="c-notification-bell-icon c-notification-bell-icon--closed c-notification-bell-icon--unread"
-    >
-      <svg />
-    </span>
-  </div>
-</body>
 `;

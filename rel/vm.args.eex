@@ -3,3 +3,7 @@
 
 ## Give more memory to the literal allocator, used by :persistent_term
 +MIscs 2048
+
+## Set and restrict Erlang RPC port
+-kernel inet_dist_listen_min 57195
+-kernel inet_dist_listen_max 57195

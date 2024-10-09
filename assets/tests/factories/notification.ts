@@ -5,6 +5,7 @@ import {
   BridgeLoweredNotification,
   BridgeRaisedNotification,
   DetourNotification,
+  DetourNotificationStatus,
   Notification,
   NotificationType,
 } from "../../src/realtime"
@@ -89,7 +90,7 @@ export const bridgeLoweredNotificationFactory = Factory.define<
 const detourActivatedNotificationContentFactory =
   Factory.define<DetourNotification>(({ sequence }) => ({
     $type: NotificationType.Detour,
-    status: "activated",
+    status: DetourNotificationStatus.Activated,
     detourId: sequence,
     headsign: `Headsign ${sequence}`,
     route: `${sequence}`,
@@ -105,3 +106,13 @@ export const detourActivatedNotificationFactory = Factory.define<
   state: "unread",
   content: detourActivatedNotificationContentFactory.build(),
 }))
+
+const detourDeactivatedNotificationContentFactory =
+  detourActivatedNotificationContentFactory.params({
+    status: DetourNotificationStatus.Deactivated,
+  })
+
+export const detourDeactivatedNotificationFactory =
+  detourActivatedNotificationFactory.params({
+    content: detourDeactivatedNotificationContentFactory.build(),
+  })

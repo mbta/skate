@@ -62,6 +62,7 @@ defmodule Skate.MixProject do
       {:csv, "~> 2.4.1"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:diskusage_logger, "~> 0.2.0"},
+      {:dns_cluster, "~> 0.1.3"},
       {:ecto_sql, "~> 3.4"},
       {:ehmon, github: "mbta/ehmon", only: :prod},
       {:emqtt_failover, "~> 0.3.0"},

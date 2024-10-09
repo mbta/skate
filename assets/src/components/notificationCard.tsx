@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react"
+import React, { ReactNode, useCallback, useState } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import {
   BlockWaiverNotification,
@@ -6,6 +6,7 @@ import {
   BlockWaiverReason,
   NotificationType,
   isBlockWaiverNotification,
+  DetourNotificationStatus,
 } from "../realtime"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
@@ -13,6 +14,13 @@ import { CardBody, CardProperties, CardReadable } from "./card"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { RoutePill } from "./routePill"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { useApiCall } from "../hooks/useApiCall"
+import { fetchDetour } from "../api"
+import { createDetourMachine } from "../models/createDetourMachine"
+import { isValidSnapshot } from "../util/isValidSnapshot"
+import { isErr } from "../util/result"
+import { DetourModal } from "./detours/detourModal"
+import { DetourId } from "../models/detoursList"
 
 export const NotificationCard = ({
   notification,
@@ -27,6 +35,13 @@ export const NotificationCard = ({
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
 }) => {
+  const [showDetourModal, setShowDetourModal] = useState(false)
+
+  const detourId =
+    notification.content.$type === NotificationType.Detour
+      ? notification.content.detourId
+      : undefined
+
   const routes = useRoutes(
     isBlockWaiverNotification(notification) ? notification.content.routeIds : []
   )
@@ -43,53 +58,114 @@ export const NotificationCard = ({
     return null
   }
 
+  const onCloseDetour = () => {
+    setShowDetourModal(false)
+  }
   const isUnread = notification.state === "unread"
   return (
-    <CardReadable
-      currentTime={currentTime}
-      title={<>{title(notification)}</>}
-      style="kiwi"
-      isActive={isUnread}
-      openCallback={() => {
-        openVPPForCurrentVehicle(notification)
+    <>
+      <CardReadable
+        currentTime={currentTime}
+        title={<>{title(notification)}</>}
+        style="kiwi"
+        isActive={isUnread}
+        openCallback={() => {
+          if (notification.content.$type === NotificationType.Detour) {
+            setShowDetourModal(true)
+          } else {
+            openVPPForCurrentVehicle(notification)
 
-        if (hideLatestNotification) {
-          hideLatestNotification()
-        }
+            if (hideLatestNotification) {
+              hideLatestNotification()
+            }
 
-        if (notification.content.$type === NotificationType.BridgeMovement) {
-          fullStoryEvent("User clicked Chelsea Bridge Notification", {})
-        }
-      }}
-      closeCallback={hideLatestNotification}
-      time={notification.createdAt}
-      noFocusOrHover={noFocusOrHover}
-    >
-      <CardBody>{description(notification, routes, routeAtCreation)}</CardBody>
-      {isBlockWaiverNotification(notification) && (
-        <CardProperties
-          properties={[
-            {
-              label: "Run",
-              value:
-                notification.content.runIds.length > 0
-                  ? notification.content.runIds.join(", ")
-                  : null,
-            },
-            {
-              label: "Operator",
-              value:
-                notification.content.operatorName !== null &&
-                notification.content.operatorId !== null
-                  ? `${notification.content.operatorName} #${notification.content.operatorId}`
-                  : null,
-              sensitive: true,
-            },
-          ]}
+            if (
+              notification.content.$type === NotificationType.BridgeMovement
+            ) {
+              fullStoryEvent("User clicked Chelsea Bridge Notification", {})
+            }
+          }
+        }}
+        closeCallback={hideLatestNotification}
+        time={notification.createdAt}
+        noFocusOrHover={noFocusOrHover}
+      >
+        <CardBody>
+          {description(notification, routes, routeAtCreation)}
+        </CardBody>
+        {isBlockWaiverNotification(notification) && (
+          <CardProperties
+            properties={[
+              {
+                label: "Run",
+                value:
+                  notification.content.runIds.length > 0
+                    ? notification.content.runIds.join(", ")
+                    : null,
+              },
+              {
+                label: "Operator",
+                value:
+                  notification.content.operatorName !== null &&
+                  notification.content.operatorId !== null
+                    ? `${notification.content.operatorName} #${notification.content.operatorId}`
+                    : null,
+                sensitive: true,
+              },
+            ]}
+          />
+        )}
+      </CardReadable>
+      {showDetourModal && detourId && (
+        <DetourNotificationModal
+          show
+          detourId={detourId}
+          onClose={onCloseDetour}
         />
       )}
-    </CardReadable>
+    </>
   )
+}
+
+const DetourNotificationModal = ({
+  detourId,
+  show,
+  onClose,
+}: {
+  detourId: DetourId
+  show: boolean
+  onClose: () => void
+}) => {
+  const { result: detour } = useApiCall({
+    apiCall: useCallback(async () => {
+      if (detourId === undefined) {
+        return undefined
+      }
+      const detourResponse = await fetchDetour(detourId)
+      if (isErr(detourResponse)) {
+        return undefined
+      }
+      const snapshot = isValidSnapshot(
+        createDetourMachine,
+        detourResponse.ok.state
+      )
+      if (isErr(snapshot)) {
+        return undefined
+      }
+      return detourResponse.ok
+    }, [detourId]),
+  })
+
+  return detour ? (
+    <DetourModal
+      onClose={onClose}
+      show={show}
+      key={detourId ?? ""}
+      snapshot={detour.state}
+      author={detour.author}
+      updatedAt={detour.updatedAt}
+    />
+  ) : null
 }
 
 export const title = (notification: Notification) => {
@@ -99,7 +175,17 @@ export const title = (notification: Notification) => {
     }
 
     case NotificationType.Detour: {
-      return "Detour - Active"
+      switch (notification.content.status) {
+        case DetourNotificationStatus.Activated: {
+          return "Detour - Active"
+        }
+        case DetourNotificationStatus.Deactivated: {
+          return "Detour - Closed"
+        }
+      }
+      // Typescript says this is unreachable,
+      // but eslint doesn't seem to get the memo
+      break
     }
 
     case NotificationType.BridgeMovement: {

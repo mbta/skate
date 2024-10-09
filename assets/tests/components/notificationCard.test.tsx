@@ -1,6 +1,7 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
-import { render } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
+import { render, screen } from "@testing-library/react"
 import { NotificationCard, title } from "../../src/components/notificationCard"
 import {
   BlockWaiverReason,
@@ -12,6 +13,7 @@ import {
   bridgeLoweredNotificationFactory,
   bridgeRaisedNotificationFactory,
   detourActivatedNotificationFactory,
+  detourDeactivatedNotificationFactory,
 } from "../factories/notification"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
@@ -20,12 +22,21 @@ import { RoutesProvider } from "../../src/contexts/routesContext"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { fetchDetour, fetchDetours } from "../../src/api"
+import { Ok } from "../../src/util/result"
+import { detourStateMachineFactory } from "../factories/detourStateMachineFactory"
+import { detourListFactory } from "../factories/detourListFactory"
 
+jest.mock("../../src/api")
 jest.mock("../../src/helpers/fullStory")
 jest.mock("../../src/userTestGroups")
 
 beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+  jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
+  jest
+    .mocked(fetchDetour)
+    .mockResolvedValue(Ok(detourStateMachineFactory.build()))
 })
 
 const routes = [
@@ -252,7 +263,7 @@ describe("NotificationCard", () => {
     expect(dispatch).toHaveBeenCalledWith({ type: "HIDE_LATEST_NOTIFICATION" })
   })
 
-  test("renders detour notification if user is in DetoursList group", () => {
+  test("renders activated detour notification if user is in DetoursList group", () => {
     const n: Notification = detourActivatedNotificationFactory.build()
     const { baseElement } = render(
       <RoutesProvider routes={routes}>
@@ -266,7 +277,7 @@ describe("NotificationCard", () => {
     expect(baseElement).toMatchSnapshot()
   })
 
-  test("does not render detour notification if user not in DetoursList group", () => {
+  test("does not render activated detour notification if user not in DetoursList group", () => {
     jest.mocked(getTestGroups).mockReturnValue([])
 
     const n: Notification = detourActivatedNotificationFactory.build()
@@ -280,6 +291,40 @@ describe("NotificationCard", () => {
       </RoutesProvider>
     )
     expect(result.queryByText(/Detour - Active/)).toBeNull()
+  })
+
+  test("renders detour deactivated notification if user is in DetoursList group", () => {
+    const n: Notification = detourDeactivatedNotificationFactory.build()
+    const { baseElement } = render(
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          currentTime={new Date()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
+    )
+    // The card's role is currently just a "button" which doesn't quite feel like
+    // the right role, so instead of asserting on role, this uses `getByText`
+    // _for now_.
+    expect(screen.getByText(/Detour - Closed/)).toBeVisible()
+    expect(baseElement).toMatchSnapshot()
+  })
+
+  test("does not render deactivated detour notification if user not in DetoursList group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    const n: Notification = detourDeactivatedNotificationFactory.build()
+    const result = render(
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          currentTime={new Date()}
+          openVPPForCurrentVehicle={jest.fn()}
+        />
+      </RoutesProvider>
+    )
+    expect(result.queryByText(/Detour - Closed/)).toBeNull()
   })
 
   test.each<{
@@ -361,6 +406,10 @@ describe("NotificationCard", () => {
     {
       should_fire_fs_event: false,
       notification: detourActivatedNotificationFactory.build({}),
+    },
+    {
+      should_fire_fs_event: false,
+      notification: detourDeactivatedNotificationFactory.build(),
     },
   ])(
     "clicking bridge notification should trigger FS event: $notification.content.reason",

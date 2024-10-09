@@ -198,7 +198,7 @@ defmodule Skate.Detours.Detours do
   def update_or_create_detour_for_user(user_id, uuid, attrs \\ %{}) do
     user = User.get_by_id!(user_id)
 
-    previous_status = categorize_detour_by_id(uuid, user_id)
+    previous_record = uuid != nil && Skate.Repo.get(Detour, uuid)
 
     detour =
       case uuid do
@@ -214,7 +214,13 @@ defmodule Skate.Detours.Detours do
           )
       end
 
-    send_notification(detour, previous_status, user_id)
+    case detour do
+      {:ok, %Detour{} = new_record} ->
+        send_notification(new_record, previous_record, user_id)
+
+      _ ->
+        nil
+    end
 
     detour
   end
@@ -237,27 +243,48 @@ defmodule Skate.Detours.Detours do
   end
 
   @spec send_notification(
-          detour_db_result :: {:ok, Skate.Detours.Db.Detour.t()},
-          previous_status :: detour_type(),
-          user_id :: Skate.Settings.Db.User.t()
+          new_record :: Skate.Detours.Db.Detour.t() | nil,
+          previous_record :: Skate.Detours.Db.Detour.t() | nil,
+          user_id :: Skate.Settings.Db.User.id() | nil
         ) :: :ok | nil
-  @spec send_notification(
-          detour_db_result :: any(),
-          previous_status :: detour_type(),
-          user_id :: Skate.Settings.Db.User.t()
-        ) :: nil
+  @spec send_notification(%{
+          next_detour: Skate.Detours.Db.Detour.t() | nil,
+          next: detour_type() | nil,
+          previous: detour_type() | nil
+        }) :: :ok | nil
   defp send_notification(
-         {:ok, %Skate.Detours.Db.Detour{} = detour},
-         previous_status,
+         %Detour{} = new_record,
+         %Detour{} = previous_record,
          user_id
-       )
-       when previous_status != :active do
-    if categorize_detour(detour, user_id) == :active do
-      Notifications.NotificationServer.detour_activated(detour)
-    end
+       ) do
+    send_notification(%{
+      next_detour: new_record,
+      previous: categorize_detour(previous_record, user_id),
+      next: categorize_detour(new_record, user_id)
+    })
   end
 
   defp send_notification(_, _, _), do: nil
+
+  defp send_notification(%{
+         next: :active,
+         next_detour: detour,
+         previous: previous_status
+       })
+       when previous_status != :active do
+    Notifications.NotificationServer.detour_activated(detour)
+  end
+
+  defp send_notification(%{
+         next: :past,
+         next_detour: detour,
+         previous: previous_status
+       })
+       when previous_status != :past do
+    Notifications.NotificationServer.detour_deactivated(detour)
+  end
+
+  defp send_notification(_), do: nil
 
   @doc """
   Deletes a detour.
