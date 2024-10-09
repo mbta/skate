@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { DeviceType } from "../skate"
+import { DeviceType } from "../util/screenSize"
 
 const maxMobileWidth = 480
 const minMobileLandscapeTabletPortraitWidth = maxMobileWidth + 1
@@ -36,8 +36,5 @@ const useScreenSize = (): DeviceType => {
     return "desktop"
   }
 }
-
-export const isMobile = (deviceType: string) =>
-  deviceType === "mobile" || deviceType === "mobile_landscape_tablet_portrait"
 
 export default useScreenSize

@@ -6,7 +6,7 @@ import ViewHeader from "../../src/components/viewHeader"
 import userEvent from "@testing-library/user-event"
 import useScreenSize from "../../src/hooks/useScreenSize"
 import { OpenView } from "../../src/state/pagePanelState"
-import { DeviceType } from "../../src/skate"
+import { DeviceType } from "../../src/util/screenSize"
 
 jest.mock("../../src/hooks/useScreenSize", () => ({
   __esModule: true,

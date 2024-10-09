@@ -28,8 +28,9 @@ import { timeAgoLabel } from "../../util/dateTime"
 import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
-import useScreenSize, { isMobile } from "../../hooks/useScreenSize"
+import useScreenSize from "../../hooks/useScreenSize"
 import Drawer from "../drawer"
+import { isMobile } from "../../util/screenSize"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
