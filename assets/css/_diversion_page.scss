@@ -55,15 +55,19 @@
   @include media-breakpoint-up(md) {
     // For larger breakpoints, layout into grid
     grid-template:
-      "heading heading" min-content
+      "heading heading-right" min-content
       "panel map" auto
       / max(22.5vw, 350px) auto;
 
+    .l-diversion-page__header {
+      grid-row: heading-right;
+      grid-column: heading-right;
+    }
     // Overlay the panel and make the panel header match
     // the size of the page header if subgrid is supported
     @supports (grid-template-rows: subgrid) {
       grid-template:
-        [panel-start] "heading heading" min-content
+        [panel-start] "heading heading-right" min-content
         "panel map" auto
         / max(22.5vw, 350px) auto;
 
@@ -76,7 +80,6 @@
 
         grid-area: panel;
 
-        .l-diversion-page__header,
         .l-diversion-page-panel__header {
           grid-row: heading;
         }
