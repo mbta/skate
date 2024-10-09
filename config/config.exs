@@ -130,6 +130,10 @@ config :skate, Oban,
     }
   ]
 
+config :skate, DNSCluster,
+  query: :ignore,
+  log: :info
+
 # Include 2 logger backends
 config :logger,
   backends: [:console, Sentry.LoggerBackend]
