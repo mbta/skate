@@ -22,12 +22,21 @@ import { RoutesProvider } from "../../src/contexts/routesContext"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { fetchDetour, fetchDetours } from "../../src/api"
+import { Ok } from "../../src/util/result"
+import { detourStateMachineFactory } from "../factories/detourStateMachineFactory"
+import { detourListFactory } from "../factories/detourListFactory"
 
+jest.mock("../../src/api")
 jest.mock("../../src/helpers/fullStory")
 jest.mock("../../src/userTestGroups")
 
 beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+  jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
+  jest
+    .mocked(fetchDetour)
+    .mockResolvedValue(Ok(detourStateMachineFactory.build()))
 })
 
 const routes = [
