@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
 import React from "react"
-import { ActiveDetourPanel } from "../../../src/components/detours/activeDetourPanel"
+import { ActiveDetourPanel } from "../../../src/components/detours/detourPanels/activeDetourPanel"
 import { stopFactory } from "../../../tests/factories/stop"
 
 const meta = {

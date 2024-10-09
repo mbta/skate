@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import React from "react"
 
-import { DetourRouteSelectionPanel } from "../../../src/components/detours/detourRouteSelectionPanel"
+import { DetourRouteSelectionPanel } from "../../../src/components/detours/detourPanels/detourRouteSelectionPanel"
 import { routePatternFactory } from "../../../tests/factories/routePattern"
 import routeFactory from "../../../tests/factories/route"
 import { RoutesProvider } from "../../../src/contexts/routesContext"

@@ -4,7 +4,6 @@ defmodule Notifications.Db.Detour do
   """
 
   use Skate.Schema
-  import Ecto.Changeset
 
   @derive {Jason.Encoder,
            only: [
@@ -21,7 +20,7 @@ defmodule Notifications.Db.Detour do
     belongs_to :detour, Skate.Detours.Db.Detour
     has_one :notification, Notifications.Db.Notification
 
-    field :status, Ecto.Enum, values: [:activated]
+    field :status, Ecto.Enum, values: [:activated, :deactivated]
 
     # Derived from the associated detour
     field :headsign, :any, virtual: true
@@ -30,20 +29,7 @@ defmodule Notifications.Db.Detour do
     field :origin, :any, virtual: true
   end
 
-  def changeset(
-        %__MODULE__{} = struct,
-        attrs \\ %{}
-      ) do
-    struct
-    |> cast(attrs, [
-      :detour,
-      :status
-    ])
-    |> validate_required([
-      :detour,
-      :status
-    ])
-  end
+  # Notifications are not created from external input, so there is no changeset function
 
   defmodule Queries do
     @moduledoc """

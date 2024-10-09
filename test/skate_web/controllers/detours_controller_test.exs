@@ -93,6 +93,35 @@ defmodule SkateWeb.DetoursControllerTest do
       Process.sleep(10)
       assert Skate.Repo.aggregate(Notifications.Db.Detour, :count) == 0
     end
+
+    @tag :authenticated
+    test "creates a new notification when detour is deactivated", %{conn: conn} do
+      setup_notification_server()
+
+      %Skate.Detours.Db.Detour{id: id, state: snapshot} = insert(:detour)
+
+      put(conn, ~p"/api/detours/update_snapshot", %{
+        "snapshot" => snapshot |> deactivated |> with_id(id)
+      })
+
+      Process.sleep(10)
+      assert Skate.Repo.aggregate(Notifications.Db.Detour, :count) == 1
+    end
+
+    @tag :authenticated
+    test "does not create a new notification if detour was already deactivated", %{conn: conn} do
+      setup_notification_server()
+
+      %Skate.Detours.Db.Detour{id: id, state: snapshot} =
+        :detour |> build |> deactivated |> insert
+
+      put(conn, ~p"/api/detours/update_snapshot", %{
+        "snapshot" => with_id(snapshot, id)
+      })
+
+      Process.sleep(10)
+      assert Skate.Repo.aggregate(Notifications.Db.Detour, :count) == 0
+    end
   end
 
   defp populate_db_and_get_user(conn) do

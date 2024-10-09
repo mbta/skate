@@ -1,13 +1,13 @@
 import React, { useId } from "react"
 import { Button, Form, Spinner } from "react-bootstrap"
-import { Panel } from "./diversionPage"
+import { Panel } from "../diversionPage"
 import {
   ByRoutePatternId,
   Route,
   RoutePattern,
   RoutePatternId,
-} from "../../schedule"
-import RoutePropertiesCard from "../mapPage/routePropertiesCard"
+} from "../../../schedule"
+import RoutePropertiesCard from "../../mapPage/routePropertiesCard"
 
 interface SelectedRouteInfoWithRoutePatterns {
   selectedRoute: Route

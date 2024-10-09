@@ -65,22 +65,16 @@
   .c-route-ladder__alert-icon {
     display: flex;
     align-items: center;
-    width: 1.6rem;
 
     cursor: pointer;
 
     svg {
-      height: 1.6rem;
-      width: 1.6rem;
+      height: 1rem;
+      width: 1.125rem;
     }
   }
 
-  .c-route-ladder__route-pill {
-    grid-column: 2/3;
-  }
-
   .c-route-ladder__close-button-container {
-    grid-column: 3/4;
     margin: 2px 0 2px auto;
   }
 }

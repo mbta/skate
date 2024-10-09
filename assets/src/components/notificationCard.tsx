@@ -6,6 +6,7 @@ import {
   BlockWaiverReason,
   NotificationType,
   isBlockWaiverNotification,
+  DetourNotificationStatus,
 } from "../realtime"
 import { Route } from "../schedule"
 import { formattedTime } from "../util/dateTime"
@@ -174,7 +175,17 @@ export const title = (notification: Notification) => {
     }
 
     case NotificationType.Detour: {
-      return "Detour - Active"
+      switch (notification.content.status) {
+        case DetourNotificationStatus.Activated: {
+          return "Detour - Active"
+        }
+        case DetourNotificationStatus.Deactivated: {
+          return "Detour - Closed"
+        }
+      }
+      // Typescript says this is unreachable,
+      // but eslint doesn't seem to get the memo
+      break
     }
 
     case NotificationType.BridgeMovement: {

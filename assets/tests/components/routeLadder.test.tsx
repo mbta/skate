@@ -253,7 +253,7 @@ describe("routeLadder", () => {
     )
 
     expect(
-      screen.getByRole("button", { name: "28 Route Options" })
+      screen.getByRole("button", { name: /28 Route Options/ })
     ).toBeVisible()
 
     expect(tree).toMatchSnapshot()
@@ -288,7 +288,7 @@ describe("routeLadder", () => {
     )
 
     await userEvent.click(
-      screen.getByRole("button", { name: "28 Route Options" })
+      screen.getByRole("button", { name: /28 Route Options/ })
     )
 
     expect(screen.getByText(/This route has an active detour./)).toBeVisible()
@@ -323,7 +323,7 @@ describe("routeLadder", () => {
     )
 
     await userEvent.click(
-      screen.getByRole("button", { name: "28 Route Options" })
+      screen.getByRole("button", { name: /28 Route Options/ })
     )
 
     expect(

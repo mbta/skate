@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react"
 
 import React from "react"
-import { PastDetourPanel } from "../../../src/components/detours/pastDetourPanel"
+import { PastDetourPanel } from "../../../src/components/detours/detourPanels/pastDetourPanel"
 import { stopFactory } from "../../../tests/factories/stop"
 
 const meta = {

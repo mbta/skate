@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react"
 import { Button, Form, OverlayTrigger, Popover } from "react-bootstrap"
-import * as BsIcons from "../../helpers/bsIcons"
-import { Panel } from "./diversionPage"
+import * as BsIcons from "../../../helpers/bsIcons"
+import { Panel } from "../diversionPage"
 
 interface DetourFinishedPanelProps extends PropsWithChildren {
   onNavigateBack: () => void

@@ -2,11 +2,13 @@ import React, { ComponentPropsWithoutRef } from "react"
 import { joinClasses } from "../helpers/dom"
 
 export const RoutePill = ({
+  children,
   routeName,
   largeFormat,
   className,
   ...props
 }: {
+  children?: React.ReactNode
   routeName: string
   largeFormat?: boolean
   className?: string
@@ -20,6 +22,7 @@ export const RoutePill = ({
 
   return (
     <div {...props} className={classes}>
+      {children}
       {routeNameTransform(routeName)}
     </div>
   )

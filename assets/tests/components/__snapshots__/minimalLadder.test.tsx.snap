@@ -19,7 +19,7 @@ exports[`MinimalLadders renders route ladders 1`] = `
             class="c-route-ladder__dropdown"
           />
           <div
-            class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+            class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
             id="route-pill:r0:"
           >
             1
@@ -178,7 +178,7 @@ exports[`MinimalLadders renders route ladders 1`] = `
             class="c-route-ladder__dropdown"
           />
           <div
-            class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-ladder__route-pill c-route-pill"
+            class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
             id="route-pill:r2:"
           >
             28
