@@ -366,7 +366,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
     tabindex="-1"
   >
     <article
-      class="l-diversion-page h-100 border-box inherit-box"
+      class="l-diversion-page l-diversion-page--desktop h-100 border-box inherit-box"
     >
       <header
         class="l-diversion-page__header border-bottom text-bg-light"
