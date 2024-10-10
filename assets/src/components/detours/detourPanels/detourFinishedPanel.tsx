@@ -65,11 +65,11 @@ export const DetourFinishedPanel = ({
         </OverlayTrigger>
         {onActivateDetour && (
           <Button
-            className="m-3 flex-grow-1"
-            variant="missed-stop"
+            className="m-3 flex-grow-1 icon-link justify-content-center"
             onClick={onActivateDetour}
           >
-            Activate Detour
+            <BsIcons.Power />
+            Start Detour
           </Button>
         )}
       </Panel.Body.Footer>

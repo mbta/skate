@@ -3,7 +3,7 @@ import { DetourShape } from "../../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
-import { ArrowLeft } from "../../../helpers/bsIcons"
+import { ArrowLeft, CardChecklist } from "../../../helpers/bsIcons"
 import { AffectedRoute, MissedStops } from "../detourPanelComponents"
 
 export interface DrawDetourPanelProps {
@@ -77,8 +77,12 @@ export const DrawDetourPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer hidden={!detourFinished}>
-        <Button className="flex-grow-1 m-3" onClick={onReviewDetour}>
-          Review Detour
+        <Button
+          className="flex-grow-1 m-3 icon-link justify-content-center"
+          onClick={onReviewDetour}
+        >
+          <CardChecklist />
+          Review
         </Button>
       </Panel.Body.Footer>
     </Panel.Body>
