@@ -7,7 +7,7 @@ interface Props {
   onToggleOpen?: () => void
 }
 
-const Drawer = ({
+export const Drawer = ({
   open = true,
   onToggleOpen,
   children,
@@ -50,5 +50,3 @@ const DrawerWithState = (props: PropsWithChildren<DrawerWithStateProps>) => {
 }
 
 Drawer.WithState = DrawerWithState
-
-export default Drawer
