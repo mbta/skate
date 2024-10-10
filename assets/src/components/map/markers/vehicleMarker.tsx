@@ -90,10 +90,12 @@ export const VehicleMarker = ({
         ref={markerRef}
         divIconSettings={{
           iconAnchor: [0, 0],
-          className: "c-vehicle-map__icon",
+          // Disable default leaflet marker class
+          className: "",
         }}
         icon={
           <svg
+            className="c-vehicle-map__icon"
             height="24"
             viewBox="0 0 24 24"
             width="24"
@@ -124,14 +126,16 @@ export const VehicleMarker = ({
         position={position}
         divIconSettings={{
           iconAnchor: [labelBackgroundWidth / 2, isPrimary ? -16 : -10],
-          className: joinClasses([
-            "c-vehicle-map__label",
-            isPrimary ? "primary" : "secondary",
-            isSelected && "selected",
-          ]),
+          // Disable default leaflet marker class
+          className: "",
         }}
         icon={
           <svg
+            className={joinClasses([
+              "c-vehicle-map__label",
+              isPrimary ? "primary" : "secondary",
+              isSelected && "selected",
+            ])}
             viewBox={`0 0 ${labelBackgroundWidth} ${labelBackgroundHeight}`}
             width={labelBackgroundWidth}
             height={labelBackgroundHeight}
