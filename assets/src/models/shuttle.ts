@@ -1,5 +1,17 @@
 import { Vehicle } from "../realtime"
 
+export enum ShuttleVariant {
+  // Rapid Transit Lines
+  Blue = "Blue",
+  Green = "Green",
+  Orange = "Orange",
+  Red = "Red",
+
+  // Other Shuttle Types
+  CommuterRail = "CR",
+  Special = "Special",
+}
+
 export const formattedRunNumber = ({ runId }: Vehicle): string => {
   if (runId === null) {
     return "Not Available"
