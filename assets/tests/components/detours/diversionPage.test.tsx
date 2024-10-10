@@ -1212,9 +1212,7 @@ describe("DiversionPage", () => {
       expect(
         screen.queryByRole("button", { name: "Edit Detour" })
       ).not.toBeInTheDocument()
-      expect(
-        screen.getByRole("button", { name: "Review" })
-      ).toBeVisible()
+      expect(screen.getByRole("button", { name: "Review" })).toBeVisible()
 
       expect(screen.getByRole("button", { name: "Undo" })).not.toBeDisabled()
       expect(screen.getByRole("button", { name: "Clear" })).not.toBeDisabled()
