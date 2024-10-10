@@ -43,6 +43,25 @@
   path {
     fill: inherit;
   }
+
+  &.c-vehicle-marker--shuttle {
+    // Shuttle Colors
+    &.c-vehicle-marker--blue {
+      fill: var(--color-blue-line);
+    }
+    &.c-vehicle-marker--orange {
+      fill: var(--color-orange-line);
+    }
+    &.c-vehicle-marker--green {
+      fill: var(--color-green-line);
+    }
+    &.c-vehicle-marker--red {
+      fill: var(--color-red-line);
+    }
+    &.c-vehicle-marker--cr {
+      fill: var(--color-cr-line);
+    }
+  }
 }
 
 .c-vehicle-map--label {
