@@ -1739,12 +1739,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </div>
             </div>
             <div
-              class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 1027;"
               tabindex="0"
             >
               <svg
+                class="c-vehicle-map__icon"
                 height="24"
                 viewBox="0 0 24 24"
                 width="24"
@@ -1758,12 +1759,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </svg>
             </div>
             <div
-              class="leaflet-marker-icon c-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 1027;"
               tabindex="0"
             >
               <svg
+                class="c-vehicle-map__label primary selected"
                 height="16"
                 viewBox="0 0 40 16"
                 width="40"
@@ -1787,12 +1789,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </svg>
             </div>
             <div
-              class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27; z-index: 27;"
               tabindex="0"
             >
               <svg
+                class="c-vehicle-map__icon"
                 height="24"
                 viewBox="0 0 24 24"
                 width="24"
@@ -1806,12 +1809,13 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               </svg>
             </div>
             <div
-              class="leaflet-marker-icon c-vehicle-map__label secondary leaflet-zoom-hide leaflet-interactive"
+              class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
               role="button"
               style="margin-left: -15px; margin-top: 10px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27; z-index: 27;"
               tabindex="0"
             >
               <svg
+                class="c-vehicle-map__label secondary"
                 height="12"
                 viewBox="0 0 30 12"
                 width="30"
