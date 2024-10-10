@@ -33,6 +33,25 @@ export const shuttleVariantFromRunId = (
   }
 }
 
+const prefix = (variant: ShuttleVariant | null): string => {
+  switch (variant) {
+    case ShuttleVariant.Blue:
+      return "Blue "
+    case ShuttleVariant.Green:
+      return "Green "
+    case ShuttleVariant.Orange:
+      return "Orange "
+    case ShuttleVariant.Red:
+      return "Red "
+    case ShuttleVariant.CommuterRail:
+      return "Commuter Rail "
+    case ShuttleVariant.Special:
+      return "Special "
+    default:
+      return ""
+  }
+}
+
 export const formattedRunNumber = ({ runId }: Vehicle): string => {
   if (runId === null) {
     return "Not Available"
@@ -41,24 +60,5 @@ export const formattedRunNumber = ({ runId }: Vehicle): string => {
   const [area, run] = runId.split("-")
 
   // Remove leading zero from the run portion
-  return `${prefix(run)}${area} ${run.slice(1)}`
-}
-
-const prefix = (run: string): string => {
-  switch (run) {
-    case "0501":
-      return "Blue "
-    case "0502":
-      return "Green "
-    case "0503":
-      return "Orange "
-    case "0504":
-      return "Red "
-    case "0505":
-      return "Commuter Rail "
-    case "0555":
-      return "Special "
-    default:
-      return ""
-  }
+  return `${prefix(shuttleVariantFromRunId(runId))}${area} ${run.slice(1)}`
 }
