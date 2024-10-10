@@ -29,12 +29,11 @@
   &--mobile_landscape_tablet_portrait {
     grid-template:
       "heading" min-content
-      "panel" 0
-      "map" auto
+      "map-and-panel" auto
       / 1fr;
 
-    .l-diversion-page__panel {
-      grid-area: map;
+    .l-diversion-page__panel, .l-diversion-page__map {
+      grid-area: map-and-panel;
     }
 
     .l-diversion-page-panel__scroll-area {
@@ -60,8 +59,7 @@
       / max(22.5vw, 350px) auto;
 
     .l-diversion-page__header {
-      grid-row: heading-right;
-      grid-column: heading-right;
+      grid-area: heading-right;
     }
     // Overlay the panel and make the panel header match
     // the size of the page header if subgrid is supported
