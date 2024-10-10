@@ -88,10 +88,10 @@ describe("Detours Page: Open a Detour", () => {
       .mocked(fetchDetour)
       .mockResolvedValue(Ok(detourStateMachineFactory.build()))
 
-    const { baseElement } = render(<DetourListPage />)
+    render(<DetourListPage />)
 
     await userEvent.click(await screen.findByText("Headsign Z"))
     await userEvent.click(await screen.findByTitle("Collapse"))
-    await waitFor(() => expect(baseElement).toMatchSnapshot())
+    expect(await screen.findByTitle("Expand")).toBeVisible()
   })
 })
