@@ -59,8 +59,7 @@
       / max(22.5vw, 350px) auto;
 
     .l-diversion-page__header {
-      grid-row: heading-right;
-      grid-column: heading-right;
+      grid-area: heading-right;
     }
     // Overlay the panel and make the panel header match
     // the size of the page header if subgrid is supported
