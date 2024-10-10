@@ -28,6 +28,9 @@ import { timeAgoLabel } from "../../util/dateTime"
 import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
+import useScreenSize from "../../hooks/useScreenSize"
+import { Drawer } from "../drawer"
+import { isMobile } from "../../util/screenSize"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -394,9 +397,13 @@ export const DiversionPage = ({
     }
   }
 
+  const displayType = useScreenSize()
+
   return (
     <>
-      <article className="l-diversion-page h-100 border-box inherit-box">
+      <article
+        className={`l-diversion-page l-diversion-page--${displayType} h-100 border-box inherit-box`}
+      >
         <header
           className={joinClasses([
             "l-diversion-page__header",
@@ -407,7 +414,7 @@ export const DiversionPage = ({
               : "text-bg-light",
           ])}
         >
-          {"snapshot" in useDetourProps && (
+          {"snapshot" in useDetourProps && !isMobile(displayType) ? (
             <>
               <span className="l-diversion-page__header-details">
                 <strong className="font-m-semi me-2">
@@ -420,6 +427,8 @@ export const DiversionPage = ({
                 {useDetourProps.author}
               </span>
             </>
+          ) : (
+            <div className="flex-grow-1 fw-semibold text-center">Detours</div>
           )}
           <CloseButton className="p-4" onClick={onClose} />
         </header>
@@ -433,7 +442,11 @@ export const DiversionPage = ({
               : "text-bg-light",
           ])}
         >
-          {detourPanel()}
+          {isMobile(displayType) ? (
+            <Drawer.WithState startOpen>{detourPanel()}</Drawer.WithState>
+          ) : (
+            detourPanel()
+          )}
         </div>
         <div className="l-diversion-page__map position-relative">
           {snapshot.matches({ "Detour Drawing": "Share Detour" }) && (

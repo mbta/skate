@@ -9,6 +9,10 @@
     "map" 80vh
     / 1fr;
 
+  &__header {
+    grid-area: heading;
+  }
+
   &__panel {
     grid-area: panel;
   }
@@ -21,18 +25,48 @@
     }
   }
 
+  &--mobile,
+  &--mobile_landscape_tablet_portrait {
+    grid-template:
+      "heading" min-content
+      "map-and-panel" auto
+      / 1fr;
+
+    .l-diversion-page__panel,
+    .l-diversion-page__map {
+      grid-area: map-and-panel;
+    }
+
+    .l-diversion-page-panel__scroll-area {
+      padding-top: 1rem;
+    }
+
+    .l-diversion-page__header {
+      border-bottom: none;
+    }
+    .c-diversion-panel__header_text,
+    .c-detour-panel__subheader,
+    .c-diversion-panel__back-button-container,
+    .c-active-detour__alert-icon {
+      display: none !important;
+    }
+  }
+
   @include media-breakpoint-up(md) {
     // For larger breakpoints, layout into grid
     grid-template:
-      "heading heading" min-content
+      "heading heading-right" min-content
       "panel map" auto
       / max(22.5vw, 350px) auto;
 
+    .l-diversion-page__header {
+      grid-area: heading-right;
+    }
     // Overlay the panel and make the panel header match
     // the size of the page header if subgrid is supported
     @supports (grid-template-rows: subgrid) {
       grid-template:
-        [panel-start] "heading heading" min-content
+        [panel-start] "heading heading-right" min-content
         "panel map" auto
         / max(22.5vw, 350px) auto;
 
@@ -45,7 +79,6 @@
 
         grid-area: panel;
 
-        .l-diversion-page__header,
         .l-diversion-page-panel__header {
           grid-row: heading;
         }
@@ -54,6 +87,10 @@
           grid-row: 2/-1;
         }
       }
+    }
+
+    .l-diversion-page-panel__header .c-diversion-panel__back-button {
+      display: none;
     }
   }
 }

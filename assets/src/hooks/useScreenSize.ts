@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { DeviceType } from "../skate"
+import { DeviceType } from "../util/screenSize"
 
 const maxMobileWidth = 480
 const minMobileLandscapeTabletPortraitWidth = maxMobileWidth + 1
