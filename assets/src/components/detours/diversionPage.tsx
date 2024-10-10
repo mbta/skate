@@ -443,7 +443,7 @@ export const DiversionPage = ({
           ])}
         >
           {isMobile(displayType) ? (
-            <DrawerWithState>{detourPanel()}</DrawerWithState>
+            <DrawerWithState startOpen>{detourPanel()}</DrawerWithState>
           ) : (
             detourPanel()
           )}

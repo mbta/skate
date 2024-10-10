@@ -38,7 +38,7 @@ interface DrawerWithStateProps {
 export const DrawerWithState = (
   props: PropsWithChildren<DrawerWithStateProps>
 ) => {
-  const [drawerOpen, setDrawerOpen] = useState(props.startOpen)
+  const [drawerOpen, setDrawerOpen] = useState(props.startOpen || false)
 
   return (
     <Drawer
