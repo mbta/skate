@@ -36,7 +36,9 @@ interface DrawerWithStateProps {
   onToggleOpen: Props["onToggleOpen"]
 }
 
-export const DrawerWithState = (props: PropsWithChildren<DrawerWithStateProps>) => {
+export const DrawerWithState = (
+  props: PropsWithChildren<DrawerWithStateProps>
+) => {
   const [drawerOpen, setDrawerOpen] = useState(props.startOpen)
 
   return (
