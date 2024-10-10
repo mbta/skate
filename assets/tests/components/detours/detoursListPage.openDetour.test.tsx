@@ -47,9 +47,7 @@ describe("Detours Page: Open a Detour", () => {
     // even if it doesn't match the detour clicked
     jest
       .mocked(fetchDetour)
-      .mockResolvedValue(
-        Ok(detourStateMachineFactory.build())
-      )
+      .mockResolvedValue(Ok(detourStateMachineFactory.build()))
 
     const { baseElement } = render(<DetourListPage />)
 
@@ -72,9 +70,7 @@ describe("Detours Page: Open a Detour", () => {
 
     jest
       .mocked(fetchDetour)
-      .mockResolvedValue(
-        Ok(detourStateMachineFactory.build())
-      )
+      .mockResolvedValue(Ok(detourStateMachineFactory.build()))
 
     const { baseElement } = render(<DetourListPage />)
 
@@ -90,9 +86,7 @@ describe("Detours Page: Open a Detour", () => {
 
     jest
       .mocked(fetchDetour)
-      .mockResolvedValue(
-        Ok(detourStateMachineFactory.build())
-      )
+      .mockResolvedValue(Ok(detourStateMachineFactory.build()))
 
     const { baseElement } = render(<DetourListPage />)
 
