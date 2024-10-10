@@ -10,14 +10,11 @@ import userEvent from "@testing-library/user-event"
 import { DetourListPage } from "../../../src/components/detourListPage"
 import { fetchDetour, fetchDetours } from "../../../src/api"
 import { Ok } from "../../../src/util/result"
-import { neverPromise } from "../../testHelpers/mockHelpers"
-import { createActor } from "xstate"
-import { createDetourMachine } from "../../../src/models/createDetourMachine"
-import { originalRouteFactory } from "../../factories/originalRouteFactory"
-import { shapePointFactory } from "../../factories/shapePointFactory"
+import { mockScreenSize, neverPromise } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
 import { detourListFactory } from "../../factories/detourListFactory"
 import { TestGroups } from "../../../src/userInTestGroup"
+import { detourStateMachineFactory } from "../../factories/detourStateMachineFactory"
 
 jest
   .useFakeTimers({ doNotFake: ["setTimeout"] })
@@ -46,33 +43,12 @@ describe("Detours Page: Open a Detour", () => {
   test("renders detour details modal to match mocked fetchDetour", async () => {
     jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
 
-    // Stub out a detour machine, and start a detour-in-progress
-    const machine = createActor(createDetourMachine, {
-      input: originalRouteFactory.build(),
-    }).start()
-    machine.send({
-      type: "detour.edit.place-waypoint-on-route",
-      location: shapePointFactory.build(),
-    })
-    machine.send({
-      type: "detour.edit.place-waypoint",
-      location: shapePointFactory.build(),
-    })
-    machine.send({
-      type: "detour.edit.place-waypoint-on-route",
-      location: shapePointFactory.build(),
-    })
-    machine.send({ type: "detour.edit.done" })
-
-    const snapshot = machine.getPersistedSnapshot()
-    machine.stop()
-
     // Return the state of the machine as the fetchDetour mocked value,
     // even if it doesn't match the detour clicked
     jest
       .mocked(fetchDetour)
       .mockResolvedValue(
-        Ok({ updatedAt: 1724834480, author: "fake@email.com", state: snapshot })
+        Ok(detourStateMachineFactory.build())
       )
 
     const { baseElement } = render(<DetourListPage />)
@@ -86,6 +62,42 @@ describe("Detours Page: Open a Detour", () => {
     ).toBeVisible()
 
     // Finally, check snapshot
+    await waitFor(() => expect(baseElement).toMatchSnapshot())
+  })
+
+  test("renders detour details in an open drawer on mobile", async () => {
+    mockScreenSize("mobile")
+
+    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
+
+    jest
+      .mocked(fetchDetour)
+      .mockResolvedValue(
+        Ok(detourStateMachineFactory.build())
+      )
+
+    const { baseElement } = render(<DetourListPage />)
+
+    await userEvent.click(await screen.findByText("Headsign Z"))
+
+    await waitFor(() => expect(baseElement).toMatchSnapshot())
+  })
+
+  test("detour details drawer is collapsible on mobile", async () => {
+    mockScreenSize("mobile")
+
+    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
+
+    jest
+      .mocked(fetchDetour)
+      .mockResolvedValue(
+        Ok(detourStateMachineFactory.build())
+      )
+
+    const { baseElement } = render(<DetourListPage />)
+
+    await userEvent.click(await screen.findByText("Headsign Z"))
+    await userEvent.click(await screen.findByTitle("Collapse"))
     await waitFor(() => expect(baseElement).toMatchSnapshot())
   })
 })
