@@ -32,7 +32,8 @@
       "map-and-panel" auto
       / 1fr;
 
-    .l-diversion-page__panel, .l-diversion-page__map {
+    .l-diversion-page__panel,
+    .l-diversion-page__map {
       grid-area: map-and-panel;
     }
 
