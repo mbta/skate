@@ -7,10 +7,8 @@ import {
   StationMarker,
   StopMarkers,
   TrainVehicleMarker,
-  VehicleMarker,
 } from "../../src/components/mapMarkers"
 import { stopFactory } from "../factories/stop"
-import { vehicleFactory } from "../factories/vehicle"
 import { trainVehicleFactory } from "../factories/trainVehicle"
 import { render, screen } from "@testing-library/react"
 import React from "react"
@@ -37,21 +35,6 @@ afterAll(() => {
 
 const stop = stopFactory.build()
 const station = stopFactory.build({ locationType: LocationType.Station })
-
-describe("VehicleMarker", () => {
-  test("Includes icon and label", () => {
-    const { container } = renderInMap(
-      <VehicleMarker
-        vehicle={vehicleFactory.build({
-          runId: "101",
-        })}
-        isPrimary={true}
-      />
-    )
-    expect(container.querySelector(".c-vehicle-map__icon")).toBeInTheDocument()
-    expect(screen.getByText("101")).toBeInTheDocument()
-  })
-})
 
 describe("TrainVehicleMarker", () => {
   test("Includes icon and label", () => {
