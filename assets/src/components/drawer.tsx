@@ -1,31 +1,53 @@
-import React, { ReactElement, useState } from "react"
+import React, { PropsWithChildren, useState } from "react"
 import DrawerTab from "../components/drawerTab"
 import { joinClasses } from "../helpers/dom"
 
 interface Props {
-  children?: ReactElement<HTMLElement>
+  open?: boolean
+  onToggleOpen?: () => void
 }
 
-const Drawer = ({ children }: Props): ReactElement<HTMLDivElement> => {
-  const [drawerOpen, setDrawerOpen] = useState(true)
-  const toggleDrawer = () => setDrawerOpen((drawerOpen) => !drawerOpen)
+const Drawer = ({
+  open = true,
+  onToggleOpen,
+  children,
+}: PropsWithChildren<Props>) => (
+  <>
+    <div
+      className={joinClasses([
+        "c-drawer",
+        ...(open
+          ? ["c-drawer--visible"]
+          : ["c-drawer--hidden", "u-hideable--hidden"]),
+      ])}
+    >
+      <DrawerTab
+        isVisible={open}
+        toggleVisibility={onToggleOpen || (() => {})}
+      />
+      {children}
+    </div>
+    <button onClick={onToggleOpen} className="c-drawer__backdrop-button" />
+  </>
+)
+
+interface DrawerWithStateProps {
+  startOpen?: boolean
+}
+
+export const DrawerWithState = (
+  props: PropsWithChildren<DrawerWithStateProps>
+) => {
+  const [drawerOpen, setDrawerOpen] = useState(props.startOpen)
 
   return (
-    <>
-      <div
-        className={joinClasses([
-          "c-drawer",
-          ...(drawerOpen
-            ? ["c-drawer--visible"]
-            : ["c-drawer--hidden", "u-hideable--hidden"]),
-        ])}
-      >
-        <DrawerTab isVisible={drawerOpen} toggleVisibility={toggleDrawer} />
-        {children}
-      </div>
-      <button onClick={toggleDrawer} className="c-drawer__backdrop-button" />
-    </>
+    <Drawer
+      open={drawerOpen}
+      onToggleOpen={() => setDrawerOpen((drawerOpen) => !drawerOpen)}
+    >
+      {props.children}
+    </Drawer>
   )
 }
 
-export default Drawer
+Drawer.WithState = DrawerWithState
