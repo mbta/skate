@@ -29,7 +29,7 @@ import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
 import useScreenSize from "../../hooks/useScreenSize"
-import Drawer from "../drawer"
+import { DrawerWithState } from "../drawer"
 import { isMobile } from "../../util/screenSize"
 
 const displayFieldsFromRouteAndPattern = (
@@ -443,7 +443,7 @@ export const DiversionPage = ({
           ])}
         >
           {isMobile(displayType) ? (
-            <Drawer>{detourPanel()}</Drawer>
+            <DrawerWithState>{detourPanel()}</DrawerWithState>
           ) : (
             detourPanel()
           )}
