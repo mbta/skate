@@ -214,7 +214,7 @@ exports[`Shuttle Map Page renders 1`] = `
                 tabindex="0"
               >
                 <svg
-                  class="c-vehicle-map__icon"
+                  class="c-vehicle-map__icon c-vehicle-marker--shuttle"
                   height="24"
                   viewBox="0 0 24 24"
                   width="24"
@@ -923,7 +923,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 tabindex="0"
               >
                 <svg
-                  class="c-vehicle-map__icon"
+                  class="c-vehicle-map__icon c-vehicle-marker--shuttle"
                   height="24"
                   viewBox="0 0 24 24"
                   width="24"
@@ -1632,7 +1632,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 tabindex="0"
               >
                 <svg
-                  class="c-vehicle-map__icon"
+                  class="c-vehicle-map__icon c-vehicle-marker--shuttle"
                   height="24"
                   viewBox="0 0 24 24"
                   width="24"
@@ -2650,7 +2650,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 tabindex="0"
               >
                 <svg
-                  class="c-vehicle-map__icon"
+                  class="c-vehicle-map__icon c-vehicle-marker--shuttle"
                   height="24"
                   viewBox="0 0 24 24"
                   width="24"

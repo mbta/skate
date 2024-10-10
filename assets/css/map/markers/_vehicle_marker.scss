@@ -33,6 +33,25 @@
     stroke-width: 1.5;
     filter: drop-shadow(1px 1px 4px $color-eggplant-400);
   }
+
+  &.c-vehicle-marker--shuttle {
+    // Shuttle Colors
+    &.c-vehicle-marker--blue {
+      fill: var(--color-blue-line);
+    }
+    &.c-vehicle-marker--orange {
+      fill: var(--color-orange-line);
+    }
+    &.c-vehicle-marker--green {
+      fill: var(--color-green-line);
+    }
+    &.c-vehicle-marker--red {
+      fill: var(--color-red-line);
+    }
+    &.c-vehicle-marker--cr {
+      fill: var(--color-cr-line);
+    }
+  }
 }
 
 .c-vehicle-map__label {
