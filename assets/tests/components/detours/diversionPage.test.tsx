@@ -375,14 +375,14 @@ describe("DiversionPage", () => {
     })
 
     expect(
-      screen.getByRole("button", { name: "Review Detour", hidden: true })
+      screen.getByRole("button", { name: "Review", hidden: true })
     ).not.toBeVisible()
 
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(screen.getByRole("button", { name: "Review Detour" })).toBeVisible()
+    expect(screen.getByRole("button", { name: "Review" })).toBeVisible()
   })
 
   test.each<{
@@ -1071,7 +1071,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("When 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When 'Review' button is clicked, shows 'Share Detour Details' screen", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -1092,7 +1092,7 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("When the finished-detour API call errors and 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When the finished-detour API call errors and 'Review' button is clicked, shows 'Share Detour Details' screen", async () => {
     jest.mocked(fetchFinishedDetour).mockRejectedValue("NOPE")
 
     const { container } = render(<DiversionPage />)
@@ -1115,7 +1115,7 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
-  test("When the detour-directions API call errors and 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When the detour-directions API call errors and 'Review' button is clicked, shows 'Share Detour Details' screen", async () => {
     jest.mocked(fetchDetourDirections).mockRejectedValue("NOPE")
 
     const { container } = render(<DiversionPage />)
@@ -1213,7 +1213,7 @@ describe("DiversionPage", () => {
         screen.queryByRole("button", { name: "Edit Detour" })
       ).not.toBeInTheDocument()
       expect(
-        screen.getByRole("button", { name: "Review Detour" })
+        screen.getByRole("button", { name: "Review" })
       ).toBeVisible()
 
       expect(screen.getByRole("button", { name: "Undo" })).not.toBeDisabled()

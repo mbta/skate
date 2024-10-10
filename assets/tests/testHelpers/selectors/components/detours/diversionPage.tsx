@@ -1,9 +1,9 @@
 import { expect } from "@jest/globals"
 import { byRole } from "testing-library-selector"
 
-export const reviewDetourButton = byRole("button", { name: "Review Detour" })
+export const reviewDetourButton = byRole("button", { name: "Review" })
 export const activateDetourButton = byRole("button", {
-  name: "Activate Detour",
+  name: "Start Detour",
 })
 
 export const originalRouteShape = {
