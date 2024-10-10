@@ -29,7 +29,7 @@ import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
 import useScreenSize from "../../hooks/useScreenSize"
-import { DrawerWithState } from "../drawer"
+import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
 
 const displayFieldsFromRouteAndPattern = (
