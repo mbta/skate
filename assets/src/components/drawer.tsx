@@ -33,7 +33,6 @@ const Drawer = ({
 
 interface DrawerWithStateProps {
   startOpen?: boolean
-  onToggleOpen: Props["onToggleOpen"]
 }
 
 export const DrawerWithState = (
