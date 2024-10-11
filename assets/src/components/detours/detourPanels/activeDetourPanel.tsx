@@ -8,9 +8,15 @@ import {
   ExclamationTriangleFill,
   StopCircle,
 } from "../../../helpers/bsIcons"
-import { AffectedRoute, MissedStops } from "../detourPanelComponents"
+import {
+  AffectedRoute,
+  CopyButton,
+  MissedStops,
+} from "../detourPanelComponents"
+import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 
 export interface ActiveDetourPanelProps extends PropsWithChildren {
+  detourText: string
   directions?: DetourDirection[]
   connectionPoints?: string[]
   missedStops?: Stop[]
@@ -23,6 +29,7 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
 }
 
 export const ActiveDetourPanel = ({
+  detourText,
   directions,
   connectionPoints,
   missedStops,
@@ -36,7 +43,7 @@ export const ActiveDetourPanel = ({
 }: ActiveDetourPanelProps) => {
   const backButton = (
     <Button
-      className="c-diversion-panel__back-button icon-link my-3"
+      className="c-diversion-panel__outline-button c-diversion-panel__outline-button--back icon-link my-3"
       variant="outline-primary"
       onClick={onNavigateBack}
     >
@@ -52,11 +59,13 @@ export const ActiveDetourPanel = ({
           Active Detour
         </h1>
         {backButton}
+        {/* TODO: temporary test group until I get the copy logic hooked up */}
+        { inTestGroup(TestGroups.CopyButton) && <CopyButton detourText={detourText} /> }
       </Panel.Header>
 
       <Panel.Body className="d-flex flex-column">
         <Panel.Body.ScrollArea>
-          <div className="d-flex c-diversion-panel__back-button-container justify-content-between align-items-center">
+          <div className="d-flex c-diversion-panel__desktop-buttons justify-content-between align-items-center">
             {backButton}
             <ExclamationTriangleFill className="c-active-detour__alert-icon" />
           </div>

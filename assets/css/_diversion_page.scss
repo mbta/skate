@@ -44,10 +44,14 @@
     .l-diversion-page__header {
       border-bottom: none;
     }
+
+    .l-diversion-page-panel__header {
+      align-items: center;
+    }
+
     .c-diversion-panel__header_text,
     .c-detour-panel__subheader,
-    .c-diversion-panel__back-button-container,
-    .c-active-detour__alert-icon {
+    .c-diversion-panel__desktop-buttons {
       display: none !important;
     }
   }
@@ -89,7 +93,7 @@
       }
     }
 
-    .l-diversion-page-panel__header .c-diversion-panel__back-button {
+    .l-diversion-page-panel__header .c-diversion-panel__outline-button--back {
       display: none;
     }
   }
@@ -160,4 +164,13 @@
 .c-active-detour__alert-icon {
   height: 1.5rem;
   width: 1.5rem;
+}
+
+.c-diversion-panel__outline-button {
+  height: 2rem;
+  border-radius: 0.2rem;
+
+  &--copy {
+    margin: 0.78125rem 0;
+  }
 }
