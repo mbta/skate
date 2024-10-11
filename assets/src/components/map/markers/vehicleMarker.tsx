@@ -1,4 +1,4 @@
-import Leaflet, { LatLngExpression } from "leaflet"
+import { LatLngExpression, Marker } from "leaflet"
 import React, {
   PropsWithChildren,
   useContext,
@@ -34,7 +34,7 @@ export const VehicleMarker = ({
   onShouldShowPopupChange = () => {},
 }: VehicleMarkerProps) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
-  const markerRef = useRef<Leaflet.Marker<any>>(null)
+  const markerRef = useRef<Marker<any>>(null)
 
   const [isPopupVisible, setIsPopupVisible] = useState<boolean>(false)
 
