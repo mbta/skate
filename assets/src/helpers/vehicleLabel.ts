@@ -18,7 +18,7 @@ export const runOrBusNumberLabel = (
   }
 }
 
-const vehicleLabel = (
+export const vehicleLabel = (
   vehicleOrGhost: Vehicle | Ghost,
   settings: UserSettings
 ): string => {
