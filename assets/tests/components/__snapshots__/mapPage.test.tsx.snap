@@ -1517,21 +1517,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -57px; top: 1295px; z-index: 1295;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Albany
-                    </text>
-                  </svg>
-                </div>
+                    Albany
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1547,21 +1543,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2115px; top: 3617px; z-index: 3617;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Arborway
-                    </text>
-                  </svg>
-                </div>
+                    Arborway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1577,21 +1569,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 273px; top: 1319px; z-index: 1319;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Cabot
-                    </text>
-                  </svg>
-                </div>
+                    Cabot
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1607,21 +1595,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -456px; top: -1720px; z-index: -1720;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Charlestown and Somerville
-                    </text>
-                  </svg>
-                </div>
+                    Charlestown and Somerville
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1637,21 +1621,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1173px; top: -3823px; z-index: -3823;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Fellsway
-                    </text>
-                  </svg>
-                </div>
+                    Fellsway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1667,21 +1647,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 4158px; top: -5947px; z-index: -5947;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Lynn
-                    </text>
-                  </svg>
-                </div>
+                    Lynn
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1697,21 +1673,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3032px; top: -2266px; z-index: -2266;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      North Cambridge
-                    </text>
-                  </svg>
-                </div>
+                    North Cambridge
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1727,21 +1699,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2539px; top: 6390px; z-index: 6390;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Quincy
-                    </text>
-                  </svg>
-                </div>
+                    Quincy
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1757,21 +1725,17 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -65px; top: 1854px; z-index: 1854;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Southampton
-                    </text>
-                  </svg>
-                </div>
+                    Southampton
+                  </text>
+                </svg>
               </div>
             </div>
             <div
@@ -1780,22 +1744,18 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 1027;"
               tabindex="0"
             >
-              <div
-                class="w-100 h-100"
+              <svg
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    class="on-time early-red selected"
-                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                    transform="scale(1) rotate(33) translate(-12, -12)"
-                  />
-                </svg>
-              </div>
+                <path
+                  class="on-time early-red selected"
+                  d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                  transform="scale(1) rotate(33) translate(-12, -12)"
+                />
+              </svg>
             </div>
             <div
               class="leaflet-marker-icon c-vehicle-map__label primary selected leaflet-zoom-hide leaflet-interactive"
@@ -1803,32 +1763,28 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 1027;"
               tabindex="0"
             >
-              <div
-                class="w-100 h-100"
+              <svg
+                height="16"
+                viewBox="0 0 40 16"
+                width="40"
               >
-                <svg
-                  height="16"
-                  viewBox="0 0 40 16"
-                  width="40"
+                <rect
+                  class="c-vehicle-icon__label-background"
+                  height="100%"
+                  rx="5.5px"
+                  ry="5.5px"
+                  width="100%"
+                />
+                <text
+                  class="c-vehicle-icon__label"
+                  dominant-baseline="central"
+                  text-anchor="middle"
+                  x="50%"
+                  y="50%"
                 >
-                  <rect
-                    class="c-vehicle-icon__label-background"
-                    height="100%"
-                    rx="5.5px"
-                    ry="5.5px"
-                    width="100%"
-                  />
-                  <text
-                    class="c-vehicle-icon__label"
-                    dominant-baseline="central"
-                    text-anchor="middle"
-                    x="50%"
-                    y="50%"
-                  >
-                    1
-                  </text>
-                </svg>
-              </div>
+                  1
+                </text>
+              </svg>
             </div>
             <div
               class="leaflet-marker-icon c-vehicle-map__icon leaflet-zoom-hide leaflet-interactive"
@@ -1836,22 +1792,18 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27; z-index: 27;"
               tabindex="0"
             >
-              <div
-                class="w-100 h-100"
+              <svg
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    class="on-time early-red"
-                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                    transform="scale(0.8) rotate(33) translate(-12, -12)"
-                  />
-                </svg>
-              </div>
+                <path
+                  class="on-time early-red"
+                  d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                  transform="scale(0.8) rotate(33) translate(-12, -12)"
+                />
+              </svg>
             </div>
             <div
               class="leaflet-marker-icon c-vehicle-map__label secondary leaflet-zoom-hide leaflet-interactive"
@@ -1859,32 +1811,28 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
               style="margin-left: -15px; margin-top: 10px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27; z-index: 27;"
               tabindex="0"
             >
-              <div
-                class="w-100 h-100"
+              <svg
+                height="12"
+                viewBox="0 0 30 12"
+                width="30"
               >
-                <svg
-                  height="12"
-                  viewBox="0 0 30 12"
-                  width="30"
+                <rect
+                  class="c-vehicle-icon__label-background"
+                  height="100%"
+                  rx="5.5px"
+                  ry="5.5px"
+                  width="100%"
+                />
+                <text
+                  class="c-vehicle-icon__label"
+                  dominant-baseline="central"
+                  text-anchor="middle"
+                  x="50%"
+                  y="50%"
                 >
-                  <rect
-                    class="c-vehicle-icon__label-background"
-                    height="100%"
-                    rx="5.5px"
-                    ry="5.5px"
-                    width="100%"
-                  />
-                  <text
-                    class="c-vehicle-icon__label"
-                    dominant-baseline="central"
-                    text-anchor="middle"
-                    x="50%"
-                    y="50%"
-                  >
-                    2
-                  </text>
-                </svg>
-              </div>
+                  2
+                </text>
+              </svg>
             </div>
           </div>
           <div

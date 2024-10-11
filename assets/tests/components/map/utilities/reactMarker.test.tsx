@@ -78,7 +78,7 @@ describe("ReactMarker", () => {
 
     expect(icon).toBeEmptyDOMElement()
 
-    expect(icon.parentElement?.parentElement).toHaveStyle({
+    expect(icon.parentElement).toHaveStyle({
       width: `${initialSizeX}px`,
       height: `${initialSizeY}px`,
     })
@@ -91,7 +91,7 @@ describe("ReactMarker", () => {
       />
     )
 
-    expect(icon.parentElement?.parentElement).toHaveStyle({
+    expect(icon.parentElement).toHaveStyle({
       width: `${newSizeX}px`,
       height: `${newSizeY}px`,
     })

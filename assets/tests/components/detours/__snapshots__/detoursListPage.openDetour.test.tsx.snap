@@ -573,30 +573,26 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   tabindex="0"
                   title="Detour Start"
                 >
-                  <div
-                    class="w-100 h-100"
+                  <svg
+                    class="c-detour_map-circle-marker--start"
+                    height="100%"
+                    viewBox="0 0 16 16"
+                    width="100%"
                   >
-                    <svg
-                      class="c-detour_map-circle-marker--start"
-                      height="100%"
-                      viewBox="0 0 16 16"
-                      width="100%"
-                    >
-                      <circle
-                        cx="8"
-                        cy="8"
-                        opacity="0.5"
-                        r="7.5"
-                      />
-                      <circle
-                        cx="8"
-                        cy="8"
-                        r="6"
-                        stroke="white"
-                        stroke-width="2"
-                      />
-                    </svg>
-                  </div>
+                    <circle
+                      cx="8"
+                      cy="8"
+                      opacity="0.5"
+                      r="7.5"
+                    />
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="6"
+                      stroke="white"
+                      stroke-width="2"
+                    />
+                  </svg>
                 </div>
                 <div
                   class="leaflet-marker-icon leaflet-zoom-hide"
@@ -604,23 +600,19 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   style="margin-left: -5px; margin-top: -5px; width: 10px; height: 10px; left: 0px; top: -1px; z-index: -1;"
                   tabindex="0"
                 >
-                  <div
-                    class="w-100 h-100"
+                  <svg
+                    class="c-detour_map-circle-marker--detour-point"
+                    fill="none"
+                    height="100%"
+                    viewBox="0 0 10 10"
+                    width="100%"
                   >
-                    <svg
-                      class="c-detour_map-circle-marker--detour-point"
-                      fill="none"
-                      height="100%"
-                      viewBox="0 0 10 10"
-                      width="100%"
-                    >
-                      <circle
-                        cx="5"
-                        cy="5"
-                        r="4.5"
-                      />
-                    </svg>
-                  </div>
+                    <circle
+                      cx="5"
+                      cy="5"
+                      r="4.5"
+                    />
+                  </svg>
                 </div>
                 <div
                   class="leaflet-marker-icon leaflet-zoom-hide"
@@ -629,30 +621,26 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   tabindex="0"
                   title="Detour End"
                 >
-                  <div
-                    class="w-100 h-100"
+                  <svg
+                    class="c-detour_map-circle-marker--end"
+                    height="100%"
+                    viewBox="0 0 16 16"
+                    width="100%"
                   >
-                    <svg
-                      class="c-detour_map-circle-marker--end"
-                      height="100%"
-                      viewBox="0 0 16 16"
-                      width="100%"
-                    >
-                      <circle
-                        cx="8"
-                        cy="8"
-                        opacity="0.5"
-                        r="7.5"
-                      />
-                      <circle
-                        cx="8"
-                        cy="8"
-                        r="6"
-                        stroke="white"
-                        stroke-width="2"
-                      />
-                    </svg>
-                  </div>
+                    <circle
+                      cx="8"
+                      cy="8"
+                      opacity="0.5"
+                      r="7.5"
+                    />
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="6"
+                      stroke="white"
+                      stroke-width="2"
+                    />
+                  </svg>
                 </div>
                 <div
                   class="leaflet-marker-icon c-stop-icon-container c-vehicle-map__stop leaflet-zoom-hide leaflet-interactive"
@@ -660,33 +648,29 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   style="margin-left: -7px; margin-top: -7px; width: 14px; height: 14px; left: 0px; top: -1px; z-index: -1;"
                   tabindex="0"
                 >
-                  <div
-                    class="w-100 h-100"
+                  <svg
+                    class="c-stop-icon"
+                    height="100%"
+                    width="100%"
                   >
                     <svg
-                      class="c-stop-icon"
-                      height="100%"
-                      width="100%"
+                      fill="none"
+                      viewBox="0 0 14 14"
                     >
-                      <svg
-                        fill="none"
-                        viewBox="0 0 14 14"
-                      >
-                        <circle
-                          class="c-stop-icon__focus-circle"
-                          cx="7"
-                          cy="7"
-                          r="8"
-                        />
-                        <circle
-                          class="c-stop-icon__circle c-stop-icon__circle--small"
-                          cx="7"
-                          cy="7"
-                          r="5"
-                        />
-                      </svg>
+                      <circle
+                        class="c-stop-icon__focus-circle"
+                        cx="7"
+                        cy="7"
+                        r="8"
+                      />
+                      <circle
+                        class="c-stop-icon__circle c-stop-icon__circle--small"
+                        cx="7"
+                        cy="7"
+                        r="5"
+                      />
                     </svg>
-                  </div>
+                  </svg>
                 </div>
               </div>
               <div
@@ -1349,30 +1333,26 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   tabindex="0"
                   title="Detour Start"
                 >
-                  <div
-                    class="w-100 h-100"
+                  <svg
+                    class="c-detour_map-circle-marker--start"
+                    height="100%"
+                    viewBox="0 0 16 16"
+                    width="100%"
                   >
-                    <svg
-                      class="c-detour_map-circle-marker--start"
-                      height="100%"
-                      viewBox="0 0 16 16"
-                      width="100%"
-                    >
-                      <circle
-                        cx="8"
-                        cy="8"
-                        opacity="0.5"
-                        r="7.5"
-                      />
-                      <circle
-                        cx="8"
-                        cy="8"
-                        r="6"
-                        stroke="white"
-                        stroke-width="2"
-                      />
-                    </svg>
-                  </div>
+                    <circle
+                      cx="8"
+                      cy="8"
+                      opacity="0.5"
+                      r="7.5"
+                    />
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="6"
+                      stroke="white"
+                      stroke-width="2"
+                    />
+                  </svg>
                 </div>
                 <div
                   class="leaflet-marker-icon leaflet-zoom-hide"
@@ -1380,23 +1360,19 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   style="margin-left: -5px; margin-top: -5px; width: 10px; height: 10px; left: 0px; top: 0px; z-index: 0;"
                   tabindex="0"
                 >
-                  <div
-                    class="w-100 h-100"
+                  <svg
+                    class="c-detour_map-circle-marker--detour-point"
+                    fill="none"
+                    height="100%"
+                    viewBox="0 0 10 10"
+                    width="100%"
                   >
-                    <svg
-                      class="c-detour_map-circle-marker--detour-point"
-                      fill="none"
-                      height="100%"
-                      viewBox="0 0 10 10"
-                      width="100%"
-                    >
-                      <circle
-                        cx="5"
-                        cy="5"
-                        r="4.5"
-                      />
-                    </svg>
-                  </div>
+                    <circle
+                      cx="5"
+                      cy="5"
+                      r="4.5"
+                    />
+                  </svg>
                 </div>
                 <div
                   class="leaflet-marker-icon leaflet-zoom-hide"
@@ -1405,30 +1381,26 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   tabindex="0"
                   title="Detour End"
                 >
-                  <div
-                    class="w-100 h-100"
+                  <svg
+                    class="c-detour_map-circle-marker--end"
+                    height="100%"
+                    viewBox="0 0 16 16"
+                    width="100%"
                   >
-                    <svg
-                      class="c-detour_map-circle-marker--end"
-                      height="100%"
-                      viewBox="0 0 16 16"
-                      width="100%"
-                    >
-                      <circle
-                        cx="8"
-                        cy="8"
-                        opacity="0.5"
-                        r="7.5"
-                      />
-                      <circle
-                        cx="8"
-                        cy="8"
-                        r="6"
-                        stroke="white"
-                        stroke-width="2"
-                      />
-                    </svg>
-                  </div>
+                    <circle
+                      cx="8"
+                      cy="8"
+                      opacity="0.5"
+                      r="7.5"
+                    />
+                    <circle
+                      cx="8"
+                      cy="8"
+                      r="6"
+                      stroke="white"
+                      stroke-width="2"
+                    />
+                  </svg>
                 </div>
                 <div
                   class="leaflet-marker-icon c-stop-icon-container c-vehicle-map__stop leaflet-zoom-hide leaflet-interactive"
@@ -1436,33 +1408,29 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   style="margin-left: -7px; margin-top: -7px; width: 14px; height: 14px; left: 0px; top: 0px; z-index: 0;"
                   tabindex="0"
                 >
-                  <div
-                    class="w-100 h-100"
+                  <svg
+                    class="c-stop-icon"
+                    height="100%"
+                    width="100%"
                   >
                     <svg
-                      class="c-stop-icon"
-                      height="100%"
-                      width="100%"
+                      fill="none"
+                      viewBox="0 0 14 14"
                     >
-                      <svg
-                        fill="none"
-                        viewBox="0 0 14 14"
-                      >
-                        <circle
-                          class="c-stop-icon__focus-circle"
-                          cx="7"
-                          cy="7"
-                          r="8"
-                        />
-                        <circle
-                          class="c-stop-icon__circle c-stop-icon__circle--small"
-                          cx="7"
-                          cy="7"
-                          r="5"
-                        />
-                      </svg>
+                      <circle
+                        class="c-stop-icon__focus-circle"
+                        cx="7"
+                        cy="7"
+                        r="8"
+                      />
+                      <circle
+                        class="c-stop-icon__circle c-stop-icon__circle--small"
+                        cx="7"
+                        cy="7"
+                        r="5"
+                      />
                     </svg>
-                  </div>
+                  </svg>
                 </div>
               </div>
               <div
