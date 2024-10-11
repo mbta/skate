@@ -359,7 +359,7 @@ export const PlusSquare = (props: SvgProps) => (
 )
 
 /**
- * @returns https://icons.getbootstrap.com/icons/card-checklist/
+ * @returns https://icons.getbootstrap.com/icons/power/
  */
 export const Power = (props: SvgProps) => (
   <svg
