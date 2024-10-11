@@ -6,7 +6,7 @@ import React, {
 import { useRoute } from "../contexts/routesContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { joinClasses } from "../helpers/dom"
-import vehicleLabel from "../helpers/vehicleLabel"
+import { vehicleLabel } from "../helpers/vehicleLabel"
 import { emptyLadderDirectionsByRouteId } from "../models/ladderDirection"
 import { currentRouteTab } from "../models/routeTab"
 import {
