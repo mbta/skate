@@ -213,22 +213,22 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
               >
-                <svg
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-        
-                  <path
-                    class=""
-                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                    transform="scale(1) rotate(33) translate(-12, -12)"
-                  />
-                  
-      
-                </svg>
+                  <svg
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      class=""
+                      d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                      transform="scale(1) rotate(33) translate(-12, -12)"
+                    />
+                  </svg>
+                </div>
               </div>
               <div
                 class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
@@ -236,36 +236,32 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
               >
-                <svg
-                  height="16"
-                  viewBox="0 0 40 16"
-                  width="40"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-            
-                  <rect
-                    class="c-vehicle-icon__label-background"
-                    height="100%"
-                    rx="5.5px"
-                    ry="5.5px"
-                    width="100%"
-                  />
-                  
-            
-                  <text
-                    class="c-vehicle-icon__label"
-                    dominant-baseline="central"
-                    text-anchor="middle"
-                    x="50%"
-                    y="50%"
+                  <svg
+                    height="16"
+                    viewBox="0 0 40 16"
+                    width="40"
                   >
-                    
-              1818
-            
-                  </text>
-                  
-          
-                </svg>
+                    <rect
+                      class="c-vehicle-icon__label-background"
+                      height="100%"
+                      rx="5.5px"
+                      ry="5.5px"
+                      width="100%"
+                    />
+                    <text
+                      class="c-vehicle-icon__label"
+                      dominant-baseline="central"
+                      text-anchor="middle"
+                      x="50%"
+                      y="50%"
+                    >
+                      1818
+                    </text>
+                  </svg>
+                </div>
               </div>
             </div>
             <div
@@ -968,22 +964,22 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
               >
-                <svg
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-        
-                  <path
-                    class=""
-                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                    transform="scale(1) rotate(33) translate(-12, -12)"
-                  />
-                  
-      
-                </svg>
+                  <svg
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      class=""
+                      d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                      transform="scale(1) rotate(33) translate(-12, -12)"
+                    />
+                  </svg>
+                </div>
               </div>
               <div
                 class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
@@ -991,36 +987,32 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
               >
-                <svg
-                  height="16"
-                  viewBox="0 0 40 16"
-                  width="40"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-            
-                  <rect
-                    class="c-vehicle-icon__label-background"
-                    height="100%"
-                    rx="5.5px"
-                    ry="5.5px"
-                    width="100%"
-                  />
-                  
-            
-                  <text
-                    class="c-vehicle-icon__label"
-                    dominant-baseline="central"
-                    text-anchor="middle"
-                    x="50%"
-                    y="50%"
+                  <svg
+                    height="16"
+                    viewBox="0 0 40 16"
+                    width="40"
                   >
-                    
-              1818
-            
-                  </text>
-                  
-          
-                </svg>
+                    <rect
+                      class="c-vehicle-icon__label-background"
+                      height="100%"
+                      rx="5.5px"
+                      ry="5.5px"
+                      width="100%"
+                    />
+                    <text
+                      class="c-vehicle-icon__label"
+                      dominant-baseline="central"
+                      text-anchor="middle"
+                      x="50%"
+                      y="50%"
+                    >
+                      1818
+                    </text>
+                  </svg>
+                </div>
               </div>
             </div>
             <div
@@ -1723,22 +1715,22 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
               >
-                <svg
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-        
-                  <path
-                    class=""
-                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                    transform="scale(1) rotate(33) translate(-12, -12)"
-                  />
-                  
-      
-                </svg>
+                  <svg
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      class=""
+                      d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                      transform="scale(1) rotate(33) translate(-12, -12)"
+                    />
+                  </svg>
+                </div>
               </div>
               <div
                 class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
@@ -1746,36 +1738,32 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
               >
-                <svg
-                  height="16"
-                  viewBox="0 0 40 16"
-                  width="40"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-            
-                  <rect
-                    class="c-vehicle-icon__label-background"
-                    height="100%"
-                    rx="5.5px"
-                    ry="5.5px"
-                    width="100%"
-                  />
-                  
-            
-                  <text
-                    class="c-vehicle-icon__label"
-                    dominant-baseline="central"
-                    text-anchor="middle"
-                    x="50%"
-                    y="50%"
+                  <svg
+                    height="16"
+                    viewBox="0 0 40 16"
+                    width="40"
                   >
-                    
-              1818
-            
-                  </text>
-                  
-          
-                </svg>
+                    <rect
+                      class="c-vehicle-icon__label-background"
+                      height="100%"
+                      rx="5.5px"
+                      ry="5.5px"
+                      width="100%"
+                    />
+                    <text
+                      class="c-vehicle-icon__label"
+                      dominant-baseline="central"
+                      text-anchor="middle"
+                      x="50%"
+                      y="50%"
+                    >
+                      1818
+                    </text>
+                  </svg>
+                </div>
               </div>
             </div>
             <div
@@ -2787,22 +2775,22 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
               >
-                <svg
-                  height="24"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-        
-                  <path
-                    class=""
-                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
-                    transform="scale(1) rotate(33) translate(-12, -12)"
-                  />
-                  
-      
-                </svg>
+                  <svg
+                    height="24"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      class=""
+                      d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                      transform="scale(1) rotate(33) translate(-12, -12)"
+                    />
+                  </svg>
+                </div>
               </div>
               <div
                 class="leaflet-marker-icon c-vehicle-map__label primary leaflet-zoom-hide leaflet-interactive"
@@ -2810,36 +2798,32 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
                 tabindex="0"
               >
-                <svg
-                  height="16"
-                  viewBox="0 0 40 16"
-                  width="40"
+                <div
+                  class="w-100 h-100"
                 >
-                  
-            
-                  <rect
-                    class="c-vehicle-icon__label-background"
-                    height="100%"
-                    rx="5.5px"
-                    ry="5.5px"
-                    width="100%"
-                  />
-                  
-            
-                  <text
-                    class="c-vehicle-icon__label"
-                    dominant-baseline="central"
-                    text-anchor="middle"
-                    x="50%"
-                    y="50%"
+                  <svg
+                    height="16"
+                    viewBox="0 0 40 16"
+                    width="40"
                   >
-                    
-              1818
-            
-                  </text>
-                  
-          
-                </svg>
+                    <rect
+                      class="c-vehicle-icon__label-background"
+                      height="100%"
+                      rx="5.5px"
+                      ry="5.5px"
+                      width="100%"
+                    />
+                    <text
+                      class="c-vehicle-icon__label"
+                      dominant-baseline="central"
+                      text-anchor="middle"
+                      x="50%"
+                      y="50%"
+                    >
+                      1818
+                    </text>
+                  </svg>
+                </div>
               </div>
             </div>
             <div
