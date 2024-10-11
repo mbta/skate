@@ -1,3 +1,20 @@
+import Leaflet, { LatLngExpression } from "leaflet"
+import React, {
+  PropsWithChildren,
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+} from "react"
+
+import { StateDispatchContext } from "../../../contexts/stateDispatchContext"
+import { joinClasses } from "../../../helpers/dom"
+import { vehicleLabel } from "../../../helpers/vehicleLabel"
+import { statusClasses, drawnStatus } from "../../../models/vehicleStatus"
+
+import { Vehicle } from "../../../realtime"
+import { ReactMarker } from "../utilities/reactMarker"
+
 interface VehicleMarkerProps extends PropsWithChildren {
   vehicle: Vehicle
   isPrimary: boolean
