@@ -1850,7 +1850,7 @@ describe("<MapPage />", () => {
         })
       )
 
-      expect(screen.getByText("Create Detour")).toBeVisible()
+      expect(screen.getByText("Draw Detour")).toBeVisible()
     })
 
     test("dismisses the detour modal on escape key", async () => {
