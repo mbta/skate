@@ -32,7 +32,7 @@ jest.mock("../../src/helpers/fullStory")
 jest.mock("../../src/userTestGroups")
 
 beforeEach(() => {
-  jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+  jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList, TestGroups.DetoursNotifications])
   jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
   jest
     .mocked(fetchDetour)

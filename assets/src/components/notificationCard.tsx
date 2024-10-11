@@ -53,7 +53,7 @@ export const NotificationCard = ({
 
   if (
     notification.content.$type === NotificationType.Detour &&
-    !inTestGroup(TestGroups.DetoursList)
+    !(inTestGroup(TestGroups.DetoursList) && inTestGroup(TestGroups.DetoursNotifications))
   ) {
     return null
   }
