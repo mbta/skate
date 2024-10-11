@@ -1,8 +1,15 @@
 import React from "react"
 import { Stop } from "../../schedule"
-import { Badge, ListGroup } from "react-bootstrap"
+import {
+  Badge,
+  Button,
+  ListGroup,
+  OverlayTrigger,
+  Popover,
+} from "react-bootstrap"
 import { uniqBy } from "../../helpers/array"
 import { RoutePill } from "../routePill"
+import { Files } from "../../helpers/bsIcons"
 
 interface MissedStopsProps {
   missedStops?: Stop[]
@@ -60,4 +67,27 @@ export const AffectedRoute = ({
       </div>
     </div>
   </section>
+)
+
+export const CopyButton = ({ detourText }: { detourText: string }) => (
+  <OverlayTrigger
+    placement="bottom"
+    trigger="click"
+    rootClose
+    rootCloseEvent="mousedown"
+    overlay={
+      <Popover>
+        <Popover.Body>Copied to clipboard!</Popover.Body>
+      </Popover>
+    }
+  >
+    <Button
+      className="c-diversion-panel__outline-button c-diversion-panel__outline-button--copy icon-link"
+      variant="outline-primary"
+      onClick={() => window.navigator.clipboard?.writeText(detourText)}
+    >
+      <Files />
+      Copy Details
+    </Button>
+  </OverlayTrigger>
 )

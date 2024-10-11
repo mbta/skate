@@ -1,7 +1,8 @@
 import React, { PropsWithChildren } from "react"
-import { Button, Form, OverlayTrigger, Popover } from "react-bootstrap"
+import { Button, Form } from "react-bootstrap"
 import * as BsIcons from "../../../helpers/bsIcons"
 import { Panel } from "../diversionPage"
+import { CopyButton } from "../detourPanelComponents"
 
 interface DetourFinishedPanelProps extends PropsWithChildren {
   onNavigateBack: () => void
@@ -20,6 +21,7 @@ export const DetourFinishedPanel = ({
   <Panel as="article">
     <Panel.Header className="">
       <h1 className="c-diversion-panel__h1 my-3">Share Detour Details</h1>
+      <CopyButton detourText={detourText} />
     </Panel.Header>
 
     <Panel.Body className="d-flex flex-column">
@@ -45,24 +47,6 @@ export const DetourFinishedPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex flex-column">
-        <OverlayTrigger
-          placement="top"
-          trigger="click"
-          rootClose
-          rootCloseEvent="mousedown"
-          overlay={
-            <Popover>
-              <Popover.Body>Copied to clipboard!</Popover.Body>
-            </Popover>
-          }
-        >
-          <Button
-            className="m-3 flex-grow-1"
-            onClick={() => window.navigator.clipboard?.writeText(detourText)}
-          >
-            Copy Details
-          </Button>
-        </OverlayTrigger>
         {onActivateDetour && (
           <Button
             className="m-3 flex-grow-1"
