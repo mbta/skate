@@ -8,9 +8,11 @@ defmodule SkateWeb.ConnCase do
   to build common data structures and query the data layer.
 
   Finally, if the test case interacts with the database,
-  it cannot be async. For this reason, every test runs
-  inside a transaction which is reset at the beginning
-  of the test unless the test case is marked as async.
+  we enable the SQL sandbox, so changes done to the database
+  are reverted at the end of every test. If you are using
+  PostgreSQL, you can even run database tests asynchronously
+  by setting `use SkateWeb.ConnCase, async: true`, although
+  this option is not recommended for other databases.
   """
 
   use ExUnit.CaseTemplate
@@ -32,14 +34,10 @@ defmodule SkateWeb.ConnCase do
   end
 
   setup tags do
-    alias Ecto.Adapters.SQL.Sandbox
-    :ok = Sandbox.checkout(Skate.Repo)
+    Skate.DataCase.setup_sandbox(tags)
+
     username = "test_user"
     email = "test_user@test.com"
-
-    unless tags[:async] do
-      Sandbox.mode(Skate.Repo, {:shared, self()})
-    end
 
     user = User.upsert(username, email)
     resource = %{id: user.id}
