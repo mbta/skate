@@ -4,6 +4,5 @@ defmodule Skate.Repo.AsyncMigrations.FirstAsyncMigration do
 
   def change do
     Logger.info("first async migration")
-
   end
 end
