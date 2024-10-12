@@ -21,15 +21,15 @@ defmodule SkateWeb.ConnCase do
 
   using do
     quote do
-      # Import conveniences for testing with connections
-      import Plug.Conn
-      import Phoenix.ConnTest
-      alias SkateWeb.Router.Helpers, as: Routes
-
       # The default endpoint for testing
       @endpoint SkateWeb.Endpoint
 
       use SkateWeb, :verified_routes
+
+      # Import conveniences for testing with connections
+      import Plug.Conn
+      import Phoenix.ConnTest
+      import SkateWeb.ConnCase
     end
   end
 
