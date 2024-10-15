@@ -160,7 +160,12 @@ describe("NotificationBellIcon", () => {
     },
   ])("$type detour notification", () => {
     test("renders when there are new detour notifications and user is part of DetoursList group", () => {
-      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList, TestGroups.DetoursNotifications])
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([
+          TestGroups.DetoursList,
+          TestGroups.DetoursNotifications,
+        ])
 
       const { baseElement } = render(
         <StateDispatchProvider

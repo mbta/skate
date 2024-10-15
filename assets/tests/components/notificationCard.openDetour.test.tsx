@@ -37,7 +37,11 @@ describe("NotificationCard", () => {
   test("renders detour details modal to match mocked fetchDetour", async () => {
     jest
       .mocked(getTestGroups)
-      .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList, TestGroups.DetoursNotifications])
+      .mockReturnValue([
+        TestGroups.DetoursPilot,
+        TestGroups.DetoursList,
+        TestGroups.DetoursNotifications,
+      ])
 
     jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
     jest
