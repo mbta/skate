@@ -510,7 +510,7 @@ defmodule Realtime.Server do
         :alerts -> "realtime_alerts"
       end
 
-    Phoenix.PubSub.broadcast(pubsub_name(), topic, {:new_realtime_data, state.ets})
+    Phoenix.PubSub.local_broadcast(pubsub_name(), topic, {:new_realtime_data, state.ets})
   end
 
   @spec block_is_active?(VehicleOrGhost.t()) :: boolean
