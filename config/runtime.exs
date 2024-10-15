@@ -105,5 +105,7 @@ if config_env() == :prod do
     config :skate, Skate.Detours.TripModificationPublisher, start: true
   end
 
-  config :skate, DNSCluster, query: System.get_env("DNS_CLUSTER_QUERY") || :ignore
+  # There are currently issues with Distributed Elixir and our Data Pipelines.
+  # So we need to disable clustering in prod until we figure this out
+  # config :skate, DNSCluster, query: System.get_env("DNS_CLUSTER_QUERY") || :ignore
 end
