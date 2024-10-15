@@ -60,7 +60,9 @@ export const ActiveDetourPanel = ({
         </h1>
         {backButton}
         {/* TODO: temporary test group until I get the copy logic hooked up */}
-        { inTestGroup(TestGroups.CopyButton) && <CopyButton detourText={detourText} /> }
+        {inTestGroup(TestGroups.CopyButton) && (
+          <CopyButton detourText={detourText} />
+        )}
       </Panel.Header>
 
       <Panel.Body className="d-flex flex-column">
