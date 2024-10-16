@@ -13,6 +13,7 @@ import { detourListFactory } from "../factories/detourListFactory"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
 import { detourStateMachineFactory } from "../factories/detourStateMachineFactory"
+import { viewDraftDetourHeading } from "../testHelpers/selectors/components/detours/diversionPage"
 
 jest.mock("../../src/api")
 jest.mock("../../src/helpers/fullStory")
@@ -37,7 +38,11 @@ describe("NotificationCard", () => {
   test("renders detour details modal to match mocked fetchDetour", async () => {
     jest
       .mocked(getTestGroups)
-      .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
+      .mockReturnValue([
+        TestGroups.DetoursPilot,
+        TestGroups.DetoursList,
+        TestGroups.DetoursNotifications,
+      ])
 
     jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
     jest
@@ -59,8 +64,6 @@ describe("NotificationCard", () => {
     await userEvent.click(screen.getByRole("button", { name: /Detour/ }))
     // Render modal based on mocked value, which is a detour-in-progress
 
-    expect(
-      screen.getByRole("heading", { name: "Share Detour Details" })
-    ).toBeVisible()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
   })
 })

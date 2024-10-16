@@ -31,7 +31,7 @@ export const DrawDetourPanel = ({
 }: DrawDetourPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header>
-      <h1 className="c-diversion-panel__h1 my-3">Create Detour</h1>
+      <h1 className="c-diversion-panel__h1 my-3">Draw Detour</h1>
     </Panel.Header>
 
     <Panel.Body className="d-flex flex-column">

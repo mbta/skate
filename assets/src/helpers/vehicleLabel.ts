@@ -18,7 +18,7 @@ export const runOrBusNumberLabel = (
   }
 }
 
-const vehicleLabel = (
+export const vehicleLabel = (
   vehicleOrGhost: Vehicle | Ghost,
   settings: UserSettings
 ): string => {
@@ -58,5 +58,3 @@ export const runIdToLabel = (runId: RunId | null): string => {
 
 const stripLeadingZero = (num: string): string =>
   num.startsWith("0") ? num.slice(1) : num
-
-export default vehicleLabel

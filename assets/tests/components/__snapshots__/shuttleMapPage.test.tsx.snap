@@ -219,15 +219,11 @@ exports[`Shuttle Map Page renders 1`] = `
                   width="24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  
-        
                   <path
                     class=""
                     d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
                     transform="scale(1) rotate(33) translate(-12, -12)"
                   />
-                  
-      
                 </svg>
               </div>
               <div
@@ -241,8 +237,6 @@ exports[`Shuttle Map Page renders 1`] = `
                   viewBox="0 0 40 16"
                   width="40"
                 >
-                  
-            
                   <rect
                     class="c-vehicle-icon__label-background"
                     height="100%"
@@ -250,8 +244,6 @@ exports[`Shuttle Map Page renders 1`] = `
                     ry="5.5px"
                     width="100%"
                   />
-                  
-            
                   <text
                     class="c-vehicle-icon__label"
                     dominant-baseline="central"
@@ -259,12 +251,8 @@ exports[`Shuttle Map Page renders 1`] = `
                     x="50%"
                     y="50%"
                   >
-                    
-              1818
-            
+                    1818
                   </text>
-                  
-          
                 </svg>
               </div>
             </div>
@@ -290,21 +278,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Albany
-                    </text>
-                  </svg>
-                </div>
+                    Albany
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -320,21 +304,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2338px; top: 3590px; z-index: 3590;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Arborway
-                    </text>
-                  </svg>
-                </div>
+                    Arborway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -350,21 +330,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Cabot
-                    </text>
-                  </svg>
-                </div>
+                    Cabot
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -380,21 +356,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -679px; top: -1747px; z-index: -1747;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Charlestown and Somerville
-                    </text>
-                  </svg>
-                </div>
+                    Charlestown and Somerville
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -410,21 +382,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Fellsway
-                    </text>
-                  </svg>
-                </div>
+                    Fellsway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -440,21 +408,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 3935px; top: -5974px; z-index: -5974;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Lynn
-                    </text>
-                  </svg>
-                </div>
+                    Lynn
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -470,21 +434,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      North Cambridge
-                    </text>
-                  </svg>
-                </div>
+                    North Cambridge
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -500,21 +460,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Quincy
-                    </text>
-                  </svg>
-                </div>
+                    Quincy
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -530,21 +486,17 @@ exports[`Shuttle Map Page renders 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -288px; top: 1827px; z-index: 1827;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Southampton
-                    </text>
-                  </svg>
-                </div>
+                    Southampton
+                  </text>
+                </svg>
               </div>
             </div>
           </div>
@@ -974,15 +926,11 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                   width="24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  
-        
                   <path
                     class=""
                     d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
                     transform="scale(1) rotate(33) translate(-12, -12)"
                   />
-                  
-      
                 </svg>
               </div>
               <div
@@ -996,8 +944,6 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                   viewBox="0 0 40 16"
                   width="40"
                 >
-                  
-            
                   <rect
                     class="c-vehicle-icon__label-background"
                     height="100%"
@@ -1005,8 +951,6 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                     ry="5.5px"
                     width="100%"
                   />
-                  
-            
                   <text
                     class="c-vehicle-icon__label"
                     dominant-baseline="central"
@@ -1014,12 +958,8 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                     x="50%"
                     y="50%"
                   >
-                    
-              1818
-            
+                    1818
                   </text>
-                  
-          
                 </svg>
               </div>
             </div>
@@ -1045,21 +985,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Albany
-                    </text>
-                  </svg>
-                </div>
+                    Albany
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1075,21 +1011,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2338px; top: 3590px; z-index: 3590;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Arborway
-                    </text>
-                  </svg>
-                </div>
+                    Arborway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1105,21 +1037,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Cabot
-                    </text>
-                  </svg>
-                </div>
+                    Cabot
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1135,21 +1063,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -679px; top: -1747px; z-index: -1747;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Charlestown and Somerville
-                    </text>
-                  </svg>
-                </div>
+                    Charlestown and Somerville
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1165,21 +1089,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Fellsway
-                    </text>
-                  </svg>
-                </div>
+                    Fellsway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1195,21 +1115,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 3935px; top: -5974px; z-index: -5974;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Lynn
-                    </text>
-                  </svg>
-                </div>
+                    Lynn
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1225,21 +1141,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      North Cambridge
-                    </text>
-                  </svg>
-                </div>
+                    North Cambridge
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1255,21 +1167,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Quincy
-                    </text>
-                  </svg>
-                </div>
+                    Quincy
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1285,21 +1193,17 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -288px; top: 1827px; z-index: 1827;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Southampton
-                    </text>
-                  </svg>
-                </div>
+                    Southampton
+                  </text>
+                </svg>
               </div>
             </div>
           </div>
@@ -1729,15 +1633,11 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                   width="24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  
-        
                   <path
                     class=""
                     d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
                     transform="scale(1) rotate(33) translate(-12, -12)"
                   />
-                  
-      
                 </svg>
               </div>
               <div
@@ -1751,8 +1651,6 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                   viewBox="0 0 40 16"
                   width="40"
                 >
-                  
-            
                   <rect
                     class="c-vehicle-icon__label-background"
                     height="100%"
@@ -1760,8 +1658,6 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                     ry="5.5px"
                     width="100%"
                   />
-                  
-            
                   <text
                     class="c-vehicle-icon__label"
                     dominant-baseline="central"
@@ -1769,12 +1665,8 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                     x="50%"
                     y="50%"
                   >
-                    
-              1818
-            
+                    1818
                   </text>
-                  
-          
                 </svg>
               </div>
             </div>
@@ -1800,21 +1692,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Albany
-                    </text>
-                  </svg>
-                </div>
+                    Albany
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1830,21 +1718,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2338px; top: 3590px; z-index: 3590;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Arborway
-                    </text>
-                  </svg>
-                </div>
+                    Arborway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1860,21 +1744,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Cabot
-                    </text>
-                  </svg>
-                </div>
+                    Cabot
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1890,21 +1770,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -679px; top: -1747px; z-index: -1747;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Charlestown and Somerville
-                    </text>
-                  </svg>
-                </div>
+                    Charlestown and Somerville
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1920,21 +1796,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Fellsway
-                    </text>
-                  </svg>
-                </div>
+                    Fellsway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1950,21 +1822,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 3935px; top: -5974px; z-index: -5974;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Lynn
-                    </text>
-                  </svg>
-                </div>
+                    Lynn
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -1980,21 +1848,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      North Cambridge
-                    </text>
-                  </svg>
-                </div>
+                    North Cambridge
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -2010,21 +1874,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Quincy
-                    </text>
-                  </svg>
-                </div>
+                    Quincy
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -2040,21 +1900,17 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -288px; top: 1827px; z-index: 1827;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Southampton
-                    </text>
-                  </svg>
-                </div>
+                    Southampton
+                  </text>
+                </svg>
               </div>
             </div>
           </div>
@@ -2793,15 +2649,11 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                   width="24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  
-        
                   <path
                     class=""
                     d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
                     transform="scale(1) rotate(33) translate(-12, -12)"
                   />
-                  
-      
                 </svg>
               </div>
               <div
@@ -2815,8 +2667,6 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                   viewBox="0 0 40 16"
                   width="40"
                 >
-                  
-            
                   <rect
                     class="c-vehicle-icon__label-background"
                     height="100%"
@@ -2824,8 +2674,6 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                     ry="5.5px"
                     width="100%"
                   />
-                  
-            
                   <text
                     class="c-vehicle-icon__label"
                     dominant-baseline="central"
@@ -2833,12 +2681,8 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                     x="50%"
                     y="50%"
                   >
-                    
-              1818
-            
+                    1818
                   </text>
-                  
-          
                 </svg>
               </div>
             </div>
@@ -2893,21 +2737,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Albany
-                    </text>
-                  </svg>
-                </div>
+                    Albany
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -2923,21 +2763,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2338px; top: 3590px; z-index: 3590;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Arborway
-                    </text>
-                  </svg>
-                </div>
+                    Arborway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -2953,21 +2789,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Cabot
-                    </text>
-                  </svg>
-                </div>
+                    Cabot
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -2983,21 +2815,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -679px; top: -1747px; z-index: -1747;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Charlestown and Somerville
-                    </text>
-                  </svg>
-                </div>
+                    Charlestown and Somerville
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -3013,21 +2841,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Fellsway
-                    </text>
-                  </svg>
-                </div>
+                    Fellsway
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -3043,21 +2867,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 3935px; top: -5974px; z-index: -5974;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Lynn
-                    </text>
-                  </svg>
-                </div>
+                    Lynn
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -3073,21 +2893,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      North Cambridge
-                    </text>
-                  </svg>
-                </div>
+                    North Cambridge
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -3103,21 +2919,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Quincy
-                    </text>
-                  </svg>
-                </div>
+                    Quincy
+                  </text>
+                </svg>
               </div>
               <div
                 class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
@@ -3133,21 +2945,17 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
                 style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -288px; top: 1827px; z-index: 1827;"
                 tabindex="0"
               >
-                <div
-                  class="w-100 h-100"
+                <svg
+                  height="30"
+                  width="200"
                 >
-                  <svg
-                    height="30"
-                    width="200"
+                  <text
+                    x="1"
+                    y="15"
                   >
-                    <text
-                      x="1"
-                      y="15"
-                    >
-                      Southampton
-                    </text>
-                  </svg>
-                </div>
+                    Southampton
+                  </text>
+                </svg>
               </div>
             </div>
           </div>

@@ -95,6 +95,7 @@ import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
 import { fetchNearestIntersection } from "../../src/api"
+import { drawDetourHeading } from "../testHelpers/selectors/components/detours/diversionPage"
 
 jest.mock("../../src/hooks/useLocationSearchResults", () => ({
   useLocationSearchResults: jest.fn(() => null),
@@ -1850,7 +1851,7 @@ describe("<MapPage />", () => {
         })
       )
 
-      expect(screen.getByText("Create Detour")).toBeVisible()
+      expect(drawDetourHeading.get()).toBeVisible()
     })
 
     test("dismisses the detour modal on escape key", async () => {

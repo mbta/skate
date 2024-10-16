@@ -1,5 +1,6 @@
 import { describe, test, expect } from "@jest/globals"
-import vehicleLabel, {
+import {
+  vehicleLabel,
   runOrBusNumberLabel,
   runIdToLabel,
 } from "../../src/helpers/vehicleLabel"
