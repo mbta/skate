@@ -405,7 +405,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
               <h1
                 class="c-diversion-panel__h1 my-3"
               >
-                Share Detour Details
+                View Draft Detour
               </h1>
             </header>
             <div
@@ -432,7 +432,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                       fill-rule="evenodd"
                     />
                   </svg>
-                   Edit Detour
+                   Edit
                 </button>
                 <textarea
                   class="flex-grow-1 mb-3 form-control"
@@ -1169,7 +1169,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <h1
               class="c-diversion-panel__h1 my-3"
             >
-              Share Detour Details
+              View Draft Detour
             </h1>
           </header>
           <div
@@ -1196,7 +1196,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                     fill-rule="evenodd"
                   />
                 </svg>
-                 Edit Detour
+                 Edit
               </button>
               <textarea
                 class="flex-grow-1 mb-3 form-control"

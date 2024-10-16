@@ -19,7 +19,7 @@ export const DetourFinishedPanel = ({
 }: DetourFinishedPanelProps) => (
   <Panel as="article">
     <Panel.Header className="">
-      <h1 className="c-diversion-panel__h1 my-3">Share Detour Details</h1>
+      <h1 className="c-diversion-panel__h1 my-3">View Draft Detour</h1>
     </Panel.Header>
 
     <Panel.Body className="d-flex flex-column">
@@ -30,7 +30,7 @@ export const DetourFinishedPanel = ({
           variant="outline-primary"
           onClick={onNavigateBack}
         >
-          <BsIcons.ArrowLeft /> Edit Detour
+          <BsIcons.ArrowLeft /> Edit
         </Button>
 
         <Form.Control

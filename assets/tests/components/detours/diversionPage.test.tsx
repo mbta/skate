@@ -25,8 +25,11 @@ import {
 import { stopFactory } from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
+  drawDetourHeading,
+  editDetourButton,
   originalRouteShape,
   reviewDetourButton,
+  viewDraftDetourHeading,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
 import {
   finishedDetourFactory,
@@ -1071,7 +1074,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("When 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When 'Review Detour' button is clicked, shows 'View Draft Detour' screen", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -1084,15 +1087,11 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(
-      screen.queryByRole("heading", { name: "Create Detour" })
-    ).not.toBeInTheDocument()
-    expect(
-      screen.getByRole("heading", { name: "Share Detour Details" })
-    ).toBeVisible()
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
   })
 
-  test("When the finished-detour API call errors and 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When the finished-detour API call errors and 'Review Detour' button is clicked, shows 'View Draft Detour' screen", async () => {
     jest.mocked(fetchFinishedDetour).mockRejectedValue("NOPE")
 
     const { container } = render(<DiversionPage />)
@@ -1107,15 +1106,11 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(
-      screen.queryByRole("heading", { name: "Create Detour" })
-    ).not.toBeInTheDocument()
-    expect(
-      screen.getByRole("heading", { name: "Share Detour Details" })
-    ).toBeVisible()
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
   })
 
-  test("When the detour-directions API call errors and 'Review Detour' button is clicked, shows 'Share Detour Details' screen", async () => {
+  test("When the detour-directions API call errors and 'Review Detour' button is clicked, shows 'View Draft Detour' screen", async () => {
     jest.mocked(fetchDetourDirections).mockRejectedValue("NOPE")
 
     const { container } = render(<DiversionPage />)
@@ -1130,15 +1125,11 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(
-      screen.queryByRole("heading", { name: "Create Detour" })
-    ).not.toBeInTheDocument()
-    expect(
-      screen.getByRole("heading", { name: "Share Detour Details" })
-    ).toBeVisible()
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
   })
 
-  test("'Share Detour Details' screen has alert describing that the detour is not editable", async () => {
+  test("'View Draft Detour' screen has alert describing that the detour is not editable", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -1156,7 +1147,7 @@ describe("DiversionPage", () => {
     )
   })
 
-  test("'Share Detour Details' screen disables the 'Undo' and 'Clear' buttons", async () => {
+  test("'View Draft Detour' screen disables the 'Undo' and 'Clear' buttons", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -1175,7 +1166,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("'Share Detour Details' screen has back button to edit detour again", async () => {
+  test("'View Draft Detour' screen has back button to edit detour again", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -1188,10 +1179,10 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(screen.getByRole("button", { name: "Edit Detour" })).toBeVisible()
+    expect(editDetourButton.get()).toBeVisible()
   })
 
-  test("'Share Detour Details' screen returns to editing screen when edit detour button is clicked", async () => {
+  test("'View Draft Detour' screen returns to editing screen when edit detour button is clicked", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -1204,14 +1195,10 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    await userEvent.click(
-      await screen.findByRole("button", { name: "Edit Detour" })
-    )
+    await userEvent.click(editDetourButton.get())
 
     await waitFor(() => {
-      expect(
-        screen.queryByRole("button", { name: "Edit Detour" })
-      ).not.toBeInTheDocument()
+      expect(editDetourButton.query()).not.toBeInTheDocument()
       expect(
         screen.getByRole("button", { name: "Review Detour" })
       ).toBeVisible()
@@ -1221,7 +1208,7 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("'Share Detour Details' screen has button to copy details", async () => {
+  test("'View Draft Detour' screen has button to copy details", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -1237,7 +1224,7 @@ describe("DiversionPage", () => {
     expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
   })
 
-  test("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
+  test("'View Draft Detour' screen copies text content to clipboard when clicked copy details button", async () => {
     const stops = stopFactory.buildList(4)
     const [start, end] = stopFactory.buildList(2)
 
@@ -1409,9 +1396,7 @@ describe("DiversionPage", () => {
         />
       )
 
-      expect(
-        await screen.findByRole("heading", { name: "Create Detour" })
-      ).toBeInTheDocument()
+      expect(await drawDetourHeading.find()).toBeInTheDocument()
       expect(
         screen.queryByRole("button", { name: "Change route or direction" })
       ).toBeInTheDocument()
@@ -1927,8 +1912,6 @@ describe("DiversionPage", () => {
       </RoutesProvider>
     )
 
-    expect(
-      screen.getByRole("heading", { name: "Share Detour Details" })
-    ).toBeVisible()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
   })
 })
