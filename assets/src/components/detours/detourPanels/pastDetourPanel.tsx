@@ -4,9 +4,15 @@ import { DetourDirection } from "../../../models/detour"
 import { Stop } from "../../../schedule"
 import { ArrowLeft } from "../../../helpers/bsIcons"
 import { Button, ListGroup } from "react-bootstrap"
-import { AffectedRoute, MissedStops } from "../detourPanelComponents"
+import {
+  AffectedRoute,
+  CopyButton,
+  MissedStops,
+} from "../detourPanelComponents"
+import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 
 export interface PastDetourPanelProps {
+  detourText: string
   directions?: DetourDirection[]
   connectionPoints: [string, string]
   missedStops?: Stop[]
@@ -18,6 +24,7 @@ export interface PastDetourPanelProps {
 }
 
 export const PastDetourPanel = ({
+  detourText,
   directions,
   connectionPoints: [connectionPointStart, connectionPointEnd],
   missedStops,
@@ -30,6 +37,10 @@ export const PastDetourPanel = ({
   <Panel as="article">
     <Panel.Header className="">
       <h1 className="c-diversion-panel__h1 my-3">View Past Detour</h1>
+      {/* TODO: temporary test group until I get the copy logic hooked up */}
+      {inTestGroup(TestGroups.CopyButton) && (
+        <CopyButton detourText={detourText} />
+      )}
     </Panel.Header>
 
     <Panel.Body className="d-flex flex-column">
