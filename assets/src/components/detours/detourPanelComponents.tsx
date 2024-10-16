@@ -87,7 +87,7 @@ export const CopyButton = ({ detourText }: { detourText: string }) => (
       onClick={() => window.navigator.clipboard?.writeText(detourText)}
     >
       <Files />
-      Copy Details
+      Copy details
     </Button>
   </OverlayTrigger>
 )
