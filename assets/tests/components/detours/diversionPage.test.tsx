@@ -1234,7 +1234,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
+    expect(screen.getByRole("button", { name: "Copy details" })).toBeVisible()
   })
 
   test("'Share Detour Details' screen copies text content to clipboard when clicked copy details button", async () => {
@@ -1300,7 +1300,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    await userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
+    await userEvent.click(screen.getByRole("button", { name: "Copy details" }))
 
     await waitFor(() =>
       expect(window.navigator.clipboard.readText()).resolves.toBe(
