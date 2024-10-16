@@ -1072,247 +1072,6 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("When 'Review' button is clicked, shows 'View Draft Detour' screen", async () => {
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    expect(drawDetourHeading.query()).not.toBeInTheDocument()
-    expect(viewDraftDetourHeading.get()).toBeVisible()
-  })
-
-  test("When the finished-detour API call errors and 'Review' button is clicked, shows 'View Draft Detour' screen", async () => {
-    jest.mocked(fetchFinishedDetour).mockRejectedValue("NOPE")
-
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    expect(drawDetourHeading.query()).not.toBeInTheDocument()
-    expect(viewDraftDetourHeading.get()).toBeVisible()
-  })
-
-  test("When the detour-directions API call errors and 'Review' button is clicked, shows 'View Draft Detour' screen", async () => {
-    jest.mocked(fetchDetourDirections).mockRejectedValue("NOPE")
-
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    expect(drawDetourHeading.query()).not.toBeInTheDocument()
-    expect(viewDraftDetourHeading.get()).toBeVisible()
-  })
-
-  test("'View Draft Detour' screen has alert describing that the detour is not editable", async () => {
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      "Detour shape is not editable from this screen."
-    )
-  })
-
-  test("'View Draft Detour' screen disables the 'Undo' and 'Clear' buttons", async () => {
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
-      expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
-    })
-  })
-
-  test("'View Draft Detour' screen has back button to edit detour again", async () => {
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    expect(editDetourButton.get()).toBeVisible()
-  })
-
-  test("'View Draft Detour' screen returns to editing screen when edit detour button is clicked", async () => {
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    await userEvent.click(editDetourButton.get())
-
-    await waitFor(() => {
-      expect(editDetourButton.query()).not.toBeInTheDocument()
-      expect(reviewDetourButton.get()).toBeVisible()
-
-      expect(screen.getByRole("button", { name: "Undo" })).not.toBeDisabled()
-      expect(screen.getByRole("button", { name: "Clear" })).not.toBeDisabled()
-    })
-  })
-
-  test("'View Draft Detour' screen has button to copy details", async () => {
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
-  })
-
-  test("'View Draft Detour' screen copies text content to clipboard when clicked copy details button", async () => {
-    const stops = stopFactory.buildList(4)
-    const [start, end] = stopFactory.buildList(2)
-
-    jest.mocked(fetchFinishedDetour).mockResolvedValue(
-      finishedDetourFactory.build({
-        missedStops: stops,
-        connectionPoint: {
-          start,
-          end,
-        },
-        routeSegments: routeSegmentsFactory.build(),
-        detourShape: detourShapeFactory.build({
-          directions: [
-            { instruction: "Turn left on Main Street" },
-            { instruction: "Turn right on High Street" },
-            { instruction: "Turn sharp right on Broadway" },
-          ],
-        }),
-      })
-    )
-
-    const intersectionPromise = Promise.resolve("Avenue 1 & Street 2")
-    jest.mocked(fetchNearestIntersection).mockReturnValue(intersectionPromise)
-
-    userEvent.setup() // Configure the clipboard API
-
-    const routeName = "route1"
-    const routeOrigin = "Origin Station"
-    const routeDescription = "Headsign via Bus"
-    const routeDirection = "Outbound"
-    const connectionPoint = { lat: 10, lon: 10 }
-    const { container } = render(
-      <DiversionPage
-        originalRoute={originalRouteFactory.build({
-          route: {
-            name: routeName,
-          },
-          routePattern: {
-            headsign: routeDescription,
-            name: routeOrigin,
-            shape: {
-              points: [connectionPoint],
-            },
-          },
-        })}
-      />
-    )
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await act(async () => {
-      await intersectionPromise
-    })
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await userEvent.click(reviewDetourButton.get())
-
-    await userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
-
-    await waitFor(() =>
-      expect(window.navigator.clipboard.readText()).resolves.toBe(
-        [
-          `Detour ${routeName} ${routeDirection}`,
-          routeOrigin,
-          ,
-          "Connection Points:",
-          start.name,
-          end.name,
-          ,
-          `Missed Stops (${stops.length}):`,
-          ...stops.map(({ name }) => name),
-          ,
-          "Turn-by-Turn Directions:",
-          "From Avenue 1 & Street 2",
-          "Turn left on Main Street",
-          "Turn right on High Street",
-          "Turn sharp right on Broadway",
-          "Regular Route",
-        ].join("\n")
-      )
-    )
-
-    expect(
-      await screen.findByRole("tooltip", { name: "Copied to clipboard!" })
-    ).toBeVisible()
-  })
-
   test("Attempting to close the page calls the onClose callback", async () => {
     const onClose = jest.fn()
 
@@ -1909,5 +1668,248 @@ describe("DiversionPage", () => {
     )
 
     expect(viewDraftDetourHeading.get()).toBeVisible()
+  })
+})
+
+describe("View Draft Detour", () => {
+  test("When 'Review' button is clicked, shows 'View Draft Detour' screen", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
+  })
+
+  test("When the finished-detour API call errors and 'Review' button is clicked, shows 'View Draft Detour' screen", async () => {
+    jest.mocked(fetchFinishedDetour).mockRejectedValue("NOPE")
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
+  })
+
+  test("When the detour-directions API call errors and 'Review' button is clicked, shows 'View Draft Detour' screen", async () => {
+    jest.mocked(fetchDetourDirections).mockRejectedValue("NOPE")
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
+  })
+
+  test("'View Draft Detour' screen has alert describing that the detour is not editable", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Detour shape is not editable from this screen."
+    )
+  })
+
+  test("'View Draft Detour' screen disables the 'Undo' and 'Clear' buttons", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
+      expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
+    })
+  })
+
+  test("'View Draft Detour' screen has back button to edit detour again", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    expect(editDetourButton.get()).toBeVisible()
+  })
+
+  test("'View Draft Detour' screen returns to editing screen when edit detour button is clicked", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    await userEvent.click(editDetourButton.get())
+
+    await waitFor(() => {
+      expect(editDetourButton.query()).not.toBeInTheDocument()
+      expect(reviewDetourButton.get()).toBeVisible()
+
+      expect(screen.getByRole("button", { name: "Undo" })).not.toBeDisabled()
+      expect(screen.getByRole("button", { name: "Clear" })).not.toBeDisabled()
+    })
+  })
+
+  test("'View Draft Detour' screen has button to copy details", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    expect(screen.getByRole("button", { name: "Copy Details" })).toBeVisible()
+  })
+
+  test("'View Draft Detour' screen copies text content to clipboard when clicked copy details button", async () => {
+    const stops = stopFactory.buildList(4)
+    const [start, end] = stopFactory.buildList(2)
+
+    jest.mocked(fetchFinishedDetour).mockResolvedValue(
+      finishedDetourFactory.build({
+        missedStops: stops,
+        connectionPoint: {
+          start,
+          end,
+        },
+        routeSegments: routeSegmentsFactory.build(),
+        detourShape: detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        }),
+      })
+    )
+
+    const intersectionPromise = Promise.resolve("Avenue 1 & Street 2")
+    jest.mocked(fetchNearestIntersection).mockReturnValue(intersectionPromise)
+
+    userEvent.setup() // Configure the clipboard API
+
+    const routeName = "route1"
+    const routeOrigin = "Origin Station"
+    const routeDescription = "Headsign via Bus"
+    const routeDirection = "Outbound"
+    const connectionPoint = { lat: 10, lon: 10 }
+    const { container } = render(
+      <DiversionPage
+        originalRoute={originalRouteFactory.build({
+          route: {
+            name: routeName,
+          },
+          routePattern: {
+            headsign: routeDescription,
+            name: routeOrigin,
+            shape: {
+              points: [connectionPoint],
+            },
+          },
+        })}
+      />
+    )
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await act(async () => {
+      await intersectionPromise
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    await userEvent.click(screen.getByRole("button", { name: "Copy Details" }))
+
+    await waitFor(() =>
+      expect(window.navigator.clipboard.readText()).resolves.toBe(
+        [
+          `Detour ${routeName} ${routeDirection}`,
+          routeOrigin,
+          ,
+          "Connection Points:",
+          start.name,
+          end.name,
+          ,
+          `Missed Stops (${stops.length}):`,
+          ...stops.map(({ name }) => name),
+          ,
+          "Turn-by-Turn Directions:",
+          "From Avenue 1 & Street 2",
+          "Turn left on Main Street",
+          "Turn right on High Street",
+          "Turn sharp right on Broadway",
+          "Regular Route",
+        ].join("\n")
+      )
+    )
+
+    expect(
+      await screen.findByRole("tooltip", { name: "Copied to clipboard!" })
+    ).toBeVisible()
   })
 })
