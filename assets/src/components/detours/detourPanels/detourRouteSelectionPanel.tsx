@@ -8,6 +8,7 @@ import {
   RoutePatternId,
 } from "../../../schedule"
 import RoutePropertiesCard from "../../mapPage/routePropertiesCard"
+import { Brush } from "../../../helpers/bsIcons"
 
 interface SelectedRouteInfoWithRoutePatterns {
   selectedRoute: Route
@@ -142,7 +143,11 @@ export const DetourRouteSelectionPanel = ({
         </Panel.Body.ScrollArea>
 
         <Panel.Body.Footer className="d-flex">
-          <Button className="m-3 flex-grow-1" onClick={onConfirm}>
+          <Button
+            className="m-3 flex-grow-1 icon-link justify-content-center"
+            onClick={onConfirm}
+          >
+            <Brush />
             Start drawing detour
           </Button>
         </Panel.Body.Footer>

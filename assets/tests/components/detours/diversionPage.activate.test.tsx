@@ -14,6 +14,7 @@ import {
   activateDetourButton,
   originalRouteShape,
   reviewDetourButton,
+  viewDraftDetourHeading,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
 import {
   fetchDetourDirections,
@@ -152,9 +153,7 @@ describe("DiversionPage activate workflow", () => {
     test("does not show the activate flow modal before clicking the activate button", async () => {
       await diversionPageOnReviewScreen()
 
-      expect(
-        screen.getByRole("heading", { name: "Share Detour Details" })
-      ).toBeVisible()
+      expect(viewDraftDetourHeading.get()).toBeVisible()
       expect(step1Heading.query()).not.toBeInTheDocument()
     })
 
@@ -163,9 +162,7 @@ describe("DiversionPage activate workflow", () => {
 
       await userEvent.click(activateDetourButton.get())
 
-      expect(
-        screen.getByRole("heading", { name: "Share Detour Details" })
-      ).toBeVisible()
+      expect(viewDraftDetourHeading.get()).toBeVisible()
       expect(step1Heading.get()).toBeVisible()
     })
   })
@@ -356,9 +353,7 @@ describe("DiversionPage activate workflow", () => {
 
       await userEvent.click(activateButton.get())
 
-      expect(
-        screen.queryByRole("heading", { name: "Share Detour Details" })
-      ).not.toBeInTheDocument()
+      expect(viewDraftDetourHeading.query()).not.toBeInTheDocument()
       expect(
         screen.getByRole("heading", { name: "Active Detour" })
       ).toBeVisible()

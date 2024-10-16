@@ -20,7 +20,7 @@ export const DetourFinishedPanel = ({
 }: DetourFinishedPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header className="d-inline-flex justify-content-between">
-      <h1 className="c-diversion-panel__h1 my-3">Share Detour Details</h1>
+      <h1 className="c-diversion-panel__h1 my-3">View Draft Detour</h1>
       <CopyButton detourText={detourText} />
     </Panel.Header>
 
@@ -32,7 +32,7 @@ export const DetourFinishedPanel = ({
           variant="outline-primary"
           onClick={onNavigateBack}
         >
-          <BsIcons.ArrowLeft /> Edit Detour
+          <BsIcons.ArrowLeft /> Edit
         </Button>
 
         <Form.Control
@@ -49,11 +49,11 @@ export const DetourFinishedPanel = ({
       <Panel.Body.Footer className="d-flex flex-column">
         {onActivateDetour && (
           <Button
-            className="m-3 flex-grow-1"
-            variant="missed-stop"
+            className="m-3 flex-grow-1 icon-link justify-content-center"
             onClick={onActivateDetour}
           >
-            Activate Detour
+            <BsIcons.Power />
+            Start Detour
           </Button>
         )}
       </Panel.Body.Footer>

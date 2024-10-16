@@ -429,9 +429,9 @@ export const DiversionPage = ({
                 {useDetourProps.author}
               </span>
             </>
-          ) : (
+          ) : isMobile(displayType) ? (
             <div className="flex-grow-1 fw-semibold text-center">Detours</div>
-          )}
+          ) : null}
           <CloseButton className="p-4" onClick={onClose} />
         </header>
 

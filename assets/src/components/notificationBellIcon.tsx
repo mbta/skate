@@ -17,12 +17,15 @@ const NotificationBellIcon = ({
   } = usePanelStateFromStateDispatchContext()
   const { notifications } = useContext(NotificationsContext)
 
-  const inDetoursList = inTestGroup(TestGroups.DetoursList)
+  const inDetoursNotificationGroup =
+    inTestGroup(TestGroups.DetoursList) &&
+    inTestGroup(TestGroups.DetoursNotifications)
   const unreadNotifications = (notifications || []).filter(
     (notification) =>
       notification.state === "unread" &&
       !(
-        notification.content.$type === NotificationType.Detour && !inDetoursList
+        notification.content.$type === NotificationType.Detour &&
+        !inDetoursNotificationGroup
       )
   )
   const unreadBadge: boolean = unreadNotifications.length > 0

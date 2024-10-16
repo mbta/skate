@@ -5,7 +5,7 @@ import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten, partition } from "../helpers/array"
 import { joinClasses } from "../helpers/dom"
-import vehicleLabel from "../helpers/vehicleLabel"
+import { vehicleLabel } from "../helpers/vehicleLabel"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import { crowdingLabel, OccupancyStatus } from "../models/crowding"
 import {

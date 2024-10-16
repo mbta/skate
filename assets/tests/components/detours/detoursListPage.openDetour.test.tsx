@@ -15,6 +15,7 @@ import getTestGroups from "../../../src/userTestGroups"
 import { detourListFactory } from "../../factories/detourListFactory"
 import { TestGroups } from "../../../src/userInTestGroup"
 import { detourStateMachineFactory } from "../../factories/detourStateMachineFactory"
+import { viewDraftDetourHeading } from "../../testHelpers/selectors/components/detours/diversionPage"
 
 jest
   .useFakeTimers({ doNotFake: ["setTimeout"] })
@@ -55,9 +56,7 @@ describe("Detours Page: Open a Detour", () => {
     await userEvent.click(await screen.findByText("Headsign Z"))
 
     // Render modal based on mocked value, which is a detour-in-progress
-    expect(
-      await screen.findByRole("heading", { name: "Share Detour Details" })
-    ).toBeVisible()
+    expect(viewDraftDetourHeading.get()).toBeVisible()
 
     // Finally, check snapshot
     await waitFor(() => expect(baseElement).toMatchSnapshot())
