@@ -161,7 +161,7 @@ export const DiversionPage = ({
     routeName,
     routeDirection,
     routeOrigin,
-    extendedDirections,
+    directions,
     missedStops,
     connectionPoints?.start?.name,
     connectionPoints?.end?.name,
