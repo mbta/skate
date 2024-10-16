@@ -7,7 +7,9 @@ export const activateDetourButton = byRole("button", {
 })
 export const editDetourButton = byRole("button", { name: "Edit" })
 
-export const viewDraftDetourHeading = byRole("heading", { name: "View Draft Detour" })
+export const viewDraftDetourHeading = byRole("heading", {
+  name: "View Draft Detour",
+})
 export const drawDetourHeading = byRole("heading", { name: "Draw Detour" })
 
 export const originalRouteShape = {

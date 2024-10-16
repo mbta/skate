@@ -25,6 +25,7 @@ import {
 import { stopFactory } from "../../factories/stop"
 import userEvent from "@testing-library/user-event"
 import {
+  drawDetourHeading,
   editDetourButton,
   originalRouteShape,
   reviewDetourButton,
@@ -1086,9 +1087,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(
-      screen.queryByRole("heading", { name: "Draw Detour" })
-    ).not.toBeInTheDocument()
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
     expect(viewDraftDetourHeading.get()).toBeVisible()
   })
 
@@ -1107,9 +1106,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(
-      screen.queryByRole("heading", { name: "Draw Detour" })
-    ).not.toBeInTheDocument()
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
     expect(viewDraftDetourHeading.get()).toBeVisible()
   })
 
@@ -1128,9 +1125,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(
-      screen.queryByRole("heading", { name: "Draw Detour" })
-    ).not.toBeInTheDocument()
+    expect(drawDetourHeading.query()).not.toBeInTheDocument()
     expect(viewDraftDetourHeading.get()).toBeVisible()
   })
 
@@ -1401,9 +1396,7 @@ describe("DiversionPage", () => {
         />
       )
 
-      expect(
-        await screen.findByRole("heading", { name: "Draw Detour" })
-      ).toBeInTheDocument()
+      expect(await drawDetourHeading.find()).toBeInTheDocument()
       expect(
         screen.queryByRole("button", { name: "Change route or direction" })
       ).toBeInTheDocument()
