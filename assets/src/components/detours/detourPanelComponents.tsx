@@ -13,8 +13,8 @@ export const MissedStops = ({ missedStops }: MissedStopsProps) => (
     {missedStops && (
       <section className="pb-3">
         <h2 className="c-diversion-panel__h2">
-          Missed Stops{" "}
-          <Badge pill bg="missed-stop" className="fs-4">
+          Missed Stops
+          <Badge pill bg="missed-stop" className="ps-2 fs-4">
             {missedStops.length}
           </Badge>
         </h2>
