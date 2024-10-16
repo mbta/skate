@@ -397,10 +397,10 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             </span>
           </button>
           <article
-            class="l-diversion-page-panel border-end"
+            class="l-diversion-page-panel border-end c-diversion-panel"
           >
             <header
-              class="l-diversion-page-panel__header border-bottom px-3"
+              class="l-diversion-page-panel__header border-bottom px-3 d-inline-flex justify-content-between"
             >
               <h1
                 class="c-diversion-panel__h1 my-3"
@@ -1189,10 +1189,10 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
         class="l-diversion-page__panel text-bg-light"
       >
         <article
-          class="l-diversion-page-panel border-end"
+          class="l-diversion-page-panel border-end c-diversion-panel"
         >
           <header
-            class="l-diversion-page-panel__header border-bottom px-3"
+            class="l-diversion-page-panel__header border-bottom px-3 d-inline-flex justify-content-between"
           >
             <h1
               class="c-diversion-panel__h1 my-3"
