@@ -3,7 +3,6 @@ import React, {
   ComponentPropsWithoutRef,
   PropsWithChildren,
   useContext,
-  useEffect,
   useState,
 } from "react"
 import { DrawDetourPanel } from "./detourPanels/drawDetourPanel"
@@ -90,7 +89,6 @@ export const DiversionPage = ({
     detourShape,
     directions,
     routingError,
-    nearestIntersection,
 
     unfinishedRouteSegments,
 
@@ -113,16 +111,7 @@ export const DiversionPage = ({
       : { input: useDetourProps.originalRoute }
   )
 
-  const [textArea, setTextArea] = useState("")
-
-  const nearestIntersectionDirection = [
-    { instruction: "From " + nearestIntersection },
-  ]
-  const extendedDirections = directions
-    ? nearestIntersectionDirection.concat(directions)
-    : undefined
-
-  const { route, routePattern, routePatterns } = snapshot.context
+  const { route, routePattern, routePatterns, editedDetourText } = snapshot.context
   const routePatternsById = Object.fromEntries(
     routePatterns?.map((rp) => [rp.id, rp]) ?? []
   )
@@ -136,36 +125,6 @@ export const DiversionPage = ({
   } = route && routePattern
     ? displayFieldsFromRouteAndPattern(route, routePattern)
     : {}
-
-  useEffect(() => {
-    if (snapshot.matches({ "Detour Drawing": "Share Detour" })) {
-      setTextArea(
-        [
-          `Detour ${routeName} ${routeDirection}`,
-          routeOrigin,
-          ,
-          "Connection Points:",
-          connectionPoints?.start?.name ?? "N/A",
-          connectionPoints?.end?.name ?? "N/A",
-          ,
-          `Missed Stops (${missedStops?.length}):`,
-          ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
-          ,
-          "Turn-by-Turn Directions:",
-          ...(extendedDirections?.map((v) => v.instruction) ?? []),
-        ].join("\n")
-      )
-    }
-  }, [
-    snapshot,
-    routeName,
-    routeDirection,
-    routeOrigin,
-    extendedDirections,
-    missedStops,
-    connectionPoints?.start?.name,
-    connectionPoints?.end?.name,
-  ])
 
   const routes = useContext(RoutesContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
@@ -236,7 +195,7 @@ export const DiversionPage = ({
     ) {
       return (
         <DrawDetourPanel
-          directions={extendedDirections}
+          directions={directions}
           missedStops={missedStops}
           routeName={routeName ?? "??"}
           routeDescription={routeDescription ?? "??"}
@@ -254,8 +213,8 @@ export const DiversionPage = ({
       return (
         <DetourFinishedPanel
           onNavigateBack={editDetour}
-          detourText={textArea}
-          onChangeDetourText={setTextArea}
+          detourText={editedDetourText || ""}
+          onChangeDetourText={(detourText: string) => send({type: "detour.share.edit-directions", detourText})}
           onActivateDetour={
             inTestGroup(TestGroups.DetoursList)
               ? () => {
@@ -339,8 +298,8 @@ export const DiversionPage = ({
     } else if (snapshot.matches({ "Detour Drawing": "Active" })) {
       return (
         <ActiveDetourPanel
-          detourText="Hello World"
-          directions={extendedDirections}
+          detourText={editedDetourText || ""}
+          directions={directions}
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
             connectionPoints?.end?.name ?? "N/A",
@@ -380,8 +339,8 @@ export const DiversionPage = ({
     } else if (snapshot.matches({ "Detour Drawing": "Past" })) {
       return (
         <PastDetourPanel
-          detourText="Hello World"
-          directions={extendedDirections}
+          detourText={editedDetourText || ""}
+          directions={directions}
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
             connectionPoints?.end?.name ?? "N/A",
