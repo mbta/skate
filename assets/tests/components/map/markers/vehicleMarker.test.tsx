@@ -6,7 +6,7 @@ import "@testing-library/jest-dom/jest-globals"
 
 import { VehicleMarker } from "../../../../src/components/map/markers/vehicleMarker"
 
-import { vehicleFactory } from "../../../factories/vehicle"
+import { shuttleFactory, vehicleFactory } from "../../../factories/vehicle"
 import { MapContainer } from "react-leaflet"
 
 const TestMap = ({ children }: PropsWithChildren): React.JSX.Element => (
@@ -38,4 +38,73 @@ describe("VehicleMarker", () => {
     expect(container.querySelector(".c-vehicle-map__icon")).toBeInTheDocument()
     expect(screen.getByText("101")).toBeInTheDocument()
   })
+
+  describe.each([
+    {
+      runId: "999-0501",
+      specialClass: ".c-vehicle-marker--blue",
+    },
+    {
+      runId: "999-0502",
+      specialClass: ".c-vehicle-marker--green",
+    },
+    {
+      runId: "999-0503",
+      specialClass: ".c-vehicle-marker--orange",
+    },
+    {
+      runId: "999-0504",
+      specialClass: ".c-vehicle-marker--red",
+    },
+    {
+      runId: "999-0505",
+      specialClass: ".c-vehicle-marker--cr",
+    },
+    {
+      runId: "999-0555",
+      specialClass: null,
+    },
+    {
+      runId: "101",
+      specialClass: null,
+    },
+  ])(
+    "when vehicle is shuttle with runId:`$runId`",
+    ({ runId, specialClass }) => {
+      test("should render with shuttle class", () => {
+        const { container } = render(
+          <VehicleMarker
+            vehicle={shuttleFactory.build({
+              runId,
+            })}
+            isPrimary={true}
+          />,
+          {
+            wrapper: TestMap,
+          }
+        )
+
+        expect(
+          container.querySelector(".c-vehicle-marker--shuttle")
+        ).toBeInTheDocument()
+      })
+
+      specialClass !== null &&
+        test(`should render with class \`${specialClass}\``, () => {
+          const { container } = render(
+            <VehicleMarker
+              vehicle={shuttleFactory.build({
+                runId,
+              })}
+              isPrimary={true}
+            />,
+            {
+              wrapper: TestMap,
+            }
+          )
+
+          expect(container.querySelector(specialClass)).toBeInTheDocument()
+        })
+    }
+  )
 })
