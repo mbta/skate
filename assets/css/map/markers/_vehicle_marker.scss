@@ -1,0 +1,64 @@
+.c-vehicle-map__icon {
+  path {
+    fill: $color-primary-legacy;
+    stroke: $color-bg-base;
+    stroke-width: 2;
+
+    &.on-time {
+      fill: $color-vehicle-ontime;
+    }
+
+    &.early.early-red {
+      fill: $color-vehicle-red;
+    }
+    &.early.early-blue {
+      fill: $color-vehicle-blue;
+    }
+
+    &.late.early-red {
+      fill: $color-vehicle-blue;
+    }
+    &.late.early-blue {
+      fill: $color-vehicle-red;
+    }
+
+    &.off-course {
+      fill: $color-vehicle-off-course;
+    }
+
+    &.logged-out {
+      fill: $color-gray-300;
+      stroke: $color-gray-600;
+      stroke-width: 1px;
+    }
+
+    &.selected {
+      stroke: $color-eggplant-600;
+      stroke-width: 1.5;
+      filter: drop-shadow(1px 1px 4px $color-eggplant-400);
+    }
+  }
+
+  svg {
+    overflow: visible;
+  }
+}
+
+.c-vehicle-map__label {
+  svg {
+    overflow: visible;
+  }
+
+  &.primary {
+    font-size: var(--font-size-s);
+    font-weight: 500;
+  }
+
+  &.secondary {
+    @include font-tiny;
+  }
+
+  &.selected .c-vehicle-icon__label-background {
+    fill: $color-eggplant-300;
+  }
+}

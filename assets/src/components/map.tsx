@@ -29,8 +29,8 @@ import {
   RouteStopMarkers,
   StationMarker,
   TrainVehicleMarker,
-  VehicleMarker,
 } from "./mapMarkers"
+import { VehicleMarker } from "./map/markers/vehicleMarker"
 import ZoomLevelWrapper from "./ZoomLevelWrapper"
 import { StreetViewControl } from "./map/controls/StreetViewSwitch"
 import StreetViewModeEnabledContext from "../contexts/streetViewModeEnabledContext"

@@ -36,12 +36,8 @@ import {
   drawerOffsetAutoCenter,
   InterruptibleFollower,
 } from "../map/follower"
-import {
-  RouteShape,
-  RouteStopMarkers,
-  StopMarkers,
-  VehicleMarker,
-} from "../mapMarkers"
+import { RouteShape, RouteStopMarkers, StopMarkers } from "../mapMarkers"
+import { VehicleMarker } from "../map/markers/vehicleMarker"
 import { MapSafeAreaContext } from "../../contexts/mapSafeAreaContext"
 import { LocationSearchMarker } from "../map/markers/locationSearchMarker"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
