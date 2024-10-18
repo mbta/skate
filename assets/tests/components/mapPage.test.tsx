@@ -1587,7 +1587,7 @@ describe("<MapPage />", () => {
           })
           expect(selectedVehicleLabel).toBeInTheDocument()
           // this should be expressed via some accessibility property
-          expect(selectedVehicleLabel).toHaveClass("selected")
+          expect(selectedVehicleLabel.querySelector(".selected")).toBeVisible()
 
           expect(
             container.querySelectorAll(".c-vehicle-map__stop")
