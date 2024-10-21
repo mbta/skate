@@ -4,6 +4,26 @@ import { Badge, ListGroup } from "react-bootstrap"
 import { uniqBy } from "../../helpers/array"
 import { RoutePill } from "../routePill"
 
+interface ConnectionPointsProps {
+  connectionPoints?: [string, string]
+}
+
+export const ConnectionPoints = ({
+  connectionPoints,
+}: ConnectionPointsProps) => (
+  <>
+    {connectionPoints && (
+      <section className="pb-3">
+        <h2 className="c-diversion-panel__h2">Connection Points</h2>
+        <ListGroup as="ul">
+          <ListGroup.Item>{connectionPoints[0]}</ListGroup.Item>
+          <ListGroup.Item>{connectionPoints[1]}</ListGroup.Item>
+        </ListGroup>
+      </section>
+    )}
+  </>
+)
+
 interface MissedStopsProps {
   missedStops?: Stop[]
 }

@@ -8,11 +8,15 @@ import {
   ExclamationTriangleFill,
   StopCircle,
 } from "../../../helpers/bsIcons"
-import { AffectedRoute, MissedStops } from "../detourPanelComponents"
+import {
+  AffectedRoute,
+  ConnectionPoints,
+  MissedStops,
+} from "../detourPanelComponents"
 
 export interface ActiveDetourPanelProps extends PropsWithChildren {
   directions?: DetourDirection[]
-  connectionPoints?: string[]
+  connectionPoints?: [string, string]
   missedStops?: Stop[]
   routeName: string
   routeDescription: string
@@ -67,15 +71,7 @@ export const ActiveDetourPanel = ({
             routeDirection={routeDirection}
           />
 
-          {connectionPoints && (
-            <section className="pb-3">
-              <h2 className="c-diversion-panel__h2">Connection Points</h2>
-              <ListGroup as="ul">
-                <ListGroup.Item>{connectionPoints[0]}</ListGroup.Item>
-                <ListGroup.Item>{connectionPoints[1]}</ListGroup.Item>
-              </ListGroup>
-            </section>
-          )}
+          <ConnectionPoints connectionPoints={connectionPoints} />
 
           <MissedStops missedStops={missedStops} />
 

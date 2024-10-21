@@ -4,7 +4,11 @@ import { DetourDirection } from "../../../models/detour"
 import { Stop } from "../../../schedule"
 import { ArrowLeft } from "../../../helpers/bsIcons"
 import { Button, ListGroup } from "react-bootstrap"
-import { AffectedRoute, MissedStops } from "../detourPanelComponents"
+import {
+  AffectedRoute,
+  ConnectionPoints,
+  MissedStops,
+} from "../detourPanelComponents"
 
 export interface PastDetourPanelProps {
   directions?: DetourDirection[]
@@ -19,7 +23,7 @@ export interface PastDetourPanelProps {
 
 export const PastDetourPanel = ({
   directions,
-  connectionPoints: [connectionPointStart, connectionPointEnd],
+  connectionPoints,
   missedStops,
   routeName,
   routeDescription,
@@ -53,13 +57,7 @@ export const PastDetourPanel = ({
           routeDirection={routeDirection}
         />
 
-        <section className="pb-3">
-          <h2 className="c-diversion-panel__h2">Connection Points</h2>
-          <ListGroup as="ul">
-            <ListGroup.Item>{connectionPointStart}</ListGroup.Item>
-            <ListGroup.Item>{connectionPointEnd}</ListGroup.Item>
-          </ListGroup>
-        </section>
+        <ConnectionPoints connectionPoints={connectionPoints} />
 
         <MissedStops missedStops={missedStops} />
 
