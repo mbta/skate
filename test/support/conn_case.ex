@@ -83,12 +83,8 @@ defmodule SkateWeb.ConnCase do
   end
 
   # Factory to create users
-  # Currently uses hardcoded information, but is subject to change
   defp create_default_user() do
-    username = "test_user"
-    email = "test_user@test.com"
-
-    Skate.Settings.User.upsert(username, email)
+    Skate.Factory.insert(:user)
   end
 
   # Creates a Guardian resource for a `User`
