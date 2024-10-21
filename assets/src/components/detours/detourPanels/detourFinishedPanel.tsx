@@ -18,7 +18,11 @@ export const DetourFinishedPanel = ({
   onActivateDetour,
   children,
 }: DetourFinishedPanelProps) => (
-  <Panel as="article" className="c-diversion-panel">
+  <Panel
+    as="article"
+    className="c-diversion-panel"
+    data-fs-element="Activate Panel"
+  >
     <Panel.Header>
       <h1 className="c-diversion-panel__h1 my-3">View Draft Detour</h1>
       <CopyButton detourText={detourText} />
@@ -43,6 +47,7 @@ export const DetourFinishedPanel = ({
           style={{
             resize: "none",
           }}
+          data-fs-element="Detour Text"
         />
       </Panel.Body.ScrollArea>
 
@@ -51,6 +56,7 @@ export const DetourFinishedPanel = ({
           <Button
             className="m-3 flex-grow-1 icon-link justify-content-center"
             onClick={onActivateDetour}
+            data-fs-element="Activate"
           >
             <BsIcons.Power />
             Start Detour

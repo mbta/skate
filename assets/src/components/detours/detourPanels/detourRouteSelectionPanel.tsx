@@ -146,6 +146,7 @@ export const DetourRouteSelectionPanel = ({
           <Button
             className="m-3 flex-grow-1 icon-link justify-content-center"
             onClick={onConfirm}
+            data-fs-element="Start Drawing"
           >
             <Brush />
             Start drawing detour
