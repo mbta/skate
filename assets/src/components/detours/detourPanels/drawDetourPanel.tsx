@@ -4,10 +4,15 @@ import { Button, ListGroup } from "react-bootstrap"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
 import { ArrowLeft, CardChecklist } from "../../../helpers/bsIcons"
-import { AffectedRoute, MissedStops } from "../detourPanelComponents"
+import {
+  AffectedRoute,
+  ConnectionPoints,
+  MissedStops,
+} from "../detourPanelComponents"
 
 export interface DrawDetourPanelProps {
   directions?: DetourShape["directions"]
+  connectionPoints?: [string, string]
   missedStops?: Stop[]
   routeName: string
   routeDescription: string
@@ -20,6 +25,7 @@ export interface DrawDetourPanelProps {
 
 export const DrawDetourPanel = ({
   directions,
+  connectionPoints,
   missedStops,
   routeName,
   routeDescription,
@@ -72,6 +78,8 @@ export const DrawDetourPanel = ({
             <DirectionsHelpText />
           )}
         </section>
+
+        <ConnectionPoints connectionPoints={connectionPoints} />
 
         <MissedStops missedStops={missedStops} />
       </Panel.Body.ScrollArea>

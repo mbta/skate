@@ -237,6 +237,10 @@ export const DiversionPage = ({
       return (
         <DrawDetourPanel
           directions={extendedDirections}
+          connectionPoints={[
+            connectionPoints?.start?.name ?? "N/A",
+            connectionPoints?.end?.name ?? "N/A",
+          ]}
           missedStops={missedStops}
           routeName={routeName ?? "??"}
           routeDescription={routeDescription ?? "??"}
