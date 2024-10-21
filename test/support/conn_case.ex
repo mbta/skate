@@ -17,7 +17,6 @@ defmodule SkateWeb.ConnCase do
 
   use ExUnit.CaseTemplate
   import Plug.Test
-  alias Skate.Settings.User
 
   using do
     quote do
@@ -36,10 +35,7 @@ defmodule SkateWeb.ConnCase do
   setup tags do
     Skate.DataCase.setup_sandbox(tags)
 
-    username = "test_user"
-    email = "test_user@test.com"
-
-    user = User.upsert(username, email)
+    user = Skate.Factory.insert(:user)
     resource = %{id: user.id}
 
     {conn, user} =
