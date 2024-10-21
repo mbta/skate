@@ -45,8 +45,6 @@ defmodule SkateWeb.ConnCase do
     {conn, user} =
       cond do
         tags[:authenticated] ->
-          User.upsert(username, email)
-
           conn =
             Phoenix.ConnTest.build_conn()
             |> init_test_session(%{})
@@ -55,8 +53,6 @@ defmodule SkateWeb.ConnCase do
           {conn, user}
 
         tags[:authenticated_admin] ->
-          User.upsert(username, email)
-
           conn =
             Phoenix.ConnTest.build_conn()
             |> init_test_session(%{})
@@ -67,8 +63,6 @@ defmodule SkateWeb.ConnCase do
           {conn, user}
 
         tags[:authenticated_dispatcher] ->
-          User.upsert(username, email)
-
           conn =
             Phoenix.ConnTest.build_conn()
             |> init_test_session(%{})
