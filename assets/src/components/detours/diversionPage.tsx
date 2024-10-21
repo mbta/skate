@@ -533,6 +533,9 @@ const DiversionPagePanelHeader = <As extends React.ElementType = "header">({
       "l-diversion-page-panel__header",
       "border-bottom",
       "px-3",
+      "d-inline-flex",
+      "justify-content-between",
+      "align-items-baseline",
       props.className,
     ])}
   >

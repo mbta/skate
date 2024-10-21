@@ -19,7 +19,7 @@ export const DetourFinishedPanel = ({
   children,
 }: DetourFinishedPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
-    <Panel.Header className="d-inline-flex justify-content-between">
+    <Panel.Header>
       <h1 className="c-diversion-panel__h1 my-3">View Draft Detour</h1>
       <CopyButton detourText={detourText} />
     </Panel.Header>
