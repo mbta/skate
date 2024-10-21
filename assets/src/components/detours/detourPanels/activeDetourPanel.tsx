@@ -43,8 +43,9 @@ export const ActiveDetourPanel = ({
 }: ActiveDetourPanelProps) => {
   const backButton = (
     <Button
-      className="c-diversion-panel__outline-button c-diversion-panel__outline-button--back icon-link my-3"
+      className="c-diversion-panel__back-button icon-link my-3"
       variant="outline-primary"
+      size="sm"
       onClick={onNavigateBack}
     >
       <ArrowLeft />
@@ -54,7 +55,7 @@ export const ActiveDetourPanel = ({
 
   return (
     <Panel as="article" className="c-diversion-panel">
-      <Panel.Header className="d-inline-flex justify-content-between">
+      <Panel.Header>
         <h1 className="c-diversion-panel__header_text c-diversion-panel__h1 my-3">
           Active Detour
         </h1>

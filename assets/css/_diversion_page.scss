@@ -93,7 +93,7 @@
       }
     }
 
-    .l-diversion-page-panel__header .c-diversion-panel__outline-button--back {
+    .l-diversion-page-panel__header .c-diversion-panel__back-button {
       display: none;
     }
   }
@@ -164,15 +164,4 @@
 .c-active-detour__alert-icon {
   height: 1.5rem;
   width: 1.5rem;
-}
-
-.c-diversion-panel__outline-button {
-  height: 2rem;
-  border-radius: 0.2rem;
-  font-size: 0.875rem;
-  padding: 0.375rem 0.5rem;
-
-  &--copy {
-    margin: 0.78125rem 0;
-  }
 }

@@ -85,8 +85,9 @@ export const CopyButton = ({ detourText }: { detourText: string }) => (
     }
   >
     <Button
-      className="c-diversion-panel__outline-button c-diversion-panel__outline-button--copy icon-link"
+      className="icon-link"
       variant="outline-primary"
+      size="sm"
       onClick={() => window.navigator.clipboard?.writeText(detourText)}
     >
       <Files />

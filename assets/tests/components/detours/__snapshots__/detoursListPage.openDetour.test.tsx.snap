@@ -400,7 +400,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             class="l-diversion-page-panel border-end c-diversion-panel"
           >
             <header
-              class="l-diversion-page-panel__header border-bottom px-3 d-inline-flex justify-content-between"
+              class="l-diversion-page-panel__header border-bottom px-3 d-inline-flex justify-content-between align-items-baseline"
             >
               <h1
                 class="c-diversion-panel__h1 my-3"
@@ -408,7 +408,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 View Draft Detour
               </h1>
               <button
-                class="c-diversion-panel__outline-button c-diversion-panel__outline-button--copy icon-link btn btn-outline-primary"
+                class="icon-link btn btn-outline-primary btn-sm"
                 type="button"
               >
                 <svg
@@ -1176,7 +1176,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
           class="l-diversion-page-panel border-end c-diversion-panel"
         >
           <header
-            class="l-diversion-page-panel__header border-bottom px-3 d-inline-flex justify-content-between"
+            class="l-diversion-page-panel__header border-bottom px-3 d-inline-flex justify-content-between align-items-baseline"
           >
             <h1
               class="c-diversion-panel__h1 my-3"
@@ -1184,7 +1184,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
               View Draft Detour
             </h1>
             <button
-              class="c-diversion-panel__outline-button c-diversion-panel__outline-button--copy icon-link btn btn-outline-primary"
+              class="icon-link btn btn-outline-primary btn-sm"
               type="button"
             >
               <svg
