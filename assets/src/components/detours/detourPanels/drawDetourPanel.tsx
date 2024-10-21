@@ -29,7 +29,11 @@ export const DrawDetourPanel = ({
   onReviewDetour,
   onChangeRoute,
 }: DrawDetourPanelProps) => (
-  <Panel as="article" className="c-diversion-panel">
+  <Panel
+    as="article"
+    className="c-diversion-panel"
+    data-fs-element="Drawing Panel"
+  >
     <Panel.Header>
       <h1 className="c-diversion-panel__h1 my-3">Draw Detour</h1>
     </Panel.Header>
