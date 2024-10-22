@@ -269,7 +269,7 @@ export const DetourMap = ({
             <>
               {uniqBy(stops, (stop) => stop.id).map((stop) => (
                 <StopMarkerWithStopCard
-                  key={stop.name}
+                  key={stop.id}
                   stop={stop}
                   zoomLevel={zoomLevel}
                   interactionStatesDisabled={false}
