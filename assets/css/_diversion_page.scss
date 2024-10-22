@@ -44,10 +44,14 @@
     .l-diversion-page__header {
       border-bottom: none;
     }
+
+    .l-diversion-page-panel__header {
+      align-items: center;
+    }
+
     .c-diversion-panel__header_text,
     .c-detour-panel__subheader,
-    .c-diversion-panel__back-button-container,
-    .c-active-detour__alert-icon {
+    .c-diversion-panel__desktop-buttons {
       display: none !important;
     }
   }
