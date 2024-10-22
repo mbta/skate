@@ -1328,11 +1328,22 @@ describe("DiversionPage", () => {
 
     const input = screen.getByRole("textbox") as HTMLInputElement
 
-    act(() => {
-      fireEvent.change(input, { target: { value: "Hello World" } })
-    })
+    const startText = `Detour 52 Outbound
+Route pattern From A52 - To B52
 
-    expect(input.value).toBe("Hello World")
+Connection Points:
+N/A
+N/A
+
+Missed Stops (undefined):
+no stops
+
+Turn-by-Turn Directions:
+From null`
+
+    await userEvent.type(input, "\nHello World!")
+
+    expect(input.value).toBe(startText + "\nHello World!")
   })
 
   test("Attempting to close the page calls the onClose callback", async () => {
