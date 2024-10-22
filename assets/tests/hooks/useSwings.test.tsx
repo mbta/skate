@@ -6,7 +6,7 @@ import useSwings from "../../src/hooks/useSwings"
 import { initialState } from "../../src/state"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { RouteTab } from "../../src/models/routeTab"
-import routeTabFactory from "../factories/routeTab"
+import routeTabFactory, { routeTabPresetFactory } from "../factories/routeTab"
 import { neverPromise } from "../testHelpers/mockHelpers"
 import { swingFactory } from "../factories/swing"
 
@@ -41,8 +41,7 @@ describe("useSwings", () => {
               isCurrentTab: false,
               selectedRouteIds: ["2"],
             }),
-            routeTabFactory.build({
-              ordering: undefined,
+            routeTabPresetFactory.build({
               selectedRouteIds: ["3"],
             }),
           ]}
