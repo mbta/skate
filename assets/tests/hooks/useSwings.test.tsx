@@ -1,9 +1,8 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
-import { renderHook } from "@testing-library/react"
+import { renderHook, waitFor } from "@testing-library/react"
 import React, { ReactNode } from "react"
 import * as Api from "../../src/api"
 import useSwings from "../../src/hooks/useSwings"
-import { instantPromise } from "../testHelpers/mockHelpers"
 import { initialState } from "../../src/state"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { RouteTab } from "../../src/models/routeTab"
@@ -24,11 +23,9 @@ describe("useSwings", () => {
     expect(result.current).toEqual(null)
   })
 
-  test("returns result when loaded", () => {
+  test("returns result when loaded", async () => {
     const swings = swingFactory.buildList(2)
-    jest
-      .mocked(Api.fetchSwings)
-      .mockImplementationOnce(() => instantPromise(swings))
+    jest.mocked(Api.fetchSwings).mockResolvedValue(swings)
 
     const { result } = renderHook(useSwings, {
       wrapper: ({ children }) => (
@@ -55,8 +52,10 @@ describe("useSwings", () => {
       ),
     })
 
-    expect(jest.mocked(Api.fetchSwings)).toHaveBeenCalledWith(["1", "2"])
-    expect(result.current).toEqual(swings)
+    await waitFor(() => {
+      expect(jest.mocked(Api.fetchSwings)).toHaveBeenCalledWith(["1", "2"])
+      expect(result.current).toEqual(swings)
+    })
   })
 
   test("doesn't refetch swings on every render", () => {
