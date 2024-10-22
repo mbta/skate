@@ -1,8 +1,15 @@
 import React from "react"
 import { Stop } from "../../schedule"
-import { Badge, ListGroup } from "react-bootstrap"
+import {
+  Badge,
+  Button,
+  ListGroup,
+  OverlayTrigger,
+  Popover,
+} from "react-bootstrap"
 import { uniqBy } from "../../helpers/array"
 import { RoutePill } from "../routePill"
+import { Files } from "../../helpers/bsIcons"
 
 interface ConnectionPointsProps {
   connectionPoints: [string, string]
@@ -28,13 +35,15 @@ export const MissedStops = ({ missedStops }: MissedStopsProps) => (
   <section className="pb-3">
     <h2 className="c-diversion-panel__h2">
       Missed Stops
-      <Badge pill bg="missed-stop" className="ps-2 fs-4">
+      <Badge pill bg="missed-stop" className="ms-2 fs-4">
         {missedStops.length}
       </Badge>
     </h2>
     <ListGroup as="ul">
       {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
-        <ListGroup.Item key={missedStop.id}>{missedStop.name}</ListGroup.Item>
+        <ListGroup.Item key={missedStop.id}>
+          {missedStop.name}
+        </ListGroup.Item>
       ))}
     </ListGroup>
   </section>
@@ -73,4 +82,28 @@ export const AffectedRoute = ({
       </div>
     </div>
   </section>
+)
+
+export const CopyButton = ({ detourText }: { detourText: string }) => (
+  <OverlayTrigger
+    placement="bottom"
+    trigger="click"
+    rootClose
+    rootCloseEvent="mousedown"
+    overlay={
+      <Popover>
+        <Popover.Body>Copied to clipboard!</Popover.Body>
+      </Popover>
+    }
+  >
+    <Button
+      className="icon-link"
+      variant="outline-primary"
+      size="sm"
+      onClick={() => window.navigator.clipboard?.writeText(detourText)}
+    >
+      <Files />
+      Copy details
+    </Button>
+  </OverlayTrigger>
 )

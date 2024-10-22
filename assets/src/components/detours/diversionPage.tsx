@@ -343,6 +343,7 @@ export const DiversionPage = ({
     } else if (snapshot.matches({ "Detour Drawing": "Active" })) {
       return (
         <ActiveDetourPanel
+          detourText="Hello World"
           directions={extendedDirections}
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
@@ -383,6 +384,7 @@ export const DiversionPage = ({
     } else if (snapshot.matches({ "Detour Drawing": "Past" })) {
       return (
         <PastDetourPanel
+          detourText="Hello World"
           directions={extendedDirections}
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
@@ -535,6 +537,9 @@ const DiversionPagePanelHeader = <As extends React.ElementType = "header">({
       "l-diversion-page-panel__header",
       "border-bottom",
       "px-3",
+      "d-inline-flex",
+      "justify-content-between",
+      "align-items-baseline",
       props.className,
     ])}
   >

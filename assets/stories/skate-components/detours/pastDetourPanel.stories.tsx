@@ -4,6 +4,29 @@ import React from "react"
 import { PastDetourPanel } from "../../../src/components/detours/detourPanels/pastDetourPanel"
 import { stopFactory } from "../../../tests/factories/stop"
 
+const defaulText = [
+  "Detour:",
+  "66 Harvard via Allston from",
+  "Andrew Station",
+  "Outbound",
+  "",
+  "Turn-by-Turn Directions:",
+  "Start at Centre St & John St",
+  "Right on John St",
+  "Left on Abbotsford Rd",
+  "Right on Boston St",
+  "Regular Route",
+  "",
+  "Connection Points:",
+  "Centre St & John St",
+  "Boston St",
+  "",
+  "Missed Stops (3):",
+  "Example St @ Sample Ave",
+  "Example St opp Random Way",
+  "Example St @ Fake Blvd",
+].join("\n")
+
 const meta = {
   component: PastDetourPanel,
   parameters: {
@@ -11,6 +34,7 @@ const meta = {
     stretch: true,
   },
   args: {
+    detourText: defaulText,
     directions: [
       { instruction: "Start at Centre St & John St" },
       { instruction: "Right on John St" },

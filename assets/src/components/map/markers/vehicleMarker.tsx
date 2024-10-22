@@ -2,16 +2,19 @@ import { LatLngExpression, Marker } from "leaflet"
 import React, {
   PropsWithChildren,
   useContext,
+  useEffect,
   useRef,
   useState,
-  useEffect,
 } from "react"
 
 import { StateDispatchContext } from "../../../contexts/stateDispatchContext"
 import { joinClasses } from "../../../helpers/dom"
 import { vehicleLabel } from "../../../helpers/vehicleLabel"
-import { statusClasses, drawnStatus } from "../../../models/vehicleStatus"
-
+import {
+  shuttleVariantFromRunId,
+  ShuttleVariant,
+} from "../../../models/shuttle"
+import { drawnStatus, statusClasses } from "../../../models/vehicleStatus"
 import { Vehicle } from "../../../realtime"
 import { ReactMarker } from "../utilities/reactMarker"
 
@@ -22,6 +25,41 @@ interface VehicleMarkerProps extends PropsWithChildren {
   onSelect?: (vehicle: Vehicle) => void
   shouldShowPopup?: boolean
   onShouldShowPopupChange?: (newValue: boolean) => void
+}
+
+/**
+ * If the supplied {@linkcode vehicle} is a shuttle, returns
+ * classes to more specifically style shuttles matching certain conditions.
+ * For example, specific styles depending on Rapid Transit Line the shuttle is
+ * associated with.
+ *
+ * @param vehicle The vehicle to return styles for
+ * @returns Array of classes to add to a vehicle marker
+ */
+const stylesForShuttle = (vehicle: Vehicle) => {
+  // If this vehicle isn't a shuttle, return no styles
+  if (vehicle.isShuttle === false) {
+    return []
+  }
+
+  // Otherwise return a generic shuttle class and any more
+  // specific styles for the shuttle.
+  const classFor = (variant: string) => `c-vehicle-marker--${variant}`
+  const shuttleClasses = ["c-vehicle-marker--shuttle"]
+  switch (vehicle.runId && shuttleVariantFromRunId(vehicle.runId)) {
+    case ShuttleVariant.Blue:
+      return shuttleClasses.concat(classFor("blue"))
+    case ShuttleVariant.CommuterRail:
+      return shuttleClasses.concat(classFor("cr"))
+    case ShuttleVariant.Green:
+      return shuttleClasses.concat(classFor("green"))
+    case ShuttleVariant.Orange:
+      return shuttleClasses.concat(classFor("orange"))
+    case ShuttleVariant.Red:
+      return shuttleClasses.concat(classFor("red"))
+    default:
+      return shuttleClasses
+  }
 }
 
 export const VehicleMarker = ({
@@ -90,10 +128,15 @@ export const VehicleMarker = ({
         ref={markerRef}
         divIconSettings={{
           iconAnchor: [0, 0],
-          className: "c-vehicle-map__icon",
+          // Disable default leaflet marker class
+          className: "",
         }}
         icon={
           <svg
+            className={joinClasses([
+              "c-vehicle-map__icon",
+              ...stylesForShuttle(vehicle),
+            ])}
             height="24"
             viewBox="0 0 24 24"
             width="24"
@@ -124,14 +167,16 @@ export const VehicleMarker = ({
         position={position}
         divIconSettings={{
           iconAnchor: [labelBackgroundWidth / 2, isPrimary ? -16 : -10],
-          className: joinClasses([
-            "c-vehicle-map__label",
-            isPrimary ? "primary" : "secondary",
-            isSelected && "selected",
-          ]),
+          // Disable default leaflet marker class
+          className: "",
         }}
         icon={
           <svg
+            className={joinClasses([
+              "c-vehicle-map__label",
+              isPrimary ? "primary" : "secondary",
+              isSelected && "selected",
+            ])}
             viewBox={`0 0 ${labelBackgroundWidth} ${labelBackgroundHeight}`}
             width={labelBackgroundWidth}
             height={labelBackgroundHeight}

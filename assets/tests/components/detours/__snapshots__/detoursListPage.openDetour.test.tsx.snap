@@ -397,16 +397,35 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             </span>
           </button>
           <article
-            class="l-diversion-page-panel border-end"
+            class="l-diversion-page-panel border-end c-diversion-panel"
           >
             <header
-              class="l-diversion-page-panel__header border-bottom px-3"
+              class="l-diversion-page-panel__header border-bottom px-3 d-inline-flex justify-content-between align-items-baseline"
             >
               <h1
                 class="c-diversion-panel__h1 my-3"
               >
                 View Draft Detour
               </h1>
+              <button
+                class="icon-link btn btn-outline-primary btn-sm"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="bi bi-files"
+                  fill="currentColor"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1M3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"
+                  />
+                </svg>
+                Copy details
+              </button>
             </header>
             <div
               class="l-diversion-page-panel__body bg-light d-flex flex-column"
@@ -441,14 +460,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
               </div>
               <div
                 class="border-top d-flex mt-auto d-flex flex-column"
-              >
-                <button
-                  class="m-3 flex-grow-1 btn btn-primary"
-                  type="button"
-                >
-                  Copy Details
-                </button>
-              </div>
+              />
             </div>
           </article>
         </div>
@@ -1161,16 +1173,35 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
         class="l-diversion-page__panel text-bg-light"
       >
         <article
-          class="l-diversion-page-panel border-end"
+          class="l-diversion-page-panel border-end c-diversion-panel"
         >
           <header
-            class="l-diversion-page-panel__header border-bottom px-3"
+            class="l-diversion-page-panel__header border-bottom px-3 d-inline-flex justify-content-between align-items-baseline"
           >
             <h1
               class="c-diversion-panel__h1 my-3"
             >
               View Draft Detour
             </h1>
+            <button
+              class="icon-link btn btn-outline-primary btn-sm"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="bi bi-files"
+                fill="currentColor"
+                height="16"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1M3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"
+                />
+              </svg>
+              Copy details
+            </button>
           </header>
           <div
             class="l-diversion-page-panel__body bg-light d-flex flex-column"
@@ -1205,14 +1236,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             </div>
             <div
               class="border-top d-flex mt-auto d-flex flex-column"
-            >
-              <button
-                class="m-3 flex-grow-1 btn btn-primary"
-                type="button"
-              >
-                Copy Details
-              </button>
-            </div>
+            />
           </div>
         </article>
       </div>
