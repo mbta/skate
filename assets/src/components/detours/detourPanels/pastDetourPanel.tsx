@@ -57,9 +57,11 @@ export const PastDetourPanel = ({
           routeDirection={routeDirection}
         />
 
-        <ConnectionPoints connectionPoints={connectionPoints} />
+        {connectionPoints && (
+          <ConnectionPoints connectionPoints={connectionPoints} />
+        )}
 
-        <MissedStops missedStops={missedStops} />
+        {missedStops && <MissedStops missedStops={missedStops} />}
 
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Detour Directions</h2>

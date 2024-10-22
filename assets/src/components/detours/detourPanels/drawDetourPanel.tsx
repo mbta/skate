@@ -79,9 +79,11 @@ export const DrawDetourPanel = ({
           )}
         </section>
 
-        <ConnectionPoints connectionPoints={connectionPoints} />
+        {connectionPoints && (
+          <ConnectionPoints connectionPoints={connectionPoints} />
+        )}
 
-        <MissedStops missedStops={missedStops} />
+        {missedStops && <MissedStops missedStops={missedStops} />}
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer hidden={!detourFinished}>
