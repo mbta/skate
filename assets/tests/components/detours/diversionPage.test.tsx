@@ -1313,6 +1313,28 @@ describe("DiversionPage", () => {
     ).toBeVisible()
   })
 
+  test("'View Draft Detour' screen allows user to edit detour text", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    const input = screen.getByRole("textbox") as HTMLInputElement
+
+    act(() => {
+      fireEvent.change(input, { target: { value: "Hello World" } })
+    })
+
+    expect(input.value).toBe("Hello World")
+  })
+
   test("Attempting to close the page calls the onClose callback", async () => {
     const onClose = jest.fn()
 

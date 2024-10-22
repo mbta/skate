@@ -456,7 +456,20 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <textarea
                   class="flex-grow-1 mb-3 form-control"
                   style="resize: none;"
-                />
+                >
+                  Detour 2 Outbound
+Route pattern From A2 - To B2
+
+Connection Points:
+N/A
+N/A
+
+Missed Stops (undefined):
+no stops
+
+Turn-by-Turn Directions:
+From null
+                </textarea>
               </div>
               <div
                 class="border-top d-flex mt-auto d-flex flex-column"
@@ -1232,7 +1245,20 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
               <textarea
                 class="flex-grow-1 mb-3 form-control"
                 style="resize: none;"
-              />
+              >
+                Detour 1 Outbound
+Route pattern From A1 - To B1
+
+Connection Points:
+N/A
+N/A
+
+Missed Stops (undefined):
+no stops
+
+Turn-by-Turn Directions:
+From null
+              </textarea>
             </div>
             <div
               class="border-top d-flex mt-auto d-flex flex-column"

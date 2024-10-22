@@ -1,7 +1,7 @@
 import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
 import { RoutePatternId, ShapePoint } from "../schedule"
 import { Route, RouteId, RoutePattern } from "../schedule"
-import { Ok, Result } from "../util/result"
+import { isOk, Ok, Result } from "../util/result"
 import {
   FetchDetourDirectionsError,
   fetchDetourDirections,
@@ -29,6 +29,8 @@ export const createDetourMachine = setup({
       detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
 
       finishedDetour: FinishedDetour | undefined | null
+
+      editedDetourText?: string
 
       selectedDuration?: string
       selectedReason?: string
@@ -66,6 +68,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
+      | { type: "detour.share.edit-directions"; detourText: string }
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.share.open-activate-modal" }
       | {
@@ -472,6 +475,39 @@ export const createDetourMachine = setup({
 
           onDone: {
             target: "Share Detour",
+            actions: assign({
+              editedDetourText: ({ context }) => {
+                const routeName = context.route?.name
+                const routeDirection =
+                  context.routePattern &&
+                  context.route?.directionNames[
+                    context.routePattern.directionId
+                  ]
+                const routeOrigin = context.routePattern?.name
+                const missedStops = context.finishedDetour?.missedStops
+
+                const detourShape =
+                  context.detourShape && isOk(context.detourShape)
+                    ? context.detourShape.ok
+                    : null
+
+                return [
+                  `Detour ${routeName} ${routeDirection}`,
+                  routeOrigin,
+                  ,
+                  "Connection Points:",
+                  context.finishedDetour?.connectionPoint?.start?.name ?? "N/A",
+                  context.finishedDetour?.connectionPoint?.end?.name ?? "N/A",
+                  ,
+                  `Missed Stops (${missedStops?.length}):`,
+                  ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
+                  ,
+                  "Turn-by-Turn Directions:",
+                  "From " + context.nearestIntersection,
+                  ...(detourShape?.directions?.map((v) => v.instruction) ?? []),
+                ].join("\n")
+              },
+            }),
           },
         },
         "Share Detour": {
@@ -489,6 +525,12 @@ export const createDetourMachine = setup({
               on: {
                 "detour.share.open-activate-modal": {
                   target: "Activating",
+                },
+                "detour.share.edit-directions": {
+                  target: "Reviewing",
+                  actions: assign({
+                    editedDetourText: ({ event }) => event.detourText,
+                  }),
                 },
               },
             },
