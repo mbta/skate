@@ -41,9 +41,7 @@ export const MissedStops = ({ missedStops }: MissedStopsProps) => (
     </h2>
     <ListGroup as="ul">
       {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
-        <ListGroup.Item key={missedStop.id}>
-          {missedStop.name}
-        </ListGroup.Item>
+        <ListGroup.Item key={missedStop.id}>{missedStop.name}</ListGroup.Item>
       ))}
     </ListGroup>
   </section>
