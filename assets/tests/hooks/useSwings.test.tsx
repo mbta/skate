@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import React, { ReactNode } from "react"
 import * as Api from "../../src/api"
@@ -8,12 +8,13 @@ import { initialState } from "../../src/state"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { RouteTab } from "../../src/models/routeTab"
 import routeTabFactory from "../factories/routeTab"
+import { neverPromise } from "../testHelpers/mockHelpers"
 
-jest.mock("../../src/api", () => ({
-  __esModule: true,
+jest.mock("../../src/api")
 
-  fetchSwings: jest.fn(() => new Promise(() => {})),
-}))
+beforeEach(() => {
+  jest.mocked(Api.fetchSwings).mockReturnValue(neverPromise())
+})
 
 describe("useSwings", () => {
   test("returns null while loading", () => {
