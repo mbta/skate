@@ -1326,7 +1326,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    const input = screen.getByRole("textbox") as HTMLInputElement
+    const input = screen.getByRole("textbox") as HTMLTextAreaElement
 
     act(() => {
       fireEvent.change(input, { target: { value: "Hello World" } })
