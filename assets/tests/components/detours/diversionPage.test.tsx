@@ -1326,7 +1326,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    const input = screen.getByRole("textbox") as HTMLInputElement
+    const input = screen.getByRole("textbox") as HTMLTextAreaElement
 
     const startText = `Detour 52 Outbound
 Route pattern From A52 - To B52
