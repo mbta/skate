@@ -18,9 +18,7 @@ jest.mock("../../src/api", () => ({
 describe("useSwings", () => {
   test("returns null while loading", () => {
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
-    const { result } = renderHook(() => {
-      return useSwings()
-    })
+    const { result } = renderHook(useSwings)
     expect(mockFetchSwings).toHaveBeenCalledTimes(1)
     expect(result.current).toEqual(null)
   })
@@ -49,9 +47,7 @@ describe("useSwings", () => {
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
     mockFetchSwings.mockImplementationOnce(() => instantPromise(swings))
     const { result } = renderHook(
-      () => {
-        return useSwings()
-      },
+      useSwings,
       {
         wrapper: ({ children }) => (
           <Wrapper
@@ -85,9 +81,7 @@ describe("useSwings", () => {
   test("doesn't refetch swings on every render", () => {
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
     const { rerender } = renderHook(
-      () => {
-        useSwings()
-      },
+      useSwings,
       {
         wrapper: ({ children }) => (
           <Wrapper
@@ -116,9 +110,7 @@ describe("useSwings", () => {
       }),
     ]
     const { rerender } = renderHook(
-      () => {
-        useSwings()
-      },
+      useSwings,
       {
         wrapper: ({ children }) => (
           <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
@@ -138,9 +130,7 @@ describe("useSwings", () => {
 
     let routeTabs = [routeTabFactory.build({ selectedRouteIds: ["1"] })]
     const { rerender } = renderHook(
-      () => {
-        useSwings()
-      },
+      useSwings,
       {
         wrapper: ({ children }) => (
           <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
