@@ -52,7 +52,7 @@ describe("useSwings", () => {
     })
 
     await waitFor(() => {
-      expect(jest.mocked(Api.fetchSwings)).toHaveBeenCalledWith(["1", "2"])
+      expect(jest.mocked(Api.fetchSwings)).toHaveBeenCalledWith(["1"])
       expect(result.current).toEqual(swings)
     })
   })
@@ -78,7 +78,7 @@ describe("useSwings", () => {
         isCurrentTab: true,
       }),
       routeTabFactory.build({
-        selectedRouteIds: ["2"],
+        selectedRouteIds: ["1"],
         isCurrentTab: false,
       }),
     ]
@@ -89,20 +89,24 @@ describe("useSwings", () => {
     })
     routeTabs = [
       routeTabFactory.build({ selectedRouteIds: ["1"], isCurrentTab: false }),
-      routeTabFactory.build({ selectedRouteIds: ["2"], isCurrentTab: true }),
+      routeTabFactory.build({ selectedRouteIds: ["1"], isCurrentTab: true }),
     ]
     rerender()
     expect(jest.mocked(Api.fetchSwings)).toHaveBeenCalledTimes(1)
   })
 
   test("does refetch swings when selected routes change", () => {
-    let routeTabs = [routeTabFactory.build({ selectedRouteIds: ["1"] })]
+    let routeTabs = [
+      routeTabFactory.build({ selectedRouteIds: ["1"], isCurrentTab: true }),
+    ]
     const { rerender } = renderHook(useSwings, {
       wrapper: ({ children }) => (
         <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
       ),
     })
-    routeTabs = [routeTabFactory.build({ selectedRouteIds: ["2"] })]
+    routeTabs = [
+      routeTabFactory.build({ selectedRouteIds: ["2"], isCurrentTab: true }),
+    ]
     rerender()
     expect(jest.mocked(Api.fetchSwings)).toHaveBeenCalledTimes(2)
   })
