@@ -23,5 +23,4 @@ const routeTabFactory = defaultRouteTabFactory.params({
   presetName: undefined,
 })
 
-routeTabFactory.createList
 export default routeTabFactory
