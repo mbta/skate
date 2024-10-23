@@ -10,6 +10,7 @@ import { PlusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import CloseButton from "./closeButton"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { Button } from "react-bootstrap"
 
 const Presets = () => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)
@@ -38,7 +39,7 @@ const Presets = () => {
           </li>
         ))}
       </ul>
-      <button
+      <Button
         className="c-presets-panel__save-as-preset-button"
         onClick={() => {
           if (currentTab) {
@@ -56,7 +57,7 @@ const Presets = () => {
       >
         <PlusThinIcon className="c-presets-panel__save-as-preset-button-icon" />
         Save as preset
-      </button>
+      </Button>
     </div>
   )
 }
