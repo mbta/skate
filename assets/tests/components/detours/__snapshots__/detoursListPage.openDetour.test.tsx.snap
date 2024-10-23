@@ -410,6 +410,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
               </h1>
               <button
                 class="icon-link btn btn-outline-primary btn-sm"
+                data-fs-element="Copy Details"
                 type="button"
               >
                 <svg
@@ -1188,6 +1189,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             </h1>
             <button
               class="icon-link btn btn-outline-primary btn-sm"
+              data-fs-element="Copy Details"
               type="button"
             >
               <svg
