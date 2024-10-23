@@ -19,7 +19,7 @@ export const routeTabPresetFactory = defaultRouteTabFactory.params({
   ordering: undefined,
 })
 
-const routeTabFactory = defaultRouteTabFactory.params({
+export const routeTabFactory = defaultRouteTabFactory.params({
   presetName: undefined,
 })
 
