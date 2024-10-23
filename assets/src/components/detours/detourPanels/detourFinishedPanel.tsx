@@ -12,6 +12,7 @@ import { Stop } from "../../../schedule"
 interface DetourFinishedPanelProps extends PropsWithChildren {
   onNavigateBack: () => void
   copyableDetourText: string
+  editableDirections: string
   connectionPoints?: [string, string]
   missedStops?: Stop[]
   onChangeDetourText: (value: string) => void
@@ -21,6 +22,7 @@ interface DetourFinishedPanelProps extends PropsWithChildren {
 export const DetourFinishedPanel = ({
   onNavigateBack,
   copyableDetourText,
+  editableDirections,
   connectionPoints,
   missedStops,
   onChangeDetourText,
@@ -44,9 +46,10 @@ export const DetourFinishedPanel = ({
           <BsIcons.ArrowLeft /> Edit
         </Button>
 
+        <h2 className="c-diversion-panel__h2">Directions</h2>
         <Form.Control
           as="textarea"
-          value={copyableDetourText}
+          value={editableDirections}
           onChange={({ target: { value } }) => onChangeDetourText(value)}
           className="flex-grow-1 mb-3"
           style={{

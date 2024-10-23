@@ -453,10 +453,17 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   </svg>
                    Edit
                 </button>
+                <h2
+                  class="c-diversion-panel__h2"
+                >
+                  Directions
+                </h2>
                 <textarea
                   class="flex-grow-1 mb-3 form-control"
                   style="resize: none;"
-                />
+                >
+                  From null
+                </textarea>
                 <section
                   class="pb-3"
                 >
@@ -1252,10 +1259,17 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 </svg>
                  Edit
               </button>
+              <h2
+                class="c-diversion-panel__h2"
+              >
+                Directions
+              </h2>
               <textarea
                 class="flex-grow-1 mb-3 form-control"
                 style="resize: none;"
-              />
+              >
+                From null
+              </textarea>
               <section
                 class="pb-3"
               >
