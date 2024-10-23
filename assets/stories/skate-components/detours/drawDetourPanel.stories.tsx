@@ -41,6 +41,12 @@ export const WithDirections: Story = {
   },
 }
 
+export const WithConnections: Story = {
+  args: {
+    connectionPoints: ["Starting connection point", "Ending connection point"],
+  },
+}
+
 export const WithStops: Story = {
   args: {
     ...WithDirections.args,

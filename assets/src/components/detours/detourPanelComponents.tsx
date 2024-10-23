@@ -11,30 +11,40 @@ import { uniqBy } from "../../helpers/array"
 import { RoutePill } from "../routePill"
 import { Files } from "../../helpers/bsIcons"
 
+interface ConnectionPointsProps {
+  connectionPoints: [string, string]
+}
+
+export const ConnectionPoints = ({
+  connectionPoints: [connectionPointStart, connectionPointEnd],
+}: ConnectionPointsProps) => (
+  <section className="pb-3">
+    <h2 className="c-diversion-panel__h2">Connection Points</h2>
+    <ListGroup as="ul">
+      <ListGroup.Item>{connectionPointStart}</ListGroup.Item>
+      <ListGroup.Item>{connectionPointEnd}</ListGroup.Item>
+    </ListGroup>
+  </section>
+)
+
 interface MissedStopsProps {
-  missedStops?: Stop[]
+  missedStops: Stop[]
 }
 
 export const MissedStops = ({ missedStops }: MissedStopsProps) => (
-  <>
-    {missedStops && (
-      <section className="pb-3">
-        <h2 className="c-diversion-panel__h2">
-          Missed Stops
-          <Badge pill bg="missed-stop" className="ms-2 fs-4">
-            {missedStops.length}
-          </Badge>
-        </h2>
-        <ListGroup as="ul">
-          {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
-            <ListGroup.Item key={missedStop.id}>
-              {missedStop.name}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      </section>
-    )}
-  </>
+  <section className="pb-3">
+    <h2 className="c-diversion-panel__h2">
+      Missed Stops
+      <Badge pill bg="missed-stop" className="ms-2 fs-4">
+        {missedStops.length}
+      </Badge>
+    </h2>
+    <ListGroup as="ul">
+      {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
+        <ListGroup.Item key={missedStop.id}>{missedStop.name}</ListGroup.Item>
+      ))}
+    </ListGroup>
+  </section>
 )
 
 interface AffectedRouteProps {

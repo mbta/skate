@@ -6,6 +6,7 @@ import { ArrowLeft } from "../../../helpers/bsIcons"
 import { Button, ListGroup } from "react-bootstrap"
 import {
   AffectedRoute,
+  ConnectionPoints,
   CopyButton,
   MissedStops,
 } from "../detourPanelComponents"
@@ -26,7 +27,7 @@ export interface PastDetourPanelProps {
 export const PastDetourPanel = ({
   detourText,
   directions,
-  connectionPoints: [connectionPointStart, connectionPointEnd],
+  connectionPoints,
   missedStops,
   routeName,
   routeDescription,
@@ -64,15 +65,11 @@ export const PastDetourPanel = ({
           routeDirection={routeDirection}
         />
 
-        <section className="pb-3">
-          <h2 className="c-diversion-panel__h2">Connection Points</h2>
-          <ListGroup as="ul">
-            <ListGroup.Item>{connectionPointStart}</ListGroup.Item>
-            <ListGroup.Item>{connectionPointEnd}</ListGroup.Item>
-          </ListGroup>
-        </section>
+        {connectionPoints && (
+          <ConnectionPoints connectionPoints={connectionPoints} />
+        )}
 
-        <MissedStops missedStops={missedStops} />
+        {missedStops && <MissedStops missedStops={missedStops} />}
 
         <section className="pb-3">
           <h2 className="c-diversion-panel__h2">Detour Directions</h2>
