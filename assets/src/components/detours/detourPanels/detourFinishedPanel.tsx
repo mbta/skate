@@ -43,6 +43,7 @@ export const DetourFinishedPanel = ({
           style={{
             resize: "none",
           }}
+          data-fs-element="Detour Text"
         />
       </Panel.Body.ScrollArea>
 
