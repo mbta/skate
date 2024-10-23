@@ -110,6 +110,7 @@ export const ActiveDetourPanel = ({
               variant="ui-alert"
               className="flex-grow-1 m-3 icon-link text-light justify-content-center"
               onClick={onOpenDeactivateModal}
+              data-fs-element="Return to Regular Route"
             >
               <StopCircle />
               Return to regular route
