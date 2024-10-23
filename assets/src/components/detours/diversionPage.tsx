@@ -261,6 +261,11 @@ export const DiversionPage = ({
         <DetourFinishedPanel
           onNavigateBack={editDetour}
           detourText={textArea}
+          connectionPoints={[
+            connectionPoints?.start?.name ?? "N/A",
+            connectionPoints?.end?.name ?? "N/A",
+          ]}
+          missedStops={missedStops}
           onChangeDetourText={setTextArea}
           onActivateDetour={
             inTestGroup(TestGroups.DetoursList)
