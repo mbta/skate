@@ -260,7 +260,7 @@ export const DiversionPage = ({
       return (
         <DetourFinishedPanel
           onNavigateBack={editDetour}
-          detourText={textArea}
+          copyableDetourText={textArea}
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
             connectionPoints?.end?.name ?? "N/A",
@@ -350,7 +350,7 @@ export const DiversionPage = ({
     } else if (snapshot.matches({ "Detour Drawing": "Active" })) {
       return (
         <ActiveDetourPanel
-          detourText="Hello World"
+          copyableDetourText="Hello World"
           directions={extendedDirections}
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
@@ -391,7 +391,7 @@ export const DiversionPage = ({
     } else if (snapshot.matches({ "Detour Drawing": "Past" })) {
       return (
         <PastDetourPanel
-          detourText="Hello World"
+          copyableDetourText="Hello World"
           directions={extendedDirections}
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",

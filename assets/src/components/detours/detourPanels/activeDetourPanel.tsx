@@ -17,7 +17,7 @@ import {
 import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 
 export interface ActiveDetourPanelProps extends PropsWithChildren {
-  detourText: string
+  copyableDetourText: string
   directions?: DetourDirection[]
   connectionPoints?: [string, string]
   missedStops?: Stop[]
@@ -30,7 +30,7 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
 }
 
 export const ActiveDetourPanel = ({
-  detourText,
+  copyableDetourText,
   directions,
   connectionPoints,
   missedStops,
@@ -63,7 +63,7 @@ export const ActiveDetourPanel = ({
         {backButton}
         {/* TODO: temporary test group until I get the copy logic hooked up */}
         {inTestGroup(TestGroups.CopyButton) && (
-          <CopyButton detourText={detourText} />
+          <CopyButton detourText={copyableDetourText} />
         )}
       </Panel.Header>
 
