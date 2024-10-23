@@ -11,6 +11,8 @@ ExUnit.start(
   ]
 )
 
+Ecto.Adapters.SQL.Sandbox.mode(Skate.Repo, :manual)
+
 Mox.defmock(Skate.OpenRouteServiceAPI.MockClient, for: Skate.OpenRouteServiceAPI.Client)
 
 Application.put_env(:skate, Skate.OpenRouteServiceAPI,
