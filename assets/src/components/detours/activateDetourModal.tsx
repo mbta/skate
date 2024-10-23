@@ -66,7 +66,7 @@ const SurroundingModal = ({
         Cancel
       </Button>
       {onActivate ? (
-        <Button variant="primary" onClick={onActivate}>
+        <Button variant="primary" onClick={onActivate} data-fs-element="Activate Detour">
           Activate detour
         </Button>
       ) : (
