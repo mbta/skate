@@ -48,6 +48,7 @@ export const DeactivateDetourModal = ({
           variant="ui-alert"
           onClick={onDeactivate}
           className="text-white"
+          data-fs-element="Confirm Return to Regular Route"
         >
           Return to regular route
         </Button>

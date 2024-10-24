@@ -179,6 +179,7 @@ export const DetourMap = ({
             onClick={onUndo}
             size="lg"
             title="Undo"
+            data-fs-element="Undo"
           >
             <ArrowLeftSquare />
           </MapButton>
@@ -189,6 +190,7 @@ export const DetourMap = ({
             onClick={onClear}
             size="lg"
             title="Clear"
+            data-fs-element="Clear"
           >
             <XSquare />
           </MapButton>
