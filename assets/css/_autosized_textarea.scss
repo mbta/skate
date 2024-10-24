@@ -1,0 +1,28 @@
+.c-autosized-textarea {
+  display: grid;
+  // The main area that the textarea and the "'Sizer" occupy
+  grid-template-areas: "slot";
+
+  &::after, // "Sizer"
+  > textarea {
+    grid-area: slot;
+  }
+
+  &::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+  }
+  > textarea {
+    resize: none;
+    overflow: hidden;
+  }
+  &::after,
+  > textarea {
+    border: 1px solid $list-group-border-color;
+    padding: 0.5rem;
+    font: inherit;
+    margin-bottom: 1rem;
+    line-height: 1.5rem;
+  }
+}

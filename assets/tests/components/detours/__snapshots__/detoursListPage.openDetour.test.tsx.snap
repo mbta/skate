@@ -458,12 +458,16 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 >
                   Directions
                 </h2>
-                <textarea
-                  class="flex-grow-1 mb-3 form-control"
-                  style="resize: none;"
+                <div
+                  class="c-autosized-textarea"
+                  data-replicated-value="From null"
                 >
-                  From null
-                </textarea>
+                  <textarea
+                    class="form-control"
+                  >
+                    From null
+                  </textarea>
+                </div>
                 <section
                   class="pb-3"
                 >
@@ -1264,12 +1268,16 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
               >
                 Directions
               </h2>
-              <textarea
-                class="flex-grow-1 mb-3 form-control"
-                style="resize: none;"
+              <div
+                class="c-autosized-textarea"
+                data-replicated-value="From null"
               >
-                From null
-              </textarea>
+                <textarea
+                  class="form-control"
+                >
+                  From null
+                </textarea>
+              </div>
               <section
                 class="pb-3"
               >
