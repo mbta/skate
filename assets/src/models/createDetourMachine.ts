@@ -10,6 +10,7 @@ import {
   fetchRoutePatterns,
 } from "../api"
 import { DetourShape, FinishedDetour } from "./detour"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 export const createDetourMachine = setup({
   types: {
@@ -348,12 +349,17 @@ export const createDetourMachine = setup({
               on: {
                 "detour.edit.place-waypoint-on-route": {
                   target: "Place Waypoint",
-                  actions: {
-                    type: "detour.add-start-point",
-                    params: ({ event: { location } }) => ({
-                      location,
-                    }),
-                  },
+                  actions: [
+                    {
+                      type: "detour.add-start-point",
+                      params: ({ event: { location } }) => ({
+                        location,
+                      }),
+                    },
+                    () => {
+                      fullStoryEvent("Placed Detour Start Point", {})
+                    },
+                  ],
                 },
               },
             },
@@ -394,21 +400,31 @@ export const createDetourMachine = setup({
                 "detour.edit.place-waypoint": {
                   target: "Place Waypoint",
                   reenter: true,
-                  actions: {
-                    type: "detour.add-waypoint",
-                    params: ({ event: { location } }) => ({
-                      location,
-                    }),
-                  },
+                  actions: [
+                    {
+                      type: "detour.add-waypoint",
+                      params: ({ event: { location } }) => ({
+                        location,
+                      }),
+                    },
+                    () => {
+                      fullStoryEvent("Placed Detour Way-Point", {})
+                    },
+                  ],
                 },
                 "detour.edit.place-waypoint-on-route": {
                   target: "Finished Drawing",
-                  actions: {
-                    type: "detour.add-end-point",
-                    params: ({ event: { location } }) => ({
-                      location,
-                    }),
-                  },
+                  actions: [
+                    {
+                      type: "detour.add-end-point",
+                      params: ({ event: { location } }) => ({
+                        location,
+                      }),
+                    },
+                    () => {
+                      fullStoryEvent("Placed Detour End Point", {})
+                    },
+                  ],
                 },
                 "detour.edit.undo": [
                   {
