@@ -90,6 +90,7 @@ export const DrawDetourPanel = ({
         <Button
           className="flex-grow-1 m-3 icon-link justify-content-center"
           onClick={onReviewDetour}
+          data-fs-element="Review Drawn Detour"
         >
           <CardChecklist />
           Review

@@ -43,6 +43,7 @@ export const DetourFinishedPanel = ({
           style={{
             resize: "none",
           }}
+          data-fs-element="Detour Text"
         />
       </Panel.Body.ScrollArea>
 
@@ -51,6 +52,7 @@ export const DetourFinishedPanel = ({
           <Button
             className="m-3 flex-grow-1 icon-link justify-content-center"
             onClick={onActivateDetour}
+            data-fs-element="Begin Activate Detour"
           >
             <BsIcons.Power />
             Start Detour
