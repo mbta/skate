@@ -14,8 +14,6 @@ defmodule SkateWeb.ConnCase do
   """
 
   use ExUnit.CaseTemplate
-  import Plug.Test
-  alias Skate.Settings.User
 
   using do
     quote do
@@ -33,57 +31,68 @@ defmodule SkateWeb.ConnCase do
 
   setup tags do
     alias Ecto.Adapters.SQL.Sandbox
+
     :ok = Sandbox.checkout(Skate.Repo)
-    username = "test_user"
-    email = "test_user@test.com"
 
     unless tags[:async] do
       Sandbox.mode(Skate.Repo, {:shared, self()})
     end
 
-    user = User.upsert(username, email)
-    resource = %{id: user.id}
+    setup_from_tags(tags)
+  end
 
-    {conn, user} =
-      cond do
-        tags[:authenticated] ->
-          User.upsert(username, email)
+  def setup_from_tags(%{authenticated: true}) do
+    user = create_default_user()
 
-          conn =
-            Phoenix.ConnTest.build_conn()
-            |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, resource, %{})
-
-          {conn, user}
-
-        tags[:authenticated_admin] ->
-          User.upsert(username, email)
-
-          conn =
-            Phoenix.ConnTest.build_conn()
-            |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, resource, %{
-              "groups" => ["skate-admin"]
-            })
-
-          {conn, user}
-
-        tags[:authenticated_dispatcher] ->
-          User.upsert(username, email)
-
-          conn =
-            Phoenix.ConnTest.build_conn()
-            |> init_test_session(%{})
-            |> Guardian.Plug.sign_in(SkateWeb.AuthManager, resource, %{
-              "groups" => ["skate-dispatcher"]
-            })
-
-          {conn, user}
-
-        true ->
-          {Phoenix.ConnTest.build_conn(), nil}
-      end
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Phoenix.ConnTest.init_test_session(%{})
+      |> Guardian.Plug.sign_in(SkateWeb.AuthManager, resource_from_user(user), %{})
 
     {:ok, %{conn: conn, user: user}}
+  end
+
+  def setup_from_tags(%{authenticated_admin: true}) do
+    user = create_default_user()
+
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Phoenix.ConnTest.init_test_session(%{})
+      |> Guardian.Plug.sign_in(SkateWeb.AuthManager, resource_from_user(user), %{
+        "groups" => ["skate-admin"]
+      })
+
+    {:ok, %{conn: conn, user: user}}
+  end
+
+  def setup_from_tags(%{authenticated_dispatcher: true}) do
+    user = create_default_user()
+
+    conn =
+      Phoenix.ConnTest.build_conn()
+      |> Phoenix.ConnTest.init_test_session(%{})
+      |> Guardian.Plug.sign_in(SkateWeb.AuthManager, resource_from_user(user), %{
+        "groups" => ["skate-dispatcher"]
+      })
+
+    {:ok, %{conn: conn, user: user}}
+  end
+
+  def setup_from_tags(_) do
+    {:ok, %{conn: Phoenix.ConnTest.build_conn(), user: nil}}
+  end
+
+  # Factory to create users
+  # Currently uses hardcoded information, but is subject to change
+  defp create_default_user() do
+    username = "test_user"
+    email = "test_user@test.com"
+
+    Skate.Settings.User.upsert(username, email)
+  end
+
+  # Creates a Guardian resource for a `User`
+  defp resource_from_user(%Skate.Settings.Db.User{id: id}) do
+    %{id: id}
   end
 end
