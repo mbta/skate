@@ -460,6 +460,29 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   data-fs-element="Detour Text"
                   style="resize: none;"
                 />
+                <section
+                  class="pb-3"
+                >
+                  <h2
+                    class="c-diversion-panel__h2"
+                  >
+                    Connection Points
+                  </h2>
+                  <ul
+                    class="list-group"
+                  >
+                    <div
+                      class="list-group-item"
+                    >
+                      N/A
+                    </div>
+                    <div
+                      class="list-group-item"
+                    >
+                      N/A
+                    </div>
+                  </ul>
+                </section>
               </div>
               <div
                 class="border-top d-flex mt-auto d-flex flex-column"
@@ -1239,6 +1262,29 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 data-fs-element="Detour Text"
                 style="resize: none;"
               />
+              <section
+                class="pb-3"
+              >
+                <h2
+                  class="c-diversion-panel__h2"
+                >
+                  Connection Points
+                </h2>
+                <ul
+                  class="list-group"
+                >
+                  <div
+                    class="list-group-item"
+                  >
+                    N/A
+                  </div>
+                  <div
+                    class="list-group-item"
+                  >
+                    N/A
+                  </div>
+                </ul>
+              </section>
             </div>
             <div
               class="border-top d-flex mt-auto d-flex flex-column"
