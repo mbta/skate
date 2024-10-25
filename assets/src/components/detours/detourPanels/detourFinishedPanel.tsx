@@ -54,8 +54,9 @@ export const DetourFinishedPanel = ({
 
             The result is that the Form.Control has an invisible twin that helps the 
             wrapper grow to the appropriate size, and then the Form.Control likewise 
-            assumes that space. All formatting between the Form.Control and the ::after
-            pseudo-element must be identical: border, padding, margin, font.
+            assumes that space. All styles that affect layout must be identical
+            (e.g., `border`, `padding`, `margin`, `font`) between the `<Form.Control/>`
+            and the `.c-autosized-textarea::after` pseudo-element.
         */}
         <div
           className="c-autosized-textarea"
