@@ -8,8 +8,6 @@ on:
 jobs:
   deploy:
     name: Deploy to Dev (ECS)
-    concurrency:
-      group: dev
     uses: ./.github/workflows/deploy-base.yml
     with:
       env: dev
