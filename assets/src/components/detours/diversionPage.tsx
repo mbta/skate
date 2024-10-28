@@ -344,7 +344,8 @@ export const DiversionPage = ({
           directions={
             editedDirections
               ? parseIntoDirectionsList(editedDirections)
-              : extendedDirections
+              : // Include fallback if editedDirections was not initialized on an older detour
+                extendedDirections
           }
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
@@ -389,7 +390,8 @@ export const DiversionPage = ({
           directions={
             editedDirections
               ? parseIntoDirectionsList(editedDirections)
-              : extendedDirections
+              : // Include fallback if editedDirections was not initialized on an older detour
+                extendedDirections
           }
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
