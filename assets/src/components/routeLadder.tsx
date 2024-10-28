@@ -93,7 +93,11 @@ export const Header = ({
                     Adjustments
                   </div>
                 </Dropdown.Header>
-                <Dropdown.Item className="icon-link" onClick={onClickAddDetour}>
+                <Dropdown.Item
+                  className="icon-link"
+                  onClick={onClickAddDetour}
+                  data-fs-element="Add Detour on Route"
+                >
                   <PlusSquare /> Add detour
                 </Dropdown.Item>
                 {hasAlert && (

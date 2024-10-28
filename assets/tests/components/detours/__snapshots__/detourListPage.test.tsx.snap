@@ -8,6 +8,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
     >
       <button
         class="c-detour-list-page__button icon-link fw-light px-3 py-2 u-hide-for-mobile btn btn-primary"
+        data-fs-element="Add Detour"
         type="button"
       >
         <svg

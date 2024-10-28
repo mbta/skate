@@ -54,6 +54,7 @@ export const DetourDropdown = ({
               zoom,
             })
           }}
+          data-fs-element="Add Detour on Trip"
         >
           Start a detour on route {routeName}
         </DropdownItem>
