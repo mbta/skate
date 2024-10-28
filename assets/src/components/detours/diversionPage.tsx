@@ -344,7 +344,7 @@ export const DiversionPage = ({
           directions={
             editedDirections
               ? parseIntoDirectionsList(editedDirections)
-              : undefined
+              : extendedDirections
           }
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
@@ -389,7 +389,7 @@ export const DiversionPage = ({
           directions={
             editedDirections
               ? parseIntoDirectionsList(editedDirections)
-              : undefined
+              : extendedDirections
           }
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
