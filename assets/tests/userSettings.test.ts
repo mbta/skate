@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import {
   userSettingsFromData,
   VehicleAdherenceColorsData,
@@ -11,7 +12,6 @@ describe("userSettingsFromData", () => {
       ladder_page_vehicle_label: "run_id" as VehicleLabelData,
       shuttle_page_vehicle_label: "run_id" as VehicleLabelData,
       vehicle_adherence_colors: "early_red" as VehicleAdherenceColorsData,
-      minischedules_trip_label: "origin",
     }
 
     expect(userSettingsFromData(data).vehicleAdherenceColors).toEqual(

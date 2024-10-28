@@ -1,6 +1,7 @@
 defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
   use ExUnit.Case, async: true
 
+  import Skate.Factory
   import Concentrate.TestHelpers
 
   alias Concentrate.{TripUpdate, StopTimeUpdate, VehiclePosition}
@@ -89,47 +90,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
     end
 
     test "decodes a VehiclePosition JSON map" do
-      input = %{
-        "block_id" => "Q238-135",
-        "capacity" => 18,
-        "congestion_level" => nil,
-        "current_status" => "STOPPED_AT",
-        "current_stop_sequence" => 670,
-        "load" => 12,
-        "location_source" => "samsara",
-        "occupancy_percentage" => 0.67,
-        "occupancy_status" => "FEW_SEATS_AVAILABLE",
-        "operator" => %{
-          "id" => "2841",
-          "logon_time" => 1_534_340_301,
-          "first_name" => "JIMMY",
-          "last_name" => "EVANS"
-        },
-        "position" => %{
-          "bearing" => 135,
-          "latitude" => 42.32951,
-          "longitude" => -71.11109,
-          "odometer" => 5.1,
-          "speed" => 2.9796
-        },
-        "run_id" => "128-1007",
-        "stop_id" => "70257",
-        "timestamp" => 1_534_340_406,
-        "trip" => %{
-          "direction_id" => 0,
-          "route_id" => "Green-E",
-          "schedule_relationship" => "SCHEDULED",
-          "start_date" => "20180815",
-          "start_time" => nil,
-          "trip_id" => "37165437-X"
-        },
-        "vehicle" => %{
-          "id" => "G-10098",
-          "label" => "3823-3605",
-          "license_plate" => nil
-        },
-        "revenue" => false
-      }
+      input = build(:gtfs_realtime_enhanced_vehicle_position)
 
       assert [tu, vp] = GTFSRealtimeEnhanced.decode_vehicle(input)
 
@@ -138,6 +99,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  trip_id: "37165437-X",
                  route_id: "Green-E",
                  direction_id: 0,
+                 overload_offset: -6,
                  start_date: {2018, 8, 15},
                  schedule_relationship: :SCHEDULED
                )
@@ -155,10 +117,11 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  trip_id: "37165437-X",
                  stop_sequence: 670,
                  block_id: "Q238-135",
-                 operator_id: "2841",
-                 operator_first_name: "JIMMY",
-                 operator_last_name: "EVANS",
+                 operator_id: input["operator"]["id"],
+                 operator_first_name: input["operator"]["first_name"],
+                 operator_last_name: input["operator"]["last_name"],
                  operator_logon_time: 1_534_340_301,
+                 overload_offset: -6,
                  run_id: "128-1007",
                  current_status: :STOPPED_AT,
                  last_updated: 1_534_340_406,
@@ -173,6 +136,22 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  },
                  revenue: false
                )
+    end
+
+    test "decodes a VehiclePosition JSON map, falling back on trip_id if tm_trip_id is absent" do
+      input =
+        build(:gtfs_realtime_enhanced_vehicle_position, %{
+          trip:
+            :gtfs_realtime_enhanced_trip_descriptor
+            |> build(%{"trip_id" => "37165437-X"})
+            |> Map.drop(["tm_trip_id"])
+        })
+
+      assert [tu, vp] = GTFSRealtimeEnhanced.decode_vehicle(input)
+
+      assert %TripUpdate{trip_id: "37165437-X"} = tu
+
+      assert %VehiclePosition{trip_id: "37165437-X"} = vp
     end
   end
 

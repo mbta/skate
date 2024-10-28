@@ -1,69 +1,162 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Modal renders inactive notification modal when appropriate 1`] = `
-Array [
+exports[`Modal renders Chelsea Lowered modal 1`] = `
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal"
+    aria-hidden="true"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="m-inactive-notification-modal__close-button"
+      class="c-basic-notification-modal"
+      role="document"
     >
       <button
-        onClick={[Function]}
+        class="c-basic-notification-modal__close-button"
+        title="Close"
       >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div>
+        Chelsea St Bridge Lowered
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        OCC reported that the Chelsea St Bridge has been lowered.
+      </div>
     </div>
-    <div
-      className="m-notification__title"
-    >
-      OTHER
-       NOTIFICATION
-    </div>
-    <div
-      className="m-inactive-notification-modal__body"
-    >
-      Sorry, there's no additional information that we can provide you about this notification.
-    </div>
-  </div>,
+  </div>
+</body>
+`;
+
+exports[`Modal renders Chelsea Raised modal 1`] = `
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal-overlay"
-  />,
-]
+    aria-hidden="true"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
+  >
+    <div
+      class="c-basic-notification-modal"
+      role="document"
+    >
+      <button
+        class="c-basic-notification-modal__close-button"
+        title="Close"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div>
+        Chelsea St Bridge Raised
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        OCC reported that the Chelsea St Bridge will be raised until 7:45 AM.
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`Modal renders inactive notification modal when appropriate 1`] = `
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 1024px;"
+>
+  <div />
+  <div
+    aria-hidden="true"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
+  >
+    <div
+      class="c-basic-notification-modal"
+      role="document"
+    >
+      <button
+        class="c-basic-notification-modal__close-button"
+        title="Close"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div>
+        Other NOTIFICATION
+      </div>
+      <div
+        class="c-basic-notification-modal__body"
+      >
+        Sorry, there's no additional information that we can provide you about this notification.
+      </div>
+    </div>
+  </div>
+</body>
 `;
 
 exports[`Modal renders loading modal when appropriate 1`] = `
-Array [
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 2048px;"
+>
+  <div />
   <div
-    className="c-modal m-notification-loading-modal"
+    aria-hidden="true"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal c-notification-loading-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div
-      className="m-notification-loading-modal__spinner-wrapper"
+      role="document"
     >
-      <span
-        className="c-loading-spinner"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
-          }
-        }
-      />
+      <div
+        class="c-notification-loading-modal__spinner-wrapper"
+      >
+        <span
+          class="c-loading-spinner"
+        >
+          <svg />
+        </span>
+      </div>
+      <div
+        class="c-notification-loading-modal__text-wrapper"
+      >
+        Loading...
+      </div>
     </div>
-    <div
-      className="m-notification-loading-modal__text-wrapper"
-    >
-      Loading...
-    </div>
-  </div>,
-  <div
-    className="c-modal-overlay"
-  />,
-]
+  </div>
+</body>
 `;

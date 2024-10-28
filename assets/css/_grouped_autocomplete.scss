@@ -1,0 +1,93 @@
+// #region Autocomplete
+.c-autocomplete {
+  padding: 1rem;
+  padding-bottom: 0.875rem;
+
+  color: $color-gray-700;
+
+  background-color: $white;
+
+  border: 1px solid $color-gray-400;
+  border-top-color: transparent;
+  border-radius: 0 0 4px 4px;
+
+  box-shadow: 0 0 10px $color-gray-400;
+  box-shadow: 0 5px 5px $color-gray-400;
+
+  &__list &__group-heading:not(:empty) {
+    // make space between heading and list content
+    margin-bottom: 0.625rem;
+  }
+
+  &__group-list {
+    // Remove default styling on margin for lists
+    margin: 0;
+  }
+
+  &__group-heading {
+    margin: 0;
+
+    // All heading text must be on one line, with no extra space between it and
+    // it's list items. All text must be a similar style.
+    > * {
+      display: inline-block;
+      margin-top: 0;
+      margin-bottom: 0;
+
+      color: $color-gray-700;
+      font-size: var(--font-size-xs);
+      font-weight: normal;
+    }
+  }
+
+  &__group-heading:not(:first-of-type) {
+    // Display a line between each group
+    border-top: 1px solid $color-gray-100;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    line-height: 1;
+  }
+
+  &__option {
+    --horizontal-padding: 0.5rem;
+    --negative-horizontal-padding: calc(var(--horizontal-padding) * -1);
+
+    display: block;
+    // Size content area to available width
+    width: 100%;
+    box-sizing: content-box !important;
+
+    position: relative;
+    // Widen tap, hover, and focus area
+    right: var(--negative-horizontal-padding);
+    left: var(--negative-horizontal-padding);
+    // Pad the contents back into the "available space"
+    padding: 0.5rem var(--horizontal-padding) 0.5rem var(--horizontal-padding);
+
+    font-size: var(--font-size-s);
+    line-height: 1;
+    text-align: left;
+
+    border-radius: 4px;
+
+    &:hover {
+      background-color: $color-gray-100;
+    }
+
+    &:focus {
+      // When focused, bring to front of stack,
+      // So that hover's `background-color` does not overlap the focus ring
+      isolation: isolate;
+      z-index: 1;
+      outline: $color-eggplant-600 solid 1.5px;
+    }
+  }
+
+  &:focus,
+  &:active {
+    border: 1px solid $color-eggplant-500;
+    box-shadow: 0 5px 5px $color-gray-400, 0 0 0 2px #aa4ef22b;
+  }
+}
+
+// #endregion Autocomplete

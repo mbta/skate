@@ -1,32 +1,54 @@
 defmodule Notifications.NotificationTest do
   use Skate.DataCase
+  import Skate.Factory
 
   alias Notifications.Notification
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.RouteSettings
+  alias Skate.Settings.RouteTab
   alias Skate.Settings.User
 
   import Ecto.Query
 
-  @chelsea_st_bridge_route_ids ["112", "743"]
-
   describe "get_or_create_from_block_waiver/1" do
-    test "associates a new notification with users subscribed to an affected route" do
-      user1 = User.get_or_create("user1")
-      user2 = User.get_or_create("user2")
-      User.get_or_create("user3")
+    setup do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+      user3 = User.upsert("user3", "user3@test.com")
+      {:ok, %{user1: user1, user2: user2, user3: user3}}
+    end
 
-      RouteSettings.get_or_create("user1")
-      RouteSettings.get_or_create("user2")
-      RouteSettings.get_or_create("user3")
+    test "associates a new notification with users subscribed to an affected route", %{
+      user1: user1,
+      user2: user2,
+      user3: user3
+    } do
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["4", "1"]
+        })
 
-      RouteSettings.set("user1", selected_route_ids: ["4", "1"])
-      RouteSettings.set("user2", selected_route_ids: ["2"])
-      RouteSettings.set("user3", selected_route_ids: ["4", "5", "6", "7"])
+      RouteTab.update_all_for_user!(user1.id, [route_tab1])
+
+      route_tab2 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["2"]
+        })
+
+      RouteTab.update_all_for_user!(user2.id, [route_tab2])
+
+      route_tab3 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["4", "5", "6", "7"]
+        })
+
+      RouteTab.update_all_for_user!(user3.id, [route_tab3])
 
       notification_values = %{
-        created_at: 12345,
+        created_at: 12_345,
         block_id: "Z1-1",
         service_id: "FallWeekday",
         reason: :other,
@@ -46,23 +68,42 @@ defmodule Notifications.NotificationTest do
 
       assert(
         notification_users |> Enum.map(& &1.user_id) |> Enum.sort() ==
-          [user1.id, user2.id] |> Enum.sort()
+          Enum.sort([user1.id, user2.id])
       )
     end
   end
 
   describe "unexpired_notifications_for_user/2" do
-    test "returns all unexpired notifications for the given user, in chronological order by creation timestamp" do
+    setup do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+      user3 = User.upsert("user3", "user3@test.com")
+      {:ok, %{user1: user1, user2: user2, user3: user3}}
+    end
+
+    test "returns all unexpired notifications for the given user, in chronological order by creation timestamp",
+         %{user1: user1, user2: user2} do
       baseline_time = 1_000_000_000
       now_fn = fn -> baseline_time end
       naive_now_fn = fn -> baseline_time |> DateTime.from_unix!() |> DateTime.to_naive() end
       Application.put_env(:skate, :naive_now_fn, naive_now_fn)
       eight_hours = 8 * 60 * 60
 
-      RouteSettings.get_or_create("user1")
-      RouteSettings.get_or_create("user2")
-      RouteSettings.set("user1", selected_route_ids: ["1", "2", "112"])
-      RouteSettings.set("user2", selected_route_ids: ["1", "3", "743"])
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["1", "2", "112"]
+        })
+
+      RouteTab.update_all_for_user!(user1.id, [route_tab1])
+
+      route_tab2 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["1", "3", "743"]
+        })
+
+      RouteTab.update_all_for_user!(user2.id, [route_tab2])
 
       route_1_unexpired =
         Notification.get_or_create_from_block_waiver(%{
@@ -74,7 +115,7 @@ defmodule Notifications.NotificationTest do
           start_time: 0,
           created_at: baseline_time - eight_hours + 10,
           route_ids: ["1"],
-          end_time: 10000
+          end_time: 10_000
         })
 
       _route_1_expired =
@@ -209,15 +250,11 @@ defmodule Notifications.NotificationTest do
         "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
       )
 
-      filled_in_bridge_lowered_unexpired = %Notification{
-        bridge_lowered_unexpired
-        | start_time: baseline_time - eight_hours + 1234,
-          end_time: baseline_time + 1234,
-          reason: :chelsea_st_bridge_lowered,
-          route_ids: @chelsea_st_bridge_route_ids,
-          run_ids: [],
-          trip_ids: []
-      }
+      filled_in_bridge_lowered_unexpired =
+        Kernel.update_in(
+          bridge_lowered_unexpired.content.inserted_at,
+          &NaiveDateTime.add(&1, -3, :hour)
+        )
 
       _bridge_lowered_expired =
         Notification.get_or_create_from_bridge_movement(%{
@@ -241,15 +278,11 @@ defmodule Notifications.NotificationTest do
         "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
       )
 
-      filled_in_bridge_raised_unexpired = %Notification{
-        bridge_raised_unexpired
-        | start_time: baseline_time - eight_hours + 2,
-          end_time: baseline_time - eight_hours + 999,
-          reason: :chelsea_st_bridge_raised,
-          route_ids: @chelsea_st_bridge_route_ids,
-          run_ids: [],
-          trip_ids: []
-      }
+      filled_in_bridge_raised_unexpired =
+        Kernel.update_in(
+          bridge_raised_unexpired.content.inserted_at,
+          &NaiveDateTime.add(&1, -1, :hour)
+        )
 
       _bridge_raised_expired =
         Notification.get_or_create_from_bridge_movement(%{
@@ -261,10 +294,10 @@ defmodule Notifications.NotificationTest do
       assert Skate.Repo.aggregate(DbNotification, :count) == 14
 
       user1_notifications =
-        Notification.unexpired_notifications_for_user("user1", now_fn) |> Enum.sort_by(& &1.id)
+        user1.id |> Notification.unexpired_notifications_for_user(now_fn) |> Enum.sort_by(& &1.id)
 
       user2_notifications =
-        Notification.unexpired_notifications_for_user("user2", now_fn) |> Enum.sort_by(& &1.id)
+        user2.id |> Notification.unexpired_notifications_for_user(now_fn) |> Enum.sort_by(& &1.id)
 
       assert user1_notifications ==
                [
@@ -287,6 +320,184 @@ defmodule Notifications.NotificationTest do
                ]
                |> Enum.map(&%Notification{&1 | state: :unread})
                |> Enum.sort_by(& &1.id)
+    end
+  end
+
+  describe "create_activated_detour_notification_from_detour/1" do
+    test "inserts new record into the database" do
+      count = 3
+
+      # create new notification
+      for _ <- 1..count do
+        :detour
+        |> insert()
+        |> Notifications.Notification.create_activated_detour_notification_from_detour()
+      end
+
+      # assert it is in the database
+      assert count == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+    end
+
+    test "creates an unread notification for all users" do
+      number_of_users = 5
+      [user | _] = insert_list(number_of_users, :user)
+
+      # create new notification
+      detour =
+        :detour
+        |> insert(
+          # don't create a new user and affect the user count
+          author: user
+        )
+        |> Notifications.Notification.create_activated_detour_notification_from_detour()
+
+      detour_notification =
+        Notifications.Db.Notification
+        |> Skate.Repo.get!(detour.id)
+        |> Skate.Repo.preload(:users)
+
+      # assert all users have a notification that is unread
+      assert Kernel.length(detour_notification.users) == number_of_users
+    end
+
+    test "returns detour information" do
+      # create new notification
+      %{
+        state: %{
+          "context" => %{
+            "route" => %{
+              "name" => route_name
+            },
+            "routePattern" => %{
+              "name" => route_pattern_name,
+              "headsign" => headsign
+            }
+          }
+        }
+      } =
+        detour =
+        :detour
+        |> build()
+        |> with_direction(:inbound)
+        |> insert()
+
+      detour_notification =
+        Notifications.Notification.create_activated_detour_notification_from_detour(detour)
+
+      # assert fields are set
+      assert %Notifications.Notification{
+               content: %Notifications.Db.Detour{
+                 status: :activated,
+                 route: ^route_name,
+                 origin: ^route_pattern_name,
+                 headsign: ^headsign,
+                 direction: "Inbound"
+               }
+             } = detour_notification
+    end
+
+    test "deletes associated detour notifications when detour is deleted" do
+      # create new notification and detour
+      detour = insert(:detour)
+
+      Notifications.Notification.create_activated_detour_notification_from_detour(detour)
+
+      # assert it is in the database
+      assert 1 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+
+      Skate.Repo.delete!(detour)
+
+      assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+      assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
+    end
+  end
+
+  describe "create_deactivated_detour_notification_from_detour/1" do
+    test "inserts new record into the database" do
+      count = 3
+
+      # create new notification
+      for _ <- 1..count do
+        :detour
+        |> insert()
+        |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
+      end
+
+      # assert it is in the database
+      assert count == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+    end
+
+    test "creates an unread notification for all users" do
+      number_of_users = 5
+      [user | _] = insert_list(number_of_users, :user)
+
+      # create new notification
+      detour =
+        :detour
+        |> insert(
+          # don't create a new user and affect the user count
+          author: user
+        )
+        |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
+
+      detour_notification =
+        Notifications.Db.Notification
+        |> Skate.Repo.get!(detour.id)
+        |> Skate.Repo.preload(:users)
+
+      # assert all users have a notification that is unread
+      assert Kernel.length(detour_notification.users) == number_of_users
+    end
+
+    test "returns detour information" do
+      # create new notification
+      %{
+        state: %{
+          "context" => %{
+            "route" => %{
+              "name" => route_name
+            },
+            "routePattern" => %{
+              "name" => route_pattern_name,
+              "headsign" => headsign
+            }
+          }
+        }
+      } =
+        detour =
+        :detour
+        |> build()
+        |> with_direction(:inbound)
+        |> insert()
+
+      detour_notification =
+        Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
+
+      # assert fields are set
+      assert %Notifications.Notification{
+               content: %Notifications.Db.Detour{
+                 status: :deactivated,
+                 route: ^route_name,
+                 origin: ^route_pattern_name,
+                 headsign: ^headsign,
+                 direction: "Inbound"
+               }
+             } = detour_notification
+    end
+
+    test "deletes associated detour notifications when detour is deleted" do
+      # create new notification and detour
+      detour = insert(:detour)
+
+      Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
+
+      # assert it is in the database
+      assert 1 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+
+      Skate.Repo.delete!(detour)
+
+      assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
+      assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
     end
   end
 end

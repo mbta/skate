@@ -1,5 +1,5 @@
-import { act, renderHook } from "@testing-library/react-hooks"
-import { mount } from "enzyme"
+import { jest, describe, test, expect } from "@jest/globals"
+import { act, renderHook } from "@testing-library/react"
 import React from "react"
 import {
   filterRoutes,
@@ -9,16 +9,10 @@ import {
 } from "../../src/hooks/useRouteFilter"
 import routeFactory from "../factories/route"
 import { Route } from "../../src/schedule.d"
-
-// tslint:disable: react-hooks-nesting no-empty
+import userEvent from "@testing-library/user-event"
+import { render } from "@testing-library/react"
 
 describe("useRouteFilter", () => {
-  test("defaults filter type to 'name'", () => {
-    const { result } = renderHook(() => useRouteFilter())
-
-    expect(result.current.filterType).toBe("name")
-  })
-
   test("defaults filter text to empty string", () => {
     const { result } = renderHook(() => useRouteFilter())
 
@@ -57,7 +51,7 @@ describe("useRouteFilter", () => {
 })
 
 describe("filterRoutes", () => {
-  test("when filter type is name, filters by route name, case insensitively", () => {
+  test("filters by route name, case insensitively", () => {
     const initialRoutes: Route[] = [
       routeFactory.build({ id: "3", name: "3" }),
       routeFactory.build({ id: "12", name: "12" }),
@@ -66,7 +60,6 @@ describe("filterRoutes", () => {
     ]
 
     const filteredRoutes1 = filterRoutes(initialRoutes, {
-      filterType: "name",
       filterText: "Sl",
     })
 
@@ -75,7 +68,6 @@ describe("filterRoutes", () => {
     ])
 
     const filteredRoutes2 = filterRoutes(initialRoutes, {
-      filterType: "name",
       filterText: "7",
     })
 
@@ -84,57 +76,31 @@ describe("filterRoutes", () => {
 })
 
 describe("RouteFilter", () => {
-  test("changing the filter type updates the route filter", () => {
+  test("inputting filter text updates the route filter", async () => {
     const mockRouteFilter: RouteFilterData = {
-      filterType: "name",
       filterText: "",
-      handleTypeChange: jest.fn(),
       handleTextInput: jest.fn(),
       clearTextInput: jest.fn(),
     }
-    const routePicker = mount(<RouteFilter {...mockRouteFilter} />)
+    const result = render(<RouteFilter {...mockRouteFilter} />)
 
-    const testEvent = {
-      currentTarget: {
-        value: "new-type",
-      },
-    } as React.ChangeEvent<HTMLSelectElement>
-    routePicker.find(".m-route-filter__type").simulate("change", testEvent)
-
-    expect(mockRouteFilter.handleTypeChange).toHaveBeenCalled()
-  })
-
-  test("inputting filter text updates the route filter", () => {
-    const mockRouteFilter: RouteFilterData = {
-      filterType: "name",
-      filterText: "",
-      handleTypeChange: jest.fn(),
-      handleTextInput: jest.fn(),
-      clearTextInput: jest.fn(),
-    }
-    const routePicker = mount(<RouteFilter {...mockRouteFilter} />)
-
-    const testEvent = {
-      currentTarget: {
-        value: "test input",
-      },
-    } as React.ChangeEvent<HTMLInputElement>
-    routePicker.find(".m-route-filter__input").simulate("change", testEvent)
+    await userEvent.type(
+      result.getByPlaceholderText("Search routes"),
+      "test input"
+    )
 
     expect(mockRouteFilter.handleTextInput).toHaveBeenCalled()
   })
 
-  test("the clear button clears the filter text", () => {
+  test("the clear button clears the filter text", async () => {
     const mockRouteFilter: RouteFilterData = {
-      filterType: "name",
-      filterText: "",
-      handleTypeChange: jest.fn(),
+      filterText: "28",
       handleTextInput: jest.fn(),
       clearTextInput: jest.fn(),
     }
-    const routePicker = mount(<RouteFilter {...mockRouteFilter} />)
+    const result = render(<RouteFilter {...mockRouteFilter} />)
 
-    routePicker.find(".m-route-filter__clear").simulate("click")
+    await userEvent.click(result.getByTitle("Clear"))
 
     expect(mockRouteFilter.clearTextInput).toHaveBeenCalled()
   })

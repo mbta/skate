@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import vehicleLabel from "../helpers/vehicleLabel"
+import { vehicleLabel } from "../helpers/vehicleLabel"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import { crowdingLabel, OccupancyStatus } from "../models/crowding"
 import {
@@ -8,13 +8,13 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
-import { Vehicle, VehicleId, VehicleOrGhost } from "../realtime.d"
-import { selectVehicle } from "../state"
+import { VehicleInScheduledService, VehicleId, Ghost } from "../realtime"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
 import VehicleIcon, { Orientation, Size, VehicleTooltip } from "./vehicleIcon"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const IncomingBoxVehicle = ({
   displayCrowding,
@@ -23,21 +23,32 @@ const IncomingBoxVehicle = ({
   selectedVehicleId,
 }: {
   displayCrowding: boolean
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => {
-  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
+  const [{ userSettings }] = useContext(StateDispatchContext)
+
+  const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
+
   const selectedClass =
-    vehicleOrGhost.id === selectedVehicleId ? "selected" : ""
+    vehicleOrGhost.id === selectedVehicleId
+      ? " c-incoming-box__vehicle--selected"
+      : ""
   const orientation =
-    directionOnLadder(vehicleOrGhost.directionId, ladderDirection) ===
-    VehicleDirection.Down
+    directionOnLadder(
+      vehicleOrGhost.incomingTripDirectionId !== null
+        ? vehicleOrGhost.incomingTripDirectionId
+        : vehicleOrGhost.directionId,
+      ladderDirection
+    ) === VehicleDirection.Down
       ? Orientation.Down
       : Orientation.Up
   const alertIconStyle: AlertIconStyle | undefined =
     blockWaiverAlertStyle(vehicleOrGhost)
-  const crowding = isVehicle(vehicleOrGhost) ? vehicleOrGhost.crowding : null
+  const crowding = isVehicleInScheduledService(vehicleOrGhost)
+    ? vehicleOrGhost.crowding
+    : null
   const occupancyStatus: OccupancyStatus = crowding
     ? crowding.occupancyStatus
     : "NO_DATA"
@@ -45,10 +56,10 @@ const IncomingBoxVehicle = ({
   return (
     <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
       <button
-        className={`m-incoming-box__vehicle ${selectedClass}`}
-        onClick={() => dispatch(selectVehicle(vehicleOrGhost))}
+        className={`c-incoming-box__vehicle${selectedClass}`}
+        onClick={() => openVehiclePropertiesPanel(vehicleOrGhost)}
       >
-        <div className="m-incoming-box__vehicle-icon">
+        <div className="c-incoming-box__vehicle-icon">
           {displayCrowding ? (
             <CrowdingIcon
               size={Size.Small}
@@ -68,9 +79,9 @@ const IncomingBoxVehicle = ({
         {displayCrowding || alertIconStyle === undefined ? null : (
           <IconAlertCircle style={alertIconStyle} />
         )}
-        <div className="m-incoming-box__vehicle-label">
+        <div className="c-incoming-box__vehicle-label">
           {displayCrowding
-            ? crowdingLabel(vehicleOrGhost as Vehicle)
+            ? crowdingLabel(vehicleOrGhost as VehicleInScheduledService)
             : vehicleLabel(vehicleOrGhost, userSettings)}
         </div>
       </button>
@@ -85,14 +96,16 @@ const IncomingBox = ({
   selectedVehicleId,
 }: {
   displayCrowding?: boolean
-  vehiclesAndGhosts: VehicleOrGhost[]
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[]
   ladderDirection: LadderDirection
   selectedVehicleId: VehicleId | undefined
 }) => (
-  <div className="m-incoming-box">
+  <div className="c-incoming-box">
     {vehiclesAndGhosts.map((vehicleOrGhost) => (
       <IncomingBoxVehicle
-        displayCrowding={!!displayCrowding && isVehicle(vehicleOrGhost)}
+        displayCrowding={
+          !!displayCrowding && isVehicleInScheduledService(vehicleOrGhost)
+        }
         vehicleOrGhost={vehicleOrGhost}
         ladderDirection={ladderDirection}
         selectedVehicleId={selectedVehicleId}

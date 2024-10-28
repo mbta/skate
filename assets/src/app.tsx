@@ -2,7 +2,6 @@
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
 declare function require(name: string): string
-// tslint:disable-next-line
 require("../css/app.scss")
 
 // webpack automatically bundles all modules in your
@@ -11,38 +10,39 @@ require("../css/app.scss")
 //
 // Import dependencies
 //
-import * as Sentry from "@sentry/react"
 import "core-js/stable"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
-import "leaflet/dist/leaflet.css"
 import "phoenix_html"
 import * as React from "react"
-import ReactDOM from "react-dom"
-import ResizeObserver from "resize-observer-polyfill"
+import { createRoot } from "react-dom/client"
+import sentryInit from "./helpers/sentryInit"
 import AppStateWrapper from "./components/appStateWrapper"
+import { tagManagerIdentify } from "./helpers/googleTagManager"
+import { fullStoryInit } from "./helpers/fullStory"
+import inTestGroup, { TestGroups } from "./userInTestGroup"
 
-if (window.sentry) {
-  Sentry.init({
-    dsn: window.sentry.dsn,
-  })
+document.documentElement.dataset.demoMode = inTestGroup(
+  TestGroups.DemoMode
+).toString()
 
-  if (window.username) {
-    Sentry.setUser({ username: window.username })
-  }
-}
+const username = document
+  .querySelector("meta[name=username]")
+  ?.getAttribute("content")
 
-if (window.FS && window.username) {
-  window.FS.identify(window.username, { displayName: window.username })
-}
+fullStoryInit(window.fullStoryInitialization?.organizationId, username)
 
-if (!("ResizeObserver" in global)) {
-  // Load polyfill for https://github.com/rehooks/component-size
-  window.ResizeObserver = ResizeObserver
-}
+sentryInit(
+  window.sentryInitialization?.initArgs,
+  username || undefined,
+  window.sentryInitialization?.orgSlug
+)
 
-// Import local files
-//
-// Local files can be imported directly using relative paths, for example:
-// import socket from "./socket"
+const userUuid = document
+  .querySelector("meta[name=user-uuid]")
+  ?.getAttribute("content")
 
-ReactDOM.render(<AppStateWrapper />, document.getElementById("app"))
+tagManagerIdentify(userUuid)
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+const root = createRoot(document.getElementById("app")!)
+root.render(<AppStateWrapper />)

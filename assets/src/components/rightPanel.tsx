@@ -1,36 +1,29 @@
-import React, { ReactElement, useContext } from "react"
-import { useHistory } from "react-router-dom"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { VehicleOrGhost } from "../realtime.d"
-import { setNotification, OpenView } from "../state"
+import React, { ReactElement, ReactNode } from "react"
 import NotificationDrawer from "./notificationDrawer"
-import PropertiesPanel from "./propertiesPanel"
 import SwingsView from "./swingsView"
+import { OpenView } from "../state/pagePanelState"
+import LateView from "./lateView"
+
+type RightPanelProps = {
+  openView: OpenView
+  propertiesPanel?: ReactNode
+}
 
 const RightPanel = ({
-  selectedVehicleOrGhost,
-}: {
-  selectedVehicleOrGhost?: VehicleOrGhost | null
-}): ReactElement<HTMLElement> | null => {
-  const [state, dispatch] = useContext(StateDispatchContext)
-
-  // close notification if you move away from ladder page
-  // TODO delete when notifications are viewable from anywhere
-  const history = useHistory()
-  if (history) {
-    /* istanbul ignore next */
-    history.listen(() => dispatch(setNotification(undefined)))
-  }
-
-  if (selectedVehicleOrGhost) {
-    return <PropertiesPanel selectedVehicleOrGhost={selectedVehicleOrGhost} />
-  } else if (state.openView === OpenView.Swings) {
+  openView,
+  propertiesPanel,
+}: RightPanelProps): ReactElement | null => {
+  if (propertiesPanel !== undefined) {
+    return <>{propertiesPanel}</>
+  } else if (openView === OpenView.Swings) {
     return <SwingsView />
-  } else if (state.notificationDrawerIsOpen) {
+  } else if (openView === OpenView.Late) {
+    return <LateView />
+  } else if (openView === OpenView.NotificationDrawer) {
     return <NotificationDrawer />
-  } else {
-    return null
   }
+
+  return null
 }
 
 export default RightPanel

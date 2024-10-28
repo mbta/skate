@@ -1,0 +1,167 @@
+@use "./color/definitions" as semantic;
+
+.l-diversion-page {
+  display: grid;
+  // Default layout is linear
+  grid-template:
+    "heading" min-content
+    "panel" auto
+    "map" 80vh
+    / 1fr;
+
+  &__header {
+    grid-area: heading;
+  }
+
+  &__panel {
+    grid-area: panel;
+  }
+
+  &__map {
+    grid-area: map;
+
+    > * {
+      contain: paint;
+    }
+  }
+
+  &--mobile,
+  &--mobile_landscape_tablet_portrait {
+    grid-template:
+      "heading" min-content
+      "map-and-panel" auto
+      / 1fr;
+
+    .l-diversion-page__panel,
+    .l-diversion-page__map {
+      grid-area: map-and-panel;
+    }
+
+    .l-diversion-page-panel__scroll-area {
+      padding-top: 1rem;
+    }
+
+    .l-diversion-page__header {
+      border-bottom: none;
+    }
+
+    .l-diversion-page-panel__header {
+      align-items: center;
+    }
+
+    .c-diversion-panel__header_text,
+    .c-detour-panel__subheader,
+    .c-diversion-panel__desktop-buttons {
+      display: none !important;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    // For larger breakpoints, layout into grid
+    grid-template:
+      "heading heading-right" min-content
+      "panel map" auto
+      / max(22.5vw, 350px) auto;
+
+    .l-diversion-page__header {
+      grid-area: heading-right;
+    }
+    // Overlay the panel and make the panel header match
+    // the size of the page header if subgrid is supported
+    @supports (grid-template-rows: subgrid) {
+      grid-template:
+        [panel-start] "heading heading-right" min-content
+        "panel map" auto
+        / max(22.5vw, 350px) auto;
+
+      .l-diversion-page__panel,
+      .l-diversion-page-panel {
+        display: grid;
+
+        grid-template-rows: subgrid;
+        grid-template-columns: subgrid;
+
+        grid-area: panel;
+
+        .l-diversion-page-panel__header {
+          grid-row: heading;
+        }
+
+        .l-diversion-page-panel__body {
+          grid-row: 2/-1;
+        }
+      }
+    }
+
+    .l-diversion-page-panel__header .c-diversion-panel__back-button {
+      display: none;
+    }
+  }
+}
+
+.l-diversion-page-panel {
+  // Try to fill space and expand children when not in
+  // the `l-diversion-page` grid
+  :not(.l-diversion-page__panel) > & {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    > .l-diversion-page-panel__body {
+      flex-grow: 1;
+    }
+  }
+
+  &__scroll-area {
+    flex: 1 1 0;
+    overflow-y: auto;
+  }
+}
+
+.c-diversion-panel__origin,
+.c-diversion-panel__direction {
+  font-size: var(--font-size-s);
+}
+
+.c-diversion-panel__description {
+  font-weight: var(--font-weight-semi);
+}
+
+.l-diversion-page__header {
+  display: flex;
+  align-items: center;
+  padding-left: 1rem;
+
+  &-details {
+    margin-right: 1.125rem;
+  }
+  button {
+    margin-left: auto;
+  }
+}
+
+.l-diversion-page__header,
+.l-diversion-page__panel {
+  &.active-detour {
+    background-color: semantic.$active-detour;
+  }
+}
+
+.c-diversion-panel__h1 {
+  font-size: 1.25rem; // h3 font size
+  font-weight: var(--font-weight-semi);
+}
+
+.c-diversion-panel__h2 {
+  font-size: 1.125rem; // h4 font size
+  font-weight: var(--font-weight-semi);
+}
+
+.c-diversion-panel__help-text {
+  line-height: 1.5;
+}
+
+.c-active-detour__alert-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+}

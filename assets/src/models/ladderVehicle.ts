@@ -1,14 +1,14 @@
 import { TimepointStatusYFunc } from "../components/ladder"
-import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, VehicleInScheduledService } from "../realtime"
 import {
   directionOnLadder,
   LadderDirection,
   VehicleDirection,
 } from "./ladderDirection"
-import { isVehicle } from "./vehicle"
+import { isVehicleInScheduledService } from "./vehicle"
 
 export interface LadderVehicle {
-  vehicle: VehicleOrGhost
+  vehicle: VehicleInScheduledService | Ghost
   x: number
   y: number
   vehicleDirection: VehicleDirection
@@ -17,7 +17,7 @@ export interface LadderVehicle {
 }
 
 interface WithVehicle {
-  vehicle: VehicleOrGhost
+  vehicle: VehicleInScheduledService | Ghost
 }
 
 interface OnLadder {
@@ -38,8 +38,6 @@ interface VehicleInLane extends WithVehicle, InLane {}
 const widthOfVehicleGroup = 32
 const heightOfVehicleGroup = 34
 
-// tslint:disable:object-literal-sort-keys
-
 /**
  * The LadderVehicle data has some order dependency in how the properties are calculated.
  * E.g. In order to calculate x we need to know what lane the vehicle is in.
@@ -50,7 +48,7 @@ const heightOfVehicleGroup = 34
  *  3) Calculate the x property
  */
 export const ladderVehiclesFromVehicles = (
-  vehiclesAndGhosts: VehicleOrGhost[],
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[],
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): {
@@ -59,7 +57,7 @@ export const ladderVehiclesFromVehicles = (
 } => {
   const vehiclesOnLadder: VehicleOnLadder[] = vehiclesAndGhosts.map(
     (vehicleOrGhost) =>
-      isVehicle(vehicleOrGhost)
+      isVehicleInScheduledService(vehicleOrGhost)
         ? vehicleOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
         : ghostOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
   )
@@ -115,7 +113,7 @@ export const putIntoLanes = (
     )
 
 const vehicleOnLadder = (
-  vehicle: Vehicle,
+  vehicle: VehicleInScheduledService,
   ladderDirection: LadderDirection,
   timepointStatusYFunc: TimepointStatusYFunc
 ): VehicleOnLadder => {
@@ -136,7 +134,6 @@ const vehicleOnLadder = (
       : timepointStatusYFunc(vehicle.timepointStatus, vehicleDirection)
 
   return {
-    // tslint:disable-next-line:object-literal-sort-keys
     vehicle,
     vehicleDirection,
     y,
@@ -151,7 +148,7 @@ interface ScheduledToBe {
 }
 
 const scheduledToBe = (
-  vehicle: Vehicle,
+  vehicle: VehicleInScheduledService,
   ladderDirection: LadderDirection,
   timepointStatusY: TimepointStatusYFunc
 ): ScheduledToBe => {
@@ -191,7 +188,6 @@ const ghostOnLadder = (
     vehicleDirection
   )
   return {
-    // tslint:disable-next-line:object-literal-sort-keys
     vehicle: ghost,
     vehicleDirection,
     y,

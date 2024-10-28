@@ -1,122 +1,91 @@
-import { mount, shallow } from "enzyme"
+import { describe, test, expect } from "@jest/globals"
 import React from "react"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
 import routeFactory from "../factories/route"
 import { RouteVariantName } from "../../src/components/routeVariantName"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { Vehicle } from "../../src/realtime"
 import { Route } from "../../src/schedule"
-
-const vehicle: Vehicle = {
-  id: "v1",
-  label: "v1-label",
-  runId: "run-1",
-  timestamp: 123,
-  latitude: 0,
-  longitude: 0,
-  directionId: 0,
-  routeId: "39",
-  tripId: "t1",
-  headsign: "Forest Hills",
-  viaVariant: "X",
-  operatorId: "op1",
-  operatorFirstName: "WILL",
-  operatorLastName: "SMITH",
-  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-  bearing: 33,
-  blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: null,
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
-  isShuttle: false,
-  isOverload: false,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [
-    {
-      attribute: "trip_id",
-      sources: [
-        {
-          id: "swiftly",
-          value: "swiftly-trip-id",
-        },
-        {
-          id: "busloc",
-          value: "busloc-trip-id",
-        },
-      ],
-    },
-  ],
-  stopStatus: {
-    stopId: "s1",
-    stopName: "Stop Name",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "tp1",
-  },
-  scheduledLocation: null,
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
-}
+import { vehicleFactory } from "../factories/vehicle"
 
 describe("RouteVariantName", () => {
   test("renders for a vehicle with variant and headsign", () => {
-    const wrapper = shallow(<RouteVariantName vehicle={vehicle} />)
+    const vehicle = vehicleFactory.build()
 
-    expect(wrapper.text()).toEqual("39_X Forest Hills")
+    render(<RouteVariantName vehicle={vehicle} />)
+
+    expect(
+      screen.getByRole("status", { name: "Route Variant Name" })
+    ).toHaveTextContent("39_X Forest Hills")
   })
 
   test("renders for a vehicle missing variant and headsign", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
+    const testVehicle = vehicleFactory.build({
       headsign: null,
       viaVariant: null,
-    }
+    })
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(wrapper.text()).toEqual("39_")
+    expect(
+      screen.getByRole("status", { name: "Route Variant Name" })
+    ).toHaveTextContent("39_")
   })
 
   test("doesn't show underscore variant character", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
+    const testVehicle = vehicleFactory.build({
       headsign: null,
       viaVariant: "_",
-    }
+    })
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(wrapper.text()).toEqual("39_")
+    expect(
+      screen.getByRole("status", { name: "Route Variant Name" })
+    ).toHaveTextContent("39_")
   })
 
   test("renders a static label for a shuttle", () => {
-    const testVehicle: Vehicle = {
-      ...vehicle,
+    const testVehicle = vehicleFactory.build({
       isShuttle: true,
-    }
+    })
 
-    const wrapper = shallow(<RouteVariantName vehicle={testVehicle} />)
+    render(<RouteVariantName vehicle={testVehicle} />)
 
-    expect(wrapper.text()).toEqual("Shuttle")
+    expect(
+      screen.getByRole("status", { name: "Route Variant Name" })
+    ).toHaveTextContent(/shuttle/i)
+  })
+
+  test("renders a static label for a logged out vehicle", () => {
+    const testVehicle = vehicleFactory.build({
+      runId: null,
+      blockId: undefined,
+      operatorLogonTime: null,
+    })
+
+    render(<RouteVariantName vehicle={testVehicle} />)
+
+    expect(
+      screen.getByRole("status", { name: "Route Variant Name" })
+    ).toHaveTextContent(/logged off/i)
   })
 
   test("uses route name if available", () => {
+    const vehicle = vehicleFactory.build()
     const route: Route = routeFactory.build({
       id: "39",
       name: "ThirtyNine",
     })
 
-    const wrapper = mount(
+    render(
       <RoutesProvider routes={[route]}>
         <RouteVariantName vehicle={vehicle} />
       </RoutesProvider>
     )
-    expect(wrapper.text()).toEqual("ThirtyNine_X Forest Hills")
+
+    expect(
+      screen.getByRole("status", { name: "Route Variant Name" })
+    ).toHaveTextContent("ThirtyNine_X Forest Hills")
   })
 })

@@ -1,9 +1,11 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
+import { BrowserRouter } from "react-router-dom"
+import { render, waitFor } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
 import renderer from "react-test-renderer"
 import SettingsPage from "../../src/components/settingsPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import featureIsEnabled from "../../src/laboratoryFeatures"
 import {
   initialState,
   setLadderVehicleLabelSetting,
@@ -15,11 +17,20 @@ import {
   VehicleLabelSetting,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
+import userEvent from "@testing-library/user-event"
+import { useNearestIntersectionFetchResult } from "../../src/hooks/useNearestIntersection"
+import { loading } from "../../src/util/fetchResult"
 
-jest.mock("../../src/laboratoryFeatures", () => ({
+jest.mock("../../src/hooks/useNearestIntersection")
+
+jest.mock("../../src/hooks/useShapes", () => ({
   __esModule: true,
-  default: jest.fn(),
+  useTripShape: jest.fn(() => null),
 }))
+
+beforeEach(() => {
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
 
 const mockDispatch = jest.fn()
 
@@ -28,7 +39,9 @@ describe("SettingsPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-          <SettingsPage />
+          <BrowserRouter>
+            <SettingsPage />
+          </BrowserRouter>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -45,42 +58,43 @@ describe("SettingsPage", () => {
       },
     }
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
-    const vehicleNumberOptionChecked = wrapper
-      .find('[data-option-id="ladder-vehicle-label-vehicle-number"] input')
-      .prop("checked")
 
-    expect(vehicleNumberOptionChecked).toBeTruthy()
+    expect(
+      result.getByTestId("ladder-vehicle-label-vehicle-number")
+    ).toBeChecked()
   })
 
-  test("selecting a ladder vehicle label setting sets that value", () => {
+  test("selecting a ladder vehicle label setting sets that value", async () => {
     const testDispatch = jest.fn()
-    window.fetch = jest.fn()
+    window.fetch = jest.fn<typeof window.fetch>()
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
-    const testEvent = {
-      currentTarget: {
-        value: `${VehicleLabelSetting.RunNumber}`,
-      },
-    } as React.FormEvent<HTMLSelectElement>
-    wrapper
-      .find('[data-option-id="ladder-vehicle-label-run-number"] input')
-      .prop("onChange")!(testEvent)
 
-    expect(testDispatch).toHaveBeenCalledWith(
-      setLadderVehicleLabelSetting(VehicleLabelSetting.RunNumber)
+    await userEvent.click(
+      result.getByTestId("ladder-vehicle-label-vehicle-number")
+    )
+
+    await waitFor(() =>
+      expect(testDispatch).toHaveBeenCalledWith(
+        setLadderVehicleLabelSetting(VehicleLabelSetting.VehicleNumber)
+      )
     )
     // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
-      "/api/user_settings?field=ladder_page_vehicle_label&value=run_id"
+    expect(jest.mocked(window.fetch).mock.calls[0][0]).toEqual(
+      "/api/user_settings?field=ladder_page_vehicle_label&value=vehicle_id"
     )
   })
 
@@ -93,73 +107,64 @@ describe("SettingsPage", () => {
       },
     }
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
-    const runNumberOptionChecked = wrapper
-      .find('[data-option-id="shuttle-vehicle-label-run-number"] input')
-      .prop("checked")
-
-    expect(runNumberOptionChecked).toBeTruthy()
+    expect(result.getByTestId("shuttle-vehicle-label-run-number")).toBeChecked()
   })
 
-  test("selecting a map vehicle label setting sets that value", () => {
+  test("selecting a map vehicle label setting sets that value", async () => {
     const testDispatch = jest.fn()
-    window.fetch = jest.fn()
+    window.fetch = jest.fn<typeof window.fetch>()
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
-    const testEvent = {
-      currentTarget: {
-        value: `${VehicleLabelSetting.VehicleNumber}`,
-      },
-    } as React.FormEvent<HTMLSelectElement>
-    wrapper
-      .find('[data-option-id="shuttle-vehicle-label-vehicle-number"] input')
-      .prop("onChange")!(testEvent)
+
+    await userEvent.click(
+      result.getByTestId("shuttle-vehicle-label-run-number")
+    )
 
     expect(testDispatch).toHaveBeenCalledWith(
-      setShuttleVehicleLabelSetting(VehicleLabelSetting.VehicleNumber)
+      setShuttleVehicleLabelSetting(VehicleLabelSetting.RunNumber)
     )
     // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
-      "/api/user_settings?field=shuttle_page_vehicle_label&value=vehicle_id"
+    expect(jest.mocked(window.fetch).mock.calls[0][0]).toEqual(
+      "/api/user_settings?field=shuttle_page_vehicle_label&value=run_id"
     )
   })
 
-  test("selecting a vehicle adherence colors setting sets that value", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(
-      (feature) => feature === "vehicle_adherence_colors_setting"
-    )
-
+  test("selecting a vehicle adherence colors setting sets that value", async () => {
     const testDispatch = jest.fn()
-    window.fetch = jest.fn()
+    window.fetch = jest.fn<typeof window.fetch>()
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <SettingsPage />
+        <BrowserRouter>
+          <SettingsPage />
+        </BrowserRouter>
       </StateDispatchProvider>
     )
-    const testEvent = {
-      currentTarget: {
-        value: `${VehicleAdherenceColorsSetting.EarlyBlue}`,
-      },
-    } as React.ChangeEvent<HTMLSelectElement>
-    wrapper
-      .find('[data-option-id="vehicle-adherence-colors-early-blue"] input')
-      .prop("onChange")!(testEvent)
+
+    await userEvent.click(
+      result.getByTestId("vehicle-adherence-colors-early-blue")
+    )
 
     expect(testDispatch).toHaveBeenCalledWith(
       setVehicleAdherenceColorsSetting(VehicleAdherenceColorsSetting.EarlyBlue)
     )
     // Updates the backend database
-    expect((window.fetch as jest.Mock).mock.calls[0][0]).toEqual(
-      "/api/user_settings?field=vehicle_adherence_colors&value=early_blue"
+    expect(window.fetch).toHaveBeenCalledWith(
+      "/api/user_settings?field=vehicle_adherence_colors&value=early_blue",
+      expect.anything()
     )
   })
 })

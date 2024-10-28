@@ -1,10 +1,20 @@
 defmodule Report do
+  @moduledoc false
+
   @doc """
   Exectutes a report against a given repo, returning the results or an error
   """
   @type t :: module()
 
-  @report_modules [Report.UserSettings]
+  @report_modules [
+    Report.UserSettings,
+    Report.UserInfo,
+    Report.UserConfigurations,
+    Report.NotificationsCountEstimate,
+    Report.NotificationsUsersCountEstimate,
+    Report.MaxConnections,
+    Report.AuthenticationTimeout
+  ]
 
   @callback run() :: {:ok, [map()]} | :error
   @callback short_name() :: String.t()

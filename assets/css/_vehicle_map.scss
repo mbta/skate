@@ -1,52 +1,25 @@
-.m-vehicle-map__label {
-  svg {
-    overflow: visible;
+$map-component-z-index: (
+  "overlay-cutout": 800,
+  "control-layer": 1000,
+);
+
+.c-vehicle-map {
+  .c-street-view-switch {
+    // Same control layer as leaflet controls
+    z-index: map-get($map-component-z-index, "control-layer");
   }
 
-  &.primary {
-    @include font-emph;
-  }
-
-  &.secondary {
-    @include font-tiny;
-  }
-}
-
-.m-vehicle-map__icon {
-  path {
-    fill: $color-primary;
-    stroke: $color-bg-base;
-    stroke-width: 2;
-
-    &.on-time {
-      fill: $color-vehicle-ontime;
-    }
-
-    &.early.early-red {
-      fill: $color-vehicle-red;
-    }
-    &.early.early-blue {
-      fill: $color-vehicle-blue;
-    }
-
-    &.late.early-red {
-      fill: $color-vehicle-blue;
-    }
-    &.late.early-blue {
-      fill: $color-vehicle-red;
-    }
-
-    &.off-course {
-      fill: $color-vehicle-off-course;
-    }
-  }
-
-  svg {
-    overflow: visible;
+  .c-cutout-overlay {
+    // Below controls, above map
+    z-index: map-get($map-component-z-index, "overlay-cutout");
   }
 }
 
-.m-vehicle-map__train-icon {
+.c-vehicle-properties-panel__location .c-vehicle-map .leaflet-right {
+  padding-right: calc(env(safe-area-inset-right) - #{$vpp-location-padding});
+}
+
+.c-vehicle-map__train-icon {
   fill: $white;
   stroke: $color-component-dark;
   stroke-width: 4;
@@ -58,31 +31,101 @@
   }
 }
 
-.m-vehicle-map__route-shape:hover {
+.c-vehicle-map__route-shape {
+  stroke: $color-kiwi-500;
+  stroke-opacity: 0.5;
+  stroke-width: 5;
+}
+
+.c-vehicle-map__route-shape:focus {
+  outline: none;
+}
+
+.route-shape--rail {
+  stroke-opacity: 1;
+  stroke-width: 4;
+}
+
+.c-vehicle-map__route-shape.route-shape--blue {
+  stroke: $color-mbta-blue;
+}
+
+.c-vehicle-map__route-shape.route-shape--green {
+  stroke: $color-mbta-green;
+}
+
+.c-vehicle-map__route-shape.route-shape--orange {
+  stroke: $color-mbta-orange;
+}
+
+.c-vehicle-map__route-shape.route-shape--red {
+  stroke: $color-mbta-red;
+}
+
+.c-vehicle-map__route-shape:not(.c-vehicle-map__route-shape--no-hover):hover,
+.c-vehicle-map__route-shape--selected {
+  stroke-width: 7;
+}
+
+.c-vehicle-map__route-shape--satellite {
+  stroke: $color-kiwi-300;
   stroke-opacity: 1;
 }
 
-.m-vehicle-map__stop {
-  fill: $color-stop-fill;
-  fill-opacity: 1;
-  stroke: $color-stop-stroke;
-  stroke-width: 1;
+.leaflet-tooltip.c-vehicle-map__mobile-friendly-tooltip,
+.leaflet-tooltip.route-shape__tooltip {
+  background-color: $color-tooltip-background;
+  color: $white;
+  border-color: $color-tooltip-background;
+  opacity: 1 !important;
 }
 
-.m-vehicle-map__recenter-button {
-  path {
-    fill: none;
-    stroke: $color-button-secondary;
-    stroke-width: 2;
-  }
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip .leaflet-popup-content {
+  margin: 0px;
+  background-color: $color-tooltip-background;
+  opacity: 1 !important;
+  text-align: center;
+}
 
-  .m-vehicle-map-state--auto-centering + .m-vehicle-map & a {
-    background-color: $color-button-disabled;
-    color: $color-font-grey;
-    cursor: default;
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip
+  .leaflet-popup-content-wrapper {
+  background-color: $color-tooltip-background;
+  color: $white;
+  padding: 0;
+  box-shadow: none;
+}
 
-    path {
-      stroke: $color-font-grey;
-    }
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip .leaflet-popup-content {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip {
+  margin-bottom: 6px !important;
+}
+
+// Hide popup pointer triangle - replaced by tooltip triangle
+.leaflet-popup.c-vehicle-map__mobile-friendly-tooltip
+  .leaflet-popup-tip-container {
+  display: none;
+}
+
+// The tooltip triangle
+.leaflet-tooltip-top.c-vehicle-map__mobile-friendly-tooltip::before,
+.leaflet-tooltip-top.route-shape__tooltip::before {
+  border-top-color: $color-tooltip-background;
+}
+
+.c-garage-icon__label {
+  paint-order: stroke;
+  stroke: white;
+  stroke-width: 2px;
+  font-family: $font-family;
+  font-weight: 600;
+  color: $color-gray-800;
+
+  &--satellite {
+    stroke-width: 4px;
+    letter-spacing: 0.03rem;
   }
 }

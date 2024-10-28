@@ -2,7 +2,6 @@ defmodule SkateWeb.VehiclesChannelTest do
   use SkateWeb.ChannelCase
   import Test.Support.Helpers
   import Skate.Factory
-  import ExUnit.CaptureLog, only: [capture_log: 1]
 
   alias Phoenix.Socket
   alias SkateWeb.{UserSocket, VehiclesChannel}
@@ -11,20 +10,26 @@ defmodule SkateWeb.VehiclesChannelTest do
 
   setup do
     reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
+    reassign_env(:skate, :username_from_socket!, fn _socket -> "test_uid" end)
 
-    socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
+    user = Skate.Settings.User.upsert("test_uid", "test_email")
 
-    start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
+    socket =
+      UserSocket
+      |> socket("", %{})
+      |> Guardian.Phoenix.Socket.put_current_resource(%{id: user.id})
+
+    start_supervised({Phoenix.PubSub, name: Realtime.Server.pubsub_name()})
     start_supervised({Realtime.Server, name: Realtime.Server.default_name()})
 
-    {:ok, socket: socket}
+    {:ok, socket: socket, user: user}
   end
 
   describe "join/3" do
     test "subscribes to vehicles for a route ID and returns the current list of vehicles", %{
       socket: socket
     } do
-      assert {:ok, %{data: []}, %Socket{} = socket} =
+      assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:route:" <> @vehicle.route_id)
     end
 
@@ -33,13 +38,18 @@ defmodule SkateWeb.VehiclesChannelTest do
                subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
     end
 
+    test "subscribes to all pull-backs", %{socket: socket} do
+      assert {:ok, %{data: []}, %Socket{}} =
+               subscribe_and_join(socket, VehiclesChannel, "vehicles:pull_backs:all")
+    end
+
     test "subscribes to vehicles for a run ID", %{socket: socket} do
-      assert {:ok, %{data: []}, %Socket{} = socket} =
+      assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(socket, VehiclesChannel, "vehicles:run_ids:" <> @vehicle.run_id)
     end
 
     test "subscribes to vehicles for a block ID", %{socket: socket} do
-      assert {:ok, %{data: []}, %Socket{} = socket} =
+      assert {:ok, %{data: []}, %Socket{}} =
                subscribe_and_join(
                  socket,
                  VehiclesChannel,
@@ -47,37 +57,26 @@ defmodule SkateWeb.VehiclesChannelTest do
                )
     end
 
-    test "subscribes to a vehicle search", %{socket: socket} do
-      assert {:ok, %{data: []}, %Socket{}} =
-               subscribe_and_join(
-                 socket,
-                 VehiclesChannel,
-                 "vehicles:search:run:" <> String.slice(@vehicle.run_id, 0, 3)
-               )
-    end
-
-    test "logs that a user subscribed to a vehicle search", %{socket: socket} do
-      old_level = Logger.level()
-
-      on_exit(fn ->
-        Logger.configure(level: old_level)
-      end)
-
-      Logger.configure(level: :info)
-
-      run_search_term = String.slice(@vehicle.run_id, 0, 3)
-
-      log =
-        capture_log(fn ->
-          subscribe_and_join(socket, VehiclesChannel, "vehicles:search:run:" <> run_search_term)
-        end)
-
-      assert log =~ "User=test_uid searched for property=run, text=" <> run_search_term
-    end
-
     test "returns an error when joining a non-existant topic", %{socket: socket} do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
                subscribe_and_join(socket, VehiclesChannel, "rooms:1")
+    end
+
+    test "deny topic subscription when socket token validation fails", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for route <- [
+            "vehicles:shuttle:all",
+            "vehicles:route:",
+            "vehicles:run_ids:",
+            "vehicles:block_ids:",
+            "random:topic:"
+          ],
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, VehiclesChannel, route)
+            )
     end
   end
 
@@ -92,13 +91,13 @@ defmodule SkateWeb.VehiclesChannelTest do
       socket: socket,
       ets: ets
     } do
-      assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
+      assert Realtime.Server.update_vehicles({%{"1" => [@vehicle]}, [], []}) == :ok
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:route:1")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, {:route_id, "1"}}},
+                 {:new_realtime_data, ets},
                  socket
                )
 
@@ -110,13 +109,13 @@ defmodule SkateWeb.VehiclesChannelTest do
       socket: socket,
       ets: ets
     } do
-      assert Realtime.Server.update({%{}, [@vehicle]}) == :ok
+      assert Realtime.Server.update_vehicles({%{}, [@vehicle], []}) == :ok
 
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:shuttle:all")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, :all_shuttles}},
+                 {:new_realtime_data, ets},
                  socket
                )
 
@@ -124,37 +123,37 @@ defmodule SkateWeb.VehiclesChannelTest do
       assert_push("shuttles", %{data: [^vehicle]})
     end
 
-    test "pushes new search results data onto the socket", %{
+    test "pushes new pull-back data onto the socket", %{
       socket: socket,
       ets: ets
     } do
-      assert Realtime.Server.update({%{}, [@vehicle]}) == :ok
+      pull_back_vehicle = build(:vehicle, %{route_id: "1", end_of_trip_type: :pull_back})
 
-      {:ok, _, socket} =
-        subscribe_and_join(socket, VehiclesChannel, "vehicles:search:all:" <> @vehicle.label)
+      assert Realtime.Server.update_vehicles({%{"1" => [pull_back_vehicle]}, [], []}) == :ok
 
-      assert {:noreply, socket} =
+      {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:pull_backs:all")
+
+      assert {:noreply, _socket} =
                VehiclesChannel.handle_info(
-                 {:new_realtime_data, {ets, {:search, %{text: @vehicle.label, property: :all}}}},
+                 {:new_realtime_data, ets},
                  socket
                )
 
-      vehicle = @vehicle
-      assert_push("search", %{data: [^vehicle]})
+      assert_push("pull_backs", %{data: [^pull_back_vehicle]})
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{
       socket: socket,
       ets: ets
     } do
-      assert Realtime.Server.update({%{"1" => [@vehicle]}, []}) == :ok
-      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
-
+      assert Realtime.Server.update_vehicles({%{"1" => [@vehicle]}, [], []}) == :ok
       {:ok, _, socket} = subscribe_and_join(socket, VehiclesChannel, "vehicles:route:1")
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       {:stop, :normal, _socket} =
         VehiclesChannel.handle_info(
-          {:new_realtime_data, {ets, {:route_id, "1"}}},
+          {:new_realtime_data, ets},
           socket
         )
 

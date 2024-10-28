@@ -1,7 +1,9 @@
 // colors
+@use "./color/tokens_2021" as tokens;
+@use "./color/tokens_2024" as new_tokens;
 
-$white: #ffffff;
-$black: #000000;
+$white: tokens.$white;
+$black: tokens.$black;
 
 $color-bg-light: #f7f8f9;
 $color-bg-base: #f2f3f5;
@@ -10,27 +12,87 @@ $color-bg-medium: #d5d8e0;
 $color-component-light: $color-bg-medium;
 $color-component-medium: #8b8d91;
 $color-component-dark: #1c1e23;
-$color-component-red: #e45d32;
-$color-component-highlight: #e7ff36;
+$color-component-red: tokens.$persimmon;
+$color-component-highlight: tokens.$highlighter;
 
-$color-primary: #586f7c;
-$color-primary-dark: #465863;
+$color-primary-legacy: #586f7c;
+$color-primary-dark-legacy: #465863;
 $color-secondary-dark: #4db6ac;
 $color-secondary-medium: #b8dbd9;
 $color-secondary-light: #d4e7e7;
 
+$color-strawberry-900: tokens.$strawberry-900;
+$color-strawberry-800: tokens.$strawberry-800;
+$color-strawberry-700: tokens.$strawberry-700;
+$color-strawberry-600: tokens.$strawberry-600;
+$color-strawberry-500: tokens.$strawberry-500;
+$color-strawberry-400: tokens.$strawberry-400;
+$color-strawberry-300: tokens.$strawberry-300;
+$color-strawberry-200: tokens.$strawberry-200;
+$color-strawberry-100: tokens.$strawberry-100;
+$color-strawberry-50: tokens.$strawberry-50;
+$color-eggplant-900: tokens.$eggplant-900;
+$color-eggplant-800: tokens.$eggplant-800;
+$color-eggplant-700: tokens.$eggplant-700;
+$color-eggplant-600: tokens.$eggplant-600;
+$color-eggplant-500: tokens.$eggplant-500;
+$color-eggplant-400: tokens.$eggplant-400;
+$color-eggplant-300: tokens.$eggplant-300;
+$color-eggplant-200: tokens.$eggplant-200;
+$color-eggplant-100: tokens.$eggplant-100;
+$color-eggplant-50: tokens.$eggplant-50;
+$color-kiwi-900: tokens.$kiwi-900;
+$color-kiwi-800: tokens.$kiwi-800;
+$color-kiwi-700: tokens.$kiwi-700;
+$color-kiwi-600: tokens.$kiwi-600;
+$color-kiwi-500: tokens.$kiwi-500;
+$color-kiwi-400: tokens.$kiwi-400;
+$color-kiwi-300: tokens.$kiwi-300;
+$color-kiwi-200: tokens.$kiwi-200;
+$color-kiwi-100: tokens.$kiwi-100;
+$color-kiwi-50: tokens.$kiwi-50;
+$color-lemon-900: tokens.$lemon-900;
+$color-lemon-800: tokens.$lemon-800;
+$color-lemon-700: tokens.$lemon-700;
+$color-lemon-600: tokens.$lemon-600;
+$color-lemon-500: tokens.$lemon-500;
+$color-lemon-400: tokens.$lemon-400;
+$color-lemon-300: tokens.$lemon-300;
+$color-lemon-200: tokens.$lemon-200;
+$color-lemon-100: tokens.$lemon-100;
+$color-lemon-50: tokens.$lemon-50;
+$color-gray-900: tokens.$gray-900;
+$color-gray-800: tokens.$gray-800;
+$color-gray-700: tokens.$gray-700;
+$color-gray-600: tokens.$gray-600;
+$color-gray-500: tokens.$gray-500;
+$color-gray-400: tokens.$gray-400;
+$color-gray-300: tokens.$gray-300;
+$color-gray-200: tokens.$gray-200;
+$color-gray-100: tokens.$gray-100;
+$color-gray-50: tokens.$gray-50;
+
+$color-text-blue: #0041ea;
+
+$color-mbta-bus: tokens.$mbta-bus;
+$color-mbta-silver: tokens.$mbta-silver;
+$color-mbta-red: tokens.$mbta-red;
+$color-mbta-green: tokens.$mbta-green;
+$color-mbta-orange: tokens.$mbta-orange;
+$color-mbta-blue: tokens.$mbta-blue;
+
 $color-button-simple: $color-component-light;
 $color-button-simple-focus: $color-secondary-medium;
-$color-button-primary: $color-primary;
-$color-button-primary-focus: $color-primary-dark;
+$color-button-primary-legacy: $color-primary-legacy;
+$color-button-primary-focus-legacy: $color-primary-dark-legacy;
 $color-button-secondary: $color-secondary-dark;
 $color-button-secondary-focus: $color-secondary-medium;
 $color-button-light: $color-bg-base;
 $color-button-light-focus: $color-secondary-medium;
 $color-button-disabled: #e6e8ec;
 
-$color-toggle-selected-border: $color-primary-dark;
-$color-toggle-selected-text: $color-primary-dark;
+$color-toggle-selected-border: $color-primary-dark-legacy;
+$color-toggle-selected-text: $color-primary-dark-legacy;
 $color-toggle-selected-fill: #ebf4ff;
 $color-toggle-unselected-border: #d6d6d6;
 $color-toggle-unselected-text: $color-component-medium;
@@ -45,9 +107,9 @@ $color-rule: $color-component-light;
 
 $color-vehicle-normal: $color-component-medium;
 $color-vehicle-normal-line: $color-component-light;
-$color-vehicle-ontime: #8bcf00;
+$color-vehicle-ontime: tokens.$lime;
 $color-vehicle-ontime-light: #e8f6cd;
-$color-vehicle-blue: #46a5e7;
+$color-vehicle-blue: tokens.$sky;
 $color-vehicle-blue-light: #b5dbf6;
 $color-vehicle-red: $color-component-red;
 $color-vehicle-red-light: #f5bfad;
@@ -56,6 +118,24 @@ $color-vehicle-ghost-border: $color-component-medium;
 $color-vehicle-nonrevenue: #8f7ed6;
 $color-vehicle-off-course: $color-component-dark;
 
+@import "./color/root";
+
+:root {
+  --color-vehicle-off-course: #{$color-vehicle-off-course};
+  --color-vehicle-ontime: #{$color-vehicle-ontime};
+}
+
+:root,
+.early-red {
+  --color-vehicle-early: #{$color-vehicle-red};
+  --color-vehicle-late: #{$color-vehicle-blue};
+}
+
+.early-blue {
+  --color-vehicle-early: #{$color-vehicle-blue};
+  --color-vehicle-late: #{$color-vehicle-red};
+}
+
 $color-line-normal: $color-component-light;
 $color-line-bunched: #ff66bc;
 $color-line-bunched-light: #ffcce9;
@@ -63,11 +143,16 @@ $color-line-gapped: #00c6ed;
 $color-line-gapped-light: #75e8ff;
 
 $color-stop-fill: $white;
-$color-stop-stroke: $black;
+$color-stop-stroke: $color-gray-700;
 
 $color-logo-halloween: #f4b347;
 
 // type styles
+$color-tooltip-background: #333333;
+
+// #endregion
+
+// #region type styles [v1]
 
 @mixin font-header-big {
   font-size: 1.5rem;
@@ -132,7 +217,9 @@ $color-logo-halloween: #f4b347;
   font-weight: 700;
 }
 
-// button styles
+// #endregion
+
+// #region button styles
 
 @mixin button-base {
   border-radius: 4px;
@@ -163,24 +250,80 @@ $color-logo-halloween: #f4b347;
   }
 }
 
-@mixin button-primary {
+@mixin button-primary-legacy {
   @include button-base;
-  background-color: $color-button-primary;
+  background-color: $color-button-primary-legacy;
   color: $color-font-light;
 
   &:focus,
   &:hover {
-    background-color: $color-button-primary-focus;
+    background-color: $color-button-primary-focus-legacy;
+  }
+}
+
+@mixin button-primary {
+  color: $white;
+  padding: 8px;
+  background-color: $color-eggplant-700;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $color-eggplant-500;
+  }
+
+  &:focus-visible {
+    background-color: $color-eggplant-700;
+    outline: 2px solid $color-eggplant-700;
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    background-color: $color-gray-500;
+  }
+}
+
+@mixin button-primary-new {
+  color: $white;
+  padding: 8px;
+  background-color: new_tokens.$eggplant-500;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #5d3092;
+  }
+
+  &:focus-visible {
+    background-color: new_tokens.$eggplant-500;
+    outline: 2px solid new_tokens.$eggplant-500;
+    outline-offset: 1px;
+  }
+
+  &:disabled {
+    background-color: new_tokens.$gray-400;
   }
 }
 
 @mixin button-secondary {
-  @include button-base;
-  background-color: $color-button-secondary;
+  color: $color-eggplant-700;
+  background-color: $white;
+  border: 1px solid $color-eggplant-700;
+  border-radius: 4px;
+  span svg path {
+    stroke: currentColor;
+  }
 
-  &:focus,
   &:hover {
-    background-color: $color-button-secondary-focus;
+    color: $white;
+    background-color: $color-eggplant-700;
+  }
+
+  &:focus {
+    border: 2px solid $color-eggplant-500;
+  }
+
+  &:disabled {
+    color: $white;
+    background-color: $color-gray-500;
   }
 }
 
@@ -204,13 +347,18 @@ $color-logo-halloween: #f4b347;
   // Typical HTML: <button><span><svg/></span>optional text</button>
   // @include alongside other button mixins styles
   span {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     height: $size;
-    width: $size;
 
     svg {
       stroke: currentColor;
       fill: currentColor;
+
+      height: $size;
+      width: $size;
     }
   }
 }
@@ -224,11 +372,13 @@ $color-logo-halloween: #f4b347;
 
   &:focus,
   &:hover {
-    color: $color-primary;
+    color: $color-primary-legacy;
   }
 }
 
-// toggle styles
+// #endregion
+
+// #region toggle styles
 
 @mixin toggle-base {
   @include font-small;
@@ -263,7 +413,9 @@ $color-logo-halloween: #f4b347;
   border-color: $color-toggle-unselected-border;
 }
 
-// input styles
+// #endregion
+
+// #region input styles
 
 select {
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
@@ -277,33 +429,21 @@ select {
   }
 }
 
-input {
-  background-color: $white;
-  border: 2px solid transparent;
-  border-radius: 0.5rem;
-  box-sizing: border-box;
-  line-height: 1rem;
-  padding: 0.5rem 1rem 0.5rem 0.8125rem;
+// #endregion
 
-  &:hover {
-    border: 2px solid $color-secondary-light;
-  }
+// #region transitions
 
-  &:focus {
-    border: 2px solid $color-secondary-medium;
-  }
-}
+$transition-slide-duration: 0.2s;
+$transition-slide: all $transition-slide-duration ease-in-out;
 
-// transitions
+// #endregion
 
-$transition-slide: all 0.2s ease-in-out;
-
-// modals
-$modal-overlay-color: transparentize($color-component-dark, 0.8);
+// #region modals
+$modal-backdrop-color: transparentize($color-component-dark, 0.8);
 $modal-box-shadow: 0 0 2rem 0 transparentize($black, 0.5);
 
-@mixin modal-overlay {
-  background-color: $modal-overlay-color;
+@mixin modal-backdrop {
+  background-color: $modal-backdrop-color;
   height: 100%;
   left: 0;
   position: fixed;
@@ -321,3 +461,17 @@ $box-shadow-secondary: 0 2px 4px 0 rgba(77, 182, 172, 0.2);
 $submenu-box-shadow: 0 2px 4px 0 rgba(126, 126, 126, 0.5);
 
 $font-family-route-pill: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+// #endregion
+
+// #region blur state
+@mixin blur {
+  filter: blur(5px);
+}
+
+@media screen and (max-width: map-get($old-breakpoints, "mobile-max-width")) {
+  .blurred-mobile {
+    @include blur;
+  }
+}
+// #endregion

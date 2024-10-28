@@ -24,6 +24,7 @@ defmodule Concentrate.VehiclePosition do
     :operator_first_name,
     :operator_last_name,
     :operator_logon_time,
+    :overload_offset,
     :run_id,
     :last_updated,
     :last_updated_by_source,
@@ -31,7 +32,6 @@ defmodule Concentrate.VehiclePosition do
     :operator,
     :direction_id,
     :headsign,
-    :headway_secs,
     :layover_departure_time,
     :previous_vehicle_id,
     :previous_vehicle_schedule_adherence_secs,
@@ -39,7 +39,6 @@ defmodule Concentrate.VehiclePosition do
     :route_id,
     :schedule_adherence_secs,
     :schedule_adherence_string,
-    :scheduled_headway_secs,
     :sources,
     :data_discrepancies,
     :crowding,
@@ -100,11 +99,18 @@ defmodule Concentrate.VehiclePosition do
           speed: first_value(second.speed, first.speed),
           odometer: first_value(second.odometer, first.odometer),
           stop_sequence: first_value(second.stop_sequence, first.stop_sequence),
-          block_id: overload_priority(second.block_id, first.block_id),
+          block_id:
+            overload_or_swiftly_priority(
+              second.sources,
+              second.block_id,
+              first.sources,
+              first.block_id
+            ),
           operator_id: first_value(second.operator_id, first.operator_id),
           operator_first_name: first_value(second.operator_first_name, first.operator_first_name),
           operator_last_name: first_value(second.operator_last_name, first.operator_last_name),
           operator_logon_time: first_value(second.operator_logon_time, first.operator_logon_time),
+          overload_offset: first_value(second.overload_offset, first.overload_offset),
           run_id: first_value(second.run_id, first.run_id),
           stop_name: first_value(second.stop_name, first.stop_name),
           operator: first_value(second.operator, first.operator),
@@ -116,7 +122,6 @@ defmodule Concentrate.VehiclePosition do
               first.sources,
               first.headsign
             ),
-          headway_secs: first_value(second.headway_secs, first.headway_secs),
           previous_vehicle_id: first_value(second.previous_vehicle_id, first.previous_vehicle_id),
           previous_vehicle_schedule_adherence_secs:
             first_value(
@@ -139,8 +144,6 @@ defmodule Concentrate.VehiclePosition do
             first_value(second.schedule_adherence_secs, first.schedule_adherence_secs),
           schedule_adherence_string:
             first_value(second.schedule_adherence_string, first.schedule_adherence_string),
-          scheduled_headway_secs:
-            first_value(second.scheduled_headway_secs, first.scheduled_headway_secs),
           sources: merge_sources(first, second),
           data_discrepancies: discrepancies(first, second),
           layover_departure_time:
@@ -150,8 +153,8 @@ defmodule Concentrate.VehiclePosition do
               first.sources,
               first.layover_departure_time
             ),
-          crowding: first_value(first.crowding, second.crowding),
-          revenue: first_value(first.revenue, second.revenue),
+          crowding: first_value(second.crowding, first.crowding),
+          revenue: first_value(second.revenue, first.revenue),
           last_updated_by_source: merge_last_updated_by_source(first, second)
       }
     end
@@ -182,11 +185,11 @@ defmodule Concentrate.VehiclePosition do
       end
     end
 
-    defp overload_priority(block_id1, nil), do: block_id1
+    defp overload_or_swiftly_priority(_sources1, block_id1, _sources2, nil), do: block_id1
 
-    defp overload_priority(nil, block_id2), do: block_id2
+    defp overload_or_swiftly_priority(_sources1, nil, _sources2, block_id2), do: block_id2
 
-    defp overload_priority(block_id1, block_id2) do
+    defp overload_or_swiftly_priority(sources1, block_id1, sources2, block_id2) do
       cond do
         Block.overload?(block_id1) ->
           block_id1
@@ -195,7 +198,7 @@ defmodule Concentrate.VehiclePosition do
           block_id2
 
         true ->
-          block_id1
+          swiftly_priority(sources1, block_id1, sources2, block_id2)
       end
     end
 

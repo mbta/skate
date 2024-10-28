@@ -8,6 +8,7 @@ defmodule Concentrate.TripUpdate do
     :trip_id,
     :route_id,
     :direction_id,
+    :overload_offset,
     :start_date,
     :start_time,
     schedule_relationship: :SCHEDULED
@@ -24,7 +25,8 @@ defmodule Concentrate.TripUpdate do
     def merge(first, second) do
       %{
         first
-        | route_id: first.route_id || second.route_id,
+        | overload_offset: first.overload_offset || second.overload_offset,
+          route_id: first.route_id || second.route_id,
           direction_id: first.direction_id || second.direction_id,
           start_date: first.start_date || second.start_date,
           start_time: first.start_time || second.start_time,

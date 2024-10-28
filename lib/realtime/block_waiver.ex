@@ -72,14 +72,25 @@ defmodule Realtime.BlockWaiver do
          stop_time_updates,
          fn stu ->
            StopTimeUpdate.stop_id(stu) == stop_time.stop_id &&
-             is_block_waiver?(stu)
+             block_waiver?(stu)
          end
        )}
     end)
   end
 
-  @spec is_block_waiver?(StopTimeUpdate.t()) :: boolean()
-  def is_block_waiver?(stop_time_update) do
+  @spec current?(t()) :: boolean()
+  @doc """
+  Returns whether or not the given block waiver is currently active
+  based on its start and end times.
+  """
+  def current?(block_waiver) do
+    now_fn = Application.get_env(:skate, :now_fn, &Util.Time.now/0)
+    now = now_fn.()
+    now > block_waiver.start_time && now < block_waiver.end_time
+  end
+
+  @spec block_waiver?(StopTimeUpdate.t()) :: boolean()
+  def block_waiver?(stop_time_update) do
     # cause_id 33 is bad TransitMaster units.
     # Since we can fall back to swiftly data,
     # these block waivers don't matter to people using skate.

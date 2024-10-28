@@ -1,7 +1,7 @@
 import { Factory } from "fishery"
 import { Swing } from "../../src/schedule"
 
-export default Factory.define<Swing>(() => ({
+export const swingFactory = Factory.define<Swing>(() => ({
   blockId: "A12-34",
   fromRouteId: "1",
   fromRunId: "123-456",

@@ -5,13 +5,13 @@ defmodule SkateWeb.ShuttleControllerTest do
   alias Schedule.Gtfs.{Route, RoutePattern, Shape}
 
   describe "GET /api/shuttles" do
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       conn =
         conn
         |> api_headers()
         |> get("/api/shuttles")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated

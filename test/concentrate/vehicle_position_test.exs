@@ -293,6 +293,51 @@ defmodule Concentrate.VehiclePositionTest do
                )
     end
 
+    test "merge/2 prioritizes the swiftly block_id when there isn't an overload" do
+      non_overloaded_swiftly =
+        new(
+          last_updated: 1,
+          block_id: "swiftly_block_id",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["swiftly"])
+        )
+
+      non_overloaded_other =
+        new(
+          last_updated: 2,
+          block_id: "other_block_id",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["other"])
+        )
+
+      overloaded =
+        new(
+          last_updated: 3,
+          block_id: "other_block_id-OL1",
+          latitude: 1,
+          longitude: 1,
+          sources: MapSet.new(["other"])
+        )
+
+      assert %{
+               block_id: "other_block_id-OL1"
+             } = Mergeable.merge(overloaded, non_overloaded_swiftly)
+
+      assert %{
+               block_id: "other_block_id-OL1"
+             } = Mergeable.merge(non_overloaded_swiftly, overloaded)
+
+      assert %{
+               block_id: "swiftly_block_id"
+             } = Mergeable.merge(non_overloaded_swiftly, non_overloaded_other)
+
+      assert %{
+               block_id: "swiftly_block_id"
+             } = Mergeable.merge(non_overloaded_other, non_overloaded_swiftly)
+    end
+
     test "merge/2 doesn't include any data discrepancies if they values are the same" do
       first =
         new(
@@ -327,6 +372,84 @@ defmodule Concentrate.VehiclePositionTest do
         )
 
       assert Mergeable.merge(first, second) == expected
+    end
+
+    test "merge/2 takes the latest non-nil value for crowding" do
+      crowding_1 = %{
+        load: 98,
+        capacity: 100,
+        occupancy_percentage: 0.98,
+        occupancy_status: "FULL"
+      }
+
+      first =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          crowding: crowding_1
+        )
+
+      crowding_2 = %{
+        load: 2,
+        capacity: 100,
+        occupancy_percentage: 0.02,
+        occupancy_status: "MANY_SEATS_AVAILABLE"
+      }
+
+      second =
+        new(
+          last_updated: 2,
+          latitude: 2,
+          longitude: 2,
+          crowding: crowding_2
+        )
+
+      third_no_crowding =
+        new(
+          last_updated: 3,
+          latitude: 2,
+          longitude: 2,
+          crowding: nil
+        )
+
+      assert %{crowding: ^crowding_2} = Mergeable.merge(first, second)
+      assert %{crowding: ^crowding_2} = Mergeable.merge(second, first)
+
+      assert %{crowding: ^crowding_2} = Mergeable.merge(second, third_no_crowding)
+      assert %{crowding: ^crowding_2} = Mergeable.merge(third_no_crowding, second)
+    end
+
+    test "merge/2 takes the latest non-nil value for revenue" do
+      first =
+        new(
+          last_updated: 1,
+          latitude: 1,
+          longitude: 1,
+          revenue: true
+        )
+
+      second =
+        new(
+          last_updated: 2,
+          latitude: 2,
+          longitude: 2,
+          revenue: false
+        )
+
+      third_nil_rev =
+        new(
+          last_updated: 3,
+          latitude: 2,
+          longitude: 2,
+          revenue: nil
+        )
+
+      assert %{revenue: false} = Mergeable.merge(first, second)
+      assert %{revenue: false} = Mergeable.merge(second, first)
+
+      assert %{revenue: false} = Mergeable.merge(second, third_nil_rev)
+      assert %{revenue: false} = Mergeable.merge(third_nil_rev, second)
     end
 
     test "merge/2 retains all timestamps" do

@@ -1,4 +1,6 @@
 defmodule Realtime.StopTimeUpdatesByTrip do
+  @moduledoc false
+
   alias Concentrate.StopTimeUpdate
   alias Schedule.Trip
 

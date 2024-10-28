@@ -1,4 +1,6 @@
 defmodule Notifications.BridgeStatus do
+  @moduledoc false
+
   use Ecto.Type
 
   @type t :: :raised | :lowered

@@ -86,6 +86,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             operator_first_name: Map.get(operator, "first_name"),
             operator_last_name: Map.get(operator, "last_name"),
             operator_logon_time: Map.get(operator, "logon_time"),
+            overload_offset: TripUpdate.overload_offset(trip),
             sources: MapSet.new(["busloc"]),
             data_discrepancies: [],
             crowding: decode_crowding(vp),
@@ -106,7 +107,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   defp decode_trip_descriptor(trip) do
     [
       TripUpdate.new(
-        trip_id: Map.get(trip, "trip_id"),
+        overload_offset: Map.get(trip, "overload_offset"),
+        trip_id: Map.get(trip, "tm_trip_id") || Map.get(trip, "trip_id"),
         route_id: Map.get(trip, "route_id"),
         direction_id: Map.get(trip, "direction_id"),
         start_date: date(Map.get(trip, "start_date")),

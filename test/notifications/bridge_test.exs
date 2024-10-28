@@ -99,7 +99,7 @@ defmodule Notifications.BridgeTest do
       Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
 
       naive_date = ~N[2020-01-01 01:06:01.0]
-      expected_time = Timex.to_datetime(naive_date, "America/New_York") |> DateTime.to_unix()
+      expected_time = naive_date |> Timex.to_datetime("America/New_York") |> DateTime.to_unix()
 
       assert handle_info(:update, state) == {:noreply, {:raised, expected_time}}
     end
@@ -185,7 +185,7 @@ defmodule Notifications.BridgeTest do
 
     test "Logs warning on bad message" do
       log =
-        capture_log([level: :warn], fn ->
+        capture_log([level: :warning], fn ->
           {:noreply, _state} = handle_info(:bad_message, nil)
         end)
 
@@ -196,7 +196,7 @@ defmodule Notifications.BridgeTest do
   describe "parse_response/1" do
     test "Logs warning with bad status code" do
       log =
-        capture_log([level: :warn], fn ->
+        capture_log([level: :warning], fn ->
           refute parse_response({:ok, %HTTPoison.Response{status_code: 500}})
         end)
 
@@ -205,7 +205,7 @@ defmodule Notifications.BridgeTest do
 
     test "Logs warning when request fails" do
       log =
-        capture_log([level: :warn], fn ->
+        capture_log([level: :warning], fn ->
           refute parse_response({:error, %HTTPoison.Error{reason: "Unknown error"}})
         end)
 
@@ -214,7 +214,7 @@ defmodule Notifications.BridgeTest do
 
     test "Logs warning when parsing fails" do
       log =
-        capture_log([level: :warn], fn ->
+        capture_log([level: :warning], fn ->
           refute parse_response(
                    {:ok, %HTTPoison.Response{status_code: 201, body: "invalid json"}}
                  )

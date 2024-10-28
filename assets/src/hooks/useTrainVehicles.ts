@@ -86,7 +86,7 @@ const reducer = (state: State, action: Action): State => {
           [action.payload.routeId]: action.payload.trainVehiclesForRoute,
         },
       }
-    case "REMOVE_ROUTE":
+    case "REMOVE_ROUTE": {
       const { [action.payload.routeId]: _channel, ...channelsWithoutRouteId } =
         state.channelsByRouteId
       const {
@@ -98,6 +98,7 @@ const reducer = (state: State, action: Action): State => {
         channelsByRouteId: channelsWithoutRouteId,
         trainVehiclesByRouteId: trainVehiclesByRouteIdWithoutRouteId,
       }
+    }
     default:
       return state
   }
@@ -139,20 +140,16 @@ const subscribe = (
   channel.on("train_vehicles", handleTrainVehicles)
 
   // Reload our session if the auth has expired
-  channel.on("auth_expired", () => {
-    reload(true)
-  })
+  channel.on("auth_expired", reload)
 
   channel
     .join()
     .receive("ok", handleTrainVehicles)
     .receive("error", ({ reason }) =>
-      // tslint:disable-next-line: no-console
+      // eslint-disable-next-line no-console
       console.error("Train vehicles join failed", reason)
     )
-    .receive("timeout", () => {
-      reload(true)
-    })
+    .receive("timeout", reload)
   return channel
 }
 
@@ -163,6 +160,7 @@ const useTrainVehicles = (
   const [state, dispatch] = useReducer(reducer, initialState)
   const { channelsByRouteId, trainVehiclesByRouteId } = state
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (socket) {
       // Unsubscribe from any routes we don't care about anymore
@@ -182,6 +180,7 @@ const useTrainVehicles = (
       })
     }
   }, [socket, selectedTrainRouteIds])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return trainVehiclesByRouteId
 }

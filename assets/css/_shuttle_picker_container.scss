@@ -1,0 +1,27 @@
+.c-shuttle-picker-container {
+  background-color: $color-bg-medium;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  // Required for pinning to the left side of the screen on the tablets
+  left: 0;
+  padding: 1rem;
+  position: absolute;
+  top: inherit;
+  transition: $transition-slide;
+  width: $shuttle-picker-width;
+  z-index: 1;
+
+  &--visible {
+    left: 0;
+  }
+
+  &--hidden {
+    left: -$shuttle-picker-width;
+  }
+}
+
+.c-shuttle-picker-container .c-drawer-tab {
+  left: $shuttle-picker-width;
+}

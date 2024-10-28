@@ -1,12 +1,13 @@
 defmodule Schedule do
-  use GenServer
+  @moduledoc """
+  A repository for accessing and updating static schedule data stored in memory
+  """
   require Logger
 
   alias Schedule.{
     Block,
     Data,
     Hastus,
-    Health,
     Trip,
     Swing
   }
@@ -23,6 +24,7 @@ defmodule Schedule do
   alias Schedule.Run
 
   @type state :: :not_loaded | {:loaded, Data.t()}
+  @type persistent_term_key :: term()
 
   @typedoc """
   For mocking tests
@@ -44,60 +46,69 @@ defmodule Schedule do
   # Queries (Client)
 
   @spec all_routes() :: [Route.t()]
-  @spec all_routes(GenServer.server()) :: [Route.t()]
-  def all_routes(server \\ __MODULE__) do
-    call_catch_timeout(server, :all_routes, :all_routes, [])
+  @spec all_routes(persistent_term_key()) :: [Route.t()]
+  def all_routes(persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [], :all_routes, [])
   end
 
-  @spec route_by_id(Route.id(), GenServer.server()) :: Route.t() | nil
-  def route_by_id(route_id, server \\ __MODULE__) do
-    all_routes(server) |> Enum.find(&(&1.id == route_id))
+  @spec route_by_id(Route.id(), persistent_term_key()) :: Route.t() | nil
+  def route_by_id(route_id, persistent_term_key \\ __MODULE__) do
+    persistent_term_key |> all_routes() |> Enum.find(&(&1.id == route_id))
   end
 
   # Timepoint IDs on a route, sorted in order of stop sequence
   @spec timepoints_on_route(Route.id()) :: [Timepoint.t()]
-  @spec timepoints_on_route(Route.id(), GenServer.server()) :: [Timepoint.t()]
-  def timepoints_on_route(route_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:timepoints_on_route, route_id}, :timepoints_on_route, [])
+  @spec timepoints_on_route(Route.id(), persistent_term_key()) :: [Timepoint.t()]
+  def timepoints_on_route(route_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(
+      persistent_term_key,
+      [route_id],
+      :timepoints_on_route,
+      []
+    )
   end
 
-  @spec timepoint_names_by_id(GenServer.server()) :: Timepoint.timepoint_names_by_id()
-  def timepoint_names_by_id(server \\ __MODULE__) do
-    call_catch_timeout(server, {:timepoint_names_by_id}, :timepoint_names_by_id, %{})
+  @spec timepoint_names_by_id(persistent_term_key()) :: Timepoint.timepoint_names_by_id()
+  def timepoint_names_by_id(persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [], :timepoint_names_by_id, %{})
   end
 
   @spec stop(Stop.id()) :: Stop.t() | nil
-  @spec stop(Stop.id(), GenServer.server()) :: Stop.t() | nil
-  def stop(stop_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:stop, stop_id}, :stop, nil)
+  @spec stop(Stop.id(), persistent_term_key()) :: Stop.t() | nil
+  def stop(stop_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [stop_id], :stop, nil)
   end
 
   @spec trip(Trip.id()) :: Trip.t() | nil
-  @spec trip(Trip.id(), GenServer.server()) :: Trip.t() | nil
-  def trip(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:trip, trip_id}, :trip, nil)
+  @spec trip(Trip.id(), persistent_term_key()) :: Trip.t() | nil
+  def trip(trip_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [trip_id], :trip, nil)
   end
 
   @spec trips_by_id([Trip.id()]) :: %{Trip.id() => Trip.t()}
-  @spec trips_by_id([Trip.id()], GenServer.server()) :: %{Trip.id() => Trip.t()}
-  def trips_by_id(trip_ids, server \\ __MODULE__) do
-    call_catch_timeout(server, {:trips_by_id, trip_ids}, :trips_by_id, nil)
+  @spec trips_by_id([Trip.id()], persistent_term_key()) :: %{Trip.id() => Trip.t()}
+  def trips_by_id(trip_ids, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [trip_ids], :trips_by_id, nil)
   end
 
   @spec block(Hastus.Schedule.id(), Block.id()) :: Block.t() | nil
-  @spec block(Hastus.Schedule.id(), Block.id(), GenServer.server()) :: Block.t() | nil
-  def block(schedule_id, block_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:block, schedule_id, block_id}, :block, nil)
+  @spec block(Hastus.Schedule.id(), Block.id(), persistent_term_key()) :: Block.t() | nil
+  def block(schedule_id, block_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [schedule_id, block_id], :block, nil)
   end
 
   @doc """
   All trips that are scheduled to be active at the given time, on all routes.
   """
-  @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp()) :: [Trip.t()]
-  @spec active_trips(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
+  @spec trips_starting_in_range(Util.Time.timestamp(), Util.Time.timestamp()) :: [Trip.t()]
+  @spec trips_starting_in_range(
+          Util.Time.timestamp(),
+          Util.Time.timestamp(),
+          persistent_term_key()
+        ) ::
           [Trip.t()]
-  def active_trips(start_time, end_time, server \\ __MODULE__) do
-    call_catch_timeout(server, {:active_trips, start_time, end_time}, :active_trips, [])
+  def trips_starting_in_range(start_time, end_time, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [start_time, end_time], :trips_starting_in_range, [])
   end
 
   @doc """
@@ -107,30 +118,54 @@ defmodule Schedule do
   If a block is scheduled to be active on two dates during that time, it wil be in both dates' lists.
   """
   @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Block.t()]}
-  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) ::
+  @spec active_blocks(Util.Time.timestamp(), Util.Time.timestamp(), persistent_term_key()) ::
           %{Date.t() => [Block.t()]}
-  def active_blocks(start_time, end_time, server \\ __MODULE__) do
-    call_catch_timeout(server, {:active_blocks, start_time, end_time}, :active_blocks, %{})
+  def active_blocks(start_time, end_time, persistent_term_key \\ __MODULE__) do
+    call_with_data(
+      persistent_term_key,
+      [start_time, end_time],
+      :active_blocks,
+      %{}
+    )
   end
 
   @spec active_runs(Util.Time.timestamp(), Util.Time.timestamp()) :: %{Date.t() => [Run.t()]}
-  @spec active_runs(Util.Time.timestamp(), Util.Time.timestamp(), GenServer.server()) :: %{
+  @spec active_runs(Util.Time.timestamp(), Util.Time.timestamp(), persistent_term_key()) :: %{
           Date.t() => [Run.t()]
         }
-  def active_runs(start_time, end_time, server \\ __MODULE__) do
-    call_catch_timeout(server, {:active_runs, start_time, end_time}, :active_runs, %{})
+  def active_runs(start_time, end_time, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [start_time, end_time], :active_runs, %{})
   end
 
   @spec shapes(Route.id()) :: [Shape.t()]
-  @spec shapes(Route.id(), GenServer.server()) :: [Shape.t()]
-  def shapes(route_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:shapes, route_id}, :shapes, [])
+  @spec shapes(Route.id(), persistent_term_key()) :: [Shape.t()]
+  def shapes(route_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [route_id], :shapes, [])
   end
 
   @spec shape_for_trip(Trip.id()) :: Shape.t() | nil
-  @spec shape_for_trip(Trip.id(), GenServer.server()) :: Shape.t() | nil
-  def shape_for_trip(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:shape_for_trip, trip_id}, :shapes, nil)
+  @spec shape_for_trip(Trip.id(), persistent_term_key()) :: Shape.t() | nil
+  def shape_for_trip(trip_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [trip_id], :shape_for_trip, nil)
+  end
+
+  @spec shape_with_stops_for_trip(Trip.id(), persistent_term_key()) ::
+          Schedule.ShapeWithStops.t() | nil
+  def shape_with_stops_for_trip(trip_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [trip_id], :shape_with_stops_for_trip, nil)
+  end
+
+  def stations(persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [], :stations, [])
+  end
+
+  def all_stops(persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [], :all_stops, [])
+  end
+
+  @spec route_pattern(RoutePattern.id(), persistent_term_key()) :: RoutePattern.t() | nil
+  def route_pattern(route_pattern_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [route_pattern_id], :route_pattern, nil)
   end
 
   @spec first_route_pattern_for_route_and_direction(Route.id(), Direction.id()) ::
@@ -138,190 +173,135 @@ defmodule Schedule do
   @spec first_route_pattern_for_route_and_direction(
           Route.id(),
           Direction.id(),
-          GenServer.server()
+          persistent_term_key()
         ) :: RoutePattern.t() | nil
-  def first_route_pattern_for_route_and_direction(route_id, direction_id, server \\ __MODULE__) do
-    call_catch_timeout(
-      server,
-      {:first_route_pattern_for_route_and_direction, route_id, direction_id},
+  def first_route_pattern_for_route_and_direction(
+        route_id,
+        direction_id,
+        persistent_term_key \\ __MODULE__
+      ) do
+    call_with_data(
+      persistent_term_key,
+      [route_id, direction_id],
       :first_route_pattern_for_route_and_direction,
       nil
     )
   end
 
-  @spec minischedule_run(Trip.id()) :: Run.t() | nil
-  @spec minischedule_run(Trip.id(), GenServer.server()) :: Run.t() | nil
-  def minischedule_run(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:minischedule_run, trip_id}, :minischedule_run, nil)
+  @spec route_patterns_for_route(Route.id()) :: [RoutePattern.t()]
+  @spec route_patterns_for_route(Route.id(), persistent_term_key()) :: [RoutePattern.t()]
+  @doc """
+  Get all route patterns associated with the given route.
+  """
+  def route_patterns_for_route(route_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(
+      persistent_term_key,
+      [route_id],
+      :route_patterns_for_route,
+      []
+    )
   end
 
   @spec run_for_trip(Hastus.Run.id(), Trip.id()) :: Run.t() | nil
-  @spec run_for_trip(Hastus.Run.id(), Trip.id(), GenServer.server()) :: Run.t() | nil
-  def run_for_trip(run_id, trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:run_for_trip, run_id, trip_id}, :run_for_trip, nil)
+  @spec run_for_trip(Hastus.Run.id(), Trip.id(), persistent_term_key()) :: Run.t() | nil
+  def run_for_trip(run_id, trip_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [run_id, trip_id], :run_for_trip, nil)
   end
 
   @spec block_for_trip(Trip.id()) :: Block.t() | nil
-  @spec block_for_trip(Trip.id(), GenServer.server()) :: Block.t() | nil
-  def block_for_trip(trip_id, server \\ __MODULE__) do
-    call_catch_timeout(server, {:block_for_trip, trip_id}, :block_for_trip, nil)
+  @spec block_for_trip(Trip.id(), persistent_term_key()) :: Block.t() | nil
+  def block_for_trip(trip_id, persistent_term_key \\ __MODULE__) do
+    call_with_data(persistent_term_key, [trip_id], :block_for_trip, nil)
   end
 
   @spec swings_for_route(
           Route.id(),
           Util.Time.timestamp(),
           Util.Time.timestamp(),
-          GenServer.server()
+          persistent_term_key()
         ) :: [Swing.t()] | nil
-  def swings_for_route(route_id, start_time, end_time, server \\ __MODULE__) do
-    call_catch_timeout(
-      server,
-      {:swings_for_route, route_id, start_time, end_time},
+  def swings_for_route(route_id, start_time, end_time, persistent_term_key \\ __MODULE__) do
+    call_with_data(
+      persistent_term_key,
+      [route_id, start_time, end_time],
       :swings_for_route,
       nil
     )
   end
 
   @doc """
-  Handle Schedule server timeouts gracefully
+  Get the version for the loaded schedule data
   """
-  @spec call_catch_timeout(GenServer.server(), any(), atom(), any()) :: any()
-  def call_catch_timeout(server, arg, function_name, default_result) do
-    try do
-      GenServer.call(server, arg) || default_result
-    catch
-      :exit, _ ->
-        Logger.warn("module=#{__MODULE__} function=#{function_name} error=timeout")
+  @spec version(persistent_term_key()) :: String.t() | nil
+  def version(persistent_term_key \\ __MODULE__) do
+    call_with_data(
+      persistent_term_key,
+      [],
+      :version,
+      nil
+    )
+  end
+
+  @doc """
+  Try to load the Data out of :persistent_term for querying, or return a default value.
+  """
+  @spec call_with_data(persistent_term_key(), any(), atom(), any()) :: any()
+  def call_with_data(persistent_term_key, args, function_name, default_result) do
+    data_get_fn = Application.get_env(:skate, :schedule_data_get_fn, &persistent_term_lookup/2)
+
+    case data_get_fn.(persistent_term_key, :not_loaded) do
+      {:loaded, data} ->
+        apply(Data, function_name, [data | args])
+
+      :not_loaded ->
         default_result
     end
   end
 
-  # Queries (Server)
-
-  @impl true
-  def handle_call({:new_schedule_state, new_state}, _from, _state) do
-    {:reply, :ok, new_state}
+  defp persistent_term_lookup(key, default_value) do
+    :persistent_term.get(key, default_value)
   end
 
-  def handle_call(_message, _from, :not_loaded = state) do
-    {:reply, nil, state}
-  end
+  @spec update_state(state(), term()) :: :ok
+  def update_state(state, key \\ __MODULE__) do
+    {time, :ok} = :timer.tc(:persistent_term, :put, [key, state])
+    %{count: count, memory: memory} = :persistent_term.info()
 
-  def handle_call(:all_routes, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.all_routes(gtfs_data), state}
-  end
-
-  def handle_call({:timepoints_on_route, route_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.timepoints_on_route(gtfs_data, route_id), state}
-  end
-
-  def handle_call({:timepoint_names_by_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.timepoint_names_by_id(gtfs_data), state}
-  end
-
-  def handle_call({:stop, stop_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.stop(gtfs_data, stop_id), state}
-  end
-
-  def handle_call({:trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.trip(gtfs_data, trip_id), state}
-  end
-
-  def handle_call({:trips_by_id, trip_ids}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.trips_by_id(gtfs_data, trip_ids), state}
-  end
-
-  def handle_call({:block, schedule_id, block_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.block(gtfs_data, schedule_id, block_id), state}
-  end
-
-  def handle_call({:active_trips, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.active_trips(gtfs_data, start_time, end_time), state}
-  end
-
-  def handle_call({:active_blocks, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.active_blocks(gtfs_data, start_time, end_time), state}
-  end
-
-  def handle_call({:active_runs, start_time, end_time}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.active_runs(gtfs_data, start_time, end_time), state}
-  end
-
-  def handle_call({:shapes, route_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.shapes(gtfs_data, route_id), state}
-  end
-
-  def handle_call({:shape_for_trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.shape_for_trip(gtfs_data, trip_id), state}
-  end
-
-  def handle_call(
-        {:first_route_pattern_for_route_and_direction, route_id, direction_id},
-        _from,
-        {:loaded, gtfs_data} = state
-      ) do
-    {:reply, Data.first_route_pattern_for_route_and_direction(gtfs_data, route_id, direction_id),
-     state}
-  end
-
-  def handle_call({:minischedule_run, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.minischedule_run(gtfs_data, trip_id), state}
-  end
-
-  def handle_call({:run_for_trip, run_id, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.run_for_trip(gtfs_data, run_id, trip_id), state}
-  end
-
-  def handle_call({:block_for_trip, trip_id}, _from, {:loaded, gtfs_data} = state) do
-    {:reply, Data.block_for_trip(gtfs_data, trip_id), state}
-  end
-
-  def handle_call(
-        {:swings_for_route, route_id, start_time, end_time},
-        _from,
-        {:loaded, gtfs_data} = state
-      ) do
-    {:reply, Data.swings_for_route(gtfs_data, route_id, start_time, end_time), state}
-  end
-
-  @spec update_state(state(), GenServer.server()) :: :ok
-  def update_state(state, pid \\ __MODULE__) do
-    GenServer.call(pid, {:new_schedule_state, state})
-  end
-
-  # Initialization (Client)
-
-  @spec start_link([]) :: GenServer.on_start()
-  def start_link([]) do
-    GenServer.start_link(
-      __MODULE__,
-      {:remote, Health.Server.default_server()},
-      name: __MODULE__
+    Logger.info(
+      "wrote state to persistent term time_in_ms=#{System.convert_time_unit(time, :microsecond, :millisecond)} count=#{count} memory=#{memory}"
     )
+
+    :ok
   end
 
-  @spec start_mocked(mocked_files(), pid() | nil) :: pid()
+  # Initialization (Testing)
+  @spec start_mocked(mocked_files(), pid() | nil) :: persistent_term_key()
   def start_mocked(mocked_files, health_server_pid \\ nil) do
-    {:ok, pid} = GenServer.start_link(__MODULE__, [])
+    persistent_term_key = {:schedule_mocked, :erlang.phash2(mocked_files)}
 
-    {:ok, _pid} =
+    {:ok, pid} =
       GenServer.start_link(Schedule.Fetcher,
         files_source: {:mocked_files, mocked_files},
         health_server: health_server_pid,
         updater_function: fn state ->
-          update_state(state, pid)
+          update_state(state, persistent_term_key)
         end
       )
 
-    Process.sleep(50)
+    ref = Process.monitor(pid)
 
-    pid
-  end
+    receive do
+      {:DOWN, ^ref, :process, ^pid, exit_ok}
+      when exit_ok in [:normal, :noproc] ->
+        persistent_term_key
 
-  # Initialization (Server)
-
-  @impl true
-  def init(_opts) do
-    {:ok, :not_loaded}
+      {:DOWN, ^ref, :process, ^pid, error} ->
+        raise "Schedule.Fetcher exited with #{inspect(error)}"
+    after
+      100 ->
+        if Process.alive?(pid) do
+          raise "Schedule.Fetcher failed to terminate"
+        end
+    end
   end
 end

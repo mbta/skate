@@ -1,6 +1,7 @@
 defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
   use ExUnit.Case, async: true
 
+  import Skate.Factory
   import Concentrate.TestHelpers
 
   alias Concentrate.VehiclePosition
@@ -20,6 +21,9 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
 
   describe "decode_vehicle/1" do
     test "decodes Swiftly vehicle data response JSON" do
+      operator_id = build(:operator_id)
+      operator_last_name = build(:last_name)
+
       input = %{
         "id" => "y1714",
         "routeId" => "39",
@@ -29,8 +33,6 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
         "vehicleType" => "3",
         "schAdhSecs" => 0,
         "schAdhStr" => "0.0 sec (ontime)",
-        "headwaySecs" => 859.1,
-        "scheduledHeadwaySecs" => 120,
         "previousVehicleId" => "y1272",
         "previousVehicleSchAdhSecs" => 59,
         "previousVehicleSchAdhStr" => "59.0 sec (late)",
@@ -41,7 +43,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
         "layoverDepTimeStr" => "14:43:00",
         "nextStopId" => "23391",
         "nextStopName" => "Back Bay",
-        "driver" => "PAUL - 71924",
+        "driver" => "#{operator_last_name} - #{operator_id}",
         "field1Name" => "Run",
         "field1Value" => "122-1065",
         "runId" => "122-1065",
@@ -70,14 +72,11 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           trip_id: "39998535",
           block_id: "B36-173",
           run_id: "122-1065",
-          operator_id: "71924",
-          operator_last_name: "PAUL",
           last_updated: 1_559_672_827,
           last_updated_by_source: %{"swiftly" => 1_559_672_827},
           stop_name: "Back Bay",
           direction_id: 0,
           headsign: "Forest Hills",
-          headway_secs: 859.1,
           layover_departure_time: 1_559_673_780,
           previous_vehicle_id: "y1272",
           previous_vehicle_schedule_adherence_secs: 59,
@@ -85,7 +84,6 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
           route_id: "39",
           schedule_adherence_secs: 0,
           schedule_adherence_string: "0.0 sec (ontime)",
-          scheduled_headway_secs: 120,
           sources: MapSet.new(["swiftly"]),
           data_discrepancies: []
         )

@@ -1,54 +1,57 @@
-import { Channel, Socket } from "phoenix"
-import { useContext, useEffect } from "react"
-import { SocketContext } from "../contexts/socketContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { reload } from "../models/browser"
+import { Socket } from "phoenix"
+import { array, Infer, type, union } from "superstruct"
 import {
   NotificationData,
   notificationFromData,
 } from "../models/notificationData"
-import { Notification } from "../realtime.d"
+import { Notification } from "../realtime"
+import { useCheckedChannel } from "./useChannel"
 
-export const useNotifications = (
-  handleNewNotification: (notification: Notification) => void,
-  handleInitialNotifications: (notificationsData: NotificationData[]) => void
-): void => {
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-  const topic: string = "notifications"
-  const event: string = "notification"
-  const [{ selectedRouteIds }] = useContext(StateDispatchContext)
+const InitialNotificationData = type({
+  initial_notifications: array(NotificationData),
+})
+type InitialNotificationData = Infer<typeof InitialNotificationData>
 
-  useEffect(() => {
-    let channel: Channel | undefined
+const ReceivedNotificationsData = union([
+  NotificationData,
+  InitialNotificationData,
+])
 
-    if (socket !== undefined) {
-      channel = socket.channel(topic)
-      channel.on(event, ({ data: data }) => {
-        const notification: Notification = notificationFromData(data)
-        handleNewNotification(notification)
-      })
-      channel
-        .join()
-        .receive(
-          "ok",
-          (data) =>
-            data.initial_notifications &&
-            handleInitialNotifications(data.initial_notifications)
-        )
-        .receive("error", ({ reason }) =>
-          // tslint:disable-next-line: no-console
-          console.error(`joining topic ${topic} failed`, reason)
-        )
-        .receive("timeout", () => {
-          reload(true)
-        })
+export type InitialNotifications = { type: "initial"; payload: Notification[] }
+export type NewNotification = { type: "new"; payload: Notification }
+
+export type ReceivedNotifications =
+  | NewNotification
+  | InitialNotifications
+  | null
+
+const parseNotifications = (
+  notificationData: NotificationData | InitialNotificationData
+): NewNotification | InitialNotifications => {
+  if ("initial_notifications" in notificationData) {
+    return {
+      type: "initial",
+      payload: (
+        notificationData as InitialNotificationData
+      ).initial_notifications.map(notificationFromData),
     }
+  }
+  return {
+    type: "new",
+    payload: notificationFromData(notificationData as NotificationData),
+  }
+}
 
-    return () => {
-      if (channel !== undefined) {
-        channel.leave()
-        channel = undefined
-      }
-    }
-  }, [socket, selectedRouteIds])
+export const useNotifications = (socket: Socket | undefined) => {
+  return useCheckedChannel<
+    NotificationData | InitialNotificationData,
+    ReceivedNotifications
+  >({
+    socket,
+    topic: "notifications",
+    event: "notification",
+    dataStruct: ReceivedNotificationsData,
+    parser: parseNotifications,
+    loadingState: null,
+  })
 }

@@ -23,6 +23,15 @@ export const formattedTime = (date: Date): string => {
   return formattedHoursMinutes(date.getHours(), date.getMinutes())
 }
 
+export const formattedDate = (date: Date): string => {
+  const displayMonth = date.getMonth() + 1
+  const day = date.getDate()
+  const displayDay = day < 10 ? `0${day}` : `${day}`
+  const displayYear = date.getFullYear()
+
+  return `${displayMonth}/${displayDay}/${displayYear}`
+}
+
 export const formattedDuration = (duration: number): string => {
   const diffHours = Math.floor(duration / 3_600)
   const diffMinutes = Math.floor((duration % 3_600) / 60)
@@ -49,11 +58,20 @@ export const formattedTimeDiffUnderThreshold = (
     : formattedTime(b)
 }
 
-/** Takes a time of day in seconds since midnight
+/** Takes a time of day in seconds since midnight, offset in seconds (reasonably -8640 to 8640 seconds, or -12 to 12 hours)
  */
-export const formattedScheduledTime = (time: number): string => {
-  const minutes = Math.floor(time / 60)
+export const formattedScheduledTime = (
+  time: number,
+  offset?: number | undefined
+): string => {
+  const offsetSeconds = offset || 0
+  let minutes = Math.floor((time + offsetSeconds) / 60)
+  if (minutes < 0) {
+    /* if the offset shifts the time before midnight */
+    minutes += 1440
+  }
   const hours25 = Math.floor(minutes / 60)
+
   const minutes60 = minutes - hours25 * 60
   return formattedHoursMinutes(hours25, minutes60)
 }
@@ -70,3 +88,19 @@ export const formattedHoursMinutes = (
 
 export const secondsToMinutes = (seconds: number): number =>
   Math.abs(Math.floor(seconds / 60))
+
+export const secondsAgoLabel = (
+  epochNowInSeconds: number,
+  epochTime: number
+): string => `${epochNowInSeconds - epochTime}s ago`
+
+export const timeAgoLabel = (
+  epochNowInSeconds: number,
+  epochTime: number
+): string => {
+  const duration = epochNowInSeconds - epochTime
+  const diffHours = Math.floor(duration / 3_600)
+  const diffMinutes = Math.floor((duration % 3_600) / 60)
+
+  return diffHours >= 1 ? `${diffHours} hours ago` : `${diffMinutes} min ago`
+}

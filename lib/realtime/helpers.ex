@@ -1,4 +1,6 @@
 defmodule Realtime.Helpers do
+  @moduledoc false
+
   @doc """
   Returns the first element that matches the condition, and also the element that appears before it in the list.
 

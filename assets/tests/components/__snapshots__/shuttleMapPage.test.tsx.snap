@@ -1,1332 +1,3175 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Shuttle Map Page renders 1`] = `
-<div
-  className="m-shuttle-map"
->
+<DocumentFragment>
   <div
-    className="m-picker-container m-picker-container--wide visible"
+    class="c-shuttle-map "
   >
     <div
-      className="c-drawer-tab"
+      class="c-shuttle-picker-container c-shuttle-picker-container--visible"
+      data-testid="shuttle-picker-container"
     >
       <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
       <div
-        className="m-route-picker__label"
-      >
-        Run #
-      </div>
-      <ul
-        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              All Specials (999*)
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              Special 999 555
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Blue 999 501
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Green 999 502
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Orange 999 503
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Red 999 504
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              CR 999 505
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-      </ul>
-      <div
-        className="m-route-picker__label"
-      >
-        Routes
-      </div>
-    </div>
-  </div>
-  <div
-    className="m-shuttle-map__map"
-  >
-    <div
-      className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-    />
-    <div
-      className="m-vehicle-map"
-      id="id-vehicle-map"
-    />
-  </div>
-</div>
-`;
-
-exports[`Shuttle Map Page renders a selected shuttle vehicle 1`] = `
-<div
-  className="m-shuttle-map"
->
-  <div
-    className="m-picker-container m-picker-container--wide visible"
-  >
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      <div
-        className="m-route-picker__label"
-      >
-        Run #
-      </div>
-      <ul
-        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              All Specials (999*)
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              Special 999 555
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Blue 999 501
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Green 999 502
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Orange 999 503
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Red 999 504
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              CR 999 505
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-      </ul>
-      <div
-        className="m-route-picker__label"
-      >
-        Routes
-      </div>
-    </div>
-  </div>
-  <div
-    className="m-shuttle-map__map"
-  >
-    <div
-      className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-    />
-    <div
-      className="m-vehicle-map"
-      id="id-vehicle-map"
-    />
-  </div>
-  <div
-    className="m-properties-panel"
-    id="m-properties-panel"
-  >
-    <div
-      className="m-vehicle-properties-panel"
-    >
-      <div
-        className="m-properties-panel__header-wrapper"
+        class="c-shuttle-picker u-hideable"
       >
         <div
-          className="m-properties-panel__header"
+          class="c-shuttle-picker__label"
+        >
+          Run #
+        </div>
+        <ul
+          class="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list"
+        >
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--selected"
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                All Specials (999*)
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              >
+                1
+              </span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--unselected"
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                Special 999 555
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              >
+                1
+              </span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Blue 999 501
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Green 999 502
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Orange 999 503
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Red 999 504
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                CR 999 505
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+        </ul>
+        <div
+          class="c-shuttle-picker__label"
+        >
+          Routes
+        </div>
+      </div>
+    </div>
+    <div
+      class="c-shuttle-map__map"
+    >
+      <div
+        class="c-vehicle-map-state"
+      />
+      <div
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
         >
           <div
-            className="m-properties-panel__label"
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 21; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="test_base_url/16/19832/24239"
+                  style="width: 256px; height: 256px; left: -31px; top: -119px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-pane leaflet-primaryVehicles-pane"
+              style="z-index: 499;"
+            >
+              <div
+                class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
+                tabindex="0"
+              >
+                <svg
+                  class="c-vehicle-map__icon c-vehicle-marker--shuttle"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    class=""
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="scale(1) rotate(33) translate(-12, -12)"
+                  />
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
+                tabindex="0"
+              >
+                <svg
+                  class="c-vehicle-map__label primary"
+                  height="16"
+                  viewBox="0 0 40 16"
+                  width="40"
+                >
+                  <rect
+                    class="c-vehicle-icon__label-background"
+                    height="100%"
+                    rx="5.5px"
+                    ry="5.5px"
+                    width="100%"
+                  />
+                  <text
+                    class="c-vehicle-icon__label"
+                    dominant-baseline="central"
+                    text-anchor="middle"
+                    x="50%"
+                    y="50%"
+                  >
+                    1818
+                  </text>
+                </svg>
+              </div>
+            </div>
+            <div
+              class="leaflet-pane leaflet-secondaryVehicles-pane"
+              style="z-index: 400;"
+            />
+            <div
+              class="leaflet-pane leaflet-notableLocationMarkers-pane"
+              style="z-index: 410;"
+            >
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -280px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Albany
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Arborway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Cabot
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Charlestown and Somerville
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Fellsway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Lynn
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    North Cambridge
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Quincy
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Southampton
+                  </text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control"
+            >
+              <div
+                class="c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r0:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r0:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base-layer-radio-:r2:"
+                              name="layers-control-tile-type-:r4:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="base-layer-radio-:r2:"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite-layer-radio-:r3:"
+                              name="layers-control-tile-type-:r4:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="satellite-layer-radio-:r3:"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control leaflet-bar"
+            >
+              <a
+                aria-label="Recenter Map"
+                class="c-recenter-control"
+                data-is-active="true"
+                role="button"
+                tabindex="-1"
+                title="Recenter Map"
+              >
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
+<DocumentFragment>
+  <div
+    class="c-shuttle-map "
+  >
+    <div
+      class="c-shuttle-picker-container c-shuttle-picker-container--visible"
+      data-testid="shuttle-picker-container"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-shuttle-picker u-hideable"
+      >
+        <div
+          class="c-shuttle-picker__label"
+        >
+          Run #
+        </div>
+        <ul
+          class="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list"
+        >
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--unselected"
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                All Specials (999*)
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              >
+                1
+              </span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--selected"
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                Special 999 555
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              >
+                1
+              </span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Blue 999 501
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Green 999 502
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Orange 999 503
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Red 999 504
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                CR 999 505
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+        </ul>
+        <div
+          class="c-shuttle-picker__label"
+        >
+          Routes
+        </div>
+      </div>
+    </div>
+    <div
+      class="c-shuttle-map__map"
+    >
+      <div
+        class="c-vehicle-map-state"
+      />
+      <div
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 21; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="test_base_url/16/19832/24239"
+                  style="width: 256px; height: 256px; left: -31px; top: -119px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-pane leaflet-primaryVehicles-pane"
+              style="z-index: 499;"
+            >
+              <div
+                class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
+                tabindex="0"
+              >
+                <svg
+                  class="c-vehicle-map__icon c-vehicle-marker--shuttle"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    class=""
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="scale(1) rotate(33) translate(-12, -12)"
+                  />
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
+                tabindex="0"
+              >
+                <svg
+                  class="c-vehicle-map__label primary"
+                  height="16"
+                  viewBox="0 0 40 16"
+                  width="40"
+                >
+                  <rect
+                    class="c-vehicle-icon__label-background"
+                    height="100%"
+                    rx="5.5px"
+                    ry="5.5px"
+                    width="100%"
+                  />
+                  <text
+                    class="c-vehicle-icon__label"
+                    dominant-baseline="central"
+                    text-anchor="middle"
+                    x="50%"
+                    y="50%"
+                  >
+                    1818
+                  </text>
+                </svg>
+              </div>
+            </div>
+            <div
+              class="leaflet-pane leaflet-secondaryVehicles-pane"
+              style="z-index: 400;"
+            />
+            <div
+              class="leaflet-pane leaflet-notableLocationMarkers-pane"
+              style="z-index: 410;"
+            >
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -280px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Albany
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Arborway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Cabot
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Charlestown and Somerville
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Fellsway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Lynn
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    North Cambridge
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Quincy
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Southampton
+                  </text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control"
+            >
+              <div
+                class="c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:rk:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:rk:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base-layer-radio-:rm:"
+                              name="layers-control-tile-type-:ro:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="base-layer-radio-:rm:"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite-layer-radio-:rn:"
+                              name="layers-control-tile-type-:ro:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="satellite-layer-radio-:rn:"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control leaflet-bar"
+            >
+              <a
+                aria-label="Recenter Map"
+                class="c-recenter-control"
+                data-is-active="true"
+                role="button"
+                tabindex="-1"
+                title="Recenter Map"
+              >
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
+<DocumentFragment>
+  <div
+    class="c-shuttle-map "
+  >
+    <div
+      class="c-shuttle-picker-container c-shuttle-picker-container--visible"
+      data-testid="shuttle-picker-container"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-shuttle-picker u-hideable"
+      >
+        <div
+          class="c-shuttle-picker__label"
+        >
+          Run #
+        </div>
+        <ul
+          class="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list"
+        >
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--selected"
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                All Specials (999*)
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              >
+                1
+              </span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--unselected"
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                Special 999 555
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              >
+                1
+              </span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Blue 999 501
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Green 999 502
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Orange 999 503
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Red 999 504
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                CR 999 505
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+        </ul>
+        <div
+          class="c-shuttle-picker__label"
+        >
+          Routes
+        </div>
+      </div>
+    </div>
+    <div
+      class="c-shuttle-map__map"
+    >
+      <div
+        class="c-vehicle-map-state"
+      />
+      <div
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 21; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="test_base_url/16/19832/24239"
+                  style="width: 256px; height: 256px; left: -31px; top: -119px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-pane leaflet-primaryVehicles-pane"
+              style="z-index: 499;"
+            >
+              <div
+                class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
+                tabindex="0"
+              >
+                <svg
+                  class="c-vehicle-map__icon c-vehicle-marker--shuttle"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    class=""
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="scale(1) rotate(33) translate(-12, -12)"
+                  />
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
+                tabindex="0"
+              >
+                <svg
+                  class="c-vehicle-map__label primary"
+                  height="16"
+                  viewBox="0 0 40 16"
+                  width="40"
+                >
+                  <rect
+                    class="c-vehicle-icon__label-background"
+                    height="100%"
+                    rx="5.5px"
+                    ry="5.5px"
+                    width="100%"
+                  />
+                  <text
+                    class="c-vehicle-icon__label"
+                    dominant-baseline="central"
+                    text-anchor="middle"
+                    x="50%"
+                    y="50%"
+                  >
+                    1818
+                  </text>
+                </svg>
+              </div>
+            </div>
+            <div
+              class="leaflet-pane leaflet-secondaryVehicles-pane"
+              style="z-index: 400;"
+            />
+            <div
+              class="leaflet-pane leaflet-notableLocationMarkers-pane"
+              style="z-index: 410;"
+            >
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -280px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Albany
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Arborway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Cabot
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Charlestown and Somerville
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Fellsway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Lynn
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    North Cambridge
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Quincy
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Southampton
+                  </text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control"
+            >
+              <div
+                class="c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:rp:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:rp:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base-layer-radio-:rr:"
+                              name="layers-control-tile-type-:rt:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="base-layer-radio-:rr:"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite-layer-radio-:rs:"
+                              name="layers-control-tile-type-:rt:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="satellite-layer-radio-:rs:"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control leaflet-bar"
+            >
+              <a
+                aria-label="Recenter Map"
+                class="c-recenter-control"
+                data-is-active="true"
+                role="button"
+                tabindex="-1"
+                title="Recenter Map"
+              >
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`Shuttle Map Page renders with shapes selected 1`] = `
+<DocumentFragment>
+  <div
+    class="c-shuttle-map "
+  >
+    <div
+      class="c-shuttle-picker-container c-shuttle-picker-container--visible"
+      data-testid="shuttle-picker-container"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-shuttle-picker u-hideable"
+      >
+        loading...
+      </div>
+    </div>
+    <div
+      class="c-shuttle-map__map"
+    >
+      <div
+        class="c-vehicle-map-state"
+      />
+      <div
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 21; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="test_base_url/13/2479/3029"
+                  style="width: 256px; height: 256px; left: -4px; top: -239px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
           >
             <svg
-              style={
-                Object {
-                  "height": 64,
-                  "width": 64,
-                }
-              }
-              viewBox="-32 -20 64 64"
+              height="0"
+              pointer-events="none"
+              style="left: 0px; top: 0px;"
+              viewBox="0 0 0 0"
+              width="0"
             >
-              <g
-                className="m-vehicle-icon m-vehicle-icon--large"
-              >
-                <rect
-                  className="m-vehicle-icon__label-background"
-                  height={24}
-                  rx={12}
-                  ry={12}
-                  width={64}
-                  x={-32}
-                  y={19}
-                />
-                <text
-                  className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-                  dominantBaseline="central"
-                  textAnchor="middle"
-                  x="0"
-                  y={31}
-                >
-                  1818
-                </text>
+              <g>
                 <path
-                  className="m-vehicle-icon__triangle"
-                  d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-                  transform="scale(1) rotate(0) translate(-24,-22)"
+                  class="c-vehicle-map__route-shape c-vehicle-map__route-shape--base"
+                  d="M0 0"
+                  fill="none"
+                  stroke="#3388ff"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-opacity="1"
+                  stroke-width="3"
                 />
-                <text
-                  className="m-vehicle-icon__variant"
-                  dominantBaseline="alphabetic"
-                  textAnchor="middle"
-                  x={0}
-                  y={14}
-                >
-                  4
-                </text>
               </g>
             </svg>
           </div>
           <div
-            className="m-properties-panel__variant"
-          >
-            <div
-              className="m-properties-panel__inbound-outbound"
-            >
-              
-            </div>
-            <div
-              className="m-route-variant-name"
-            >
-              Shuttle
-            </div>
-          </div>
-          <div
-            className="m-properties-panel__close-ping"
-          >
-            <button
-              className="m-close-button"
-              onClick={[Function]}
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-            </button>
-            <div
-              className="m-properties-panel__last-gps-ping"
-            >
-              -1557160073s ago
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="m-properties-list"
-      >
-        <table
-          className="m-properties-list__table"
-        >
-          <tbody>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Run
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                Special 999 555
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Vehicle
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                1818
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property "
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Operator
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                PATTI SMITH #op1
-              </td>
-            </tr>
-            <tr
-              className="m-properties-list__property m-properties-list__property--last-login"
-            >
-              <td
-                className="m-properties-list__property-label"
-              >
-                Last Login
-              </td>
-              <td
-                className="m-properties-list__property-value"
-              >
-                4 hr 3 min; 1:38 PM
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        className="m-vehicle-properties-panel__location"
-      >
-        <div
-          className="m-vehicle-properties-panel__latlng"
-        >
-          <div
-            className="m-vehicle-properties-panel__label"
-          >
-            Current Location
-          </div>
-          <a
-            className="m-vehicle-properties-panel__link"
-            href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-            target="_blank"
-          >
-            Directions
-          </a>
-        </div>
-        <div
-          className="m-vehicle-properties-panel__next-stop"
-        >
-          <div
-            className="m-vehicle-properties-panel__label"
-          >
-            Next Stop
-          </div>
-          <div
-            className="m-vehicle-properties-panel__value"
-          >
-            <span
-              className="m-vehicle-properties-panel__not-available"
-            >
-              Not available
-            </span>
-          </div>
-        </div>
-        <div
-          className="m-vehicle-properties-panel__map"
-        >
-          <div
-            className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+            class="leaflet-pane leaflet-shadow-pane"
           />
           <div
-            className="m-vehicle-map"
-            id="id-vehicle-map"
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-pane leaflet-primaryVehicles-pane"
+              style="z-index: 499;"
+            />
+            <div
+              class="leaflet-pane leaflet-secondaryVehicles-pane"
+              style="z-index: 400;"
+            />
+            <div
+              class="leaflet-pane leaflet-notableLocationMarkers-pane"
+              style="z-index: 410;"
+            />
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
           />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control"
+            >
+              <div
+                class="c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:ra:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:ra:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base-layer-radio-:rc:"
+                              name="layers-control-tile-type-:re:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="base-layer-radio-:rc:"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite-layer-radio-:rd:"
+                              name="layers-control-tile-type-:re:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="satellite-layer-radio-:rd:"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control leaflet-bar"
+            >
+              <a
+                aria-label="Recenter Map"
+                class="c-recenter-control"
+                data-is-active="true"
+                role="button"
+                tabindex="-1"
+                title="Recenter Map"
+              >
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div
-    className="m-properties-panel__modal-overlay"
-    onClick={[Function]}
-  />
-</div>
-`;
-
-exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
-<div
-  className="m-shuttle-map"
->
-  <div
-    className="m-picker-container m-picker-container--wide visible"
-  >
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      <div
-        className="m-route-picker__label"
-      >
-        Run #
-      </div>
-      <ul
-        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              All Specials (999*)
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              Special 999 555
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Blue 999 501
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Green 999 502
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Orange 999 503
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Red 999 504
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              CR 999 505
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-      </ul>
-      <div
-        className="m-route-picker__label"
-      >
-        Routes
-      </div>
-    </div>
-  </div>
-  <div
-    className="m-shuttle-map__map"
-  >
-    <div
-      className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-    />
-    <div
-      className="m-vehicle-map"
-      id="id-vehicle-map"
-    />
-  </div>
-</div>
-`;
-
-exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
-<div
-  className="m-shuttle-map"
->
-  <div
-    className="m-picker-container m-picker-container--wide visible"
-  >
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      <div
-        className="m-route-picker__label"
-      >
-        Run #
-      </div>
-      <ul
-        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              All Specials (999*)
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              Special 999 555
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Blue 999 501
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Green 999 502
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Orange 999 503
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Red 999 504
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              CR 999 505
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-      </ul>
-      <div
-        className="m-route-picker__label"
-      >
-        Routes
-      </div>
-    </div>
-  </div>
-  <div
-    className="m-shuttle-map__map"
-  >
-    <div
-      className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-    />
-    <div
-      className="m-vehicle-map"
-      id="id-vehicle-map"
-    />
-  </div>
-</div>
-`;
-
-exports[`Shuttle Map Page renders with shapes selected 1`] = `
-<div
-  className="m-shuttle-map"
->
-  <div
-    className="m-picker-container m-picker-container--wide visible"
-  >
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      loading...
-    </div>
-  </div>
-  <div
-    className="m-shuttle-map__map"
-  >
-    <div
-      className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-    />
-    <div
-      className="m-vehicle-map"
-      id="id-vehicle-map"
-    />
-  </div>
-</div>
+</DocumentFragment>
 `;
 
 exports[`Shuttle Map Page renders with train vehicles 1`] = `
-<div
-  className="m-shuttle-map"
->
+<DocumentFragment>
   <div
-    className="m-picker-container m-picker-container--wide visible"
+    class="c-shuttle-map "
   >
     <div
-      className="c-drawer-tab"
+      class="c-shuttle-picker-container c-shuttle-picker-container--visible"
+      data-testid="shuttle-picker-container"
     >
       <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
+      <div
+        class="c-shuttle-picker u-hideable"
+      >
+        <div
+          class="c-shuttle-picker__label"
+        >
+          Run #
+        </div>
+        <ul
+          class="c-shuttle-picker__route-list c-shuttle-picker__shuttle-run-list"
+        >
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--selected"
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                All Specials (999*)
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              >
+                1
+              </span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--unselected"
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                Special 999 555
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              >
+                1
+              </span>
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Blue 999 501
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Green 999 502
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Orange 999 503
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                Red 999 504
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+          <li>
+            <button
+              class="c-shuttle-picker__route-list-button c-shuttle-picker__route-list-button--with-count c-shuttle-picker__route-list-button--disabled"
+              disabled=""
+            >
+              <span
+                class="c-shuttle-picker__route-list-button-name"
+              >
+                <span>
+                  <svg />
+                </span>
+                CR 999 505
+              </span>
+              <span
+                class="c-shuttle-picker__route-list-button-count"
+              />
+            </button>
+          </li>
+        </ul>
+        <div
+          class="c-shuttle-picker__label"
+        >
+          Routes
+        </div>
+      </div>
     </div>
     <div
-      className="m-route-picker"
+      class="c-shuttle-map__map"
     >
       <div
-        className="m-route-picker__label"
-      >
-        Run #
-      </div>
-      <ul
-        className="m-route-picker__route-list m-route-picker__shuttle-run-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--selected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              All Specials (999*)
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--unselected"
-            disabled={false}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              Special 999 555
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            >
-              1
-            </span>
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Blue 999 501
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Green 999 502
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Orange 999 503
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              Red 999 504
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--with-count m-route-picker__route-list-button--disabled"
-            disabled={true}
-            onClick={[Function]}
-          >
-            <span
-              className="m-route-picker__route-list-button-name"
-            >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
-              CR 999 505
-            </span>
-            <span
-              className="m-route-picker__route-list-button-count"
-            />
-          </button>
-        </li>
-      </ul>
+        class="c-vehicle-map-state"
+      />
       <div
-        className="m-route-picker__label"
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
       >
-        Routes
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 21; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="test_base_url/16/19832/24239"
+                  style="width: 256px; height: 256px; left: -31px; top: -119px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-pane leaflet-primaryVehicles-pane"
+              style="z-index: 499;"
+            >
+              <div
+                class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
+                tabindex="0"
+              >
+                <svg
+                  class="c-vehicle-map__icon c-vehicle-marker--shuttle"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    class=""
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="scale(1) rotate(33) translate(-12, -12)"
+                  />
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+                role="button"
+                style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 0px; top: 0px; z-index: 0;"
+                tabindex="0"
+              >
+                <svg
+                  class="c-vehicle-map__label primary"
+                  height="16"
+                  viewBox="0 0 40 16"
+                  width="40"
+                >
+                  <rect
+                    class="c-vehicle-icon__label-background"
+                    height="100%"
+                    rx="5.5px"
+                    ry="5.5px"
+                    width="100%"
+                  />
+                  <text
+                    class="c-vehicle-icon__label"
+                    dominant-baseline="central"
+                    text-anchor="middle"
+                    x="50%"
+                    y="50%"
+                  >
+                    1818
+                  </text>
+                </svg>
+              </div>
+            </div>
+            <div
+              class="leaflet-pane leaflet-secondaryVehicles-pane"
+              style="z-index: 400;"
+            />
+            <div
+              class="leaflet-marker-icon c-vehicle-map__train-icon leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -6px; margin-top: -6px; width: 12px; height: 12px; left: 2573px; top: 7219px; z-index: 7219;"
+              tabindex="0"
+            >
+              <svg
+                role="img"
+                viewBox="0 0 36 36"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                
+        
+                <g
+                  transform="rotate(15, 24, 24)"
+                >
+                  
+          
+                  <path
+                    d="m42.88 45.83a2.1 2.1 0 0 1 -.87-.19l-15.92-7.17a5.23 5.23 0 0 0 -2.09-.47 5.14 5.14 0 0 0 -2.08.44l-15.92 7.2a2.1 2.1 0 0 1 -.87.19 2.14 2.14 0 0 1 -1.76-1 2 2 0 0 1 -.12-2l18.86-40.83a2.08 2.08 0 0 1 3.78 0l18.87 40.87a2 2 0 0 1 -.12 2 2.14 2.14 0 0 1 -1.76.96z"
+                    fill="#fff"
+                  />
+                  
+        
+                </g>
+                
+    
+              </svg>
+            </div>
+            <div
+              class="leaflet-pane leaflet-notableLocationMarkers-pane"
+              style="z-index: 410;"
+            >
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -280px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -280px; top: 1268px; z-index: 1268;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Albany
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2338px; top: 3590px; z-index: 3590;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Arborway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 50px; top: 1292px; z-index: 1292;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Cabot
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -679px; top: -1747px; z-index: -1747;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Charlestown and Somerville
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1396px; top: -3850px; z-index: -3850;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Fellsway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 3935px; top: -5974px; z-index: -5974;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Lynn
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3255px; top: -2293px; z-index: -2293;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    North Cambridge
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2316px; top: 6363px; z-index: 6363;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Quincy
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -288px; top: 1827px; z-index: 1827;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Southampton
+                  </text>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control"
+            >
+              <div
+                class="c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:rf:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:rf:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base-layer-radio-:rh:"
+                              name="layers-control-tile-type-:rj:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="base-layer-radio-:rh:"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite-layer-radio-:ri:"
+                              name="layers-control-tile-type-:rj:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="satellite-layer-radio-:ri:"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-control leaflet-bar inherit-box"
+            >
+              <a
+                class="c-user-location-button"
+                role="button"
+                title="Show your current location"
+              >
+                <span
+                  class="c-user-location-button__svg"
+                >
+                  <svg />
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control leaflet-bar"
+            >
+              <a
+                aria-label="Recenter Map"
+                class="c-recenter-control"
+                data-is-active="true"
+                role="button"
+                tabindex="-1"
+                title="Recenter Map"
+              >
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div
-    className="m-shuttle-map__map"
-  >
-    <div
-      className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-    />
-    <div
-      className="m-vehicle-map"
-      id="id-vehicle-map"
-    />
-  </div>
-</div>
+</DocumentFragment>
 `;

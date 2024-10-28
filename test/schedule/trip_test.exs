@@ -119,33 +119,29 @@ defmodule Schedule.TripTest do
     end
   end
 
-  describe "is_active" do
-    test "a trip that starts before the range and ends after is active" do
-      assert Trip.is_active(@trip, 4, 5)
+  describe "starts_in_range" do
+    test "when a trip that starts before the range and ends after, false" do
+      refute Trip.starts_in_range(@trip, 4, 5)
     end
 
-    test "a trip that starts before the range and ends during is active" do
-      assert Trip.is_active(@trip, 5, 7)
+    test "when a trip starts before the range and ends during, false" do
+      refute Trip.starts_in_range(@trip, 5, 7)
     end
 
-    test "a trip that starts during the range and ends after is active" do
-      assert Trip.is_active(@trip, 2, 4)
+    test "when a trip starts during the range and ends after, true" do
+      assert Trip.starts_in_range(@trip, 2, 4)
     end
 
-    test "a trip that's totally inside the time range is active" do
-      assert Trip.is_active(@trip, 2, 7)
+    test "when a trip that's totally inside the time range, true" do
+      assert Trip.starts_in_range(@trip, 2, 7)
     end
 
-    test "a trip is active if the start and end times are the same" do
-      assert Trip.is_active(@trip, 4, 4)
+    test "when a trip is trip totally before the range, false" do
+      refute Trip.starts_in_range(@trip, 10, 12)
     end
 
-    test "a trip totally before the range is inactive" do
-      refute Trip.is_active(@trip, 10, 12)
-    end
-
-    test "a trip totally after the range is inactive" do
-      refute Trip.is_active(@trip, 1, 2)
+    test "when a trip is totally after the range, false" do
+      refute Trip.starts_in_range(@trip, 1, 2)
     end
   end
 

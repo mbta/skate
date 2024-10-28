@@ -1,21 +1,24 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect } from "@jest/globals"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
-import renderer from "react-test-renderer"
 import DisconnectedModal from "../../src/components/disconnectedModal"
-import * as browser from "../../src/models/browser"
+import { reload } from "../../src/models/browser"
 
-// tslint:disable no-empty
+jest.mock("../../src/models/browser", () => ({
+  __esModule: true,
+  reload: jest.fn(),
+}))
 
 describe("DisconnectedModal", () => {
   test("renders", () => {
-    const tree = renderer.create(<DisconnectedModal />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const { baseElement } = render(<DisconnectedModal />)
+    expect(baseElement).toMatchSnapshot()
   })
 
-  test("refreshes when you click the button", () => {
-    const wrapper = mount(<DisconnectedModal />)
-    jest.spyOn(browser, "reload").mockImplementation(() => {})
-    wrapper.find("button").simulate("click")
-    expect(browser.reload).toHaveBeenCalled()
+  test("refreshes when you click the button", async () => {
+    const result = render(<DisconnectedModal />)
+    await userEvent.click(result.getByRole("button"))
+    expect(reload).toHaveBeenCalled()
   })
 })

@@ -3,17 +3,62 @@ defmodule SkateWeb.AuthManagerTest do
   alias Guardian.Phoenix.Socket
   alias SkateWeb.AuthManager
   alias SkateWeb.UserSocket
+  alias Skate.Settings.User
+
+  @username "username1"
+  @user_id 1
+
+  describe "subject_for_token/2" do
+    test "returns v3 formatted user id when given user struct" do
+      assert {:ok, "v3:#{@user_id}"} ==
+               AuthManager.subject_for_token(%{id: @user_id}, %{})
+    end
+  end
+
+  describe "resource_from_claims/2" do
+    test "returns struct when given v3 formatted user id" do
+      %{id: user_id} = User.upsert(@username, "email@test.com")
+
+      assert {:ok, %{id: ^user_id}} =
+               AuthManager.resource_from_claims(%{
+                 "sub" => "v3:#{user_id}"
+               })
+    end
+  end
+
+  describe "verify_claims/2" do
+    test "passes with a v3-formatted resource" do
+      claims = %{"sub" => "v3:#{@user_id}"}
+
+      assert {:ok, ^claims} = AuthManager.verify_claims(claims, %{})
+    end
+
+    test "fails with a non-v3-formatted resource" do
+      claims = %{"sub" => "v2:#{@user_id}"}
+
+      assert {:error, :invalid_claims} = AuthManager.verify_claims(claims, %{})
+    end
+  end
 
   describe "username_from_socket!/1" do
     test "extracts the username from the given socket's token" do
-      {:ok, token, _claims} = AuthManager.encode_and_sign("charlie")
+      user = User.upsert(@username, "test@email.com")
+      resource = %{id: user.id}
+      {:ok, token, _claims} = AuthManager.encode_and_sign(resource)
 
       {:ok, socket} =
         UserSocket
-        |> socket("charlie", %{})
+        |> socket(resource, %{})
         |> Socket.authenticate(AuthManager, token)
 
-      assert(AuthManager.username_from_socket!(socket) == "charlie")
+      assert(AuthManager.username_from_socket!(socket) == @username)
+    end
+  end
+
+  describe "username_from_resource/1" do
+    test "returns username from user struct" do
+      %{id: user_id} = User.upsert(@username, "test@email.com")
+      assert @username = AuthManager.username_from_resource(%{id: user_id})
     end
   end
 

@@ -98,7 +98,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
 
     _ =
       Logger.debug(fn ->
-        "#{__MODULE__} scheduling fetch url=#{inspect(machine.url)} after=#{time}"
+        "scheduling fetch url=#{inspect(machine.url)} after=#{time}"
       end)
 
     time
@@ -162,7 +162,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
     # not modified
     _ =
       Logger.info(fn ->
-        "#{__MODULE__}: not modified url=#{inspect(machine.url)}"
+        "not modified url=#{inspect(machine.url)}"
       end)
 
     {machine, messages} = check_last_success(machine)
@@ -180,7 +180,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
 
     _ =
       Logger.log(log_level, fn ->
-        "#{__MODULE__}: url=#{inspect(machine.url)} error=#{inspect(reason)}"
+        "url=#{inspect(machine.url)} error=#{inspect(reason)}"
       end)
 
     {machine, messages} = check_last_success(machine)
@@ -207,7 +207,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
 
     _ =
       Logger.log(log_level, fn ->
-        "#{__MODULE__}: url=#{inspect(machine.url)} error=#{inspect(reason)}"
+        "url=#{inspect(machine.url)} error=#{inspect(reason)}"
       end)
 
     {machine, [], []}
@@ -216,9 +216,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
   defp handle_message(machine, unknown) do
     _ =
       Logger.error(fn ->
-        "#{__MODULE__}: got unexpected message url=#{inspect(machine.url)} message=#{
-          inspect(unknown)
-        }"
+        "got unexpected message url=#{inspect(machine.url)} message=#{inspect(unknown)}"
       end)
 
     {machine, [], []}
@@ -277,7 +275,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
       ^previous_hash ->
         _ =
           Logger.info(fn ->
-            "#{__MODULE__}: same content url=#{inspect(machine.url)}"
+            "same content url=#{inspect(machine.url)}"
           end)
 
         {[], machine}
@@ -292,9 +290,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
 
     _ =
       Logger.info(fn ->
-        "#{__MODULE__} updated: url=#{inspect(url(machine))} records=#{length(parsed)} time=#{
-          time / 1000
-        }"
+        "updated: url=#{inspect(url(machine))} records=#{length(parsed)} time=#{time / 1000}"
       end)
 
     machine =
@@ -308,20 +304,18 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
     {[parsed], machine}
   rescue
     error ->
-      log_parse_error(error, machine, System.stacktrace())
+      log_parse_error(error, machine, __STACKTRACE__)
       {[], machine}
   catch
     error ->
-      log_parse_error(error, machine, System.stacktrace())
+      log_parse_error(error, machine, __STACKTRACE__)
       {[], machine}
   end
 
   defp log_parse_error(error, machine, trace) do
     _ =
       Logger.error(fn ->
-        "#{__MODULE__}: parse error url=#{inspect(machine.url)} error=#{inspect(error)}\n#{
-          Exception.format_stacktrace(trace)
-        }"
+        "parse error url=#{inspect(machine.url)} error=#{inspect(error)}\n#{Exception.format_stacktrace(trace)}"
       end)
 
     []
@@ -332,9 +326,9 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
 
     if time_since_last_success >= machine.content_warning_timeout do
       _ =
-        Logger.warn(fn ->
+        Logger.warning(fn ->
           delay = div(time_since_last_success, 1000)
-          "#{__MODULE__}: feed has not been updated url=#{inspect(machine.url)} delay=#{delay}"
+          "feed has not been updated url=#{inspect(machine.url)} delay=#{delay}"
         end)
 
       activate_fallback(%{machine | last_success: now()})
@@ -346,9 +340,7 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
   defp activate_fallback(%{fallback: {:not_active, url}} = machine) do
     _ =
       Logger.error(fn ->
-        "#{__MODULE__} activating fallback url=#{inspect(machine.url)} fallback_url=#{
-          inspect(url)
-        }"
+        "activating fallback url=#{inspect(machine.url)} fallback_url=#{inspect(url)}"
       end)
 
     fallback_machine =
@@ -387,11 +379,11 @@ defmodule Concentrate.Producer.HTTP.StateMachine do
     [{message, delay} | fallback_messages]
   end
 
-  defp error_log_level(:closed), do: :warn
-  defp error_log_level({:closed, _}), do: :warn
-  defp error_log_level({:ssl_closed, _}), do: :warn
-  defp error_log_level(:timeout), do: :warn
-  defp error_log_level({:unexpected_code, _}), do: :warn
+  defp error_log_level(:closed), do: :warning
+  defp error_log_level({:closed, _}), do: :warning
+  defp error_log_level({:ssl_closed, _}), do: :warning
+  defp error_log_level(:timeout), do: :warning
+  defp error_log_level({:unexpected_code, _}), do: :warning
   defp error_log_level(_), do: :error
 
   defp now do

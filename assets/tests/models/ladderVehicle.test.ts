@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import { VehicleDirection } from "../../src/models/ladderDirection"
 import {
   areOverlapping,
@@ -6,33 +7,31 @@ import {
   LadderVehicle,
   putIntoLanes,
 } from "../../src/models/ladderVehicle"
-import { Vehicle } from "../../src/realtime"
-
-// tslint:disable:object-literal-sort-keys
+import { VehicleInScheduledService } from "../../src/realtime"
 
 describe("putIntoLanes", () => {
   test("adds lane properties", () => {
     const original: LadderVehicle[] = [
       {
-        vehicle: { id: "v1" } as Vehicle,
+        vehicle: { id: "v1" } as VehicleInScheduledService,
         vehicleDirection: VehicleDirection.Up,
         x: 0,
         y: 10,
       },
       {
-        vehicle: { id: "v2" } as Vehicle,
+        vehicle: { id: "v2" } as VehicleInScheduledService,
         vehicleDirection: VehicleDirection.Up,
         x: 0,
         y: 20,
       },
       {
-        vehicle: { id: "v3" } as Vehicle,
+        vehicle: { id: "v3" } as VehicleInScheduledService,
         vehicleDirection: VehicleDirection.Down,
         x: 0,
         y: 20,
       },
       {
-        vehicle: { id: "v4" } as Vehicle,
+        vehicle: { id: "v4" } as VehicleInScheduledService,
         vehicleDirection: VehicleDirection.Down,
         x: 0,
         y: 10,

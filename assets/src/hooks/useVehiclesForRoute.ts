@@ -1,24 +1,34 @@
 import { Socket } from "phoenix"
+import { array, union } from "superstruct"
 import {
-  VehicleOrGhostData,
-  vehicleOrGhostFromData,
+  vehicleInScheduledServiceOrGhostFromData,
+  VehicleInScheduledServiceData,
+  GhostData,
 } from "../models/vehicleData"
-import { VehicleOrGhost } from "../realtime"
+import { VehicleInScheduledService, Ghost } from "../realtime"
 import { RouteId } from "../schedule"
-import { useChannel } from "./useChannel"
+import { useCheckedChannel } from "./useChannel"
 
-const parser = (data: VehicleOrGhostData[]): VehicleOrGhost[] =>
-  data.map(vehicleOrGhostFromData)
+const parser = (
+  data: (VehicleInScheduledServiceData | GhostData)[]
+): (VehicleInScheduledService | Ghost)[] =>
+  data.map(vehicleInScheduledServiceOrGhostFromData)
+
+const dataStruct = array(union([VehicleInScheduledServiceData, GhostData]))
 
 const useVehiclesForRoute = (
   socket: Socket | undefined,
   routeId: RouteId | null
-): VehicleOrGhost[] | null => {
+): (VehicleInScheduledService | Ghost)[] | null => {
   const topic: string | null = routeId && `vehicles:route:${routeId}`
-  return useChannel<VehicleOrGhost[] | null>({
+  return useCheckedChannel<
+    (VehicleInScheduledServiceData | GhostData)[],
+    (VehicleInScheduledService | Ghost)[] | null
+  >({
     socket,
     topic,
     event: "vehicles",
+    dataStruct,
     parser,
     loadingState: null,
   })

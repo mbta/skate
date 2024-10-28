@@ -1,0 +1,13 @@
+.c-basic-notification-modal {
+  display: flex;
+  flex-direction: column;
+}
+
+.c-basic-notification-modal__close-button {
+  width: 1rem;
+  margin-left: auto;
+}
+
+.c-basic-notification-modal__body {
+  margin-top: 1rem;
+}

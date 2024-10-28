@@ -1,3 +1,4 @@
+import { describe, test, expect } from "@jest/globals"
 import {
   dateFromEpochSeconds,
   formattedHoursMinutes,
@@ -7,6 +8,7 @@ import {
   now,
   formattedScheduledTime,
   serviceDaySeconds,
+  formattedDate,
 } from "../../src/util/dateTime"
 
 describe("now", () => {
@@ -65,12 +67,24 @@ describe("formattedTime", () => {
   })
 })
 
+describe("formattedDate", () => {
+  test("returns a formatted string version of the date", () => {
+    expect(formattedDate(new Date("Februrary 18, 2020 21:08"))).toEqual(
+      "2/18/2020"
+    )
+
+    expect(formattedDate(new Date("Februrary 7, 2020 21:08"))).toEqual(
+      "2/07/2020"
+    )
+  })
+})
+
 describe("formattedTimeDiff", () => {
   test("returns a formatted string representing the difference in hours and minutes between two times", () => {
     const a: Date = new Date("Februrary 18, 2020 14:42")
     const b: Date = new Date("Februrary 18, 2020 9:38")
 
-    const expected: string = "5 hr 4 min"
+    const expected = "5 hr 4 min"
 
     expect(formattedTimeDiff(a, b)).toEqual(expected)
   })
@@ -79,7 +93,7 @@ describe("formattedTimeDiff", () => {
     const a: Date = new Date("Februrary 18, 2020 2:00")
     const b: Date = new Date("Februrary 18, 2020 1:01")
 
-    const expected: string = "59 min"
+    const expected = "59 min"
 
     expect(formattedTimeDiff(a, b)).toEqual(expected)
   })
@@ -90,7 +104,7 @@ describe("formattedTimeDiffUnderThreshold", () => {
     const a: Date = new Date("Februrary 18, 2020 14:42")
     const b: Date = new Date("Februrary 18, 2020 9:38")
 
-    const expected: string = "9:38 AM"
+    const expected = "9:38 AM"
 
     expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
   })
@@ -99,7 +113,7 @@ describe("formattedTimeDiffUnderThreshold", () => {
     const a: Date = new Date("Februrary 18, 2020 2:00")
     const b: Date = new Date("Februrary 18, 2020 1:01")
 
-    const expected: string = "59 min"
+    const expected = "59 min"
 
     expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
   })
@@ -108,7 +122,7 @@ describe("formattedTimeDiffUnderThreshold", () => {
     const a: Date = new Date("Februrary 18, 2020 2:01")
     const b: Date = new Date("Februrary 18, 2020 1:01")
 
-    const expected: string = "1 hr 0 min"
+    const expected = "1 hr 0 min"
 
     expect(formattedTimeDiffUnderThreshold(a, b, 60)).toEqual(expected)
   })
@@ -122,6 +136,14 @@ describe("formattedScheduledTime", () => {
     expect(formattedScheduledTime(47100)).toEqual("1:05 PM")
     expect(formattedScheduledTime(86400)).toEqual("12:00 AM")
     expect(formattedScheduledTime(90900)).toEqual("1:15 AM")
+  })
+  test("applies offset seconds", () => {
+    expect(formattedScheduledTime(34100, 120)).toEqual("9:30 AM")
+    expect(formattedScheduledTime(34100, -180)).toEqual("9:25 AM")
+    expect(formattedScheduledTime(34100, 0)).toEqual("9:28 AM")
+    expect(formattedScheduledTime(46800, 3660)).toEqual("2:01 PM")
+    expect(formattedScheduledTime(86399, 120)).toEqual("12:01 AM")
+    expect(formattedScheduledTime(1, -180)).toEqual("11:57 PM")
   })
 })
 

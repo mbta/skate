@@ -1,7 +1,11 @@
 defmodule Schedule.Hastus.Trip do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Hastus.{Place, Run, Schedule}
+
+  @through_routed_suffix_regex ~r/_(\d+)$/
 
   @type t :: %__MODULE__{
           schedule_id: Schedule.id(),
@@ -9,8 +13,8 @@ defmodule Schedule.Hastus.Trip do
           block_id: Block.id(),
           start_time: Util.Time.time_of_day(),
           end_time: Util.Time.time_of_day(),
-          start_place: Place.id(),
-          end_place: Place.id(),
+          start_place: Place.id() | nil,
+          end_place: Place.id() | nil,
           # nil means nonrevenue
           route_id: Route.id() | nil,
           trip_id: Trip.id()
@@ -91,29 +95,37 @@ defmodule Schedule.Hastus.Trip do
   # to the trip ID. It does this because Schedules has to merge these
   # through-routed trips into continuous trips that change route number,
   # because they can't depend on the HASTUS "fixed link" feature that kept
-  # the separate trips attached. But we wanted to keep presenting these to 
+  # the separate trips attached. But we wanted to keep presenting these to
   # passengers as separate trips with multiple route numbers. In theory the
   # HASTUS problem will eventually get fixed, but it's been several years
   # already.
 
   @spec expand_through_routed_trips([t()], MapSet.t()) :: [t()]
   def expand_through_routed_trips(trips, gtfs_trip_ids) do
-    through_routed_trip_ids = Enum.filter(gtfs_trip_ids, &Regex.match?(~r/_\d+$/, &1))
-
     original_id_to_through_routed_trip_ids =
-      Enum.reduce(through_routed_trip_ids, %{}, fn through_routed_trip_id, result ->
-        original_id = String.replace(through_routed_trip_id, ~r/_\d+$/, "")
-        through_routed_trip_ids = Map.get(result, original_id, [])
-        new_through_routed_trip_ids = [through_routed_trip_id | through_routed_trip_ids]
-        Map.put(result, original_id, new_through_routed_trip_ids)
-      end)
+      gtfs_trip_ids
+      |> Enum.filter(&Regex.match?(@through_routed_suffix_regex, &1))
+      |> Enum.group_by(&String.replace(&1, @through_routed_suffix_regex, ""))
 
-    trips
-    |> Enum.flat_map(fn trip ->
+    Enum.flat_map(trips, fn trip ->
       through_routed_trip_ids = Map.get(original_id_to_through_routed_trip_ids, trip.trip_id)
 
       if through_routed_trip_ids do
-        Enum.map(through_routed_trip_ids, &%__MODULE__{trip | trip_id: &1})
+        through_routed_trip_ids
+        |> Enum.sort_by(fn trip_id ->
+          try do
+            [[suffix]] =
+              Regex.scan(@through_routed_suffix_regex, trip_id, capture: :all_but_first)
+
+            String.to_integer(suffix)
+          rescue
+            _ -> 0
+          end
+        end)
+        # Since these trips are split up in GTFS, start and end place from HASTUS are not
+        # necessarily accurate. Origin and destination should be derived from stop times
+        # instead. See Schedule.Trip.merge/3
+        |> Enum.map(&%__MODULE__{trip | trip_id: &1, start_place: nil, end_place: nil})
       else
         [trip]
       end

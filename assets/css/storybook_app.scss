@@ -1,0 +1,11 @@
+// .storybook/stretchParameterDecorator.ts
+.sb-skate-fill-preview-canvas {
+  width: 100%;
+  height: 100%;
+
+  .sbdocs-preview & {
+    // https://github.com/storybookjs/storybook/issues/2264#issuecomment-975669474
+    // 600x400
+    height: 400px;
+  }
+}

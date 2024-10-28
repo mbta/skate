@@ -1,27 +1,34 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import Ladder from "../../src/components/ladder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
 import { emptyVehiclesByPosition } from "../../src/models/vehiclesByPosition"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   BlockWaiver,
   Ghost,
-  Vehicle,
-  VehicleOrGhost,
-} from "../../src/realtime.d"
+  VehicleInScheduledService,
+} from "../../src/realtime"
 import { Timepoint } from "../../src/schedule.d"
-import { initialState, selectVehicle } from "../../src/state"
+import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: () => ({}),
 }))
+
+jest.mock("../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+})
 
 describe("ladder", () => {
   test("renders a ladder", () => {
@@ -30,7 +37,7 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
+    const vehicles: VehicleInScheduledService[] = [
       vehicleFactory.build({
         id: "upward",
         label: "upward",
@@ -40,13 +47,10 @@ describe("ladder", () => {
         blockId: "block-1",
         directionId: 0,
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         viaVariant: null,
         operatorId: "op1",
         operatorFirstName: "PATTI",
         operatorLastName: "SMITH",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         stopStatus: {
           stopId: "stop",
           stopName: "stop",
@@ -70,13 +74,10 @@ describe("ladder", () => {
         blockId: "block-1",
         directionId: 1,
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         viaVariant: null,
         operatorId: "op2",
         operatorFirstName: "NORA",
         operatorLastName: "JONES",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         stopStatus: {
           stopId: "stop",
           stopName: "stop",
@@ -112,13 +113,10 @@ describe("ladder", () => {
         blockId: "block-1",
         directionId: 1,
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         viaVariant: null,
         operatorId: "op3",
         operatorFirstName: "SHENGMMO",
         operatorLastName: "XI",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         stopStatus: {
           stopId: "stop",
           stopName: "stop",
@@ -195,8 +193,8 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
-      {
+    const vehicles: VehicleInScheduledService[] = [
+      vehicleFactory.build({
         id: "downward",
         label: "downward",
         runId: "run-2",
@@ -214,11 +212,8 @@ describe("ladder", () => {
         operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
         bearing: 33,
         blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
@@ -250,7 +245,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.OneToZero
     const tree = renderer
@@ -273,8 +268,8 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
-      {
+    const vehicles: VehicleInScheduledService[] = [
+      vehicleFactory.build({
         id: "upward",
         label: "upward",
         runId: "run-1",
@@ -292,11 +287,8 @@ describe("ladder", () => {
         operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
         bearing: 33,
         blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
@@ -316,8 +308,8 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
-      {
+      }),
+      vehicleFactory.build({
         id: "downward",
         label: "downward",
         runId: "run-2",
@@ -335,11 +327,8 @@ describe("ladder", () => {
         operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
         bearing: 33,
         blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
@@ -371,7 +360,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -424,71 +413,69 @@ describe("ladder", () => {
         },
       ],
     })
-    const vehicleWithOldBlockWaiver: Vehicle = {
-      id: "id",
-      label: "label",
-      runId: "run",
-      timestamp: 0,
-      latitude: 0,
-      longitude: 0,
-      directionId: 1,
-      routeId: "route",
-      tripId: "trip",
-      headsign: null,
-      viaVariant: null,
-      operatorId: "op",
-      operatorFirstName: "NORA",
-      operatorLastName: "JONES",
-      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-      bearing: 33,
-      blockId: "block",
-      headwaySecs: null,
-      headwaySpacing: null,
-      previousVehicleId: "",
-      scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
-      isShuttle: false,
-      isOverload: false,
-      isOffCourse: false,
-      isRevenue: true,
-      layoverDepartureTime: null,
-      dataDiscrepancies: [],
-      stopStatus: {
-        stopId: "stop",
-        stopName: "stop",
-      },
-      timepointStatus: {
-        fractionUntilTimepoint: 0.75,
-        timepointId: "t2",
-      },
-      scheduledLocation: {
+    const vehicleWithOldBlockWaiver: VehicleInScheduledService =
+      vehicleFactory.build({
+        id: "id",
+        label: "label",
+        runId: "run",
+        timestamp: 0,
+        latitude: 0,
+        longitude: 0,
+        directionId: 1,
         routeId: "route",
-        directionId: 0,
-        tripId: "scheduled trip",
-        runId: "scheduled run",
-        timeSinceTripStartTime: 0,
-        headsign: "scheduled headsign",
-        viaVariant: "scheduled via variant",
+        tripId: "trip",
+        headsign: null,
+        viaVariant: null,
+        operatorId: "op",
+        operatorFirstName: "NORA",
+        operatorLastName: "JONES",
+        operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+        bearing: 33,
+        blockId: "block",
+        previousVehicleId: "",
+        scheduleAdherenceSecs: 0,
+        isShuttle: false,
+        isOverload: false,
+        isOffCourse: false,
+        isRevenue: true,
+        layoverDepartureTime: null,
+        dataDiscrepancies: [],
+        stopStatus: {
+          stopId: "stop",
+          stopName: "stop",
+        },
         timepointStatus: {
-          timepointId: "t2",
           fractionUntilTimepoint: 0.75,
+          timepointId: "t2",
         },
-      },
-      routeStatus: "on_route",
-      endOfTripType: "another_trip",
-      blockWaivers: [
-        {
-          startTime: new Date("2019-12-31T22:00:00.000Z"),
-          endTime: new Date("2019-12-31T23:00:00.000Z"),
-          causeId: 0,
-          causeDescription: "Block Waiver",
-          remark: null,
+        scheduledLocation: {
+          routeId: "route",
+          directionId: 0,
+          tripId: "scheduled trip",
+          runId: "scheduled run",
+          timeSinceTripStartTime: 0,
+          headsign: "scheduled headsign",
+          viaVariant: "scheduled via variant",
+          timepointStatus: {
+            timepointId: "t2",
+            fractionUntilTimepoint: 0.75,
+          },
         },
-      ],
-      crowding: null,
-    }
+        routeStatus: "on_route",
+        endOfTripType: "another_trip",
+        blockWaivers: [
+          {
+            startTime: new Date("2019-12-31T22:00:00.000Z"),
+            endTime: new Date("2019-12-31T23:00:00.000Z"),
+            causeId: 0,
+            causeDescription: "Block Waiver",
+            remark: null,
+          },
+        ],
+        crowding: null,
+      })
 
-    const vehicleWithCurrentBlockWaiver: Vehicle = {
+    const vehicleWithCurrentBlockWaiver: VehicleInScheduledService = {
       ...vehicleWithOldBlockWaiver,
       id: "otherVehicle",
       blockWaivers: [
@@ -502,7 +489,7 @@ describe("ladder", () => {
       ],
     }
 
-    const vehiclesAndGhosts: VehicleOrGhost[] = [
+    const vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] = [
       ghostWithBlockWaiver,
       vehicleWithOldBlockWaiver,
       vehicleWithCurrentBlockWaiver,
@@ -525,15 +512,15 @@ describe("ladder", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a vehicle selects that vehicle", () => {
-    const mockDispatch = jest.fn()
+  test("clicking a vehicle selects that vehicle", async () => {
+    const mockedUsePanelState = mockUsePanelState()
 
     const timepoints: Timepoint[] = [
       { id: "t0", name: "t0 name" },
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "upward",
       label: "upward",
       runId: "run-1",
@@ -551,11 +538,8 @@ describe("ladder", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -575,12 +559,12 @@ describe("ladder", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const ladderDirection = LadderDirection.ZeroToOne
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <Ladder
           timepoints={timepoints}
           vehiclesByPosition={{
@@ -592,13 +576,15 @@ describe("ladder", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-ladder__vehicle").simulate("click")
+    await userEvent.click(result.getByText("1"))
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
   })
 
-  test("clicking an incoming ghost selects the associated vehicle", () => {
-    const mockDispatch = jest.fn()
+  test("clicking an incoming ghost selects the associated vehicle", async () => {
+    const mockedUsePanelState = mockUsePanelState()
 
     const timepoints: Timepoint[] = [
       { id: "t0", name: "t0 name" },
@@ -612,8 +598,8 @@ describe("ladder", () => {
 
     const ladderDirection = LadderDirection.ZeroToOne
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <Ladder
           timepoints={timepoints}
           vehiclesByPosition={{
@@ -625,20 +611,25 @@ describe("ladder", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-ladder__vehicle").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(incomingGhost))
+    await userEvent.click(
+      result.getByText("N/A", { selector: ".c-vehicle-icon__label" })
+    )
+
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(incomingGhost)
   })
 
-  test("clicking a crowding icon selects the associated vehicle", () => {
-    const mockDispatch = jest.fn()
+  test("clicking a crowding icon selects the associated vehicle", async () => {
+    const mockedUsePanelState = mockUsePanelState()
 
     const timepoints: Timepoint[] = [
       { id: "t0", name: "t0 name" },
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "upward",
       label: "upward",
       runId: "run-1",
@@ -656,11 +647,8 @@ describe("ladder", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -685,12 +673,12 @@ describe("ladder", () => {
         capacity: 18,
         occupancyPercentage: 0,
       },
-    }
+    })
 
     const ladderDirection = LadderDirection.ZeroToOne
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <Ladder
           timepoints={timepoints}
           vehiclesByPosition={{
@@ -703,15 +691,17 @@ describe("ladder", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-ladder__vehicle").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    await userEvent.click(result.getByText("0/18"))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
   })
 
   test("renders a ladder with no timepoints", () => {
     const timepoints: Timepoint[] = []
-    const vehicles: Vehicle[] = [
-      {
+    const vehicles: VehicleInScheduledService[] = [
+      vehicleFactory.build({
         id: "upward",
         label: "upward",
         runId: "run-1",
@@ -729,11 +719,8 @@ describe("ladder", () => {
         operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
         bearing: 33,
         blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
@@ -753,7 +740,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -777,8 +764,8 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
-      {
+    const vehicles: VehicleInScheduledService[] = [
+      vehicleFactory.build({
         id: "upward",
         label: "upward",
         runId: "run-1",
@@ -796,11 +783,8 @@ describe("ladder", () => {
         operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
         bearing: 33,
         blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
@@ -832,7 +816,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.OneToZero
 
@@ -851,7 +835,7 @@ describe("ladder", () => {
   })
 
   test("renders an off-course vehicle", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "y1439",
       label: "1439",
       runId: "run-1",
@@ -869,11 +853,8 @@ describe("ladder", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 0,
       blockId: "T71-17",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: true,
@@ -916,7 +897,7 @@ describe("ladder", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const timepoints: Timepoint[] = [
       { id: "t0", name: "t0 name" },
@@ -948,8 +929,8 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
-      {
+    const vehicles: VehicleInScheduledService[] = [
+      vehicleFactory.build({
         id: "upward",
         label: "upward",
         runId: "run-1",
@@ -967,11 +948,8 @@ describe("ladder", () => {
         operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
         bearing: 33,
         blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         isShuttle: false,
         isOverload: true,
         isOffCourse: false,
@@ -991,7 +969,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -1015,8 +993,8 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
-      {
+    const vehicles: VehicleInScheduledService[] = [
+      vehicleFactory.build({
         id: "laying-over",
         label: "laying-over",
         runId: "laying-over",
@@ -1034,11 +1012,8 @@ describe("ladder", () => {
         operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
         bearing: 33,
         blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         isShuttle: false,
         isOverload: true,
         isOffCourse: false,
@@ -1058,7 +1033,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 
@@ -1085,8 +1060,8 @@ describe("ladder", () => {
       { id: "t1", name: "t1 name" },
       { id: "t2", name: "t2 name" },
     ]
-    const vehicles: Vehicle[] = [
-      {
+    const vehicles: VehicleInScheduledService[] = [
+      vehicleFactory.build({
         id: "laying-over",
         label: "laying-over",
         runId: "laying-over",
@@ -1104,11 +1079,8 @@ describe("ladder", () => {
         operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
         bearing: 33,
         blockId: "block-1",
-        headwaySecs: 859.1,
-        headwaySpacing: HeadwaySpacing.Ok,
         previousVehicleId: "v2",
         scheduleAdherenceSecs: 0,
-        scheduledHeadwaySecs: 120,
         isShuttle: false,
         isOverload: false,
         isOffCourse: false,
@@ -1140,7 +1112,7 @@ describe("ladder", () => {
         endOfTripType: "another_trip",
         blockWaivers: [],
         crowding: null,
-      },
+      }),
     ]
     const ladderDirection = LadderDirection.ZeroToOne
 

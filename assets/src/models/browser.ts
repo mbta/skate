@@ -1,3 +1,3 @@
-export const reload = (forceGet: boolean = false) => {
-  window.location.reload(forceGet)
+export const reload = () => {
+  window.location.reload()
 }

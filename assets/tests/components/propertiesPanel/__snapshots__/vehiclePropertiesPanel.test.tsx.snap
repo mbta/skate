@@ -2,31 +2,60 @@
 
 exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -35,7 +64,7 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -44,12 +73,13 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -61,28 +91,36 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
+        />
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          
-        </div>
-        <div
-          className="m-route-variant-name"
-        >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           Forest Hills
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            Forest Hills
+          </output>
+        </output>
         <div
-          className="m-properties-panel__schedule-adherence on-time early-red"
+          className="c-properties-panel__schedule-adherence on-time early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -96,179 +134,185 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             on time
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (0 min early)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="c-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-properties-list"
+      className="c-vehicle-properties-panel__notes"
+    />
+    <div
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -277,371 +321,54 @@ exports[`VehiclePropertiesPanel renders a vehicle properties panel 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          rel="noreferrer"
           target="_blank"
         >
-          Directions
-        </a>
-      </div>
-      <div
-        className="m-vehicle-properties-panel__next-stop"
-      >
-        <div
-          className="m-vehicle-properties-panel__label"
-        >
-          Next Stop
-        </div>
-        <div
-          className="m-vehicle-properties-panel__value"
-        >
-          Stop Name
-        </div>
-      </div>
-      <div
-        className="m-vehicle-properties-panel__map"
-      >
-        <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
-        />
-        <div
-          className="m-vehicle-map"
-          id="id-vehicle-map"
-        />
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
-<div
-  className="m-vehicle-properties-panel"
->
-  <div
-    className="m-properties-panel__header-wrapper"
-  >
-    <div
-      className="m-properties-panel__header"
-    >
-      <div
-        className="m-properties-panel__label"
-      >
-        <svg
-          style={
-            Object {
-              "height": 64,
-              "width": 64,
-            }
-          }
-          viewBox="-32 -20 64 64"
-        >
-          <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
-          >
-            <rect
-              className="m-vehicle-icon__label-background"
-              height={24}
-              rx={12}
-              ry={12}
-              width={64}
-              x={-32}
-              y={19}
-            />
-            <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-              dominantBaseline="central"
-              textAnchor="middle"
-              x="0"
-              y={31}
-            >
-              1
-            </text>
-            <path
-              className="m-vehicle-icon__triangle"
-              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
-              transform="scale(1) rotate(0) translate(-24,-22)"
-            />
-            <text
-              className="m-vehicle-icon__variant"
-              dominantBaseline="alphabetic"
-              textAnchor="middle"
-              x={0}
-              y={14}
-            >
-              X
-            </text>
-          </g>
-        </svg>
-      </div>
-      <div
-        className="m-properties-panel__variant"
-      >
-        <div
-          className="m-properties-panel__inbound-outbound"
-        >
-          
-        </div>
-        <div
-          className="m-route-variant-name"
-        >
           <span
-            className="m-route-variant-name__route-id"
-          >
-            39_X
-          </span>
-           Forest Hills
-        </div>
-        <div
-          className="m-properties-panel__schedule-adherence on-time early-red"
-        >
-          <div
-            className="m-properties-panel__schedule-adherence-status-icon"
-          >
-            <svg
-              height="10"
-              width="10"
-            >
-              <circle
-                cx="5"
-                cy="5"
-                r="5"
-              />
-            </svg>
-          </div>
-          <div
-            className="m-properties-panel__schedule-adherence-status-string"
-          >
-            on time
-          </div>
-          <div
-            className="m-properties-panel__schedule-adherence-label"
-          >
-            (0 min early)
-          </div>
-        </div>
-      </div>
-      <div
-        className="m-properties-panel__close-ping"
-      >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
             dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
+              {
+                "__html": "<svg/>",
               }
             }
           />
-        </button>
-        <div
-          className="m-properties-panel__last-gps-ping"
-        >
-          111s ago
-        </div>
-      </div>
-    </div>
-    <ul
-      className="m-tabs__tab-list"
-    >
-      <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
-      </li>
-      <li
-        className="m-tabs__tab"
-        onClick={[Function]}
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
-      </li>
-      <li
-        className="m-tabs__tab"
-        onClick={[Function]}
-      >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
-        >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
-      </li>
-    </ul>
-  </div>
-  <div
-    className="m-tabs__tab-panel"
-  >
-    <div
-      className="m-properties-list"
-    >
-      <table
-        className="m-properties-list__table"
-      >
-        <tbody>
-          <tr
-            className="m-properties-list__property "
-          >
-            <td
-              className="m-properties-list__property-label"
-            >
-              Run
-            </td>
-            <td
-              className="m-properties-list__property-value"
-            >
-              run-1
-            </td>
-          </tr>
-          <tr
-            className="m-properties-list__property "
-          >
-            <td
-              className="m-properties-list__property-label"
-            >
-              Vehicle
-            </td>
-            <td
-              className="m-properties-list__property-value"
-            >
-              v1-label
-            </td>
-          </tr>
-          <tr
-            className="m-properties-list__property "
-          >
-            <td
-              className="m-properties-list__property-label"
-            >
-              Operator
-            </td>
-            <td
-              className="m-properties-list__property-value"
-            >
-              PATTI SMITH #op1
-            </td>
-          </tr>
-          <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
-          >
-            <td
-              className="m-properties-list__property-label"
-            >
-              Last Login
-            </td>
-            <td
-              className="m-properties-list__property-value"
-            >
-              4 hr 3 min; 1:38 PM
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div
-      className="m-vehicle-properties-panel__location"
-    >
-      <div
-        className="m-vehicle-properties-panel__latlng"
-      >
-        <div
-          className="m-vehicle-properties-panel__label"
-        >
-          Current Location
-        </div>
-        <a
-          className="m-vehicle-properties-panel__link"
-          href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
-          target="_blank"
-        >
-          Directions
+          Get directions to bus
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -652,31 +379,60 @@ exports[`VehiclePropertiesPanel renders for a headway-based vehicle 1`] = `
 
 exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large late early-red"
+            className="c-vehicle-icon c-vehicle-icon--large late early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -685,7 +441,7 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -694,12 +450,13 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -711,28 +468,36 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
+        />
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          
-        </div>
-        <div
-          className="m-route-variant-name"
-        >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           Forest Hills
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            Forest Hills
+          </output>
+        </output>
         <div
-          className="m-properties-panel__schedule-adherence late early-red"
+          className="c-properties-panel__schedule-adherence late early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -746,179 +511,185 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             late
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (6 min late)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="c-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-properties-list"
+      className="c-vehicle-properties-panel__notes"
+    />
+    <div
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -927,46 +698,54 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          rel="noreferrer"
           target="_blank"
         >
-          Directions
+          <span
+            dangerouslySetInnerHTML={
+              {
+                "__html": "<svg/>",
+              }
+            }
+          />
+          Get directions to bus
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -977,31 +756,60 @@ exports[`VehiclePropertiesPanel renders for a late vehicle 1`] = `
 
 exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 72,
             }
           }
           viewBox="-36 -20 72 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large"
+            className="c-vehicle-icon c-vehicle-icon--large"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1010,7 +818,7 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--extended"
+              className="c-vehicle-icon__label c-vehicle-icon__label--extended"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1019,12 +827,13 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
               v1-label
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1036,37 +845,23 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
-        >
-          
-        </div>
-        <div
-          className="m-route-variant-name"
+          className="c-properties-panel__inbound-outbound"
+        />
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
           Shuttle
-        </div>
+        </output>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="c-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
@@ -1074,64 +869,67 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     </div>
   </div>
   <div
-    className="m-properties-list"
+    className="c-vehicle-properties-panel__notes"
+  />
+  <div
+    className="c-properties-list"
   >
     <table
-      className="m-properties-list__table"
+      className="c-properties-list__table"
     >
       <tbody>
         <tr
-          className="m-properties-list__property "
+          className="c-properties-list__property "
         >
           <td
-            className="m-properties-list__property-label"
+            className="c-properties-list__property-label"
           >
             Run
           </td>
           <td
-            className="m-properties-list__property-value"
+            className="c-properties-list__property-value"
           >
             Special 999 555
           </td>
         </tr>
         <tr
-          className="m-properties-list__property "
+          className="c-properties-list__property "
         >
           <td
-            className="m-properties-list__property-label"
+            className="c-properties-list__property-label"
           >
             Vehicle
           </td>
           <td
-            className="m-properties-list__property-value"
+            className="c-properties-list__property-value"
           >
             v1-label
           </td>
         </tr>
         <tr
-          className="m-properties-list__property "
+          className="c-properties-list__property c-properties-list__property--operator fs-mask"
         >
           <td
-            className="m-properties-list__property-label"
+            className="c-properties-list__property-label"
           >
             Operator
           </td>
           <td
-            className="m-properties-list__property-value"
+            className="c-properties-list__property-value"
           >
             PATTI SMITH #op1
           </td>
         </tr>
         <tr
-          className="m-properties-list__property m-properties-list__property--last-login"
+          className="c-properties-list__property c-properties-list__property--last-login"
         >
           <td
-            className="m-properties-list__property-label"
+            className="c-properties-list__property-label"
           >
             Last Login
           </td>
           <td
-            className="m-properties-list__property-value"
+            className="c-properties-list__property-value"
           >
             4 hr 3 min; 1:38 PM
           </td>
@@ -1140,50 +938,58 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
     </table>
   </div>
   <div
-    className="m-vehicle-properties-panel__location"
+    className="c-vehicle-properties-panel__location"
   >
     <div
-      className="m-vehicle-properties-panel__latlng"
+      className="c-vehicle-properties-panel__latlng"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="c-vehicle-properties-panel__label"
       >
         Current Location
       </div>
       <a
-        className="m-vehicle-properties-panel__link"
+        className="c-directions-button button-small"
         href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+        rel="noreferrer"
         target="_blank"
       >
-        Directions
+        <span
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+        />
+        Get directions to bus
       </a>
     </div>
     <div
-      className="m-vehicle-properties-panel__next-stop"
+      className="c-vehicle-properties-panel__next-stop"
     >
       <div
-        className="m-vehicle-properties-panel__label"
+        className="c-vehicle-properties-panel__label"
       >
         Next Stop
       </div>
       <div
-        className="m-vehicle-properties-panel__value"
+        className="c-vehicle-properties-panel__value"
       >
         <span
-          className="m-vehicle-properties-panel__not-available"
+          className="c-vehicle-properties-panel__not-available"
         >
           Not available
         </span>
       </div>
     </div>
     <div
-      className="m-vehicle-properties-panel__map"
+      className="c-vehicle-properties-panel__map"
     >
       <div
-        className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+        className="c-vehicle-map-state"
       />
       <div
-        className="m-vehicle-map"
+        className="c-vehicle-map"
         id="id-vehicle-map"
       />
     </div>
@@ -1193,31 +999,60 @@ exports[`VehiclePropertiesPanel renders for a shuttle 1`] = `
 
 exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1226,7 +1061,7 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1235,12 +1070,13 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1252,28 +1088,36 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
+        />
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          
-        </div>
-        <div
-          className="m-route-variant-name"
-        >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           Forest Hills
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            Forest Hills
+          </output>
+        </output>
         <div
-          className="m-properties-panel__schedule-adherence on-time early-red"
+          className="c-properties-panel__schedule-adherence on-time early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -1287,274 +1131,282 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             on time
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (0 min early)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="c-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-block-waiver-list"
+      className="c-vehicle-properties-panel__notes"
     >
       <div
-        className="m-block-waiver-banner m-block-waiver-banner--past"
+        className="c-block-waiver-list"
       >
         <div
-          className="m-block-waiver-banner__header"
+          aria-labelledby="card-label-:r7:"
+          className="c-card c-card--kiwi c-block-waiver-banner c-block-waiver-banner--past c-card--no-focus-or-hover c-card--inactive"
         >
-          <span
-            className="m-block-waiver-banner__alert-icon"
-          >
-            <svg
-              className="c-icon-alert-circle"
-              viewBox="-3 -3 54 54"
-            >
-              <g
-                className="c-icon-alert-circle--grey-on-grey"
-              >
-                <circle
-                  className="c-icon-alert-circle__outline"
-                  cx="24"
-                  cy="24"
-                  r="27"
-                />
-                <circle
-                  className="c-icon-alert-circle__fill"
-                  cx="24"
-                  cy="24"
-                  r="22.59"
-                />
-                <g
-                  className="c-icon-alert-circle__exclamation-point"
-                >
-                  <path
-                    d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                  />
-                  <path
-                    d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                  />
-                </g>
-              </g>
-            </svg>
-          </span>
           <div
-            className="m-block-waiver-banner__title"
+            className="c-card__left"
           >
-            Dispatcher Note - 
-            Past
+            <div
+              className="c-card__left-content"
+            >
+              <div
+                className="c-card__top-row"
+              >
+                <div
+                  className="c-card__title"
+                  id="card-label-:r7:"
+                >
+                  <h3
+                    className="c-block-waiver-banner__title"
+                  >
+                    Dispatcher Note
+                  </h3>
+                  <div
+                    className="c-block-waiver-banner__badge c-block-waiver-banner__badge--past"
+                  >
+                    Past
+                  </div>
+                </div>
+              </div>
+              <div
+                className="c-card__contents"
+              >
+                <div
+                  className="c-card__body"
+                >
+                  <div
+                    className="c-properties-list"
+                  >
+                    <table
+                      className="c-properties-list__table"
+                    >
+                      <tbody>
+                        <tr
+                          className="c-properties-list__property "
+                        >
+                          <td
+                            className="c-properties-list__property-label"
+                          >
+                            Reason
+                          </td>
+                          <td
+                            className="c-properties-list__property-value"
+                          >
+                            Block Waiver
+                          </td>
+                        </tr>
+                        <tr
+                          className="c-properties-list__property "
+                        >
+                          <td
+                            className="c-properties-list__property-label"
+                          >
+                            Start Time
+                          </td>
+                          <td
+                            className="c-properties-list__property-value"
+                          >
+                            5:05 AM
+                          </td>
+                        </tr>
+                        <tr
+                          className="c-properties-list__property "
+                        >
+                          <td
+                            className="c-properties-list__property-label"
+                          >
+                            End Time
+                          </td>
+                          <td
+                            className="c-properties-list__property-value"
+                          >
+                            12:38 PM
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <table
-          className="m-block-waiver-banner__details"
-        >
-          <tbody>
-            <tr>
-              <td
-                className="m-block-waiver-banner__detail-label"
-              >
-                Reason
-              </td>
-              <td
-                className="m-block-waiver-banner__detail-value"
-              >
-                Block Waiver
-              </td>
-            </tr>
-            <tr>
-              <td
-                className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--start-time"
-              >
-                Start Time
-              </td>
-              <td
-                className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
-              >
-                5:05 AM
-              </td>
-            </tr>
-            <tr>
-              <td
-                className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--end-time"
-              >
-                End Time
-              </td>
-              <td
-                className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
-              >
-                12:38 PM
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -1563,46 +1415,54 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          rel="noreferrer"
           target="_blank"
         >
-          Directions
+          <span
+            dangerouslySetInnerHTML={
+              {
+                "__html": "<svg/>",
+              }
+            }
+          />
+          Get directions to bus
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -1613,31 +1473,60 @@ exports[`VehiclePropertiesPanel renders for a vehicle with block waivers 1`] = `
 
 exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large early early-red"
+            className="c-vehicle-icon c-vehicle-icon--large early early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1646,7 +1535,7 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1655,12 +1544,13 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1672,28 +1562,36 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
+        />
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          
-        </div>
-        <div
-          className="m-route-variant-name"
-        >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           Forest Hills
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            Forest Hills
+          </output>
+        </output>
         <div
-          className="m-properties-panel__schedule-adherence early early-red"
+          className="c-properties-panel__schedule-adherence early early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -1707,179 +1605,185 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             early
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (2 min early)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="c-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-properties-list"
+      className="c-vehicle-properties-panel__notes"
+    />
+    <div
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -1888,46 +1792,54 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          rel="noreferrer"
           target="_blank"
         >
-          Directions
+          <span
+            dangerouslySetInnerHTML={
+              {
+                "__html": "<svg/>",
+              }
+            }
+          />
+          Get directions to bus
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -1938,31 +1850,60 @@ exports[`VehiclePropertiesPanel renders for an early vehicle 1`] = `
 
 exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large off-course early-red"
+            className="c-vehicle-icon c-vehicle-icon--large off-course early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -1971,7 +1912,7 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -1980,12 +1921,13 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -1997,28 +1939,36 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
+        />
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          
-        </div>
-        <div
-          className="m-route-variant-name"
-        >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           Forest Hills
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            Forest Hills
+          </output>
+        </output>
         <div
-          className="m-properties-panel__schedule-adherence off-course early-red"
+          className="c-properties-panel__schedule-adherence off-course early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -2032,189 +1982,218 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             Invalid
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
-          >
-            
-          </div>
+            className="c-properties-panel__schedule-adherence-label"
+          />
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="c-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-vehicle-properties-panel__invalid-banner"
-  >
-    <span
-      className="m-vehicle-properties-panel__invalid-banner-title"
-    >
-      Invalid
-    </span>
-    - We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
-  </div>
-  <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-properties-list"
+      className="c-vehicle-properties-panel__notes"
+    >
+      <div
+        aria-labelledby="card-label-:r4:"
+        className="c-card c-card--lemon c-vehicle-properties-panel__invalid-banner c-card--no-focus-or-hover c-card--inactive"
+      >
+        <div
+          className="c-card__left"
+        >
+          <div
+            className="c-card__left-content"
+          >
+            <div
+              className="c-card__top-row"
+            >
+              <div
+                className="c-card__title"
+                id="card-label-:r4:"
+              >
+                <h3>
+                  Invalid Bus
+                </h3>
+              </div>
+            </div>
+            <div
+              className="c-card__contents"
+            >
+              <div
+                className="c-card__body"
+              >
+                We cannot match this vehicle to a scheduled trip at this time. This vehicle may be off-route or severely off-schedule.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -2223,50 +2202,58 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          rel="noreferrer"
           target="_blank"
         >
-          Directions
+          <span
+            dangerouslySetInnerHTML={
+              {
+                "__html": "<svg/>",
+              }
+            }
+          />
+          Get directions to bus
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           <span
-            className="m-vehicle-properties-panel__not-available"
+            className="c-vehicle-properties-panel__not-available"
           >
             Not available
           </span>
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>
@@ -2277,31 +2264,60 @@ exports[`VehiclePropertiesPanel renders for an off-course vehicle 1`] = `
 
 exports[`VehiclePropertiesPanel renders with route data 1`] = `
 <div
-  className="m-vehicle-properties-panel"
+  className="c-vehicle-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--large on-time early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -2310,7 +2326,7 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -2319,12 +2335,13 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
               1
             </text>
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(1) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -2336,28 +2353,38 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         >
           Outbound
         </div>
-        <div
-          className="m-route-variant-name"
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           Forest Hills
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            Forest Hills
+          </output>
+        </output>
         <div
-          className="m-properties-panel__schedule-adherence on-time early-red"
+          className="c-properties-panel__schedule-adherence on-time early-red"
         >
           <div
-            className="m-properties-panel__schedule-adherence-status-icon"
+            className="c-properties-panel__schedule-adherence-status-icon"
           >
             <svg
               height="10"
@@ -2371,179 +2398,185 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
             </svg>
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-status-string"
+            className="c-properties-panel__schedule-adherence-status-string"
           >
             on time
           </div>
           <div
-            className="m-properties-panel__schedule-adherence-label"
+            className="c-properties-panel__schedule-adherence-label"
           >
             (0 min early)
           </div>
         </div>
       </div>
       <div
-        className="m-properties-panel__close-ping"
+        className="c-properties-panel__ping-container"
       >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
         <div
-          className="m-properties-panel__last-gps-ping"
+          className="c-properties-panel__last-gps-ping"
         >
           111s ago
         </div>
       </div>
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-properties-list"
+      className="c-vehicle-properties-panel__notes"
+    />
+    <div
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               run-1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Vehicle
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               v1-label
             </td>
           </tr>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property c-properties-list__property--operator fs-mask"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Operator
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               PATTI SMITH #op1
             </td>
           </tr>
           <tr
-            className="m-properties-list__property m-properties-list__property--last-login"
+            className="c-properties-list__property c-properties-list__property--last-login"
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Last Login
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               4 hr 3 min; 1:38 PM
             </td>
@@ -2552,46 +2585,54 @@ exports[`VehiclePropertiesPanel renders with route data 1`] = `
       </table>
     </div>
     <div
-      className="m-vehicle-properties-panel__location"
+      className="c-vehicle-properties-panel__location"
     >
       <div
-        className="m-vehicle-properties-panel__latlng"
+        className="c-vehicle-properties-panel__latlng"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Current Location
         </div>
         <a
-          className="m-vehicle-properties-panel__link"
+          className="c-directions-button button-small"
           href="https://www.google.com/maps/dir/?api=1&destination=0,0&travelmode=driving"
+          rel="noreferrer"
           target="_blank"
         >
-          Directions
+          <span
+            dangerouslySetInnerHTML={
+              {
+                "__html": "<svg/>",
+              }
+            }
+          />
+          Get directions to bus
         </a>
       </div>
       <div
-        className="m-vehicle-properties-panel__next-stop"
+        className="c-vehicle-properties-panel__next-stop"
       >
         <div
-          className="m-vehicle-properties-panel__label"
+          className="c-vehicle-properties-panel__label"
         >
           Next Stop
         </div>
         <div
-          className="m-vehicle-properties-panel__value"
+          className="c-vehicle-properties-panel__value"
         >
           Stop Name
         </div>
       </div>
       <div
-        className="m-vehicle-properties-panel__map"
+        className="c-vehicle-properties-panel__map"
       >
         <div
-          className="m-vehicle-map-state m-vehicle-map-state--auto-centering"
+          className="c-vehicle-map-state"
         />
         <div
-          className="m-vehicle-map"
+          className="c-vehicle-map"
           id="id-vehicle-map"
         />
       </div>

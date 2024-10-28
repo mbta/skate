@@ -2,8 +2,11 @@
 
 exports[`SettingsPage renders 1`] = `
 <div
-  className="c-page c-page--settings"
+  className="l-page c-settings-page "
 >
+  <div
+    className="c-notifications"
+  />
   <div
     className="c-page__container"
   >
@@ -16,101 +19,36 @@ exports[`SettingsPage renders 1`] = `
       className="c-page__section"
     >
       <h2
-        className="m-settings-page__section-header"
+        className="c-settings-page__section-header"
       >
         Vehicle Settings
       </h2>
       <div
-        className="m-settings-page__setting"
+        className="c-settings-page__setting"
       >
         <div
-          className="m-settings-page__setting_header"
+          className="c-settings-page__setting_header"
         >
           <div
-            className="m-settings-page__icon"
+            className="c-settings-page__setting-label"
           >
-            <span
-              className="m-settings-page__icon-path"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </div>
-          <div
-            className="m-settings-page__setting-label"
-          >
-            Vehicle labels on map
+            Vehicle labels on 
+            <strong>
+              regular
+            </strong>
+             buses
           </div>
         </div>
         <div
-          className="m-settings-page__options-container"
+          className="c-settings-page__options-container"
         >
           <label
-            className="m-settings-page__option-label-unselected"
-            data-option-id="shuttle-vehicle-label-run-number"
-          >
-            <input
-              checked={false}
-              className="m-settings-page__input"
-              name="shuttle-vehicle-label"
-              onChange={[Function]}
-              type="radio"
-              value={1}
-            />
-            Run number
-          </label>
-          <label
-            className="m-settings-page__option-label-selected"
-            data-option-id="shuttle-vehicle-label-vehicle-number"
+            className="c-settings-page__option-label-selected"
           >
             <input
               checked={true}
-              className="m-settings-page__input"
-              name="shuttle-vehicle-label"
-              onChange={[Function]}
-              type="radio"
-              value={2}
-            />
-            Vehicle number
-          </label>
-        </div>
-      </div>
-      <div
-        className="m-settings-page__setting"
-      >
-        <div
-          className="m-settings-page__setting_header"
-        >
-          <div
-            className="m-settings-page__icon"
-          >
-            <span
-              className="m-settings-page__icon-path"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </div>
-          <div
-            className="m-settings-page__setting-label"
-          >
-            Vehicle labels on route ladder
-          </div>
-        </div>
-        <div
-          className="m-settings-page__options-container"
-        >
-          <label
-            className="m-settings-page__option-label-selected"
-            data-option-id="ladder-vehicle-label-run-number"
-          >
-            <input
-              checked={true}
-              className="m-settings-page__input"
+              className="c-settings-page__input"
+              data-testid="ladder-vehicle-label-run-number"
               name="ladder-vehicle-label"
               onChange={[Function]}
               type="radio"
@@ -119,12 +57,12 @@ exports[`SettingsPage renders 1`] = `
             Run number
           </label>
           <label
-            className="m-settings-page__option-label-unselected"
-            data-option-id="ladder-vehicle-label-vehicle-number"
+            className="c-settings-page__option-label-unselected"
           >
             <input
               checked={false}
-              className="m-settings-page__input"
+              className="c-settings-page__input"
+              data-testid="ladder-vehicle-label-vehicle-number"
               name="ladder-vehicle-label"
               onChange={[Function]}
               type="radio"
@@ -135,39 +73,76 @@ exports[`SettingsPage renders 1`] = `
         </div>
       </div>
       <div
-        className="m-settings-page__setting"
+        className="c-settings-page__setting"
       >
         <div
-          className="m-settings-page__setting_header"
+          className="c-settings-page__setting_header"
         >
           <div
-            className="m-settings-page__icon"
+            className="c-settings-page__setting-label"
           >
-            <span
-              className="m-settings-page__icon-path"
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
+            Vehicle labels on 
+            <strong>
+              shuttle
+            </strong>
+             buses
           </div>
+        </div>
+        <div
+          className="c-settings-page__options-container"
+        >
+          <label
+            className="c-settings-page__option-label-unselected"
+          >
+            <input
+              checked={false}
+              className="c-settings-page__input"
+              data-testid="shuttle-vehicle-label-run-number"
+              name="shuttle-vehicle-label"
+              onChange={[Function]}
+              type="radio"
+              value={1}
+            />
+            Run number
+          </label>
+          <label
+            className="c-settings-page__option-label-selected"
+          >
+            <input
+              checked={true}
+              className="c-settings-page__input"
+              data-testid="shuttle-vehicle-label-vehicle-number"
+              name="shuttle-vehicle-label"
+              onChange={[Function]}
+              type="radio"
+              value={2}
+            />
+            Vehicle number
+          </label>
+        </div>
+      </div>
+      <div
+        className="c-settings-page__setting"
+      >
+        <div
+          className="c-settings-page__setting_header"
+        >
           <div
-            className="m-settings-page__setting-label"
+            className="c-settings-page__setting-label"
           >
             Adherence colors
           </div>
         </div>
         <div
-          className="m-settings-page__options-container"
+          className="c-settings-page__options-container"
         >
           <label
-            className="m-settings-page__option-label-selected"
-            data-option-id="vehicle-adherence-colors-early-red"
+            className="c-settings-page__option-label-selected"
           >
             <input
               checked={true}
-              className="m-settings-page__input"
+              className="c-settings-page__input"
+              data-testid="vehicle-adherence-colors-early-red"
               name="vehicle-adherence-colors"
               onChange={[Function]}
               type="radio"
@@ -175,34 +150,34 @@ exports[`SettingsPage renders 1`] = `
             />
             <div>
               <div
-                className="m-settings-page__vehicle-adherence-setting-row"
+                className="c-settings-page__vehicle-adherence-setting-row"
               >
                 Early bus: Red
                 <div
-                  className="m-settings-page__vehicle-adherence-icon"
+                  className="c-settings-page__vehicle-adherence-icon"
                 >
                   <span
                     className="red"
                     dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
+                      {
+                        "__html": "<svg/>",
                       }
                     }
                   />
                 </div>
               </div>
               <div
-                className="m-settings-page__vehicle-adherence-setting-row"
+                className="c-settings-page__vehicle-adherence-setting-row"
               >
                 Late bus: Blue
                 <div
-                  className="m-settings-page__vehicle-adherence-icon"
+                  className="c-settings-page__vehicle-adherence-icon"
                 >
                   <span
                     className="blue"
                     dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
+                      {
+                        "__html": "<svg/>",
                       }
                     }
                   />
@@ -211,12 +186,12 @@ exports[`SettingsPage renders 1`] = `
             </div>
           </label>
           <label
-            className="m-settings-page__option-label-unselected"
-            data-option-id="vehicle-adherence-colors-early-blue"
+            className="c-settings-page__option-label-unselected"
           >
             <input
               checked={false}
-              className="m-settings-page__input"
+              className="c-settings-page__input"
+              data-testid="vehicle-adherence-colors-early-blue"
               name="vehicle-adherence-colors"
               onChange={[Function]}
               type="radio"
@@ -224,34 +199,34 @@ exports[`SettingsPage renders 1`] = `
             />
             <div>
               <div
-                className="m-settings-page__vehicle-adherence-setting-row"
+                className="c-settings-page__vehicle-adherence-setting-row"
               >
                 Early bus: Blue
                 <div
-                  className="m-settings-page__vehicle-adherence-icon"
+                  className="c-settings-page__vehicle-adherence-icon"
                 >
                   <span
                     className="blue"
                     dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
+                      {
+                        "__html": "<svg/>",
                       }
                     }
                   />
                 </div>
               </div>
               <div
-                className="m-settings-page__vehicle-adherence-setting-row"
+                className="c-settings-page__vehicle-adherence-setting-row"
               >
                 Late bus: Red
                 <div
-                  className="m-settings-page__vehicle-adherence-icon"
+                  className="c-settings-page__vehicle-adherence-icon"
                 >
                   <span
                     className="red"
                     dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "SVG",
+                      {
+                        "__html": "<svg/>",
                       }
                     }
                   />

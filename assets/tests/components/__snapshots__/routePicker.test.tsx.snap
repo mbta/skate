@@ -1,137 +1,129 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RoutePicker renders a list of routes 1`] = `
+exports[`RoutePicker renders a list of routes and presets toggle 1`] = `
 <div
-  className="m-picker-container m-picker-container--narrow visible"
+  className="c-route-picker u-hideable"
 >
   <div
-    className="c-drawer-tab"
+    className="c-route-filter"
+  >
+    <div
+      className="c-route-filter__text"
+    >
+      <input
+        className="c-route-filter__input"
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Search routes"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    className="c-garage-filter"
   >
     <button
-      className="c-drawer-tab__tab-button"
+      className="c-garage-filter__show-hide-button"
       onClick={[Function]}
+      title="Toggle Garage Filter"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <div
+        className="c-garage-filter__header"
+      >
+        Filter garages
+      </div>
+      <div
+        className="c-garage-filter__show-hide-icon"
+      >
+        <span
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
           }
-        }
-      />
+        />
+      </div>
     </button>
   </div>
   <div
-    className="m-route-picker"
+    className="c-route-picker__routes-container"
   >
     <ul
-      className="m-route-picker__selected-routes"
+      className="c-route-picker__route-list"
     >
       <li>
         <button
-          className="m-route-picker__selected-routes-button"
+          className="c-route-picker__route-list-button"
           onClick={[Function]}
-        >
-          28
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__selected-routes-button"
-          onClick={[Function]}
-        >
-          39
-        </button>
-      </li>
-    </ul>
-    <div
-      className="m-route-filter"
-    >
-      <select
-        className="m-route-filter__type"
-        onChange={[Function]}
-        value="name"
-      >
-        <option
-          value="name"
-        >
-          Route ID
-        </option>
-      </select>
-      <div
-        className="m-route-filter__text"
-      >
-        <input
-          className="m-route-filter__input"
-          onChange={[Function]}
-          onKeyDown={[Function]}
-          type="text"
-          value=""
-        />
-        <button
-          className="m-route-filter__clear"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
-    </div>
-    <ul
-      className="m-route-picker__route-list"
-    >
-      <li>
-        <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-          onClick={[Function]}
-        >
-          28
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-          onClick={[Function]}
-        >
-          39
-        </button>
-      </li>
-      <li>
-        <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
-          onClick={[Function]}
+          tabIndex={-1}
         >
           71
         </button>
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="c-route-picker__route-list-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           73
         </button>
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="c-route-picker__route-list-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           111
         </button>
       </li>
       <li>
         <button
-          className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
+          className="c-route-picker__route-list-button"
           onClick={[Function]}
+          tabIndex={-1}
         >
           SL1
+        </button>
+      </li>
+    </ul>
+    <ul
+      className="c-route-picker__selected-routes"
+    >
+      <li>
+        <button
+          className="c-route-picker__selected-routes-button"
+          onClick={[Function]}
+          tabIndex={-1}
+        >
+          28
+          <span
+            className="c-route-picker__selected-routes-button-icon"
+            dangerouslySetInnerHTML={
+              {
+                "__html": "<svg/>",
+              }
+            }
+          />
+        </button>
+      </li>
+      <li>
+        <button
+          className="c-route-picker__selected-routes-button"
+          onClick={[Function]}
+          tabIndex={-1}
+        >
+          39
+          <span
+            className="c-route-picker__selected-routes-button-icon"
+            dangerouslySetInnerHTML={
+              {
+                "__html": "<svg/>",
+              }
+            }
+          />
         </button>
       </li>
     </ul>
@@ -141,71 +133,57 @@ exports[`RoutePicker renders a list of routes 1`] = `
 
 exports[`RoutePicker renders a loading/empty state 1`] = `
 <div
-  className="m-picker-container m-picker-container--narrow visible"
+  className="c-route-picker u-hideable"
 >
   <div
-    className="c-drawer-tab"
+    className="c-route-filter"
+  >
+    <div
+      className="c-route-filter__text"
+    >
+      <input
+        className="c-route-filter__input"
+        onChange={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Search routes"
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    className="c-garage-filter"
   >
     <button
-      className="c-drawer-tab__tab-button"
+      className="c-garage-filter__show-hide-button"
       onClick={[Function]}
+      title="Toggle Garage Filter"
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
+      <div
+        className="c-garage-filter__header"
+      >
+        Filter garages
+      </div>
+      <div
+        className="c-garage-filter__show-hide-icon"
+      >
+        <span
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
           }
-        }
-      />
+        />
+      </div>
     </button>
   </div>
   <div
-    className="m-route-picker"
+    className="c-route-picker__routes-container"
   >
-    <ul
-      className="m-route-picker__selected-routes"
-    />
-    <div
-      className="m-route-filter"
-    >
-      <select
-        className="m-route-filter__type"
-        onChange={[Function]}
-        value="name"
-      >
-        <option
-          value="name"
-        >
-          Route ID
-        </option>
-      </select>
-      <div
-        className="m-route-filter__text"
-      >
-        <input
-          className="m-route-filter__input"
-          onChange={[Function]}
-          onKeyDown={[Function]}
-          type="text"
-          value=""
-        />
-        <button
-          className="m-route-filter__clear"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
-    </div>
     loading...
+    <p>
+      Selected routes will show up here…
+    </p>
   </div>
 </div>
 `;

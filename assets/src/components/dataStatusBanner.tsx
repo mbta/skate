@@ -15,11 +15,11 @@ const DataStatusBanner = (): JSX.Element | null => {
 }
 
 const Outage = () => (
-  <div className="m-data-status-banner m-data-status-banner--outage">
-    <div className="m-data-status-banner__heading">
+  <div className="c-data-status-banner c-data-status-banner--outage">
+    <div className="c-data-status-banner__heading">
       Ongoing MBTA Data Outage
     </div>
-    <div className="m-data-status-banner__content">
+    <div className="c-data-status-banner__content">
       Vehicle information may be missing or inaccurate. Thank you for your
       patience as we work to fix this issue.
     </div>

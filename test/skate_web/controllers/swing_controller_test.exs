@@ -1,10 +1,8 @@
 defmodule SkateWeb.SwingsControllerTest do
   use SkateWeb.ConnCase
-  use Skate.DataCase
   import Test.Support.Helpers
 
   alias Schedule.Swing
-  alias Skate.Settings.RouteSettings
 
   @swings [
     %Swing{
@@ -15,33 +13,42 @@ defmodule SkateWeb.SwingsControllerTest do
       to_route_id: "2",
       to_trip_id: "5678",
       time: 100
+    },
+    %Swing{
+      from_run_id: "124-123",
+      from_route_id: "3",
+      from_trip_id: "1235",
+      to_run_id: "124-789",
+      to_route_id: "3",
+      to_trip_id: "5679",
+      time: 100
     }
   ]
 
   describe "GET /api/swings" do
-    setup %{user: username} do
-      if username, do: RouteSettings.get_or_create(username)
-      reassign_env(:skate_web, :swings_fn, fn _route_id, _start_time, _end_time -> @swings end)
+    setup do
+      reassign_env(:skate_web, :swings_fn, fn route_id, _start_time, _end_time ->
+        Enum.filter(@swings, fn swing ->
+          swing.from_route_id == route_id or swing.to_route_id == route_id
+        end)
+      end)
     end
 
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       conn =
         conn
         |> api_headers()
         |> get("/api/swings")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated
-    test "when logged in, returns all swings for selected routes", %{conn: conn} do
+    test "when logged in, returns swings for routes given in argument", %{conn: conn} do
       conn =
         conn
         |> api_headers()
-        |> put("/api/route_settings", %{
-          "selectedRouteIds" => ["1", "2"]
-        })
-        |> get("/api/swings")
+        |> get("/api/swings?route_ids=1,2")
 
       assert %{
                "data" => [

@@ -1,7 +1,11 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect } from "@jest/globals"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import renderer from "react-test-renderer"
-import BlockWaiverBanner from "../../../src/components/propertiesPanel/blockWaiverBanner"
+import BlockWaiverBanner, {
+  NoWaiverBanner,
+} from "../../../src/components/propertiesPanel/blockWaiverBanner"
 import { BlockWaiver } from "../../../src/realtime"
 import * as dateTime from "../../../src/util/dateTime"
 
@@ -63,11 +67,9 @@ describe("BlockWaiverBanner", () => {
       causeDescription: "E - Diverted",
       remark: "1106",
     }
-    const wrapper = mount(<BlockWaiverBanner blockWaiver={blockWaiver} />)
+    const result = render(<BlockWaiverBanner blockWaiver={blockWaiver} />)
 
-    expect(
-      wrapper.find(".m-block-waiver-banner__detail-value").first().text()
-    ).toEqual("E - Diverted 1106")
+    expect(result.queryByText("E - Diverted 1106")).toBeVisible()
   })
 
   test("includes just the cause description if remark is null", () => {
@@ -78,11 +80,9 @@ describe("BlockWaiverBanner", () => {
       causeDescription: "D - Disabled Bus",
       remark: null,
     }
-    const wrapper = mount(<BlockWaiverBanner blockWaiver={blockWaiver} />)
+    const result = render(<BlockWaiverBanner blockWaiver={blockWaiver} />)
 
-    expect(
-      wrapper.find(".m-block-waiver-banner__detail-value").first().text()
-    ).toEqual("D - Disabled Bus")
+    expect(result.queryByText("D - Disabled Bus")).toBeVisible()
   })
 
   test("deduplicates the description if it's included in the remark", () => {
@@ -93,10 +93,17 @@ describe("BlockWaiverBanner", () => {
       causeDescription: "D - Disabled Bus",
       remark: "D - Disabled Bus:",
     }
-    const wrapper = mount(<BlockWaiverBanner blockWaiver={blockWaiver} />)
+    const result = render(<BlockWaiverBanner blockWaiver={blockWaiver} />)
 
+    expect(result.queryAllByText(/D - Disabled Bus/)).toHaveLength(1)
+  })
+})
+
+describe("NoWaiverBanner", () => {
+  test("renders unknown ghost bus", () => {
+    render(<NoWaiverBanner />)
     expect(
-      wrapper.find(".m-block-waiver-banner__detail-value").first().text()
-    ).toEqual("D - Disabled Bus")
+      screen.getByRole("heading", { name: "Unknown Ghost Bus" })
+    ).toBeVisible()
   })
 })

@@ -1,12 +1,15 @@
 defmodule SkateWeb.UserSocket do
+  require Logger
   use Phoenix.Socket
 
   ## Channels
   channel("data_status", SkateWeb.DataStatusChannel)
   channel("vehicle:*", SkateWeb.VehicleChannel)
   channel("vehicles:*", SkateWeb.VehiclesChannel)
+  channel("vehicles_search:*", SkateWeb.VehiclesSearchChannel)
   channel("train_vehicles:*", SkateWeb.TrainVehiclesChannel)
   channel("notifications", SkateWeb.NotificationsChannel)
+  channel("alerts:*", SkateWeb.AlertsChannel)
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -20,9 +23,26 @@ defmodule SkateWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(%{"token" => token}, socket, _connect_info) do
+    unverified_user_id =
+      with %{claims: claims} <- SkateWeb.AuthManager.peek(token),
+           {:ok, %{id: id}} <- SkateWeb.AuthManager.resource_from_claims(claims) do
+        id
+      else
+        _ -> nil
+      end
+
     case Guardian.Phoenix.Socket.authenticate(socket, SkateWeb.AuthManager, token) do
-      {:ok, authed_socket} -> {:ok, authed_socket}
-      {:error, _reason} -> :error
+      {:ok, authed_socket} ->
+        Logger.info("socket_authenticated user_id=#{unverified_user_id}")
+
+        {:ok, authed_socket}
+
+      {:error, _reason} ->
+        if !is_nil(unverified_user_id) do
+          Logger.info("socket_auth_rejected user_id=#{unverified_user_id}")
+        end
+
+        :error
     end
   end
 

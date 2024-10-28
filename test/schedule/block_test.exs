@@ -13,7 +13,8 @@ defmodule Schedule.BlockTest do
     schedule_id: "schedule",
     route_id: nil,
     start_time: 1,
-    end_time: 3
+    end_time: 3,
+    start_place: "garage"
   }
 
   @trip1 %Trip{
@@ -59,7 +60,8 @@ defmodule Schedule.BlockTest do
     schedule_id: "schedule",
     route_id: nil,
     start_time: 17,
-    end_time: 19
+    end_time: 19,
+    end_place: "garage"
   }
 
   @piece build(:piece,
@@ -133,33 +135,33 @@ defmodule Schedule.BlockTest do
     end
   end
 
-  describe "is_active" do
+  describe "active?" do
     test "a block that starts before the range and ends after is active" do
-      assert Block.is_active(@block, 2, 18)
+      assert Block.active?(@block, 2, 18)
     end
 
     test "a block that starts before the range and ends during is active" do
-      assert Block.is_active(@block, 2, 20)
+      assert Block.active?(@block, 2, 20)
     end
 
     test "a block that starts during the range and ends after is active" do
-      assert Block.is_active(@block, 0, 18)
+      assert Block.active?(@block, 0, 18)
     end
 
     test "a block that's laying over is active" do
-      assert Block.is_active(@block, 8, 12)
+      assert Block.active?(@block, 8, 12)
     end
 
     test "a block is active if the start and end times are the same" do
-      assert Block.is_active(@block, 6, 6)
+      assert Block.active?(@block, 6, 6)
     end
 
     test "a block totally before the range is inactive" do
-      refute Block.is_active(@block, 20, 21)
+      refute Block.active?(@block, 20, 21)
     end
 
     test "a block totally after the range is inactive" do
-      refute Block.is_active(@block, 0, 0)
+      refute Block.active?(@block, 0, 0)
     end
   end
 
@@ -183,6 +185,24 @@ defmodule Schedule.BlockTest do
 
     test "returns the last trip if pulling back" do
       assert %Trip{id: "t2"} = Block.trip_at_time(@block, 18)
+    end
+  end
+
+  describe "pull_back_place_id/1" do
+    test "handles nil" do
+      assert nil |> Block.pull_back_place_id() |> is_nil()
+    end
+
+    test "returns end place of last trip" do
+      assert Block.pull_back_place_id(@block) == "garage"
+    end
+
+    test "handles empty pieces list" do
+      assert %{@block | pieces: []} |> Block.pull_back_place_id() |> is_nil()
+    end
+
+    test "handles piece without trips" do
+      assert %{@block | pieces: [%{@piece | trips: []}]} |> Block.pull_back_place_id() |> is_nil()
     end
   end
 

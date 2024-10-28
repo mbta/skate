@@ -1,8 +1,9 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { describe, test, expect } from "@jest/globals"
+import { renderHook } from "@testing-library/react"
 import useVehicleForBlockIds from "../../src/hooks/useVehiclesForBlockIds"
 import { vehicleFromData } from "../../src/models/vehicleData"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
-import vehicleDataFactory from "../factories/vehicle_data"
+import { vehicleDataFactory } from "../factories/vehicle_data"
 
 describe("useVehiclesForBlockIds", () => {
   test("returns data", () => {
@@ -11,7 +12,6 @@ describe("useVehiclesForBlockIds", () => {
     const mockChannel = makeMockChannel("ok", { data: [vehicleData] })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    // tslint:disable: react-hooks-nesting
     const { result } = renderHook(() => {
       return useVehicleForBlockIds(mockSocket, ["S12-34"])
     })

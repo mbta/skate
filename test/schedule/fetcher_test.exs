@@ -26,9 +26,7 @@ defmodule Schedule.FetcherTest do
       set_log_level(:info)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -40,7 +38,8 @@ defmodule Schedule.FetcherTest do
         capture_log(
           [level: :info],
           fn ->
-            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"}} =
+            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"},
+                    :hibernate} =
                      Schedule.Fetcher.do_poll(
                        %{
                          poll_interval_ms: 50,
@@ -57,6 +56,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
+      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
     end
 
@@ -99,8 +99,8 @@ defmodule Schedule.FetcherTest do
       set_log_level(:info)
 
       # Mismatch in number of columns per line to trigger CSV parse error
-      {:ok, {'file.zip', zip_binary}} =
-        :zip.zip('file.zip', [{'calendar.txt', "column_1,column_2\n1,2,3"}], [:memory])
+      {:ok, {~c"file.zip", zip_binary}} =
+        :zip.zip(~c"file.zip", [{~c"calendar.txt", "column_1,column_2\n1,2,3"}], [:memory])
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -188,9 +188,7 @@ defmodule Schedule.FetcherTest do
       set_log_level(:info)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -202,7 +200,8 @@ defmodule Schedule.FetcherTest do
         capture_log(
           [level: :info],
           fn ->
-            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"}} =
+            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"},
+                    :hibernate} =
                      Schedule.Fetcher.do_poll(
                        %{
                          poll_interval_ms: 50,
@@ -219,6 +218,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
+      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
       assert log =~ "Saving gtfs cache"
     end
@@ -235,9 +235,7 @@ defmodule Schedule.FetcherTest do
       set_log_level(:info)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -249,7 +247,8 @@ defmodule Schedule.FetcherTest do
         capture_log(
           [level: :info],
           fn ->
-            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"}} =
+            assert {:noreply, %{latest_gtfs_timestamp: "foo", latest_hastus_timestamp: "foo"},
+                    :hibernate} =
                      Schedule.Fetcher.handle_info(
                        :check_gtfs,
                        %{
@@ -266,6 +265,7 @@ defmodule Schedule.FetcherTest do
           end
         )
 
+      assert log =~ ~r/Sent updated schedule data to receiving process, time_in_ms=\d+/
       assert log =~ "Successfully loaded schedule data"
     end
   end
@@ -298,9 +298,7 @@ defmodule Schedule.FetcherTest do
       reassign_env(:skate, :hastus_url, hastus_url)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         conn
@@ -319,9 +317,7 @@ defmodule Schedule.FetcherTest do
       reassign_env(:skate, :hastus_url, hastus_url)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         request_url = Plug.Conn.request_url(conn)
@@ -350,9 +346,7 @@ defmodule Schedule.FetcherTest do
       reassign_env(:skate, :hastus_url, hastus_url)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         request_url = Plug.Conn.request_url(conn)
@@ -411,9 +405,7 @@ defmodule Schedule.FetcherTest do
       reassign_env(:skate, :hastus_url, hastus_url)
 
       # empty zip file
-      zip_binary =
-        "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA=="
-        |> Base.decode64!()
+      zip_binary = Base.decode64!("UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==")
 
       Bypass.expect(bypass, fn conn ->
         request_url = Plug.Conn.request_url(conn)
@@ -446,8 +438,9 @@ defmodule Schedule.FetcherTest do
       url = "http://localhost:#{bypass.port}/test.zip"
 
       zip_binary =
-        "UEsDBAoAAAAAAHJrSU+DFtyMAQAAAAEAAAABABwAZlVUCQADhxieXasYnl11eAsAAQT1AQAABBQAAAB4UEsBAh4DCgAAAAAAcmtJT4MW3IwBAAAAAQAAAAEAGAAAAAAAAQAAAKSBAAAAAGZVVAUAA4cYnl11eAsAAQT1AQAABBQAAABQSwUGAAAAAAEAAQBHAAAAPAAAAAAA"
-        |> Base.decode64!()
+        Base.decode64!(
+          "UEsDBAoAAAAAAHJrSU+DFtyMAQAAAAEAAAABABwAZlVUCQADhxieXasYnl11eAsAAQT1AQAABBQAAAB4UEsBAh4DCgAAAAAAcmtJT4MW3IwBAAAAAQAAAAEAGAAAAAAAAQAAAKSBAAAAAGZVVAUAA4cYnl11eAsAAQT1AQAABBQAAABQSwUGAAAAAAEAAQBHAAAAPAAAAAAA"
+        )
 
       Bypass.expect(bypass, fn conn ->
         conn

@@ -1,22 +1,28 @@
 import React, {
   createContext,
   Dispatch,
-  ReactElement,
+  ReactNode,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from "react"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useInterval from "../hooks/useInterval"
-import { useNotifications } from "../hooks/useNotifications"
 import useNotificationsReducer, {
   Action,
-  addNotification,
   expireNotifications,
-  setNotifications,
   State as ReducerState,
 } from "../hooks/useNotificationsReducer"
-import { NotificationId, NotificationState } from "../realtime.d"
+import useSocket from "../hooks/useSocket"
+import useVehicleForNotification from "../hooks/useVehicleForNotification"
+import {
+  isBlockWaiverNotification,
+  NotificationId,
+  NotificationState,
+} from "../realtime"
+import { selectVehicleFromNotification } from "../state/pagePanelState"
+import { StateDispatchContext } from "./stateDispatchContext"
 
 export const otherNotificationReadState = (state: NotificationState) => {
   if (state === "unread") {
@@ -30,8 +36,6 @@ export const otherNotificationReadState = (state: NotificationState) => {
 
 export interface State extends ReducerState {
   dispatch: (action: Action) => void
-  rememberScrollPosition: (scrollPosition: number) => void
-  scrollPosition: number
   notificationWithOpenSubmenuId: NotificationId | null
   setNotificationWithOpenSubmenuId: Dispatch<
     SetStateAction<NotificationId | null>
@@ -40,44 +44,54 @@ export interface State extends ReducerState {
 
 // Don't worry about covering the no-ops below
 /* istanbul ignore next */
-// tslint:disable: no-empty
 export const NotificationsContext = createContext<State>({
   notifications: [],
   showLatestNotification: false,
+
   dispatch: () => {},
-  rememberScrollPosition: () => {},
-  scrollPosition: 0,
   notificationWithOpenSubmenuId: null,
+
   setNotificationWithOpenSubmenuId: () => {},
 })
-// tslint:enable: no-empty
 
 export const NotificationsProvider = ({
   children,
 }: {
-  children: ReactElement<HTMLElement>
+  children: ReactNode
 }) => {
-  const [state, dispatch] = useNotificationsReducer()
-  const { notifications, showLatestNotification } = state
-  const [scrollPosition, setScrollPosition] = useState<number>(0)
+  const [{ selectedNotification }, stateDispatch] =
+    useContext(StateDispatchContext)
+
   const now = useCurrentTime()
 
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
-  /* istanbul ignore next */
-  useNotifications(
-    (notification) => {
-      dispatch(addNotification(notification))
-    },
-    (notificationsData) => {
-      dispatch(setNotifications(notificationsData, isInitialLoad))
-    }
+
+  const [state, dispatch] = useNotificationsReducer(
+    isInitialLoad,
+    setIsInitialLoad
   )
-  useEffect(() => setIsInitialLoad(false))
+  const { notifications, showLatestNotification } = state
 
   useInterval(() => dispatch(expireNotifications(now)), 10000)
 
   const [notificationWithOpenSubmenuId, setNotificationWithOpenSubmenuId] =
     useState<NotificationId | null>(null)
+
+  const { socket } = useSocket()
+  const vehicleForNotification = useVehicleForNotification(
+    selectedNotification && isBlockWaiverNotification(selectedNotification)
+      ? selectedNotification
+      : undefined,
+    socket
+  )
+
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    if (selectedNotification) {
+      stateDispatch(selectVehicleFromNotification(vehicleForNotification))
+    }
+  }, [selectedNotification, vehicleForNotification])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return (
     <NotificationsContext.Provider
@@ -85,8 +99,6 @@ export const NotificationsProvider = ({
         notifications,
         showLatestNotification,
         dispatch,
-        rememberScrollPosition: setScrollPosition,
-        scrollPosition,
         notificationWithOpenSubmenuId,
         setNotificationWithOpenSubmenuId,
       }}

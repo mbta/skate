@@ -1,0 +1,61 @@
+.c-route-pill {
+  min-width: 2.875rem;
+  height: 1.5rem;
+
+  border-radius: 0.8125rem;
+
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 700;
+  font-family: $font-family-route-pill;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  &--large-format {
+    min-width: 4.5rem;
+    height: 2.25rem;
+    border-radius: 1.875rem;
+    font-size: $h3-font-size;
+    font-weight: 600;
+  }
+
+  &--dynamic-size {
+    min-width: unset;
+    padding: 0 1.5rem;
+    margin: 0 0.5rem;
+  }
+}
+
+.c-route-pill--bus {
+  color: $black;
+  background-color: $color-mbta-bus;
+}
+
+.c-route-pill--silver {
+  color: $white;
+  background-color: $color-mbta-silver;
+}
+
+.c-route-pill--red {
+  color: $white;
+  background-color: $color-mbta-red;
+}
+
+.c-route-pill--green {
+  color: $white;
+  background-color: $color-mbta-green;
+}
+
+.c-route-pill--orange {
+  color: $white;
+  background-color: $color-mbta-orange;
+}
+
+.c-route-pill--blue {
+  color: $white;
+  background-color: $color-mbta-blue;
+}

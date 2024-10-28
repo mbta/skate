@@ -21,7 +21,10 @@ defmodule Skate.Repo.Migrations.CreateUserSettings do
     )
 
     create table(:user_settings, primary_key: false) do
-      add(:user_id, references(:users, on_delete: :delete_all, on_update: :update_all), primary_key: true)
+      add(:user_id, references(:users, on_delete: :delete_all, on_update: :update_all),
+        primary_key: true
+      )
+
       add(:ladder_page_vehicle_label, :vehicle_label)
       add(:shuttle_page_vehicle_label, :vehicle_label)
       timestamps()

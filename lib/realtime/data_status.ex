@@ -1,4 +1,6 @@
 defmodule Realtime.DataStatus do
+  @moduledoc false
+
   alias Realtime.Vehicle
   require Logger
 
@@ -25,11 +27,7 @@ defmodule Realtime.DataStatus do
       vehicles_to_consider |> Enum.filter(&vehicle_is_good_swiftly(&1, now)) |> Enum.count()
 
     Logger.info(
-      "data_status_calculation total_vehicles=#{total_count} considered_vehicles=#{
-        considered_count
-      } good_vehicles=#{good_count} good_busloc_vehicles=#{good_busloc_count} good_swiftly_vehicles=#{
-        good_swiftly_count
-      } bad_vehicles=#{bad_count}"
+      "data_status_calculation total_vehicles=#{total_count} considered_vehicles=#{considered_count} good_vehicles=#{good_count} good_busloc_vehicles=#{good_busloc_count} good_swiftly_vehicles=#{good_swiftly_count} bad_vehicles=#{bad_count}"
     )
 
     if considered_count >= 20 and bad_count / considered_count >= 0.20 do

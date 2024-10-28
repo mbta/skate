@@ -18,14 +18,22 @@ defmodule SkateWeb.ChannelCase do
   using do
     quote do
       # Import conveniences for testing with channels
-      use Phoenix.ChannelTest
+      import Plug.Conn
+      import Phoenix.ChannelTest
 
       # The default endpoint for testing
       @endpoint SkateWeb.Endpoint
     end
   end
 
-  setup _tags do
+  setup tags do
+    alias Ecto.Adapters.SQL.Sandbox
+    :ok = Sandbox.checkout(Skate.Repo)
+
+    unless tags[:async] do
+      Sandbox.mode(Skate.Repo, {:shared, self()})
+    end
+
     :ok
   end
 end

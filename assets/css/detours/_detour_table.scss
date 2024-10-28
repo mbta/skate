@@ -1,0 +1,81 @@
+@use "../color/tokens_2024" as tokens;
+
+$table-border: 1px solid tokens.$gray-400;
+$table-border-radius: 0.5rem;
+
+.c-detours-table {
+  border-spacing: 0;
+
+  thead {
+    text-align: left;
+    font-weight: 600;
+  }
+
+  th {
+    background-color: tokens.$gray-50;
+    color: tokens.$gray-700;
+
+    white-space: nowrap;
+  }
+
+  td {
+    color: tokens.$gray-900;
+  }
+
+  th,
+  td {
+    border-bottom: $table-border;
+  }
+
+  tr {
+    th:first-child,
+    td:first-child {
+      @include media-breakpoint-up(md) {
+        border-left: $table-border;
+      }
+    }
+
+    th:last-child,
+    td:last-child {
+      border-right: $table-border;
+    }
+  }
+
+  tr:first-child {
+    th {
+      border-top: $table-border;
+    }
+
+    th:first-child {
+      border-top-left-radius: $table-border-radius;
+    }
+    th:last-child {
+      border-top-right-radius: $table-border-radius;
+    }
+  }
+
+  tr:last-child {
+    td:first-child {
+      border-bottom-left-radius: $table-border-radius;
+    }
+    td:last-child {
+      border-bottom-right-radius: $table-border-radius;
+    }
+
+    @include media-breakpoint-down(md) {
+      td {
+        border-bottom: none;
+      }
+    }
+  }
+}
+
+.c-detours-table__route-info-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.c-detours-table__route-info-direction {
+  color: tokens.$gray-600;
+}

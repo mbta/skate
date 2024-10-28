@@ -1,0 +1,66 @@
+$stop-card-popup-box-border: 1px solid $color-gray-500;
+$stop-card-popup-box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.16),
+  0px 16px 24px rgba(176, 181, 192, 0.24);
+
+.c-stop-card .leaflet-popup-content-wrapper {
+  width: 295px;
+
+  padding: 16px;
+
+  box-shadow: $stop-card-popup-box-shadow;
+  border: $stop-card-popup-box-border;
+
+  .leaflet-popup-content {
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.c-stop-card .leaflet-popup-tip-container {
+  left: calc(50% + 125px);
+
+  .leaflet-popup-tip {
+    box-shadow: $stop-card-popup-box-shadow;
+    border: $stop-card-popup-box-border;
+  }
+}
+
+.c-stop-card__stop-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-gray-900;
+}
+
+.c-stop-card__direction {
+  color: $color-gray-700;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.c-stop-card__routes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding: 8px;
+
+  background-color: $color-gray-50;
+  border: 1px solid $color-gray-300;
+  border-radius: 4px;
+}
+
+.c-stop-card__routes-label {
+  color: $color-gray-700;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.c-stop-card__routes-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}

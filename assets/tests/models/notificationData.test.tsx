@@ -1,4 +1,9 @@
-import { Notification } from "../../src/realtime"
+import { describe, test, expect } from "@jest/globals"
+import {
+  isBlockWaiverNotification,
+  Notification,
+  NotificationType,
+} from "../../src/realtime"
 import {
   NotificationData,
   notificationFromData,
@@ -8,20 +13,27 @@ describe("notificationFromData", () => {
   test("handles a null endTime", () => {
     const data: NotificationData = {
       id: "1",
-      created_at: 0,
-      reason: "manpower",
-      route_ids: [],
-      run_ids: [],
-      trip_ids: [],
-      operator_name: null,
-      operator_id: null,
-      route_id_at_creation: null,
-      start_time: 1234,
-      end_time: null,
+      created_at: new Date(0),
       state: "unread",
+      content: {
+        __struct__: NotificationType.BlockWaiver,
+        created_at: new Date(0),
+        reason: "manpower",
+        route_ids: [],
+        run_ids: [],
+        trip_ids: [],
+        operator_name: null,
+        operator_id: null,
+        route_id_at_creation: null,
+        start_time: new Date(1234),
+        end_time: null,
+      },
     }
 
     const notification: Notification = notificationFromData(data)
-    expect(notification.endTime).toEqual(null)
+
+    expect(
+      isBlockWaiverNotification(notification) && notification.content.endTime
+    ).toEqual(null)
   })
 })

@@ -1,89 +1,124 @@
-import { act as hooksAct, renderHook } from "@testing-library/react-hooks"
-import { mount } from "enzyme"
-import React, { useContext } from "react"
-import { act as testUtilsAct } from "react-dom/test-utils"
+import { jest, describe, test, expect } from "@jest/globals"
+import { act, renderHook } from "@testing-library/react"
+import React, { ReactNode, useContext } from "react"
 import {
   NotificationsContext,
   NotificationsProvider,
   otherNotificationReadState,
 } from "../../src/contexts/notificationsContext"
+import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useCurrentTime from "../../src/hooks/useCurrentTime"
+import { Notification } from "../../src/realtime"
+import { initialState } from "../../src/state"
+import { vehicleFactory } from "../factories/vehicle"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { useNotifications } from "../../src/hooks/useNotifications"
-import { Notification, NotificationState } from "../../src/realtime.d"
+import { fullStoryEvent } from "../../src/helpers/fullStory"
+import { selectVehicleFromNotification } from "../../src/state/pagePanelState"
+import {
+  blockWaiverNotificationFactory,
+  bridgeRaisedNotificationFactory,
+} from "../factories/notification"
 
 jest.mock("../../src/hooks/useCurrentTime", () => ({
   __esModule: true,
   default: jest.fn(() => new Date(0)),
 }))
 
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
+
+const vehicle = vehicleFactory.build()
+
+jest.mock("../../src/hooks/useVehicleForNotification", () => ({
+  __esModule: true,
+  default: jest.fn(() => vehicle),
+}))
 jest.mock("../../src/hooks/useNotifications", () => ({
   __esModule: true,
   useNotifications: jest.fn(),
 }))
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: () => true,
-}))
+jest.mock("../../src/helpers/fullStory")
 
-const notification: Notification = {
-  id: "0",
+const notification: Notification = blockWaiverNotificationFactory.build({
   createdAt: new Date(0),
-  reason: "manpower",
-  routeIds: ["route1", "route2"],
-  runIds: ["run1", "run2"],
-  tripIds: [],
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
-  startTime: new Date(0),
-  endTime: new Date(100),
-  state: "unread" as NotificationState,
-}
+  content: {
+    reason: "manpower",
+    routeIds: ["route1", "route2"],
+    runIds: ["run1", "run2"],
+    tripIds: [],
+    startTime: new Date(0),
+    endTime: new Date(100),
+  },
+})
 
-// tslint:disable: react-hooks-nesting
-
-describe("Notification", () => {
+describe("NotificationsProvider", () => {
   test("starts empty", () => {
     const { result } = renderHook(() => useContext(NotificationsContext), {
       wrapper: NotificationsProvider,
     })
-    expect(result.current.notifications).toEqual([])
+    expect(result.current.notifications).toBeNull()
   })
 
-  test("receives incoming notifications", () => {
-    let handler: (notification: Notification) => void
-    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
-      handler = h
-    })
-    const { result } = renderHook(() => useContext(NotificationsContext), {
-      wrapper: NotificationsProvider,
-    })
+  test("receives incoming notifications and logs a tag manager event", () => {
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
+      type: "initial",
+      payload: [],
+    }))
+
+    const { result, rerender } = renderHook(
+      () => useContext(NotificationsContext),
+      {
+        wrapper: NotificationsProvider,
+      }
+    )
     expect(result.current.notifications).toHaveLength(0)
-    hooksAct(() => {
-      handler!(notification)
-    })
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
+      type: "new",
+      payload: notification,
+    }))
+
+    rerender()
+
     expect(result.current.notifications).toHaveLength(1)
+    expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
+    expect(mockedFSEvent).toHaveBeenCalledWith(
+      "User was Delivered a Notification",
+      {}
+    )
   })
 
-  test("makes a fullstory event when a notification arrives", () => {
-    let handler: (notification: Notification) => void
-    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
-      handler = h
-    })
-    mount(<NotificationsProvider children={<></>} />)
-    const originalFS = window.FS
-    const originalUsername = window.username
-    window.FS = { event: jest.fn(), identify: jest.fn() }
-    window.username = "username"
-    testUtilsAct(() => {
-      handler!(notification)
-    })
-    expect(window.FS!.event).toHaveBeenCalledWith("Notification delivered", {
-      num_stacked_int: 1,
-    })
-    window.FS = originalFS
-    window.username = originalUsername
+  test("when receiving a bridge notification, should trigger FS event", () => {
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
+      type: "initial",
+      payload: [],
+    }))
+
+    const { result, rerender } = renderHook(
+      () => useContext(NotificationsContext),
+      {
+        wrapper: NotificationsProvider,
+      }
+    )
+    expect(result.current.notifications).toHaveLength(0)
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
+      type: "new",
+      payload: bridgeRaisedNotificationFactory.build(),
+    }))
+
+    rerender()
+
+    expect(result.current.notifications).toHaveLength(1)
+    expect(tagManagerEvent).toHaveBeenCalledWith("notification_delivered")
+    expect(mockedFSEvent).toHaveBeenCalledWith(
+      "User was Delivered a Chelsea Bridge Notification",
+      {}
+    )
   })
 
   test("expires notifications after 8 hours", () => {
@@ -91,32 +126,54 @@ describe("Notification", () => {
 
     jest.useFakeTimers()
 
-    let handler: (notification: Notification) => void
-    ;(useNotifications as jest.Mock).mockImplementationOnce((h) => {
-      handler = h
-    })
     const { result } = renderHook(() => useContext(NotificationsContext), {
       wrapper: NotificationsProvider,
     })
-    ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
+    jest.mocked(useCurrentTime).mockImplementationOnce(() => {
       return new Date(0)
     })
-    hooksAct(() => {
-      handler!(notification)
-    })
-    hooksAct(() => {
+    jest.mocked(useNotifications).mockImplementationOnce(() => ({
+      type: "new",
+      payload: notification,
+    }))
+
+    act(() => {
       jest.runOnlyPendingTimers()
       // This seems like it should work if we put the mock outside the
-      // hooksAct block, but it doesn't.
-      ;(useCurrentTime as jest.Mock).mockImplementationOnce(() => {
+      // act block, but it doesn't.
+      jest.mocked(useCurrentTime).mockImplementationOnce(() => {
         return new Date(maxAge)
       })
     })
     expect(result.current.notifications).toHaveLength(1)
-    hooksAct(() => {
+    act(() => {
       jest.runOnlyPendingTimers()
     })
     expect(result.current.notifications).toHaveLength(0)
+  })
+
+  test("selects vehicle from notification", () => {
+    const stateDispatch = jest.fn()
+
+    let state = initialState
+    const wrapper = ({ children }: { children?: ReactNode }) => (
+      <StateDispatchProvider state={state} dispatch={stateDispatch}>
+        <NotificationsProvider>
+          <> {children} </>
+        </NotificationsProvider>
+      </StateDispatchProvider>
+    )
+
+    const { rerender } = renderHook(() => useContext(NotificationsContext), {
+      wrapper,
+    })
+
+    state = { ...initialState, selectedNotification: notification }
+    rerender()
+
+    expect(stateDispatch).toHaveBeenCalledWith(
+      selectVehicleFromNotification(vehicle)
+    )
   })
 })
 

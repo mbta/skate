@@ -1,0 +1,46 @@
+.l-nav--wide {
+  display: grid;
+  gap: 0;
+  grid-template-columns: max-content minmax(0, 1fr);
+  grid-template-rows: max-content minmax(0, 1fr);
+  grid-template-areas:
+    "top top"
+    "left content";
+  width: 100%;
+  height: 100%;
+}
+
+.l-nav--narrow {
+  display: grid;
+  gap: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: max-content minmax(0, 1fr) max-content;
+  grid-template-areas:
+    "top"
+    "content"
+    "bottom";
+  width: 100%;
+  height: 100%;
+}
+
+.l-nav__nav-bar {
+  z-index: map-get($z-page-layout-context, "navbar");
+}
+
+.l-nav__nav-bar--left {
+  grid-area: left;
+}
+
+.l-nav__nav-bar--top {
+  grid-area: top;
+}
+
+.l-nav__nav-bar--bottom {
+  grid-area: bottom;
+  z-index: 1099;
+}
+
+.l-nav__app-content {
+  grid-area: content;
+  position: relative;
+}

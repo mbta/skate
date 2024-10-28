@@ -57,13 +57,14 @@ interface TripData {
   run_id: RunId | null
   start_time: Time
   end_time: Time
-  start_place: string
-  end_place: string
+  start_place: string | null
+  end_place: string | null
 }
 
 const isBreakData = (
   activityData: BreakData | PieceData
-): activityData is BreakData => activityData.hasOwnProperty("break_type")
+): activityData is BreakData =>
+  Object.prototype.hasOwnProperty.call(activityData, "break_type")
 
 export const runFromData = (runData: RunData): Run => ({
   id: runData.id,
@@ -116,8 +117,8 @@ const tripFromData = (tripData: TripData): Trip => ({
   runId: tripData.run_id,
   startTime: tripData.start_time,
   endTime: tripData.end_time,
-  startPlace: tripData.start_place,
-  endPlace: tripData.end_place,
+  startPlace: tripData.start_place || "",
+  endPlace: tripData.end_place || "",
 })
 
 const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({
@@ -127,4 +128,4 @@ const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({
 })
 
 const isTripData = (data: TripData | AsDirectedData): data is TripData =>
-  data.hasOwnProperty("id")
+  Object.prototype.hasOwnProperty.call(data, "id")

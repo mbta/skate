@@ -1,4 +1,6 @@
 defmodule Realtime.Crowding do
+  @moduledoc false
+
   @type t :: %__MODULE__{
           load: non_neg_integer() | nil,
           capacity: non_neg_integer() | nil,

@@ -2,36 +2,26 @@ const path = require("path")
 const glob = require("glob")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const TerserPlugin = require("terser-webpack-plugin")
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
-const SentryCliPlugin = require('@sentry/webpack-plugin');
 
 module.exports = (env, options) => {
-  const uploadSourceMapToSentry = options.mode === "production";
-
-  const basePlugins = [
+  const plugins = [
     new MiniCssExtractPlugin({ filename: "../css/app.css" }),
-    new CopyWebpackPlugin({ patterns: [{ from: "static/", to: "../" }] })
+    new CopyWebpackPlugin({ patterns: [{ from: "static/", to: "../" }] }),
   ]
-  const plugins = uploadSourceMapToSentry ? 
-    [
-      ...basePlugins, 
-      new SentryCliPlugin({
-        include: '../priv/static/js'
-      })
-    ] : basePlugins
 
-  const useMinimization = options.mode === "production";
+  const useMinimization = options.mode === "production"
 
-  return({
+  return {
     optimization: {
       minimize: useMinimization,
       minimizer: [
-        new TerserPlugin({ parallel: true, sourceMap: true }),
-        new OptimizeCSSAssetsPlugin({}),
+        new TerserPlugin({ parallel: true }),
+        new CssMinimizerPlugin(),
       ],
     },
-    devtool: 'source-map',
+    devtool: "source-map",
     entry: {
       "./js/app.tsx": ["./src/app.tsx"].concat(glob.sync("./vendor/**/*.js")),
     },
@@ -64,19 +54,40 @@ module.exports = (env, options) => {
         },
         {
           test: /\.svg$/,
+          type: "asset/source",
           use: [
-            { loader: "svg-inline-loader" },
             {
               loader: "svgo-loader",
               options: {
-                externalConfig: "svgo.yml",
+                plugins: [
+                  {
+                    name: "preset-default",
+                    params: {
+                      overrides: {
+                        // viewBox is required to resize SVGs with CSS.
+                        // @see https://github.com/svg/svgo/issues/1128
+                        removeViewBox: false,
+                      },
+                    },
+                  },
+                  {
+                    name: "removeTitle",
+                    active: true,
+                  },
+                  {
+                    name: "removeAttrs",
+                    params: {
+                      attrs: ["id"],
+                    },
+                  },
+                ],
               },
             },
           ],
         },
         {
           test: /\.png$/,
-          use: [{ loader: "file-loader" }],
+          type: "asset/resource",
         },
       ],
     },
@@ -84,7 +95,6 @@ module.exports = (env, options) => {
       extensions: [".ts", ".tsx", ".js", ".jsx"],
       modules: ["deps", "node_modules"],
     },
-    plugins: plugins
-,
-  })
+    plugins: plugins,
+  }
 }

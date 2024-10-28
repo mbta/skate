@@ -1,9 +1,16 @@
-import { useEffect, useReducer, useState } from "react"
-import { putRouteSettings } from "../api"
+import { useEffect, useReducer, useRef } from "react"
+import { putRouteTabs } from "../api"
 import appData from "../appData"
 import { loadState, saveState } from "../localStorage"
-import { defaultRouteSettings, RouteSettings } from "../routeSettings"
-import { Dispatch, initialState, reducer, State } from "../state"
+import {
+  Dispatch,
+  initialState,
+  reducer,
+  State,
+  startingRouteTabsPush,
+  routeTabsPushComplete,
+  retryRouteTabsPushIfNotOutdated,
+} from "../state"
 import {
   defaultUserSettings,
   putLadderVehicleLabel,
@@ -12,16 +19,23 @@ import {
   UserSettings,
   userSettingsFromData,
 } from "../userSettings"
+import { RouteTab, parseRouteTabData, RouteTabData } from "../models/routeTab"
+import { array, assert } from "superstruct"
 
 const APP_STATE_KEY = "mbta-skate-state"
 
 type Key = string[]
 
 const LOCALLY_PERSISTED_KEYS: Key[] = [
+  ["openView"],
+  ["pickerContainerIsVisible"],
   ["selectedShuttleRouteIds"],
   ["selectedShuttleRunIds"],
   ["searchPageState", "savedQueries"],
+  ["showGaragesFilter"],
 ]
+
+const routeTabsPushRetries = 2
 
 const usePersistedStateReducer = (): [State, Dispatch] => {
   const [state, dispatch] = useReducer(reducer, undefined, init)
@@ -32,21 +46,39 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
     saveState(APP_STATE_KEY, locallyPersistableState)
   }, [locallyPersistableState])
 
-  const { selectedRouteIds, ladderDirections, ladderCrowdingToggles } = state
+  const { routeTabsToPush, routeTabsPushInProgress } = state
 
-  const [firstLoadDone, setFirstLoadDone] = useState(false)
+  const routeTabsPushRetriesLeft = useRef(routeTabsPushRetries)
 
   useEffect(() => {
-    if (firstLoadDone) {
-      putRouteSettings({
-        selectedRouteIds: state.selectedRouteIds,
-        ladderDirections: state.ladderDirections,
-        ladderCrowdingToggles: state.ladderCrowdingToggles,
-      })
-    } else {
-      setFirstLoadDone(true)
+    if (routeTabsToPush && !routeTabsPushInProgress) {
+      const currentTriesLeft = routeTabsPushRetriesLeft.current
+      dispatch(startingRouteTabsPush())
+      putRouteTabs(routeTabsToPush)
+        .then((response) => {
+          if (response.ok) {
+            routeTabsPushRetriesLeft.current = routeTabsPushRetries
+            dispatch(routeTabsPushComplete())
+          } else if (currentTriesLeft > 0) {
+            routeTabsPushRetriesLeft.current = currentTriesLeft - 1
+            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
+          } else {
+            routeTabsPushRetriesLeft.current = routeTabsPushRetries
+            dispatch(routeTabsPushComplete())
+          }
+        })
+        .catch(() => {
+          if (currentTriesLeft > 0) {
+            routeTabsPushRetriesLeft.current = currentTriesLeft - 1
+            dispatch(retryRouteTabsPushIfNotOutdated(routeTabsToPush))
+          } else {
+            routeTabsPushRetriesLeft.current = routeTabsPushRetries
+            dispatch(routeTabsPushComplete())
+          }
+        })
     }
-  }, [selectedRouteIds, ladderDirections, ladderCrowdingToggles])
+  }, [routeTabsToPush, routeTabsPushInProgress])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return [state, dispatch]
 }
@@ -54,9 +86,9 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
 const init = (): State => {
   const loadedState: object | undefined = loadState(APP_STATE_KEY)
   const userSettings = getUserSettings(loadedState)
-  const routeSettings = getRouteSettings(loadedState)
+  const routeTabs = getRouteTabs()
   const result = merge<State>(
-    { ...initialState, ...routeSettings, userSettings },
+    { ...initialState, routeTabs, userSettings },
     loadedState || {},
     LOCALLY_PERSISTED_KEYS
   )
@@ -65,7 +97,10 @@ const init = (): State => {
 
 const getUserSettings = (loadedState: object | undefined): UserSettings => {
   let userSettings: UserSettings
-  if (loadedState !== undefined && loadedState.hasOwnProperty("settings")) {
+  if (
+    loadedState !== undefined &&
+    Object.prototype.hasOwnProperty.call(loadedState, "settings")
+  ) {
     // migrating settings from localStorage to database
     const localStorageSettings: UserSettings = (
       loadedState as {
@@ -90,36 +125,19 @@ const getUserSettings = (loadedState: object | undefined): UserSettings => {
   return userSettings
 }
 
-const getRouteSettings = (loadedState: object | undefined): RouteSettings => {
-  let routeSettings: RouteSettings
-  if (
-    loadedState !== undefined &&
-    loadedState.hasOwnProperty("selectedRouteIds")
-  ) {
-    // migrating settings from localStorage to database
-    const localStorageData = loadedState as RouteSettings
-    routeSettings = {
-      selectedRouteIds: localStorageData.selectedRouteIds,
-      ladderDirections: localStorageData.ladderDirections,
-      ladderCrowdingToggles: localStorageData.ladderCrowdingToggles,
-    }
-    putRouteSettings(routeSettings)
-  } else {
-    const backendSettingsString: string | undefined = appData()?.routeSettings
-    if (backendSettingsString !== undefined) {
-      const { selected_route_ids, ladder_directions, ladder_crowding_toggles } =
-        JSON.parse(backendSettingsString)
-      routeSettings = {
-        selectedRouteIds: selected_route_ids,
-        ladderDirections: ladder_directions,
-        ladderCrowdingToggles: ladder_crowding_toggles,
-      }
-    } else {
-      routeSettings = defaultRouteSettings
-    }
+const getRouteTabs = (): RouteTab[] => {
+  let routeTabs: RouteTab[] = []
+
+  const backendSettingsString: string | undefined = appData()?.routeTabs
+  if (backendSettingsString !== undefined) {
+    const backendSettings = JSON.parse(backendSettingsString) as unknown
+
+    assert(backendSettings, array(RouteTabData))
+
+    routeTabs = parseRouteTabData(backendSettings)
   }
 
-  return routeSettings
+  return routeTabs
 }
 
 export const get = (obj: object, key: Key): any | undefined =>
@@ -137,7 +155,9 @@ export const insert = (base: object, key: Key, value: any): object => {
     return {
       ...base,
       [field]: insert(
-        base.hasOwnProperty(field) ? (base as any)[field] : {},
+        Object.prototype.hasOwnProperty.call(base, field)
+          ? (base as any)[field]
+          : {},
         key.slice(1),
         value
       ),

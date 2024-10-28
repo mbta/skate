@@ -1,16 +1,22 @@
 import { Socket } from "phoenix"
-import { useEffect, useState } from "react"
 import useVehiclesForRunIds from "./useVehiclesForRunIds"
-import { isVehicle } from "../models/vehicle"
-import { Notification, VehicleOrGhost } from "../realtime.d"
+import {
+  Notification,
+  VehicleInScheduledService,
+  Ghost,
+  BlockWaiverNotification,
+} from "../realtime"
+import { useEffect, useState } from "react"
+import { tagManagerEvent } from "../helpers/googleTagManager"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 const useVehicleForNotification = (
-  notification?: Notification,
+  notification?: Notification<BlockWaiverNotification>,
   socket?: Socket
-): VehicleOrGhost | undefined | null => {
+): VehicleInScheduledService | Ghost | undefined | null => {
   // undefined means we're still trying to load the vehicle,
   // null means we tried and failed
-  const runIds = notification?.runIds || []
+  const runIds = notification?.content.runIds || []
 
   const newVehiclesOrGhosts = useVehiclesForRunIds(socket, runIds, true)
   const newVehicleOrGhost = Array.isArray(newVehiclesOrGhosts)
@@ -20,26 +26,21 @@ const useVehicleForNotification = (
   const [clickthroughLogged, setClickthroughLogged] = useState<boolean>(false)
 
   useEffect(() => {
-    if (window.FS) {
-      if (!clickthroughLogged) {
-        if (newVehicleOrGhost) {
-          setClickthroughLogged(true)
-          if (isVehicle(newVehicleOrGhost)) {
-            window.FS.event("Notification linked to VPP")
-          } else {
-            window.FS.event("Notification linked to ghost")
-          }
-        } else if (notification && newVehicleOrGhost === null) {
-          setClickthroughLogged(true)
-          window.FS.event(
-            new Date() < notification.startTime
-              ? "Notification link failed upcoming"
-              : "Notification link failed"
-          )
-        }
+    if (!clickthroughLogged) {
+      if (newVehicleOrGhost) {
+        setClickthroughLogged(true)
+        fullStoryEvent("User clicked Notification and linked to VPP", {})
+        tagManagerEvent("notification_linked_to_vpp")
+      } else if (notification && newVehicleOrGhost === null) {
+        setClickthroughLogged(true)
+        tagManagerEvent("notification_linked_to_inactive_modal")
+        fullStoryEvent(
+          "User clicked Notification and linked to Inactive Modal",
+          {}
+        )
       }
     }
-  }, [newVehicleOrGhost, notification])
+  }, [clickthroughLogged, notification, newVehicleOrGhost])
 
   return newVehicleOrGhost
 }

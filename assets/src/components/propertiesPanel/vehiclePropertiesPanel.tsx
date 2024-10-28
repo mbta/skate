@@ -1,103 +1,116 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
-import { useNearestIntersection } from "../../hooks/useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
 import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
-import { isVehicle, shouldShowHeadwayDiagram } from "../../models/vehicle"
+import { isVehicleInScheduledService } from "../../models/vehicle"
 import {
   DataDiscrepancy,
-  Vehicle,
+  VehicleInScheduledService,
   VehicleId,
-  VehicleOrGhost,
+  Vehicle,
+  Ghost,
 } from "../../realtime"
 import { RouteId, Shape } from "../../schedule"
-import Map from "../map"
+import { isOk } from "../../util/fetchResult"
+import { Card, CardBody } from "../card"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
 import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
-import HeadwayDiagram from "./headwayDiagram"
-import TabPanels, { TabMode } from "./tabPanels"
+import MiniMap from "./miniMap"
+import TabPanels from "./tabPanels"
+import { fullStoryEvent } from "../../helpers/fullStory"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
+import { DirectionsButton } from "../directionsButton"
 
-interface Props {
+type Props = {
   selectedVehicle: Vehicle
-}
+  openMapEnabled: boolean
+} & IndividualPropertiesPanelProps
 
 const InvalidBanner = () => (
-  <div className="m-vehicle-properties-panel__invalid-banner">
-    <span className="m-vehicle-properties-panel__invalid-banner-title">
-      Invalid
-    </span>
-    - We cannot match this vehicle to a scheduled trip at this time. This
-    vehicle may be off-route or severely off-schedule.
-  </div>
+  <Card
+    additionalClass="c-vehicle-properties-panel__invalid-banner"
+    style="lemon"
+    title={<h3>Invalid Bus</h3>}
+    noFocusOrHover={true}
+  >
+    <CardBody>
+      We cannot match this vehicle to a scheduled trip at this time. This
+      vehicle may be off-route or severely off-schedule.
+    </CardBody>
+  </Card>
 )
 
 const NotAvailable = () => (
-  <span className="m-vehicle-properties-panel__not-available">
+  <span className="c-vehicle-properties-panel__not-available">
     Not available
   </span>
 )
 
-const directionsUrl = (
-  latitude: number,
-  longitude: number
-) => `https://www.google.com/maps/dir/?api=1\
-&destination=${latitude.toString()},${longitude.toString()}\
-&travelmode=driving`
-
 const useRouteVehicles = (
   routeId: RouteId | null,
   primaryVehicleId: VehicleId
-): Vehicle[] => {
+): VehicleInScheduledService[] => {
   // Get vehicles we've already fetched from the context.
   const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
-  const existingVehiclesAndGhosts: VehicleOrGhost[] | undefined =
-    routeId === null ? undefined : vehiclesByRouteId[routeId]
+
+  const existingVehiclesAndGhosts:
+    | (VehicleInScheduledService | Ghost)[]
+    | undefined = routeId === null ? undefined : vehiclesByRouteId[routeId]
   // If we haven't already fetched this route, open a new channel.
   const { socket } = useContext(SocketContext)
-  const newVehiclesAndGhosts: VehicleOrGhost[] | null = useVehiclesForRoute(
-    socket,
-    existingVehiclesAndGhosts === undefined ? routeId : null
-  )
+  const newVehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] | null =
+    useVehiclesForRoute(
+      socket,
+      existingVehiclesAndGhosts === undefined ? routeId : null
+    )
   return (existingVehiclesAndGhosts || newVehiclesAndGhosts || [])
-    .filter(isVehicle)
+    .filter(isVehicleInScheduledService)
     .filter((v) => v.id !== primaryVehicleId)
 }
 
-const Location = ({ vehicle }: { vehicle: Vehicle }) => {
-  const routeVehicles: Vehicle[] = useRouteVehicles(vehicle.routeId, vehicle.id)
+const Location = ({
+  vehicle,
+  openMapEnabled,
+}: {
+  vehicle: Vehicle
+  openMapEnabled: boolean
+}) => {
+  const routeVehicles: VehicleInScheduledService[] = useRouteVehicles(
+    vehicle.routeId,
+    vehicle.id
+  )
   const shapes: Shape[] = useTripShape(vehicle.tripId)
   const { isOffCourse, latitude, longitude, stopStatus } = vehicle
-  const nearestIntersection: string | null = useNearestIntersection(
+
+  const nearestIntersectionResult = useNearestIntersectionFetchResult(
     latitude,
     longitude
   )
+  const nearestIntersection = isOk(nearestIntersectionResult)
+    ? nearestIntersectionResult.ok
+    : null
 
   return (
-    <div className="m-vehicle-properties-panel__location">
-      <div className="m-vehicle-properties-panel__latlng">
-        <div className="m-vehicle-properties-panel__label">
+    <div className="c-vehicle-properties-panel__location">
+      <div className="c-vehicle-properties-panel__latlng">
+        <div className="c-vehicle-properties-panel__label">
           Current Location
         </div>
         {nearestIntersection ? (
-          <div className="m-vehicle-properties-panel__value">
+          <div className="c-vehicle-properties-panel__value">
             {nearestIntersection}
           </div>
         ) : null}
-        <a
-          className="m-vehicle-properties-panel__link"
-          href={directionsUrl(latitude, longitude)}
-          target="_blank"
-        >
-          Directions
-        </a>
+        <DirectionsButton latitude={latitude} longitude={longitude} />
       </div>
-      <div className="m-vehicle-properties-panel__next-stop">
-        <div className="m-vehicle-properties-panel__label">Next Stop</div>
-        <div className="m-vehicle-properties-panel__value">
+      <div className="c-vehicle-properties-panel__next-stop">
+        <div className="c-vehicle-properties-panel__label">Next Stop</div>
+        <div className="c-vehicle-properties-panel__value">
           {isOffCourse || vehicle.isShuttle ? (
             <NotAvailable />
           ) : (
@@ -105,11 +118,12 @@ const Location = ({ vehicle }: { vehicle: Vehicle }) => {
           )}
         </div>
       </div>
-      <div className="m-vehicle-properties-panel__map">
-        <Map
-          vehicles={[vehicle]}
+      <div className="c-vehicle-properties-panel__map">
+        <MiniMap
+          vehicle={vehicle}
+          routeVehicles={routeVehicles}
           shapes={shapes}
-          secondaryVehicles={routeVehicles}
+          openMapEnabled={openMapEnabled}
         />
       </div>
     </div>
@@ -121,16 +135,16 @@ const Discrepancy = ({
 }: {
   dataDiscrepancy: DataDiscrepancy
 }) => (
-  <dl className="m-vehicle-properties-panel__data-discrepancy">
+  <dl className="c-vehicle-properties-panel__data-discrepancy">
     <dt>{attribute}</dt>
     <dd>
       <ul>
         {sources.map(({ id, value }) => (
-          <li key={`${attribute}-${id}`}>
-            <span className="m-vehicle-properties-panel__data-discrepancy-source-id">
+          <li key={`${attribute}-${id}`} data-testid="data-discrepancy">
+            <span className="c-vehicle-properties-panel__data-discrepancy-source-id">
               {id}
             </span>
-            <span className="m-vehicle-properties-panel__data-discrepancy-source-value">
+            <span className="c-vehicle-properties-panel__data-discrepancy-source-value">
               {value}
             </span>
           </li>
@@ -145,7 +159,7 @@ const DataDiscrepancies = ({
 }: {
   vehicle: Vehicle
 }) => (
-  <ul className="m-vehicle-properties-panel__data-discrepancies">
+  <ul className="c-vehicle-properties-panel__data-discrepancies">
     {dataDiscrepancies.map((dataDiscrepancy) => (
       <li key={dataDiscrepancy.attribute}>
         <Discrepancy dataDiscrepancy={dataDiscrepancy} />
@@ -160,17 +174,27 @@ const inDebugMode = (): boolean =>
 const shouldShowDataDiscrepancies = ({ dataDiscrepancies }: Vehicle): boolean =>
   inDebugMode() && dataDiscrepancies.length > 0
 
-const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
+const StatusContent = ({
+  selectedVehicle,
+  openMapEnabled,
+}: {
+  selectedVehicle: Vehicle
+  openMapEnabled: boolean
+}) => (
   <>
-    {hasBlockWaiver(selectedVehicle) && (
-      <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
-    )}
+    <div className="c-vehicle-properties-panel__notes">
+      {selectedVehicle.isOffCourse && <InvalidBanner />}
+
+      {hasBlockWaiver(selectedVehicle) && (
+        <BlockWaiverList blockWaivers={selectedVehicle.blockWaivers} />
+      )}
+    </div>
 
     <PropertiesList properties={vehicleProperties(selectedVehicle)} />
 
     <CrowdingDiagram crowding={selectedVehicle.crowding} />
 
-    <Location vehicle={selectedVehicle} />
+    <Location vehicle={selectedVehicle} openMapEnabled={openMapEnabled} />
 
     {shouldShowDataDiscrepancies(selectedVehicle) && (
       <DataDiscrepancies vehicle={selectedVehicle} />
@@ -178,33 +202,44 @@ const StatusContent = ({ selectedVehicle }: { selectedVehicle: Vehicle }) => (
   </>
 )
 
-const VehiclePropertiesPanel = ({ selectedVehicle }: Props) => {
-  const [tabMode, setTabMode] = useState<TabMode>("status")
-
+const VehiclePropertiesPanel = ({
+  selectedVehicle,
+  tabMode,
+  onChangeTabMode,
+  onClosePanel,
+  openMapEnabled,
+}: Props) => {
   return (
-    <div className="m-vehicle-properties-panel">
+    <div className="c-vehicle-properties-panel">
       <Header
         vehicle={selectedVehicle}
         tabMode={tabMode}
-        setTabMode={setTabMode}
+        onChangeTabMode={(newTabMode) => {
+          if (newTabMode !== tabMode) {
+            fullStoryEvent("Switched tab in Vehicle Properties Panel", {
+              tab_str: newTabMode,
+            })
+          }
+          onChangeTabMode(newTabMode)
+        }}
+        onClosePanel={onClosePanel}
       />
 
-      {selectedVehicle.isOffCourse && <InvalidBanner />}
-
-      {
-        /* istanbul ignore next */
-        shouldShowHeadwayDiagram(selectedVehicle) && (
-          <HeadwayDiagram vehicle={selectedVehicle} />
-        )
-      }
-
-      {selectedVehicle.isShuttle ? (
-        <StatusContent selectedVehicle={selectedVehicle} />
-      ) : (
+      {isVehicleInScheduledService(selectedVehicle) ? (
         <TabPanels
           vehicleOrGhost={selectedVehicle}
-          statusContent={<StatusContent selectedVehicle={selectedVehicle} />}
+          statusContent={
+            <StatusContent
+              selectedVehicle={selectedVehicle}
+              openMapEnabled={openMapEnabled}
+            />
+          }
           mode={tabMode}
+        />
+      ) : (
+        <StatusContent
+          selectedVehicle={selectedVehicle}
+          openMapEnabled={openMapEnabled}
         />
       )}
     </div>

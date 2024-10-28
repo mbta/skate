@@ -1,5 +1,24 @@
 defmodule Skate.Factory do
+  @moduledoc false
+
   use ExMachina.Ecto, repo: Skate.Repo
+  use Skate.DetourFactory
+  use Skate.OpenRouteServiceFactory
+  use Skate.GtfsFactory
+  use Skate.ScheduleFactory
+  use Skate.HastusFactory
+
+  def operator_id_factory(_) do
+    sequence(:operator_id, &to_string/1, start_at: 10_000)
+  end
+
+  def first_name_factory(_) do
+    sequence(:first_name, &"First(#{&1})")
+  end
+
+  def last_name_factory(_) do
+    sequence(:first_name, &"Last(#{&1})")
+  end
 
   def vehicle_factory do
     %Realtime.Vehicle{
@@ -19,8 +38,9 @@ defmodule Skate.Factory do
       operator_last_name: "",
       operator_name: "",
       operator_logon_time: nil,
+      overload_offset: nil,
       run_id: "",
-      headway_spacing: :ok,
+      incoming_trip_direction_id: nil,
       is_shuttle: false,
       is_overload: false,
       is_off_course: false,
@@ -44,6 +64,7 @@ defmodule Skate.Factory do
       block_id: "block",
       run_id: "123-9049",
       via_variant: "X",
+      incoming_trip_direction_id: nil,
       layover_departure_time: nil,
       scheduled_timepoint_status: %{
         timepoint_id: "t2",
@@ -53,112 +74,85 @@ defmodule Skate.Factory do
     }
   end
 
-  def piece_factory do
-    %Schedule.Piece{
-      schedule_id: "schedule",
-      run_id: "run",
-      start_time: 50,
-      start_place: "garage",
-      trips: [
-        build(:trip),
-        build(:trip, %{id: "trip2", route_id: "route"})
-      ],
-      end_time: 200,
-      end_place: "station"
+  def route_tab_factory do
+    %Skate.Settings.RouteTab{
+      uuid: Ecto.UUID.generate(),
+      preset_name: "preset",
+      selected_route_ids: [],
+      ladder_directions: %{},
+      ladder_crowding_toggles: %{},
+      ordering: sequence(""),
+      is_current_tab: false,
+      save_changes_to_tab_uuid: nil
     }
   end
 
-  def block_factory do
-    %Schedule.Block{
-      id: "block",
-      service_id: "service",
-      schedule_id: "schedule",
-      start_time: 0,
-      end_time: 1,
-      pieces: [build(:piece)]
+  def amazon_location_place_factory(attrs) do
+    address_number = Map.get(attrs, :address_number, sequence(:address_number, &to_string/1))
+    street = Map.get(attrs, :street, "Test St")
+    name = Map.get(attrs, :name, "Landmark")
+    address_suffix = Map.get(attrs, :address_suffix, "MA 02201, United States")
+
+    %{
+      "AddressNumber" => address_number,
+      "Geometry" => %{
+        "Point" => [0, 0]
+      },
+      "Label" =>
+        "#{name && name <> ", "}#{address_number && address_number <> " "}#{street && street <> ", "}#{address_suffix}",
+      "Street" => street
     }
   end
 
-  def run_factory do
-    %Schedule.Run{
-      schedule_id: "schedule",
-      service_id: "service",
-      id: "run",
-      activities: [
-        build(:piece)
-      ]
+  def amazon_location_search_result_factory(attrs) do
+    result = %{
+      "Place" => fn -> build(:amazon_location_place, attrs) end,
+      "PlaceId" => "test_id_#{sequence(:place_id, &to_string/1)}"
+    }
+
+    result |> merge_attributes(attrs) |> evaluate_lazy_attributes()
+  end
+
+  def amazon_location_suggest_result_factory do
+    %{
+      "Text" =>
+        "#{sequence(:address_number, &to_string/1)} Test St, Boston, MA 02201, United States",
+      "PlaceId" => "test_id_#{sequence(:place_id, &to_string/1)}"
     }
   end
 
-  def as_directed_factory do
-    %Schedule.AsDirected{
-      kind: :wad,
-      start_time: 1,
-      end_time: 2,
-      start_place: "place1",
-      end_place: "place2"
+  def db_notification_factory() do
+    %Notifications.Db.Notification{
+      created_at: DateTime.to_unix(DateTime.utc_now())
     }
   end
 
-  def gtfs_stoptime_factory do
-    %Schedule.Gtfs.StopTime{
-      stop_id: "stop1",
-      time: 150,
-      timepoint_id: "t1"
+  def user_factory do
+    %Skate.Settings.Db.User{
+      uuid: Ecto.UUID.generate(),
+      email: sequence(:user_email, &"test-#{&1}@mbta.com"),
+      username: sequence("Skate.Settings.Db.User.username:")
     }
   end
 
-  def gtfs_route_factory do
-    %Schedule.Gtfs.Route{
-      id: "route",
-      description: "Key Bus",
-      direction_names: %{0 => "Outbound", 1 => "Inbound"},
-      name: "Point A - Point B",
-      garages: MapSet.new([])
-    }
-  end
-
-  def trip_factory do
-    %Schedule.Trip{
-      id: "trip",
-      block_id: "block",
-      route_id: "route",
-      service_id: "service",
-      headsign: "headsign",
-      direction_id: 0,
-      run_id: "run",
-      stop_times: [
-        build(:gtfs_stoptime)
-      ],
-      start_time: 100,
-      end_time: 200
-    }
-  end
-
-  def hastus_trip_factory do
-    %Schedule.Hastus.Trip{
-      schedule_id: "schedule",
-      run_id: "run",
-      block_id: "block",
-      start_time: 100,
-      end_time: 102,
-      start_place: "place1",
-      end_place: "place2",
-      route_id: "route",
-      trip_id: "trip1"
-    }
-  end
-
-  def hastus_activity_factory do
-    %Schedule.Hastus.Activity{
-      schedule_id: "schedule",
-      run_id: "run",
-      start_time: 100,
-      end_time: 105,
-      start_place: "place1",
-      end_place: "place2",
-      activity_type: "Operator",
-      partial_block_id: "block"
+  def ueberauth_auth_factory do
+    %Ueberauth.Auth{
+      provider: :keycloak,
+      uid: "test_username",
+      credentials: %Ueberauth.Auth.Credentials{
+        expires_at: System.system_time(:second) + 1_000,
+        refresh_token: "test_refresh_token"
+      },
+      info: %{email: "test@mbta.com"},
+      extra: %Ueberauth.Auth.Extra{
+        raw_info: %UeberauthOidcc.RawInfo{
+          userinfo: %{
+            "resource_access" => %{
+              "test-client" => %{"roles" => ["test1", "skate-readonly"]}
+            }
+          }
+        }
+      }
     }
   end
 end

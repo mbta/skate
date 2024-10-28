@@ -1,4 +1,6 @@
 defmodule Schedule.Block do
+  @moduledoc false
+
   alias Schedule.AsDirected
   alias Schedule.Gtfs.Service
   alias Schedule.Hastus
@@ -66,7 +68,7 @@ defmodule Schedule.Block do
     first_revenue_trip =
       pieces
       |> Enum.flat_map(& &1.trips)
-      |> Enum.find(&Trip.is_revenue_trip?/1)
+      |> Enum.find(&Trip.revenue_trip?/1)
 
     service_id =
       case first_revenue_trip do
@@ -88,7 +90,7 @@ defmodule Schedule.Block do
   def revenue_trips(%__MODULE__{pieces: pieces}) do
     pieces
     |> Enum.flat_map(& &1.trips)
-    |> Enum.filter(&Trip.is_revenue_trip?/1)
+    |> Enum.filter(&Trip.revenue_trip?/1)
   end
 
   @spec get(by_id(), Hastus.Schedule.id(), id()) :: t() | nil
@@ -99,8 +101,8 @@ defmodule Schedule.Block do
   @doc """
   Whether the block is active at any time during the time_of_day range.
   """
-  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
-  def is_active(block, start_time_of_day, end_time_of_day) do
+  @spec active?(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
+  def active?(block, start_time_of_day, end_time_of_day) do
     end_time_of_day > block.start_time and
       start_time_of_day < block.end_time
   end
@@ -142,6 +144,20 @@ defmodule Schedule.Block do
         # If it's between the end of the last trip and the end of the block, use the last trip
         block |> revenue_trips |> Enum.find(fn trip -> trip.end_time > now end) ||
           block |> revenue_trips |> List.last()
+    end
+  end
+
+  @spec pull_back_place_id(t() | nil) :: String.t() | nil
+  def pull_back_place_id(block) do
+    with true <- !is_nil(block),
+         last_piece <- List.last(block.pieces),
+         true <- !is_nil(last_piece),
+         piece_trips <- last_piece.trips,
+         last_piece_trip <- List.last(piece_trips),
+         true <- !is_nil(last_piece_trip) do
+      last_piece_trip.end_place
+    else
+      _ -> nil
     end
   end
 

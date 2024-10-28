@@ -30,7 +30,7 @@ defmodule Schedule.GarageTest do
 
     test "handles unknown garage code" do
       log =
-        capture_log([level: :warn], fn ->
+        capture_log([level: :warning], fn ->
           [%Schedule.Gtfs.Route{garages: garages}] =
             Schedule.Garage.add_garages_to_routes([build(:gtfs_route, %{id: "route1"})], %{
               "1234" => build(:trip, %{id: "1234", block_id: "X12-34", route_id: "route1"})
@@ -44,7 +44,7 @@ defmodule Schedule.GarageTest do
 
     test "silently ignores private carrier garage code" do
       log =
-        capture_log([level: :warn], fn ->
+        capture_log([level: :warning], fn ->
           [%Schedule.Gtfs.Route{garages: garages}] =
             Schedule.Garage.add_garages_to_routes([build(:gtfs_route, %{id: "route1"})], %{
               "1234" => build(:trip, %{id: "1234", block_id: "J12-34", route_id: "route1"})

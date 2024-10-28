@@ -1,14 +1,17 @@
-import React from "react"
+import React, { useId } from "react"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
-import { crowdingIcon, questionMarkIcon } from "../../helpers/icon"
+import { CrowdingIcon, QuestionMarkIcon } from "../../helpers/icon"
 import {
   classModifierForStatus,
   Crowding,
   statusDescriptionForStatus,
 } from "../../models/crowding"
+import { fullStoryEvent } from "../../helpers/fullStory"
 
 const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
+  const tooltipButtonId = `riders-onboard-${useId()}`
+
   if (crowding === null) {
     return null
   }
@@ -20,30 +23,36 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
   const loadPhrase = crowding.load === 1 ? "1 rider" : `${crowding.load} riders`
 
   return (
-    <div className="m-crowding-diagram">
-      <div className="m-crowding-diagram__properties">
-        <span className="m-properties-list__property-label">
+    <div className="c-crowding-diagram">
+      <div className="c-crowding-diagram__properties">
+        <label
+          className="c-properties-list__property-label"
+          htmlFor={tooltipButtonId}
+        >
           Riders onboard
-        </span>
+        </label>
         <Tippy
           content={
             <div>
-              Riders are estimated using Automated <br /> Passenger Counters
-              (APCs).
+              Riders are estimated using
+              <br />
+              Automated Passenger Counters (APCs).
             </div>
           }
           trigger="click"
-          className="m-crowding-diagram__crowding-tooltip"
-          /* istanbul ignore next */
+          className="c-crowding-diagram__crowding-tooltip"
           onShow={() => {
-            /* istanbul ignore next */
-            if (window.FS) {
-              /* istanbul ignore next */
-              window.FS.event("Crowding data tooltip opened")
-            }
+            fullStoryEvent('User opened "Riders Onboard" tooltip', {})
           }}
         >
-          {questionMarkIcon("m-crowding-diagram__tooltip-anchor")}
+          <button id={tooltipButtonId}>
+            <QuestionMarkIcon
+              role="presentation img"
+              aria-label=""
+              aria-hidden={true}
+              className="c-crowding-diagram__tooltip-anchor"
+            />
+          </button>
         </Tippy>
         <br />
         {crowding.load !== null ? (
@@ -51,7 +60,7 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
             {loadPhrase} / {crowding.capacity} seats
             <br />
             <span
-              className={`m-crowding-diagram__status-description m-crowding-diagram__status-description--${classModifier}`}
+              className={`c-crowding-diagram__status-description c-crowding-diagram__status-description--${classModifier}`}
             >
               {statusDescription}
             </span>
@@ -60,10 +69,10 @@ const CrowdingDiagram = ({ crowding }: { crowding: Crowding | null }) => {
           "No data available"
         )}
       </div>
-      <div className="m-crowding-diagram__crowding-icon-wrapper">
-        {crowdingIcon(
-          `m-crowding-diagram__crowding-icon m-crowding-diagram__crowding-icon--${classModifier}`
-        )}
+      <div className="c-crowding-diagram__crowding-icon-wrapper">
+        <CrowdingIcon
+          className={`c-crowding-diagram__crowding-icon c-crowding-diagram__crowding-icon--${classModifier}`}
+        />
       </div>
     </div>
   )

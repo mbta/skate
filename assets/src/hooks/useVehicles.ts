@@ -1,23 +1,23 @@
 import { Channel, Socket } from "phoenix"
-import {
-  Dispatch as ReactDispatch,
-  useEffect,
-  useReducer,
-  useState,
-} from "react"
+import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
+import { array, assert, StructError, union } from "superstruct"
 import { reload } from "../models/browser"
 import {
-  VehicleOrGhostData,
-  vehicleOrGhostFromData,
+  vehicleInScheduledServiceOrGhostFromData,
+  VehicleInScheduledServiceData,
+  GhostData,
 } from "../models/vehicleData"
-import { isVehicle } from "../models/vehicle"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import { VehicleInScheduledService, Ghost } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule.d"
-import { flatten } from "../helpers/array"
+import * as Sentry from "@sentry/react"
+
+const VehiclesOrGhostsData = array(
+  union([VehicleInScheduledServiceData, GhostData])
+)
 
 interface State {
   channelsByRouteId: ByRouteId<Channel>
-  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>
+  vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]>
 }
 
 const initialState: State = {
@@ -45,13 +45,13 @@ interface SetVehiclesForRouteAction {
   type: "SET_VEHICLES_FOR_ROUTE"
   payload: {
     routeId: RouteId
-    vehiclesForRoute: VehicleOrGhost[]
+    vehiclesForRoute: (VehicleInScheduledService | Ghost)[]
   }
 }
 
 const setVehiclesForRoute = (
   routeId: RouteId,
-  vehiclesForRoute: VehicleOrGhost[]
+  vehiclesForRoute: (VehicleInScheduledService | Ghost)[]
 ): SetVehiclesForRouteAction => ({
   type: "SET_VEHICLES_FOR_ROUTE",
   payload: {
@@ -97,7 +97,7 @@ const reducer = (state: State, action: Action): State => {
           [action.payload.routeId]: action.payload.vehiclesForRoute,
         },
       }
-    case "REMOVE_ROUTE":
+    case "REMOVE_ROUTE": {
       const { [action.payload.routeId]: _channel, ...channelsWithoutRouteId } =
         state.channelsByRouteId
       const {
@@ -109,6 +109,7 @@ const reducer = (state: State, action: Action): State => {
         channelsByRouteId: channelsWithoutRouteId,
         vehiclesByRouteId: vehiclesByRouteIdWithoutRouteId,
       }
+    }
     default:
       return state
   }
@@ -119,13 +120,19 @@ const subscribe = (
   routeId: RouteId,
   dispatch: Dispatch
 ): Channel => {
-  const handleVehicles = ({
-    data: vehiclesAndGhostsData,
-  }: {
-    data: VehicleOrGhostData[]
-  }) => {
-    const vehiclesAndGhosts = vehiclesAndGhostsData.map(vehicleOrGhostFromData)
-    dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
+  const handleVehicles = ({ data: vehiclesAndGhostsData }: { data: any }) => {
+    try {
+      assert(vehiclesAndGhostsData, VehiclesOrGhostsData)
+
+      const vehiclesAndGhosts = vehiclesAndGhostsData.map(
+        vehicleInScheduledServiceOrGhostFromData
+      )
+      dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
+    } catch (error) {
+      if (error instanceof StructError) {
+        Sentry.captureException({ error: error, route_id: routeId })
+      }
+    }
   }
 
   const topic = `vehicles:route:${routeId}`
@@ -134,29 +141,25 @@ const subscribe = (
   channel.on("vehicles", handleVehicles)
 
   // Reload our session if the auth has expired
-  channel.on("auth_expired", () => {
-    reload(true)
-  })
+  channel.on("auth_expired", reload)
 
   channel
     .join()
     .receive("ok", handleVehicles)
-    // tslint:disable-next-line: no-console
+    // eslint-disable-next-line no-console
     .receive("error", ({ reason }) => console.error("join failed", reason))
-    .receive("timeout", () => {
-      reload(true)
-    })
+    .receive("timeout", reload)
   return channel
 }
 
 const useVehicles = (
   socket: Socket | undefined,
   selectedRouteIds: RouteId[]
-): ByRouteId<VehicleOrGhost[]> => {
+): ByRouteId<(VehicleInScheduledService | Ghost)[]> => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const [invalidVehicleIds, setInvalidVehicleIds] = useState<VehicleId[]>([])
   const { channelsByRouteId, vehiclesByRouteId } = state
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (socket) {
       // Unsubscribe from any routes we don't care about anymore
@@ -176,31 +179,7 @@ const useVehicles = (
       })
     }
   }, [socket, selectedRouteIds])
-
-  useEffect(() => {
-    const newInvalidVehicles = flatten(Object.values(vehiclesByRouteId)).filter(
-      (vehicleOrGhost) =>
-        isVehicle(vehicleOrGhost) &&
-        vehicleOrGhost.isOffCourse &&
-        vehicleOrGhost.isRevenue
-    )
-
-    const oldInvalidVehicleIds = new Set(invalidVehicleIds)
-
-    newInvalidVehicles.forEach((vehicle) => {
-      if (
-        !oldInvalidVehicleIds.has(vehicle.id) &&
-        window.FS &&
-        window.username
-      ) {
-        window.FS.event("Vehicle went invalid", {
-          route_id: vehicle.routeId,
-        })
-      }
-    })
-
-    setInvalidVehicleIds(newInvalidVehicles.map((vehicle) => vehicle.id))
-  }, [vehiclesByRouteId])
+  /* eslint-enable react-hooks/exhaustive-deps */
 
   return vehiclesByRouteId
 }

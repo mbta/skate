@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1" />
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <title><%= assigns[:title] || "Skate" %></title>
+
+    <link
+      rel="apple-touch-icon"
+      href={static_content_route(@conn, "/images/mbta-logo-t-180.png")}
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      href={static_content_route(@conn, "/images/mbta-logo-t-favicon.png")}
+      sizes="32x32"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      href={static_content_route(@conn, "/favicon.ico")}
+      sizes="16x16"
+      type="image/vnd.microsoft.icon"
+    />
+
+    <style>
+      :root {
+        --color-mbta-bus: #ffc72c;
+        --color-mbta-silver: #7c878e;
+
+        --color-mbta-green: #00843d;
+        --color-mbta-red: #da291c;
+        --color-mbta-orange: #ed8b00;
+        --color-mbta-blue: #003da5;
+
+        --color-mbta-cr: #80276c;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .container {
+        margin: 8px;
+      }
+
+      .error-tag {
+        color: red;
+        font-style: italic;
+      }
+
+      .banner {
+        text-align: center;
+        line-height: 4;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      th {
+        background-color: var(--color-mbta-silver);
+      }
+
+      td, th {
+        border: 1px solid black;
+        padding: 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <.admin_banner />
+    <main role="main" class="container">
+      <%= @inner_content %>
+    </main>
+  </body>
+</html>

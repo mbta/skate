@@ -1,4 +1,6 @@
 defmodule Realtime.Ghost do
+  @moduledoc false
+
   alias Schedule.{AsDirected, Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, StopTime, Timepoint}
   alias Schedule.Piece
@@ -14,6 +16,7 @@ defmodule Realtime.Ghost do
           block_id: Block.id(),
           run_id: Schedule.Hastus.Run.id() | nil,
           via_variant: RoutePattern.via_variant() | nil,
+          incoming_trip_direction_id: Direction.id() | nil,
           layover_departure_time: Util.Time.timestamp() | nil,
           scheduled_timepoint_status: TimepointStatus.timepoint_status(),
           scheduled_logon: Util.Time.timestamp() | nil,
@@ -45,6 +48,7 @@ defmodule Realtime.Ghost do
     :block_id,
     :run_id,
     :via_variant,
+    :incoming_trip_direction_id,
     :layover_departure_time,
     :scheduled_timepoint_status,
     :scheduled_logon,
@@ -87,7 +91,7 @@ defmodule Realtime.Ghost do
     current_piece_trips =
       run
       |> Run.pieces()
-      |> Enum.find(&Piece.is_for_now?(&1, now_time_of_day))
+      |> Enum.find(&Piece.current?(&1, now_time_of_day))
       |> case do
         %Piece{start_mid_route?: %{trip: trip}, trips: trips} ->
           [trip | trips]
@@ -108,7 +112,7 @@ defmodule Realtime.Ghost do
         nil
 
       {route_status, trip} ->
-        timepoints = Enum.filter(trip.stop_times, &StopTime.is_timepoint?/1)
+        timepoints = Enum.filter(trip.stop_times, &StopTime.timepoint?/1)
 
         case timepoints do
           [] ->
@@ -128,7 +132,7 @@ defmodule Realtime.Ghost do
             current_piece =
               with pieces <- Run.pieces(run),
                    [current_piece] <-
-                     Enum.filter(pieces, &Piece.is_for_now?(&1, now_time_of_day)) do
+                     Enum.filter(pieces, &Piece.current?(&1, now_time_of_day)) do
                 current_piece
               else
                 _ -> nil

@@ -1,10 +1,9 @@
 import React from "react"
-import { intersperseString } from "../helpers/array"
-import { filterToAlphanumeric } from "../models/searchQuery"
 import { formattedRunNumber } from "../models/shuttle"
-import { isVehicle } from "../models/vehicle"
-import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { isLoggedOut, isVehicle } from "../models/vehicle"
+import { Ghost, Vehicle } from "../realtime"
 import { formattedTime, formattedTimeDiff, now } from "../util/dateTime"
+import { HighlightedMatch } from "./highlightedMatch"
 
 interface Props {
   properties: Property[]
@@ -15,6 +14,7 @@ export interface Property {
   label: string
   value: string | null
   classNameModifier?: string
+  sensitive?: boolean
 }
 
 export const formattedLogonTime = (logonDate: Date): string => {
@@ -23,7 +23,10 @@ export const formattedLogonTime = (logonDate: Date): string => {
   return `${formattedTimeDiff(nowDate, logonDate)}; ${formattedTime(logonDate)}`
 }
 
-export const vehicleProperties = (vehicle: Vehicle): Property[] => {
+export const vehicleProperties = (
+  vehicle: Vehicle,
+  operatorLastNameOnly?: boolean
+): Property[] => {
   const {
     runId,
     label,
@@ -33,30 +36,51 @@ export const vehicleProperties = (vehicle: Vehicle): Property[] => {
     operatorLogonTime,
   } = vehicle
 
+  const isLoggedOutVehicle = isVehicle(vehicle) && isLoggedOut(vehicle)
+
+  const operatorValue =
+    [
+      operatorLastNameOnly ? null : operatorFirstName,
+      operatorLastName,
+      operatorId ? `#${operatorId}` : null,
+    ]
+      .filter((e) => e !== null)
+      .join(" ") || "Not Available"
+
   return [
-    {
-      label: "Run",
-      value: vehicle.isShuttle
-        ? formattedRunNumber(vehicle)
-        : vehicle.isOverload && !!vehicle.runId
-        ? `ADDED ${runId}`
-        : runId || "Not Available",
-    },
+    ...(isLoggedOutVehicle
+      ? []
+      : [
+          {
+            label: "Run",
+            value: vehicle.isShuttle
+              ? formattedRunNumber(vehicle)
+              : vehicle.isOverload && !!vehicle.runId
+              ? `ADDED ${runId}`
+              : runId || "Not Available",
+          },
+        ]),
     {
       label: "Vehicle",
       value: label,
     },
-    {
-      label: "Operator",
-      value: `${operatorFirstName} ${operatorLastName} #${operatorId}`,
-    },
-    {
-      label: "Last Login",
-      value: operatorLogonTime
-        ? formattedLogonTime(operatorLogonTime)
-        : "Not Available",
-      classNameModifier: "last-login",
-    },
+    ...(isLoggedOutVehicle
+      ? []
+      : [
+          {
+            label: "Operator",
+            value: operatorValue,
+            classNameModifier: "operator",
+            sensitive: true,
+          },
+          {
+            label: "Last Login",
+            value: operatorLogonTime
+              ? formattedLogonTime(operatorLogonTime)
+              : "Not Available",
+            classNameModifier: "last-login",
+          },
+        ]),
   ]
 }
 
@@ -68,59 +92,18 @@ export const ghostProperties = (ghost: Ghost): Property[] => [
 ]
 
 export const vehicleOrGhostProperties = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost,
+  operatorLastNameOnly?: boolean
 ): Property[] =>
   isVehicle(vehicleOrGhost)
-    ? vehicleProperties(vehicleOrGhost)
+    ? vehicleProperties(vehicleOrGhost, operatorLastNameOnly)
     : ghostProperties(vehicleOrGhost)
 
-export const Highlighted = ({
-  content,
-  highlightText,
-}: {
-  content: string
-  highlightText?: string
-}): JSX.Element => {
-  if (highlightText === undefined) {
-    return <>{content}</>
-  }
-
-  const match = content.match(highlightRegex(highlightText))
-
-  if (match === null || match.index === undefined) {
-    return <>{content}</>
-  }
-
-  const matchingString = match[0]
-
-  return (
-    <>
-      {[
-        content.slice(0, match.index),
-        <span className="highlighted" key={`highlighted-${match.index}`}>
-          {matchingString}
-        </span>,
-        <Highlighted
-          content={content.slice(match.index + match[0].length)}
-          highlightText={highlightText}
-          key={`highlighted-extension-${match.index + match[0].length}`}
-        />,
-      ]}
-    </>
-  )
-}
-
-const highlightRegex = (highlightText: string): RegExp => {
-  const stripped = filterToAlphanumeric(highlightText)
-  const allowNonAlphanumeric = intersperseString(stripped, "[^0-9a-zA-Z]*")
-  return new RegExp(allowNonAlphanumeric, "i")
-}
-
 const modifiedClassName = (classNameModifier?: string): string =>
-  classNameModifier ? `m-properties-list__property--${classNameModifier}` : ""
+  classNameModifier ? `c-properties-list__property--${classNameModifier}` : ""
 
 const PropertyRow = ({
-  property: { label, value, classNameModifier },
+  property: { label, value, classNameModifier, sensitive },
   highlightText,
 }: {
   property: Property
@@ -128,20 +111,20 @@ const PropertyRow = ({
 }) =>
   value === null ? null : (
     <tr
-      className={`m-properties-list__property ${modifiedClassName(
+      className={`c-properties-list__property ${modifiedClassName(
         classNameModifier
-      )}`}
+      )}${sensitive ? " fs-mask" : ""}`}
     >
-      <td className="m-properties-list__property-label">{label}</td>
-      <td className="m-properties-list__property-value">
-        <Highlighted content={value} highlightText={highlightText} />
+      <td className="c-properties-list__property-label">{label}</td>
+      <td className="c-properties-list__property-value">
+        <HighlightedMatch content={value} highlightText={highlightText} />
       </td>
     </tr>
   )
 
 const PropertiesList = ({ properties, highlightText }: Props) => (
-  <div className="m-properties-list">
-    <table className="m-properties-list__table">
+  <div className="c-properties-list">
+    <table className="c-properties-list__table">
       <tbody>
         {properties.map((property) => (
           <PropertyRow

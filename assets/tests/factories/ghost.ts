@@ -1,15 +1,17 @@
 import { Factory } from "fishery"
 import { Ghost } from "../../src/realtime"
 
-export default Factory.define<Ghost>(({ sequence }) => ({
+const ghostFactory = Factory.define<Ghost>(({ sequence }) => ({
   id: `ghost-trip-${sequence}`,
   directionId: 0,
   routeId: "1",
+  routePatternId: "1-_-0",
   tripId: `trip-${sequence}`,
   headsign: "headsign",
   blockId: "block",
   runId: null,
   viaVariant: null,
+  incomingTripDirectionId: null,
   layoverDepartureTime: null,
   scheduledTimepointStatus: {
     timepointId: "t0",
@@ -21,3 +23,4 @@ export default Factory.define<Ghost>(({ sequence }) => ({
   currentPieceStartPlace: "garage",
   currentPieceFirstRoute: "route",
 }))
+export default ghostFactory

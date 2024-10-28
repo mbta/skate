@@ -1,4 +1,4 @@
-.m-properties-panel {
+.c-properties-panel {
   @include modal-content;
   display: flex;
   flex-direction: column;
@@ -9,26 +9,30 @@
   right: 0;
   top: 0;
   width: 23.5rem;
-  z-index: 1002;
+  z-index: map-get($z-page-layout-context, "properties-panel");
 
-  @media screen and (max-width: $mobile-max-width) {
+  @media screen and (max-width: map-get($breakpoints, "max-mobile-landscape-tablet-portrait-width")) {
     width: 100vw;
+  }
+  @media screen and (max-width: map-get($breakpoints, "max-mobile-width")) {
+    position: fixed;
+    bottom: 0;
   }
 }
 
-.m-properties-panel .m-properties-panel__header-wrapper {
+.c-properties-panel .c-properties-panel__header-wrapper {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  z-index: 10;
+  z-index: map-get($z-properties-panel-context, "header");
 }
 
-.m-properties-panel .m-properties-panel__header {
+.c-properties-panel .c-properties-panel__header {
   background-color: $color-bg-base;
   border-bottom: 1px solid $color-rule;
 }
 
-.m-properties-panel__modal-overlay {
-  @include modal-overlay;
-  z-index: 1000;
+.c-properties-panel-backdrop {
+  @include modal-backdrop;
+  z-index: map-get($z-page-layout-context, "properties-panel-backdrop");
 }

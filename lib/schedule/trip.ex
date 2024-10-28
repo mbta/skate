@@ -1,4 +1,6 @@
 defmodule Schedule.Trip do
+  @moduledoc false
+
   alias Schedule.AsDirected
   alias Schedule.Block
   alias Schedule.Gtfs
@@ -126,12 +128,11 @@ defmodule Schedule.Trip do
   end
 
   @doc """
-  Whether the trip is active at any time during the time_of_day range.
+  Whether the trip starts within the given time_of_day range, exclusive
   """
-  @spec is_active(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
-  def is_active(trip, start_time_of_day, end_time_of_day) do
-    end_time_of_day > trip.start_time and
-      start_time_of_day < trip.end_time
+  @spec starts_in_range(t(), Util.Time.time_of_day(), Util.Time.time_of_day()) :: boolean()
+  def starts_in_range(trip, start_time_of_day, end_time_of_day) do
+    start_time_of_day < trip.start_time and trip.start_time < end_time_of_day
   end
 
   @spec id_sans_overload(id() | nil) :: id() | nil
@@ -175,10 +176,10 @@ defmodule Schedule.Trip do
 
   def set_pretty_names(trip, _), do: trip
 
-  @spec is_revenue_trip?(t() | AsDirected.t()) :: boolean()
-  def is_revenue_trip?(%AsDirected{}), do: true
+  @spec revenue_trip?(t() | AsDirected.t()) :: boolean()
+  def revenue_trip?(%AsDirected{}), do: true
 
-  def is_revenue_trip?(%__MODULE__{service_id: service_id, route_id: route_id}) do
+  def revenue_trip?(%__MODULE__{service_id: service_id, route_id: route_id}) do
     !is_nil(service_id) && !is_nil(route_id)
   end
 end

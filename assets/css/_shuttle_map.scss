@@ -1,27 +1,15 @@
-.m-shuttle-map {
+.c-shuttle-map {
   height: 100%;
   position: relative;
   transition: $transition-slide;
 
-  .m-picker-container {
+  .c-shuttle-picker-container {
     z-index: 620;
-  }
-
-  .m-tab-bar.hidden + & {
-    margin-left: 0;
-  }
-
-  .m-tab-bar.visible + & {
-    margin-left: $tab-bar-width;
   }
 }
 
-.m-shuttle-map__map {
+.c-shuttle-map__map {
   height: 100%;
   position: absolute;
   width: 100%;
-
-  .m-vehicle-map__label.selected .m-vehicle-icon__label-background {
-    fill: $color-secondary-medium;
-  }
 }

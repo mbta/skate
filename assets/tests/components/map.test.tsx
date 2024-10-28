@@ -1,95 +1,109 @@
-import { mount } from "enzyme"
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeAll,
+  beforeEach,
+  afterAll,
+} from "@jest/globals"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
 import { LatLng } from "leaflet"
+import * as Leaflet from "leaflet"
 import React, { MutableRefObject } from "react"
-import { act } from "react-dom/test-utils"
-import { Map as ReactLeafletMap } from "react-leaflet"
+import { act } from "@testing-library/react"
+import { Map as LeafletMap } from "leaflet"
 import Map, {
-  autoCenter,
   defaultCenter,
-  strokeOptions,
+  MapFollowingPrimaryVehicles,
+  MapFollowingSelectionKey,
 } from "../../src/components/map"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { TrainVehicle, Vehicle } from "../../src/realtime"
-import { Shape } from "../../src/schedule"
-import featureIsEnabled from "../../src/laboratoryFeatures"
+import { autoCenter } from "../../src/components/map/follower"
+import { TrainVehicle, VehicleInScheduledService } from "../../src/realtime"
+import { vehicleFactory } from "../factories/vehicle"
+import { stopFactory } from "../factories/stop"
 
-jest.unmock("leaflet")
-jest.unmock("react-leaflet-control")
+import userEvent from "@testing-library/user-event"
+import { runIdToLabel } from "../../src/helpers/vehicleLabel"
 
-jest.mock("../../src/laboratoryFeatures", () => ({
+import getTestGroups from "../../src/userTestGroups"
+import { LocationType } from "../../src/models/stopData"
+import { setHtmlDefaultWidthHeight } from "../testHelpers/leafletMapWidth"
+import { mockScreenSize, mockTileUrls } from "../testHelpers/mockHelpers"
+import { streetViewModeSwitch } from "../testHelpers/selectors/components/mapPage/map"
+import { streetViewUrl } from "../../src/util/streetViewUrl"
+import { shapeFactory } from "../factories/shape"
+import { fullStoryEvent } from "../../src/helpers/fullStory"
+import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
+
+const shape = shapeFactory.build({
+  id: "shape",
+  points: [
+    { lat: 0, lon: 0 },
+    { lat: 0, lon: 0 },
+  ],
+  stops: [
+    stopFactory.build({
+      id: "stop",
+      name: "stop",
+      lat: 0,
+      lon: 0,
+    }),
+  ],
+})
+
+const station = stopFactory.build({ locationType: LocationType.Station })
+
+jest.mock("userTestGroups", () => ({
   __esModule: true,
-  default: jest.fn(() => false),
+  default: jest.fn(() => []),
+}))
+jest.mock("tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
 }))
 
-const vehicle: Vehicle = {
-  id: "y1818",
-  label: "1818",
-  runId: "run-1",
-  timestamp: 123,
-  latitude: 42.0,
-  longitude: -71.0,
-  directionId: 0,
-  routeId: "39",
-  tripId: "t1",
-  headsign: "Forest Hills",
-  viaVariant: "X",
-  operatorId: "op1",
-  operatorFirstName: "PATTI",
-  operatorLastName: "SMITH",
-  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-  bearing: 33,
-  blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
-  isShuttle: false,
-  isOverload: false,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [
-    {
-      attribute: "trip_id",
-      sources: [
-        {
-          id: "swiftly",
-          value: "swiftly-trip-id",
-        },
-        {
-          id: "busloc",
-          value: "busloc-trip-id",
-        },
-      ],
-    },
-  ],
-  stopStatus: {
-    stopId: "s1",
-    stopName: "Stop Name",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "tp1",
-  },
-  scheduledLocation: null,
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
-}
+jest.mock("../../src/helpers/fullStory")
 
-describe("map", () => {
+const originalScrollTo = global.scrollTo
+// Clicking/moving map calls scrollTo under the hood
+jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
+
+beforeAll(() => {
+  mockTileUrls()
+})
+
+beforeEach(() => {
+  jest.mocked(getTestGroups).mockReturnValue([])
+})
+
+beforeEach(() => {
+  mockScreenSize("desktop")
+})
+
+afterAll(() => {
+  global.scrollTo = originalScrollTo
+})
+
+describe("<MapFollowingPrimaryVehicles />", () => {
   test("draws vehicles", () => {
-    const wrapper = mount(<Map vehicles={[vehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__icon")
-    expect(wrapper.html()).toContain("m-vehicle-map__label")
+    const vehicle = vehicleFactory.build({})
+    const result = render(<MapFollowingPrimaryVehicles vehicles={[vehicle]} />)
+    expect(result.container.innerHTML).toContain("c-vehicle-map__icon")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__label")
   })
 
   test("draws secondary vehicles", () => {
-    const wrapper = mount(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__icon")
-    expect(wrapper.html()).toContain("m-vehicle-map__label")
+    const vehicle = vehicleFactory.build({})
+    const result = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        secondaryVehicles={[vehicle]}
+      />
+    )
+    expect(result.container.innerHTML).toContain("c-vehicle-map__icon")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__label")
   })
 
   test("draws train vehicles", () => {
@@ -99,75 +113,381 @@ describe("map", () => {
       longitude: -71.00369,
       bearing: 15,
     }
-    const wrapper = mount(<Map vehicles={[]} trainVehicles={[trainVehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__train-icon")
-  })
-
-  test("draws vehicles with Pigeon", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-
-    const wrapper = mount(<Map vehicles={[vehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__icon")
-    expect(wrapper.html()).toContain("m-vehicle-map__label")
-  })
-
-  test("draws secondary vehicles with Pigeon", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-
-    const wrapper = mount(<Map vehicles={[]} secondaryVehicles={[vehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__icon")
-    expect(wrapper.html()).toContain("m-vehicle-map__label")
-  })
-
-  test("draws train vehicles with Pigeon", () => {
-    ;(featureIsEnabled as jest.Mock).mockImplementationOnce(() => true)
-
-    const trainVehicle: TrainVehicle = {
-      id: "red1",
-      latitude: 42.24615,
-      longitude: -71.00369,
-      bearing: 15,
-    }
-    const wrapper = mount(<Map vehicles={[]} trainVehicles={[trainVehicle]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__train-icon")
+    const result = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        trainVehicles={[trainVehicle]}
+      />
+    )
+    expect(result.container.innerHTML).toContain("c-vehicle-map__train-icon")
   })
 
   test("draws shapes", () => {
-    const shape = {
-      id: "shape",
-      points: [
-        { lat: 0, lon: 0 },
-        { lat: 0, lon: 0 },
-      ],
-      stops: [
-        {
-          id: "stop",
-          name: "stop",
-          lat: 0,
-          lon: 0,
+    const result = render(
+      <MapFollowingPrimaryVehicles vehicles={[]} shapes={[shape]} />
+    )
+    expect(result.container.innerHTML).toContain("c-vehicle-map__route-shape")
+    expect(result.container.innerHTML).toContain("c-vehicle-map__stop")
+  })
+
+  test("doesn't draw garage icons at zoom levels < 15", async () => {
+    const vehicle = vehicleFactory.build()
+
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(14)
+    })
+    await animationFramePromise()
+    expect(container.innerHTML).not.toContain("c-garage-icon")
+    expect(screen.queryByText("Albany")).toBeNull()
+  })
+
+  test("draws garage icons only at zoom levels >= 15", async () => {
+    const vehicle = vehicleFactory.build({})
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(15)
+    })
+    await animationFramePromise()
+    expect(container.innerHTML).toContain("c-garage-icon")
+    expect(screen.queryByText("Albany")).toBeNull()
+  })
+
+  test("draws garage icons and labels at zoom levels >= 16", async () => {
+    const vehicle = vehicleFactory.build({})
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(16)
+    })
+
+    expect(container.innerHTML).toContain("c-garage-icon")
+    expect(screen.getByText("Albany")).toBeInTheDocument()
+  })
+
+  test("doesn't draw station icons at zoom levels < 15", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(14)
+    })
+    await animationFramePromise()
+    expect(container.querySelector(".c-station-icon")).not.toBeInTheDocument()
+    expect(screen.queryByText(station.name)).toBeNull()
+  })
+
+  test("draws station icons at zoom levels >= 15", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(15)
+    })
+    await animationFramePromise()
+    expect(container.querySelector(".c-station-icon")).toBeVisible()
+    expect(screen.queryByText(station.name)).toBeNull()
+  })
+
+  test("station name appears on hover", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicleFactory.build()]}
+        reactLeafletRef={mapRef}
+        stations={[station]}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(15)
+    })
+    await animationFramePromise()
+    await userEvent.hover(container.querySelector(".c-station-icon")!)
+
+    expect(screen.queryByText(station.name)).toBeInTheDocument()
+  })
+
+  test("if shape contains stations, renders them as stations instead of regular stops", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        shapes={[{ ...shape, stops: [station] }]}
+        vehicles={[]}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    // Manual zoom
+    act(() => {
+      mapRef.current!.setZoom(14)
+    })
+    await animationFramePromise()
+    expect(container.querySelector(".c-station-icon")).toBeVisible()
+  })
+
+  test("performs onPrimaryVehicleSelected function when primary vehicle selected", async () => {
+    const vehicle = vehicleFactory.build({})
+    const onClick = jest.fn()
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        onPrimaryVehicleSelect={onClick}
+      />
+    )
+    await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
+    expect(onClick).toHaveBeenCalledWith(vehicle)
+  })
+
+  test("does not perform onPrimaryVehicleSelected function when secondary vehicle selected", async () => {
+    const vehicle = vehicleFactory.build({})
+    const onClick = jest.fn()
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        secondaryVehicles={[vehicle]}
+        onPrimaryVehicleSelect={onClick}
+      />
+    )
+    await userEvent.click(screen.getByText(runIdToLabel(vehicle.runId!)))
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  test("renders street view link from stop", async () => {
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        shapes={[shape]}
+        includeStopCard={true}
+      />
+    )
+
+    await userEvent.click(container.querySelector(".c-vehicle-map__stop")!)
+
+    expect(
+      screen.getByRole("link", { name: /street view/i })
+    ).toBeInTheDocument()
+  })
+
+  test("does not render street view link from stop if not in maps test group", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles vehicles={[]} shapes={[shape]} />
+    )
+
+    await userEvent.click(container.querySelector("e-map__stop")!)
+
+    expect(
+      screen.queryByRole("link", { name: /Go to Street View/ })
+    ).not.toBeInTheDocument()
+  })
+
+  test("can turn on street view and click on the map", async () => {
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
+    const openSpy = jest
+      .spyOn(window, "open")
+      .mockImplementationOnce(jest.fn<typeof window.open>())
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        allowStreetView={true}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    await userEvent.click(streetViewModeSwitch.get())
+    expect(mockedFSEvent).toHaveBeenNthCalledWith(
+      1,
+      "Dedicated street view toggled",
+      { streetViewEnabled_bool: true }
+    )
+
+    await userEvent.click(mapRef.current!.getPane("mapPane")!)
+
+    /**
+     * These "magic numbers" correspond to the nearest floating point value of
+     * our map's {@link defaultCenter} (and also constrained by `maxBounds`).
+     */
+    const latitude = 42.360700296138525
+    const longitude = -71.0588836669922
+    const url = streetViewUrl({ latitude, longitude })
+
+    expect(mockedFSEvent).toHaveBeenNthCalledWith(
+      2,
+      "User clicked map to open street view",
+      {
+        streetViewUrl_str: url,
+        clickedMapAt: {
+          latitude_real: latitude,
+          longitude_real: longitude,
         },
-      ],
-    }
-    const wrapper = mount(<Map vehicles={[]} shapes={[shape]} />)
-    expect(wrapper.html()).toContain("m-vehicle-map__route-shape")
-    expect(wrapper.html()).toContain("m-vehicle-map__stop")
+      }
+    )
+
+    expect(openSpy).toHaveBeenCalled()
+
+    expect(streetViewModeSwitch.get()).toBeVisible()
+    expect(streetViewModeSwitch.get()).toBeChecked()
+  })
+
+  test("turning off street view also fires a FullStory event", async () => {
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
+
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        allowStreetView={true}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    expect(mockedFSEvent).toHaveBeenCalledWith(
+      "Dedicated street view toggled",
+      { streetViewEnabled_bool: false }
+    )
+
+    expect(
+      screen.queryByRole("switch", { name: /Street View/, checked: false })
+    ).toBeInTheDocument()
+  })
+
+  test("clicking on the map with street view off doesn't open link", async () => {
+    const openSpy = jest
+      .spyOn(window, "open")
+      .mockImplementationOnce(jest.fn<typeof window.open>())
+
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        allowStreetView={true}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    await userEvent.click(mapRef.current!.getPane("mapPane")!)
+
+    expect(openSpy).not.toHaveBeenCalled()
+  })
+
+  test("pressing escape leaves street view mode", async () => {
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[]}
+        allowStreetView={true}
+        reactLeafletRef={mapRef}
+      />
+    )
+
+    await userEvent.click(screen.getByRole("switch", { name: /Street View/ }))
+
+    await userEvent.keyboard("{Escape}")
+
+    expect(
+      screen.queryByRole("switch", { name: /Street View/, checked: false })
+    ).toBeInTheDocument()
+  })
+
+  test("does not show street view when prop is not specified", () => {
+    render(<MapFollowingPrimaryVehicles vehicles={[]} />)
+
+    expect(
+      screen.queryByRole("switch", { name: /Street View/ })
+    ).not.toBeInTheDocument()
+  })
+
+  test("sets selected vehicle id as selected", () => {
+    const vehicle = vehicleFactory.build()
+
+    const { container } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        selectedVehicleId={vehicle.id}
+      />
+    )
+
+    expect(
+      container.querySelector(".c-vehicle-map__icon .selected")
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector(".c-vehicle-map__label.selected")
+    ).toBeInTheDocument()
   })
 })
 
 describe("autoCenter", () => {
-  const Leaflet = jest.requireActual("leaflet")
-  const pickerContainerIsVisible: boolean = false
+  beforeEach(() => {
+    setHtmlDefaultWidthHeight(0, 0)
+  })
+  const L = jest.requireActual<typeof Leaflet>("leaflet")
+  const pickerContainerIsVisible = false
 
   test("centers the map on a single vehicle", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map")
+    const map = L.map("map")
     autoCenter(map, [[42, -71]], pickerContainerIsVisible)
     expect(map.getCenter()).toEqual({ lat: 42, lng: -71 })
   })
 
   test("fits around multiple vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map")
+    const map = L.map("map")
     autoCenter(
       map,
       [
@@ -181,17 +501,15 @@ describe("autoCenter", () => {
 
   test("does not center the map if there are no vehicles", () => {
     document.body.innerHTML = "<div id='map'></div>"
-    const map = Leaflet.map("map")
+    const map = L.map("map")
     autoCenter(map, [], pickerContainerIsVisible)
     expect(map.getCenter()).toEqual(defaultCenter)
   })
 })
 
 const getCenter = (
-  reactLeafletMapRef: MutableRefObject<ReactLeafletMap | null>
-): LatLng | null =>
-  reactLeafletMapRef.current &&
-  reactLeafletMapRef.current.leafletElement.getCenter()
+  LeafletMapRef: MutableRefObject<LeafletMap | null>
+): LatLng | null => LeafletMapRef.current && LeafletMapRef.current.getCenter()
 
 const animationFramePromise = (): Promise<null> => {
   return new Promise((resolve) => {
@@ -201,70 +519,97 @@ const animationFramePromise = (): Promise<null> => {
 
 describe("auto centering", () => {
   test("auto centers on a vehicle", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
-    mount(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
+    const location = { lat: 42.25, lng: -71 }
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
+      latitude: location.lat,
+      longitude: location.lng,
+    })
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+    render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
+
     await animationFramePromise()
-    expect(getCenter(mapRef)).toEqual({ lat: 42, lng: -71 })
+    expect(getCenter(mapRef)).toEqual(location)
   })
 
   test("tracks a vehicle when it moves", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
-    const oldLatLng = { lat: 42, lng: -71 }
+    const vehicle = vehicleFactory.build({})
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+    const oldLatLng = { lat: 42.25, lng: -71 }
     const oldVehicle = {
       ...vehicle,
       latitude: oldLatLng.lat,
       longitude: oldLatLng.lng,
     }
-    const wrapper = mount(
-      <Map vehicles={[oldVehicle]} reactLeafletRef={mapRef} />
+    const { rerender } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[oldVehicle]}
+        reactLeafletRef={mapRef}
+      />
     )
     await animationFramePromise()
-    const newLatLng = { lat: 42.1, lng: -71.1 }
+    const newLatLng = { lat: 42.35, lng: -71.1 }
     const newVehicle = {
       ...vehicle,
       latitude: newLatLng.lat,
       longitude: newLatLng.lng,
     }
-    wrapper.setProps({ vehicles: [newVehicle] })
+    rerender(
+      <MapFollowingPrimaryVehicles
+        vehicles={[newVehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(newLatLng)
   })
 
   test("manual moves disable auto centering", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
-    const wrapper = mount(<Map vehicles={[vehicle]} reactLeafletRef={mapRef} />)
+    const vehicle = vehicleFactory.build({})
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+    const { rerender } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
     await animationFramePromise()
-    expect(
-      wrapper
-        .find(".m-vehicle-map-state")
-        .hasClass("m-vehicle-map-state--auto-centering")
-    ).toBe(true)
-    const manualLatLng = { lat: 41.9, lng: -70.9 }
+    expect(recenterControl.get().dataset.isActive).toBe("true")
+    const manualLatLng = { lat: 42.25, lng: -70.9 }
+
     act(() => {
-      mapRef.current!.leafletElement.panTo(manualLatLng)
+      mapRef.current!.fire("dragstart")
+      mapRef.current!.panTo(manualLatLng)
     })
+
     await animationFramePromise()
-    const newLatLng = { lat: 42.1, lng: -71.1 }
+    const newLatLng = { lat: 42.35, lng: -71.1 }
     const newVehicle = {
       ...vehicle,
       latitude: newLatLng.lat,
       longitude: newLatLng.lng,
     }
-    wrapper!.setProps({ vehicles: [newVehicle] })
+    rerender(
+      <MapFollowingPrimaryVehicles
+        vehicles={[newVehicle]}
+        reactLeafletRef={mapRef}
+      />
+    )
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(manualLatLng)
-    expect(
-      wrapper
-        .find(".m-vehicle-map-state")
-        .hasClass("m-vehicle-map-state--auto-centering")
-    ).toBe(false)
+    expect(recenterControl.get().dataset.isActive).toBe("false")
   })
 
   test("auto recentering does not disable auto centering", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
-    const latLng1 = { lat: 42, lng: -71 }
-    const latLng2 = { lat: 42.1, lng: -71.1 }
-    const latLng3 = { lat: 42.2, lng: -71.2 }
+    const vehicle = vehicleFactory.build({})
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+    const latLng1 = { lat: 42.1, lng: -71 }
+    const latLng2 = { lat: 42.2, lng: -71.1 }
+    const latLng3 = { lat: 42.3, lng: -71.2 }
     const vehicle1 = {
       ...vehicle,
       latitude: latLng1.lat,
@@ -280,75 +625,113 @@ describe("auto centering", () => {
       latitude: latLng3.lat,
       longitude: latLng3.lng,
     }
-    const wrapper = mount(
-      <Map vehicles={[vehicle1]} reactLeafletRef={mapRef} />
+    const { rerender } = render(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle1]}
+        reactLeafletRef={mapRef}
+      />
     )
     await animationFramePromise()
-    wrapper.setProps({ vehicles: [vehicle2] })
+    rerender(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle2]}
+        reactLeafletRef={mapRef}
+      />
+    )
+
     await animationFramePromise()
-    wrapper.setProps({ vehicles: [vehicle3] })
+    rerender(
+      <MapFollowingPrimaryVehicles
+        vehicles={[vehicle3]}
+        reactLeafletRef={mapRef}
+      />
+    )
+
     await animationFramePromise()
     expect(getCenter(mapRef)).toEqual(latLng3)
   })
 
   test("recenter control turns on auto center", async () => {
-    const mapRef: MutableRefObject<ReactLeafletMap | null> = { current: null }
-    const wrapper = mount(<Map vehicles={[]} reactLeafletRef={mapRef} />)
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
+    const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+    const result = render(
+      <MapFollowingPrimaryVehicles vehicles={[]} reactLeafletRef={mapRef} />
+    )
     await animationFramePromise()
 
     // Manual move to turn off auto centering
-    const manualLatLng = { lat: 41.9, lng: -70.9 }
+    const manualLatLng = { lat: 42.25, lng: -70.9 }
     act(() => {
-      mapRef.current!.leafletElement.panTo(manualLatLng)
+      mapRef.current!.fire("dragstart")
+      mapRef.current!.panTo(manualLatLng)
     })
     await animationFramePromise()
-    wrapper.update()
-    expect(
-      wrapper
-        .find(".m-vehicle-map-state")
-        .hasClass("m-vehicle-map-state--auto-centering")
-    ).toBe(false)
+    expect(recenterControl.get().dataset.isActive).toBe("false")
     expect(getCenter(mapRef)).toEqual(manualLatLng)
 
     // Click the recenter button
-    wrapper.find(".m-vehicle-map__recenter-button").find("a").simulate("click")
+    await userEvent.click(result.getByTitle("Recenter Map"))
     await animationFramePromise()
-    wrapper.update()
-    expect(
-      wrapper
-        .find(".m-vehicle-map-state")
-        .hasClass("m-vehicle-map-state--auto-centering")
-    ).toBe(true)
+    expect(recenterControl.get().dataset.isActive).toBe("true")
     expect(getCenter(mapRef)).toEqual(defaultCenter)
+    expect(mockedFSEvent).toHaveBeenCalledWith("Recenter control clicked", {})
+  })
+
+  describe("for MapFollowingSelectionKey", () => {
+    test("changing followerResetKey turns on auto center", async () => {
+      const mapRef: MutableRefObject<LeafletMap | null> = { current: null }
+      const vehicles: VehicleInScheduledService[] = []
+      const result = render(
+        <MapFollowingSelectionKey
+          vehicles={vehicles}
+          reactLeafletRef={mapRef}
+          selectionKey="key1"
+        />
+      )
+      await animationFramePromise()
+
+      // Manual move to turn off auto centering
+      const manualLatLng = { lat: 42.35, lng: -70.9 }
+      act(() => {
+        mapRef.current!.fire("dragstart")
+        mapRef.current!.panTo(manualLatLng)
+      })
+      await animationFramePromise()
+
+      result.rerender(
+        <MapFollowingSelectionKey
+          vehicles={vehicles}
+          reactLeafletRef={mapRef}
+          selectionKey="key2"
+        />
+      )
+      await animationFramePromise()
+      expect(recenterControl.get().dataset.isActive).toBe("true")
+      expect(getCenter(mapRef)).toEqual(defaultCenter)
+    })
   })
 })
 
-describe("strokeOptions", () => {
-  test("uses the color for a subway line, defaults to a thinner, opaque line", () => {
-    const subwayShape = {
-      color: "#DA291C",
-    } as Shape
+describe("TileLayer", () => {
+  test("when the selected layer is base, the base tiles and attribution are rendered", () => {
+    const { container } = render(<Map tileType="base" vehicles={[]} />)
 
-    const expected = {
-      color: "#DA291C",
-      opacity: 1.0,
-      weight: 4,
-    }
+    expect(container.querySelector("img[src^=test_base_url")).not.toBeNull()
 
-    expect(strokeOptions(subwayShape)).toEqual(expected)
+    expect(
+      screen.getByRole("link", { name: "OpenStreetMap" })
+    ).toBeInTheDocument()
   })
 
-  test("sets default color, width, and opacity settincgs for shuttle route lines", () => {
-    const shuttleShape = {
-      color: undefined,
-    } as Shape
+  test("when the selected layer is satellite, the satellite tiles and attribution are rendered", () => {
+    const { container } = render(<Map tileType="satellite" vehicles={[]} />)
 
-    const expected = {
-      color: "#4db6ac",
-      opacity: 0.6,
-      weight: 6,
-    }
+    expect(
+      container.querySelector("img[src^=test_satellite_url")
+    ).not.toBeNull()
 
-    expect(strokeOptions(shuttleShape)).toEqual(expected)
+    expect(
+      screen.getByRole("link", { name: "MassGIS 2021" })
+    ).toBeInTheDocument()
   })
 })

@@ -14,6 +14,7 @@ defmodule Schedule.DataTest do
   alias Schedule.Hastus.Activity
   alias Schedule.Piece
   alias Schedule.Run
+  alias Schedule.ShapeWithStops
 
   test "all_routes/1 returns all the routes" do
     routes = [
@@ -230,8 +231,8 @@ defmodule Schedule.DataTest do
     end
   end
 
-  describe "active_trips" do
-    test "returns an active trip" do
+  describe "trips_starting_in_range" do
+    test "doesn't return a trip starting before the range" do
       trip = %Schedule.Trip{
         id: "active",
         block_id: "active",
@@ -259,10 +260,41 @@ defmodule Schedule.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 2, time0 + 5) == [trip]
+      assert Data.trips_starting_in_range(data, time0 + 5, time0 + 10) == []
     end
 
-    test "doesn't return a trip active at a different time today" do
+    test "returns an trip starting in the range" do
+      trip = %Schedule.Trip{
+        id: "active",
+        block_id: "active",
+        service_id: "today",
+        stop_times: [
+          %StopTime{
+            stop_id: "stop",
+            time: 3
+          },
+          %StopTime{
+            stop_id: "stop",
+            time: 4
+          }
+        ],
+        start_time: 3,
+        end_time: 4
+      }
+
+      data = %Data{
+        trips: %{trip.id => trip},
+        calendar: %{
+          ~D[2019-01-01] => ["today"]
+        }
+      }
+
+      # 2019-01-01 00:00:00 EST
+      time0 = 1_546_318_800
+      assert Data.trips_starting_in_range(data, time0 + 2, time0 + 5) == [trip]
+    end
+
+    test "doesn't return a trip starting at a later time today" do
       trip = %Schedule.Trip{
         id: "trip",
         block_id: "block",
@@ -286,10 +318,10 @@ defmodule Schedule.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 2) == []
+      assert Data.trips_starting_in_range(data, time0 + 1, time0 + 2) == []
     end
 
-    test "doesn't return a trip active at this time on a different day" do
+    test "doesn't return a trip starting at this time on a different day" do
       trip = %Schedule.Trip{
         id: "trip",
         block_id: "block",
@@ -313,37 +345,7 @@ defmodule Schedule.DataTest do
 
       # 2019-01-01 00:00:00 EST
       time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 3) == []
-    end
-
-    test "returns late-night trips that are still active from yesterday" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        service_id: "yesterday",
-        stop_times: [
-          %StopTime{
-            stop_id: "stop",
-            # 24:00:02
-            time: 86402
-          }
-        ],
-        start_time: 86402,
-        end_time: 86402
-      }
-
-      data = %Data{
-        trips: %{
-          "trip" => trip
-        },
-        calendar: %{
-          ~D[2018-12-31] => ["yesterday"]
-        }
-      }
-
-      # 2019-01-01 00:00:00 EST
-      time0 = 1_546_318_800
-      assert Data.active_trips(data, time0 + 1, time0 + 3) == [trip]
+      assert Data.trips_starting_in_range(data, time0 + 1, time0 + 3) == []
     end
   end
 
@@ -495,6 +497,89 @@ defmodule Schedule.DataTest do
     end
   end
 
+  describe "shape_with_stops_for_trip" do
+    setup do
+      trip = %Schedule.Trip{
+        id: "trip",
+        block_id: "block",
+        route_id: "route",
+        shape_id: "shape",
+        stop_times: [
+          %StopTime{stop_id: "stop1", time: 150, timepoint_id: "t1"},
+          %StopTime{stop_id: "stop2", time: 160, timepoint_id: "t2"}
+        ]
+      }
+
+      stops = [
+        %Stop{id: "stop1", name: "Stop 1", latitude: 42.01, longitude: -71.01},
+        %Stop{id: "stop2", name: "Stop 2", latitude: 42.02, longitude: -71.02}
+      ]
+
+      shape = %Shape{
+        id: "shape",
+        points: [
+          %Point{
+            shape_id: "shape",
+            lat: 42.413560,
+            lon: -70.992110,
+            sequence: 0
+          }
+        ]
+      }
+
+      {:ok, %{trip: trip, stops: stops, shape: shape}}
+    end
+
+    test "returns nil when no trip found", %{trip: trip, shape: shape} do
+      data = %Data{trips: %{}, shapes: %{trip.route_id => [shape]}}
+
+      assert is_nil(Data.shape_with_stops_for_trip(data, trip.id))
+    end
+
+    test "returns nil when no shape found", %{trip: trip} do
+      data = %Data{trips: %{trip.id => trip}, shapes: %{}}
+
+      assert is_nil(Data.shape_with_stops_for_trip(data, trip.id))
+    end
+
+    test "returns the shape without stops when no stops found", %{trip: trip, shape: shape} do
+      data = %Data{trips: %{trip.id => trip}, stops: %{}, shapes: %{trip.route_id => [shape]}}
+
+      assert %ShapeWithStops{id: shape.id, points: shape.points, stops: []} ==
+               Data.shape_with_stops_for_trip(data, trip.id)
+    end
+
+    test "returns all stops when all stops are found", %{
+      trip: trip,
+      stops: [stop1, stop2],
+      shape: shape
+    } do
+      data = %Data{
+        trips: %{trip.id => trip},
+        stops: %{stop1.id => stop1, stop2.id => stop2},
+        shapes: %{trip.route_id => [shape]}
+      }
+
+      assert %ShapeWithStops{id: shape.id, points: shape.points, stops: [stop1, stop2]} ==
+               Data.shape_with_stops_for_trip(data, trip.id)
+    end
+
+    test "returns the shape with a subset of stops when not all found", %{
+      trip: trip,
+      stops: [stop1, _stop2],
+      shape: shape
+    } do
+      data = %Data{
+        trips: %{trip.id => trip},
+        stops: %{stop1.id => stop1},
+        shapes: %{trip.route_id => [shape]}
+      }
+
+      assert %ShapeWithStops{id: shape.id, points: shape.points, stops: [stop1]} ==
+               Data.shape_with_stops_for_trip(data, trip.id)
+    end
+  end
+
   describe "shape_for_trip" do
     test "returns the shape for the given trip_id" do
       trip = %Schedule.Trip{
@@ -543,6 +628,61 @@ defmodule Schedule.DataTest do
       data = %Data{}
 
       assert Data.shape_for_trip(data, "trip") == nil
+    end
+  end
+
+  describe "stations/1" do
+    test "returns only stations" do
+      [station_1, station_2] = [
+        build(:gtfs_stop, %{id: "station-1", location_type: :station}),
+        build(:gtfs_stop, %{id: "station-2", location_type: :station})
+      ]
+
+      stops = %{
+        station_1.id => station_1,
+        station_2.id => station_2,
+        "stop-1" => build(:gtfs_stop, %{id: "stop-1", location_type: :stop})
+      }
+
+      assert [station_1, station_2] == Data.stations(%Data{stops: stops})
+    end
+  end
+
+  describe "all_stops/0" do
+    test "returns both stops and stations" do
+      [station_1, station_2, stop_1] = [
+        build(:gtfs_stop, %{id: "station-1", location_type: :station}),
+        build(:gtfs_stop, %{id: "station-2", location_type: :station}),
+        build(:gtfs_stop, %{id: "stop-1", location_type: :stop})
+      ]
+
+      stops = %{
+        station_1.id => station_1,
+        station_2.id => station_2,
+        stop_1.id => stop_1
+      }
+
+      assert [station_1, station_2, stop_1] == Data.all_stops(%Data{stops: stops})
+    end
+  end
+
+  describe "route_pattern/2" do
+    setup do
+      route_patterns = [build(:gtfs_route_pattern, id: "1")]
+
+      data = %Data{
+        route_patterns: route_patterns
+      }
+
+      {:ok, data: data}
+    end
+
+    test "retrieves a route pattern by ID", %{data: data} do
+      assert %RoutePattern{id: "1"} = Data.route_pattern(data, "1")
+    end
+
+    test "returns nil of route pattern isn't found for ID", %{data: data} do
+      assert is_nil(Data.route_pattern(data, "2"))
     end
   end
 
@@ -601,47 +741,45 @@ defmodule Schedule.DataTest do
     end
   end
 
-  describe "minischedule_run" do
-    test "returns run for the trip" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: "schedule",
-        run_id: "run"
-      }
-
-      run = %Run{
-        schedule_id: "schedule",
-        id: "run",
-        activities: []
-      }
-
+  describe "route_patterns_for_route/2" do
+    setup do
       data = %Data{
-        trips: %{trip.id => trip},
-        runs: %{Run.key(run) => run}
+        route_patterns: [
+          %RoutePattern{
+            id: "1",
+            name: "Route Pattern 1",
+            route_id: "r1",
+            direction_id: 0,
+            representative_trip_id: "t1"
+          },
+          %RoutePattern{
+            id: "2",
+            name: "Route Pattern 2",
+            route_id: "r1",
+            direction_id: 1,
+            representative_trip_id: "t2"
+          },
+          %RoutePattern{
+            id: "3",
+            name: "Route Pattern 3",
+            route_id: "r2",
+            direction_id: 0,
+            representative_trip_id: "t3"
+          }
+        ]
       }
 
-      assert Data.minischedule_run(data, trip.id) == run
+      {:ok, data: data}
     end
 
-    test "returns nil if the trip isn't known" do
-      data = %Data{}
-
-      assert Data.minischedule_run(data, "trip") == nil
+    test "returns all associated route patterns", %{
+      data: %{route_patterns: [r1_pattern_1, r1_pattern_2, _r2_pattern]} = data
+    } do
+      assert [r1_pattern_1, r1_pattern_2] == Data.route_patterns_for_route(data, "r1")
     end
 
-    test "returns nil if the trip is in gtfs but not hastus" do
-      trip = %Schedule.Trip{
-        id: "trip",
-        block_id: "block",
-        schedule_id: nil
-      }
-
-      data = %Data{
-        trips: %{trip.id => trip}
-      }
-
-      assert Data.minischedule_run(data, trip.id) == nil
+    test "returns empty list if no patterns for route", %{data: data} do
+      assert [] == Data.route_patterns_for_route(data, "fake_route")
     end
   end
 
@@ -784,12 +922,18 @@ defmodule Schedule.DataTest do
   describe "parse_files/1" do
     test "includes certain hardcoded garage IDs as checkpoints" do
       hardcoded_garage_ids =
-        Data.parse_files(%{gtfs: %{}, hastus: %{}})
+        Data.parse_files(%{gtfs: %{}, hastus: %{}, version: "test_version"})
         |> Map.get(:timepoint_names_by_id)
         |> Map.keys()
         |> Enum.sort()
 
-      assert hardcoded_garage_ids == ~w[cabot charl fell lynn ncamb prwb somvl]
+      assert hardcoded_garage_ids ==
+               ~w[albny arbor cabot charl fell lynn ncamb prwb qubus soham somvl]
+    end
+
+    test "includes version" do
+      assert %{version: "test_version"} =
+               Data.parse_files(%{gtfs: %{}, hastus: %{}, version: "test_version"})
     end
   end
 
@@ -950,13 +1094,13 @@ defmodule Schedule.DataTest do
       assert %{
                {"schedule", "run_1"} => %Run{
                  activities: [
-                   %Piece{trips: [trip_11]},
-                   %Piece{trips: [trip_12]}
+                   %Piece{trips: [_trip_11]},
+                   %Piece{trips: [_trip_12]}
                  ]
                },
                {"schedule", "run_2"} => %Run{
                  activities: [
-                   %Piece{trips: [trip_21]}
+                   %Piece{trips: [_trip_21]}
                  ]
                }
              } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id, %{})
@@ -1017,10 +1161,10 @@ defmodule Schedule.DataTest do
 
       assert %{
                {"schedule_1", "run"} => %Run{
-                 activities: [%Piece{trips: [schedule_trip1]}]
+                 activities: [%Piece{trips: [_schedule_trip1]}]
                },
                {"schedule_2", "run"} => %Run{
-                 activities: [%Piece{trips: [schedule_trip2]}]
+                 activities: [%Piece{trips: [_schedule_trip2]}]
                }
              } = Data.runs_from_hastus(activities, trips, schedule_trips_by_id, %{})
     end
@@ -1302,13 +1446,13 @@ defmodule Schedule.DataTest do
                  %Piece{
                    block_id: "block",
                    start_time: 101,
-                   trips: [schedule_trip1],
+                   trips: [_schedule_trip1],
                    end_time: 102
                  } = _,
                  %Piece{
                    block_id: "block",
                    start_time: 103,
-                   trips: [schedule_trip2],
+                   trips: [_schedule_trip2],
                    end_time: 104
                  } = _
                ]
@@ -1368,7 +1512,7 @@ defmodule Schedule.DataTest do
                        headsign: nil,
                        id: "leading_deadhead_run_101"
                      },
-                     schedule_trip
+                     _schedule_trip
                    ],
                    end_time: 103,
                    schedule_id: "schedule",
@@ -1432,7 +1576,7 @@ defmodule Schedule.DataTest do
                  %Piece{
                    start_time: 101,
                    trips: [
-                     schedule_trip,
+                     _schedule_trip,
                      %Schedule.Trip{
                        id: "following_deadhead_run_102",
                        block_id: "block",
@@ -1502,8 +1646,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "aba20l31",
           run_id: "123-1502",
-          start_time: 15600,
-          end_time: 16200,
+          start_time: 15_600,
+          end_time: 16_200,
           start_place: "alban",
           end_place: "alban",
           activity_type: "Sign-on"
@@ -1511,8 +1655,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "aba20l31",
           run_id: "123-1502",
-          start_time: 16200,
-          end_time: 44400,
+          start_time: 16_200,
+          end_time: 44_400,
           start_place: "alban",
           end_place: "alban",
           activity_type: "wad"
@@ -1525,15 +1669,15 @@ defmodule Schedule.DataTest do
                activities: [
                  %Piece{
                    block_id: nil,
-                   start_time: 15600,
+                   start_time: 15_600,
                    trips: [
                      %AsDirected{
                        kind: :wad,
-                       start_time: 16200,
-                       end_time: 44400
+                       start_time: 16_200,
+                       end_time: 44_400
                      }
                    ],
-                   end_time: 44400
+                   end_time: 44_400
                  }
                ]
              } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
@@ -1546,8 +1690,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "abc20011",
           run_id: "123-9073",
-          start_time: 21000,
-          end_time: 21600,
+          start_time: 21_000,
+          end_time: 21_600,
           start_place: "cabot",
           end_place: "cabot",
           activity_type: "Sign-on"
@@ -1555,8 +1699,8 @@ defmodule Schedule.DataTest do
         %Activity{
           schedule_id: "abc20011",
           run_id: "123-9073",
-          start_time: 21600,
-          end_time: 32400,
+          start_time: 21_600,
+          end_time: 32_400,
           start_place: "cabot",
           end_place: "cabot",
           activity_type: "Operator",
@@ -1569,8 +1713,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc20011",
           run_id: "123-9073",
           block_id: "Crad-340",
-          start_time: 21600,
-          end_time: 21600,
+          start_time: 21_600,
+          end_time: 21_600,
           start_place: "cabot",
           end_place: "cabot",
           route_id: nil,
@@ -1580,8 +1724,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc20011",
           run_id: "123-9073",
           block_id: "Crad-340",
-          start_time: 21600,
-          end_time: 32400,
+          start_time: 21_600,
+          end_time: 32_400,
           start_place: "cabot",
           end_place: "cabot",
           route_id: "rad",
@@ -1591,8 +1735,8 @@ defmodule Schedule.DataTest do
           schedule_id: "abc20011",
           run_id: "123-9073",
           block_id: "Crad-340",
-          start_time: 32400,
-          end_time: 32400,
+          start_time: 32_400,
+          end_time: 32_400,
           start_place: "cabot",
           end_place: "cabot",
           route_id: nil,
@@ -1604,18 +1748,262 @@ defmodule Schedule.DataTest do
                activities: [
                  %Piece{
                    block_id: "Crad-340",
-                   start_time: 21000,
+                   start_time: 21_000,
                    trips: [
                      %AsDirected{
                        kind: :rad,
-                       start_time: 21600,
-                       end_time: 32400
+                       start_time: 21_600,
+                       end_time: 32_400
                      }
                    ],
-                   end_time: 32400
+                   end_time: 32_400
                  }
                ]
              } = Data.run_from_hastus(run_key, activities, trips, %{}, %{}, %{})
+    end
+
+    test "allows as directed trips and regular trips in the same piece named like a regular block" do
+      run_key = {"abc20011", "123-9073"}
+
+      activities = [
+        %Activity{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          start_time: 68_220,
+          end_time: 68_220,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Sign-on"
+        },
+        %Activity{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          start_time: 68_220,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Operator",
+          partial_block_id: "block_id"
+        }
+      ]
+
+      trips = [
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 68_220,
+          end_time: 68_820,
+          start_place: "cabot",
+          end_place: "ctypt",
+          route_id: nil,
+          trip_id: "64466045"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 68_820,
+          end_time: 70_860,
+          start_place: "ctypt",
+          end_place: "copst",
+          route_id: "09",
+          trip_id: "64464840"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 71_280,
+          end_time: 73_020,
+          start_place: "copst",
+          end_place: "ctypt",
+          route_id: "09",
+          trip_id: "64463084"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 73_020,
+          end_time: 73_560,
+          start_place: "ctypt",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "64465819"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 73_800,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: "wad",
+          trip_id: "64463012"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "block_id",
+          start_time: 84_600,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "64466123"
+        }
+      ]
+
+      schedule_trips_by_id = %{
+        "64466045" => build(:trip, id: "64466045"),
+        "64464840" => build(:trip, id: "64464840"),
+        "64463084" => build(:trip, id: "64463084"),
+        "64465819" => build(:trip, id: "64465819"),
+        "64463012" => build(:trip, id: "64463012"),
+        "64466123" => build(:trip, id: "64466123")
+      }
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   block_id: "block_id",
+                   start_time: 68_220,
+                   trips: [
+                     %Schedule.Trip{id: "64466045"},
+                     %Schedule.Trip{id: "64464840"},
+                     %Schedule.Trip{id: "64463084"},
+                     %Schedule.Trip{id: "64465819"},
+                     %Schedule.Trip{id: "64463012"},
+                     %Schedule.Trip{id: "64466123"}
+                   ],
+                   end_time: 84_600
+                 }
+               ]
+             } = Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id, %{})
+    end
+
+    test "allows as directed trips and regular trips in the same piece named like an as-directed block" do
+      run_key = {"abc20011", "123-9073"}
+
+      activities = [
+        %Activity{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          start_time: 68_220,
+          end_time: 68_220,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Sign-on"
+        },
+        %Activity{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          start_time: 68_220,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          activity_type: "Operator",
+          partial_block_id: "wad-294"
+        }
+      ]
+
+      trips = [
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 68_220,
+          end_time: 68_820,
+          start_place: "cabot",
+          end_place: "ctypt",
+          route_id: nil,
+          trip_id: "64466045"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 68_820,
+          end_time: 70_860,
+          start_place: "ctypt",
+          end_place: "copst",
+          route_id: "09",
+          trip_id: "64464840"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 71_280,
+          end_time: 73_020,
+          start_place: "copst",
+          end_place: "ctypt",
+          route_id: "09",
+          trip_id: "64463084"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 73_020,
+          end_time: 73_560,
+          start_place: "ctypt",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "64465819"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 73_800,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: "wad",
+          trip_id: "64463012"
+        },
+        %Schedule.Hastus.Trip{
+          schedule_id: "abc44011",
+          run_id: "123-1113",
+          block_id: "Cwad-294",
+          start_time: 84_600,
+          end_time: 84_600,
+          start_place: "cabot",
+          end_place: "cabot",
+          route_id: nil,
+          trip_id: "64466123"
+        }
+      ]
+
+      schedule_trips_by_id = %{
+        "64466045" => build(:trip, id: "64466045"),
+        "64464840" => build(:trip, id: "64464840"),
+        "64463084" => build(:trip, id: "64463084"),
+        "64465819" => build(:trip, id: "64465819"),
+        "64463012" => build(:trip, id: "64463012"),
+        "64466123" => build(:trip, id: "64466123")
+      }
+
+      assert %Run{
+               activities: [
+                 %Piece{
+                   block_id: "Cwad-294",
+                   start_time: 68_220,
+                   trips: [
+                     %Schedule.Trip{id: "64466045"},
+                     %Schedule.Trip{id: "64464840"},
+                     %Schedule.Trip{id: "64463084"},
+                     %Schedule.Trip{id: "64465819"},
+                     %Schedule.Trip{id: "64463012"},
+                     %Schedule.Trip{id: "64466123"}
+                   ],
+                   end_time: 84_600
+                 }
+               ]
+             } = Data.run_from_hastus(run_key, activities, trips, %{}, schedule_trips_by_id, %{})
     end
 
     test "makes breaks" do

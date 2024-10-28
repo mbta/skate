@@ -1,4 +1,6 @@
 defmodule Schedule.Hastus.Place do
+  @moduledoc false
+
   @type id :: String.t()
 
   @spec map_input_place_id(id) :: id

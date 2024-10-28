@@ -1,28 +1,72 @@
 import { Socket } from "phoenix"
-import { SearchQuery } from "../models/searchQuery"
+import { Infer, array, boolean, type, union } from "superstruct"
+import { VehiclePropertyQuery } from "../models/searchQuery"
 import {
-  VehicleOrGhostData,
+  GhostData,
+  VehicleData,
   vehicleOrGhostFromData,
 } from "../models/vehicleData"
-import { VehicleOrGhost } from "../realtime"
-import { useChannel } from "./useChannel"
+import { Ghost, Vehicle } from "../realtime"
+import { useCheckedTwoWayChannel } from "./useChannel"
+import { useEffect } from "react"
+import { Loading, Ok } from "../util/fetchResult"
 
-const parser = (data: VehicleOrGhostData[]): VehicleOrGhost[] =>
+const parser = (data: (VehicleData | GhostData)[]): (Vehicle | Ghost)[] =>
   data.map(vehicleOrGhostFromData)
 
-const useSearchResults = (
-  socket: Socket | undefined,
-  searchQuery: SearchQuery | null
-): VehicleOrGhost[] | null => {
-  const topic: string | null =
-    searchQuery && `vehicles:search:${searchQuery.property}:${searchQuery.text}`
-  return useChannel<VehicleOrGhost[] | null>({
-    socket,
-    topic,
-    event: "search",
-    parser,
-    loadingState: null,
-  })
+const dataStruct = array(union([VehicleData, GhostData]))
+
+const limitedVehicleSearchResultsData = type({
+  matching_vehicles: dataStruct,
+  has_more_matches: boolean(),
+})
+
+type LimitedSearchResultsData = Infer<typeof limitedVehicleSearchResultsData>
+export type LimitedSearchResults<T> = {
+  matches: T[]
+  hasMoreMatches: boolean
 }
 
-export default useSearchResults
+const parseLimitedSearchResults = (
+  data: LimitedSearchResultsData
+): Ok<LimitedSearchResults<Vehicle | Ghost>> => ({
+  ok: {
+    matches: parser(data.matching_vehicles),
+    hasMoreMatches: data.has_more_matches,
+  },
+})
+
+const loadingState: Loading = { is_loading: true }
+
+export const useSearchResults = (
+  socket: Socket | undefined,
+  query: { property: VehiclePropertyQuery; text: string; limit: number } | null
+): Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading | null => {
+  const topic: string | null =
+    query?.text && query.text != ""
+      ? `vehicles_search:limited:${query.property}:${query.text}`
+      : null
+
+  const [state, pushUpdate] = useCheckedTwoWayChannel<
+    LimitedSearchResultsData,
+    Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading,
+    { limit: number }
+  >({
+    socket,
+    topic: topic,
+    event: "search",
+    dataStruct: limitedVehicleSearchResultsData,
+    parser: parseLimitedSearchResults,
+    loadingState: loadingState,
+  })
+
+  useEffect(() => {
+    if (query?.limit) {
+      pushUpdate("update_search_query", {
+        limit: query.limit,
+      })
+    }
+  }, [query?.limit, pushUpdate])
+
+  return topic ? state : null
+}

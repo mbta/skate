@@ -1,0 +1,25 @@
+@use "../color/tokens_2024" as new_tokens;
+
+$custom-theme-text: (
+  "ui-alert": new_tokens.$strawberry-800,
+);
+
+$theme-colors-text: map-merge($theme-colors-text, $custom-theme-text);
+
+$custom-theme-bg-subtle: (
+  "ui-alert": new_tokens.$strawberry-50,
+);
+
+$theme-colors-bg-subtle: map-merge(
+  $theme-colors-bg-subtle,
+  $custom-theme-bg-subtle
+);
+
+$custom-theme-border-subtle: (
+  "ui-alert": new_tokens.$strawberry-100,
+);
+
+$theme-colors-border-subtle: map-merge(
+  $theme-colors-border-subtle,
+  $custom-theme-border-subtle
+);

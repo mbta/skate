@@ -1,13 +1,13 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { jest, describe, test, expect } from "@jest/globals"
+import { renderHook } from "@testing-library/react"
 import * as Api from "../../src/api"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import { Timepoint, TimepointsByRouteId } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
 
-// tslint:disable: react-hooks-nesting no-empty
-
 jest.mock("../../src/api", () => ({
   __esModule: true,
+
   fetchTimepointsForRoute: jest.fn(() => new Promise<Timepoint[]>(() => {})),
 }))
 

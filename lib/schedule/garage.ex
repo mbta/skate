@@ -1,4 +1,6 @@
 defmodule Schedule.Garage do
+  @moduledoc false
+
   alias Schedule.Gtfs.Route
   alias Schedule.Trip
   require Logger
@@ -30,7 +32,7 @@ defmodule Schedule.Garage do
     garage = @block_code_mapping[block_code]
 
     if is_nil(garage) do
-      Logger.warn("#{__MODULE__}: Unrecognized block code: #{inspect(block_code)}")
+      Logger.warning("Unrecognized block code: #{inspect(block_code)}")
     end
 
     garage

@@ -1,4 +1,6 @@
 defmodule Helpers do
+  @moduledoc false
+
   @doc """
   Apply a function to all of the values in a map
 

@@ -1,5 +1,5 @@
-.m-picker-container {
-  background-color: $color-bg-medium;
+.c-picker-container {
+  background-color: $color-gray-200;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -10,30 +10,52 @@
   position: absolute;
   top: inherit;
   transition: $transition-slide;
-  width: $picker-width-narrow;
-  z-index: 1;
+  width: $route-picker-width;
+  z-index: 100;
 
-  &--wide {
-    width: $picker-width-wide;
+  & > :not(:last-child) {
+    margin-bottom: 1rem;
   }
 
-  &.visible {
+  &--visible {
     left: 0;
   }
 
-  &.hidden {
-    left: -$picker-width-narrow;
-  }
-
-  &--wide.hidden {
-    left: -$picker-width-wide;
+  &--hidden {
+    left: -$route-picker-width;
   }
 }
 
-.m-picker-container--narrow .c-drawer-tab {
-  left: $picker-width-narrow;
+.c-picker-container .c-drawer-tab {
+  left: 100%;
+  background-color: $color-gray-200;
 }
 
-.m-picker-container--wide .c-drawer-tab {
-  left: $picker-width-wide;
+.c-picker-container-backdrop {
+  display: none;
+}
+
+@media screen and (max-width: map-get($old-breakpoints, "mobile-max-width")) {
+  .c-picker-container {
+    --picker-container-width: min(
+      #{$mobile-route-picker-width},
+      calc(100% - #{$drawer-tab-width})
+    );
+    width: var(--picker-container-width);
+
+    &--hidden {
+      left: calc(-1 * var(--picker-container-width));
+    }
+  }
+
+  .c-picker-container-backdrop {
+    display: initial;
+    z-index: 90;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(88, 88, 88, 0.23);
+  }
 }

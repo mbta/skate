@@ -1,8 +1,9 @@
 defmodule SkateWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :skate
 
   socket "/socket", SkateWeb.UserSocket,
-    websocket: [check_origin: Application.get_env(:skate, :websocket_check_origin, false)],
+    websocket: [check_origin: Application.compile_env(:skate, :websocket_check_origin, false)],
     longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
@@ -13,7 +14,7 @@ defmodule SkateWeb.Endpoint do
     at: "/",
     from: :skate,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: SkateWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -24,13 +25,15 @@ defmodule SkateWeb.Endpoint do
   end
 
   plug Plug.RequestId
-  plug Plug.Logger
+
+  plug Logster.Plugs.Logger
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
     json_decoder: Phoenix.json_library()
 
+  plug Sentry.PlugContext
   plug Plug.MethodOverride
   plug Plug.Head
 
@@ -43,19 +46,4 @@ defmodule SkateWeb.Endpoint do
     signing_salt: "jkUgGkwy"
 
   plug SkateWeb.Router
-
-  # callback for runtime configuration
-  def init(:supervisor, config) do
-    secret_key_base = Application.get_env(:skate, :secret_key_base)
-
-    config =
-      if secret_key_base do
-        Keyword.put(config, :secret_key_base, secret_key_base)
-      else
-        config[:secret_key_base] || raise "No SECRET_KEY_BASE ENV var!"
-        config
-      end
-
-    {:ok, config}
-  end
 end

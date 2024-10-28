@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NotificationCard renders activated detour notification if user is in DetoursList group 1`] = `
+<body>
+  <div>
+    <div
+      aria-labelledby="card-label-:rh:"
+      class="c-card c-card--kiwi"
+    >
+      <button
+        class="c-card__left"
+      >
+        <div
+          class="c-card__left-content"
+        >
+          <div
+            class="c-card__top-row"
+          >
+            <div
+              class="c-card__title"
+              id="card-label-:rh:"
+            >
+              <span>
+                <svg />
+              </span>
+              Detour - Active
+            </div>
+            <div
+              class="c-card__time"
+            >
+              0 min
+            </div>
+          </div>
+          <div
+            class="c-card__contents"
+          >
+            <div
+              class="c-card__body"
+            >
+              <div
+                class="d-flex flex-row gap-2"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  4
+                </div>
+                <div>
+                  <div
+                    class="fw-semibold"
+                  >
+                    Headsign 4
+                  </div>
+                  <div
+                    class="fw-normal text-body-secondary"
+                  >
+                    From 
+                    Origin station 4
+                  </div>
+                  <div
+                    class="fw-normal"
+                  >
+                    Outbound
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`NotificationCard renders detour deactivated notification if user is in DetoursList group 1`] = `
+<body>
+  <div>
+    <div
+      aria-labelledby="card-label-:ri:"
+      class="c-card c-card--kiwi"
+    >
+      <button
+        class="c-card__left"
+      >
+        <div
+          class="c-card__left-content"
+        >
+          <div
+            class="c-card__top-row"
+          >
+            <div
+              class="c-card__title"
+              id="card-label-:ri:"
+            >
+              <span>
+                <svg />
+              </span>
+              Detour - Closed
+            </div>
+            <div
+              class="c-card__time"
+            >
+              0 min
+            </div>
+          </div>
+          <div
+            class="c-card__contents"
+          >
+            <div
+              class="c-card__body"
+            >
+              <div
+                class="d-flex flex-row gap-2"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  1
+                </div>
+                <div>
+                  <div
+                    class="fw-semibold"
+                  >
+                    Headsign 1
+                  </div>
+                  <div
+                    class="fw-normal text-body-secondary"
+                  >
+                    From 
+                    Origin station 1
+                  </div>
+                  <div
+                    class="fw-normal"
+                  >
+                    Outbound
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</body>
+`;

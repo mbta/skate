@@ -1,2 +1,6 @@
-export const className = (classes: (string | null | undefined)[]): string =>
-  classes.filter((c) => c && c !== "").join(" ")
+type RemovedTypes = null | undefined | false
+export const joinTruthy = (strings: (string | RemovedTypes)[], joiner = " ") =>
+  strings.filter(Boolean).join(joiner)
+
+export const joinClasses = (classes: (string | RemovedTypes)[]): string =>
+  joinTruthy(classes, " ")

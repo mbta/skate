@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.Route do
+  @moduledoc false
+
   alias Schedule.{Csv, Data, Garage}
 
   @type id :: Schedule.Route.id()
@@ -10,6 +12,8 @@ defmodule Schedule.Gtfs.Route do
           name: String.t(),
           garages: MapSet.t(Garage.id())
         }
+
+  @type route_type :: number()
 
   @type direction_names :: %{
           0 => String.t(),
@@ -25,11 +29,16 @@ defmodule Schedule.Gtfs.Route do
 
   @derive Jason.Encoder
 
+  @bus_route_type 3
+
+  @subway_route_types [0, 1]
+
   defstruct [
     :id,
     :description,
     :direction_names,
     :name,
+    type: @bus_route_type,
     garages: MapSet.new([])
   ]
 
@@ -38,6 +47,7 @@ defmodule Schedule.Gtfs.Route do
     id = row["route_id"]
     description = row["route_desc"]
     route_directions = Map.get(directions_by_route_id, id)
+    type = String.to_integer(row["route_type"])
 
     name = name(row)
 
@@ -48,8 +58,21 @@ defmodule Schedule.Gtfs.Route do
         0 => route_directions[0] && route_directions[0].direction_name,
         1 => route_directions[1] && route_directions[1].direction_name
       },
+      type: type,
       name: name
     }
+  end
+
+  @spec row_has_route_type?(Csv.row()) :: boolean()
+  @doc """
+  Verify that "route_type" exists on the row, especially to prevent issues while testing
+  """
+  def row_has_route_type?(%{"route_type" => route_id}) when not is_nil(route_id) do
+    true
+  end
+
+  def row_has_route_type?(_route_row) do
+    raise ArgumentError, message: "route_type is required on route rows"
   end
 
   @spec name(Csv.row()) :: String.t()
@@ -61,17 +84,22 @@ defmodule Schedule.Gtfs.Route do
     short_name
   end
 
-  @spec bus_route_row?(Csv.row()) :: boolean
-  def bus_route_row?(row) do
-    # Verify that "route_type" exists on the row, especially to prevent issues while testing
-    if row["route_type"] == nil do
-      raise ArgumentError, message: "route_type is required on route rows"
-    end
-
-    row["route_type"] == "3"
+  @spec bus_route_mbta?(t()) :: boolean
+  @doc """
+  Is this an mbta bus route?
+  """
+  def bus_route_mbta?(route) do
+    # Verify that route number is not one of the private carriers: 710, 712, 713, 714, 716
+    route.type == @bus_route_type && route.id not in ["710", "712", "713", "714", "716"]
   end
 
   @spec shuttle_route?(t) :: boolean
   def shuttle_route?(%__MODULE__{description: "Rail Replacement Bus"}), do: true
   def shuttle_route?(%__MODULE__{}), do: false
+
+  @spec subway_route?(t) :: boolean
+  def subway_route?(%__MODULE__{type: route_type}) when route_type in @subway_route_types,
+    do: true
+
+  def subway_route?(_), do: false
 end

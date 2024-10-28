@@ -1,0 +1,27 @@
+$street-view-button-background-color: $color-eggplant-700;
+$street-view-button-text-color: $color-eggplant-50;
+
+.c-street-view-button {
+  @include button-primary;
+  @include button-icon(1rem);
+  /* Layout */
+  /** push button to newline */
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  /** Prevent the button from expanding to available space */
+  width: fit-content;
+
+  /* Text Decoration */
+  text-decoration: none;
+
+  span svg {
+    stroke: none;
+  }
+}
+
+/* Override `.leaflet-container a` */
+.leaflet-container .c-street-view-button {
+  color: $street-view-button-text-color;
+}

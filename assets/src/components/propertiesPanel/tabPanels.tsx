@@ -1,11 +1,11 @@
 import React from "react"
-import { VehicleOrGhost } from "../../realtime"
+import { VehicleInScheduledService, Ghost } from "../../realtime"
 import { MinischeduleBlock, MinischeduleRun } from "./minischedule"
 
 export type TabMode = "status" | "run" | "block"
 
 interface Props {
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
   statusContent: JSX.Element
   mode: TabMode
 }
@@ -26,7 +26,7 @@ const activePanelContent = ({ mode, statusContent, vehicleOrGhost }: Props) => {
 }
 
 const TabPanels = (props: Props) => (
-  <div className="m-tabs__tab-panel">{activePanelContent(props)}</div>
+  <div className="c-tabs__tab-panel">{activePanelContent(props)}</div>
 )
 
 export default TabPanels

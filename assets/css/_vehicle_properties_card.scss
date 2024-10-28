@@ -1,0 +1,107 @@
+// #region Vehicle Properties Card
+.c-vehicle-properties-card {
+  box-sizing: border-box;
+
+  *:before,
+  *:after,
+  * {
+    box-sizing: inherit;
+  }
+}
+
+.c-vehicle-properties-card {
+  font-family: $font-family;
+
+  // Card Look
+  border-radius: 8px;
+  background-color: $white;
+  border: 1px solid $color-gray-400;
+  // Clip children to keep rounded edges for background color
+  overflow: clip;
+
+  // all children expand to full width of card
+  > * {
+    width: 100%;
+  }
+}
+
+.c-vehicle-properties-card__title-bar {
+  background-color: $color-gray-100;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c-vehicle-properties-card__body {
+  display: flex;
+  flex-flow: column;
+  gap: 10px;
+}
+
+// #region Vehicle Properties Card vehicle location display
+.c-vehicle-properties-card__location-info > :not(:first-child) {
+  margin-top: 10px;
+}
+// #endregion
+
+// #region Padding quirks
+// All children have a 16px padding around the card
+.c-vehicle-properties-card > * {
+  padding-inline: 16px;
+}
+
+.c-vehicle-properties-card__title-bar {
+  padding: 16px;
+}
+
+.c-vehicle-properties-card__summary {
+  padding-top: 16px;
+}
+
+.c-vehicle-properties-card__summary .c-vehicle-icon__label-background {
+  fill: $white;
+}
+
+.c-vehicle-properties-card__body {
+  padding: 16px;
+}
+// #endregion
+// #endregion
+
+// #region Visual Information group Section
+.c-vehicle-properties-card__info-section {
+  width: 100%;
+  padding: 1rem;
+
+  border: 1px solid $color-gray-300;
+  border-radius: 8px;
+}
+// #endregion
+
+// #region Vehicle Nearest Intersection Display
+.c-current-location {
+  line-height: 1;
+
+  .c-current-location__label {
+    margin-bottom: 8px;
+  }
+
+  .c-current-location__label,
+  .c-current-location__value {
+    display: block;
+  }
+}
+// #endregion
+
+// #region Vehicle Work Information
+.c-vehicle-work-info {
+  line-height: 1.25;
+}
+
+.c-vehicle-work-info th {
+  padding-right: 36px;
+  text-align: start;
+  vertical-align: top;
+}
+// #endregion

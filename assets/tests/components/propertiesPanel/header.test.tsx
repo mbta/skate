@@ -1,6 +1,8 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
+import { render } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
 import Header from "../../../src/components/propertiesPanel/header"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
@@ -9,18 +11,24 @@ import {
   flipLadderDirectionForRoute,
   LadderDirections,
 } from "../../../src/models/ladderDirection"
-import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../../src/realtime"
+import {
+  Ghost,
+  Vehicle,
+  VehicleInScheduledService,
+} from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
-import { deselectVehicle, initialState } from "../../../src/state"
+import { initialState } from "../../../src/state"
+import { vehicleFactory } from "../../factories/vehicle"
 import ghostFactory from "../../factories/ghost"
 import routeFactory from "../../factories/route"
+import routeTabFactory from "../../factories/routeTab"
+import userEvent from "@testing-library/user-event"
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 const setTabMode = jest.fn()
 
-const vehicle: Vehicle = {
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -38,11 +46,8 @@ const vehicle: Vehicle = {
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: null,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,
@@ -76,13 +81,18 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 describe("Header", () => {
   test("renders a header", () => {
     const tree = renderer
       .create(
-        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
+        <Header
+          vehicle={vehicle}
+          tabMode={"status"}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
+        />
       )
       .toJSON()
 
@@ -100,7 +110,8 @@ describe("Header", () => {
           <Header
             vehicle={vehicle}
             tabMode={"status"}
-            setTabMode={setTabMode}
+            onChangeTabMode={setTabMode}
+            onClosePanel={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -110,7 +121,7 @@ describe("Header", () => {
   })
 
   test("renders for an early vehicle", () => {
-    const earlyVehicle: Vehicle = {
+    const earlyVehicle: VehicleInScheduledService = {
       ...vehicle,
       scheduleAdherenceSecs: -61,
     }
@@ -119,7 +130,8 @@ describe("Header", () => {
         <Header
           vehicle={earlyVehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -128,7 +140,7 @@ describe("Header", () => {
   })
 
   test("renders for a late vehicle", () => {
-    const earlyVehicle: Vehicle = {
+    const earlyVehicle: VehicleInScheduledService = {
       ...vehicle,
       scheduleAdherenceSecs: 361,
     }
@@ -137,7 +149,8 @@ describe("Header", () => {
         <Header
           vehicle={earlyVehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -146,7 +159,7 @@ describe("Header", () => {
   })
 
   test("renders for an off-course vehicle", () => {
-    const offCourseVehicle: Vehicle = {
+    const offCourseVehicle: VehicleInScheduledService = {
       ...vehicle,
       isOffCourse: true,
     }
@@ -156,26 +169,8 @@ describe("Header", () => {
         <Header
           vehicle={offCourseVehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
-        />
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders for a headway-based vehicle", () => {
-    const headwayVehicle: Vehicle = {
-      ...vehicle,
-      headwaySpacing: HeadwaySpacing.Ok,
-    }
-
-    const tree = renderer
-      .create(
-        <Header
-          vehicle={headwayVehicle}
-          tabMode={"status"}
-          setTabMode={setTabMode}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -184,7 +179,7 @@ describe("Header", () => {
   })
 
   test("renders for a shuttle", () => {
-    const shuttleVehicle: Vehicle = {
+    const shuttleVehicle: VehicleInScheduledService = {
       ...vehicle,
       isShuttle: true,
     }
@@ -194,7 +189,8 @@ describe("Header", () => {
         <Header
           vehicle={shuttleVehicle}
           tabMode={"status"}
-          setTabMode={setTabMode}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
         />
       )
       .toJSON()
@@ -224,42 +220,47 @@ describe("Header", () => {
 
     const tree = renderer
       .create(
-        <Header vehicle={ghost} tabMode={"status"} setTabMode={setTabMode} />
+        <Header
+          vehicle={ghost}
+          tabMode={"status"}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
+        />
       )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
-  test("renders pointing sideways for a laying over vehicle", () => {
-    const rightFacing = mount(
+  test("renders pointing right for a laying over vehicle", () => {
+    const result = render(
       <Header
         vehicle={{ ...vehicle, directionId: 0, routeStatus: "laying_over" }}
         tabMode={"status"}
-        setTabMode={setTabMode}
+        onChangeTabMode={setTabMode}
+        onClosePanel={jest.fn()}
       />
     )
-    const leftFacing = mount(
+    expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
+      "transform",
+      expect.stringContaining("rotate(90)")
+    )
+  })
+
+  test("renders pointing left for a laying over vehicle", () => {
+    const result = render(
       <Header
         vehicle={{ ...vehicle, directionId: 1, routeStatus: "laying_over" }}
         tabMode={"status"}
-        setTabMode={setTabMode}
+        onChangeTabMode={setTabMode}
+        onClosePanel={jest.fn()}
       />
     )
 
-    const rightFacingTransform = rightFacing
-      .find(".m-vehicle-icon")
-      .find("path")
-      .getDOMNode()
-      .getAttribute("transform")
-    expect(rightFacingTransform).toEqual(expect.stringContaining("rotate(90)"))
-
-    const leftFacingTransform = leftFacing
-      .find(".m-vehicle-icon")
-      .find("path")
-      .getDOMNode()
-      .getAttribute("transform")
-    expect(leftFacingTransform).toEqual(expect.stringContaining("rotate(270)"))
+    expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
+      "transform",
+      expect.stringContaining("rotate(270)")
+    )
   })
 
   test("renders a vehicle that's moving down on the ladder as pointing down", () => {
@@ -268,21 +269,29 @@ describe("Header", () => {
       vehicle.routeId!
     )
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider
-        state={{ ...initialState, ladderDirections }}
+        state={{
+          ...initialState,
+          routeTabs: [
+            routeTabFactory.build({ isCurrentTab: true, ladderDirections }),
+          ],
+        }}
         dispatch={jest.fn()}
       >
-        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
+        <Header
+          vehicle={vehicle}
+          tabMode={"status"}
+          onChangeTabMode={setTabMode}
+          onClosePanel={jest.fn()}
+        />
       </StateDispatchProvider>
     )
 
-    const transform = wrapper
-      .find(".m-vehicle-icon")
-      .find("path")
-      .getDOMNode()
-      .getAttribute("transform")
-    expect(transform).toEqual(expect.stringContaining("rotate(180)"))
+    expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
+      "transform",
+      expect.stringContaining("rotate(180)")
+    )
   })
 
   test("renders a shuttle triangle as pointing up", () => {
@@ -292,34 +301,36 @@ describe("Header", () => {
       routeId: null,
       tripId: null,
     }
-    const wrapper = mount(
+    const result = render(
       <Header
         vehicle={shuttleVehicle}
         tabMode={"status"}
-        setTabMode={setTabMode}
+        onChangeTabMode={setTabMode}
+        onClosePanel={jest.fn()}
       />
     )
 
-    const transform = wrapper
-      .find(".m-vehicle-icon")
-      .find("path")
-      .getDOMNode()
-      .getAttribute("transform")
-    expect(transform).toEqual(expect.stringContaining("rotate(0)"))
+    expect(result.getByTestId("vehicle-triangle")).toHaveAttribute(
+      "transform",
+      expect.stringContaining("rotate(0)")
+    )
   })
 
-  test("clicking the X close button deselects the vehicle", () => {
-    const mockDispatch = jest.fn()
+  test("clicking the X close button deselects the vehicle", async () => {
+    const mockClosePanel = jest.fn()
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <Header vehicle={vehicle} tabMode={"status"} setTabMode={setTabMode} />
-      </StateDispatchProvider>
+    const user = userEvent.setup()
+    const result = render(
+      <Header
+        vehicle={vehicle}
+        tabMode={"status"}
+        onChangeTabMode={setTabMode}
+        onClosePanel={mockClosePanel}
+      />
     )
-    wrapper
-      .find(".m-properties-panel__header .m-close-button")
-      .simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(deselectVehicle())
+    await user.click(result.getByRole("button", { name: /close/i }))
+
+    expect(mockClosePanel).toHaveBeenCalled()
   })
 })

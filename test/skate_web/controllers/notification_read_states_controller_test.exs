@@ -1,27 +1,32 @@
 defmodule SkateWeb.NotificationReadStatesControllerTest do
   use SkateWeb.ConnCase
-  use Skate.DataCase
-
+  import Skate.Factory
   alias Notifications.Notification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Skate.Settings.RouteSettings
+  alias Skate.Settings.RouteTab
   alias Skate.Settings.User
 
   import Ecto.Query
+
+  def build_test_tab() do
+    build(:route_tab, %{
+      preset_name: "some routes",
+      selected_route_ids: ["1", "2"]
+    })
+  end
 
   describe "PUT /api/notification_read_states" do
     @tag :authenticated
     test "sets read state for a batch of notifications for the user", %{
       conn: conn,
-      user: username
+      user: user
     } do
-      user = User.get_or_create(username)
-      RouteSettings.get_or_create(username)
-      RouteSettings.set(username, selected_route_ids: ["1", "2"])
+      route_tab1 = build_test_tab()
+      RouteTab.update_all_for_user!(user.id, [route_tab1])
 
-      User.get_or_create("otherguy")
-      RouteSettings.get_or_create("otherguy")
-      RouteSettings.set("otherguy", selected_route_ids: ["1", "2"])
+      %{id: other_user_id} = User.upsert("otheruser", "other@email.com")
+      route_tab2 = build_test_tab()
+      RouteTab.update_all_for_user!(other_user_id, [route_tab2])
 
       user_notification1 =
         Notification.get_or_create_from_block_waiver(%{
@@ -60,8 +65,7 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
              ) == 4
 
       conn =
-        conn
-        |> put("/api/notification_read_state", %{
+        put(conn, "/api/notification_read_state", %{
           "new_state" => "read",
           "notification_ids" => "#{user_notification1.id}"
         })
@@ -83,8 +87,7 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
              ) == {user_notification1.id, user.id}
 
       conn =
-        conn
-        |> put("/api/notification_read_state", %{
+        put(conn, "/api/notification_read_state", %{
           "new_state" => "read",
           "notification_ids" => "#{user_notification2.id}"
         })
@@ -99,24 +102,21 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
              ) == 2
 
       read_notification_user_ids =
-        Skate.Repo.all(
-          from(nu in DbNotificationUser,
-            select: {nu.notification_id, nu.user_id},
-            where: nu.state == ^read_state
-          )
+        from(nu in DbNotificationUser,
+          select: {nu.notification_id, nu.user_id},
+          where: nu.state == ^read_state
         )
+        |> Skate.Repo.all()
         |> Enum.sort()
 
       assert read_notification_user_ids ==
-               [
+               Enum.sort([
                  {user_notification1.id, user.id},
                  {user_notification2.id, user.id}
-               ]
-               |> Enum.sort()
+               ])
 
       conn =
-        conn
-        |> put("/api/notification_read_state", %{
+        put(conn, "/api/notification_read_state", %{
           "new_state" => "unread",
           "notification_ids" => "#{user_notification1.id},#{user_notification2.id}"
         })

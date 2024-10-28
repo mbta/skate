@@ -2,31 +2,60 @@
 
 exports[`GhostPropertiesPanel renders 1`] = `
 <div
-  className="m-ghost-properties-panel"
+  className="c-ghost-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
+            className="c-vehicle-icon c-vehicle-icon--large ghost early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -35,7 +64,7 @@ exports[`GhostPropertiesPanel renders 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -47,18 +76,18 @@ exports[`GhostPropertiesPanel renders 1`] = `
               transform="scale(0.7) translate(-24,-23)"
             >
               <path
-                className="m-vehicle-icon__ghost-highlight"
+                className="c-vehicle-icon__ghost-highlight"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-join="round"
+                strokeLinejoin="round"
               />
               <path
-                className="m-vehicle-icon__ghost-body"
+                className="c-vehicle-icon__ghost-body"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-join="round"
+                strokeLinejoin="round"
               />
             </g>
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -70,188 +99,203 @@ exports[`GhostPropertiesPanel renders 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         >
           Outbound
         </div>
-        <div
-          className="m-route-variant-name"
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           headsign
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            headsign
+          </output>
+        </output>
       </div>
       <div
-        className="m-properties-panel__close-ping"
-      >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
+        className="c-properties-panel__ping-container"
+      />
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-ghost-properties-panel__no-waiver-banner"
+      className="c-ghost-properties-panel__notes"
     >
       <div
-        className="m-ghost-properties-panel__no-waiver-banner-header"
+        aria-labelledby="card-label-:r0:"
+        className="c-card c-card--lemon c-block-waiver-banner c-block-waiver-banner--unknown c-card--no-focus-or-hover c-card--inactive"
       >
-        <span
-          className="m-ghost-properties-panel__no-waiver-banner-alert-icon"
-        >
-          <svg
-            className="c-icon-alert-circle"
-            viewBox="-3 -3 54 54"
-          >
-            <g
-              className="c-icon-alert-circle--highlighted"
-            >
-              <circle
-                className="c-icon-alert-circle__outline"
-                cx="24"
-                cy="24"
-                r="27"
-              />
-              <circle
-                className="c-icon-alert-circle__fill"
-                cx="24"
-                cy="24"
-                r="22.59"
-              />
-              <g
-                className="c-icon-alert-circle__exclamation-point"
-              >
-                <path
-                  d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                />
-                <path
-                  d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                />
-              </g>
-            </g>
-          </svg>
-        </span>
         <div
-          className="m-ghost-properties-panel__no-waiver-banner-title"
+          className="c-card__left"
         >
-          Unknown Ghost Bus - No Dispatcher Note
+          <div
+            className="c-card__left-content"
+          >
+            <div
+              className="c-card__top-row"
+            >
+              <div
+                className="c-card__title"
+                id="card-label-:r0:"
+              >
+                <h3
+                  className="c-block-waiver-banner__title"
+                >
+                  Unknown Ghost Bus
+                </h3>
+                <div
+                  className="c-block-waiver-banner__badge c-block-waiver-banner__badge--unknown"
+                >
+                  <span
+                    dangerouslySetInnerHTML={
+                      {
+                        "__html": "<svg/>",
+                      }
+                    }
+                  />
+                  Ghost
+                </div>
+              </div>
+            </div>
+            <div
+              className="c-card__contents"
+            >
+              <div
+                className="c-card__body"
+              >
+                A ghost bus or dropped trip has been automatically detected on this route but no reason has been logged yet. Once a dispatcher generates a note, it will appear here.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      A ghost bus or dropped trip has been automatically detected on this route but no reason has been logged yet. Once a dispatcher generates a note, it will appear here.
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               123-0123
             </td>
@@ -265,31 +309,60 @@ exports[`GhostPropertiesPanel renders 1`] = `
 
 exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
 <div
-  className="m-ghost-properties-panel"
+  className="c-ghost-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
+            className="c-vehicle-icon c-vehicle-icon--large ghost early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -298,7 +371,7 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -310,18 +383,18 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
               transform="scale(0.7) translate(-24,-23)"
             >
               <path
-                className="m-vehicle-icon__ghost-highlight"
+                className="c-vehicle-icon__ghost-highlight"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-join="round"
+                strokeLinejoin="round"
               />
               <path
-                className="m-vehicle-icon__ghost-body"
+                className="c-vehicle-icon__ghost-body"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-join="round"
+                strokeLinejoin="round"
               />
             </g>
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -333,234 +406,249 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
+        />
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          
-        </div>
-        <div
-          className="m-route-variant-name"
-        >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           headsign
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            headsign
+          </output>
+        </output>
       </div>
       <div
-        className="m-properties-panel__close-ping"
-      >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
+        className="c-properties-panel__ping-container"
+      />
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-block-waiver-list"
+      className="c-ghost-properties-panel__notes"
     >
       <div
-        className="m-block-waiver-banner m-block-waiver-banner--past"
+        className="c-block-waiver-list"
       >
         <div
-          className="m-block-waiver-banner__header"
+          aria-labelledby="card-label-:r2:"
+          className="c-card c-card--kiwi c-block-waiver-banner c-block-waiver-banner--past c-card--no-focus-or-hover c-card--inactive"
         >
-          <span
-            className="m-block-waiver-banner__alert-icon"
-          >
-            <svg
-              className="c-icon-alert-circle"
-              viewBox="-3 -3 54 54"
-            >
-              <g
-                className="c-icon-alert-circle--grey-on-grey"
-              >
-                <circle
-                  className="c-icon-alert-circle__outline"
-                  cx="24"
-                  cy="24"
-                  r="27"
-                />
-                <circle
-                  className="c-icon-alert-circle__fill"
-                  cx="24"
-                  cy="24"
-                  r="22.59"
-                />
-                <g
-                  className="c-icon-alert-circle__exclamation-point"
-                >
-                  <path
-                    d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                  />
-                  <path
-                    d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                  />
-                </g>
-              </g>
-            </svg>
-          </span>
           <div
-            className="m-block-waiver-banner__title"
+            className="c-card__left"
           >
-            Dispatcher Note - 
-            Past
+            <div
+              className="c-card__left-content"
+            >
+              <div
+                className="c-card__top-row"
+              >
+                <div
+                  className="c-card__title"
+                  id="card-label-:r2:"
+                >
+                  <h3
+                    className="c-block-waiver-banner__title"
+                  >
+                    Dispatcher Note
+                  </h3>
+                  <div
+                    className="c-block-waiver-banner__badge c-block-waiver-banner__badge--past"
+                  >
+                    Past
+                  </div>
+                </div>
+              </div>
+              <div
+                className="c-card__contents"
+              >
+                <div
+                  className="c-card__body"
+                >
+                  <div
+                    className="c-properties-list"
+                  >
+                    <table
+                      className="c-properties-list__table"
+                    >
+                      <tbody>
+                        <tr
+                          className="c-properties-list__property "
+                        >
+                          <td
+                            className="c-properties-list__property-label"
+                          >
+                            Reason
+                          </td>
+                          <td
+                            className="c-properties-list__property-value"
+                          >
+                            Block Waiver
+                          </td>
+                        </tr>
+                        <tr
+                          className="c-properties-list__property "
+                        >
+                          <td
+                            className="c-properties-list__property-label"
+                          >
+                            Start Time
+                          </td>
+                          <td
+                            className="c-properties-list__property-value"
+                          >
+                            5:05 AM
+                          </td>
+                        </tr>
+                        <tr
+                          className="c-properties-list__property "
+                        >
+                          <td
+                            className="c-properties-list__property-label"
+                          >
+                            End Time
+                          </td>
+                          <td
+                            className="c-properties-list__property-value"
+                          >
+                            12:38 PM
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <table
-          className="m-block-waiver-banner__details"
-        >
-          <tbody>
-            <tr>
-              <td
-                className="m-block-waiver-banner__detail-label"
-              >
-                Reason
-              </td>
-              <td
-                className="m-block-waiver-banner__detail-value"
-              >
-                Block Waiver
-              </td>
-            </tr>
-            <tr>
-              <td
-                className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--start-time"
-              >
-                Start Time
-              </td>
-              <td
-                className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--start-time"
-              >
-                5:05 AM
-              </td>
-            </tr>
-            <tr>
-              <td
-                className="m-block-waiver-banner__detail-label m-block-waiver-banner__detail-label--end-time"
-              >
-                End Time
-              </td>
-              <td
-                className="m-block-waiver-banner__detail-value m-block-waiver-banner__detail-value--end-time"
-              >
-                12:38 PM
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               123-0123
             </td>
@@ -574,31 +662,60 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
 
 exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
 <div
-  className="m-ghost-properties-panel"
+  className="c-ghost-properties-panel"
 >
   <div
-    className="m-properties-panel__header-wrapper"
+    className="c-properties-panel__header-wrapper"
   >
     <div
-      className="m-properties-panel__header"
+      className="c-view-header"
+    >
+      <h2
+        className="c-view-header__title"
+      >
+        Vehicles
+      </h2>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--x-large c-close-button--light"
+        onClick={[MockFunction]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </div>
+    <div
+      className="c-properties-panel__header"
     >
       <div
-        className="m-properties-panel__label"
+        className="c-properties-panel__label"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 64,
               "width": 64,
             }
           }
           viewBox="-32 -20 64 64"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
+            className="c-vehicle-icon c-vehicle-icon--large ghost early-red"
           >
             <rect
-              className="m-vehicle-icon__label-background"
+              className="c-vehicle-icon__label-background"
               height={24}
               rx={12}
               ry={12}
@@ -607,7 +724,7 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
               y={19}
             />
             <text
-              className="m-vehicle-icon__label m-vehicle-icon__label--normal"
+              className="c-vehicle-icon__label c-vehicle-icon__label--normal"
               dominantBaseline="central"
               textAnchor="middle"
               x="0"
@@ -619,18 +736,18 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
               transform="scale(0.7) translate(-24,-23)"
             >
               <path
-                className="m-vehicle-icon__ghost-highlight"
+                className="c-vehicle-icon__ghost-highlight"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-join="round"
+                strokeLinejoin="round"
               />
               <path
-                className="m-vehicle-icon__ghost-body"
+                className="c-vehicle-icon__ghost-body"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-join="round"
+                strokeLinejoin="round"
               />
             </g>
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -642,188 +759,203 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
         </svg>
       </div>
       <div
-        className="m-properties-panel__variant"
+        className="c-properties-panel__variant"
       >
         <div
-          className="m-properties-panel__inbound-outbound"
+          className="c-properties-panel__inbound-outbound"
         >
           Outbound
         </div>
-        <div
-          className="m-route-variant-name"
+        <output
+          aria-label="Route Variant Name"
+          className="c-route-variant-name"
         >
-          <span
-            className="m-route-variant-name__route-id"
+          <output
+            aria-label="Route & Variant"
+            className="c-route-variant-name__route-id"
           >
             39_X
+          </output>
+          <span>
+             
           </span>
-           headsign
-        </div>
+          <output
+            aria-label="Headsign"
+            className="c-route-variant-name__headsign"
+          >
+            headsign
+          </output>
+        </output>
       </div>
       <div
-        className="m-properties-panel__close-ping"
-      >
-        <button
-          className="m-close-button"
-          onClick={[Function]}
-        >
-          <span
-            className=""
-            dangerouslySetInnerHTML={
-              Object {
-                "__html": "SVG",
-              }
-            }
-          />
-        </button>
-      </div>
+        className="c-properties-panel__ping-container"
+      />
     </div>
     <ul
-      className="m-tabs__tab-list"
+      className="c-tabs__tab-list"
+      role="tablist"
     >
       <li
-        className="m-tabs__tab m-tabs__tab--selected"
-        onClick={[Function]}
+        className="c-tabs__tab c-tabs__tab--selected"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={true}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Status
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Status
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Run
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Run
+        </button>
       </li>
       <li
-        className="m-tabs__tab"
-        onClick={[Function]}
+        className="c-tabs__tab"
       >
-        <svg
-          className="m-tabs__tab-status-icon"
-          height="14"
-          width="14"
+        <button
+          aria-selected={false}
+          onClick={[Function]}
+          role="tab"
         >
-          <circle
-            className="m-tabs__tab-status-icon-outer-circle"
-            cx="7"
-            cy="7"
-            r="6"
-          />
-          <circle
-            className="m-tabs__tab-status-icon-inner-circle"
-            cx="7"
-            cy="7"
-            r="4"
-          />
-        </svg>
-        Block
+          <svg
+            className="c-tabs__tab-status-icon"
+            height="14"
+            width="14"
+          >
+            <circle
+              className="c-tabs__tab-status-icon-outer-circle"
+              cx="7"
+              cy="7"
+              r="6"
+            />
+            <circle
+              className="c-tabs__tab-status-icon-inner-circle"
+              cx="7"
+              cy="7"
+              r="4"
+            />
+          </svg>
+          Block
+        </button>
       </li>
     </ul>
   </div>
   <div
-    className="m-tabs__tab-panel"
+    className="c-tabs__tab-panel"
   >
     <div
-      className="m-ghost-properties-panel__no-waiver-banner"
+      className="c-ghost-properties-panel__notes"
     >
       <div
-        className="m-ghost-properties-panel__no-waiver-banner-header"
+        aria-labelledby="card-label-:r1:"
+        className="c-card c-card--lemon c-block-waiver-banner c-block-waiver-banner--unknown c-card--no-focus-or-hover c-card--inactive"
       >
-        <span
-          className="m-ghost-properties-panel__no-waiver-banner-alert-icon"
-        >
-          <svg
-            className="c-icon-alert-circle"
-            viewBox="-3 -3 54 54"
-          >
-            <g
-              className="c-icon-alert-circle--highlighted"
-            >
-              <circle
-                className="c-icon-alert-circle__outline"
-                cx="24"
-                cy="24"
-                r="27"
-              />
-              <circle
-                className="c-icon-alert-circle__fill"
-                cx="24"
-                cy="24"
-                r="22.59"
-              />
-              <g
-                className="c-icon-alert-circle__exclamation-point"
-              >
-                <path
-                  d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                />
-                <path
-                  d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                />
-              </g>
-            </g>
-          </svg>
-        </span>
         <div
-          className="m-ghost-properties-panel__no-waiver-banner-title"
+          className="c-card__left"
         >
-          Unknown Ghost Bus - No Dispatcher Note
+          <div
+            className="c-card__left-content"
+          >
+            <div
+              className="c-card__top-row"
+            >
+              <div
+                className="c-card__title"
+                id="card-label-:r1:"
+              >
+                <h3
+                  className="c-block-waiver-banner__title"
+                >
+                  Unknown Ghost Bus
+                </h3>
+                <div
+                  className="c-block-waiver-banner__badge c-block-waiver-banner__badge--unknown"
+                >
+                  <span
+                    dangerouslySetInnerHTML={
+                      {
+                        "__html": "<svg/>",
+                      }
+                    }
+                  />
+                  Ghost
+                </div>
+              </div>
+            </div>
+            <div
+              className="c-card__contents"
+            >
+              <div
+                className="c-card__body"
+              >
+                A ghost bus or dropped trip has been automatically detected on this route but no reason has been logged yet. Once a dispatcher generates a note, it will appear here.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      A ghost bus or dropped trip has been automatically detected on this route but no reason has been logged yet. Once a dispatcher generates a note, it will appear here.
     </div>
     <div
-      className="m-properties-list"
+      className="c-properties-list"
     >
       <table
-        className="m-properties-list__table"
+        className="c-properties-list__table"
       >
         <tbody>
           <tr
-            className="m-properties-list__property "
+            className="c-properties-list__property "
           >
             <td
-              className="m-properties-list__property-label"
+              className="c-properties-list__property-label"
             >
               Run
             </td>
             <td
-              className="m-properties-list__property-value"
+              className="c-properties-list__property-value"
             >
               Not Available
             </td>

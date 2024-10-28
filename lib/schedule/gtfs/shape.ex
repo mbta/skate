@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.Shape do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.Gtfs.Shape.Point
 
@@ -44,6 +46,8 @@ defmodule Schedule.Gtfs.Shape do
 end
 
 defmodule Schedule.Gtfs.Shape.Point do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.Gtfs.Shape
 
@@ -78,5 +82,10 @@ defmodule Schedule.Gtfs.Shape.Point do
       lon: String.to_float(row["shape_pt_lon"]),
       sequence: String.to_integer(row["shape_pt_sequence"])
     }
+  end
+
+  defimpl Util.Location.From, for: __MODULE__ do
+    def as_location(%Schedule.Gtfs.Shape.Point{lat: lat, lon: long}),
+      do: {:ok, %Util.Location{latitude: lat, longitude: long}}
   end
 end

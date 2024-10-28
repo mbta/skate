@@ -1,5 +1,15 @@
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeAll,
+  afterAll,
+} from "@jest/globals"
 import React from "react"
-import renderer from "react-test-renderer"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
+import { BrowserRouter } from "react-router-dom"
 import ShuttleMapPage, {
   allTrainVehicles,
 } from "../../src/components/shuttleMapPage"
@@ -7,17 +17,34 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
 import useShuttleVehicles from "../../src/hooks/useShuttleVehicles"
 import useTrainVehicles from "../../src/hooks/useTrainVehicles"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { TrainVehicle, Vehicle } from "../../src/realtime"
+import { TrainVehicle, VehicleInScheduledService } from "../../src/realtime"
 import { ByRouteId, Shape } from "../../src/schedule"
 import { initialState } from "../../src/state"
 import * as dateTime from "../../src/util/dateTime"
+import { shuttleFactory } from "../factories/vehicle"
+import userEvent from "@testing-library/user-event"
+import { shapeFactory } from "../factories/shape"
+import {
+  layersControlButton,
+  zoomInButton,
+  zoomOutButton,
+} from "../testHelpers/selectors/components/map"
+import { mockTileUrls } from "../testHelpers/mockHelpers"
+import { RealDispatchWrapper } from "../testHelpers/wrappers"
+import geolocationCoordinates from "../factories/geolocationCoordinates"
+import useGeolocation from "../../src/hooks/useGeolocation"
+import { currentLocationControl } from "../testHelpers/selectors/components/map/controls/currentLocationControl"
+import { currentLocationMarker } from "../testHelpers/selectors/components/map/markers/currentLocationMarker"
+import { recenterControl } from "../testHelpers/selectors/components/map/controls/recenterControl"
 
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
+
+jest.mock("../../src/hooks/useGeolocation")
+
 jest.mock("../../src/hooks/useShuttleRoutes", () => ({
   __esModule: true,
   default: jest.fn(() => null),
@@ -26,6 +53,10 @@ jest.mock("../../src/hooks/useShapes", () => ({
   __esModule: true,
   useRouteShapes: jest.fn(() => []),
   useTripShape: jest.fn(() => []),
+}))
+jest.mock("../../src/hooks/useStations", () => ({
+  __esModule: true,
+  useStations: jest.fn(() => []),
 }))
 jest.mock("../../src/hooks/useShuttleVehicles", () => ({
   __esModule: true,
@@ -36,67 +67,63 @@ jest.mock("../../src/hooks/useTrainVehicles", () => ({
   default: jest.fn(() => ({})),
 }))
 
-const shuttle: Vehicle = {
-  id: "y1818",
-  label: "1818",
-  runId: "999-0555",
-  timestamp: 1557160307,
-  latitude: 0,
-  longitude: 0,
-  directionId: 0,
-  routeId: "1",
-  tripId: "39914237",
-  headsign: "h1",
-  viaVariant: "4",
-  operatorId: "op1",
-  operatorFirstName: "PATTI",
-  operatorLastName: "SMITH",
-  operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
-  bearing: 33,
-  blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
-  previousVehicleId: "v2",
-  scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
-  isShuttle: true,
-  isOverload: false,
-  isOffCourse: false,
-  isRevenue: true,
-  layoverDepartureTime: null,
-  dataDiscrepancies: [],
-  stopStatus: {
-    stopId: "57",
-    stopName: "57",
-  },
-  timepointStatus: {
-    fractionUntilTimepoint: 0.5,
-    timepointId: "MATPN",
-  },
-  scheduledLocation: null,
-  routeStatus: "on_route",
-  endOfTripType: "another_trip",
-  blockWaivers: [],
-  crowding: null,
-}
+jest.mock("../../src/tilesetUrls", () => ({
+  __esModule: true,
+  tilesetUrlForType: jest.fn(() => null),
+}))
 
-const shape: Shape = {
-  id: "shape",
+beforeAll(() => {
+  mockTileUrls()
+})
+
+const originalScrollTo = global.scrollTo
+// Clicking/moving map calls scrollTo under the hood
+jest.spyOn(global, "scrollTo").mockImplementation(jest.fn())
+
+afterAll(() => {
+  global.scrollTo = originalScrollTo
+})
+
+const shuttle: VehicleInScheduledService = shuttleFactory.build({
+  label: "1818",
+})
+
+const shape: Shape = shapeFactory.build({
   points: [],
-}
+  stops: [],
+})
 
 describe("Shuttle Map Page", () => {
   test("renders", () => {
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer.create(<ShuttleMapPage />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
+  test("Has the layers control", () => {
+    render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(layersControlButton.get()).toBeInTheDocument()
+  })
+
+  // TODO: based on the snapshot, this test does not appear to be correctly testing
+  // the intended functionality
   test("renders with shapes selected", () => {
     ;(useRouteShapes as jest.Mock).mockImplementationOnce(() => [shape])
     ;(useTripShape as jest.Mock).mockImplementationOnce(() => [shape])
-    const tree = renderer.create(<ShuttleMapPage />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders with train vehicles", () => {
@@ -111,58 +138,104 @@ describe("Shuttle Map Page", () => {
       [trainVehicle.id]: trainVehicle,
     }))
 
-    const tree = renderer.create(<ShuttleMapPage />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <BrowserRouter>
+        <ShuttleMapPage />
+      </BrowserRouter>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders selected shuttle routes", () => {
     const dispatch = jest.fn()
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer
-      .create(
-        <StateDispatchProvider
-          state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
-          dispatch={dispatch}
-        >
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
           <ShuttleMapPage />
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("renders with all shuttles selected", () => {
     const dispatch = jest.fn()
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer
-      .create(
-        <StateDispatchProvider
-          state={{ ...initialState, selectedShuttleRunIds: "all" }}
-          dispatch={dispatch}
-        >
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: "all" }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
           <ShuttleMapPage />
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
-  test("renders a selected shuttle vehicle", () => {
+  test("changing selected shuttles re-enabled map centering", async () => {
     const dispatch = jest.fn()
-    const state = {
-      ...initialState,
-      selectedShuttleRunIds: [shuttle.runId!],
-      selectedVehicleOrGhost: shuttle,
-    }
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={dispatch}>
+    const result = render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: "all" }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
           <ShuttleMapPage />
-        </StateDispatchProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+    await animationFramePromise()
+
+    // We can't directly use the recenter button to disable recentering, but zooming works.
+    // However, there is currently a bug causing us to not disable autocentering with a single
+    // click on one of the zoom buttons, instead requiring two.
+    await userEvent.click(zoomInButton.get())
+    await animationFramePromise()
+    await userEvent.click(zoomOutButton.get())
+    await animationFramePromise()
+
+    result.rerender(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: ["shuttle run"] }}
+        dispatch={dispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(recenterControl.get().dataset.isActive).toBe("true")
+  })
+
+  test("clicking a shuttle on the map dispatches select event", async () => {
+    const label = "clickMe"
+    ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [
+      { ...shuttle, label: label },
+    ])
+    const mockDispatch = jest.fn()
+    render(
+      <StateDispatchProvider
+        state={{ ...initialState, selectedShuttleRunIds: "all" }}
+        dispatch={mockDispatch}
+      >
+        <BrowserRouter>
+          <ShuttleMapPage />
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    await userEvent.click(screen.getByText(label))
+    expect(mockDispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "SELECT_VEHICLE" })
+    )
   })
 })
 
@@ -181,3 +254,45 @@ describe("allTrainVehicles", () => {
     expect(allTrainVehicles(trainVehiclesByRouteId)).toEqual([trainVehicle])
   })
 })
+
+describe("Map controls", () => {
+  test("Can change tile layer to satellite", async () => {
+    const { container } = render(
+      <RealDispatchWrapper>
+        <ShuttleMapPage />
+      </RealDispatchWrapper>
+    )
+
+    await userEvent.click(layersControlButton.get())
+
+    await userEvent.click(screen.getByLabelText("Satellite"))
+
+    expect(
+      container.querySelector("img[src^=test_satellite_url")
+    ).not.toBeNull()
+  })
+
+  test("on initial load, does not show user location", () => {
+    render(<ShuttleMapPage />)
+
+    expect(currentLocationMarker.query()).not.toBeInTheDocument()
+  })
+
+  test("after user location button is clicked, show's user location on map", async () => {
+    jest.mocked(useGeolocation).mockReturnValue(geolocationCoordinates.build())
+
+    render(<ShuttleMapPage />)
+
+    expect(currentLocationMarker.query()).not.toBeInTheDocument()
+
+    await userEvent.click(currentLocationControl.get())
+
+    expect(currentLocationMarker.get()).toBeInTheDocument()
+  })
+})
+
+const animationFramePromise = (): Promise<null> => {
+  return new Promise((resolve) => {
+    window.requestAnimationFrame(() => resolve(null))
+  })
+}

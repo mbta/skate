@@ -1,0 +1,85 @@
+.c-shuttle-picker {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.c-shuttle-picker__label {
+  @include font-label();
+}
+
+.c-shuttle-picker__selected-routes {
+  display: flex;
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+
+  &:empty {
+    margin-bottom: 0rem;
+  }
+}
+
+.c-shuttle-picker__route-list {
+  flex: 1 1 0;
+  overflow-y: scroll;
+  margin-top: 0rem;
+}
+
+.c-shuttle-picker__route-list-button {
+  margin-bottom: 0.25rem;
+  width: 100%;
+  word-break: break-word;
+
+  &--selected {
+    @include button-primary-legacy;
+  }
+
+  &--unselected {
+    @include button-light;
+  }
+
+  &--disabled {
+    @include button-disabled;
+  }
+
+  &--with-count {
+    align-items: stretch;
+    display: flex;
+    justify-content: start;
+    padding: 0;
+  }
+}
+
+.c-shuttle-picker__route-list-button-name,
+.c-shuttle-picker__route-list-button-count {
+  padding: 0.3125rem 0.5rem;
+}
+
+.c-shuttle-picker__route-list-button-name {
+  flex: 1 1 auto;
+  text-align: left;
+
+  span {
+    display: inline-block;
+    height: 1rem;
+    margin-right: 0.5rem;
+    vertical-align: top;
+    width: 1rem;
+  }
+}
+
+.c-shuttle-picker__route-list-button-count {
+  border-left: 1px solid $color-bg-medium;
+  display: inline-block;
+  flex: 0 0 auto;
+  font-weight: normal;
+  margin-left: 0.5rem;
+  min-width: 0.5rem;
+  padding-left: 0.3125rem;
+
+  .c-shuttle-picker__route-list-button--unselected & {
+    color: $color-font-grey;
+  }
+}

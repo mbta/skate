@@ -1,4 +1,6 @@
 defmodule Realtime.TimepointStatus do
+  @moduledoc false
+
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, Stop, StopTime}
   alias Schedule.Hastus.Run
@@ -18,6 +20,7 @@ defmodule Realtime.TimepointStatus do
   @type scheduled_location ::
           %{
             route_id: Route.id(),
+            route_pattern_id: RoutePattern.id() | nil,
             direction_id: Direction.id(),
             trip_id: Trip.id() | nil,
             run_id: Run.id() | nil,
@@ -33,7 +36,7 @@ defmodule Realtime.TimepointStatus do
     # future_stop_times starts with the stop that has stop_id
     {past_stop_times, future_stop_times} = Enum.split_while(stop_times, &(&1.stop_id != stop_id))
 
-    case Enum.find(future_stop_times, &StopTime.is_timepoint?(&1)) do
+    case Enum.find(future_stop_times, &StopTime.timepoint?(&1)) do
       %StopTime{timepoint_id: next_timepoint_id} ->
         stops_until_timepoint = count_to_timepoint(future_stop_times)
 
@@ -159,7 +162,7 @@ defmodule Realtime.TimepointStatus do
         nil
 
       _ ->
-        timepoints = Enum.filter(trip.stop_times, &StopTime.is_timepoint?/1)
+        timepoints = Enum.filter(trip.stop_times, &StopTime.timepoint?/1)
 
         case timepoints do
           [] ->
@@ -170,6 +173,7 @@ defmodule Realtime.TimepointStatus do
 
             %{
               route_id: trip.route_id,
+              route_pattern_id: trip.route_pattern_id,
               direction_id: trip.direction_id,
               trip_id: trip.id,
               run_id: trip.run_id,
@@ -218,7 +222,7 @@ defmodule Realtime.TimepointStatus do
 
   @spec count_to_timepoint([StopTime.t()]) :: non_neg_integer()
   defp count_to_timepoint(stop_times) do
-    count = Enum.find_index(stop_times, &StopTime.is_timepoint?(&1))
+    count = Enum.find_index(stop_times, &StopTime.timepoint?(&1))
 
     if is_number(count), do: count, else: length(stop_times)
   end

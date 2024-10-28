@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.Trip do
+  @moduledoc false
+
   alias Schedule.Block
   alias Schedule.Csv
   alias Schedule.Gtfs.{Direction, Route, RoutePattern, Service, Shape}

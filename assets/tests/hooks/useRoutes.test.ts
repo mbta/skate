@@ -1,12 +1,12 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { jest, describe, test, expect } from "@jest/globals"
+import { renderHook } from "@testing-library/react"
 import * as Api from "../../src/api"
 import useRoutes from "../../src/hooks/useRoutes"
 import { instantPromise } from "../testHelpers/mockHelpers"
 
-// tslint:disable: react-hooks-nesting no-empty
-
 jest.mock("../../src/api", () => ({
   __esModule: true,
+
   fetchRoutes: jest.fn(() => new Promise(() => {})),
 }))
 

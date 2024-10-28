@@ -1,6 +1,7 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
-import renderer from "react-test-renderer"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
 import routeFactory from "../factories/route"
 import NotificationDrawer from "../../src/components/notificationDrawer"
 import { NotificationsContext } from "../../src/contexts/notificationsContext"
@@ -10,33 +11,40 @@ import {
   markAllAsRead,
   toggleReadState,
 } from "../../src/hooks/useNotificationsReducer"
-import {
-  Notification,
-  NotificationReason,
-  NotificationState,
-} from "../../src/realtime.d"
+import { Notification, NotificationState } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import {
-  closeNotificationDrawer,
   initialState,
+  rememberNotificationDrawerScrollPosition,
   setNotification,
 } from "../../src/state"
 import { now } from "../../src/util/dateTime"
+import userEvent from "@testing-library/user-event"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+import { blockWaiverNotificationFactory } from "../factories/notification"
 
-const notification: Notification = {
+jest.mock("../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+})
+
+const notification: Notification = blockWaiverNotificationFactory.build({
   id: "0",
   createdAt: now(),
-  reason: "manpower",
-  routeIds: ["route1", "route2"],
-  runIds: ["run1", "run2"],
-  tripIds: [],
-  operatorName: null,
-  operatorId: null,
-  routeIdAtCreation: null,
-  startTime: now(),
-  endTime: now(),
-  state: "unread" as NotificationState,
-}
+  state: "unread",
+  content: {
+    reason: "manpower",
+    routeIds: ["route1", "route2"],
+    runIds: ["run1", "run2"],
+    tripIds: [],
+    operatorName: null,
+    operatorId: null,
+    routeIdAtCreation: null,
+    startTime: now(),
+    endTime: now(),
+  },
+})
 
 const readNotification: Notification = {
   ...notification,
@@ -56,51 +64,79 @@ const routes: Route[] = [
 ]
 
 describe("NotificationDrawer", () => {
+  test("renders loading state", () => {
+    render(
+      <NotificationsContext.Provider
+        value={{
+          notifications: null,
+          showLatestNotification: false,
+          dispatch: jest.fn(),
+          notificationWithOpenSubmenuId: null,
+          setNotificationWithOpenSubmenuId: jest.fn(),
+        }}
+      >
+        <NotificationDrawer />
+      </NotificationsContext.Provider>
+    )
+    expect(screen.getByText(/loading/)).toBeInTheDocument()
+  })
   test("renders empty state", () => {
-    const tree = renderer.create(<NotificationDrawer />).toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <NotificationsContext.Provider
+        value={{
+          notifications: [],
+          showLatestNotification: true,
+          dispatch: jest.fn(),
+          notificationWithOpenSubmenuId: null,
+          setNotificationWithOpenSubmenuId: jest.fn(),
+        }}
+      >
+        <NotificationDrawer />
+      </NotificationsContext.Provider>
+    )
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
-  test("close button closes the drawer", () => {
-    const dispatch = jest.fn()
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+  test("close button closes the drawer", async () => {
+    const mockedUsePanelState = mockUsePanelState()
+
+    const user = userEvent.setup()
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <NotificationDrawer />
         </RoutesProvider>
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-close-button").first().simulate("click")
-    expect(dispatch).toHaveBeenCalledWith(closeNotificationDrawer())
+    await user.click(result.getByRole("button", { name: /close/i }))
+
+    expect(mockedUsePanelState().closeView).toHaveBeenCalledTimes(1)
   })
 
   test("renders notifications", () => {
-    const tree = renderer
-      .create(
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider
-            value={{
-              notifications: [notification],
-              showLatestNotification: true,
-              dispatch: jest.fn(),
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
-              notificationWithOpenSubmenuId: null,
-              setNotificationWithOpenSubmenuId: jest.fn(),
-            }}
-          >
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      )
-      .toJSON()
-    expect(tree).toMatchSnapshot()
+    const result = render(
+      <RoutesProvider routes={routes}>
+        <NotificationsContext.Provider
+          value={{
+            notifications: [notification],
+            showLatestNotification: true,
+            dispatch: jest.fn(),
+            notificationWithOpenSubmenuId: null,
+            setNotificationWithOpenSubmenuId: jest.fn(),
+          }}
+        >
+          <NotificationDrawer />
+        </NotificationsContext.Provider>
+      </RoutesProvider>
+    )
+
+    expect(result.asFragment()).toMatchSnapshot()
   })
 
-  test("clicking a notification tries to open the VPP for it", () => {
+  test("clicking a notification tries to open the VPP for it", async () => {
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
@@ -108,8 +144,6 @@ describe("NotificationDrawer", () => {
               notifications: [notification],
               showLatestNotification: true,
               dispatch: jest.fn(),
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -120,75 +154,11 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-notification-drawer__card").first().simulate("click")
+    await userEvent.click(result.getByText(/No Operator/))
     expect(dispatch).toHaveBeenCalledWith(setNotification(notification))
   })
 
-  test("clicking a bridge-lowering notification logs to Fullstory", () => {
-    const eventFn = jest.fn()
-    window.FS = { event: eventFn, identify: jest.fn() }
-
-    const loweringNotification = {
-      ...notification,
-      reason: "chelsea_st_bridge_lowered" as NotificationReason,
-    }
-
-    const dispatch = jest.fn()
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [loweringNotification],
-            showLatestNotification: true,
-            dispatch: jest.fn(),
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
-      </StateDispatchProvider>
-    )
-
-    wrapper.find(".m-notification-drawer__card").first().simulate("click")
-    expect(eventFn).toHaveBeenCalledWith("Chelsea bridge notification clicked")
-  })
-
-  test("clicking a bridge-raising notification logs to Fullstory", () => {
-    const eventFn = jest.fn()
-    window.FS = { event: eventFn, identify: jest.fn() }
-
-    const loweringNotification = {
-      ...notification,
-      reason: "chelsea_st_bridge_raised" as NotificationReason,
-    }
-
-    const dispatch = jest.fn()
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <NotificationsContext.Provider
-          value={{
-            notifications: [loweringNotification],
-            showLatestNotification: true,
-            dispatch: jest.fn(),
-            rememberScrollPosition: jest.fn(),
-            scrollPosition: 0,
-            notificationWithOpenSubmenuId: null,
-            setNotificationWithOpenSubmenuId: jest.fn(),
-          }}
-        >
-          <NotificationDrawer />
-        </NotificationsContext.Provider>
-      </StateDispatchProvider>
-    )
-
-    wrapper.find(".m-notification-drawer__card").first().simulate("click")
-    expect(eventFn).toHaveBeenCalledWith("Chelsea bridge notification clicked")
-  })
-
-  test("clicking through an unread notification makes it read", () => {
+  test("clicking through an unread notification makes it read", async () => {
     const updatedNotification = {
       ...notification,
       tripIds: ["123", "456", "789"],
@@ -196,16 +166,14 @@ describe("NotificationDrawer", () => {
 
     const mockNotificationsDispatch = jest.fn()
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn}>
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
             value={{
               notifications: [updatedNotification],
               showLatestNotification: true,
               dispatch: mockNotificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -216,17 +184,18 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-notification-drawer__card--unread").simulate("click")
+    await userEvent.click(result.getByText(/No Operator/))
     expect(mockNotificationsDispatch).toHaveBeenCalledWith(
       toggleReadState(updatedNotification)
     )
   })
 
-  test("can make all read", () => {
+  test("can make all read", async () => {
     const stateDispatch = jest.fn()
     const notificationsDispatch = jest.fn()
 
-    const wrapper = mount(
+    const user = userEvent.setup()
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
@@ -234,8 +203,6 @@ describe("NotificationDrawer", () => {
               notifications: [notification],
               showLatestNotification: true,
               dispatch: notificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -246,10 +213,7 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    wrapper
-      .find(".m-notification-drawer__mark-all-read-link")
-      .first()
-      .simulate("click")
+    await user.click(result.getByText("Mark all as read"))
     expect(notificationsDispatch).toHaveBeenCalledWith(markAllAsRead())
   })
 
@@ -257,7 +221,7 @@ describe("NotificationDrawer", () => {
     const stateDispatch = jest.fn()
     const notificationsDispatch = jest.fn()
 
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
@@ -265,8 +229,6 @@ describe("NotificationDrawer", () => {
               notifications: [readNotification],
               showLatestNotification: true,
               dispatch: notificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -277,131 +239,23 @@ describe("NotificationDrawer", () => {
       </StateDispatchProvider>
     )
 
-    expect(
-      wrapper.exists(".m-notification-drawer__mark-all-read-link")
-    ).toBeFalsy()
-  })
-
-  test("can make unread to read and vice versa", () => {
-    const notificationsDispatch = jest.fn()
-
-    const unreadProviderValue = {
-      notifications: [notification, readNotification],
-      showLatestNotification: true,
-      dispatch: notificationsDispatch,
-      rememberScrollPosition: jest.fn(),
-      scrollPosition: 0,
-      notificationWithOpenSubmenuId: notification.id,
-      setNotificationWithOpenSubmenuId: jest.fn(),
-    }
-    const readProviderValue = {
-      ...unreadProviderValue,
-      notificationWithOpenSubmenuId: readNotification.id,
-    }
-
-    const unreadWrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider value={unreadProviderValue}>
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      </StateDispatchProvider>
-    )
-
-    unreadWrapper
-      .find(
-        ".m-notification-drawer__card--unread " +
-          ".m-notification-drawer__submenu " +
-          ".m-notification-drawer__submenu-mark-read"
-      )
-      .first()
-      .simulate("click")
-    expect(notificationsDispatch).toHaveBeenCalledWith(
-      toggleReadState(notification)
-    )
-
-    const readWrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider value={readProviderValue}>
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      </StateDispatchProvider>
-    )
-
-    readWrapper
-      .find(
-        ".m-notification-drawer__card--read .m-notification-drawer__submenu-icon-anchor"
-      )
-      .simulate("click")
-    readWrapper
-      .find(
-        ".m-notification-drawer__card--read " +
-          ".m-notification-drawer__submenu " +
-          ".m-notification-drawer__submenu-mark-unread"
-      )
-      .first()
-      .simulate("click")
-    expect(notificationsDispatch).toHaveBeenCalledWith(
-      toggleReadState(readNotification)
-    )
-  })
-
-  test("clicking any part of the submenu besides the link doesn't cause the VPP to open", () => {
-    const stateDispatch = jest.fn()
-    const notificationsDispatch = jest.fn()
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={stateDispatch}>
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider
-            value={{
-              notifications: [notification],
-              showLatestNotification: true,
-              dispatch: notificationsDispatch,
-              rememberScrollPosition: jest.fn(),
-              scrollPosition: 0,
-              notificationWithOpenSubmenuId: notification.id,
-              setNotificationWithOpenSubmenuId: jest.fn(),
-            }}
-          >
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      </StateDispatchProvider>
-    )
-
-    wrapper
-      .find(
-        ".m-notification-drawer__card--unread .m-notification-drawer__submenu-icon-anchor"
-      )
-      .simulate("click")
-    wrapper
-      .find(
-        ".m-notification-drawer__card--unread .m-notification-drawer__submenu"
-      )
-      .first()
-      .simulate("click")
-
-    expect(notificationsDispatch).not.toHaveBeenCalled()
-    expect(stateDispatch).not.toHaveBeenCalled()
+    expect(result.queryByText(/Mark all as read/)).toBeNull()
   })
 
   test("remembers the scroll position when the component is unmounted", () => {
-    const rememberScrollPosition = jest.fn()
+    const dispatch = jest.fn()
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
+    const { unmount } = render(
+      <StateDispatchProvider
+        state={{ ...initialState, notificationDrawerScrollPosition: 123 }}
+        dispatch={dispatch}
+      >
         <RoutesProvider routes={routes}>
           <NotificationsContext.Provider
             value={{
               notifications: [notification],
               showLatestNotification: true,
               dispatch: jest.fn(),
-              rememberScrollPosition,
-              scrollPosition: 123,
               notificationWithOpenSubmenuId: null,
               setNotificationWithOpenSubmenuId: jest.fn(),
             }}
@@ -411,136 +265,16 @@ describe("NotificationDrawer", () => {
         </RoutesProvider>
       </StateDispatchProvider>
     )
-    expect(rememberScrollPosition).not.toHaveBeenCalled()
-    wrapper.unmount()
-    expect(rememberScrollPosition).toHaveBeenCalledWith(123)
-  })
-
-  test("opening one submenu closes any other open one", () => {
-    const setNotificationWithOpenSubmenuId = jest.fn()
-
-    const unreadProviderValue = {
-      notifications: [notification, readNotification],
-      showLatestNotification: true,
-      dispatch: jest.fn(),
-      rememberScrollPosition: jest.fn(),
-      scrollPosition: 0,
-      notificationWithOpenSubmenuId: notification.id,
-      setNotificationWithOpenSubmenuId,
-    }
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider value={unreadProviderValue}>
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      </StateDispatchProvider>
+    // first call to rememberScrollPosition happens on initial render, it's the second one
+    // that happens on unmount
+    expect(dispatch).not.toHaveBeenNthCalledWith(
+      2,
+      rememberNotificationDrawerScrollPosition(123)
     )
-
-    wrapper
-      .find(
-        ".m-notification-drawer__card--read .m-notification-drawer__submenu-icon"
-      )
-      .first()
-      .simulate("click")
-    expect(setNotificationWithOpenSubmenuId).toHaveBeenCalledWith(
-      readNotification.id
+    unmount()
+    expect(dispatch).toHaveBeenNthCalledWith(
+      2,
+      rememberNotificationDrawerScrollPosition(123)
     )
-  })
-
-  test("submenu can be closed", () => {
-    const setNotificationWithOpenSubmenuId = jest.fn()
-
-    const unreadProviderValue = {
-      notifications: [notification],
-      showLatestNotification: true,
-      dispatch: jest.fn(),
-      rememberScrollPosition: jest.fn(),
-      scrollPosition: 0,
-      notificationWithOpenSubmenuId: notification.id,
-      setNotificationWithOpenSubmenuId,
-    }
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider value={unreadProviderValue}>
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      </StateDispatchProvider>
-    )
-
-    wrapper
-      .find(
-        ".m-notification-drawer__card--unread .m-notification-drawer__submenu-icon"
-      )
-      .first()
-      .simulate("click")
-    expect(setNotificationWithOpenSubmenuId).toHaveBeenCalledWith(null)
-  })
-
-  test("clicking away from submenu closes it", () => {
-    const eventMap: { [key: string]: (args: object) => void } = {}
-    const mockAddEventListener = jest.fn(
-      (event, callback) => (eventMap[event] = callback)
-    )
-    jest
-      .spyOn(document, "addEventListener")
-      .mockImplementation(mockAddEventListener)
-
-    const setNotificationWithOpenSubmenuId = jest.fn()
-    const unreadProviderValue = {
-      notifications: [notification],
-      showLatestNotification: true,
-      dispatch: jest.fn(),
-      rememberScrollPosition: jest.fn(),
-      scrollPosition: 0,
-      notificationWithOpenSubmenuId: notification.id,
-      setNotificationWithOpenSubmenuId,
-    }
-
-    mount(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider value={unreadProviderValue}>
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      </StateDispatchProvider>
-    )
-
-    const composedPath = () => ["fake-selector", "other-fake-selector"]
-    eventMap.mousedown({ composedPath })
-    expect(setNotificationWithOpenSubmenuId).toHaveBeenCalledWith(null)
-  })
-
-  test("remove event listener on unmount", () => {
-    jest.spyOn(document, "removeEventListener")
-    const setNotificationWithOpenSubmenuId = jest.fn()
-    const unreadProviderValue = {
-      notifications: [notification],
-      showLatestNotification: true,
-      dispatch: jest.fn(),
-      rememberScrollPosition: jest.fn(),
-      scrollPosition: 0,
-      notificationWithOpenSubmenuId: notification.id,
-      setNotificationWithOpenSubmenuId,
-    }
-
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <RoutesProvider routes={routes}>
-          <NotificationsContext.Provider value={unreadProviderValue}>
-            <NotificationDrawer />
-          </NotificationsContext.Provider>
-        </RoutesProvider>
-      </StateDispatchProvider>
-    )
-    expect(document.removeEventListener).not.toHaveBeenCalled()
-    wrapper.unmount()
-    expect(document.removeEventListener).toHaveBeenCalled()
   })
 })

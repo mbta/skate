@@ -20,12 +20,11 @@ defmodule Realtime.VehicleTest do
     license_plate: nil,
     longitude: -71.08206019,
     odometer: nil,
-    operator_id: "72032",
-    operator_first_name: "ARMISTEAD",
-    operator_last_name: "MAUPIN",
+    operator_id: build(:operator_id),
+    operator_first_name: build(:first_name),
+    operator_last_name: build(:last_name),
     operator_logon_time: 1_558_364_010,
     run_id: "138-1038",
-    headway_secs: 900,
     layover_departure_time: nil,
     speed: 0.0,
     current_status: :IN_TRANSIT_TO,
@@ -54,10 +53,7 @@ defmodule Realtime.VehicleTest do
     revenue: true
   }
 
-  describe "from_vehicle_position" do
-    setup do
-      trip =
-        build(
+  @trip build(
           :trip,
           id: "39984755",
           block_id: "S28-2",
@@ -72,8 +68,13 @@ defmodule Realtime.VehicleTest do
             build(:gtfs_stoptime, stop_id: "18513", time: 2, timepoint_id: "tp2")
           ],
           start_time: 0,
-          end_time: 2
+          end_time: 2,
+          end_place: "place"
         )
+
+  describe "from_vehicle_position" do
+    setup do
+      trip = @trip
 
       reassign_env(:realtime, :trip_fn, fn trip_id ->
         if trip_id == trip.id do
@@ -115,7 +116,13 @@ defmodule Realtime.VehicleTest do
     end
 
     test "translates Concentrate VehiclePosition into a Vehicle struct" do
-      result = Vehicle.from_vehicle_position(@vehicle_position)
+      %VehiclePosition{
+        operator_id: operator_id,
+        operator_first_name: operator_first_name,
+        operator_last_name: operator_last_name
+      } = vehicle_position = @vehicle_position
+
+      result = Vehicle.from_vehicle_position(vehicle_position, %{})
 
       assert %Vehicle{
                id: "y1261",
@@ -126,25 +133,26 @@ defmodule Realtime.VehicleTest do
                longitude: -71.08206019,
                direction_id: 1,
                route_id: "28",
+               route_pattern_id: "28-_-0",
                trip_id: "39984755",
                headsign: "headsign",
                via_variant: "_",
                bearing: 0,
                block_id: "S28-2",
-               operator_id: "72032",
-               operator_first_name: "ARMISTEAD",
-               operator_last_name: "MAUPIN",
-               operator_name: "MAUPIN",
+               operator_id: ^operator_id,
+               operator_first_name: ^operator_first_name,
+               operator_last_name: ^operator_last_name,
+               operator_name: ^operator_last_name,
                operator_logon_time: 1_558_364_010,
+               overload_offset: nil,
                run_id: "138-1038",
-               headway_secs: 900,
-               headway_spacing: :ok,
                is_shuttle: false,
                is_overload: false,
                is_off_course: false,
                is_revenue: true,
                layover_departure_time: nil,
                block_is_active: true,
+               pull_back_place_name: "place",
                sources: %MapSet{},
                data_discrepancies: [
                  %DataDiscrepancy{
@@ -177,7 +185,7 @@ defmodule Realtime.VehicleTest do
                  via_variant: "_",
                  timepoint_status: %{
                    timepoint_id: "tp1",
-                   fraction_until_timepoint: 0.0
+                   fraction_until_timepoint: +0.0
                  }
                },
                route_status: :on_route,
@@ -190,29 +198,25 @@ defmodule Realtime.VehicleTest do
              } = result
     end
 
-    test "missing headway_secs results in missing headway_spacing" do
-      vehicle_position = %{@vehicle_position | headway_secs: nil}
-      result = Vehicle.from_vehicle_position(vehicle_position)
-      assert result.headway_secs == nil
-      assert result.headway_spacing == nil
-    end
-
     test "handles unknown trips" do
       reassign_env(:realtime, :trip_fn, fn _ -> nil end)
-      result = Vehicle.from_vehicle_position(@vehicle_position)
+      result = Vehicle.from_vehicle_position(@vehicle_position, %{})
       assert %Vehicle{} = result
     end
 
     test "handles trips with incomplete data" do
       reassign_env(:realtime, :trip_fn, fn _ ->
         %Trip{
-          id: "39984755",
-          block_id: "S28-2"
+          id: @trip.id,
+          block_id: @trip.block_id
         }
       end)
 
-      result = Vehicle.from_vehicle_position(@vehicle_position)
-      assert %Vehicle{} = result
+      vehicle_id = @vehicle_position.id
+      trip_id = @trip.id
+
+      assert %Vehicle{id: ^vehicle_id, trip_id: ^trip_id, route_pattern_id: nil} =
+               Vehicle.from_vehicle_position(@vehicle_position, %{})
     end
   end
 
@@ -577,6 +581,14 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", "middle") == :pull_back
     end
 
+    test "when finished with the last trip of the block but still logged in, returns :pull_back",
+         %{
+           last_trip_of_block: last_trip_of_block,
+           block: block
+         } do
+      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", nil) == :pull_back
+    end
+
     test "defaults to :another_trip if we're missing data", %{
       last_trip_of_block: last_trip_of_block,
       block: block
@@ -584,7 +596,6 @@ defmodule Realtime.VehicleTest do
       assert Vehicle.end_of_trip_type(nil, last_trip_of_block, "run2", "middle") == :another_trip
       assert Vehicle.end_of_trip_type(block, nil, "run2", "middle") == :another_trip
       assert Vehicle.end_of_trip_type(block, last_trip_of_block, nil, "middle") == :another_trip
-      assert Vehicle.end_of_trip_type(block, last_trip_of_block, "run2", nil) == :another_trip
     end
 
     test "doesn't consider it a swing off if the next trip's run is nil", %{
@@ -624,14 +635,13 @@ defmodule Realtime.VehicleTest do
         via_variant: "_",
         bearing: 0,
         block_id: "S28-2",
-        operator_id: "72032",
-        operator_first_name: "ARMISTEAD",
-        operator_last_name: "MAUPIN",
-        operator_name: "MAUPIN",
+        operator_id: build(:operator_id),
+        operator_first_name: build(:first_name),
+        operator_last_name: build(:last_name),
+        operator_name: build(:last_name),
         operator_logon_time: 1_558_364_010,
+        overload_offset: nil,
         run_id: "138-1038",
-        headway_secs: 600,
-        headway_spacing: :ok,
         is_shuttle: false,
         is_overload: false,
         is_off_course: false,
@@ -665,14 +675,47 @@ defmodule Realtime.VehicleTest do
         end_of_trip_type: :another_trip
       }
 
-      encoded_string = Jason.encode!(vehicle)
+      decoded_vehicle =
+        vehicle
+        |> Jason.encode!()
+        |> Jason.decode!(keys: :atoms!)
 
-      assert encoded_string =~ "\"id\":\"y1261\""
+      assert decoded_vehicle.id == "y1261"
+      assert decoded_vehicle.route_id == "28"
 
-      assert encoded_string =~ "\"route_id\":\"28\""
-
-      assert encoded_string =~
-               "\"data_discrepancies\":[{\"attribute\":\"trip_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":\"swiftly-trip-id\"},{\"id\":\"busloc\",\"value\":\"busloc-trip-id\"}]},{\"attribute\":\"route_id\",\"sources\":[{\"id\":\"swiftly\",\"value\":null},{\"id\":\"busloc\",\"value\":\"busloc-route-id\"}]}]"
+      assert decoded_vehicle.data_discrepancies ==
+               Jason.decode!(~s(
+                  [
+                    {
+                      "attribute": "trip_id",
+                      "sources": [
+                        {
+                          "id": "swiftly",
+                          "value": "swiftly-trip-id"
+                        },
+                        {
+                          "id": "busloc",
+                          "value": "busloc-trip-id"
+                        }
+                      ]
+                    },
+                    {
+                      "attribute": "route_id",
+                      "sources": [
+                        {
+                          "id": "swiftly",
+                          "value": null
+                        },
+                        {
+                          "id": "busloc",
+                          "value": "busloc-route-id"
+                        }
+                      ]
+                    }
+                  ]
+                ),
+                 keys: :atoms!
+               )
     end
   end
 end

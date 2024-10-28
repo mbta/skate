@@ -1,4 +1,4 @@
-import { Vehicle } from "../realtime"
+import { VehicleInScheduledService } from "../realtime"
 
 export type OccupancyStatus =
   | "NO_DATA"
@@ -29,7 +29,7 @@ export const classModifierForStatus = (status: OccupancyStatus): string => {
   }
 }
 
-export const crowdingLabel = (vehicle: Vehicle): string => {
+export const crowdingLabel = (vehicle: VehicleInScheduledService): string => {
   if (vehicle.crowding && vehicle.crowding.load !== null) {
     return `${vehicle.crowding.load}/${vehicle.crowding.capacity}`
   } else {

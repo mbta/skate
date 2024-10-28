@@ -1,26 +1,45 @@
-import React, { ReactElement, useContext, useState } from "react"
+import React, {
+  ReactElement,
+  useContext,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react"
 import { useRoutes } from "../contexts/routesContext"
 import { SocketContext } from "../contexts/socketContext"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import Loading from "./loading"
-import CloseButton from "./closeButton"
 import { partition, flatten, uniq } from "../helpers/array"
-import { ghostSwingIcon, upDownIcon, upRightIcon } from "../helpers/icon"
+import { GhostSwingIcon, UpDownIcon, UpRightIcon } from "../helpers/icon"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import useCurrentTime from "../hooks/useCurrentTime"
 import useSwings from "../hooks/useSwings"
 import useVehiclesForRunIds from "../hooks/useVehiclesForRunIds"
 import useVehiclesForBlockIds from "../hooks/useVehiclesForBlockIds"
-import { ByRunId, VehicleOrGhost } from "../realtime"
+import { ByRunId, VehicleInScheduledService, Ghost } from "../realtime"
 import { ByBlockId, ByRouteId, Route, Swing } from "../schedule"
-import { selectVehicle, toggleSwingsView } from "../state"
+import {
+  rememberSwingsViewScrollPosition,
+  toggleShowHidePastSwings,
+} from "../state"
 import { formattedScheduledTime, serviceDaySeconds } from "../util/dateTime"
+import { tagManagerEvent } from "../helpers/googleTagManager"
+import ViewHeader from "./viewHeader"
+import { fullStoryEvent } from "../helpers/fullStory"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const SwingsView = (): ReactElement<HTMLElement> => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const [
+    { mobileMenuIsOpen, swingsViewScrollPosition, showPastSwings },
+    dispatch,
+  ] = useContext(StateDispatchContext)
+
+  const { closeView } = usePanelStateFromStateDispatchContext()
   const currentTime = useCurrentTime()
   const swings = useSwings()
+  const elementRef = useRef<HTMLDivElement | null>(null)
+  const [isInitialRender, setIsInitialRender] = useState<boolean>(true)
 
   const pastSwingSecs = 900
 
@@ -68,15 +87,42 @@ const SwingsView = (): ReactElement<HTMLElement> => {
     return { ...map, [route.id]: route }
   }, {})
 
-  const hideMe = () => dispatch(toggleSwingsView())
+  const hideMe = () => {
+    // reset scrollTop to avoid race condition with useEffect cleanup
+    if (elementRef.current) {
+      elementRef.current.scrollTop = 0
+    }
+
+    closeView()
+  }
+
+  const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
+
+  useLayoutEffect(() => {
+    const element = elementRef.current
+
+    // in addition to other criteria, wait until swings are populated so that the
+    // element is tall enough to scroll
+    if (isInitialRender && element && swings) {
+      setIsInitialRender(false)
+
+      element.scrollTop = swingsViewScrollPosition
+    }
+
+    return () => {
+      if (element) {
+        dispatch(rememberSwingsViewScrollPosition(element.scrollTop))
+      }
+    }
+  }, [isInitialRender, swingsViewScrollPosition, dispatch, swings])
 
   return (
-    <div id="m-swings-view" className="m-swings-view">
-      <CloseButton onClick={hideMe} />
-      <div className="m-swings-view__header">Swings view</div>
-      <div className="m-swings-view__description">
-        Upcoming swings on your selected routes
-      </div>
+    <div
+      id="c-swings-view"
+      className={`c-swings-view ${mobileMenuClass}`}
+      ref={elementRef}
+    >
+      <ViewHeader title="Swings" closeView={hideMe} />
       {swings ? (
         <SwingsTable
           pastSwings={pastSwings}
@@ -84,6 +130,8 @@ const SwingsView = (): ReactElement<HTMLElement> => {
           swingVehiclesByRunId={swingVehiclesByRunId}
           swingVehiclesByBlockId={swingVehiclesByBlockId}
           swingRoutesById={swingRoutesById}
+          showPastSwings={showPastSwings}
+          toggleShowPastSwings={() => dispatch(toggleShowHidePastSwings())}
         />
       ) : (
         <Loading />
@@ -98,65 +146,67 @@ const SwingsTable = ({
   swingVehiclesByRunId,
   swingVehiclesByBlockId,
   swingRoutesById,
+  showPastSwings,
+  toggleShowPastSwings,
 }: {
   pastSwings: Swing[]
   activeSwings: Swing[]
-  swingVehiclesByRunId: ByRunId<VehicleOrGhost>
-  swingVehiclesByBlockId: ByBlockId<VehicleOrGhost>
+  swingVehiclesByRunId: ByRunId<VehicleInScheduledService | Ghost>
+  swingVehiclesByBlockId: ByBlockId<VehicleInScheduledService | Ghost>
   swingRoutesById: ByRouteId<Route>
+  showPastSwings: boolean
+  toggleShowPastSwings: () => void
 }): ReactElement<HTMLElement> => {
-  const [showPastSwings, setShowPastSwings] = useState<boolean>(false)
-
   return (
-    <div className="m-swings-view__table-container">
-      <table className="m-swings-view__table">
-        <thead className="m-swings-view__table-header">
+    <div className="c-swings-view__table-container">
+      <table className="c-swings-view__table">
+        <thead className="c-swings-view__table-header">
           <tr>
-            <th className="m-swings-view__table-header-cell">
+            <th className="c-swings-view__table-header-cell">
               <div>
                 Swing On
-                <div className="m-swings-view__table-header-cell-subheaders">
-                  <div className="m-swings-view__table-header-cell-subheader">
+                <div className="c-swings-view__table-header-cell-subheaders">
+                  <div className="c-swings-view__table-header-cell-subheader">
                     Time
                   </div>
                 </div>
               </div>
             </th>
-            <th className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-on">
+            <th className="c-swings-view__table-header-cell c-swings-view__table-header-cell-swing-on">
               Swing On
-              <div className="m-swings-view__table-header-cell-subheaders">
-                <div className="m-swings-view__table-header-cell-subheader">
+              <div className="c-swings-view__table-header-cell-subheaders">
+                <div className="c-swings-view__table-header-cell-subheader">
                   Run
                 </div>
               </div>
             </th>
-            <th className="m-swings-view__table-header-cell m-swings-view__table-header-cell-swing-off">
+            <th className="c-swings-view__table-header-cell c-swings-view__table-header-cell-swing-off">
               Swing Off
-              <div className="m-swings-view__table-header-cell-subheaders">
-                <div className="m-swings-view__table-header-cell-subheader">
+              <div className="c-swings-view__table-header-cell-subheaders">
+                <div className="c-swings-view__table-header-cell-subheader">
                   Run
                 </div>
-                <div className="m-swings-view__table-header-cell-route-subheader">
+                <div className="c-swings-view__table-header-cell-route-subheader">
                   Route
                 </div>
               </div>
             </th>
-            <th className="m-swings-view__table-header-cell">Vehicle</th>
+            <th className="c-swings-view__table-header-cell">Vehicle</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th
               className={
-                "m-swings-view__show-past" +
+                "c-swings-view__show-past" +
                 (showPastSwings
-                  ? " m-swings-view__show-past-enabled"
-                  : " m-swings-view__show-past-disabled")
+                  ? " c-swings-view__show-past-enabled"
+                  : " c-swings-view__show-past-disabled")
               }
               colSpan={4}
-              onClick={() => setShowPastSwings(!showPastSwings)}
+              onClick={toggleShowPastSwings}
             >
-              {upDownIcon("m-swings-view__show-past-icon")}
+              <UpDownIcon className="c-swings-view__show-past-icon" />
               {`${showPastSwings ? "Hide" : "Show"} past swings`}
             </th>
           </tr>
@@ -200,8 +250,8 @@ const SwingRow = ({
   swing: Swing
   isPast: boolean
   isLastPast?: boolean
-  swingVehiclesByRunId: ByRunId<VehicleOrGhost>
-  swingVehicleForBlockId: VehicleOrGhost
+  swingVehiclesByRunId: ByRunId<VehicleInScheduledService | Ghost>
+  swingVehicleForBlockId: VehicleInScheduledService | Ghost
   route: Route | null
 }): ReactElement<HTMLElement> => {
   const swingOffVehicleOrGhost = swingVehiclesByRunId[swing.fromRunId]
@@ -212,42 +262,54 @@ const SwingRow = ({
     <tr
       className={
         (vehicleOrGhost && !isPast
-          ? "m-swings-view__table-row-active"
-          : "m-swings-view__table-row-inactive") +
-        (isLastPast ? " m-swings-view__table-row-last-past" : "")
+          ? "c-swings-view__table-row-active"
+          : "c-swings-view__table-row-inactive") +
+        (isLastPast ? " c-swings-view__table-row-last-past" : "")
       }
     >
-      <th className="m-swings-view__table-cell">
-        <div className="m-swings-view__table-cell-contents">
-          {formattedScheduledTime(swing.time)}
+      <th className="c-swings-view__table-cell">
+        <div className="c-swings-view__table-cell-contents">
+          {formattedScheduledTime(
+            swing.time,
+            vehicleOrGhost && isVehicleInScheduledService(vehicleOrGhost)
+              ? vehicleOrGhost.overloadOffset
+              : undefined
+          )}
         </div>
       </th>
-      <th className="m-swings-view__table-cell">
-        <div className="m-swings-view__table-cell-contents">
+      <th className="c-swings-view__table-cell">
+        <div className="c-swings-view__table-cell-contents">
           <SwingCellContent
             vehicleOrGhost={swingOnVehicleOrGhost}
             runId={swing.toRunId}
-            fsEventText={"Clicked on swing-on from swings view"}
+            onClick={() => {
+              tagManagerEvent("clicked_swing_on")
+              fullStoryEvent('User clicked "Swing On" run button', {})
+            }}
           />
         </div>
       </th>
-      <th className="m-swings-view__table-cell">
-        <div className="m-swings-view__table-cell-contents">
+      <th className="c-swings-view__table-cell">
+        <div className="c-swings-view__table-cell-contents">
           <SwingCellContent
             vehicleOrGhost={swingOffVehicleOrGhost}
             runId={swing.fromRunId}
-            fsEventText={"Clicked on swing-off from swings view"}
+            onClick={() => {
+              tagManagerEvent("clicked_swing_off")
+              fullStoryEvent('User clicked "Swing Off" run button', {})
+            }}
           />
-          <div className="m-swings-view__route-pill">
-            <div className="m-swings-view__route">
+          <div className="c-swings-view__route-pill">
+            <div className="c-swings-view__route">
               {route ? route.name : swing.fromRouteId}
             </div>
           </div>
         </div>
       </th>
-      <th className="m-swings-view__table-cell">
-        <div className="m-swings-view__table-cell-contents">
-          {swingVehicleForBlockId && isVehicle(swingVehicleForBlockId)
+      <th className="c-swings-view__table-cell">
+        <div className="c-swings-view__table-cell-contents">
+          {swingVehicleForBlockId &&
+          isVehicleInScheduledService(swingVehicleForBlockId)
             ? swingVehicleForBlockId.label
             : null}
         </div>
@@ -259,36 +321,32 @@ const SwingRow = ({
 const SwingCellContent = ({
   vehicleOrGhost,
   runId,
-  fsEventText,
+  onClick,
 }: {
-  vehicleOrGhost?: VehicleOrGhost
+  vehicleOrGhost?: VehicleInScheduledService | Ghost
   runId: string
-  fsEventText: string
+  onClick?: () => void
 }): ReactElement<HTMLElement> => {
-  const [, dispatch] = useContext(StateDispatchContext)
+  const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
 
   return (
     <>
       {vehicleOrGhost ? (
         <>
-          {isVehicle(vehicleOrGhost)
-            ? upRightIcon(
-                "m-swings-view__run-icon m-swings-view__run-icon-arrow"
-              )
-            : ghostSwingIcon(
-                "m-swings-view__run-icon m-swings-view__run-icon-ghost"
-              )}
+          {isVehicleInScheduledService(vehicleOrGhost) ? (
+            <UpRightIcon className="c-swings-view__run-icon c-swings-view__run-icon-arrow" />
+          ) : (
+            <GhostSwingIcon className="c-swings-view__run-icon c-swings-view__run-icon-ghost" />
+          )}
 
-          <a
+          <button
             onClick={() => {
-              if (window.FS) {
-                window.FS.event(fsEventText)
-              }
-              dispatch(selectVehicle(vehicleOrGhost))
+              onClick?.()
+              openVehiclePropertiesPanel(vehicleOrGhost)
             }}
           >
             {runIdToLabel(runId)}
-          </a>
+          </button>
         </>
       ) : (
         runIdToLabel(runId)

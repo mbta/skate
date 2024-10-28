@@ -1,4 +1,6 @@
 defmodule Notifications.NotificationReason do
+  @moduledoc false
+
   use Ecto.Type
 
   @type t ::

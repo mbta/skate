@@ -1,0 +1,33 @@
+.c-circle-x-icon {
+  overflow: visible;
+  width: 0.75rem;
+  height: 0.75rem;
+
+  color: $color-gray-600;
+
+  &__path {
+    fill: currentColor;
+    .c-circle-x-icon-container:hover & {
+      color: $color-eggplant-500;
+    }
+  }
+
+  &__focus-circle {
+    display: none;
+
+    vector-effect: non-scaling-stroke;
+    stroke-width: 1px;
+    stroke: $color-eggplant-500;
+    fill: $color-eggplant-200;
+
+    .c-circle-x-icon-container:is(:focus, :focus-visible, :focus-within) & {
+      display: inline;
+    }
+  }
+
+  // Fill the `X` part of the `__path` with white
+  &__white-fill {
+    fill: white;
+    r: 50%;
+  }
+}

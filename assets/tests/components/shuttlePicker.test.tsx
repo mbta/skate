@@ -1,4 +1,4 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../factories/route"
@@ -7,8 +7,7 @@ import ShuttlePicker, {
   formatRunId,
 } from "../../src/components/shuttlePicker"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { RunId, Vehicle } from "../../src/realtime"
+import { RunId, VehicleInScheduledService } from "../../src/realtime"
 import { Route } from "../../src/schedule"
 import {
   deselectAllShuttleRuns,
@@ -19,8 +18,11 @@ import {
   selectShuttleRoute,
   selectShuttleRun,
 } from "../../src/state"
+import { vehicleFactory } from "../factories/vehicle"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
-const vehicle: Vehicle = {
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "y1818",
   label: "1818",
   runId: "999-0555",
@@ -38,11 +40,8 @@ const vehicle: Vehicle = {
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,
@@ -62,7 +61,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 const shuttleRoutes: Route[] = [
   routeFactory.build({
@@ -105,7 +104,7 @@ describe("ShuttlePicker", () => {
     999-0512: unknown, selected
     */
     const selectedShuttleRunIds: RunId[] = ["999-0502", "999-0504", "999-0512"]
-    const shuttles: Vehicle[] = [
+    const shuttles: VehicleInScheduledService[] = [
       { ...vehicle, runId: "999-0503" },
       { ...vehicle, runId: "999-0504" },
       { ...vehicle, runId: "999-0511" },
@@ -126,26 +125,23 @@ describe("ShuttlePicker", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking an unselected run id adds it to selected run ids", () => {
+  test("clicking an unselected run id adds it to selected run ids", async () => {
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <ShuttlePicker shuttles={[vehicle]} />
       </StateDispatchProvider>
     )
-    wrapper
-      .find(
-        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button--unselected"
-      )
-      .first()
-      .simulate("click")
+    await userEvent.click(
+      result.getByRole("button", { name: /Special 999 555/ })
+    )
 
     expect(dispatch).toHaveBeenCalledWith(selectShuttleRun(vehicle.runId!))
   })
 
-  test("clicking a selected run id removes it from selected run ids", () => {
+  test("clicking a selected run id removes it from selected run ids", async () => {
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider
         state={{ ...initialState, selectedShuttleRunIds: [vehicle.runId!] }}
         dispatch={dispatch}
@@ -153,19 +149,17 @@ describe("ShuttlePicker", () => {
         <ShuttlePicker shuttles={[vehicle]} />
       </StateDispatchProvider>
     )
-    wrapper
-      .find(
-        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button--selected"
-      )
-      .first()
-      .simulate("click")
+
+    await userEvent.click(
+      result.getByRole("button", { name: /Special 999 555/ })
+    )
 
     expect(dispatch).toHaveBeenCalledWith(deselectShuttleRun(vehicle.runId!))
   })
 
-  test("clicking the unselected All Specials button selects all runs", () => {
+  test("clicking the unselected All Specials button selects all runs", async () => {
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider
         state={{ ...initialState, selectedShuttleRunIds: [] }}
         dispatch={dispatch}
@@ -173,22 +167,15 @@ describe("ShuttlePicker", () => {
         <ShuttlePicker shuttles={[vehicle]} />
       </StateDispatchProvider>
     )
-    const allSpecialsButton = wrapper
-      .find(
-        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button"
-      )
-      .first()
 
-    expect(allSpecialsButton.text().includes("All Specials")).toBeTruthy()
-
-    allSpecialsButton.simulate("click")
+    await userEvent.click(result.getByRole("button", { name: /All Specials/ }))
 
     expect(dispatch).toHaveBeenCalledWith(selectAllShuttleRuns())
   })
 
-  test("clicking the selected All Specials button deselects all runs", () => {
+  test("clicking the selected All Specials button deselects all runs", async () => {
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider
         state={{ ...initialState, selectedShuttleRunIds: "all" }}
         dispatch={dispatch}
@@ -196,40 +183,28 @@ describe("ShuttlePicker", () => {
         <ShuttlePicker shuttles={[vehicle]} />
       </StateDispatchProvider>
     )
-    const allSpecialsButton = wrapper
-      .find(
-        ".m-route-picker__shuttle-run-list .m-route-picker__route-list-button"
-      )
-      .first()
-
-    expect(allSpecialsButton.text().includes("All Specials")).toBeTruthy()
-
-    allSpecialsButton.simulate("click")
+    await userEvent.click(result.getByRole("button", { name: /All Specials/ }))
 
     expect(dispatch).toHaveBeenCalledWith(deselectAllShuttleRuns())
   })
 
-  test("clicking an unselected route button adds the route to the selected route IDs", () => {
+  test("clicking an unselected route button adds the route to the selected route IDs", async () => {
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
         <ShuttlePicker shuttles={[]} />
       </StateDispatchProvider>
     )
-    wrapper
-      .find(
-        ".m-route-picker__shuttle-route-list .m-route-picker__route-list-button--unselected"
-      )
-      .first()
-      .simulate("click")
+    await userEvent.click(result.getByRole("button", { name: /Blue Line/ }))
 
     expect(dispatch).toHaveBeenCalledWith(selectShuttleRoute("Blue"))
   })
 
-  test("clicking a selected route button removes the route from the selected route IDs", () => {
-    const selectedRouteId = shuttleRoutes[1].id
+  test("clicking a selected route button removes the route from the selected route IDs", async () => {
+    const selectedRoute = shuttleRoutes[1]
+    const selectedRouteId = selectedRoute.id
     const dispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider
         state={{ ...initialState, selectedShuttleRouteIds: [selectedRouteId] }}
         dispatch={dispatch}
@@ -237,12 +212,9 @@ describe("ShuttlePicker", () => {
         <ShuttlePicker shuttles={[]} />
       </StateDispatchProvider>
     )
-    wrapper
-      .find(
-        ".m-route-picker__shuttle-route-list .m-route-picker__route-list-button--selected"
-      )
-      .first()
-      .simulate("click")
+    await userEvent.click(
+      result.getByRole("button", { name: selectedRoute.name })
+    )
 
     expect(dispatch).toHaveBeenCalledWith(deselectShuttleRoute(selectedRouteId))
   })
@@ -263,7 +235,7 @@ describe("activeRunCounts", () => {
         id: "3",
         runId: "1",
       },
-    ] as Vehicle[]
+    ] as VehicleInScheduledService[]
 
     const expected = {
       "1": 2,
@@ -284,7 +256,7 @@ describe("activeRunCounts", () => {
         id: "2",
         runId: null,
       },
-    ] as Vehicle[]
+    ] as VehicleInScheduledService[]
 
     const expected = {
       "1": 1,

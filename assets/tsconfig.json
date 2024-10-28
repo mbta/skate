@@ -1,10 +1,9 @@
 {
-  "include": ["src", "tests"],
+  "include": ["src", "tests", "stories"],
   "exclude": ["node_modules"],
   "files": [
     "src/skate.d.ts",
     "src/schedule.d.ts",
-    "src/realtime.d.ts",
     "src/minischedule.d.ts"
   ],
   "compilerOptions": {

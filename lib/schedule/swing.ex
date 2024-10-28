@@ -1,4 +1,6 @@
 defmodule Schedule.Swing do
+  @moduledoc false
+
   alias Schedule.Block
   alias Schedule.Hastus
   alias Schedule.Gtfs.Service
@@ -85,12 +87,13 @@ defmodule Schedule.Swing do
     |> Map.values()
     |> Enum.map(&{&1.pieces, &1.id})
     |> Enum.flat_map(fn {pieces_for_block, block_id} ->
-      Enum.chunk_every(pieces_for_block, 2, 1, :discard)
+      pieces_for_block
+      |> Enum.chunk_every(2, 1, :discard)
       |> Enum.map(fn [piece1, piece2] -> {piece1, piece2, block_id} end)
     end)
     |> Enum.map(fn {piece1, piece2, block_id} ->
       trip1 = piece1.trips |> List.last() |> trip_or_trip_id_to_trip(trips_by_id)
-      trip2 = piece2.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
+      trip2 = first_trip_from_piece(piece2, trips_by_id)
 
       %{
         swing_off_trip: trip1,
@@ -100,14 +103,34 @@ defmodule Schedule.Swing do
       }
     end)
     |> Enum.filter(fn %{swing_off_trip: trip1, swing_on_trip: trip2} ->
-      trip1.route_id || trip2.route_id
+      !is_nil(trip1) && !is_nil(trip2) && (trip1.route_id || trip2.route_id)
     end)
   end
 
-  @spec trip_or_trip_id_to_trip(Trip.id() | Schedule.Trip.t(), Trip.by_id()) ::
-          Schedule.Trip.t() | Trip.t()
+  @spec trip_or_trip_id_to_trip(
+          Trip.id() | Schedule.Trip.t() | Schedule.AsDirected.t(),
+          Trip.by_id()
+        ) ::
+          Schedule.Trip.t() | Trip.t() | nil
   defp trip_or_trip_id_to_trip(%Schedule.Trip{} = trip, trips_by_id),
     do: Map.get(trips_by_id, trip.id, trip)
 
+  defp trip_or_trip_id_to_trip(%Schedule.AsDirected{}, _trips_by_id),
+    do: nil
+
   defp trip_or_trip_id_to_trip(trip_id, trips_by_id), do: Map.fetch!(trips_by_id, trip_id)
+
+  @spec first_trip_from_piece(Schedule.Piece.t(), Trip.by_id()) ::
+          Trip.id() | Schedule.Trip.t() | Schedule.AsDirected.t()
+  defp first_trip_from_piece(piece, trips_by_id) do
+    case piece.start_mid_route? do
+      %{trip: mid_route_trip} ->
+        with %{} = first_trip <- trip_or_trip_id_to_trip(mid_route_trip, trips_by_id) do
+          %{first_trip | run_id: piece.run_id}
+        end
+
+      nil ->
+        piece.trips |> List.first() |> trip_or_trip_id_to_trip(trips_by_id)
+    end
+  end
 end

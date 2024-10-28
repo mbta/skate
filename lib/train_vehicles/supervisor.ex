@@ -1,4 +1,6 @@
 defmodule TrainVehicles.Supervisor do
+  @moduledoc false
+
   use Supervisor
 
   @api_params [
@@ -12,13 +14,12 @@ defmodule TrainVehicles.Supervisor do
 
   @impl true
   def init(:ok) do
-    children()
-    |> Supervisor.init(strategy: :one_for_all)
+    Supervisor.init(children(), strategy: :one_for_all)
   end
 
   defp children() do
     [
-      supervisor(Phoenix.PubSub.PG2, [TrainVehicles.PubSub, []])
+      {Phoenix.PubSub, name: TrainVehicles.PubSub}
       | stream_children()
     ]
   end

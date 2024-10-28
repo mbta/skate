@@ -1,17 +1,36 @@
-import { mount } from "enzyme"
-import React from "react"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
+import React, { ReactNode } from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../../factories/route"
 import * as map from "../../../src/components/map"
 import VehiclePropertiesPanel from "../../../src/components/propertiesPanel/vehiclePropertiesPanel"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
-import { useNearestIntersection } from "../../../src/hooks/useNearestIntersection"
+import { useNearestIntersectionFetchResult } from "../../../src/hooks/useNearestIntersection"
+import { useStations } from "../../../src/hooks/useStations"
 import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
-import { HeadwaySpacing } from "../../../src/models/vehicleStatus"
-import { BlockWaiver, Ghost, Vehicle } from "../../../src/realtime"
+import {
+  BlockWaiver,
+  Ghost,
+  Vehicle,
+  VehicleInScheduledService,
+} from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
 import * as dateTime from "../../../src/util/dateTime"
+import { vehicleFactory, invalidVehicleFactory } from "../../factories/vehicle"
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom/jest-globals"
+import { TabMode } from "../../../src/components/propertiesPanel/tabPanels"
+import userEvent from "@testing-library/user-event"
+import {
+  useMinischeduleBlock,
+  useMinischeduleRun,
+} from "../../../src/hooks/useMinischedule"
+import { useTripShape } from "../../../src/hooks/useShapes"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
+import { closeButton } from "../../testHelpers/selectors/components/closeButton"
+import { MemoryRouter } from "react-router-dom"
+import { loading } from "../../../src/util/fetchResult"
 
 jest
   .spyOn(dateTime, "now")
@@ -19,19 +38,38 @@ jest
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
-jest.spyOn(map, "default")
+jest.spyOn(map, "MapFollowingPrimaryVehicles")
 
 jest.mock("../../../src/hooks/useVehiclesForRoute", () => ({
   __esModule: true,
   default: jest.fn(),
 }))
 
-jest.mock("../../../src/hooks/useNearestIntersection", () => ({
+jest.mock("../../../src/hooks/useNearestIntersection")
+
+jest.mock("../../../src/hooks/useStations", () => ({
   __esModule: true,
-  useNearestIntersection: jest.fn(() => null),
+  useStations: jest.fn(() => []),
 }))
 
-const vehicle: Vehicle = {
+jest.mock("../../../src/hooks/useMinischedule", () => ({
+  __esModule: true,
+  useMinischeduleRun: jest.fn(),
+  useMinischeduleBlock: jest.fn(),
+}))
+
+jest.mock("../../../src/hooks/useShapes", () => ({
+  __esModule: true,
+  useTripShape: jest.fn(),
+}))
+
+jest.mock("../../../src/helpers/fullStory")
+
+beforeEach(() => {
+  jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
+})
+
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -49,11 +87,8 @@ const vehicle: Vehicle = {
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,
@@ -87,12 +122,24 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
+
+const MemoryRouterWrapper = ({ children }: { children: ReactNode }) => (
+  <MemoryRouter initialEntries={["/"]}>{children}</MemoryRouter>
+)
 
 describe("VehiclePropertiesPanel", () => {
   test("renders a vehicle properties panel", () => {
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicle}
+          tabMode="status"
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -106,7 +153,13 @@ describe("VehiclePropertiesPanel", () => {
     const tree = renderer
       .create(
         <RoutesProvider routes={[route]}>
-          <VehiclePropertiesPanel selectedVehicle={vehicle} />
+          <VehiclePropertiesPanel
+            selectedVehicle={vehicle}
+            tabMode="status"
+            onChangeTabMode={jest.fn()}
+            onClosePanel={jest.fn()}
+            openMapEnabled={true}
+          />
         </RoutesProvider>
       )
       .toJSON()
@@ -115,50 +168,75 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("renders for an early vehicle", () => {
-    const earlyVehicle: Vehicle = {
+    const earlyVehicle: VehicleInScheduledService = {
       ...vehicle,
       scheduleAdherenceSecs: -61,
     }
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={earlyVehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={earlyVehicle}
+          tabMode="status"
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
+  test("Includes invalid bus banner when vehicle is off course", () => {
+    render(
+      <VehiclePropertiesPanel
+        selectedVehicle={invalidVehicleFactory.build()}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
+    )
+    expect(screen.getByRole("heading", { name: "Invalid Bus" })).toBeVisible()
+  })
+
   test("renders for a late vehicle", () => {
-    const earlyVehicle: Vehicle = {
+    const earlyVehicle: VehicleInScheduledService = {
       ...vehicle,
       scheduleAdherenceSecs: 361,
     }
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={earlyVehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={earlyVehicle}
+          tabMode="status"
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
   test("renders for an off-course vehicle", () => {
-    const offCourseVehicle: Vehicle = {
+    const offCourseVehicle: VehicleInScheduledService = {
       ...vehicle,
       isOffCourse: true,
     }
 
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("renders for a headway-based vehicle", () => {
-    const offCourseVehicle: Vehicle = {
-      ...vehicle,
-      headwaySpacing: HeadwaySpacing.Ok,
-    }
-
-    const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={offCourseVehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={offCourseVehicle}
+          tabMode="status"
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -167,12 +245,21 @@ describe("VehiclePropertiesPanel", () => {
   test("renders for a shuttle", () => {
     const shuttleVehicle: Vehicle = {
       ...vehicle,
+      directionId: null,
       runId: "999-0555",
       isShuttle: true,
     }
 
     const tree = renderer
-      .create(<VehiclePropertiesPanel selectedVehicle={shuttleVehicle} />)
+      .create(
+        <VehiclePropertiesPanel
+          selectedVehicle={shuttleVehicle}
+          tabMode="status"
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />
+      )
       .toJSON()
 
     expect(tree).toMatchSnapshot()
@@ -186,14 +273,20 @@ describe("VehiclePropertiesPanel", () => {
       causeDescription: "Block Waiver",
       remark: null,
     }
-    const vehicleWithBlockWaivers: Vehicle = {
+    const vehicleWithBlockWaivers: VehicleInScheduledService = {
       ...vehicle,
       blockWaivers: [blockWaiver],
     }
 
     const tree = renderer
       .create(
-        <VehiclePropertiesPanel selectedVehicle={vehicleWithBlockWaivers} />
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleWithBlockWaivers}
+          tabMode="status"
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />
       )
       .toJSON()
 
@@ -201,11 +294,20 @@ describe("VehiclePropertiesPanel", () => {
   })
 
   test("shows the nearest intersection", () => {
-    ;(useNearestIntersection as jest.Mock).mockImplementationOnce(
-      () => "Atlantic Ave & Summer St"
+    ;(useNearestIntersectionFetchResult as jest.Mock).mockReturnValueOnce({
+      ok: "Atlantic Ave & Summer St",
+    })
+    const result = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
     )
-    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
-    expect(wrapper.html()).toContain("Atlantic Ave &amp; Summer St")
+    expect(result.getByText("Atlantic Ave & Summer St")).toBeInTheDocument()
   })
 
   test("renders data discrepancies when in debug mode", () => {
@@ -213,11 +315,18 @@ describe("VehiclePropertiesPanel", () => {
       .spyOn(URLSearchParams.prototype, "get")
       .mockImplementation((_key) => "1")
 
-    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    const result = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
+    )
 
-    expect(
-      wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
-    ).toBeGreaterThan(0)
+    expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(2)
   })
 
   test("does not render data discrepancies when not in debug mode", () => {
@@ -225,27 +334,44 @@ describe("VehiclePropertiesPanel", () => {
       .spyOn(URLSearchParams.prototype, "get")
       .mockImplementation((_key) => null)
 
-    const wrapper = mount(<VehiclePropertiesPanel selectedVehicle={vehicle} />)
+    const result = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
+    )
 
-    expect(
-      wrapper.find(".m-vehicle-properties-panel__data-discrepancies").length
-    ).toBe(0)
+    expect(result.queryAllByTestId("data-discrepancy")).toHaveLength(0)
   })
 
   test("map includes other vehicles on the route", () => {
     const thisVehicle = vehicle
     const otherVehicle = { ...vehicle, id: "other" }
     const ghost = { id: "ghost" } as Ghost
-    jest.spyOn(map, "default")
+    jest.spyOn(map, "MapFollowingPrimaryVehicles")
     renderer.create(
       <VehiclesByRouteIdProvider
         vehiclesByRouteId={{ "39": [thisVehicle, otherVehicle, ghost] }}
       >
-        <VehiclePropertiesPanel selectedVehicle={thisVehicle} />
+        <VehiclePropertiesPanel
+          selectedVehicle={thisVehicle}
+          tabMode="status"
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />
       </VehiclesByRouteIdProvider>
     )
-    expect(map.default).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
+    expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
+    const mapArgs: map.Props = (
+      map.MapFollowingPrimaryVehicles as jest.Mock<
+        typeof map.MapFollowingPrimaryVehicles
+      >
+    ).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
 
@@ -253,16 +379,165 @@ describe("VehiclePropertiesPanel", () => {
     const thisVehicle = vehicle
     const otherVehicle = { ...vehicle, id: "other" }
     const ghost = { id: "ghost" } as Ghost
-    jest.spyOn(map, "default")
+    jest.spyOn(map, "MapFollowingPrimaryVehicles")
     ;(useVehiclesForRoute as jest.Mock).mockImplementationOnce(() => [
       thisVehicle,
       otherVehicle,
       ghost,
     ])
-    renderer.create(<VehiclePropertiesPanel selectedVehicle={thisVehicle} />)
+    renderer.create(
+      <VehiclePropertiesPanel
+        selectedVehicle={thisVehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />
+    )
     expect(useVehiclesForRoute).toHaveBeenCalled()
-    expect(map.default).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = (map.default as jest.Mock).mock.calls[0][0]
+    expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
+    const mapArgs: map.Props = (
+      map.MapFollowingPrimaryVehicles as jest.Mock<
+        typeof map.MapFollowingPrimaryVehicles
+      >
+    ).mock.calls[0][0]
     expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
   })
+
+  test("map includes station icons", () => {
+    ;(useStations as jest.Mock).mockReturnValue([
+      {
+        id: "station-id",
+        locationType: "station",
+        name: "Station 1",
+        lat: vehicle.latitude,
+        lon: vehicle.longitude,
+      },
+    ])
+
+    const { container } = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
+    )
+
+    expect(container.innerHTML).toContain("c-station-icon")
+  })
+
+  test("calls closePanel callback on close", async () => {
+    const mockClosePanel = jest.fn()
+
+    render(
+      <VehiclePropertiesPanel
+        selectedVehicle={vehicle}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={mockClosePanel}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
+    )
+
+    await userEvent.click(closeButton.get())
+
+    expect(mockClosePanel).toHaveBeenCalled()
+  })
+
+  test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
+    { tab: "run", clickTarget: "Run" },
+    { tab: "block", clickTarget: "Block" },
+    { tab: "status", clickTarget: "Status", initialTab: "block" },
+  ])(
+    "when active tab changes to '$tab', calls tab change callback",
+    async ({ tab, clickTarget, initialTab }) => {
+      jest.mocked(useTripShape).mockReturnValue([])
+      jest.mocked(useMinischeduleRun).mockReturnValue(undefined)
+      jest.mocked(useMinischeduleBlock).mockReturnValue(undefined)
+
+      const mockSetTabMode = jest.fn()
+
+      render(
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          tabMode={initialTab || "status"}
+          onChangeTabMode={mockSetTabMode}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />,
+        { wrapper: MemoryRouterWrapper }
+      )
+
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
+
+      expect(mockSetTabMode).toHaveBeenCalledWith(tab)
+    }
+  )
+
+  test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
+    { tab: "run", clickTarget: "Run" },
+    { tab: "block", clickTarget: "Block" },
+    { tab: "status", clickTarget: "Status", initialTab: "block" },
+  ])(
+    "when active tab changes to '$tab', fires fullstory event",
+    async ({ tab, clickTarget, initialTab }) => {
+      ;(useTripShape as jest.Mock).mockReturnValue([])
+      ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
+      ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
+
+      const mockedFSEvent = jest.mocked(fullStoryEvent)
+
+      render(
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          tabMode={initialTab || "status"}
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />,
+        { wrapper: MemoryRouterWrapper }
+      )
+
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
+
+      expect(mockedFSEvent).toHaveBeenCalledWith(
+        "Switched tab in Vehicle Properties Panel",
+        { tab_str: tab }
+      )
+    }
+  )
+
+  test.each<{ clickTarget: string; initialTab: TabMode }>([
+    { clickTarget: "Run", initialTab: "run" },
+    { clickTarget: "Block", initialTab: "block" },
+    { clickTarget: "Status", initialTab: "status" },
+  ])(
+    "when active tab '$initialTab' is clicked, does not fire fullstory event",
+    async ({ clickTarget, initialTab }) => {
+      ;(useTripShape as jest.Mock).mockReturnValue([])
+      ;(useMinischeduleRun as jest.Mock).mockReturnValue(undefined)
+      ;(useMinischeduleBlock as jest.Mock).mockReturnValue(undefined)
+
+      const mockedFSEvent = jest.mocked(fullStoryEvent)
+
+      render(
+        <VehiclePropertiesPanel
+          selectedVehicle={vehicleFactory.build()}
+          tabMode={initialTab}
+          onChangeTabMode={jest.fn()}
+          onClosePanel={jest.fn()}
+          openMapEnabled={true}
+        />,
+        { wrapper: MemoryRouterWrapper }
+      )
+
+      await userEvent.click(screen.getByRole("tab", { name: clickTarget }))
+
+      expect(mockedFSEvent).not.toHaveBeenCalled()
+    }
+  )
 })

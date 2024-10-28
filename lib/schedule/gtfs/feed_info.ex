@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.FeedInfo do
+  @moduledoc false
+
   require Logger
 
   alias Schedule.Csv

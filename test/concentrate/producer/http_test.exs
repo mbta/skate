@@ -112,19 +112,13 @@ defmodule Concentrate.Producer.HTTPTest do
     @tag timeout: 2_000
     @tag :capture_log
     test "schedules a fetch again if there's a disconnection", %{bypass: bypass} do
-      {:ok, agent} = response_agent()
-
-      agent
-      |> add_response(fn conn ->
-        Bypass.down(bypass)
-        Bypass.up(bypass)
+      Bypass.expect(bypass, fn conn ->
+        :ok = Bypass.down(bypass)
+        :ok = Bypass.up(bypass)
         send_resp(conn, 200, "first")
       end)
-      |> add_response(fn conn ->
-        send_resp(conn, 200, "reconnect")
-      end)
 
-      Bypass.expect(bypass, fn conn -> agent_response(agent, conn) end)
+      Bypass.expect(bypass, fn conn -> send_resp(conn, 200, "reconnect") end)
 
       {:ok, producer} =
         start_producer(bypass, fetch_after: 50, get_opts: [timeout: 100, recv_timeout: 100])
@@ -146,7 +140,7 @@ defmodule Concentrate.Producer.HTTPTest do
       |> add_response(fn conn ->
         assert get_req_header(conn, "if-modified-since") == ["last mod"]
         assert get_req_header(conn, "if-none-match") == []
-        send_resp(conn, 304, "not modified")
+        send_resp(conn, 304, "")
       end)
       |> add_response(fn conn ->
         assert get_req_header(conn, "if-modified-since") == ["last mod"]
@@ -172,7 +166,7 @@ defmodule Concentrate.Producer.HTTPTest do
       end)
       |> add_response(fn conn ->
         assert get_req_header(conn, "if-none-match") == ["tag"]
-        send_resp(conn, 304, "not modified")
+        send_resp(conn, 304, "")
       end)
       |> add_response(fn conn ->
         assert get_req_header(conn, "if-none-match") == ["tag"]
@@ -237,8 +231,7 @@ defmodule Concentrate.Producer.HTTPTest do
     test "an error in parsing isn't fatal", %{bypass: bypass} do
       {:ok, agent} = response_agent()
 
-      agent
-      |> add_response(fn conn ->
+      add_response(agent, fn conn ->
         send_resp(conn, 200, "failure")
       end)
 
@@ -261,8 +254,7 @@ defmodule Concentrate.Producer.HTTPTest do
     test "a FunctionClauseError error in parsing isn't fatal", %{bypass: bypass} do
       {:ok, agent} = response_agent()
 
-      agent
-      |> add_response(fn conn ->
+      add_response(agent, fn conn ->
         send_resp(conn, 200, "failure")
       end)
 

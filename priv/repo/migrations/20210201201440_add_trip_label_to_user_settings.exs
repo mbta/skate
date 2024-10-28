@@ -11,6 +11,6 @@ defmodule Skate.Repo.Migrations.AddTripLabelToUserSettings do
       add(:minischedules_trip_label, :trip_label, default: "destination")
     end
 
-    execute("UPDATE user_settings SET minischedules_trip_label = 'destination'", fn -> end)
+    execute("UPDATE user_settings SET minischedules_trip_label = 'destination'", fn -> nil end)
   end
 end

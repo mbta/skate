@@ -1,0 +1,2095 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MapPage /> Snapshot renders the empty state 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="Search Map Page"
+    class="c-map-page inherit-box border-box"
+  >
+    <div
+      aria-label="Map Search Panel"
+      class="c-map-page__input-and-results c-map-page__input-and-results--visible"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-map-page__input u-hideable"
+      >
+        <form
+          autocomplete="off"
+          class="c-search-form"
+        >
+          <div
+            class="c-search-form__search-control"
+            data-autocomplete-visible="false"
+            role="presentation"
+          >
+            <div
+              class="c-search-form__search-input-container"
+            >
+              <input
+                aria-controls=":rk:"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-owns=":rk:"
+                class="c-search-form__input"
+                placeholder="Search"
+                role="combobox"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="c-search-form__input-controls"
+              role="presentation"
+            >
+              <button
+                class="c-search-form__clear c-circle-x-icon-container"
+                hidden=""
+                title="Clear Search"
+                type="button"
+              >
+                <svg
+                  class="c-circle-x-icon"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    class="c-circle-x-icon__focus-circle"
+                    cx="50%"
+                    cy="50%"
+                    r="75%"
+                  />
+                  <circle
+                    class="c-circle-x-icon__white-fill"
+                    cx="50%"
+                    cy="50%"
+                    r="75%"
+                  />
+                  <path
+                    class="c-circle-x-icon__path"
+                    d="m24 .05a24 24 0 1 0 24 23.95 24 24 0 0 0 -24-23.95zm13.19 32.54a3.33 3.33 0 1 1 -4.73 4.69l-8.46-8.57-8.57 8.48a3.33 3.33 0 1 1 -4.69-4.73l8.55-8.46-8.48-8.57a3.33 3.33 0 1 1 4.73-4.69l8.46 8.55 8.57-8.48a3.33 3.33 0 0 1 2.35-1 3.35 3.35 0 0 1 3.33 3.35 3.33 3.33 0 0 1 -1 2.35l-8.54 8.49z"
+                  />
+                </svg>
+              </button>
+              <button
+                class="c-search-form__submit"
+                disabled=""
+                title="Submit"
+                type="submit"
+              >
+                <span>
+                  <svg />
+                </span>
+              </button>
+            </div>
+            <div
+              class="c-search-form__autocomplete-container"
+              hidden=""
+            >
+              <div
+                class="c-autocomplete"
+              >
+                <h2
+                  aria-hidden="true"
+                  class="visually-hidden"
+                  id=":rl:"
+                  role="presentation"
+                >
+                  Search Suggestions
+                </h2>
+                <div
+                  aria-labelledby=":rl:"
+                  class="c-autocomplete__list"
+                  id=":rk:"
+                  role="listbox"
+                  tabindex="-1"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="c-autocomplete__group-heading"
+                    id=":rm:"
+                    role="presentation"
+                    style="user-select: none;"
+                  />
+                  <ul
+                    aria-labelledby=":rm:"
+                    class="c-autocomplete__group-list"
+                    role="group"
+                  >
+                    <li
+                      class="c-autocomplete__option"
+                      role="option"
+                      tabindex="-1"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            aria-expanded="true"
+            class="c-filter-accordion"
+          >
+            <button
+              class="c-filter-accordion__toggle-button"
+            >
+              <div
+                class="c-filter-accordion__header"
+              >
+                Filter results
+              </div>
+              <div
+                class="c-filter-accordion__show-hide-icon"
+              >
+                <span>
+                  <svg />
+                </span>
+              </div>
+            </button>
+            <div
+              class="c-filter-accordion__body"
+            >
+              <ul
+                class="c-filter-accordion__filters"
+              >
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    id="property-all"
+                    name="property"
+                    type="radio"
+                    value="all"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-all"
+                  >
+                    All
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-vehicle"
+                    name="property"
+                    type="radio"
+                    value="vehicle"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-vehicle"
+                  >
+                    Vehicles
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-operator"
+                    name="property"
+                    type="radio"
+                    value="operator"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-operator"
+                  >
+                    Operators
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-run"
+                    name="property"
+                    type="radio"
+                    value="run"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-run"
+                  >
+                    Runs
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-location"
+                    name="property"
+                    type="radio"
+                    value="location"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-location"
+                  >
+                    Locations
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+      <img
+        alt=""
+        aria-hidden="true"
+        class="c-map-page__horizontal-separator"
+      />
+      <div
+        class="c-search-display u-hideable"
+      >
+        <div
+          class="c-recent-searches"
+        >
+          <div
+            class="c-recent-searches__heading"
+          >
+            Recent Searches
+          </div>
+          <ul />
+        </div>
+      </div>
+    </div>
+    <button
+      class="c-map-page__panel-backdrop-button"
+    />
+    <div
+      class="c-map-page__map"
+    >
+      <div
+        class="c-vehicle-map-state"
+      />
+      <div
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 21; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="test_base_url/13/2479/3029"
+                  style="width: 256px; height: 256px; left: -4px; top: -239px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-pane leaflet-primaryVehicles-pane"
+              style="z-index: 499;"
+            />
+            <div
+              class="leaflet-pane leaflet-secondaryVehicles-pane"
+              style="z-index: 400;"
+            />
+            <div
+              class="leaflet-pane leaflet-notableLocationMarkers-pane"
+              style="z-index: 410;"
+            />
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-control leaflet-bar c-street-view-switch position-absolute"
+          >
+            <label
+              aria-hidden="true"
+              aria-label=""
+              class="c-street-view-switch__label"
+              for="street-view-toggle-:rn:"
+              role="presentation"
+            >
+              <span
+                class="c-street-view-switch__label-icon"
+              >
+                <svg />
+              </span>
+            </label>
+            <label
+              class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
+              for="street-view-toggle-:rn:"
+            >
+              Street View
+            </label>
+            <div
+              class="c-street-view-switch__input form-switch"
+            >
+              <input
+                class="form-check-input"
+                id="street-view-toggle-:rn:"
+                role="switch"
+                type="checkbox"
+              />
+            </div>
+          </div>
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control"
+            >
+              <div
+                class="c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:ro:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:ro:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base-layer-radio-:rq:"
+                              name="layers-control-tile-type-:rs:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="base-layer-radio-:rq:"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite-layer-radio-:rr:"
+                              name="layers-control-tile-type-:rs:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="satellite-layer-radio-:rr:"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        aria-labelledby="vehicle-layers-control-label-:rp:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__vehicle_layers_control"
+                        >
+                          <h2
+                            id="vehicle-layers-control-label-:rp:"
+                          >
+                            Vehicles
+                          </h2>
+                          <div
+                            class="position-relative form-check form-switch"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="pull-back-layer-switch-:rt:"
+                              role="switch"
+                              type="checkbox"
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="pull-back-layer-switch-:rt:"
+                            >
+                              Show pull-backs
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-bar"
+            >
+              <a
+                aria-label="Recenter Map"
+                class="c-recenter-control"
+                data-is-active="true"
+                role="button"
+                tabindex="-1"
+                title="Recenter Map"
+              >
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<MapPage /> Snapshot renders the null state 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="Search Map Page"
+    class="c-map-page inherit-box border-box"
+  >
+    <div
+      aria-label="Map Search Panel"
+      class="c-map-page__input-and-results c-map-page__input-and-results--visible"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-map-page__input u-hideable"
+      >
+        <form
+          autocomplete="off"
+          class="c-search-form"
+        >
+          <div
+            class="c-search-form__search-control"
+            data-autocomplete-visible="false"
+            role="presentation"
+          >
+            <div
+              class="c-search-form__search-input-container"
+            >
+              <input
+                aria-controls=":r0:"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+                aria-owns=":r0:"
+                class="c-search-form__input"
+                placeholder="Search"
+                role="combobox"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="c-search-form__input-controls"
+              role="presentation"
+            >
+              <button
+                class="c-search-form__clear c-circle-x-icon-container"
+                hidden=""
+                title="Clear Search"
+                type="button"
+              >
+                <svg
+                  class="c-circle-x-icon"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    class="c-circle-x-icon__focus-circle"
+                    cx="50%"
+                    cy="50%"
+                    r="75%"
+                  />
+                  <circle
+                    class="c-circle-x-icon__white-fill"
+                    cx="50%"
+                    cy="50%"
+                    r="75%"
+                  />
+                  <path
+                    class="c-circle-x-icon__path"
+                    d="m24 .05a24 24 0 1 0 24 23.95 24 24 0 0 0 -24-23.95zm13.19 32.54a3.33 3.33 0 1 1 -4.73 4.69l-8.46-8.57-8.57 8.48a3.33 3.33 0 1 1 -4.69-4.73l8.55-8.46-8.48-8.57a3.33 3.33 0 1 1 4.73-4.69l8.46 8.55 8.57-8.48a3.33 3.33 0 0 1 2.35-1 3.35 3.35 0 0 1 3.33 3.35 3.33 3.33 0 0 1 -1 2.35l-8.54 8.49z"
+                  />
+                </svg>
+              </button>
+              <button
+                class="c-search-form__submit"
+                disabled=""
+                title="Submit"
+                type="submit"
+              >
+                <span>
+                  <svg />
+                </span>
+              </button>
+            </div>
+            <div
+              class="c-search-form__autocomplete-container"
+              hidden=""
+            >
+              <div
+                class="c-autocomplete"
+              >
+                <h2
+                  aria-hidden="true"
+                  class="visually-hidden"
+                  id=":r1:"
+                  role="presentation"
+                >
+                  Search Suggestions
+                </h2>
+                <div
+                  aria-labelledby=":r1:"
+                  class="c-autocomplete__list"
+                  id=":r0:"
+                  role="listbox"
+                  tabindex="-1"
+                >
+                  <div
+                    aria-hidden="true"
+                    class="c-autocomplete__group-heading"
+                    id=":r2:"
+                    role="presentation"
+                    style="user-select: none;"
+                  />
+                  <ul
+                    aria-labelledby=":r2:"
+                    class="c-autocomplete__group-list"
+                    role="group"
+                  >
+                    <li
+                      class="c-autocomplete__option"
+                      role="option"
+                      tabindex="-1"
+                    />
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            aria-expanded="true"
+            class="c-filter-accordion"
+          >
+            <button
+              class="c-filter-accordion__toggle-button"
+            >
+              <div
+                class="c-filter-accordion__header"
+              >
+                Filter results
+              </div>
+              <div
+                class="c-filter-accordion__show-hide-icon"
+              >
+                <span>
+                  <svg />
+                </span>
+              </div>
+            </button>
+            <div
+              class="c-filter-accordion__body"
+            >
+              <ul
+                class="c-filter-accordion__filters"
+              >
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    checked=""
+                    class="form-check-input"
+                    id="property-all"
+                    name="property"
+                    type="radio"
+                    value="all"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-all"
+                  >
+                    All
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-vehicle"
+                    name="property"
+                    type="radio"
+                    value="vehicle"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-vehicle"
+                  >
+                    Vehicles
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-operator"
+                    name="property"
+                    type="radio"
+                    value="operator"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-operator"
+                  >
+                    Operators
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-run"
+                    name="property"
+                    type="radio"
+                    value="run"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-run"
+                  >
+                    Runs
+                  </label>
+                </li>
+                <li
+                  class="form-check position-relative lh-base"
+                >
+                  <input
+                    class="form-check-input"
+                    id="property-location"
+                    name="property"
+                    type="radio"
+                    value="location"
+                  />
+                  <label
+                    class="stretched-link form-check-label"
+                    for="property-location"
+                  >
+                    Locations
+                  </label>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+      <img
+        alt=""
+        aria-hidden="true"
+        class="c-map-page__horizontal-separator"
+      />
+      <div
+        class="c-search-display u-hideable"
+      >
+        <div
+          class="c-recent-searches"
+        >
+          <div
+            class="c-recent-searches__heading"
+          >
+            Recent Searches
+          </div>
+          <ul />
+        </div>
+      </div>
+    </div>
+    <button
+      class="c-map-page__panel-backdrop-button"
+    />
+    <div
+      class="c-map-page__map"
+    >
+      <div
+        class="c-vehicle-map-state"
+      />
+      <div
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 21; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="test_base_url/13/2479/3029"
+                  style="width: 256px; height: 256px; left: -4px; top: -239px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-pane leaflet-primaryVehicles-pane"
+              style="z-index: 499;"
+            />
+            <div
+              class="leaflet-pane leaflet-secondaryVehicles-pane"
+              style="z-index: 400;"
+            />
+            <div
+              class="leaflet-pane leaflet-notableLocationMarkers-pane"
+              style="z-index: 410;"
+            />
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-control leaflet-bar c-street-view-switch position-absolute"
+          >
+            <label
+              aria-hidden="true"
+              aria-label=""
+              class="c-street-view-switch__label"
+              for="street-view-toggle-:r3:"
+              role="presentation"
+            >
+              <span
+                class="c-street-view-switch__label-icon"
+              >
+                <svg />
+              </span>
+            </label>
+            <label
+              class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
+              for="street-view-toggle-:r3:"
+            >
+              Street View
+            </label>
+            <div
+              class="c-street-view-switch__input form-switch"
+            >
+              <input
+                class="form-check-input"
+                id="street-view-toggle-:r3:"
+                role="switch"
+                type="checkbox"
+              />
+            </div>
+          </div>
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control"
+            >
+              <div
+                class="c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r4:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r4:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base-layer-radio-:r6:"
+                              name="layers-control-tile-type-:r8:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="base-layer-radio-:r6:"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite-layer-radio-:r7:"
+                              name="layers-control-tile-type-:r8:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="satellite-layer-radio-:r7:"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        aria-labelledby="vehicle-layers-control-label-:r5:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__vehicle_layers_control"
+                        >
+                          <h2
+                            id="vehicle-layers-control-label-:r5:"
+                          >
+                            Vehicles
+                          </h2>
+                          <div
+                            class="position-relative form-check form-switch"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="pull-back-layer-switch-:r9:"
+                              role="switch"
+                              type="checkbox"
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="pull-back-layer-switch-:r9:"
+                            >
+                              Show pull-backs
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-bar"
+            >
+              <a
+                aria-label="Recenter Map"
+                class="c-recenter-control"
+                data-is-active="true"
+                role="button"
+                tabindex="-1"
+                title="Recenter Map"
+              >
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
+<DocumentFragment>
+  <div
+    aria-label="Search Map Page"
+    class="c-map-page inherit-box border-box"
+  >
+    <div
+      aria-label="Map Search Panel"
+      class="c-map-page__input-and-results c-map-page__input-and-results--visible"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div>
+        <div
+          class="c-map-page__search-actions"
+        >
+          <button
+            class="button-submit c-map-page__new-search-button"
+          >
+            <span>
+              <svg />
+            </span>
+            New Search
+          </button>
+        </div>
+        <img
+          alt=""
+          aria-hidden="true"
+          class="c-map-page__horizontal-separator"
+        />
+        <div
+          aria-label="Vehicle Properties Card"
+          class="c-vehicle-properties-card"
+        >
+          <div
+            class="c-vehicle-properties-card__title-bar"
+          >
+            <output
+              aria-label="Time Since Last Update Received"
+              class="data-stale-time label font-xs-reg"
+            >
+              Updated 111 sec ago
+            </output>
+            <output
+              aria-label="Vehicle Schedule Adherence"
+              class="c-schedule-adherence on-time early-red label font-xs-reg"
+            >
+              <svg
+                aria-hidden="true"
+                aria-label=""
+                class="c-schedule-adherence__status-icon"
+                height="8"
+                role="img"
+                viewBox="0 0 100 100"
+                width="8"
+              >
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="50"
+                />
+              </svg>
+              <output
+                class="c-schedule-adherence-status label font-xs-semi title-case"
+              >
+                on time
+              </output>
+               
+              <output
+                class="c-vehicle-adherence-label label font-xs-reg"
+              >
+                (0 min early)
+              </output>
+            </output>
+          </div>
+          <div
+            class="c-vehicle-properties-card__summary"
+          >
+            <div
+              class="c-vehicle-route-summary"
+            >
+              <output
+                aria-label="Route Direction"
+                class="c-vehicle-route-direction c-vehicle-route-summary__direction label font-xs-reg"
+              />
+              <button
+                class="c-vehicle-route-summary__route-variant c-vehicle-route-summary__route-variant--clickable headsign font-m-semi"
+              >
+                <output
+                  aria-label="Route Variant Name"
+                  class="c-route-variant-name"
+                >
+                  <output
+                    aria-label="Route & Variant"
+                    class="c-route-variant-name__route-id"
+                  >
+                    39_X
+                  </output>
+                  <span>
+                     
+                  </span>
+                  <output
+                    aria-label="Headsign"
+                    class="c-route-variant-name__headsign"
+                  >
+                    Forest Hills
+                  </output>
+                </output>
+              </button>
+              <div
+                class="c-vehicle-route-summary__icon"
+              >
+                <svg
+                  role="img"
+                  style="width: 64px; height: 64px;"
+                  viewBox="-32 -20 64 64"
+                >
+                  <title>
+                    Vehicle Status Icon
+                  </title>
+                  <g
+                    class="c-vehicle-icon c-vehicle-icon--large on-time early-red"
+                  >
+                    <rect
+                      class="c-vehicle-icon__label-background"
+                      height="24"
+                      rx="12"
+                      ry="12"
+                      width="64"
+                      x="-32"
+                      y="19"
+                    />
+                    <text
+                      class="c-vehicle-icon__label c-vehicle-icon__label--normal"
+                      dominant-baseline="central"
+                      text-anchor="middle"
+                      x="0"
+                      y="31"
+                    >
+                      1
+                    </text>
+                    <path
+                      class="c-vehicle-icon__triangle"
+                      d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+                      data-testid="vehicle-triangle"
+                      transform="scale(1) rotate(0) translate(-24,-22)"
+                    />
+                    <text
+                      class="c-vehicle-icon__variant"
+                      dominant-baseline="alphabetic"
+                      text-anchor="middle"
+                      x="0"
+                      y="14"
+                    >
+                      X
+                    </text>
+                  </g>
+                </svg>
+              </div>
+              <img
+                alt=""
+                aria-hidden="true"
+                class="c-vehicle-route-summary__separator"
+              />
+            </div>
+          </div>
+          <div
+            class="c-vehicle-properties-card__body"
+          >
+            <div
+              class="c-vehicle-properties-card__properties c-vehicle-properties-card__info-section"
+            >
+              <table
+                class="c-vehicle-work-info"
+              >
+                <tbody
+                  class="c-vehicle-work-info__items"
+                >
+                  <tr>
+                    <th
+                      class="kv-key font-s-semi"
+                      id="run:ru:"
+                      scope="row"
+                    >
+                      run
+                    </th>
+                    <td
+                      aria-labelledby="run:ru:"
+                      class="kv-value font-s-reg"
+                    >
+                      <button
+                        class="kv-value--clickable"
+                      >
+                        run-1
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="kv-key font-s-semi"
+                      id="vehicle:rv:"
+                      scope="row"
+                    >
+                      vehicle
+                    </th>
+                    <td
+                      aria-labelledby="vehicle:rv:"
+                      class="kv-value font-s-reg"
+                    >
+                      v1-label
+                    </td>
+                  </tr>
+                  <tr>
+                    <th
+                      class="kv-key font-s-semi"
+                      id="operator:r10:"
+                      scope="row"
+                    >
+                      operator
+                    </th>
+                    <td
+                      aria-labelledby="operator:r10:"
+                      class="kv-value font-s-reg fs-mask"
+                    >
+                      WILL SMITH #op1
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div
+              class="c-vehicle-properties-card__location-info c-vehicle-properties-card__info-section"
+            >
+              <div
+                class="c-current-location"
+              >
+                <label
+                  class="c-current-location__label label font-xs-reg title-case"
+                  for="current-location-:r11:"
+                >
+                  Current Location
+                </label>
+                <output
+                  class="c-current-location__value label font-s-semi"
+                  id="current-location-:r11:"
+                >
+                  loading...
+                </output>
+              </div>
+              <a
+                class="c-directions-button button-small"
+                href="https://www.google.com/maps/dir/?api=1&destination=42.360718,-71.05891&travelmode=driving"
+                rel="noreferrer"
+                target="_blank"
+              >
+                <span>
+                  <svg />
+                </span>
+                Get directions to bus
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      class="c-map-page__panel-backdrop-button"
+    />
+    <div
+      class="c-map-page__map"
+    >
+      <div
+        class="c-vehicle-map-state"
+      />
+      <div
+        class="c-vehicle-map leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
+        id="id-vehicle-map"
+        style="position: relative;"
+        tabindex="0"
+      >
+        <div
+          class="leaflet-pane leaflet-map-pane"
+          style="left: 0px; top: 0px;"
+        >
+          <div
+            class="leaflet-pane leaflet-tile-pane"
+          >
+            <div
+              class="leaflet-layer "
+              style="z-index: 1;"
+            >
+              <div
+                class="leaflet-tile-container leaflet-zoom-animated"
+                style="z-index: 21; left: 0px; top: 0px;"
+              >
+                <img
+                  alt=""
+                  class="leaflet-tile"
+                  src="test_base_url/16/19831/24239"
+                  style="width: 256px; height: 256px; left: -64px; top: -92px;"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-overlay-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-shadow-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-marker-pane"
+          >
+            <div
+              class="leaflet-pane leaflet-primaryVehicles-pane"
+              style="z-index: 499;"
+            />
+            <div
+              class="leaflet-pane leaflet-secondaryVehicles-pane"
+              style="z-index: 400;"
+            />
+            <div
+              class="leaflet-pane leaflet-notableLocationMarkers-pane"
+              style="z-index: 410;"
+            >
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -57px; top: 1295px; z-index: 1295;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -57px; top: 1295px; z-index: 1295;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Albany
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -2115px; top: 3617px; z-index: 3617;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -2115px; top: 3617px; z-index: 3617;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Arborway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 273px; top: 1319px; z-index: 1319;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 273px; top: 1319px; z-index: 1319;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Cabot
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -456px; top: -1720px; z-index: -1720;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -456px; top: -1720px; z-index: -1720;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Charlestown and Somerville
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -1173px; top: -3823px; z-index: -3823;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -1173px; top: -3823px; z-index: -3823;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Fellsway
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 4158px; top: -5947px; z-index: -5947;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 4158px; top: -5947px; z-index: -5947;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Lynn
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -3032px; top: -2266px; z-index: -2266;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -3032px; top: -2266px; z-index: -2266;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    North Cambridge
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: 2539px; top: 6390px; z-index: 6390;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: 2539px; top: 6390px; z-index: 6390;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Quincy
+                  </text>
+                </svg>
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon leaflet-zoom-hide"
+                role="button"
+                style="margin-left: -10px; margin-top: -25px; width: 21px; height: 25px; left: -65px; top: 1854px; z-index: 1854;"
+                tabindex="0"
+              >
+                <svg />
+              </div>
+              <div
+                class="leaflet-marker-icon c-garage-icon__label c-garage-icon__label--base leaflet-zoom-hide"
+                role="button"
+                style="margin-left: 14px; margin-top: -25px; width: 12px; height: 12px; left: -65px; top: 1854px; z-index: 1854;"
+                tabindex="0"
+              >
+                <svg
+                  height="30"
+                  width="200"
+                >
+                  <text
+                    x="1"
+                    y="15"
+                  >
+                    Southampton
+                  </text>
+                </svg>
+              </div>
+            </div>
+            <div
+              class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 1027;"
+              tabindex="0"
+            >
+              <svg
+                class="c-vehicle-map__icon"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="on-time early-red selected"
+                  d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                  transform="scale(1) rotate(33) translate(-12, -12)"
+                />
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -20px; margin-top: 16px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 1027;"
+              tabindex="0"
+            >
+              <svg
+                class="c-vehicle-map__label primary selected"
+                height="16"
+                viewBox="0 0 40 16"
+                width="40"
+              >
+                <rect
+                  class="c-vehicle-icon__label-background"
+                  height="100%"
+                  rx="5.5px"
+                  ry="5.5px"
+                  width="100%"
+                />
+                <text
+                  class="c-vehicle-icon__label"
+                  dominant-baseline="central"
+                  text-anchor="middle"
+                  x="50%"
+                  y="50%"
+                >
+                  1
+                </text>
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27; z-index: 27;"
+              tabindex="0"
+            >
+              <svg
+                class="c-vehicle-map__icon"
+                height="24"
+                viewBox="0 0 24 24"
+                width="24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  class="on-time early-red"
+                  d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                  transform="scale(0.8) rotate(33) translate(-12, -12)"
+                />
+              </svg>
+            </div>
+            <div
+              class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+              role="button"
+              style="margin-left: -15px; margin-top: 10px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27; z-index: 27;"
+              tabindex="0"
+            >
+              <svg
+                class="c-vehicle-map__label secondary"
+                height="12"
+                viewBox="0 0 30 12"
+                width="30"
+              >
+                <rect
+                  class="c-vehicle-icon__label-background"
+                  height="100%"
+                  rx="5.5px"
+                  ry="5.5px"
+                  width="100%"
+                />
+                <text
+                  class="c-vehicle-icon__label"
+                  dominant-baseline="central"
+                  text-anchor="middle"
+                  x="50%"
+                  y="50%"
+                >
+                  2
+                </text>
+              </svg>
+            </div>
+          </div>
+          <div
+            class="leaflet-pane leaflet-tooltip-pane"
+          />
+          <div
+            class="leaflet-pane leaflet-popup-pane"
+          />
+        </div>
+        <div
+          class="leaflet-control-container"
+        >
+          <div
+            class="leaflet-control leaflet-bar c-street-view-switch position-absolute"
+          >
+            <label
+              aria-hidden="true"
+              aria-label=""
+              class="c-street-view-switch__label"
+              for="street-view-toggle-:r12:"
+              role="presentation"
+            >
+              <span
+                class="c-street-view-switch__label-icon"
+              >
+                <svg />
+              </span>
+            </label>
+            <label
+              class="c-street-view-switch__label c-street-view-switch__label-text stretched-link"
+              for="street-view-toggle-:r12:"
+            >
+              Street View
+            </label>
+            <div
+              class="c-street-view-switch__input form-switch"
+            >
+              <input
+                class="form-check-input"
+                id="street-view-toggle-:r12:"
+                role="switch"
+                type="checkbox"
+              />
+            </div>
+          </div>
+          <div
+            class="leaflet-top leaflet-left"
+          />
+          <div
+            class="leaflet-top leaflet-right"
+          >
+            <div
+              class="leaflet-control-zoom leaflet-bar leaflet-control"
+            >
+              <a
+                aria-disabled="false"
+                aria-label="Zoom in"
+                class="leaflet-control-zoom-in"
+                href="#"
+                role="button"
+                title="Zoom in"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </a>
+              <a
+                aria-disabled="false"
+                aria-label="Zoom out"
+                class="leaflet-control-zoom-out"
+                href="#"
+                role="button"
+                title="Zoom out"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  −
+                </span>
+              </a>
+            </div>
+            <div
+              class="leaflet-control"
+            >
+              <div
+                class="c-layers-control"
+              >
+                <button
+                  class="c-layers-control__button leaflet-bar"
+                  title="Layers"
+                >
+                  <span>
+                    <svg />
+                  </span>
+                </button>
+                <div
+                  class="c-layers-control__pill"
+                  hidden=""
+                >
+                  1
+                </div>
+                <div
+                  hidden=""
+                >
+                  <div
+                    class="c-layers-control__content"
+                  >
+                    <ul
+                      class="list-group"
+                    >
+                      <li
+                        aria-labelledby="tile-layer-control-label-:r13:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__tile_layer_control"
+                        >
+                          <h2
+                            id="tile-layer-control-label-:r13:"
+                          >
+                            Base Map
+                          </h2>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              checked=""
+                              class="form-check-input"
+                              id="base-layer-radio-:r15:"
+                              name="layers-control-tile-type-:r17:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="base-layer-radio-:r15:"
+                            >
+                              Map (default)
+                            </label>
+                          </div>
+                          <div
+                            class="position-relative form-check"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="satellite-layer-radio-:r16:"
+                              name="layers-control-tile-type-:r17:"
+                              type="radio"
+                              value=""
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="satellite-layer-radio-:r16:"
+                            >
+                              Satellite
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                      <li
+                        aria-labelledby="vehicle-layers-control-label-:r14:"
+                        class="list-group-item"
+                      >
+                        <div
+                          class="c-layers-control__vehicle_layers_control"
+                        >
+                          <h2
+                            id="vehicle-layers-control-label-:r14:"
+                          >
+                            Vehicles
+                          </h2>
+                          <div
+                            class="position-relative form-check form-switch"
+                          >
+                            <input
+                              class="form-check-input"
+                              id="pull-back-layer-switch-:r18:"
+                              role="switch"
+                              type="checkbox"
+                            />
+                            <label
+                              class="stretched-link form-check-label"
+                              for="pull-back-layer-switch-:r18:"
+                            >
+                              Show pull-backs
+                            </label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="leaflet-bar leaflet-control"
+            >
+              <a
+                aria-label="Full Screen"
+                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                href="#"
+                role="button"
+                title="Full Screen"
+              />
+            </div>
+            <div
+              class="leaflet-control leaflet-bar"
+            >
+              <a
+                aria-label="Recenter Map"
+                class="c-recenter-control"
+                data-is-active="true"
+                role="button"
+                tabindex="-1"
+                title="Recenter Map"
+              >
+                <svg
+                  height="26"
+                  viewBox="-5 -5 32 32"
+                  width="26"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m10 2.7-6.21 16.94a2.33 2.33 0 0 0 1.38 3 2.36 2.36 0 0 0 1.93-.14l4.9-2.67 4.89 2.71a2.34 2.34 0 0 0 3.34-2.8l-5.81-17a2.34 2.34 0 0 0 -4.4 0z"
+                    transform="rotate(60, 12, 12)"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div
+            class="leaflet-bottom leaflet-left"
+          />
+          <div
+            class="leaflet-bottom leaflet-right"
+          >
+            <div
+              class="leaflet-control-attribution leaflet-control"
+            >
+              © 
+              <a
+                href="http://osm.org/copyright"
+              >
+                OpenStreetMap
+              </a>
+               contributors
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

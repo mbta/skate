@@ -1,5 +1,5 @@
 defmodule Schedule.Gtfs.FeedInfoTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   import ExUnit.CaptureLog, only: [capture_log: 1]
 
   alias Schedule.Gtfs.FeedInfo

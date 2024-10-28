@@ -1,8 +1,8 @@
-.m-properties-list {
+.c-properties-list {
   padding: 1rem;
 }
 
-.m-properties-list__table {
+.c-properties-list__table {
   border-spacing: 0;
 
   td {
@@ -10,14 +10,14 @@
   }
 }
 
-.m-properties-list__property-label {
+.c-properties-list__property-label {
   @include font-label;
   margin-bottom: 0.5rem;
   text-align: left;
   width: 6rem;
 }
 
-.m-properties-list__property-value {
+.c-properties-list__property-value {
   @include font-body;
   margin-bottom: 1rem;
 
@@ -25,7 +25,7 @@
     background-color: $color-secondary-light;
   }
 
-  .m-properties-list__property--last-login & {
+  .c-properties-list__property--last-login & {
     color: $color-font-grey;
     font-size: 0.75rem;
   }

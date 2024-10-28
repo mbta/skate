@@ -1,5 +1,7 @@
 defmodule SkateWeb.EnsureAdminGroup do
-  import Plug.Conn
+  @moduledoc false
+
+  use SkateWeb, :plug
 
   def init(options), do: options
 
@@ -10,7 +12,7 @@ defmodule SkateWeb.EnsureAdminGroup do
       conn
     else
       conn
-      |> Phoenix.Controller.redirect(to: SkateWeb.Router.Helpers.unauthorized_path(conn, :index))
+      |> Phoenix.Controller.redirect(to: ~p"/unauthorized")
       |> halt()
     end
   end

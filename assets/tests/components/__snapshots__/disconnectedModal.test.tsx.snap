@@ -1,22 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DisconnectedModal renders 1`] = `
-Array [
+<body
+  data-rr-ui-modal-open=""
+  style="padding-right: 1024px;"
+>
+  <div />
   <div
-    className="c-modal"
+    aria-hidden="true"
+    class="c-modal-backdrop"
+  />
+  <div
+    aria-modal="true"
+    class="c-modal"
+    role="dialog"
+    tabindex="-1"
   >
     <div>
       Your connection to Skate has expired. Refresh the page to continue.
     </div>
     <button
-      className="m-disconnected-modal__refresh-button"
-      onClick={[Function]}
+      class="c-disconnected-modal__refresh-button"
     >
       Refresh
     </button>
-  </div>,
-  <div
-    className="c-modal-overlay"
-  />,
-]
+  </div>
+</body>
 `;

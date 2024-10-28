@@ -1,32 +1,53 @@
-import { mount } from "enzyme"
+import {
+  jest,
+  describe,
+  test,
+  expect,
+  beforeEach,
+  afterEach,
+} from "@jest/globals"
 import React from "react"
-import renderer, { act } from "react-test-renderer"
+import { render, screen } from "@testing-library/react"
 import RouteLadder from "../../src/components/routeLadder"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderCrowdingToggles } from "../../src/models/ladderCrowdingToggle"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
 import {
   Ghost,
   RouteStatus,
-  Vehicle,
-  VehicleOrGhost,
-} from "../../src/realtime.d"
+  VehicleInScheduledService,
+} from "../../src/realtime"
 import { Route } from "../../src/schedule.d"
-import {
-  deselectRoute,
-  flipLadder,
-  initialState,
-  selectVehicle,
-  State,
-  toggleLadderCrowding,
-} from "../../src/state"
+import { initialState } from "../../src/state"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
 import routeFactory from "../factories/route"
+import userEvent from "@testing-library/user-event"
+import "@testing-library/jest-dom/jest-globals"
+import { tagManagerEvent } from "../../src/helpers/googleTagManager"
+import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+import getTestGroups from "../../src/userTestGroups"
+import { TestGroups } from "../../src/userInTestGroup"
 
-// tslint:disable: object-literal-sort-keys
+jest.mock("../../src/hooks/usePanelState")
 
-const vehicles: Vehicle[] = [
-  {
+jest.mock("../../src/helpers/googleTagManager", () => ({
+  __esModule: true,
+  tagManagerEvent: jest.fn(),
+}))
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
+
+beforeEach(() => {
+  mockUsePanelState()
+  jest.mocked(getTestGroups).mockReturnValue([])
+})
+
+const vehicles: VehicleInScheduledService[] = [
+  vehicleFactory.build({
     id: "y1818",
     label: "1818",
     runId: "run-1",
@@ -44,11 +65,8 @@ const vehicles: Vehicle[] = [
     blockId: "block-1",
     headsign: "h1",
     viaVariant: "4",
-    headwaySecs: 859.1,
-    headwaySpacing: HeadwaySpacing.Ok,
     previousVehicleId: "v2",
     scheduleAdherenceSecs: 0,
-    scheduledHeadwaySecs: 120,
     isShuttle: false,
     isOverload: false,
     isOffCourse: false,
@@ -68,8 +86,8 @@ const vehicles: Vehicle[] = [
     endOfTripType: "another_trip",
     blockWaivers: [],
     crowding: null,
-  },
-  {
+  }),
+  vehicleFactory.build({
     id: "y0479",
     label: "0479",
     runId: "run-2",
@@ -87,11 +105,8 @@ const vehicles: Vehicle[] = [
     blockId: "block-1",
     headsign: null,
     viaVariant: null,
-    headwaySecs: 859.1,
-    headwaySpacing: HeadwaySpacing.Ok,
     previousVehicleId: "v2",
     scheduleAdherenceSecs: 0,
-    scheduledHeadwaySecs: 120,
     isShuttle: false,
     isOverload: false,
     isOffCourse: false,
@@ -123,8 +138,10 @@ const vehicles: Vehicle[] = [
     endOfTripType: "another_trip",
     blockWaivers: [],
     crowding: null,
-  },
+  }),
 ]
+
+jest.unmock("@tippyjs/react")
 
 describe("routeLadder", () => {
   const originalGetBBox = SVGSVGElement.prototype.getBBox
@@ -160,18 +177,160 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={undefined}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).container
 
     expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a route ladder with the new header format", () => {
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const { container: tree } = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a route ladder with the new header and detour dropdown", () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const { container: tree } = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+
+    expect(
+      screen.getByRole("button", { name: /28 Route Options/ })
+    ).toBeVisible()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders descriptive content in dropdown if there's a non-skate alert", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+      />
+    )
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /28 Route Options/ })
+    )
+
+    expect(screen.getByText(/This route has an active detour./)).toBeVisible()
+  })
+
+  test("renders 'Add detour' in the dropdown", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /28 Route Options/ })
+    )
+
+    expect(
+      screen.queryByText(/This route has an active detour./)
+    ).not.toBeInTheDocument()
+
+    expect(screen.getByText("Add detour")).toBeVisible()
   })
 
   test("renders a route ladder with vehicles", () => {
@@ -204,16 +363,22 @@ describe("routeLadder", () => {
       blockWaivers: [],
     })
 
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={(vehicles as VehicleOrGhost[]).concat([ghost])}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={(
+          vehicles as (VehicleInScheduledService | Ghost)[]
+        ).concat([ghost])}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -228,19 +393,25 @@ describe("routeLadder", () => {
       { id: "WELLH", name: "WELLH Name" },
       { id: "MORTN", name: "MORTN Name" },
     ]
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={vehicles.map((vehicle: Vehicle) => ({
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={vehicles.map(
+          (vehicle: VehicleInScheduledService) => ({
             ...vehicle,
             routeStatus: "pulling_out" as RouteStatus,
-          }))}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
+          })
+        )}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -258,30 +429,29 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            { ...v1, routeStatus: "laying_over" },
-            { ...v2, routeStatus: "laying_over" },
-          ]}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          { ...v1, routeStatus: "laying_over" },
+          { ...v2, routeStatus: "laying_over" },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
 
   test("renders a route ladder with crowding instead of vehicles", () => {
-    const mockDispatch = jest.fn()
     const ladderCrowdingToggles: LadderCrowdingToggles = { "28": true }
-    const state: State = {
-      ...initialState,
-      ladderCrowdingToggles,
-    }
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
@@ -294,32 +464,34 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={mockDispatch}>
-          <RouteLadder
-            route={route}
-            selectedVehicleId={undefined}
-            timepoints={timepoints}
-            vehiclesAndGhosts={[
-              {
-                ...v1,
-                crowding: {
-                  occupancyStatus: "FEW_SEATS_AVAILABLE",
-                  occupancyPercentage: 0.78,
-                  load: 14,
-                  capacity: 18,
-                },
-              },
-              {
-                ...v2,
-                crowding: null,
-              },
-            ]}
-          />
-        </StateDispatchProvider>
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+            crowding: {
+              occupancyStatus: "FEW_SEATS_AVAILABLE",
+              occupancyPercentage: 0.78,
+              load: 14,
+              capacity: 18,
+            },
+          },
+          {
+            ...v2,
+            crowding: null,
+          },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={ladderCrowdingToggles}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -337,36 +509,35 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          selectedVehicleId={undefined}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            {
-              ...v1,
-            },
-            {
-              ...v2,
-              isOffCourse: true,
-              isRevenue: false,
-            },
-          ]}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+          },
+          {
+            ...v2,
+            isOffCourse: true,
+            isRevenue: false,
+          },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
 
   test("displays no crowding data for a bus coming off a route with no crowding data onto a route with crowding data", () => {
-    const mockDispatch = jest.fn()
     const ladderCrowdingToggles: LadderCrowdingToggles = { "28": true }
-    const state: State = {
-      ...initialState,
-      ladderCrowdingToggles,
-    }
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
@@ -379,44 +550,41 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={mockDispatch}>
-          <RouteLadder
-            route={route}
-            selectedVehicleId={undefined}
-            timepoints={timepoints}
-            vehiclesAndGhosts={[
-              {
-                ...v1,
-                crowding: {
-                  occupancyStatus: "FEW_SEATS_AVAILABLE",
-                  occupancyPercentage: 0.78,
-                  load: 14,
-                  capacity: 18,
-                },
-              },
-              {
-                ...v2,
-                routeId: "741",
-                crowding: null,
-              },
-            ]}
-          />
-        </StateDispatchProvider>
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+            crowding: {
+              occupancyStatus: "FEW_SEATS_AVAILABLE",
+              occupancyPercentage: 0.78,
+              load: 14,
+              capacity: 18,
+            },
+          },
+          {
+            ...v2,
+            routeId: "741",
+            crowding: null,
+          },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={ladderCrowdingToggles}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
 
   test("doesn't display crowding data for a vehicle coming off a route with crowding data onto a route with none", () => {
-    const mockDispatch = jest.fn()
     const ladderCrowdingToggles: LadderCrowdingToggles = { "28": true }
-    const state: State = {
-      ...initialState,
-      ladderCrowdingToggles,
-    }
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
@@ -429,33 +597,35 @@ describe("routeLadder", () => {
     ]
 
     const [v1, v2] = vehicles
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={mockDispatch}>
-          <RouteLadder
-            route={route}
-            selectedVehicleId={undefined}
-            timepoints={timepoints}
-            vehiclesAndGhosts={[
-              {
-                ...v1,
-                crowding: null,
-              },
-              {
-                ...v2,
-                routeId: "741",
-                crowding: {
-                  occupancyStatus: "FEW_SEATS_AVAILABLE",
-                  occupancyPercentage: 0.78,
-                  load: 14,
-                  capacity: 18,
-                },
-              },
-            ]}
-          />
-        </StateDispatchProvider>
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        selectedVehicleId={undefined}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+            crowding: null,
+          },
+          {
+            ...v2,
+            routeId: "741",
+            crowding: {
+              occupancyStatus: "FEW_SEATS_AVAILABLE",
+              occupancyPercentage: 0.78,
+              load: 14,
+              capacity: 18,
+            },
+          },
+        ]}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={ladderCrowdingToggles}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
@@ -467,22 +637,25 @@ describe("routeLadder", () => {
     })
     const timepoints = null
 
-    const tree = renderer
-      .create(
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={undefined}
-          selectedVehicleId={undefined}
-        />
-      )
-      .toJSON()
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
 
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking the close button deselects that route", () => {
-    const mockDispatch = jest.fn()
+  test("renders alert icon on a route ladder with an active detour", () => {
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
@@ -493,23 +666,25 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={undefined}
-          selectedVehicleId={undefined}
-        />
-      </StateDispatchProvider>
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+      />
     )
-    wrapper.find(".m-route-ladder__header .m-close-button").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(deselectRoute("28"))
+    expect(routeAlert.get()).toBeVisible()
   })
 
-  test("clicking the reverse button reverses the order of the timepoints", () => {
-    const mockDispatch = jest.fn()
+  test("clicking alert icon should show tooltip and observe event", async () => {
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
@@ -520,25 +695,92 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={undefined}
-          selectedVehicleId={undefined}
-        />
-      </StateDispatchProvider>
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+      />
     )
-    act(() => {
-      wrapper.find(".m-route-ladder__reverse").simulate("click")
-    })
 
-    expect(mockDispatch).toHaveBeenCalledWith(flipLadder("28"))
+    await userEvent.click(routeAlert.get())
+
+    expect(routeAlert.get()).toHaveAccessibleDescription(/Active Detour/i)
+    expect(tagManagerEvent).toHaveBeenCalledWith("alert_tooltip_clicked")
   })
 
-  test("clicking the crowding toggle toggles crowding", () => {
-    const mockDispatch = jest.fn()
+  test("clicking the close button deselects that route", async () => {
+    const mockDeselect = jest.fn()
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const user = userEvent.setup()
+    const result = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={mockDeselect}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+    await user.click(result.getByRole("button", { name: /close/i }))
+
+    expect(mockDeselect).toHaveBeenCalledWith("28")
+  })
+
+  test("clicking the reverse button reverses the order of the timepoints", async () => {
+    const mockReverse = jest.fn()
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const result = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={mockReverse}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+    await userEvent.click(result.getByRole("button", { name: /Reverse/ }))
+
+    expect(mockReverse).toHaveBeenCalledWith("28")
+  })
+
+  test("clicking the crowding toggle toggles crowding", async () => {
+    const mockToggle = jest.fn()
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
@@ -551,35 +793,37 @@ describe("routeLadder", () => {
 
     const [v1] = vehicles
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <RouteLadder
-          route={route}
-          timepoints={timepoints}
-          vehiclesAndGhosts={[
-            {
-              ...v1,
-              crowding: {
-                occupancyStatus: "EMPTY",
-                load: 0,
-                capacity: 18,
-                occupancyPercentage: 0,
-              },
+    const result = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={[
+          {
+            ...v1,
+            crowding: {
+              occupancyStatus: "EMPTY",
+              load: 0,
+              capacity: 18,
+              occupancyPercentage: 0,
             },
-          ]}
-          selectedVehicleId={undefined}
-        />
-      </StateDispatchProvider>
+          },
+        ]}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={mockToggle}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
     )
-    act(() => {
-      wrapper.find(".m-route-ladder__crowding-toggle--show").simulate("click")
-    })
+    await userEvent.click(result.getByRole("button", { name: /Show riders/ }))
 
-    expect(mockDispatch).toHaveBeenCalledWith(toggleLadderCrowding("28"))
+    expect(mockToggle).toHaveBeenCalledWith("28")
   })
 
-  test("clicking an incoming vehicle selects that vehicle", () => {
-    const mockDispatch = jest.fn()
+  test("clicking an incoming vehicle selects that vehicle", async () => {
+    const mockedUsePanelState = mockUsePanelState()
 
     const route: Route = routeFactory.build({
       id: "28",
@@ -590,7 +834,7 @@ describe("routeLadder", () => {
       { id: "WELLH", name: "WELLH Name" },
       { id: "MORTN", name: "MORTN Name" },
     ]
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "v1",
       label: "v1",
       runId: "run1",
@@ -608,11 +852,8 @@ describe("routeLadder", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -632,20 +873,28 @@ describe("routeLadder", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RouteLadder
           route={route}
           timepoints={timepoints}
           vehiclesAndGhosts={[vehicle]}
           selectedVehicleId={undefined}
+          deselectRoute={() => {}}
+          reverseLadder={() => {}}
+          toggleCrowding={() => {}}
+          ladderDirections={{}}
+          ladderCrowdingToggles={{}}
+          hasAlert={false}
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-incoming-box__vehicle").simulate("click")
+    await userEvent.click(result.getByText("run1"))
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(
+      mockedUsePanelState().openVehiclePropertiesPanel
+    ).toHaveBeenCalledWith(vehicle)
   })
 })

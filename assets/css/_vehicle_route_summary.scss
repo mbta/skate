@@ -1,0 +1,105 @@
+// #region Vehicle Route Summary
+.c-vehicle-route-summary {
+  // #region Layout
+  display: grid;
+  grid-template-rows: 3fr 8fr;
+  grid-template-columns: min-content 1fr 18fr;
+  grid-template-areas:
+    "icon separator direction"
+    "icon separator route-name";
+
+  align-items: start; // align element vertically within cell
+  justify-items: start; // align element horizontally within the cell
+
+  // #region element grid locations
+  .c-vehicle-route-summary__icon {
+    grid-area: icon;
+  }
+
+  .c-vehicle-route-summary__separator {
+    grid-area: separator;
+  }
+
+  .c-vehicle-route-summary__direction {
+    grid-area: direction;
+  }
+
+  .c-vehicle-route-summary__route-variant {
+    grid-area: route-name;
+  }
+  // #endregion
+
+  // #region Bespoke alignment within cells
+  // adherence should stick to the right side of the card
+  .c-schedule-adherence {
+    justify-self: end;
+  }
+
+  .c-vehicle-route-summary__icon,
+  .c-vehicle-route-summary__separator {
+    justify-self: center;
+    align-self: center;
+  }
+
+  // Adherence and direction should hug the top of the container
+  .c-schedule-adherence,
+  .c-vehicle-route-direction {
+    line-height: 1;
+  }
+  // #endregion
+
+  // #region component layout
+  .c-schedule-adherence {
+    & > * {
+      display: inline-block;
+    }
+  }
+
+  // route variant name should not move when text gets longer
+  .c-route-variant-name {
+    // Fill grid container
+    height: 100%;
+    width: 100%;
+
+    --line-height: 1.5;
+    line-height: var(--line-height);
+    max-height: calc(var(--line-height) * 2em);
+
+    text-overflow: ellipsis; // doesn't work on multiline text
+    overflow: hidden;
+  }
+
+  .c-vehicle-route-summary__icon {
+    max-height: 62px;
+  }
+
+  .c-vehicle-route-summary__separator {
+    justify-self: center;
+    align-self: center;
+    height: 100%;
+    background-color: $color-gray-300;
+    width: 1px;
+  }
+  // #endregion
+  // #endregion
+
+  // #region Appearance
+  .c-vehicle-route-summary__route-variant--clickable {
+    color: $color-eggplant-700;
+    text-decoration: underline;
+    text-align: left;
+    text-underline-offset: 0.25rem;
+
+    &:hover {
+      color: $color-eggplant-500;
+    }
+
+    &:focus {
+      color: $color-eggplant-500;
+      border: 1px solid $color-eggplant-700;
+      border-radius: 3px;
+    }
+  }
+  // #endregion
+}
+// #endregion

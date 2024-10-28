@@ -1,1302 +1,1404 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LadderPage renders the empty state 1`] = `
-<div
-  className="m-ladder-page"
->
+<DocumentFragment>
   <div
-    className="m-notifications"
-  />
-  <div
-    className="m-picker-container m-picker-container--narrow visible"
+    class="c-ladder-page c-ladder-page--picker-container-visible "
   >
     <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      <ul
-        className="m-route-picker__selected-routes"
-      />
-      <div
-        className="m-route-filter"
-      >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
-        <div
-          className="m-route-filter__text"
-        >
-          <input
-            className="m-route-filter__input"
-            onChange={[Function]}
-            onKeyDown={[Function]}
-            type="text"
-            value=""
-          />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
-        </div>
-      </div>
-      loading...
-    </div>
-  </div>
-  <div
-    className="m-route-ladders"
-  />
-</div>
-`;
-
-exports[`LadderPage renders with routes 1`] = `
-<div
-  className="m-ladder-page"
->
-  <div
-    className="m-notifications"
-  />
-  <div
-    className="m-picker-container m-picker-container--narrow visible"
-  >
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      <ul
-        className="m-route-picker__selected-routes"
-      >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <div
-        className="m-route-filter"
-      >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
-        <div
-          className="m-route-filter__text"
-        >
-          <input
-            className="m-route-filter__input"
-            onChange={[Function]}
-            onKeyDown={[Function]}
-            type="text"
-            value=""
-          />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
-        </div>
-      </div>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div
-    className="m-route-ladders"
-  >
-    <div
-      className="m-route-ladder__header"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        1
-      </div>
-    </div>
-    <div
-      className="m-route-ladder__controls"
-    >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
-    </div>
-    loading...
-  </div>
-</div>
-`;
-
-exports[`LadderPage renders with selectedRoutes in different order than routes data 1`] = `
-<div
-  className="m-ladder-page"
->
-  <div
-    className="m-notifications"
-  />
-  <div
-    className="m-picker-container m-picker-container--narrow visible"
-  >
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      <ul
-        className="m-route-picker__selected-routes"
-      >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <div
-        className="m-route-filter"
-      >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
-        <div
-          className="m-route-filter__text"
-        >
-          <input
-            className="m-route-filter__input"
-            onChange={[Function]}
-            onKeyDown={[Function]}
-            type="text"
-            value=""
-          />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
-        </div>
-      </div>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div
-    className="m-route-ladders"
-  >
-    <div
-      className="m-route-ladder__header"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        28
-      </div>
-    </div>
-    <div
-      className="m-route-ladder__controls"
-    >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
-    </div>
-    loading...
-    <div
-      className="m-route-ladder__header"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        1
-      </div>
-    </div>
-    <div
-      className="m-route-ladder__controls"
-    >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
-    </div>
-    loading...
-  </div>
-</div>
-`;
-
-exports[`LadderPage renders with timepoints 1`] = `
-<div
-  className="m-ladder-page"
->
-  <div
-    className="m-notifications"
-  />
-  <div
-    className="m-picker-container m-picker-container--narrow visible"
-  >
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      <ul
-        className="m-route-picker__selected-routes"
-      >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
-      <div
-        className="m-route-filter"
-      >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
-        <div
-          className="m-route-filter__text"
-        >
-          <input
-            className="m-route-filter__input"
-            onChange={[Function]}
-            onKeyDown={[Function]}
-            type="text"
-            value=""
-          />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
-          >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
-            />
-          </button>
-        </div>
-      </div>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div
-    className="m-route-ladders"
-  >
-    <div
-      className="m-route-ladder__header"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        28
-      </div>
-    </div>
-    <div
-      className="m-route-ladder__controls"
-    >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
-    </div>
-    <div
-      className="m-ladder"
-      style={
-        Object {
-          "width": 184,
-        }
-      }
-    >
-      <svg
-        className="m-ladder__svg"
-        height={0}
-        viewBox="-92 -55 184 0"
-        width={184}
-      >
-        <line
-          className="m-ladder__line"
-          x1={-40}
-          x2={-40}
-          y1="0"
-          y2={-110}
-        />
-        <line
-          className="m-ladder__line"
-          x1={40}
-          x2={40}
-          y1="0"
-          y2={-110}
-        />
-        <circle
-          className="m-ladder__stop-circle"
-          cx={-40}
-          cy={-0}
-          r="3"
-        />
-        <circle
-          className="m-ladder__stop-circle"
-          cx={40}
-          cy={-0}
-          r="3"
-        />
-        <div
-          className="mock-tippy"
-        >
-          <div
-            className="mock-tippy-content"
-          >
-            MATPN Name
-          </div>
-          <text
-            className="m-ladder__timepoint-name"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            x="0"
-            y={-0}
-          >
-            MATPN
-          </text>
-        </div>
-        <circle
-          className="m-ladder__stop-circle"
-          cx={-40}
-          cy={-55}
-          r="3"
-        />
-        <circle
-          className="m-ladder__stop-circle"
-          cx={40}
-          cy={-55}
-          r="3"
-        />
-        <div
-          className="mock-tippy"
-        >
-          <div
-            className="mock-tippy-content"
-          >
-            WELLH Name
-          </div>
-          <text
-            className="m-ladder__timepoint-name"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            x="0"
-            y={-55}
-          >
-            WELLH
-          </text>
-        </div>
-        <circle
-          className="m-ladder__stop-circle"
-          cx={-40}
-          cy={-110}
-          r="3"
-        />
-        <circle
-          className="m-ladder__stop-circle"
-          cx={40}
-          cy={-110}
-          r="3"
-        />
-        <div
-          className="mock-tippy"
-        >
-          <div
-            className="mock-tippy-content"
-          >
-            MORTN Name
-          </div>
-          <text
-            className="m-ladder__timepoint-name"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            x="0"
-            y={-110}
-          >
-            MORTN
-          </text>
-        </div>
-      </svg>
-    </div>
-    <div
-      className="m-incoming-box"
+      class="c-notifications"
     />
     <div
-      className="m-route-ladder__header"
+      class="c-picker-container c-picker-container--visible"
+      data-testid="picker-container"
     >
       <button
-        className="m-close-button"
-        onClick={[Function]}
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
       >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
+        <span>
+          <svg />
+        </span>
       </button>
       <div
-        className="m-route-ladder__route-name"
+        class="c-ladder-page__routes-presets-toggle u-hideable"
       >
-        1
+        <button
+          class="c-ladder-page__routes_picker_button--selected"
+          id="c-ladder-page__routes_picker_button"
+        >
+          Routes
+        </button>
+        <button
+          class="c-ladder-page__routes_picker_button--unselected"
+          id="c-ladder-page__presets_picker_button"
+        >
+          Presets
+        </button>
       </div>
-    </div>
-    <div
-      className="m-route-ladder__controls"
-    >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
-    </div>
-    <div
-      className="m-ladder"
-      style={
-        Object {
-          "width": 184,
-        }
-      }
-    >
-      <svg
-        className="m-ladder__svg"
-        height={0}
-        viewBox="-92 -55 184 0"
-        width={184}
-      >
-        <line
-          className="m-ladder__line"
-          x1={-40}
-          x2={-40}
-          y1="0"
-          y2={-110}
-        />
-        <line
-          className="m-ladder__line"
-          x1={40}
-          x2={40}
-          y1="0"
-          y2={-110}
-        />
-        <circle
-          className="m-ladder__stop-circle"
-          cx={-40}
-          cy={-0}
-          r="3"
-        />
-        <circle
-          className="m-ladder__stop-circle"
-          cx={40}
-          cy={-0}
-          r="3"
-        />
-        <div
-          className="mock-tippy"
-        >
-          <div
-            className="mock-tippy-content"
-          >
-            WASMA Name
-          </div>
-          <text
-            className="m-ladder__timepoint-name"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            x="0"
-            y={-0}
-          >
-            WASMA
-          </text>
-        </div>
-        <circle
-          className="m-ladder__stop-circle"
-          cx={-40}
-          cy={-55}
-          r="3"
-        />
-        <circle
-          className="m-ladder__stop-circle"
-          cx={40}
-          cy={-55}
-          r="3"
-        />
-        <div
-          className="mock-tippy"
-        >
-          <div
-            className="mock-tippy-content"
-          >
-            MELWA Name
-          </div>
-          <text
-            className="m-ladder__timepoint-name"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            x="0"
-            y={-55}
-          >
-            MELWA
-          </text>
-        </div>
-        <circle
-          className="m-ladder__stop-circle"
-          cx={-40}
-          cy={-110}
-          r="3"
-        />
-        <circle
-          className="m-ladder__stop-circle"
-          cx={40}
-          cy={-110}
-          r="3"
-        />
-        <div
-          className="mock-tippy"
-        >
-          <div
-            className="mock-tippy-content"
-          >
-            HHGAT Name
-          </div>
-          <text
-            className="m-ladder__timepoint-name"
-            dominantBaseline="middle"
-            textAnchor="middle"
-            x="0"
-            y={-110}
-          >
-            HHGAT
-          </text>
-        </div>
-      </svg>
-    </div>
-    <div
-      className="m-incoming-box"
-    />
-  </div>
-</div>
-`;
-
-exports[`LadderPage renders with vehicles and selected vehicles 1`] = `
-<div
-  className="m-ladder-page"
->
-  <div
-    className="m-notifications"
-  />
-  <div
-    className="m-picker-container m-picker-container--narrow visible"
-  >
-    <div
-      className="c-drawer-tab"
-    >
-      <button
-        className="c-drawer-tab__tab-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-    </div>
-    <div
-      className="m-route-picker"
-    >
-      <ul
-        className="m-route-picker__selected-routes"
-      >
-        <li>
-          <button
-            className="m-route-picker__selected-routes-button"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-      </ul>
       <div
-        className="m-route-filter"
+        class="c-route-picker u-hideable"
       >
-        <select
-          className="m-route-filter__type"
-          onChange={[Function]}
-          value="name"
-        >
-          <option
-            value="name"
-          >
-            Route ID
-          </option>
-        </select>
         <div
-          className="m-route-filter__text"
+          class="c-route-filter"
         >
-          <input
-            className="m-route-filter__input"
-            onChange={[Function]}
-            onKeyDown={[Function]}
-            type="text"
-            value=""
-          />
-          <button
-            className="m-route-filter__clear"
-            onClick={[Function]}
+          <div
+            class="c-route-filter__text"
           >
-            <span
-              className=""
-              dangerouslySetInnerHTML={
-                Object {
-                  "__html": "SVG",
-                }
-              }
+            <input
+              class="c-route-filter__input"
+              placeholder="Search routes"
+              type="text"
+              value=""
             />
-          </button>
-        </div>
-      </div>
-      <ul
-        className="m-route-picker__route-list"
-      >
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--selected"
-            onClick={[Function]}
-          >
-            1
-          </button>
-        </li>
-        <li>
-          <button
-            className="m-route-picker__route-list-button m-route-picker__route-list-button--unselected"
-            onClick={[Function]}
-          >
-            28
-          </button>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div
-    className="m-route-ladders"
-  >
-    <div
-      className="m-route-ladder__header"
-    >
-      <button
-        className="m-close-button"
-        onClick={[Function]}
-      >
-        <span
-          className=""
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-      </button>
-      <div
-        className="m-route-ladder__route-name"
-      >
-        1
-      </div>
-    </div>
-    <div
-      className="m-route-ladder__controls"
-    >
-      <button
-        className="m-route-ladder__reverse"
-        onClick={[Function]}
-      >
-        <span
-          className="m-route-ladder__reverse-icon"
-          dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
-            }
-          }
-        />
-        Reverse
-      </button>
-    </div>
-    loading...
-  </div>
-  <div
-    className="m-properties-panel"
-    id="m-properties-panel"
-  >
-    <div
-      className="m-ghost-properties-panel"
-    >
-      <div
-        className="m-properties-panel__header-wrapper"
-      >
-        <div
-          className="m-properties-panel__header"
-        >
-          <div
-            className="m-properties-panel__label"
-          >
-            <svg
-              style={
-                Object {
-                  "height": 64,
-                  "width": 64,
-                }
-              }
-              viewBox="-32 -20 64 64"
-            >
-              <g
-                className="m-vehicle-icon m-vehicle-icon--large ghost early-red"
-              >
-                <rect
-                  className="m-vehicle-icon__label-background"
-                  height={24}
-                  rx={12}
-                  ry={12}
-                  width={64}
-                  x={-32}
-                  y={19}
-                />
-                <text
-                  className="m-vehicle-icon__label m-vehicle-icon__label--normal"
-                  dominantBaseline="central"
-                  textAnchor="middle"
-                  x="0"
-                  y={31}
-                >
-                  N/A
-                </text>
-                <g
-                  transform="scale(0.7) translate(-24,-23)"
-                >
-                  <path
-                    className="m-vehicle-icon__ghost-highlight"
-                    d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                    stroke-join="round"
-                  />
-                  <path
-                    className="m-vehicle-icon__ghost-body"
-                    d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                    stroke-join="round"
-                  />
-                  <ellipse
-                    className="m-vehicle-icon__ghost-eye"
-                    cx="19.73"
-                    cy="22.8"
-                    rx="3.11"
-                    ry="3.03"
-                  />
-                  <ellipse
-                    className="m-vehicle-icon__ghost-eye"
-                    cx="35.29"
-                    cy="22.8"
-                    rx="3.11"
-                    ry="3.03"
-                  />
-                </g>
-              </g>
-            </svg>
           </div>
-          <div
-            className="m-properties-panel__variant"
+        </div>
+        <div
+          class="c-garage-filter"
+        >
+          <button
+            class="c-garage-filter__show-hide-button"
+            title="Toggle Garage Filter"
           >
             <div
-              className="m-properties-panel__inbound-outbound"
+              class="c-garage-filter__header"
             >
-              Outbound
+              Filter garages
             </div>
             <div
-              className="m-route-variant-name"
+              class="c-garage-filter__show-hide-icon"
             >
-              <span
-                className="m-route-variant-name__route-id"
-              >
-                1_
+              <span>
+                <svg />
               </span>
-               headsign
             </div>
-          </div>
-          <div
-            className="m-properties-panel__close-ping"
+          </button>
+        </div>
+        <div
+          class="c-route-picker__routes-container"
+        >
+          loading...
+          <p>
+            Selected routes will show up here…
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
+    />
+    <div
+      class="c-ladder-page__tab-bar-and-ladders"
+    >
+      <div
+        class="c-ladder-page__route-tab-bar"
+        role="tablist"
+      >
+        <button
+          class="c-ladder-page__add-tab-button"
+          title="Add Tab"
+        >
+          <span
+            class="c-ladder-page__add-tab-icon"
           >
-            <button
-              className="m-close-button"
-              onClick={[Function]}
+            <svg />
+          </span>
+        </button>
+      </div>
+      <div
+        class="c-route-ladders"
+        data-testid="route-ladders-div"
+      />
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LadderPage renders with alerts 1`] = `
+<DocumentFragment>
+  <div
+    class="c-ladder-page c-ladder-page--picker-container-visible "
+  >
+    <div
+      class="c-notifications"
+    />
+    <div
+      class="c-picker-container c-picker-container--visible"
+      data-testid="picker-container"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-ladder-page__routes-presets-toggle u-hideable"
+      >
+        <button
+          class="c-ladder-page__routes_picker_button--selected"
+          id="c-ladder-page__routes_picker_button"
+        >
+          Routes
+        </button>
+        <button
+          class="c-ladder-page__routes_picker_button--unselected"
+          id="c-ladder-page__presets_picker_button"
+        >
+          Presets
+        </button>
+      </div>
+      <div
+        class="c-route-picker u-hideable"
+      >
+        <div
+          class="c-route-filter"
+        >
+          <div
+            class="c-route-filter__text"
+          >
+            <input
+              class="c-route-filter__input"
+              placeholder="Search routes"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          class="c-garage-filter"
+        >
+          <button
+            class="c-garage-filter__show-hide-button"
+            title="Toggle Garage Filter"
+          >
+            <div
+              class="c-garage-filter__header"
             >
-              <span
-                className=""
-                dangerouslySetInnerHTML={
-                  Object {
-                    "__html": "SVG",
-                  }
-                }
-              />
+              Filter garages
+            </div>
+            <div
+              class="c-garage-filter__show-hide-icon"
+            >
+              <span>
+                <svg />
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="c-route-picker__routes-container"
+        >
+          <ul
+            class="c-route-picker__route-list"
+          />
+          <ul
+            class="c-route-picker__selected-routes"
+          >
+            <li>
+              <button
+                class="c-route-picker__selected-routes-button"
+                tabindex="-1"
+              >
+                28
+                <span
+                  class="c-route-picker__selected-routes-button-icon"
+                >
+                  <svg />
+                </span>
+              </button>
+            </li>
+            <li>
+              <button
+                class="c-route-picker__selected-routes-button"
+                tabindex="-1"
+              >
+                1
+                <span
+                  class="c-route-picker__selected-routes-button-icon"
+                >
+                  <svg />
+                </span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
+    />
+    <div
+      class="c-ladder-page__tab-bar-and-ladders"
+    >
+      <div
+        class="c-ladder-page__route-tab-bar"
+        role="tablist"
+      >
+        <div
+          aria-selected="true"
+          class="c-ladder-page__tab c-ladder-page__tab-current"
+          role="tab"
+          tabindex="-1"
+        >
+          <div
+            class="c-ladder-page__tab-contents"
+          >
+            <div
+              class="c-ladder-page__tab-title"
+            >
+              Untitled
+            </div>
+            <button
+              class="c-ladder-page__tab-save-button"
+              title="Save"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+            <button
+              class="c-old-close-button"
+              data-testid="close-button"
+              title="Close"
+            >
+              <span>
+                <svg />
+              </span>
             </button>
           </div>
         </div>
-        <ul
-          className="m-tabs__tab-list"
+        <button
+          class="c-ladder-page__add-tab-button"
+          title="Add Tab"
         >
-          <li
-            className="m-tabs__tab m-tabs__tab--selected"
-            onClick={[Function]}
+          <span
+            class="c-ladder-page__add-tab-icon"
           >
-            <svg
-              className="m-tabs__tab-status-icon"
-              height="14"
-              width="14"
-            >
-              <circle
-                className="m-tabs__tab-status-icon-outer-circle"
-                cx="7"
-                cy="7"
-                r="6"
-              />
-              <circle
-                className="m-tabs__tab-status-icon-inner-circle"
-                cx="7"
-                cy="7"
-                r="4"
-              />
-            </svg>
-            Status
-          </li>
-          <li
-            className="m-tabs__tab"
-            onClick={[Function]}
-          >
-            <svg
-              className="m-tabs__tab-status-icon"
-              height="14"
-              width="14"
-            >
-              <circle
-                className="m-tabs__tab-status-icon-outer-circle"
-                cx="7"
-                cy="7"
-                r="6"
-              />
-              <circle
-                className="m-tabs__tab-status-icon-inner-circle"
-                cx="7"
-                cy="7"
-                r="4"
-              />
-            </svg>
-            Run
-          </li>
-          <li
-            className="m-tabs__tab"
-            onClick={[Function]}
-          >
-            <svg
-              className="m-tabs__tab-status-icon"
-              height="14"
-              width="14"
-            >
-              <circle
-                className="m-tabs__tab-status-icon-outer-circle"
-                cx="7"
-                cy="7"
-                r="6"
-              />
-              <circle
-                className="m-tabs__tab-status-icon-inner-circle"
-                cx="7"
-                cy="7"
-                r="4"
-              />
-            </svg>
-            Block
-          </li>
-        </ul>
+            <svg />
+          </span>
+        </button>
       </div>
       <div
-        className="m-tabs__tab-panel"
+        class="c-route-ladders"
+        data-testid="route-ladders-div"
       >
         <div
-          className="m-ghost-properties-panel__no-waiver-banner"
+          class="c-route-ladder__header card"
         >
           <div
-            className="m-ghost-properties-panel__no-waiver-banner-header"
+            class="card-body"
           >
-            <span
-              className="m-ghost-properties-panel__no-waiver-banner-alert-icon"
-            >
-              <svg
-                className="c-icon-alert-circle"
-                viewBox="-3 -3 54 54"
-              >
-                <g
-                  className="c-icon-alert-circle--highlighted"
-                >
-                  <circle
-                    className="c-icon-alert-circle__outline"
-                    cx="24"
-                    cy="24"
-                    r="27"
-                  />
-                  <circle
-                    className="c-icon-alert-circle__fill"
-                    cx="24"
-                    cy="24"
-                    r="22.59"
-                  />
-                  <g
-                    className="c-icon-alert-circle__exclamation-point"
-                  >
-                    <path
-                      d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
-                    />
-                    <path
-                      d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
-                    />
-                  </g>
-                </g>
-              </svg>
-            </span>
             <div
-              className="m-ghost-properties-panel__no-waiver-banner-title"
+              class="c-route-ladder__dropdown"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
+              id="route-pill:rq:"
             >
-              Unknown Ghost Bus - No Dispatcher Note
+              28
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
             </div>
           </div>
-          A ghost bus or dropped trip has been automatically detected on this route but no reason has been logged yet. Once a dispatcher generates a note, it will appear here.
         </div>
         <div
-          className="m-properties-list"
+          class="c-route-ladder__controls"
         >
-          <table
-            className="m-properties-list__table"
+          <button
+            class="c-route-ladder__reverse"
           >
-            <tbody>
-              <tr
-                className="m-properties-list__property "
-              >
-                <td
-                  className="m-properties-list__property-label"
-                >
-                  Run
-                </td>
-                <td
-                  className="m-properties-list__property-value"
-                >
-                  Not Available
-                </td>
-              </tr>
-            </tbody>
-          </table>
+            <span
+              class="c-route-ladder__reverse-icon"
+            >
+              <svg />
+            </span>
+            Reverse
+          </button>
         </div>
+        loading...
+        <div
+          class="c-route-ladder__header card"
+        >
+          <div
+            class="card-body"
+          >
+            <div
+              class="c-route-ladder__dropdown c-route-ladder__dropdown--non-skate-alert"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
+              id="route-pill:rs:"
+            >
+              <div
+                class="mock-tippy"
+              >
+                <div
+                  class="mock-tippy-content"
+                >
+                  Active detour
+                </div>
+                <div
+                  aria-label="Route Alert"
+                  class="c-route-ladder__alert-icon"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="bi bi-exclamation-triangle-fill"
+                    fill="currentColor"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2"
+                    />
+                  </svg>
+                </div>
+              </div>
+              1
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="c-route-ladder__controls"
+        >
+          <button
+            class="c-route-ladder__reverse"
+          >
+            <span
+              class="c-route-ladder__reverse-icon"
+            >
+              <svg />
+            </span>
+            Reverse
+          </button>
+        </div>
+        loading...
       </div>
     </div>
   </div>
+</DocumentFragment>
+`;
+
+exports[`LadderPage renders with route tabs 1`] = `
+<DocumentFragment>
   <div
-    className="m-properties-panel__modal-overlay"
-    onClick={[Function]}
-  />
-</div>
+    class="c-ladder-page c-ladder-page--picker-container-visible "
+  >
+    <div
+      class="c-notifications"
+    />
+    <div
+      class="c-picker-container c-picker-container--visible"
+      data-testid="picker-container"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-ladder-page__routes-presets-toggle u-hideable"
+      >
+        <button
+          class="c-ladder-page__routes_picker_button--selected"
+          id="c-ladder-page__routes_picker_button"
+        >
+          Routes
+        </button>
+        <button
+          class="c-ladder-page__routes_picker_button--unselected"
+          id="c-ladder-page__presets_picker_button"
+        >
+          Presets
+        </button>
+      </div>
+      <div
+        class="c-route-picker u-hideable"
+      >
+        <div
+          class="c-route-filter"
+        >
+          <div
+            class="c-route-filter__text"
+          >
+            <input
+              class="c-route-filter__input"
+              placeholder="Search routes"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          class="c-garage-filter"
+        >
+          <button
+            class="c-garage-filter__show-hide-button"
+            title="Toggle Garage Filter"
+          >
+            <div
+              class="c-garage-filter__header"
+            >
+              Filter garages
+            </div>
+            <div
+              class="c-garage-filter__show-hide-icon"
+            >
+              <span>
+                <svg />
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="c-route-picker__routes-container"
+        >
+          <ul
+            class="c-route-picker__route-list"
+          >
+            <li>
+              <button
+                class="c-route-picker__route-list-button"
+                tabindex="-1"
+              >
+                28
+              </button>
+            </li>
+          </ul>
+          <ul
+            class="c-route-picker__selected-routes"
+          >
+            <li>
+              <button
+                class="c-route-picker__selected-routes-button"
+                tabindex="-1"
+              >
+                1
+                <span
+                  class="c-route-picker__selected-routes-button-icon"
+                >
+                  <svg />
+                </span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
+    />
+    <div
+      class="c-ladder-page__tab-bar-and-ladders"
+    >
+      <div
+        class="c-ladder-page__route-tab-bar"
+        role="tablist"
+      >
+        <div
+          aria-selected="true"
+          class="c-ladder-page__tab c-ladder-page__tab-current"
+          role="tab"
+          tabindex="-1"
+        >
+          <div
+            class="c-ladder-page__tab-contents"
+          >
+            <div
+              class="c-ladder-page__tab-title"
+            >
+              Untitled
+            </div>
+            <button
+              class="c-ladder-page__tab-save-button"
+              title="Save"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+            <button
+              class="c-old-close-button"
+              data-testid="close-button"
+              title="Close"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          aria-selected="false"
+          class="c-ladder-page__tab"
+          role="tab"
+          tabindex="0"
+        >
+          <div
+            class="c-ladder-page__tab-contents"
+          >
+            <div
+              class="c-ladder-page__tab-title"
+            >
+              Untitled
+            </div>
+            <button
+              class="c-old-close-button"
+              data-testid="close-button"
+              title="Close"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+          </div>
+        </div>
+        <button
+          class="c-ladder-page__add-tab-button"
+          title="Add Tab"
+        >
+          <span
+            class="c-ladder-page__add-tab-icon"
+          >
+            <svg />
+          </span>
+        </button>
+      </div>
+      <div
+        class="c-route-ladders"
+        data-testid="route-ladders-div"
+      >
+        <div
+          class="c-route-ladder__header card"
+        >
+          <div
+            class="card-body"
+          >
+            <div
+              class="c-route-ladder__dropdown"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
+              id="route-pill:r0:"
+            >
+              1
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="c-route-ladder__controls"
+        >
+          <button
+            class="c-route-ladder__reverse"
+          >
+            <span
+              class="c-route-ladder__reverse-icon"
+            >
+              <svg />
+            </span>
+            Reverse
+          </button>
+        </div>
+        loading...
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LadderPage renders with selectedRoutes in different order than routes data 1`] = `
+<DocumentFragment>
+  <div
+    class="c-ladder-page c-ladder-page--picker-container-visible "
+  >
+    <div
+      class="c-notifications"
+    />
+    <div
+      class="c-picker-container c-picker-container--visible"
+      data-testid="picker-container"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-ladder-page__routes-presets-toggle u-hideable"
+      >
+        <button
+          class="c-ladder-page__routes_picker_button--selected"
+          id="c-ladder-page__routes_picker_button"
+        >
+          Routes
+        </button>
+        <button
+          class="c-ladder-page__routes_picker_button--unselected"
+          id="c-ladder-page__presets_picker_button"
+        >
+          Presets
+        </button>
+      </div>
+      <div
+        class="c-route-picker u-hideable"
+      >
+        <div
+          class="c-route-filter"
+        >
+          <div
+            class="c-route-filter__text"
+          >
+            <input
+              class="c-route-filter__input"
+              placeholder="Search routes"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          class="c-garage-filter"
+        >
+          <button
+            class="c-garage-filter__show-hide-button"
+            title="Toggle Garage Filter"
+          >
+            <div
+              class="c-garage-filter__header"
+            >
+              Filter garages
+            </div>
+            <div
+              class="c-garage-filter__show-hide-icon"
+            >
+              <span>
+                <svg />
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="c-route-picker__routes-container"
+        >
+          <ul
+            class="c-route-picker__route-list"
+          />
+          <ul
+            class="c-route-picker__selected-routes"
+          >
+            <li>
+              <button
+                class="c-route-picker__selected-routes-button"
+                tabindex="-1"
+              >
+                28
+                <span
+                  class="c-route-picker__selected-routes-button-icon"
+                >
+                  <svg />
+                </span>
+              </button>
+            </li>
+            <li>
+              <button
+                class="c-route-picker__selected-routes-button"
+                tabindex="-1"
+              >
+                1
+                <span
+                  class="c-route-picker__selected-routes-button-icon"
+                >
+                  <svg />
+                </span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
+    />
+    <div
+      class="c-ladder-page__tab-bar-and-ladders"
+    >
+      <div
+        class="c-ladder-page__route-tab-bar"
+        role="tablist"
+      >
+        <div
+          aria-selected="true"
+          class="c-ladder-page__tab c-ladder-page__tab-current"
+          role="tab"
+          tabindex="-1"
+        >
+          <div
+            class="c-ladder-page__tab-contents"
+          >
+            <div
+              class="c-ladder-page__tab-title"
+            >
+              Untitled
+            </div>
+            <button
+              class="c-ladder-page__tab-save-button"
+              title="Save"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+            <button
+              class="c-old-close-button"
+              data-testid="close-button"
+              title="Close"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+          </div>
+        </div>
+        <button
+          class="c-ladder-page__add-tab-button"
+          title="Add Tab"
+        >
+          <span
+            class="c-ladder-page__add-tab-icon"
+          >
+            <svg />
+          </span>
+        </button>
+      </div>
+      <div
+        class="c-route-ladders"
+        data-testid="route-ladders-div"
+      >
+        <div
+          class="c-route-ladder__header card"
+        >
+          <div
+            class="card-body"
+          >
+            <div
+              class="c-route-ladder__dropdown"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
+              id="route-pill:ri:"
+            >
+              28
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="c-route-ladder__controls"
+        >
+          <button
+            class="c-route-ladder__reverse"
+          >
+            <span
+              class="c-route-ladder__reverse-icon"
+            >
+              <svg />
+            </span>
+            Reverse
+          </button>
+        </div>
+        loading...
+        <div
+          class="c-route-ladder__header card"
+        >
+          <div
+            class="card-body"
+          >
+            <div
+              class="c-route-ladder__dropdown"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
+              id="route-pill:rk:"
+            >
+              1
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="c-route-ladder__controls"
+        >
+          <button
+            class="c-route-ladder__reverse"
+          >
+            <span
+              class="c-route-ladder__reverse-icon"
+            >
+              <svg />
+            </span>
+            Reverse
+          </button>
+        </div>
+        loading...
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`LadderPage renders with timepoints 1`] = `
+<DocumentFragment>
+  <div
+    class="c-ladder-page c-ladder-page--picker-container-visible "
+  >
+    <div
+      class="c-notifications"
+    />
+    <div
+      class="c-picker-container c-picker-container--visible"
+      data-testid="picker-container"
+    >
+      <button
+        class="c-drawer-tab c-drawer-tab__tab-button"
+        title="Collapse"
+      >
+        <span>
+          <svg />
+        </span>
+      </button>
+      <div
+        class="c-ladder-page__routes-presets-toggle u-hideable"
+      >
+        <button
+          class="c-ladder-page__routes_picker_button--selected"
+          id="c-ladder-page__routes_picker_button"
+        >
+          Routes
+        </button>
+        <button
+          class="c-ladder-page__routes_picker_button--unselected"
+          id="c-ladder-page__presets_picker_button"
+        >
+          Presets
+        </button>
+      </div>
+      <div
+        class="c-route-picker u-hideable"
+      >
+        <div
+          class="c-route-filter"
+        >
+          <div
+            class="c-route-filter__text"
+          >
+            <input
+              class="c-route-filter__input"
+              placeholder="Search routes"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          class="c-garage-filter"
+        >
+          <button
+            class="c-garage-filter__show-hide-button"
+            title="Toggle Garage Filter"
+          >
+            <div
+              class="c-garage-filter__header"
+            >
+              Filter garages
+            </div>
+            <div
+              class="c-garage-filter__show-hide-icon"
+            >
+              <span>
+                <svg />
+              </span>
+            </div>
+          </button>
+        </div>
+        <div
+          class="c-route-picker__routes-container"
+        >
+          <ul
+            class="c-route-picker__route-list"
+          />
+          <ul
+            class="c-route-picker__selected-routes"
+          >
+            <li>
+              <button
+                class="c-route-picker__selected-routes-button"
+                tabindex="-1"
+              >
+                28
+                <span
+                  class="c-route-picker__selected-routes-button-icon"
+                >
+                  <svg />
+                </span>
+              </button>
+            </li>
+            <li>
+              <button
+                class="c-route-picker__selected-routes-button"
+                tabindex="-1"
+              >
+                1
+                <span
+                  class="c-route-picker__selected-routes-button-icon"
+                >
+                  <svg />
+                </span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="c-picker-container-backdrop"
+      data-testid="picker-container-backdrop"
+    />
+    <div
+      class="c-ladder-page__tab-bar-and-ladders"
+    >
+      <div
+        class="c-ladder-page__route-tab-bar"
+        role="tablist"
+      >
+        <div
+          aria-selected="true"
+          class="c-ladder-page__tab c-ladder-page__tab-current"
+          role="tab"
+          tabindex="-1"
+        >
+          <div
+            class="c-ladder-page__tab-contents"
+          >
+            <div
+              class="c-ladder-page__tab-title"
+            >
+              Untitled
+            </div>
+            <button
+              class="c-ladder-page__tab-save-button"
+              title="Save"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+            <button
+              class="c-old-close-button"
+              data-testid="close-button"
+              title="Close"
+            >
+              <span>
+                <svg />
+              </span>
+            </button>
+          </div>
+        </div>
+        <button
+          class="c-ladder-page__add-tab-button"
+          title="Add Tab"
+        >
+          <span
+            class="c-ladder-page__add-tab-icon"
+          >
+            <svg />
+          </span>
+        </button>
+      </div>
+      <div
+        class="c-route-ladders"
+        data-testid="route-ladders-div"
+      >
+        <div
+          class="c-route-ladder__header card"
+        >
+          <div
+            class="card-body"
+          >
+            <div
+              class="c-route-ladder__dropdown"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
+              id="route-pill:rm:"
+            >
+              28
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="c-route-ladder__controls"
+        >
+          <button
+            class="c-route-ladder__reverse"
+          >
+            <span
+              class="c-route-ladder__reverse-icon"
+            >
+              <svg />
+            </span>
+            Reverse
+          </button>
+        </div>
+        <div
+          class="c-ladder"
+          style="width: 184px;"
+        >
+          <svg
+            class="c-ladder__svg"
+            height="0"
+            viewBox="-92 -55 184 0"
+            width="184"
+          >
+            <line
+              class="c-ladder__line"
+              x1="-40"
+              x2="-40"
+              y1="0"
+              y2="-110"
+            />
+            <line
+              class="c-ladder__line"
+              x1="40"
+              x2="40"
+              y1="0"
+              y2="-110"
+            />
+            <circle
+              class="c-ladder__stop-circle"
+              cx="-40"
+              cy="0"
+              r="3"
+            />
+            <circle
+              class="c-ladder__stop-circle"
+              cx="40"
+              cy="0"
+              r="3"
+            />
+          </svg>
+          <div
+            class="mock-tippy"
+          >
+            <div
+              class="mock-tippy-content"
+            >
+              MATPN Name
+            </div>
+            <text
+              class="c-ladder__timepoint-name"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              x="0"
+              y="0"
+            >
+              MATPN
+            </text>
+          </div>
+          <circle
+            class="c-ladder__stop-circle"
+            cx="-40"
+            cy="-55"
+            r="3"
+          />
+          <circle
+            class="c-ladder__stop-circle"
+            cx="40"
+            cy="-55"
+            r="3"
+          />
+          <div
+            class="mock-tippy"
+          >
+            <div
+              class="mock-tippy-content"
+            >
+              WELLH Name
+            </div>
+            <text
+              class="c-ladder__timepoint-name"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              x="0"
+              y="-55"
+            >
+              WELLH
+            </text>
+          </div>
+          <circle
+            class="c-ladder__stop-circle"
+            cx="-40"
+            cy="-110"
+            r="3"
+          />
+          <circle
+            class="c-ladder__stop-circle"
+            cx="40"
+            cy="-110"
+            r="3"
+          />
+          <div
+            class="mock-tippy"
+          >
+            <div
+              class="mock-tippy-content"
+            >
+              MORTN Name
+            </div>
+            <text
+              class="c-ladder__timepoint-name"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              x="0"
+              y="-110"
+            >
+              MORTN
+            </text>
+          </div>
+        </div>
+        <div
+          class="c-incoming-box"
+        />
+        <div
+          class="c-route-ladder__header card"
+        >
+          <div
+            class="card-body"
+          >
+            <div
+              class="c-route-ladder__dropdown"
+            />
+            <div
+              class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
+              id="route-pill:ro:"
+            >
+              1
+            </div>
+            <div
+              class="c-route-ladder__close-button-container"
+            >
+              <button
+                aria-label="Close"
+                class="btn-close p-2"
+                type="button"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="c-route-ladder__controls"
+        >
+          <button
+            class="c-route-ladder__reverse"
+          >
+            <span
+              class="c-route-ladder__reverse-icon"
+            >
+              <svg />
+            </span>
+            Reverse
+          </button>
+        </div>
+        <div
+          class="c-ladder"
+          style="width: 184px;"
+        >
+          <svg
+            class="c-ladder__svg"
+            height="0"
+            viewBox="-92 -55 184 0"
+            width="184"
+          >
+            <line
+              class="c-ladder__line"
+              x1="-40"
+              x2="-40"
+              y1="0"
+              y2="-110"
+            />
+            <line
+              class="c-ladder__line"
+              x1="40"
+              x2="40"
+              y1="0"
+              y2="-110"
+            />
+            <circle
+              class="c-ladder__stop-circle"
+              cx="-40"
+              cy="0"
+              r="3"
+            />
+            <circle
+              class="c-ladder__stop-circle"
+              cx="40"
+              cy="0"
+              r="3"
+            />
+          </svg>
+          <div
+            class="mock-tippy"
+          >
+            <div
+              class="mock-tippy-content"
+            >
+              WASMA Name
+            </div>
+            <text
+              class="c-ladder__timepoint-name"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              x="0"
+              y="0"
+            >
+              WASMA
+            </text>
+          </div>
+          <circle
+            class="c-ladder__stop-circle"
+            cx="-40"
+            cy="-55"
+            r="3"
+          />
+          <circle
+            class="c-ladder__stop-circle"
+            cx="40"
+            cy="-55"
+            r="3"
+          />
+          <div
+            class="mock-tippy"
+          >
+            <div
+              class="mock-tippy-content"
+            >
+              MELWA Name
+            </div>
+            <text
+              class="c-ladder__timepoint-name"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              x="0"
+              y="-55"
+            >
+              MELWA
+            </text>
+          </div>
+          <circle
+            class="c-ladder__stop-circle"
+            cx="-40"
+            cy="-110"
+            r="3"
+          />
+          <circle
+            class="c-ladder__stop-circle"
+            cx="40"
+            cy="-110"
+            r="3"
+          />
+          <div
+            class="mock-tippy"
+          >
+            <div
+              class="mock-tippy-content"
+            >
+              HHGAT Name
+            </div>
+            <text
+              class="c-ladder__timepoint-name"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              x="0"
+              y="-110"
+            >
+              HHGAT
+            </text>
+          </div>
+        </div>
+        <div
+          class="c-incoming-box"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
 `;

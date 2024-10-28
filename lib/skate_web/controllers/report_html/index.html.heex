@@ -1,0 +1,5 @@
+<div>
+  <%= for {description, short_name} <- @reports do %>
+    <p><%= description %> <.link href={~p"/reports/#{short_name}"}>Run report</.link></p>
+  <% end %>
+</div>

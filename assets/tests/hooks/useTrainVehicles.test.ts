@@ -1,4 +1,5 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { jest, describe, test, expect } from "@jest/globals"
+import { renderHook } from "@testing-library/react"
 import useTrainVehicles, {
   TrainVehicleData,
 } from "../../src/hooks/useTrainVehicles"
@@ -6,8 +7,6 @@ import * as browser from "../../src/models/browser"
 import { TrainVehicle } from "../../src/realtime"
 import { RouteId } from "../../src/schedule"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
-
-// tslint:disable: react-hooks-nesting
 
 describe("useTrainVehicles", () => {
   const trainVehiclesData: TrainVehicleData[] = [
@@ -100,6 +99,7 @@ describe("useTrainVehicles", () => {
       if (event === "train_vehicles") {
         handler({ data: trainVehiclesData })
       }
+      return 1
     })
 
     const { result } = renderHook(() => useTrainVehicles(mockSocket, ["Red"]))

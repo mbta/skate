@@ -1,9 +1,12 @@
 defmodule Realtime.Vehicle do
+  @moduledoc false
+
+  alias Schedule.Gtfs.Timepoint
   alias Concentrate.{DataDiscrepancy, VehiclePosition}
   alias Schedule.{Block, Route, Trip}
   alias Schedule.Gtfs.{Direction, RoutePattern, Stop}
   alias Schedule.Hastus.Run
-  alias Realtime.{BlockWaiver, BlockWaiverStore, Crowding, Headway, RouteStatus, TimepointStatus}
+  alias Realtime.{BlockWaiver, BlockWaiverStore, Crowding, RouteStatus, TimepointStatus}
 
   @type stop_status :: %{
           stop_id: Stop.id(),
@@ -21,6 +24,7 @@ defmodule Realtime.Vehicle do
           longitude: float(),
           direction_id: Direction.id(),
           route_id: Route.id() | nil,
+          route_pattern_id: RoutePattern.id() | nil,
           trip_id: Trip.id() | nil,
           headsign: String.t() | nil,
           via_variant: RoutePattern.via_variant() | nil,
@@ -31,18 +35,18 @@ defmodule Realtime.Vehicle do
           operator_first_name: String.t() | nil,
           operator_last_name: String.t() | nil,
           operator_logon_time: Util.Time.timestamp() | nil,
+          overload_offset: integer() | nil,
           run_id: Run.id() | nil,
-          headway_secs: non_neg_integer() | nil,
-          headway_spacing: Headway.headway_spacing() | nil,
           previous_vehicle_id: String.t() | nil,
           schedule_adherence_secs: float() | nil,
-          scheduled_headway_secs: float() | nil,
+          incoming_trip_direction_id: Direction.id() | nil,
           is_shuttle: boolean,
           is_overload: boolean(),
           is_off_course: boolean(),
           is_revenue: boolean(),
           layover_departure_time: Util.Time.timestamp() | nil,
           block_is_active: boolean(),
+          pull_back_place_name: String.t() | nil,
           sources: MapSet.t(String.t()),
           data_discrepancies: [DataDiscrepancy.t()],
           stop_status: stop_status(),
@@ -69,8 +73,8 @@ defmodule Realtime.Vehicle do
     :operator_first_name,
     :operator_last_name,
     :operator_logon_time,
+    :overload_offset,
     :run_id,
-    :headway_spacing,
     :is_shuttle,
     :is_overload,
     :is_off_course,
@@ -82,7 +86,7 @@ defmodule Realtime.Vehicle do
     :end_of_trip_type
   ]
 
-  @derive {Jason.Encoder, except: [:last_updated_by_source]}
+  @derive {Jason.Encoder, except: [:timestamp_by_source]}
 
   defstruct [
     :id,
@@ -93,6 +97,7 @@ defmodule Realtime.Vehicle do
     :longitude,
     :direction_id,
     :route_id,
+    :route_pattern_id,
     :trip_id,
     :headsign,
     :via_variant,
@@ -103,18 +108,18 @@ defmodule Realtime.Vehicle do
     :operator_first_name,
     :operator_last_name,
     :operator_logon_time,
+    :overload_offset,
     :run_id,
-    :headway_secs,
-    :headway_spacing,
     :previous_vehicle_id,
     :schedule_adherence_secs,
-    :scheduled_headway_secs,
+    :incoming_trip_direction_id,
     :is_shuttle,
     :is_overload,
     :is_off_course,
     :is_revenue,
     :layover_departure_time,
     :block_is_active,
+    :pull_back_place_name,
     :sources,
     :stop_status,
     :timepoint_status,
@@ -126,8 +131,8 @@ defmodule Realtime.Vehicle do
     data_discrepancies: []
   ]
 
-  @spec from_vehicle_position(map()) :: t()
-  def from_vehicle_position(vehicle_position) do
+  @spec from_vehicle_position(map(), Timepoint.timepoint_names_by_id()) :: t()
+  def from_vehicle_position(vehicle_position, timepoint_names_by_id) do
     trip_fn = Application.get_env(:realtime, :trip_fn, &Schedule.trip/1)
     block_fn = Application.get_env(:realtime, :block_fn, &Schedule.block/2)
     now_fn = Application.get_env(:realtime, :now_fn, &Util.Time.now/0)
@@ -150,9 +155,15 @@ defmodule Realtime.Vehicle do
     direction_id = VehiclePosition.direction_id(vehicle_position) || (trip && trip.direction_id)
     block = trip && trip.schedule_id && block_fn.(trip.schedule_id, block_id)
     headsign = trip && trip.headsign
+    route_pattern = trip && trip.route_pattern_id
     via_variant = trip && trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id)
     stop_times_on_trip = (trip && trip.stop_times) || []
     stop_name = stop_name(vehicle_position, stop_id)
+
+    pull_back_place_name =
+      block
+      |> Block.pull_back_place_id()
+      |> (fn id -> Timepoint.pretty_name_for_id(timepoint_names_by_id, id) end).()
 
     timepoint_status =
       TimepointStatus.timepoint_status(
@@ -169,26 +180,6 @@ defmodule Realtime.Vehicle do
         scheduled_location
       else
         nil
-      end
-
-    headway_secs = VehiclePosition.headway_secs(vehicle_position)
-    origin_stop_id = List.first(stop_times_on_trip) && List.first(stop_times_on_trip).stop_id
-
-    date_time_now_fn = Application.get_env(:realtime, :date_time_now_fn, &Timex.now/0)
-
-    headway_spacing =
-      if headway_secs == nil do
-        nil
-      else
-        case Headway.current_expected_headway_seconds(
-               route_id,
-               direction_id,
-               origin_stop_id,
-               date_time_now_fn.()
-             ) do
-          nil -> nil
-          expected_seconds -> Headway.current_headway_spacing(expected_seconds, headway_secs)
-        end
       end
 
     data_discrepancies = VehiclePosition.data_discrepancies(vehicle_position)
@@ -210,6 +201,7 @@ defmodule Realtime.Vehicle do
       longitude: VehiclePosition.longitude(vehicle_position),
       direction_id: direction_id,
       route_id: route_id,
+      route_pattern_id: route_pattern,
       trip_id: trip_id,
       headsign: headsign,
       via_variant: via_variant,
@@ -220,18 +212,17 @@ defmodule Realtime.Vehicle do
       operator_last_name: VehiclePosition.operator_last_name(vehicle_position),
       operator_name: VehiclePosition.operator_last_name(vehicle_position),
       operator_logon_time: VehiclePosition.operator_logon_time(vehicle_position),
+      overload_offset: VehiclePosition.overload_offset(vehicle_position),
       run_id: run_id,
-      headway_secs: headway_secs,
-      headway_spacing: headway_spacing,
       previous_vehicle_id: VehiclePosition.previous_vehicle_id(vehicle_position),
       schedule_adherence_secs: VehiclePosition.schedule_adherence_secs(vehicle_position),
-      scheduled_headway_secs: VehiclePosition.scheduled_headway_secs(vehicle_position),
       is_shuttle: is_shuttle,
       is_overload: is_overload,
       is_off_course: is_off_course,
       is_revenue: VehiclePosition.revenue(vehicle_position),
       layover_departure_time: VehiclePosition.layover_departure_time(vehicle_position),
       block_is_active: active_block?(is_off_course, block, now_fn.()),
+      pull_back_place_name: pull_back_place_name,
       sources: VehiclePosition.sources(vehicle_position),
       data_discrepancies: data_discrepancies,
       stop_status: %{
@@ -293,9 +284,9 @@ defmodule Realtime.Vehicle do
   @spec active_block?(boolean(), Block.t() | nil, Util.Time.timestamp()) :: boolean()
   def active_block?(_is_off_course, nil, _now), do: false
 
-  def active_block?(_is_off_course = false, _block, _now), do: true
+  def active_block?(false = _is_off_course, _block, _now), do: true
 
-  def active_block?(_is_off_course = true, block, now) do
+  def active_block?(true = _is_off_course, block, now) do
     one_hour_in_seconds = 1 * 60 * 60
     now_time_of_day = Util.Time.time_of_day_for_timestamp(now, Util.Time.date_of_timestamp(now))
 
@@ -350,8 +341,8 @@ defmodule Realtime.Vehicle do
           Run.id() | nil,
           Stop.id() | nil
         ) :: end_of_trip_type()
-  def end_of_trip_type(block, trip, run_id, stop_id)
-      when block == nil or trip == nil or stop_id == nil or run_id == nil do
+  def end_of_trip_type(block, trip, run_id, _stop_id)
+      when block == nil or trip == nil or run_id == nil do
     :another_trip
   end
 

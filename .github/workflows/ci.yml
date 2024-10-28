@@ -8,13 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       # cache the ASDF directory, using the values from .tool-versions
       - name: ASDF cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.asdf
-          key: ${{ runner.os }}-asdf-v2-${{ hashFiles('.tool-versions') }}
+          key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
         id: asdf-cache
       # only run `asdf install` if we didn't hit the cache
       - uses: asdf-vm/actions/install@v1
@@ -29,7 +29,7 @@ jobs:
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
@@ -50,6 +50,7 @@ jobs:
       DATABASE_USER: postgres
       DATABASE_NAME: skate_test
       DATABASE_HOST: localhost
+      GUARDIAN_SECRET_KEY: test_guardian_secret_keys
     services:
       postgres:
         image: postgres
@@ -57,15 +58,25 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
-          POSTGRES_USER:  ${{env.DATABASE_USER}}
+          POSTGRES_USER: ${{env.DATABASE_USER}}
           POSTGRES_DB: ${{env.DATABASE_NAME}}
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      mosquitto:
+        image: eclipse-mosquitto:2.0
+        ports:
+          - 1883:1883
+        volumes:
+          - ./mosquitto:/mosquitto/config/
+        options: --name mqtt
     steps:
+      - uses: actions/checkout@v4
+      - name: Restart MQTT to load mosquitto/mosquitto.conf from checkout
+        run: docker restart mqtt
       - name: ASDF cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.asdf
-          key: ${{ runner.os }}-asdf-v2-${{ hashFiles('.tool-versions') }}
+          key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
         id: asdf-cache
       - name: Setup ASDF environment
         run: |
@@ -75,10 +86,9 @@ jobs:
           echo "$ASDF_DIR/bin" >> $GITHUB_PATH
           echo "$ASDF_DIR/shims" >> $GITHUB_PATH
           $ASDF_DIR/bin/asdf reshim
-      - uses: actions/checkout@v2
       - name: Restore dependencies cache
         id: deps-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
@@ -87,22 +97,19 @@ jobs:
         run: mix compile --force --warnings-as-errors
       - name: Check formatting
         run: mix format --check-formatted
+      - name: Check migration safety
+        run: mix excellent_migrations.check_safety
+      - name: Credo
+        run: mix credo
+      - name: Sobelow
+        run: mix sobelow
       - name: Run tests
-        run: mix test --cover
+        run: mix test --cover --include 'Test.Integration'
         env:
           POSTGRES_USERNAME: ${{env.DATABASE_USER}}
           POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
           POSTGRES_HOSTNAME: ${{env.DATABASE_HOST}}
-      - name: Save PR information
-        run: |
-          echo "${{ github.event.pull_request.number }}" > cover/PR_NUMBER
-          echo "${{ github.event.pull_request.head.sha }}" > cover/PR_SHA
-        if: github.event.pull_request
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: elixir-lcov
-          path: cover/
+          GUARDIAN_SECRET_KEY: ${{env.GUARDIAN_SECRET_KEY}}
       - uses: mbta/actions/dialyzer@v1
 
   build_typescript:
@@ -110,11 +117,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
+      - uses: actions/checkout@v4
       - name: ASDF cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.asdf
-          key: ${{ runner.os }}-asdf-v2-${{ hashFiles('.tool-versions') }}
+          key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
         id: asdf-cache
       - name: Setup ASDF environment
         run: |
@@ -124,17 +132,16 @@ jobs:
           echo "$ASDF_DIR/bin" >> $GITHUB_PATH
           echo "$ASDF_DIR/shims" >> $GITHUB_PATH
           $ASDF_DIR/bin/asdf reshim
-      - uses: actions/checkout@v2
       - name: Restore dependencies cache
         id: deps-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
       - name: Install dependencies
-        run: pushd assets && npm ci && popd
+        run: npm --prefix=assets ci 
       - name: Check types / linting / formatting
-        run: pushd assets && npm run check && popd
+        run: npm --prefix=assets run check
       - name: Run tests
-        run: pushd assets && npm test && popd
+        run: npm --prefix=assets test -- --detectOpenHandles

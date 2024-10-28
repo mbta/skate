@@ -1,0 +1,72 @@
+.c-vehicle-map__icon {
+  // Vehicle doesn't fit in marker as is.
+  overflow: visible;
+
+  fill: $color-primary-legacy;
+  stroke: $color-bg-base;
+  stroke-width: 2;
+
+  .on-time {
+    fill: $color-vehicle-ontime;
+  }
+
+  .early {
+    fill: var(--color-early);
+  }
+
+  .late {
+    fill: var(--color-late);
+  }
+
+  .off-course {
+    fill: $color-vehicle-off-course;
+  }
+
+  .logged-out {
+    fill: $color-gray-300;
+    stroke: $color-gray-600;
+    stroke-width: 1px;
+  }
+
+  .selected {
+    stroke: $color-eggplant-600;
+    stroke-width: 1.5;
+    filter: drop-shadow(1px 1px 4px $color-eggplant-400);
+  }
+
+  &.c-vehicle-marker--shuttle {
+    // Shuttle Colors
+    &.c-vehicle-marker--blue {
+      fill: var(--color-blue-line);
+    }
+    &.c-vehicle-marker--orange {
+      fill: var(--color-orange-line);
+    }
+    &.c-vehicle-marker--green {
+      fill: var(--color-green-line);
+    }
+    &.c-vehicle-marker--red {
+      fill: var(--color-red-line);
+    }
+    &.c-vehicle-marker--cr {
+      fill: var(--color-commuter-rail);
+    }
+  }
+}
+
+.c-vehicle-map__label {
+  overflow: visible;
+
+  &.primary {
+    font-size: var(--font-size-s);
+    font-weight: 500;
+  }
+
+  &.secondary {
+    @include font-tiny;
+  }
+
+  &.selected .c-vehicle-icon__label-background {
+    fill: $color-eggplant-300;
+  }
+}

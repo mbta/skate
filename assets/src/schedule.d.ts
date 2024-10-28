@@ -1,3 +1,4 @@
+import { LocationType, RouteType } from "./models/stopData"
 import { RunId } from "./realtime"
 
 export type BlockId = string
@@ -13,6 +14,9 @@ export interface Stop {
   name: string
   lat: number
   lon: number
+  routes?: { type: number; id: RouteId; name: string }[]
+  locationType: LocationType | null
+  vehicleType: RouteType | null
 }
 
 export type RouteId = string
@@ -23,6 +27,10 @@ export interface ByRouteId<T> {
 
 export interface ByBlockId<T> {
   [blockId: string]: T
+}
+
+export interface ByRoutePatternId<T> {
+  [routePatternId: RoutePatternId]: T
 }
 
 export type GarageName = string
@@ -37,11 +45,23 @@ export interface Route {
   garages: GarageName[]
 }
 
+export type RoutePatternId = string
+export interface RoutePattern {
+  id: RoutePatternId
+  name: string
+  routeId: RouteId
+  directionId: DirectionId
+  timeDescription?: string | null
+  sortOrder: number
+  shape?: Shape | null
+  headsign: string | null
+}
+
 export interface Shape {
   id: ShapeId
-  color?: string
   points: ShapePoint[]
   stops?: Stop[]
+  className?: string
 }
 
 export type ShapeId = string

@@ -1,75 +1,174 @@
-import React, { ReactElement, useContext } from "react"
-import { Socket } from "phoenix"
+import React, { ReactElement, useContext, useEffect } from "react"
 import {
   BrowserRouter,
+  Routes,
   Route as BrowserRoute,
   useLocation,
+  Route,
+  Outlet,
 } from "react-router-dom"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import { SocketContext } from "../contexts/socketContext"
 import { ByRouteId } from "../schedule.d"
-import { VehicleOrGhost } from "../realtime.d"
 import useAppcues from "../hooks/useAppcues"
 import useVehicles from "../hooks/useVehicles"
 import DataStatusBanner from "./dataStatusBanner"
 import LadderPage from "./ladderPage"
 import Modal from "./modal"
-import SearchPage from "./searchPage"
 import SettingsPage from "./settingsPage"
 import ShuttleMapPage from "./shuttleMapPage"
-import TabBar from "./tabBar"
-import LateView from "./lateView"
-import { OpenView } from "../state"
+import { allOpenRouteIds } from "../models/routeTab"
+import Nav from "./nav"
+import RightPanel from "./rightPanel"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
+import MapPage from "./mapPage"
+import { OpenView, isPagePath } from "../state/pagePanelState"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
+import PropertiesPanel from "./propertiesPanel"
+import { isGhost, isVehicle } from "../models/vehicle"
+import { TabMode } from "./propertiesPanel/tabPanels"
+import { DetourListPage } from "./detourListPage"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { MinimalLadderPage } from "./minimalLadderPage"
+import { MinimalLadder } from "./minimalLadder"
 
-const AppRoutes = () => {
+export const AppRoutes = () => {
   useAppcues()
-
-  const [{ pickerContainerIsVisible, openView, selectedRouteIds }] =
-    useContext(StateDispatchContext)
-
-  const { socket }: { socket: Socket | undefined } = useContext(SocketContext)
-
   const location = useLocation()
 
-  const vehiclesByRouteIdNeeded =
-    openView === OpenView.Late || location.pathname === "/"
+  const [{ routeTabs }] = useContext(StateDispatchContext)
 
-  const vehiclesByRouteId: ByRouteId<VehicleOrGhost[]> = useVehicles(
-    socket,
-    vehiclesByRouteIdNeeded ? selectedRouteIds : []
-  )
+  const {
+    setPath,
+    setTabMode,
+    closeView,
+    currentView: { openView, selectedVehicleOrGhost, vppTabMode },
+  } = usePanelStateFromStateDispatchContext()
+
+  // Keep panel in sync with current path
+  const { pathname: path } = location
+  useEffect(() => {
+    isPagePath(path) && setPath(path)
+  }, [path, setPath])
+
+  const vehiclesByRouteIdNeeded =
+    openView === OpenView.Late ||
+    location.pathname === "/" ||
+    location.pathname.includes("/minimal")
+
+  const { socket } = useContext(SocketContext)
+  const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
+    useVehicles(
+      socket,
+      vehiclesByRouteIdNeeded ? allOpenRouteIds(routeTabs) : []
+    )
 
   return (
-    <div className="m-app">
-      <div className="m-app__banner">
+    <div className="l-app">
+      <div className="l-app__banner">
         <DataStatusBanner />
       </div>
       <VehiclesByRouteIdProvider vehiclesByRouteId={vehiclesByRouteId}>
-        <div className="m-app__main">
-          <TabBar
-            pickerContainerIsVisible={pickerContainerIsVisible}
-            openView={openView}
-          />
-          <BrowserRoute exact={true} path="/" component={LadderPage} />
-          <BrowserRoute
-            exact={true}
-            path="/shuttle-map"
-            component={ShuttleMapPage}
-          />
-          <BrowserRoute
-            exact={true}
-            path="/settings"
-            component={SettingsPage}
-          />
-          <BrowserRoute exact={true} path="/search" component={SearchPage} />
-          {openView === OpenView.Late ? <LateView /> : null}
+        <div className="l-app__main">
+          <Routes>
+            {inTestGroup(TestGroups.MinimalLadderPage) && (
+              <>
+                <BrowserRoute path="/minimal" element={<MinimalLadderPage />} />
+                <BrowserRoute
+                  path="/minimal/:id"
+                  element={<MinimalLadder.FromRouterParam />}
+                />
+              </>
+            )}
+            <Route
+              element={
+                <Nav>
+                  <Outlet />
+                </Nav>
+              }
+            >
+              <Route
+                element={
+                  <RouteElement
+                    selectedVehicleOrGhost={selectedVehicleOrGhost}
+                    openView={openView}
+                    openMapEnabled={true}
+                    vppTabMode={vppTabMode}
+                    setTabMode={setTabMode}
+                    closeView={closeView}
+                  />
+                }
+              >
+                <BrowserRoute path="/" element={<LadderPage />} />
+                <BrowserRoute
+                  path="/shuttle-map"
+                  element={<ShuttleMapPage />}
+                />
+                <BrowserRoute path="/settings" element={<SettingsPage />} />
+                {inTestGroup(TestGroups.DetoursList) && (
+                  <BrowserRoute path="/detours" element={<DetourListPage />} />
+                )}
+              </Route>
+              <Route
+                element={
+                  <RouteElement
+                    selectedVehicleOrGhost={selectedVehicleOrGhost}
+                    openView={openView}
+                    openMapEnabled={false}
+                    vppTabMode={vppTabMode}
+                    setTabMode={setTabMode}
+                    closeView={closeView}
+                  />
+                }
+              >
+                <BrowserRoute path="/map" element={<MapPage />} />
+              </Route>
+            </Route>
+          </Routes>
+
           <Modal />
         </div>
       </VehiclesByRouteIdProvider>
     </div>
   )
 }
+
+const RouteElement = ({
+  openMapEnabled,
+  selectedVehicleOrGhost,
+  openView,
+  vppTabMode,
+  setTabMode,
+  closeView,
+}: {
+  openMapEnabled: boolean
+  selectedVehicleOrGhost?: Vehicle | Ghost | null
+  openView: OpenView
+  vppTabMode?: TabMode
+  setTabMode: (mode: TabMode) => void
+  closeView: () => void
+}) => (
+  <>
+    <Outlet />
+    <RightPanel
+      openView={openView}
+      propertiesPanel={
+        selectedVehicleOrGhost &&
+        (isVehicle(selectedVehicleOrGhost) ||
+          isGhost(selectedVehicleOrGhost)) ? (
+          <PropertiesPanel
+            selectedVehicleOrGhost={selectedVehicleOrGhost}
+            tabMode={vppTabMode ?? "status"}
+            onChangeTabMode={setTabMode}
+            onClosePanel={closeView}
+            openMapEnabled={openMapEnabled}
+          />
+        ) : undefined
+      }
+    />
+  </>
+)
 
 const App = (): ReactElement<HTMLDivElement> => {
   return (

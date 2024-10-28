@@ -1,19 +1,29 @@
-import featureIsEnabled from "../laboratoryFeatures"
-import { Ghost, Vehicle, VehicleOrGhost } from "../realtime"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../realtime"
+import { Route } from "../schedule"
 import { now } from "../util/dateTime"
 
 export const isVehicle = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
 ): vehicleOrGhost is Vehicle => !isGhost(vehicleOrGhost)
 
+export const isVehicleInScheduledService = (
+  vehicleOrGhost: Vehicle | Ghost
+): vehicleOrGhost is VehicleInScheduledService =>
+  !isGhost(vehicleOrGhost) && vehicleOrGhost.directionId !== null
+
 export const isGhost = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
 ): vehicleOrGhost is Ghost => vehicleOrGhost.id.startsWith("ghost")
 
 export const isLateVehicleIndicator = ({ id }: Ghost): boolean =>
   id.startsWith("ghost-incoming-")
 
-export const isRecentlyLoggedOn = (vehicleOrGhost: VehicleOrGhost): boolean => {
+export const isLoggedOut = ({ operatorLogonTime, runId }: Vehicle) =>
+  operatorLogonTime === null && runId === null
+
+export const isRecentlyLoggedOn = (
+  vehicleOrGhost: VehicleInScheduledService | Ghost
+): boolean => {
   if (isGhost(vehicleOrGhost) || !vehicleOrGhost.operatorLogonTime) {
     return false
   }
@@ -25,10 +35,24 @@ export const isRecentlyLoggedOn = (vehicleOrGhost: VehicleOrGhost): boolean => {
   return timeDiffInMs <= thirtyMinutesInMs
 }
 
-export const shouldShowHeadwayDiagram = ({
-  headwaySpacing,
-  routeStatus,
-}: Vehicle): boolean =>
-  featureIsEnabled("headway_ladder_colors") &&
-  headwaySpacing !== null &&
-  routeStatus === "on_route"
+export const isActivelyPullingBack = (vehicle: Vehicle): boolean =>
+  vehicle.endOfTripType === "pull_back" && vehicle.stopStatus.stopId === null
+
+export const directionName = (
+  vehicle: Vehicle | Ghost,
+  route: Route | null
+): string => {
+  if (vehicle.directionId !== null && route) {
+    return route.directionNames[vehicle.directionId]
+  } else if (isVehicle(vehicle) && isLoggedOut(vehicle)) {
+    return "N/A"
+  }
+
+  return ""
+}
+
+export const filterVehicles = (
+  vehiclesOrGhosts: (Vehicle | Ghost)[] | null
+): Vehicle[] => {
+  return vehiclesOrGhosts === null ? [] : vehiclesOrGhosts.filter(isVehicle)
+}

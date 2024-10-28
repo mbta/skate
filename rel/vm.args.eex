@@ -1,0 +1,9 @@
+## Customize flags given to the VM: http://erlang.org/doc/man/erl.html
+## -mode/-name/-sname/-setcookie are configured via env vars, do not set them here
+
+## Give more memory to the literal allocator, used by :persistent_term
++MIscs 2048
+
+## Set and restrict Erlang RPC port
+-kernel inet_dist_listen_min 57195
+-kernel inet_dist_listen_max 57195

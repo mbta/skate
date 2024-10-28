@@ -1,32 +1,29 @@
+import { jest, describe, test, expect } from "@jest/globals"
 import {
+  directionName,
   isGhost,
   isLateVehicleIndicator,
+  isLoggedOut,
   isRecentlyLoggedOn,
-  isVehicle,
-  shouldShowHeadwayDiagram,
+  isVehicleInScheduledService,
 } from "../../src/models/vehicle"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import routeFactory from "../factories/route"
 
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2020-03-17T12:00:00.000Z"))
 
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => true),
-}))
-
 describe("isVehicle", () => {
   test("returns true for a Vehicle", () => {
-    expect(isVehicle(vehicleFactory.build())).toBeTruthy()
+    expect(isVehicleInScheduledService(vehicleFactory.build())).toBeTruthy()
   })
 
   test("returns false for a Ghost", () => {
-    expect(isVehicle(ghostFactory.build())).toBeFalsy()
+    expect(isVehicleInScheduledService(ghostFactory.build())).toBeFalsy()
   })
 })
 
@@ -58,12 +55,32 @@ describe("isLateVehicleIndicator", () => {
   })
 })
 
+describe("isLoggedOut", () => {
+  test("true if vehicle is logged out", () => {
+    const vehicle = vehicleFactory.build({
+      operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
+      runId: "123-4567",
+    })
+
+    expect(isLoggedOut(vehicle)).toBeFalsy()
+  })
+
+  test("false if vehicle is logged in", () => {
+    const vehicle = vehicleFactory.build({
+      operatorLogonTime: null,
+      runId: null,
+    })
+
+    expect(isLoggedOut(vehicle)).toBeTruthy()
+  })
+})
+
 describe("isRecentlyLoggedOn", () => {
   test("true if the operatorLogonTime is within the past 30 minutes", () => {
     const recentVehicle = {
       id: "1",
       operatorLogonTime: new Date("2020-03-17T11:31:00.000Z"),
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(isRecentlyLoggedOn(recentVehicle)).toBeTruthy()
   })
@@ -72,7 +89,7 @@ describe("isRecentlyLoggedOn", () => {
     const oldVehicle = {
       id: "1",
       operatorLogonTime: new Date("2020-03-17T11:29:00.000Z"),
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(isRecentlyLoggedOn(oldVehicle)).toBeFalsy()
   })
@@ -81,7 +98,7 @@ describe("isRecentlyLoggedOn", () => {
     const vehicleMissingLogonTime = {
       id: "1",
       operatorLogonTime: null,
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect(isRecentlyLoggedOn(vehicleMissingLogonTime)).toBeFalsy()
   })
@@ -91,30 +108,27 @@ describe("isRecentlyLoggedOn", () => {
   })
 })
 
-describe("shouldShowHeadwayDiagram", () => {
-  test("returns false if vehicle headwaySpacing is null", () => {
-    const nullHeadwaySpacingVehicle = {
-      headwaySpacing: null,
-    } as Vehicle
+describe("directionName", () => {
+  test("returns route direction if available", () => {
+    const route = routeFactory.build()
+    const vehicle = vehicleFactory.build({ routeId: route.id, directionId: 0 })
 
-    expect(shouldShowHeadwayDiagram(nullHeadwaySpacingVehicle)).toBeFalsy()
+    expect(directionName(vehicle, route)).toEqual(route.directionNames[0])
   })
 
-  test("returns false if not on route", () => {
-    const notOnRouteVehicle = {
-      headwaySpacing: HeadwaySpacing.Ok,
-      routeStatus: "pulling_out",
-    } as Vehicle
+  test('returns "N/A" for logged out vehicles', () => {
+    const vehicle = vehicleFactory.build({
+      runId: null,
+      blockId: undefined,
+      operatorLogonTime: null,
+    })
 
-    expect(shouldShowHeadwayDiagram(notOnRouteVehicle)).toBeFalsy()
+    expect(directionName(vehicle, null)).toEqual("N/A")
   })
 
-  test("returns true if measuring headway spacing and is on route", () => {
-    const onRouteHeadwaySpacingVehicle = {
-      headwaySpacing: HeadwaySpacing.Ok,
-      routeStatus: "on_route",
-    } as Vehicle
+  test("returns empty string otherwise", () => {
+    const vehicle = vehicleFactory.build()
 
-    expect(shouldShowHeadwayDiagram(onRouteHeadwaySpacingVehicle)).toBeTruthy()
+    expect(directionName(vehicle, null)).toEqual("")
   })
 })

@@ -1,0 +1,26 @@
+/**
+ * Defines CSS styles that create and act on CSS color variables.
+ *
+ * Use this to import CSS variables into a stylesheet.
+ * This corresponds with "./_variables.scss" and provides the
+ * CSS variables to the document.
+ */
+@use "./definitions" as defs;
+
+// CSS Color Variable Definitions
+:root {
+  // @include colors.theme-colors; // Provided as CSS variables by bootstrap
+  @include defs.service-colors;
+  @include defs.mbta-colors;
+}
+
+:root,
+.early-red {
+  --color-early: #{defs.$early};
+  --color-late: #{defs.$late};
+}
+
+.early-blue {
+  --color-early: #{defs.$late};
+  --color-late: #{defs.$early};
+}

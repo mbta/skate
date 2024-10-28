@@ -1,34 +1,44 @@
 defmodule SkateWeb.AuthManager do
+  @moduledoc false
+
   use Guardian, otp_app: :skate
+  alias Skate.Settings.User
+  require Logger
 
   @type access_level :: :none | :general | :admin
 
   @skate_admin_group "skate-admin"
   @skate_dispatcher_group "skate-dispatcher"
+  @v3_resource_prefix "v3:"
 
-  def subject_for_token(resource, _claims) do
-    {:ok, resource}
+  def v3_resource_prefix, do: @v3_resource_prefix
+
+  def subject_for_token(%{id: user_id}, _claims) do
+    {:ok, "#{@v3_resource_prefix}#{user_id}"}
   end
 
-  def resource_from_claims(%{"sub" => username}) do
-    {:ok, username}
+  def resource_from_claims(%{"sub" => @v3_resource_prefix <> user_id}) do
+    {:ok, %{id: String.to_integer(user_id)}}
   end
 
   def resource_from_claims(_), do: {:error, :invalid_claims}
 
-  def username_from_socket!(socket) do
-    {:ok, username} =
-      socket
-      |> Guardian.Phoenix.Socket.current_token()
-      |> decode_and_verify!()
-      |> resource_from_claims()
-
-    username
+  def verify_claims(%{"sub" => @v3_resource_prefix <> _user_id} = claims, _options) do
+    {:ok, claims}
   end
 
-  defp decode_and_verify!(token) do
-    {:ok, decoded} = decode_and_verify(token)
-    decoded
+  def verify_claims(_claims, _options) do
+    {:error, :invalid_claims}
+  end
+
+  def(username_from_socket!(socket)) do
+    socket
+    |> Guardian.Phoenix.Socket.current_resource()
+    |> username_from_resource()
+  end
+
+  def username_from_resource(%{id: user_id}) do
+    User.get_by_id!(user_id).username
   end
 
   @spec claims_access_level(Guardian.Token.claims()) :: access_level()

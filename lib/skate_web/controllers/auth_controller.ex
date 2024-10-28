@@ -2,46 +2,119 @@ defmodule SkateWeb.AuthController do
   use SkateWeb, :controller
   plug(Ueberauth)
 
+  require Logger
+
+  import Plug.Conn
+  alias Skate.Settings.User
   alias SkateWeb.AuthManager
-  alias SkateWeb.Router.Helpers
+  alias SkateWeb.Plugs.CaptureAuthReturnPath
 
-  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
+  def callback(%{assigns: %{ueberauth_auth: %{provider: :keycloak} = auth}} = conn, _params) do
     username = auth.uid
-    credentials = auth.credentials
-    expiration = credentials.expires_at
+    email = auth.info.email
 
-    current_time = System.system_time(:second)
+    post_auth_redirect = CaptureAuthReturnPath.get_post_auth_return_to_path(conn)
 
-    if Map.has_key?(credentials, :refresh_token) && credentials.refresh_token do
-      refresh_token_store = Application.get_env(:skate, :refresh_token_store)
-      refresh_token_store.put_refresh_token(username, credentials.refresh_token)
+    keycloak_client_id =
+      get_in(Application.get_env(:ueberauth_oidcc, :providers), [:keycloak, :client_id])
+
+    groups =
+      get_in(auth.extra.raw_info.userinfo, ["resource_access", keycloak_client_id, "roles"]) || []
+
+    if "skate-readonly" in groups do
+      %{id: user_id} = User.upsert(username, email)
+
+      conn
+      |> Guardian.Plug.sign_in(
+        AuthManager,
+        %{id: user_id},
+        %{groups: groups},
+        ttl: {1, :hour}
+      )
+      |> put_session(:sign_out_url, sign_out_url(auth))
+      |> redirect(to: post_auth_redirect)
+    else
+      send_resp(conn, :forbidden, "forbidden")
     end
-
-    conn
-    |> Guardian.Plug.sign_in(
-      AuthManager,
-      username,
-      %{groups: credentials.other[:groups]},
-      ttl: {expiration - current_time, :seconds}
-    )
-    |> Plug.Conn.put_session(:username, username)
-    |> redirect(to: Helpers.page_path(conn, :index))
   end
 
-  def callback(%{assigns: %{ueberauth_failure: _fails}} = conn, _params) do
-    refresh_token_store = Application.get_env(:skate, :refresh_token_store)
+  def callback(
+        %{
+          assigns: %{
+            ueberauth_failure:
+              %Ueberauth.Failure{
+                provider: :keycloak,
+                errors: [%Ueberauth.Failure.Error{message_key: "csrf_attack"}]
+              } = auth_struct
+          }
+        } = conn,
+        _params
+      ) do
+    Logger.error("keycloak callback csrf ueberauth_failure struct=#{Kernel.inspect(auth_struct)}")
 
-    conn
-    |> Plug.Conn.get_session(:username)
-    |> refresh_token_store.clear_refresh_token()
+    if get_session(conn, :keycloak_csrf_retry) == 1 do
+      conn
+      |> delete_session(:keycloak_csrf_retry)
+      |> send_resp(:unauthorized, "unauthenticated")
+    else
+      conn
+      |> put_session(:keycloak_csrf_retry, 1)
+      |> Guardian.Plug.sign_out(AuthManager, [])
+      |> redirect(to: ~p"/auth/keycloak")
+    end
+  end
 
-    # Users are sometimes seeing unexpected Ueberauth failures of unknown provenance.
-    # Instead of sending a 403 unauthenticated response, we are signing them out and
-    # sending them to the home page to start the auth path over again.
-    # We should be on the lookout for users getting trapped in a loop because of this.
-    # If we observe that happening we should rethink this remedy. -- MSS 2019-07-03
+  def callback(
+        %{assigns: %{ueberauth_failure: %{provider: :keycloak} = auth_struct}} = conn,
+        _params
+      ) do
+    Logger.error("keycloak callback ueberauth_failure struct=#{Kernel.inspect(auth_struct)}")
+
+    send_resp(conn, :unauthorized, "unauthenticated")
+  end
+
+  # https://github.com/mbta/arrow/blob/372c279e04866509f1e287e07844d61cc243850b/lib/arrow_web/controllers/auth_controller.ex#L57-L66
+  defp sign_out_url(auth) do
+    case initiate_logout_url(auth, %{
+           post_logout_redirect_uri: "https://www.mbta.com/"
+         }) do
+      {:ok, url} ->
+        url
+
+      _ ->
+        nil
+    end
+  end
+
+  defp initiate_logout_url(auth, opts),
+    do:
+      Application.get_env(:skate, :logout_url_fn, &UeberauthOidcc.initiate_logout_url/2).(
+        auth,
+        opts
+      )
+
+  @spec logout(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def logout(conn, %{"provider" => "keycloak"}) do
+    sign_out_url = get_session(conn, :sign_out_url)
+
+    if is_nil(sign_out_url) do
+      # The router makes sure we can't call `/auth/:provider/callback`
+      # unless we have a session.
+      # So the potential `nil` from `current_claims` and the potential map with
+      # `sign_out_url=nil` can be handled the same
+      conn
+      |> session_cleanup()
+      |> redirect(to: "/")
+    else
+      conn
+      |> session_cleanup()
+      |> redirect(external: sign_out_url)
+    end
+  end
+
+  defp session_cleanup(conn) do
     conn
-    |> Guardian.Plug.sign_out(AuthManager, [])
-    |> redirect(to: Helpers.page_path(conn, :index))
+    |> SkateWeb.AuthManager.Plug.sign_out()
+    |> configure_session(drop: true)
   end
 end

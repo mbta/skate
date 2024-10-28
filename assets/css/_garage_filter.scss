@@ -1,0 +1,79 @@
+.c-garage-filter {
+  @include font-small;
+  font-weight: 400;
+  color: $color-gray-600;
+  background: $white;
+  border: 1px solid $color-gray-400;
+  border-radius: 6px;
+
+  &:hover {
+    border: 1px solid $color-eggplant-400;
+  }
+
+  &:focus-within {
+    border: 1px solid $color-eggplant-500;
+    box-shadow: 0px 0px 0px 2px rgba(170, 78, 242, 0.17);
+  }
+}
+
+.c-garage-filter__show-hide-button {
+  height: 2.25rem;
+  padding: 0 0.5rem 0 1rem;
+  width: 100%;
+  line-height: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+
+  &:not(:only-child) {
+    border-bottom: 1px solid $color-gray-300;
+  }
+
+  &:focus .c-garage-filter__show-hide-icon {
+    background-color: $color-gray-200;
+    border-radius: 4px;
+  }
+}
+
+.c-garage-filter__show-hide-icon {
+  @include button-icon(0.5625rem);
+  transform: rotate(90deg);
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span svg {
+    fill: $color-gray-600;
+  }
+}
+
+.c-garage-filter__garages {
+  margin: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  color: $color-gray-700;
+}
+
+.c-garage-filter__garage {
+  display: flex;
+  justify-content: space-between;
+
+  &:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.c-garage-filter__button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    display: inline-block;
+    width: 1.6875rem;
+  }
+}

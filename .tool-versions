@@ -1,3 +1,4 @@
-elixir v1.10.2-otp-22
-erlang 22.3.2
-nodejs 11.10.0
+elixir 1.17.2-otp-26
+erlang 26.1.2
+nodejs 20.11.0
+adr-tools 3.0.0

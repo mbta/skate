@@ -9,12 +9,16 @@ defmodule SkateWeb.ReportController do
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
     reports =
-      Report.all_reports()
-      |> Enum.map(fn {short_name, report} -> {report.description(), short_name} end)
+      Enum.map(Report.all_reports(), fn {short_name, report} ->
+        {report.description(), short_name}
+      end)
 
     conn
     |> assign(:reports, reports)
-    |> render("index.html", layout: {SkateWeb.LayoutView, "reports.html"})
+    |> render(:index,
+      layout: {SkateWeb.Layouts, "barebones.html"},
+      title: "Skate Reports"
+    )
   end
 
   @spec run(Plug.Conn.t(), map()) :: Plug.Conn.t()
@@ -26,11 +30,11 @@ defmodule SkateWeb.ReportController do
     else
       {:ok, results} = Report.to_csv(report)
 
-      {:ok, dt} =
-        Util.Time.now()
-        |> FastLocalDatetime.unix_to_datetime(Application.get_env(:skate, :timezone))
-
-      timestamp = DateTime.to_iso8601(dt, :basic)
+      timestamp =
+        Application.get_env(:skate, :timezone)
+        |> DateTime.now!()
+        |> DateTime.truncate(:second)
+        |> DateTime.to_iso8601(:basic)
 
       send_download(conn, {:binary, results},
         filename: report.short_name() <> "-" <> timestamp <> ".csv"

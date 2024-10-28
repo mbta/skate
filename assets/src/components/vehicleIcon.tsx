@@ -1,16 +1,24 @@
 import React, { ReactElement } from "react"
 import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
-import { className } from "../helpers/dom"
+import { joinClasses } from "../helpers/dom"
 import { DrawnStatus, statusClasses } from "../models/vehicleStatus"
 import { AlertIconStyle, IconAlertCircleSvgNode } from "./iconAlertCircle"
 import { runIdToLabel } from "../helpers/vehicleLabel"
 import { isGhost } from "../models/vehicle"
-import { RunId, VehicleOrGhost } from "../realtime.d"
+import { Ghost, RunId, Vehicle, VehicleInScheduledService } from "../realtime"
 import { BlockId, ViaVariant } from "../schedule.d"
 import { scheduleAdherenceLabelString } from "./propertiesPanel/header"
 import { UserSettings } from "../userSettings"
 import { todayIsHalloween } from "../helpers/date"
+import {
+  directionOnLadder,
+  getLadderDirectionForRoute,
+  LadderDirection,
+  LadderDirections,
+  VehicleDirection,
+} from "../models/ladderDirection"
+import { GhostIcon } from "../helpers/icon"
 
 export enum Orientation {
   Up,
@@ -40,7 +48,35 @@ export interface Props extends ViewBoxProps {
 
 export interface TooltipProps {
   children: ReactElement<HTMLElement>
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: VehicleInScheduledService | Ghost
+}
+
+export const vehicleOrientation = (
+  vehicle: Vehicle | Ghost,
+  ladderDirections: LadderDirections
+): Orientation => {
+  if (vehicle.routeId !== null && vehicle.directionId !== null) {
+    const ladderDirection: LadderDirection = getLadderDirectionForRoute(
+      ladderDirections,
+      vehicle.routeId
+    )
+    const vehicleDirection: VehicleDirection = directionOnLadder(
+      vehicle.directionId,
+      ladderDirection
+    )
+
+    if (vehicle.routeStatus === "laying_over") {
+      return vehicleDirection === VehicleDirection.Down
+        ? Orientation.Left
+        : Orientation.Right
+    } else {
+      return vehicleDirection === VehicleDirection.Down
+        ? Orientation.Down
+        : Orientation.Up
+    }
+  } else {
+    return Orientation.Up
+  }
 }
 
 /*
@@ -70,9 +106,11 @@ export const VehicleIcon = React.memo(
     const { left, top, width, height } = viewBox(props)
     return (
       <svg
+        role="img"
         style={{ width, height }}
         viewBox={`${left} ${top} ${width} ${height}`}
       >
+        <title>Vehicle Status Icon</title>
         <VehicleIconSvgNode {...props} />
       </svg>
     )
@@ -86,9 +124,11 @@ export const VehicleTooltip = ({
   const runId = runIdToLabel(vehicleOrGhost.runId)
   const label = isGhost(vehicleOrGhost) ? "N/A" : vehicleOrGhost.label
   const scheduleAdherenceLabel =
-    isGhost(vehicleOrGhost) || vehicleOrGhost.isOffCourse
+    isGhost(vehicleOrGhost) ||
+    vehicleOrGhost.isOffCourse ||
+    vehicleOrGhost.scheduleAdherenceSecs === null
       ? "N/A"
-      : scheduleAdherenceLabelString(vehicleOrGhost)
+      : scheduleAdherenceLabelString(vehicleOrGhost.scheduleAdherenceSecs)
 
   const operatorDetails = isGhost(vehicleOrGhost)
     ? "N/A"
@@ -98,19 +138,11 @@ export const VehicleTooltip = ({
     <Tippy
       delay={[250, 0]}
       touch={false}
-      /* istanbul ignore next */
-      onShown={() => {
-        /* istanbul ignore next */
-        if (window.FS) {
-          /* istanbul ignore next */
-          window.FS.event("Vehicle tooltip seen")
-        }
-      }}
       content={
         <TooltipContent
           blockId={vehicleOrGhost.blockId}
           runId={runId}
-          label={label}
+          label={label || ""}
           viaVariant={vehicleOrGhost.viaVariant}
           scheduleAdherenceLabel={scheduleAdherenceLabel}
           operatorDetails={operatorDetails}
@@ -149,7 +181,7 @@ const TooltipContent = React.memo(
       <br />
       <b>Adherence:</b> {scheduleAdherenceLabel}
       <br />
-      <b>Operator:</b> {operatorDetails}
+      <b>Operator:</b> <span className="fs-mask">{operatorDetails}</span>
     </>
   )
 )
@@ -236,19 +268,19 @@ export const VehicleIconSvgNode = React.memo(
       orientation = Orientation.Up
     }
     const classes: string[] = [
-      "m-vehicle-icon",
-      `m-vehicle-icon${sizeClassSuffix(size)}`,
+      "c-vehicle-icon",
+      `c-vehicle-icon${sizeClassSuffix(size)}`,
       alertIconStyle === AlertIconStyle.Highlighted
-        ? "m-vehicle-icon--highlighted"
+        ? "c-vehicle-icon--highlighted"
         : "",
     ].concat(statusClasses(status, userSettings.vehicleAdherenceColors))
     return (
-      <g className={className(classes)}>
+      <g className={joinClasses(classes)}>
         {label ? (
           <Label size={size} orientation={orientation} label={label} />
         ) : null}
         {status === "ghost" ? (
-          <Ghost size={size} variant={variant} />
+          <GhostIcon size={size} variant={variant} />
         ) : status === "off-course" && todayIsHalloween() ? (
           <Bat size={size} />
         ) : (
@@ -282,7 +314,8 @@ const Triangle = React.memo(
     const rotation = rotationForOrientation(orientation)
     return (
       <path
-        className="m-vehicle-icon__triangle"
+        className="c-vehicle-icon__triangle"
+        data-testid="vehicle-triangle"
         d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
         // Move the center to 0,0
         transform={`scale(${scale}) rotate(${rotation}) translate(-24,-22)`}
@@ -313,7 +346,7 @@ const scaleBatForSize = (size: Size): number => {
   }
 }
 
-const Ghost = React.memo(
+const GhostIcon = React.memo(
   ({ size, variant }: { size: Size; variant?: string }) => {
     // No orientation argument, because the ghost icon is always right side up.
     const scale = scaleForSize(size)
@@ -325,26 +358,26 @@ const Ghost = React.memo(
       >
         <path
           // The outline that gets highlighted when it's selected
-          className="m-vehicle-icon__ghost-highlight"
+          className="c-vehicle-icon__ghost-highlight"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-          stroke-join="round"
+          strokeLinejoin="round"
         />
         <path
-          className="m-vehicle-icon__ghost-body"
+          className="c-vehicle-icon__ghost-body"
           d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-          stroke-join="round"
+          strokeLinejoin="round"
         />
         {variant === undefined ? (
           <>
             <ellipse
-              className="m-vehicle-icon__ghost-eye"
+              className="c-vehicle-icon__ghost-eye"
               cx="19.73"
               cy="22.8"
               rx="3.11"
               ry="3.03"
             />
             <ellipse
-              className="m-vehicle-icon__ghost-eye"
+              className="c-vehicle-icon__ghost-eye"
               cx="35.29"
               cy="22.8"
               rx="3.11"
@@ -388,14 +421,14 @@ export const Label = React.memo(
 
     const labelClassWithModifier =
       label.length > 4
-        ? "m-vehicle-icon__label--extended"
-        : "m-vehicle-icon__label--normal"
-    const labelClass = `m-vehicle-icon__label ${labelClassWithModifier}`
+        ? "c-vehicle-icon__label--extended"
+        : "c-vehicle-icon__label--normal"
+    const labelClass = `c-vehicle-icon__label ${labelClassWithModifier}`
 
     return (
       <>
         <rect
-          className="m-vehicle-icon__label-background"
+          className="c-vehicle-icon__label-background"
           x={-labelBgWidth / 2}
           y={labelBgTop}
           width={labelBgWidth}
@@ -482,7 +515,7 @@ const Variant = React.memo(
         break
     }
     return (
-      <text className="m-vehicle-icon__variant" {...variantPositionOpts}>
+      <text className="c-vehicle-icon__variant" {...variantPositionOpts}>
         {variant}
       </text>
     )

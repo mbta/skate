@@ -1,22 +1,22 @@
-.m-notification-bell-icon--open {
+.c-notification-bell-icon--open {
   path {
     fill: $color-secondary-dark;
   }
 }
 
-.m-notification-bell-icon--closed {
+.c-notification-bell-icon--closed {
   path {
     fill: $color-secondary-light;
   }
 }
 
-.m-notification-bell-icon--read {
+.c-notification-bell-icon--read {
   circle {
     display: none;
   }
 }
 
-.m-notification-bell-icon--unread {
+.c-notification-bell-icon--unread {
   circle {
     fill: $color-component-red;
   }

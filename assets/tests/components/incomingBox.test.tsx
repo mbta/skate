@@ -1,15 +1,23 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import IncomingBox from "../../src/components/incomingBox"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { LadderDirection } from "../../src/models/ladderDirection"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../src/realtime"
-import { initialState, selectVehicle } from "../../src/state"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
+import { initialState } from "../../src/state"
 
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+
+jest.mock("../../src/hooks/usePanelState")
+
+beforeEach(() => {
+  mockUsePanelState()
+})
 
 describe("IncomingBox", () => {
   test("renders empty state", () => {
@@ -27,7 +35,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a vehicle", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -45,11 +53,8 @@ describe("IncomingBox", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 137.5,
       blockId: "G111-165",
-      headwaySecs: 396.3,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "y0620",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 420,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -81,8 +86,32 @@ describe("IncomingBox", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
+    const tree = renderer
+      .create(
+        <IncomingBox
+          vehiclesAndGhosts={[vehicle]}
+          ladderDirection={LadderDirection.ZeroToOne}
+          selectedVehicleId={undefined}
+        />
+      )
+      .toJSON()
+
+    expect(tree).toMatchSnapshot()
+  })
+
+  test("renders a vehicle with the opposite incoming direction ID", () => {
+    const vehicle = vehicleFactory.build({
+      directionId: 0,
+      incomingTripDirectionId: 1,
+      label: "vehicle",
+      blockId: "block",
+      runId: "run",
+      operatorFirstName: "Fake",
+      operatorLastName: "Operator",
+      operatorId: "1234",
+    })
     const tree = renderer
       .create(
         <IncomingBox
@@ -130,7 +159,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a crowding view of a vehicle", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -148,11 +177,8 @@ describe("IncomingBox", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 137.5,
       blockId: "G111-165",
-      headwaySecs: 396.3,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "y0620",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 420,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -189,7 +215,7 @@ describe("IncomingBox", () => {
         occupancyPercentage: 0.0,
         capacity: 18,
       },
-    }
+    })
 
     const tree = renderer
       .create(
@@ -206,7 +232,7 @@ describe("IncomingBox", () => {
   })
 
   test("renders a crowding view missing crowding data", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "y0654",
       label: "0654",
       runId: "126-1056",
@@ -224,11 +250,8 @@ describe("IncomingBox", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 137.5,
       blockId: "G111-165",
-      headwaySecs: 396.3,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "y0620",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 420,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -260,7 +283,7 @@ describe("IncomingBox", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
 
     const tree = renderer
       .create(
@@ -276,13 +299,13 @@ describe("IncomingBox", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking an incoming crowding icon selects the associated vehicle", () => {
-    const mockDispatch = jest.fn()
+  test("clicking an incoming crowding icon selects the associated vehicle", async () => {
+    const mockPanel = mockUsePanelState()
 
-    const vehicle: Vehicle = vehicleFactory.build()
+    const vehicle: VehicleInScheduledService = vehicleFactory.build()
 
-    const wrapper = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
+    const result = render(
+      <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <IncomingBox
           vehiclesAndGhosts={[vehicle]}
           ladderDirection={LadderDirection.ZeroToOne}
@@ -291,8 +314,8 @@ describe("IncomingBox", () => {
         />
       </StateDispatchProvider>
     )
-    wrapper.find(".m-incoming-box__vehicle").simulate("click")
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    await userEvent.click(result.getByRole("button"))
+    expect(mockPanel().openVehiclePropertiesPanel).toHaveBeenCalledWith(vehicle)
   })
 })

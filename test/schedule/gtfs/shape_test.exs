@@ -7,14 +7,16 @@ defmodule Schedule.Gtfs.ShapeTest do
   describe "Schedule.Gtfs.Shape.from_file/1" do
     test "parses shapes and organizes them by id" do
       shapes_txt =
-        [
-          "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
-          "2,22.2,-22.2,1,",
-          "1,11.1,-11.1,0,",
-          "2,21.2,-21.2,0,",
-          "1,12.1,-12.1,1,"
-        ]
-        |> Enum.join("\n")
+        Enum.join(
+          [
+            "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence,shape_dist_traveled",
+            "2,22.2,-22.2,1,",
+            "1,11.1,-11.1,0,",
+            "2,21.2,-21.2,0,",
+            "1,12.1,-12.1,1,"
+          ],
+          "\n"
+        )
 
       expected = %{
         "1" => %Shape{

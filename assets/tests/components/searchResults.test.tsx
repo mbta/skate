@@ -1,18 +1,31 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import React from "react"
 import renderer from "react-test-renderer"
 import SearchResults, {
   byOperatorLogonTime,
 } from "../../src/components/searchResults"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../src/realtime"
-import { initialState, selectVehicle, State } from "../../src/state"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
+import { initialState, State } from "../../src/state"
 import { setSearchText } from "../../src/state/searchPageState"
+import getTestGroups from "../../src/userTestGroups"
 import * as dateTime from "../../src/util/dateTime"
+import "@testing-library/jest-dom/jest-globals"
 
 import ghostFactory from "../factories/ghost"
-import vehicleFactory from "../factories/vehicle"
+import { vehicleFactory, shuttleFactory } from "../factories/vehicle"
+import { searchPageStateFactory } from "../factories/searchPageState"
+
+jest.mock("userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+}))
+
+beforeEach(() => {
+  jest.mocked(getTestGroups).mockReturnValue([])
+})
 
 jest
   .spyOn(dateTime, "now")
@@ -20,28 +33,31 @@ jest
 
 const state: State = {
   ...initialState,
-  searchPageState: {
+  searchPageState: searchPageStateFactory.build({
     query: { text: "test", property: "run" },
     isActive: true,
-    savedQueries: [],
-  },
+  }),
 }
 
 describe("SearchResults", () => {
   test("renders no results", () => {
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[]} />
-        </StateDispatchProvider>
-      )
-      .toJSON()
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
 
-    expect(tree).toMatchSnapshot()
+    expect(
+      screen.queryByText(/at this time run and operator search is limited/)
+    ).toBeInTheDocument()
   })
 
   test("renders a list of results including vehicles and ghosts", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "v1",
       label: "v1-label",
       runId: "run-1",
@@ -59,11 +75,8 @@ describe("SearchResults", () => {
       operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -97,7 +110,7 @@ describe("SearchResults", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
     const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
@@ -120,77 +133,11 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle, ghost]} />
-        </StateDispatchProvider>
-      )
-      .toJSON()
-
-    expect(tree).toMatchSnapshot()
-  })
-
-  test("shows the new badge for vehicle that have logged in within the past 30 minutes", () => {
-    const vehicle: Vehicle = {
-      id: "v1",
-      label: "v1-label",
-      runId: "run-1",
-      timestamp: 123,
-      latitude: 0,
-      longitude: 0,
-      directionId: 0,
-      routeId: "39",
-      tripId: "t1",
-      headsign: "Forest Hills",
-      viaVariant: "X",
-      operatorId: "op1",
-      operatorFirstName: "PATTI",
-      operatorLastName: "SMITH",
-      operatorLogonTime: new Date("2018-08-15T17:40:21.000Z"),
-      bearing: 33,
-      blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
-      previousVehicleId: "v2",
-      scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
-      isShuttle: false,
-      isOverload: false,
-      isOffCourse: false,
-      isRevenue: true,
-      layoverDepartureTime: null,
-      dataDiscrepancies: [
-        {
-          attribute: "trip_id",
-          sources: [
-            {
-              id: "swiftly",
-              value: "swiftly-trip-id",
-            },
-            {
-              id: "busloc",
-              value: "busloc-trip-id",
-            },
-          ],
-        },
-      ],
-      stopStatus: {
-        stopId: "s1",
-        stopName: "Stop Name",
-      },
-      timepointStatus: {
-        fractionUntilTimepoint: 0.5,
-        timepointId: "tp1",
-      },
-      scheduledLocation: null,
-      routeStatus: "on_route",
-      endOfTripType: "another_trip",
-      blockWaivers: [],
-      crowding: null,
-    }
-
-    const tree = renderer
-      .create(
-        <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle]} />
+          <SearchResults
+            vehicles={[vehicle, ghost]}
+            onClick={jest.fn()}
+            selectedVehicleId={null}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -199,7 +146,7 @@ describe("SearchResults", () => {
   })
 
   test("sorts vehicles by most recent operator logon time, ghosts at the top", () => {
-    const oldVehicle: Vehicle = {
+    const oldVehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "old",
       label: "old-label",
       runId: "run-1",
@@ -217,11 +164,8 @@ describe("SearchResults", () => {
       operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -255,8 +199,8 @@ describe("SearchResults", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
-    const newVehicle: Vehicle = {
+    })
+    const newVehicle: VehicleInScheduledService = vehicleFactory.build({
       id: "new",
       label: "new-label",
       runId: "run-1",
@@ -274,11 +218,8 @@ describe("SearchResults", () => {
       operatorLogonTime: new Date("2018-08-15T13:40:00.000Z"),
       bearing: 33,
       blockId: "block-1",
-      headwaySecs: 859.1,
-      headwaySpacing: HeadwaySpacing.Ok,
       previousVehicleId: "v2",
       scheduleAdherenceSecs: 0,
-      scheduledHeadwaySecs: 120,
       isShuttle: false,
       isOverload: false,
       isOffCourse: false,
@@ -312,7 +253,7 @@ describe("SearchResults", () => {
       endOfTripType: "another_trip",
       blockWaivers: [],
       crowding: null,
-    }
+    })
     const ghost: Ghost = ghostFactory.build({
       id: "ghost-trip",
       directionId: 0,
@@ -335,7 +276,11 @@ describe("SearchResults", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={state} dispatch={jest.fn()}>
-          <SearchResults vehicles={[oldVehicle, newVehicle, ghost]} />
+          <SearchResults
+            vehicles={[oldVehicle, newVehicle, ghost]}
+            onClick={jest.fn()}
+            selectedVehicleId={null}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -343,19 +288,61 @@ describe("SearchResults", () => {
     expect(JSON.stringify(tree)).toMatch(/ghost-run.*new-label.*old-label/)
   })
 
-  test("renders a selected result card", () => {
-    const vehicle: Vehicle = vehicleFactory.build()
-    const ghost: Ghost = ghostFactory.build({ runId: "123-0123" })
+  test("renders a shuttle", () => {
+    const vehicle: VehicleInScheduledService = shuttleFactory.build()
 
-    const stateWithSelected = {
-      ...state,
-      selectedVehicleOrGhost: vehicle,
-    }
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[vehicle]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
+
+    expect(screen.getByText(/Shuttle/)).toBeInTheDocument()
+  })
+
+  test("renders logged out vehicles at the end of the list", () => {
+    const loggedInVehicle = vehicleFactory.build()
+    const loggedOutVehicle = vehicleFactory.build({
+      operatorLogonTime: null,
+      runId: null,
+      blockId: undefined,
+    })
+
+    render(
+      <StateDispatchProvider state={state} dispatch={jest.fn()}>
+        <SearchResults
+          vehicles={[loggedOutVehicle, loggedInVehicle]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
+      </StateDispatchProvider>
+    )
+
+    const headsigns = screen.queryAllByLabelText(/route variant name/i)
+
+    expect(headsigns[1]).toHaveTextContent(/logged off/i)
+  })
+
+  test("renders a selected result card", () => {
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
+      runId: "run-1",
+      label: "v1-label",
+      operatorId: "op1",
+    })
+    const ghost: Ghost = ghostFactory.build({ runId: "123-0123" })
 
     const tree = renderer
       .create(
-        <StateDispatchProvider state={stateWithSelected} dispatch={jest.fn()}>
-          <SearchResults vehicles={[vehicle, ghost]} />
+        <StateDispatchProvider state={state} dispatch={jest.fn()}>
+          <SearchResults
+            vehicles={[vehicle, ghost]}
+            onClick={jest.fn()}
+            selectedVehicleId={vehicle.id}
+          />
         </StateDispatchProvider>
       )
       .toJSON()
@@ -363,44 +350,54 @@ describe("SearchResults", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a result card selects that vehicle", () => {
+  test("clicking a result card selects that vehicle", async () => {
     const testDispatch = jest.fn()
-    const vehicle: Vehicle = vehicleFactory.build()
-    const wrapper = mount(
+    const vehicle: VehicleInScheduledService = vehicleFactory.build({
+      runId: "12345",
+    })
+    const mockOnClick = jest.fn()
+    render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
-        <SearchResults vehicles={[vehicle]} />
+        <SearchResults
+          vehicles={[vehicle]}
+          onClick={mockOnClick}
+          selectedVehicleId={null}
+        />
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-search-results__card").simulate("click")
+    await userEvent.click(screen.getByRole("cell", { name: /run/i }))
 
-    expect(testDispatch).toHaveBeenCalledWith(selectVehicle(vehicle))
+    expect(mockOnClick).toHaveBeenCalledWith(vehicle)
   })
 
-  test("clicking the clear search button empties the search text", () => {
+  test("clicking the clear search button empties the search text", async () => {
     const testDispatch = jest.fn()
-    const wrapper = mount(
+    const result = render(
       <StateDispatchProvider state={state} dispatch={testDispatch}>
-        <SearchResults vehicles={[]} />
+        <SearchResults
+          vehicles={[]}
+          onClick={jest.fn()}
+          selectedVehicleId={null}
+        />
       </StateDispatchProvider>
     )
 
-    wrapper.find(".m-search-results__clear-search-button").simulate("click")
-
+    await userEvent.click(result.getByText("Clear search"))
     expect(testDispatch).toHaveBeenCalledWith(setSearchText(""))
   })
 })
 
 describe("byOperatorLogonTime", () => {
   test("sorts more recent logons ahead of less recent ones", () => {
-    const oldVehicle: Vehicle = {
+    const oldVehicle: VehicleInScheduledService = {
       id: "1",
       operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
-    } as Vehicle
-    const newVehicle: Vehicle = {
+    } as VehicleInScheduledService
+    const newVehicle: VehicleInScheduledService = {
       id: "2",
       operatorLogonTime: new Date("2018-08-15T13:40:00.000Z"),
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect([oldVehicle, newVehicle].sort(byOperatorLogonTime)).toEqual([
       newVehicle,
@@ -417,13 +414,13 @@ describe("byOperatorLogonTime", () => {
   })
 
   test("sorts ghosts ahead of vehicles", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "1",
       operatorLogonTime: new Date("2018-08-15T13:30:00.000Z"),
-    } as Vehicle
-    const ghost: Vehicle = {
+    } as VehicleInScheduledService
+    const ghost: VehicleInScheduledService = {
       id: "ghost-2",
-    } as Vehicle
+    } as VehicleInScheduledService
 
     expect([vehicle, ghost].sort(byOperatorLogonTime)).toEqual([ghost, vehicle])
     expect([ghost, vehicle].sort(byOperatorLogonTime)).toEqual([ghost, vehicle])

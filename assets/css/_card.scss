@@ -1,0 +1,221 @@
+.c-card {
+  display: flex;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  border-radius: 0.5rem;
+  padding: 0.3125rem 0.3125rem 1rem 1rem;
+
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
+
+  button {
+    text-align: start;
+    margin: 0;
+  }
+}
+
+.c-card__left {
+  flex-grow: 1;
+  position: relative;
+  display: grid;
+  grid-template-areas: "icon main-contents";
+  grid-template-columns: min-content 1fr;
+
+  &:last-child {
+    padding-right: 0.3125rem;
+  }
+}
+
+.c-card__icon {
+  grid-area: icon;
+}
+
+.c-card__left-content {
+  display: flex;
+  flex-direction: column;
+  grid-area: main-contents;
+}
+
+.c-card__right {
+  min-width: 2.5rem;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.c-card__top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 1.625rem;
+  margin-top: 0.3125rem;
+}
+
+.c-card__title {
+  flex-grow: 1;
+
+  display: flex;
+  align-items: center;
+
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.c-card__time {
+  font-size: 1rem;
+  font-weight: 500;
+  color: $color-kiwi-800;
+}
+
+.c-card__unread-icon {
+  span {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.c-card__contents {
+  margin-top: 0.625rem;
+}
+
+.c-card__body {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: $color-gray-700;
+}
+
+.c-card__contents .c-properties-list {
+  padding: 0;
+
+  .c-properties-list__table {
+    &:not(:first-child) {
+      margin-top: 1rem;
+    }
+
+    &:first-child {
+      margin-top: 0.375rem;
+    }
+
+    margin-bottom: 0;
+
+    tr {
+      font-size: 0.875rem;
+      line-height: 0.875rem;
+      vertical-align: top;
+
+      &:not(:last-child) th,
+      td {
+        padding-bottom: 0.5rem;
+      }
+
+      td .highlighted {
+        background-color: $color-eggplant-200;
+      }
+
+      .c-properties-list__property-label {
+        color: $color-gray-700;
+        text-align: left;
+        text-transform: initial;
+        font-size: inherit;
+      }
+
+      .c-properties-list__property-value {
+        color: $color-gray-600;
+      }
+    }
+
+    .c-properties-list__property--last-login
+      .c-properties-list__property-value {
+      color: $color-gray-600;
+      font-size: inherit;
+    }
+  }
+}
+
+.c-card__properties-label {
+  width: 6rem;
+  display: inline-block;
+
+  font-weight: 500;
+  color: $color-gray-700;
+}
+
+.c-card__properties-value {
+  font-weight: 400;
+  color: $color-gray-600;
+}
+
+.c-card--kiwi {
+  &.c-card {
+    background-color: $color-kiwi-100;
+    border: 1px solid $color-kiwi-400;
+
+    &:hover:not(.c-card--no-focus-or-hover):not(.c-card--selected) {
+      background-color: $white;
+      border: 1px solid $color-kiwi-300;
+    }
+
+    &:focus-within:not(.c-card--no-focus-or-hover) {
+      background-color: $color-kiwi-200;
+      border: 2px solid $color-kiwi-400;
+    }
+  }
+
+  &.c-card--inactive {
+    background-color: $color-gray-50;
+    border: 1px solid $color-gray-400;
+
+    &:hover:not(.c-card--no-focus-or-hover):not(.c-card--selected) {
+      background-color: $color-gray-50;
+      border: 1px solid $color-kiwi-300;
+    }
+  }
+
+  &.c-card__title {
+    color: $color-kiwi-800;
+  }
+}
+
+.c-card--white {
+  &.c-card {
+    background-color: $white;
+    border: 1px solid $color-gray-400;
+
+    &:hover:not(.c-card--no-focus-or-hover):not(.c-card--selected) {
+      background-color: $color-gray-100;
+      border: 1px solid $color-gray-300;
+    }
+
+    &:focus-within:not(.c-card--no-focus-or-hover):not(.c-card--selected) {
+      background-color: $color-gray-100;
+      border: 2px solid $color-eggplant-500;
+    }
+
+    &.c-card--selected {
+      background-color: $color-eggplant-100;
+      border: 1px solid $color-eggplant-500;
+    }
+
+    &:focus-within:not(.c-card--no-focus-or-hover).c-card--selected {
+      background-color: $color-eggplant-100;
+      border: 2px solid $color-eggplant-500;
+    }
+  }
+
+  &.c-card__title {
+    color: $color-gray-900;
+  }
+}
+
+.c-card--lemon.c-card {
+  background-color: $color-lemon-50;
+  border: 1px solid $color-lemon-400;
+}

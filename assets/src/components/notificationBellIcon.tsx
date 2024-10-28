@@ -1,32 +1,48 @@
-import { useContext } from "react"
+import React, { useContext } from "react"
 import { NotificationsContext } from "../contexts/notificationsContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className } from "../helpers/dom"
-import { notificationBellIcon } from "../helpers/icon"
+import { joinClasses } from "../helpers/dom"
+import { NotificationBellIcon as NotificationBellIconSvg } from "../helpers/icon"
+import { OpenView } from "../state/pagePanelState"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
+import { NotificationType } from "../realtime"
 
 const NotificationBellIcon = ({
   extraClasses,
 }: {
   extraClasses?: string[]
 }) => {
-  const [{ notificationDrawerIsOpen }] = useContext(StateDispatchContext)
+  const {
+    currentView: { openView },
+  } = usePanelStateFromStateDispatchContext()
   const { notifications } = useContext(NotificationsContext)
-  const unreadNotifications = notifications.filter(
-    (notification) => notification.state === "unread"
+
+  const inDetoursNotificationGroup =
+    inTestGroup(TestGroups.DetoursList) &&
+    inTestGroup(TestGroups.DetoursNotifications)
+  const unreadNotifications = (notifications || []).filter(
+    (notification) =>
+      notification.state === "unread" &&
+      !(
+        notification.content.$type === NotificationType.Detour &&
+        !inDetoursNotificationGroup
+      )
   )
   const unreadBadge: boolean = unreadNotifications.length > 0
 
-  return notificationBellIcon(
-    className([
-      "m-notification-bell-icon",
-      notificationDrawerIsOpen
-        ? "m-notification-bell-icon--open"
-        : "m-notification-bell-icon--closed",
-      unreadBadge
-        ? "m-notification-bell-icon--unread"
-        : "m-notification-bell-icon--read",
-      ...(extraClasses || []),
-    ])
+  return (
+    <NotificationBellIconSvg
+      className={joinClasses([
+        "c-notification-bell-icon",
+        openView === OpenView.NotificationDrawer
+          ? "c-notification-bell-icon--open"
+          : "c-notification-bell-icon--closed",
+        unreadBadge
+          ? "c-notification-bell-icon--unread"
+          : "c-notification-bell-icon--read",
+        ...(extraClasses || []),
+      ])}
+    />
   )
 }
 

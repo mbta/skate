@@ -4,37 +4,49 @@ defmodule Skate.Application do
   @moduledoc false
 
   use Application
+  require Logger
 
-  alias Skate.Migrate
-  alias Skate.SecretsManager
+  @version Application.compile_env(:skate, :version)
 
   @impl true
   def start(_type, _args) do
+    Logger.info("Skate application starting, deployment_id=#{@version}")
+
     load_runtime_config()
+
+    start_data_processes? = Application.get_env(:skate, :start_data_processes)
 
     # List all child processes to be supervised
     children =
-      [
-        SkateWeb.Endpoint,
-        RefreshTokenStore,
-        {Skate.Repo, []}
-      ] ++
-        if Application.get_env(:skate, :start_data_processes) do
+      [{Skate.Repo, []}] ++
+        if start_data_processes? do
           [
-            Schedule.Supervisor,
+            Schedule.Supervisor
+          ]
+        else
+          []
+        end ++
+        [Skate.WarmUp] ++
+        if start_data_processes? do
+          [
             TrainVehicles.Supervisor,
             Notifications.Supervisor,
             Realtime.Supervisor
           ]
         else
           []
-        end
+        end ++
+        [
+          {Phoenix.PubSub, name: Skate.PubSub},
+          {DNSCluster, Application.get_env(:skate, DNSCluster)},
+          SkateWeb.Endpoint,
+          Skate.Migrate,
+          {Oban, Application.fetch_env!(:skate, Oban)},
+          {Skate.Detours.TripModificationPublisher,
+           Application.get_env(:skate, Skate.Detours.TripModificationPublisher)}
+        ]
 
-    link = Supervisor.start_link(children, strategy: :one_for_all, name: Skate.Supervisor)
-
-    Migrate.up()
-
-    link
+    Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)
   end
 
   # Tell Phoenix to update the endpoint configuration
@@ -47,31 +59,27 @@ defmodule Skate.Application do
   end
 
   @doc """
-  Check system environment variables or SecretsManager secrets at runtime and load them into the application environment.
+  Check system environment variables at runtime and load them into the application environment.
 
   Will recursively check the keys below in the application config for any {:system, "ENVIRONMENT_VARIABLE"},
   and replace them with the value in the given environment variable.
 
-  Will recursively check the keys below in the application config for any {:secret, "secret-variable"},
-  and replace them with the value in the given value from SecretsManager.
   """
   @spec load_runtime_config() :: :ok
   def load_runtime_config() do
     application_keys = [
-      :api_url,
-      :api_key,
+      :google_tag_manager_id,
+      :tileset_url,
       :gtfs_url,
       :hastus_url,
       :busloc_url,
-      :swiftly_authorization_key,
-      :swiftly_realtime_vehicles_url,
       :trip_updates_url,
       :geonames_url_base,
       :geonames_token,
-      :bridge_url,
-      :bridge_api_username,
-      :bridge_api_password,
       :sentry_frontend_dsn,
+      :sentry_environment,
+      :sentry_org_slug,
+      :fullstory_org,
       SkateWeb.Endpoint,
       Skate.Repo
     ]
@@ -102,10 +110,6 @@ defmodule Skate.Application do
 
   defp runtime_config({:system, environment_variable}) do
     System.get_env(environment_variable)
-  end
-
-  defp runtime_config({:secret, secret_variable}) do
-    SecretsManager.fetch!(secret_variable)
   end
 
   defp runtime_config(value) do

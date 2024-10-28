@@ -1,3 +1,4 @@
+import { enums, Infer, record, string } from "superstruct"
 import { ByRouteId, DirectionId, RouteId, Timepoint } from "../schedule"
 
 export enum LadderDirection {
@@ -8,6 +9,9 @@ export enum LadderDirection {
 const defaultLadderDirection: LadderDirection = LadderDirection.ZeroToOne
 
 export type LadderDirections = ByRouteId<LadderDirection>
+
+export const LadderDirectionsData = record(string(), enums([0, 1]))
+export type LadderDirectionsData = Infer<typeof LadderDirectionsData>
 
 export const emptyLadderDirectionsByRouteId: LadderDirections = {}
 

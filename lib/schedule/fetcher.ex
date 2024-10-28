@@ -1,5 +1,7 @@
 defmodule Schedule.Fetcher do
-  use GenServer
+  @moduledoc false
+
+  use GenServer, restart: :transient
   require Logger
 
   alias Schedule.{
@@ -60,40 +62,43 @@ defmodule Schedule.Fetcher do
   def do_poll(state, notify_health_server?) do
     start_time = Time.utc_now()
 
-    Logger.info("#{__MODULE__}: Polling for new schedule data")
+    Logger.info("Polling for new schedule data")
 
-    with {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} <-
-           fetch_gtfs(
-             state[:files_source],
-             state[:latest_gtfs_timestamp],
-             state[:latest_hastus_timestamp]
-           ) do
-      schedule_state = {:loaded, data}
+    case fetch_gtfs(
+           state[:files_source],
+           state[:latest_gtfs_timestamp],
+           state[:latest_hastus_timestamp]
+         ) do
+      {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} ->
+        schedule_state = {:loaded, data}
 
-      :ok = state[:updater_function].(schedule_state)
+        update_start_time = Time.utc_now()
+        :ok = state[:updater_function].(schedule_state)
 
-      Logger.info(
-        "#{__MODULE__}: Successfully loaded schedule data, time_in_ms=#{
-          Time.diff(Time.utc_now(), start_time, :millisecond)
-        }"
-      )
+        Logger.info(
+          "Sent updated schedule data to receiving process, time_in_ms=#{Time.diff(Time.utc_now(), update_start_time, :millisecond)}"
+        )
 
-      if notify_health_server? && state[:health_server] do
-        Health.Server.loaded(state[:health_server])
-      end
+        Logger.info(
+          "Successfully loaded schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)}"
+        )
 
-      if continue_polling? do
-        Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
+        if notify_health_server? && state[:health_server] do
+          Health.Server.loaded(state[:health_server])
+        end
 
-        {:noreply,
-         Map.merge(state, %{
-           latest_gtfs_timestamp: gtfs_timestamp,
-           latest_hastus_timestamp: hastus_timestamp
-         })}
-      else
-        {:stop, :normal, state}
-      end
-    else
+        if continue_polling? do
+          Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
+
+          {:noreply,
+           Map.merge(state, %{
+             latest_gtfs_timestamp: gtfs_timestamp,
+             latest_hastus_timestamp: hastus_timestamp
+           }), :hibernate}
+        else
+          {:stop, :normal, state}
+        end
+
       :no_update ->
         Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
 
@@ -103,9 +108,7 @@ defmodule Schedule.Fetcher do
         Process.send_after(self(), :check_gtfs, state[:poll_interval_ms])
 
         Logger.error(fn ->
-          "#{__MODULE__}: Error loading schedule data, time_in_ms=#{
-            Time.diff(Time.utc_now(), start_time, :millisecond)
-          } error=#{inspect(error)}"
+          "Error loading schedule data, time_in_ms=#{Time.diff(Time.utc_now(), start_time, :millisecond)} error=#{inspect(error)}"
         end)
 
         {:noreply, state}
@@ -127,18 +130,18 @@ defmodule Schedule.Fetcher do
 
   defp fetch_gtfs(:remote, latest_gtfs_timestamp, latest_hastus_timestamp) do
     if CacheFile.should_use_file?() do
-      Logger.info("#{__MODULE__}: Loading schedule data from cached file")
+      Logger.info("Loading schedule data from cached file")
 
-      with {:ok, data} <- CacheFile.load_gtfs() do
-        {:ok, data, nil, nil, false}
-      else
+      case CacheFile.load_gtfs() do
+        {:ok, data} ->
+          {:ok, data, nil, nil, false}
+
         _ ->
-          with {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} <-
-                 gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
-            CacheFile.save_gtfs(data)
+          case gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
+            {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?} ->
+              CacheFile.save_gtfs(data)
+              {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?}
 
-            {:ok, data, gtfs_timestamp, hastus_timestamp, continue_polling?}
-          else
             :no_update ->
               :no_update
 
@@ -156,19 +159,19 @@ defmodule Schedule.Fetcher do
           | :no_update
           | {:error, any()}
   defp gtfs_from_url(latest_gtfs_timestamp, latest_hastus_timestamp) do
-    Logger.info("#{__MODULE__}: Querying schedule data remote files")
+    Logger.info("Querying schedule data remote files")
 
-    with {:files, files, gtfs_timestamp, hastus_timestamp} <-
-           fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
-      Logger.info("#{__MODULE__}: Updated schedule data found, parsing")
+    case fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
+      {:files, files, gtfs_timestamp, hastus_timestamp} ->
+        Logger.info("Updated schedule data found, parsing")
 
-      try do
-        data = Data.parse_files(files)
-        {:ok, data, gtfs_timestamp, hastus_timestamp, true}
-      rescue
-        error -> {:error, error}
-      end
-    else
+        try do
+          data = Data.parse_files(files)
+          {:ok, data, gtfs_timestamp, hastus_timestamp, true}
+        rescue
+          error -> {:error, error}
+        end
+
       :no_update ->
         :no_update
 
@@ -224,7 +227,8 @@ defmodule Schedule.Fetcher do
           {:files,
            %{
              gtfs: gtfs_files,
-             hastus: hastus_files
+             hastus: hastus_files,
+             version: "#{gtfs_timestamp}_#{hastus_timestamp}"
            }, gtfs_timestamp, hastus_timestamp}
         else
           {:error, error} -> {:error, error}
@@ -242,10 +246,10 @@ defmodule Schedule.Fetcher do
           {:ok, Data.files() | nil, String.t() | nil} | {:error, any()}
   def fetch_zip(url, file_names, latest_timestamp) do
     request_headers =
-      if !is_nil(latest_timestamp) do
-        [{"if-modified-since", latest_timestamp}]
-      else
+      if is_nil(latest_timestamp) do
         []
+      else
+        [{"if-modified-since", latest_timestamp}]
       end
 
     case HTTPoison.get(
@@ -264,8 +268,8 @@ defmodule Schedule.Fetcher do
         {:ok, nil, last_modified}
 
       response ->
-        Logger.warn(fn ->
-          "#{__MODULE__}: Unexpected response from #{url} : #{inspect(response)}"
+        Logger.warning(fn ->
+          "Unexpected response from #{url} : #{inspect(response)}"
         end)
 
         {:error, response}
@@ -274,7 +278,7 @@ defmodule Schedule.Fetcher do
 
   @spec files_from_mocked(Schedule.mocked_files()) :: Data.all_files()
   defp files_from_mocked(mocked_files) do
-    for key <- [:gtfs, :hastus], into: %{} do
+    for key <- [:gtfs, :hastus], into: %{version: "mocked_version"} do
       {key,
        case mocked_files[key] do
          nil ->

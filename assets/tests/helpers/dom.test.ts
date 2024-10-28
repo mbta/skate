@@ -1,11 +1,12 @@
-import { className } from "../../src/helpers/dom"
+import { describe, test, expect } from "@jest/globals"
+import { joinClasses } from "../../src/helpers/dom"
 
-describe("className", () => {
+describe("joinClasses", () => {
   test("combine a list of class names into a single string", () => {
-    expect(className(["foo", "bar"])).toEqual("foo bar")
+    expect(joinClasses(["foo", "bar"])).toEqual("foo bar")
   })
 
   test("filters out empty strings", () => {
-    expect(className(["foo", "bar", ""])).toEqual("foo bar")
+    expect(joinClasses(["foo", "bar", ""])).toEqual("foo bar")
   })
 })

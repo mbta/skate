@@ -1,10 +1,14 @@
 defmodule Skate.Ueberauth.Strategy.Fake do
-  use Ueberauth.Strategy
+  @moduledoc false
+
+  use Ueberauth.Strategy, ignores_csrf_attack: true
+
+  use SkateWeb, :verified_routes
 
   @impl Ueberauth.Strategy
   def handle_request!(conn) do
     conn
-    |> redirect!("/auth/cognito/callback")
+    |> redirect!(~p"/auth/keycloak/callback")
     |> halt()
   end
 
@@ -27,19 +31,26 @@ defmodule Skate.Ueberauth.Strategy.Fake do
       token: "fake_access_token",
       refresh_token: "fake_refresh_token",
       expires: true,
-      expires_at: expiration_time,
-      other: %{groups: ["skate-admin"]}
+      expires_at: expiration_time
     }
   end
 
   @impl Ueberauth.Strategy
   def info(_conn) do
-    %Ueberauth.Auth.Info{}
+    %Ueberauth.Auth.Info{email: "fake@email.com"}
   end
 
   @impl Ueberauth.Strategy
-  def extra(_conn) do
-    %Ueberauth.Auth.Extra{raw_info: %{}}
+  def extra(conn) do
+    %Ueberauth.Auth.Extra{
+      raw_info: %UeberauthOidcc.RawInfo{
+        userinfo: %{
+          "resource_access" => %{
+            "dev-client" => %{"roles" => Ueberauth.Strategy.Helpers.options(conn)[:groups]}
+          }
+        }
+      }
+    }
   end
 
   @impl Ueberauth.Strategy

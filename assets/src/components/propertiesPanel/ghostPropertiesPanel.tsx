@@ -1,53 +1,43 @@
-import React, { useState } from "react"
+import React from "react"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { Ghost } from "../../realtime"
-import IconAlertCircle, { AlertIconStyle } from "../iconAlertCircle"
 import PropertiesList, { ghostProperties } from "../propertiesList"
+import { NoWaiverBanner } from "./blockWaiverBanner"
 import BlockWaiverList from "./blockWaiverList"
 import Header from "./header"
-import TabPanels, { TabMode } from "./tabPanels"
+import TabPanels from "./tabPanels"
+import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 
-interface Props {
+type Props = {
   selectedGhost: Ghost
-}
-
-const NoWaiverBanner = () => (
-  <div className="m-ghost-properties-panel__no-waiver-banner">
-    <div className="m-ghost-properties-panel__no-waiver-banner-header">
-      <span className="m-ghost-properties-panel__no-waiver-banner-alert-icon">
-        <IconAlertCircle style={AlertIconStyle.Highlighted} />
-      </span>
-      <div className="m-ghost-properties-panel__no-waiver-banner-title">
-        Unknown Ghost Bus - No Dispatcher Note
-      </div>
-    </div>
-    A ghost bus or dropped trip has been automatically detected on this route
-    but no reason has been logged yet. Once a dispatcher generates a note, it
-    will appear here.
-  </div>
-)
+} & IndividualPropertiesPanelProps
 
 const StatusContent = ({ ghost }: { ghost: Ghost }) => (
   <>
-    {hasBlockWaiver(ghost) ? (
-      <BlockWaiverList blockWaivers={ghost.blockWaivers} />
-    ) : (
-      <NoWaiverBanner />
-    )}
-
+    <div className="c-ghost-properties-panel__notes">
+      {hasBlockWaiver(ghost) ? (
+        <BlockWaiverList blockWaivers={ghost.blockWaivers} />
+      ) : (
+        <NoWaiverBanner />
+      )}
+    </div>
     <PropertiesList properties={ghostProperties(ghost)} />
   </>
 )
 
-const GhostPropertiesPanel = ({ selectedGhost }: Props) => {
-  const [tabMode, setTabMode] = useState<TabMode>("status")
-
+const GhostPropertiesPanel = ({
+  selectedGhost,
+  tabMode,
+  onChangeTabMode,
+  onClosePanel,
+}: Props) => {
   return (
-    <div className="m-ghost-properties-panel">
+    <div className="c-ghost-properties-panel">
       <Header
         vehicle={selectedGhost}
         tabMode={tabMode}
-        setTabMode={setTabMode}
+        onChangeTabMode={onChangeTabMode}
+        onClosePanel={onClosePanel}
       />
 
       <TabPanels

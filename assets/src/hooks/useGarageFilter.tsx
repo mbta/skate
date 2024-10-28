@@ -1,12 +1,22 @@
 import React from "react"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Route, GarageName } from "../schedule.d"
 import { flatten, uniq } from "../helpers/array"
+import {
+  CollapseIcon,
+  ExpandIcon,
+  ToggleOnIcon,
+  ToggleOffIcon,
+} from "../helpers/icon"
+import { tagManagerEvent } from "../helpers/googleTagManager"
+import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import { toggleShowGaragesFilter } from "../state"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 export interface GarageFilterData {
   filteredGarages: GarageName[]
   allGarages: GarageName[]
-  toggleGarage: (event: React.FormEvent<HTMLInputElement>) => void
+  toggleGarage: (garage: GarageName) => void
 }
 
 export const filterRoutesByGarage = (
@@ -27,9 +37,7 @@ export const filterRoutesByGarage = (
 export const useGarageFilter = (routes: Route[] | null): GarageFilterData => {
   const [filteredGarages, setFilteredGarages] = useState<GarageName[]>([])
 
-  const toggleGarage = (event: React.FormEvent<HTMLInputElement>): void => {
-    const garage: GarageName = event.currentTarget.value
-
+  const toggleGarage = (garage: GarageName): void => {
     if (filteredGarages.includes(garage)) {
       setFilteredGarages(
         filteredGarages.filter((filteredGarage) => filteredGarage !== garage)
@@ -55,22 +63,52 @@ export const GarageFilter = ({
   allGarages,
   toggleGarage,
 }: GarageFilterData) => {
+  const [{ showGaragesFilter }, dispatch] = useContext(StateDispatchContext)
+
   const sortedGarages = allGarages.sort((a, b) => a.localeCompare(b))
 
+  const toggleVisibility = () => dispatch(toggleShowGaragesFilter())
+
   return (
-    <div className="m-garage-filter">
-      {sortedGarages.map((garage) => (
-        <div key={garage}>
-          <input
-            className="m-garage-filter__input"
-            type="checkbox"
-            value={garage}
-            onChange={toggleGarage}
-            checked={filteredGarages.includes(garage)}
-          />
-          <label>{garage}</label>
+    <div className="c-garage-filter">
+      <button
+        className="c-garage-filter__show-hide-button"
+        title="Toggle Garage Filter"
+        onClick={toggleVisibility}
+      >
+        <div className="c-garage-filter__header">Filter garages</div>
+        <div className="c-garage-filter__show-hide-icon">
+          {showGaragesFilter ? <CollapseIcon /> : <ExpandIcon />}
         </div>
-      ))}
+      </button>
+      {showGaragesFilter ? (
+        <ul className="c-garage-filter__garages">
+          {sortedGarages.map((garage) => (
+            <li key={garage} className="c-garage-filter__garage">
+              <button
+                title={"Toggle Garage: " + garage}
+                onClick={() => {
+                  if (!filteredGarages.includes(garage)) {
+                    tagManagerEvent("filtered_routes_by_garage")
+                    fullStoryEvent("User filtered Route Selector by Garage", {
+                      garageName_str: garage,
+                    })
+                  }
+                  toggleGarage(garage)
+                }}
+                className="c-garage-filter__button"
+              >
+                {garage}
+                {filteredGarages.includes(garage) ? (
+                  <ToggleOnIcon />
+                ) : (
+                  <ToggleOffIcon />
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   )
 }

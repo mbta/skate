@@ -1,15 +1,15 @@
-import { mount } from "enzyme"
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import routeFactory from "../factories/route"
 import RoutePicker from "../../src/components/routePicker"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { Route, RouteId } from "../../src/schedule.d"
-import { deselectRoute, initialState, selectRoute } from "../../src/state"
+import { render } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 
 describe("RoutePicker", () => {
-  test("renders a list of routes", () => {
+  test("renders a list of routes and presets toggle", () => {
     const routes: Route[] = [
       routeFactory.build({ id: "28", name: "28" }),
       routeFactory.build({ id: "39", name: "39" }),
@@ -24,7 +24,11 @@ describe("RoutePicker", () => {
     const tree = renderer
       .create(
         <RoutesProvider routes={routes}>
-          <RoutePicker selectedRouteIds={selectedRouteIds} />
+          <RoutePicker
+            selectedRouteIds={selectedRouteIds}
+            selectRoute={jest.fn()}
+            deselectRoute={jest.fn()}
+          />
         </RoutesProvider>
       )
       .toJSON()
@@ -33,67 +37,52 @@ describe("RoutePicker", () => {
   })
 
   test("renders a loading/empty state", () => {
-    const tree = renderer.create(<RoutePicker selectedRouteIds={[]} />).toJSON()
+    const tree = renderer
+      .create(
+        <RoutePicker
+          selectedRouteIds={[]}
+          selectRoute={jest.fn()}
+          deselectRoute={jest.fn()}
+        />
+      )
+      .toJSON()
 
     expect(tree).toMatchSnapshot()
   })
 
-  test("clicking a route selects it", () => {
-    const mockDispatch = jest.fn()
+  test("clicking a route selects it", async () => {
+    const mockSelect = jest.fn()
 
-    const routes = [routeFactory.build({ id: "id", name: "id" })]
+    const routes = [routeFactory.build({ id: "id", name: "test route" })]
 
-    const routePicker = mount(
+    const result = render(
       <RoutesProvider routes={routes}>
-        <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-          <RoutePicker selectedRouteIds={[]} />
-        </StateDispatchProvider>
+        <RoutePicker
+          selectedRouteIds={[]}
+          selectRoute={mockSelect}
+          deselectRoute={jest.fn()}
+        />
       </RoutesProvider>
     )
 
-    routePicker
-      .find(".m-route-picker__route-list-button")
-      .first()
-      .simulate("click")
+    await userEvent.click(result.getByRole("button", { name: /test route/ }))
 
-    expect(mockDispatch).toHaveBeenCalledWith(selectRoute("id"))
+    expect(mockSelect).toHaveBeenCalledWith("id")
   })
 
-  test("clicking a selected route deselects it", () => {
-    const mockDispatch = jest.fn()
+  test("clicking in the list of selected routes deselects a route", async () => {
+    const mockDeselect = jest.fn()
 
-    const routes = [routeFactory.build({ id: "id", name: "id" })]
-
-    const routePicker = mount(
-      <RoutesProvider routes={routes}>
-        <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-          <RoutePicker selectedRouteIds={["id"]} />
-        </StateDispatchProvider>
-      </RoutesProvider>
+    const result = render(
+      <RoutePicker
+        selectedRouteIds={["id"]}
+        selectRoute={jest.fn()}
+        deselectRoute={mockDeselect}
+      />
     )
 
-    routePicker
-      .find(".m-route-picker__route-list-button--selected")
-      .first()
-      .simulate("click")
+    await userEvent.click(result.getByRole("button", { name: /id/ }))
 
-    expect(mockDispatch).toHaveBeenCalledWith(deselectRoute("id"))
-  })
-
-  test("clicking in the list of selected routes deselects a route", () => {
-    const mockDispatch = jest.fn()
-
-    const routePicker = mount(
-      <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-        <RoutePicker selectedRouteIds={["id"]} />
-      </StateDispatchProvider>
-    )
-
-    routePicker
-      .find(".m-route-picker__selected-routes-button")
-      .first()
-      .simulate("click")
-
-    expect(mockDispatch).toHaveBeenCalledWith(deselectRoute("id"))
+    expect(mockDeselect).toHaveBeenCalledWith("id")
   })
 })

@@ -5,6 +5,12 @@ defmodule SkateWeb.UnauthorizedController do
   def index(conn, _params) do
     conn
     |> put_status(403)
-    |> render("index.html", layout: {SkateWeb.LayoutView, "reports.html"})
+    |> render(:index, layout: {SkateWeb.Layouts, "barebones.html"})
+  end
+
+  def restricted_environment(conn, _params) do
+    conn
+    |> put_status(403)
+    |> render(:restricted_environment, layout: {SkateWeb.Layouts, "barebones.html"})
   end
 end

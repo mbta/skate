@@ -1,0 +1,12 @@
+@use "../../color/definitions" as colors;
+@use "../../color/variables" as vars;
+
+:export {
+  @include colors.service-colors;
+  /* Because these variables are dynamic and we want them to change
+   * in storybook based on the css variable definition,
+   * override them here to point to the css variable instead of the hex value.
+   */
+  --color-late: #{vars.$late};
+  --color-early: #{vars.$early};
+}

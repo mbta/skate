@@ -6,7 +6,7 @@ defmodule Schedule.RunTest do
 
   import Skate.Factory
 
-  describe "is_active?/3" do
+  describe "active?/3" do
     test "returns true when a piece overlaps with the range given" do
       trip1 = build(:trip, %{id: "trip1", start_time: 10, end_time: 40})
       trip2 = build(:trip, %{id: "trip2", start_time: 60, end_time: 90})
@@ -24,7 +24,7 @@ defmodule Schedule.RunTest do
           ]
         })
 
-      assert Run.is_active?(run, 45, 55)
+      assert Run.active?(run, 45, 55)
     end
 
     test "returns false when a piece does not overlap with the range given" do
@@ -43,7 +43,7 @@ defmodule Schedule.RunTest do
           ]
         })
 
-      refute Run.is_active?(run, 95, 175)
+      refute Run.active?(run, 95, 175)
     end
   end
 end

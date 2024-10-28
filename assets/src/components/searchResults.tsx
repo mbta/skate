@@ -1,88 +1,63 @@
 import React, { useContext } from "react"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { className } from "../helpers/dom"
-import { isRecentlyLoggedOn, isVehicle } from "../models/vehicle"
-import { Vehicle, VehicleOrGhost } from "../realtime"
-import { selectVehicle } from "../state"
+import { isLoggedOut, isVehicle } from "../models/vehicle"
+import { Ghost, Vehicle } from "../realtime"
 import { setSearchText } from "../state/searchPageState"
-import PropertiesList, { vehicleOrGhostProperties } from "./propertiesList"
+import { Card, CardProperties } from "./card"
+import { vehicleOrGhostProperties } from "./propertiesList"
 import { RouteVariantName } from "./routeVariantName"
+import { VehicleStatusIcon } from "./vehicleRouteSummary"
 
 interface Props {
-  vehicles: VehicleOrGhost[]
+  vehicles: (Vehicle | Ghost)[]
+  onClick: (vehicle: Vehicle | Ghost) => void
+  selectedVehicleId: string | null
 }
-
-const SearchResultsNote = () => (
-  <p className="m-search-results__note">
-    Please note that at this time search is limited to active vehicles and
-    logged-in personnel.
-  </p>
-)
-
-const NewBadge = () => (
-  <div className="m-search-results__card-new-badge">
-    <span className="m-search-results__card-new-badge-label">New</span>
-    <span className="m-search-results__card-new-badge-icon">
-      <svg viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="4.5" cy="4.5" r="4.5" />
-      </svg>
-    </span>
-  </div>
-)
-
-const RouteLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-search-results__card-route-label">
-    <RouteVariantName vehicle={vehicle} />
-  </div>
-)
 
 const SearchResultCard = ({
   vehicleOrGhost,
+  onClick,
+  isSelected,
 }: {
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
+  onClick: (vehicle: Vehicle | Ghost) => void
+  isSelected: boolean
 }) => {
   const [
     {
       searchPageState: { query },
-      selectedVehicleOrGhost,
     },
-    dispatch,
   ] = useContext(StateDispatchContext)
 
-  const classes = [
-    "m-search-results__card",
-    vehicleOrGhost.id === selectedVehicleOrGhost?.id
-      ? "m-search-results__card--selected"
-      : "",
-    isRecentlyLoggedOn(vehicleOrGhost) ? "m-search-results__card--new" : "",
-  ]
-
-  const selectVehicleOrGhost = () => dispatch(selectVehicle(vehicleOrGhost))
-
   return (
-    <div className={className(classes)} onClick={selectVehicleOrGhost}>
-      {isRecentlyLoggedOn(vehicleOrGhost) && <NewBadge />}
-
-      <PropertiesList
-        properties={vehicleOrGhostProperties(vehicleOrGhost)}
-        highlightText={query.text}
-      />
-
-      {isVehicle(vehicleOrGhost) && <RouteLabel vehicle={vehicleOrGhost} />}
-    </div>
+    <li>
+      <Card
+        openCallback={() => onClick(vehicleOrGhost)}
+        style="white"
+        title={<RouteVariantName vehicle={vehicleOrGhost} />}
+        icon={<VehicleStatusIcon vehicle={vehicleOrGhost} />}
+        additionalClass="c-search-results__vehicle_result"
+        selected={isSelected}
+      >
+        <CardProperties
+          properties={vehicleOrGhostProperties(vehicleOrGhost, true)}
+          highlightText={query.text}
+        />
+      </Card>
+    </li>
   )
 }
 
 const operatorLogonTimeForSorting = (
-  vehicleOrGhost: VehicleOrGhost
+  vehicleOrGhost: Vehicle | Ghost
 ): Date | undefined =>
   isVehicle(vehicleOrGhost) && vehicleOrGhost.operatorLogonTime !== null
     ? vehicleOrGhost.operatorLogonTime
     : undefined
 
 export const byOperatorLogonTime = (
-  a: VehicleOrGhost,
-  b: VehicleOrGhost
+  a: Vehicle | Ghost,
+  b: Vehicle | Ghost
 ): number => {
   const operatorLogonTimeA = operatorLogonTimeForSorting(a)
   const operatorLogonTimeB = operatorLogonTimeForSorting(b)
@@ -107,19 +82,49 @@ export const byOperatorLogonTime = (
   return 0
 }
 
-const ResultsList = ({ vehicles }: { vehicles: VehicleOrGhost[] }) => (
-  <div className="m-search-results__list">
-    {vehicles.sort(byOperatorLogonTime).map((vehicleOrGhost) => (
-      <SearchResultCard
-        vehicleOrGhost={vehicleOrGhost}
-        key={`search-result-card-${vehicleOrGhost.id}`}
-      />
-    ))}
-    <SearchResultsNote />
-  </div>
+export const byLoggedOutStatus = (
+  a: Vehicle | Ghost,
+  b: Vehicle | Ghost
+): number => {
+  const aIsLoggedOutVehicle = isVehicle(a) && isLoggedOut(a)
+  const bIsLoggedOutVehicle = isVehicle(b) && isLoggedOut(b)
+
+  if (aIsLoggedOutVehicle && !bIsLoggedOutVehicle) {
+    return 1
+  } else if (!aIsLoggedOutVehicle && bIsLoggedOutVehicle) {
+    return -1
+  }
+
+  return 0
+}
+
+const ResultsList = ({
+  vehicles,
+  onClick,
+  selectedVehicleId,
+}: {
+  vehicles: (Vehicle | Ghost)[]
+  onClick: (vehicle: Vehicle | Ghost) => void
+  selectedVehicleId: string | null
+}) => (
+  <ul className="c-search-results__list">
+    {vehicles
+      .sort(byOperatorLogonTime)
+      .sort(byLoggedOutStatus)
+      .map((vehicleOrGhost) => (
+        <SearchResultCard
+          vehicleOrGhost={vehicleOrGhost}
+          onClick={() => onClick(vehicleOrGhost)}
+          isSelected={
+            selectedVehicleId ? selectedVehicleId === vehicleOrGhost.id : false
+          }
+          key={`search-result-card-${vehicleOrGhost.id}`}
+        />
+      ))}
+  </ul>
 )
 
-const NoResults = () => {
+export const NoResults = () => {
   const [
     {
       searchPageState: { query },
@@ -128,18 +133,21 @@ const NoResults = () => {
   ] = useContext(StateDispatchContext)
 
   return (
-    <div className="m-search-results__none">
-      <div className="m-search-results__heading">No Search Results</div>
+    <div className="c-search-results__none">
+      <div className="c-search-results__heading">No Search Results</div>
 
       <p>
         There were no matching results found for “{query.text}”. Please try
         again using numbers or last names only.
       </p>
 
-      <SearchResultsNote />
+      <p>
+        Please note that at this time run and operator search is limited to
+        logged-in personnel.
+      </p>
 
       <button
-        className="m-search-results__clear-search-button"
+        className="c-search-results__clear-search-button"
         onClick={() => dispatch(setSearchText(""))}
       >
         Clear search
@@ -148,10 +156,20 @@ const NoResults = () => {
   )
 }
 
-const SearchResults = ({ vehicles }: Props) => (
-  <div className="m-search-results">
-    {vehicles.length ? <ResultsList vehicles={vehicles} /> : <NoResults />}
-  </div>
-)
+const SearchResults = ({ vehicles, onClick, selectedVehicleId }: Props) => {
+  return (
+    <div className="c-search-results">
+      {vehicles.length ? (
+        <ResultsList
+          vehicles={vehicles}
+          onClick={onClick}
+          selectedVehicleId={selectedVehicleId}
+        />
+      ) : (
+        <NoResults />
+      )}
+    </div>
+  )
+}
 
 export default SearchResults

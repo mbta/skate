@@ -1,5 +1,6 @@
 defmodule Schedule.Gtfs.RouteTest do
   use ExUnit.Case, async: true
+  import Skate.Factory
 
   alias Schedule.Gtfs.{Direction, Route}
 
@@ -50,9 +51,9 @@ defmodule Schedule.Gtfs.RouteTest do
     end
   end
 
-  describe "bus_route_row?/1" do
-    test "returns whether or not this row represents a bus route" do
-      bus_csv_row = %{
+  describe "row_has_route_type?/1" do
+    test "true when route type present" do
+      bus_route_csv_row = %{
         "route_id" => "39",
         "agency_id" => "1",
         "route_short_name" => "39",
@@ -68,28 +69,11 @@ defmodule Schedule.Gtfs.RouteTest do
         "listed_route" => ""
       }
 
-      subway_csv_row = %{
-        "route_id" => "Red",
-        "agency_id" => "1",
-        "route_short_name" => "",
-        "route_long_name" => "Red Line",
-        "route_desc" => "Rapid Transit",
-        "route_type" => "1",
-        "route_url" => "https://www.mbta.com/schedules/Red",
-        "route_color" => "DA291C",
-        "route_text_color" => "FFFFFF",
-        "route_sort_order" => "10010",
-        "route_fare_class" => "Rapid Transit",
-        "line_id" => "line-Red",
-        "listed_route" => ""
-      }
-
-      assert Route.bus_route_row?(bus_csv_row)
-      refute Route.bus_route_row?(subway_csv_row)
+      assert Route.row_has_route_type?(bus_route_csv_row)
     end
 
     test "ensures a `route_type` property" do
-      bad_csv_row = %{
+      bad_route_csv_row = %{
         "route_id" => "39",
         "agency_id" => "1",
         "route_short_name" => "39",
@@ -106,8 +90,22 @@ defmodule Schedule.Gtfs.RouteTest do
       }
 
       assert_raise ArgumentError, fn ->
-        Route.bus_route_row?(bad_csv_row)
+        Route.row_has_route_type?(bad_route_csv_row)
       end
+    end
+  end
+
+  describe "bus_route_mbta?/1" do
+    test "true for bus route" do
+      assert Route.bus_route_mbta?(build(:gtfs_route, %{id: "1", type: 3}))
+    end
+
+    test "false for non-mbta bus route" do
+      refute Route.bus_route_mbta?(build(:gtfs_route, %{id: "710", type: 3}))
+    end
+
+    test "false for  subway route" do
+      refute Route.bus_route_mbta?(build(:gtfs_route, %{id: "RL", type: 1}))
     end
   end
 
@@ -138,6 +136,20 @@ defmodule Schedule.Gtfs.RouteTest do
       }
 
       refute Route.shuttle_route?(non_shuttle_route)
+    end
+  end
+
+  describe "subway_route?/1" do
+    test "true for heavy rail route" do
+      assert Route.subway_route?(build(:gtfs_route, %{id: "RL", type: 1}))
+    end
+
+    test "true for light rail route" do
+      assert Route.subway_route?(build(:gtfs_route, %{id: "GL", type: 0}))
+    end
+
+    test "false for bus route" do
+      refute Route.subway_route?(build(:gtfs_route, %{id: "1", type: 3}))
     end
   end
 end

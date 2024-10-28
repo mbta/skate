@@ -52,11 +52,18 @@ defmodule Skate.RepoTest do
         password: "temporary_password",
         hostname: "db_server_hostname",
         port: 6789,
-        ssl: true
+        ssl: true,
+        ssl_opts: [
+          cacertfile: "priv/aws-cert-bundle.pem",
+          verify: :verify_peer,
+          server_name_indication: ~c"db_server_hostname",
+          verify_fun:
+            {&:ssl_verify_hostname.verify_fun/3, [check_hostname: ~c"db_server_hostname"]}
+        ]
       ]
 
-      assert expected_output |> Enum.sort() ==
-               Skate.Repo.add_prod_credentials(input_config, mock_auth_token_fn) |> Enum.sort()
+      assert Enum.sort(expected_output) ==
+               Enum.sort(Skate.Repo.add_prod_credentials(input_config, mock_auth_token_fn))
     end
   end
 end

@@ -1,29 +1,24 @@
 defmodule SkateWeb.DataStatusChannel do
+  @moduledoc false
+
   use SkateWeb, :channel
+  use SkateWeb.AuthenticatedChannel
 
   alias Realtime.DataStatusPubSub
 
-  @impl Phoenix.Channel
-  def join("data_status", _message, socket) do
+  @impl SkateWeb.AuthenticatedChannel
+  def join_authenticated("data_status", _message, socket) do
     data_status = DataStatusPubSub.subscribe()
     {:ok, %{data: data_status}, socket}
   end
 
-  def join(topic, _message, _socket) do
+  def join_authenticated(topic, _message, _socket) do
     {:error, %{message: "no such topic \"#{topic}\""}}
   end
 
-  @impl Phoenix.Channel
-  def handle_info({:new_data_status, data_status}, socket) do
-    valid_token? =
-      Application.get_env(:skate, :valid_token?, &SkateWeb.ChannelAuth.valid_token?/1)
-
-    if valid_token?.(socket) do
-      :ok = push(socket, "data_status", %{data: data_status})
-      {:noreply, socket}
-    else
-      :ok = push(socket, "auth_expired", %{})
-      {:stop, :normal, socket}
-    end
+  @impl SkateWeb.AuthenticatedChannel
+  def handle_info_authenticated({:new_data_status, data_status}, socket) do
+    :ok = push(socket, "data_status", %{data: data_status})
+    {:noreply, socket}
   end
 end

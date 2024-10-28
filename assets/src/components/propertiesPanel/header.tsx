@@ -1,76 +1,48 @@
-import React, { Dispatch, SetStateAction, useContext } from "react"
+import React, { useContext } from "react"
 import { useRoute } from "../../contexts/routesContext"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { className } from "../../helpers/dom"
-import vehicleLabel from "../../helpers/vehicleLabel"
-import { secondsToMinutes } from "../../util/dateTime"
+import { joinClasses } from "../../helpers/dom"
+import { vehicleLabel } from "../../helpers/vehicleLabel"
+import { secondsAgoLabel, secondsToMinutes } from "../../util/dateTime"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
+import { emptyLadderDirectionsByRouteId } from "../../models/ladderDirection"
 import {
-  directionOnLadder,
-  getLadderDirectionForRoute,
-  LadderDirection,
-  LadderDirections,
-  VehicleDirection,
-} from "../../models/ladderDirection"
-import { isVehicle, shouldShowHeadwayDiagram } from "../../models/vehicle"
+  directionName,
+  isVehicle,
+  isVehicleInScheduledService,
+} from "../../models/vehicle"
 import {
   drawnStatus,
   humanReadableScheduleAdherence,
   statusClasses,
 } from "../../models/vehicleStatus"
-import { Vehicle, VehicleOrGhost } from "../../realtime"
-import { Route } from "../../schedule"
-import { deselectVehicle } from "../../state"
-import CloseButton from "../closeButton"
+import { Ghost, Vehicle, VehicleInScheduledService } from "../../realtime"
 import { RouteVariantName } from "../routeVariantName"
-import VehicleIcon, { Orientation, Size } from "../vehicleIcon"
+import VehicleIcon, { Size, vehicleOrientation } from "../vehicleIcon"
 import TabList from "./tabList"
-import { TabMode } from "./tabPanels"
+import { currentRouteTab } from "../../models/routeTab"
+import ViewHeader from "../viewHeader"
+import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
+import { ClosePanelProps, TabModeProps } from "../propertiesPanel"
 
-interface Props {
-  vehicle: VehicleOrGhost
-  tabMode: TabMode
-  setTabMode: Dispatch<SetStateAction<TabMode>>
-}
-
-const vehicleOrientation = (
-  vehicle: VehicleOrGhost,
-  ladderDirections: LadderDirections
-): Orientation => {
-  if (vehicle.routeId !== null && vehicle.directionId !== null) {
-    const ladderDirection: LadderDirection = getLadderDirectionForRoute(
-      ladderDirections,
-      vehicle.routeId
-    )
-    const vehicleDirection: VehicleDirection = directionOnLadder(
-      vehicle.directionId,
-      ladderDirection
-    )
-
-    if (vehicle.routeStatus === "laying_over") {
-      return vehicleDirection === VehicleDirection.Down
-        ? Orientation.Left
-        : Orientation.Right
-    } else {
-      return vehicleDirection === VehicleDirection.Down
-        ? Orientation.Down
-        : Orientation.Up
-    }
-  } else {
-    return Orientation.Up
-  }
+interface Props extends TabModeProps, ClosePanelProps {
+  vehicle: Vehicle | Ghost
 }
 
 const ScheduleAdherenceStatusIcon = () => (
-  <div className="m-properties-panel__schedule-adherence-status-icon">
+  <div className="c-properties-panel__schedule-adherence-status-icon">
     <svg width="10" height="10">
       <circle cx="5" cy="5" r="5" />
     </svg>
   </div>
 )
 
-const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-properties-panel__schedule-adherence-status-string">
+const ScheduleAdherenceStatusString = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => (
+  <div className="c-properties-panel__schedule-adherence-status-string">
     {humanReadableScheduleAdherence(vehicle)}
   </div>
 )
@@ -78,25 +50,35 @@ const ScheduleAdherenceStatusString = ({ vehicle }: { vehicle: Vehicle }) => (
 const earlyOrLate = (scheduleAdherenceSecs: number): string =>
   scheduleAdherenceSecs <= 0 ? "early" : "late"
 
-export const scheduleAdherenceLabelString = ({
-  scheduleAdherenceSecs,
-}: Vehicle): string =>
+export const scheduleAdherenceLabelString = (
+  scheduleAdherenceSecs: number
+): string =>
   `${secondsToMinutes(scheduleAdherenceSecs)} min ${earlyOrLate(
     scheduleAdherenceSecs
   )}`
 
-const ScheduleAdherenceLabel = ({ vehicle }: { vehicle: Vehicle }) => (
-  <div className="m-properties-panel__schedule-adherence-label">
-    {vehicle.isOffCourse ? "" : `(${scheduleAdherenceLabelString(vehicle)})`}
+const ScheduleAdherenceLabel = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => (
+  <div className="c-properties-panel__schedule-adherence-label">
+    {vehicle.isOffCourse || vehicle.scheduleAdherenceSecs === null
+      ? ""
+      : `(${scheduleAdherenceLabelString(vehicle.scheduleAdherenceSecs)})`}
   </div>
 )
 
-const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
+const ScheduleAdherence = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => {
   const [{ userSettings }] = useContext(StateDispatchContext)
 
   return (
     <div
-      className={`m-properties-panel__schedule-adherence ${className(
+      className={`c-properties-panel__schedule-adherence ${joinClasses(
         statusClasses(drawnStatus(vehicle), userSettings.vehicleAdherenceColors)
       )}`}
     >
@@ -107,43 +89,34 @@ const ScheduleAdherence = ({ vehicle }: { vehicle: Vehicle }) => {
   )
 }
 
-const HeadwayTarget = ({
-  vehicle: { scheduledHeadwaySecs },
-}: {
-  vehicle: Vehicle
-}) => (
-  <div className="m-properties-panel__headway-target">
-    <span className="m-properties-panel__headway-target-label">
-      HEADWAY TARGET
-    </span>
-    <span className="m-properties-panel__headway-target-value">
-      {secondsToMinutes(scheduledHeadwaySecs)} min
-    </span>
-  </div>
-)
+const Header = ({ vehicle, tabMode, onChangeTabMode, onClosePanel }: Props) => {
+  const [{ routeTabs, userSettings }] = useContext(StateDispatchContext)
 
-const directionName = (
-  { directionId }: VehicleOrGhost,
-  route: Route | null
-): string => (route ? route.directionNames[directionId] : "")
+  const {
+    currentView: { previousView },
+    openPreviousView,
+  } = usePanelStateFromStateDispatchContext()
 
-const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
-  const [{ ladderDirections, userSettings }, dispatch] =
-    useContext(StateDispatchContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
   const route = useRoute(vehicle.routeId)
 
-  const secondsAgo = (epochTime: number): string =>
-    `${epochNowInSeconds - epochTime}s ago`
-
-  const hideMe = () => dispatch(deselectVehicle())
-
   const vehicleIsShuttle = isVehicle(vehicle) && vehicle.isShuttle
 
+  const currentTab = currentRouteTab(routeTabs)
+  const ladderDirections = currentTab
+    ? currentTab.ladderDirections
+    : emptyLadderDirectionsByRouteId
+
   return (
-    <div className="m-properties-panel__header-wrapper">
-      <div className="m-properties-panel__header">
-        <div className="m-properties-panel__label">
+    <div className="c-properties-panel__header-wrapper">
+      <ViewHeader
+        title="Vehicles"
+        closeView={onClosePanel}
+        backlinkToView={previousView}
+        followBacklink={openPreviousView}
+      />
+      <div className="c-properties-panel__header">
+        <div className="c-properties-panel__label">
           <VehicleIcon
             size={Size.Large}
             orientation={vehicleOrientation(vehicle, ladderDirections)}
@@ -153,32 +126,27 @@ const Header = ({ vehicle, tabMode, setTabMode }: Props) => {
             userSettings={userSettings}
           />
         </div>
-        <div className="m-properties-panel__variant">
-          <div className="m-properties-panel__inbound-outbound">
+        <div className="c-properties-panel__variant">
+          <div className="c-properties-panel__inbound-outbound">
             {directionName(vehicle, route)}
           </div>
 
           <RouteVariantName vehicle={vehicle} />
 
-          {isVehicle(vehicle) && shouldShowHeadwayDiagram(vehicle) ? (
-            <HeadwayTarget vehicle={vehicle} />
-          ) : (
-            isVehicle(vehicle) &&
-            !vehicle.isShuttle && <ScheduleAdherence vehicle={vehicle} />
+          {isVehicleInScheduledService(vehicle) && !vehicle.isShuttle && (
+            <ScheduleAdherence vehicle={vehicle} />
           )}
         </div>
-        <div className="m-properties-panel__close-ping">
-          <CloseButton onClick={hideMe} />
-
+        <div className="c-properties-panel__ping-container">
           {isVehicle(vehicle) && (
-            <div className="m-properties-panel__last-gps-ping">
-              {secondsAgo(vehicle.timestamp)}
+            <div className="c-properties-panel__last-gps-ping">
+              {secondsAgoLabel(epochNowInSeconds, vehicle.timestamp)}
             </div>
           )}
         </div>
       </div>
       {vehicleIsShuttle || (
-        <TabList activeTab={tabMode} setActiveTab={setTabMode} />
+        <TabList activeTab={tabMode} setActiveTab={onChangeTabMode} />
       )}
     </div>
   )

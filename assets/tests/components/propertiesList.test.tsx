@@ -1,23 +1,23 @@
-import { shallow, mount } from "enzyme"
+import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import PropertiesList, {
   formattedLogonTime,
   ghostProperties,
-  Highlighted,
   vehicleOrGhostProperties,
   vehicleProperties,
 } from "../../src/components/propertiesList"
-import { HeadwaySpacing } from "../../src/models/vehicleStatus"
-import { Ghost, Vehicle } from "../../src/realtime"
+import { Ghost, VehicleInScheduledService } from "../../src/realtime"
 import * as dateTime from "../../src/util/dateTime"
+import { vehicleFactory } from "../factories/vehicle"
 import ghostFactory from "../factories/ghost"
+import { render } from "@testing-library/react"
 
 jest
   .spyOn(dateTime, "now")
   .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
 
-const vehicle: Vehicle = {
+const vehicle: VehicleInScheduledService = vehicleFactory.build({
   id: "v1",
   label: "v1-label",
   runId: "run-1",
@@ -35,11 +35,8 @@ const vehicle: Vehicle = {
   operatorLogonTime: new Date("2018-08-15T13:38:21.000Z"),
   bearing: 33,
   blockId: "block-1",
-  headwaySecs: 859.1,
-  headwaySpacing: HeadwaySpacing.Ok,
   previousVehicleId: "v2",
   scheduleAdherenceSecs: 0,
-  scheduledHeadwaySecs: 120,
   isShuttle: false,
   isOverload: false,
   isOffCourse: false,
@@ -73,7 +70,7 @@ const vehicle: Vehicle = {
   endOfTripType: "another_trip",
   blockWaivers: [],
   crowding: null,
-}
+})
 
 const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
@@ -137,7 +134,7 @@ describe("PropertiesList", () => {
   })
 
   test("ignores properties with null values", () => {
-    const wrapper = mount(
+    const result = render(
       <PropertiesList
         properties={[
           {
@@ -149,7 +146,7 @@ describe("PropertiesList", () => {
       />
     )
 
-    expect(wrapper.html()).not.toContain("Label")
+    expect(result.queryByText("Label")).toBeNull()
   })
 })
 
@@ -160,6 +157,12 @@ describe("vehicleOrGhostProperties", () => {
     )
   })
 
+  test("uses vehicle properties for vehicles, operator last name only", () => {
+    expect(vehicleOrGhostProperties(vehicle, true)).toEqual(
+      vehicleProperties(vehicle, true)
+    )
+  })
+
   test("uses ghost properties for ghosts", () => {
     expect(vehicleOrGhostProperties(ghost)).toEqual(ghostProperties(ghost))
   })
@@ -167,7 +170,7 @@ describe("vehicleOrGhostProperties", () => {
 
 describe("vehicleProperties", () => {
   test("an overloaded vehicle's run has 'ADDED'", () => {
-    const overloadedVehicle: Vehicle = {
+    const overloadedVehicle: VehicleInScheduledService = {
       ...vehicle,
       isOverload: true,
     }
@@ -188,63 +191,79 @@ describe("vehicleProperties", () => {
       properties.find((prop) => prop.label === "Last Login")!.value
     ).toEqual("Not Available")
   })
-})
 
-describe("Highlighted", () => {
-  test("renders the content, wrapping the matching text in a span", () => {
-    const content: string = "SMITH #20138713820"
-    const highlightText: string = "138"
+  test("operator information is 'Not Available' if all fields are missing", () => {
+    /* The type for Vehicle doesn't actually allow nulls, but the way we coerce values we
+     *  receive from the backend doesn't account for this fact. One more reason to adopt
+     *  Superstruct to handle the translation of data from the backend to JS values. */
+    const vehicleSansOperator = {
+      ...vehicle,
+      operatorId: null,
+      operatorFirstName: null,
+      operatorLastName: null,
+    } as unknown
 
-    const expected =
-      'SMITH #20<span class="highlighted">138</span>7<span class="highlighted">138</span>20'
-
-    const wrapper = shallow(
-      <Highlighted content={content} highlightText={highlightText} />
+    const properties = vehicleProperties(
+      vehicleSansOperator as VehicleInScheduledService
     )
 
-    expect(wrapper.html()).toEqual(expected)
+    expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
+      "Not Available"
+    )
   })
 
-  test("is insensitive in its matching", () => {
-    const content: string = "SMITH #201387 tmits"
-    const highlightText: string = "mit"
+  test("operator information gives last name if that's all that's available", () => {
+    const vehicleSansOperator = {
+      ...vehicle,
+      operatorId: "1234",
+      operatorFirstName: null,
+      operatorLastName: "SMITH",
+    } as unknown
 
-    const expected =
-      'S<span class="highlighted">MIT</span>H #201387 t<span class="highlighted">mit</span>s'
-
-    const wrapper = shallow(
-      <Highlighted content={content} highlightText={highlightText} />
+    const properties = vehicleProperties(
+      vehicleSansOperator as VehicleInScheduledService
     )
 
-    expect(wrapper.html()).toEqual(expected)
-  })
-
-  test("ignores spaces and hyphens", () => {
-    const content: string = "abcde-f gh"
-    const highlightText: string = "b c-defg"
-    const expected = 'a<span class="highlighted">bcde-f g</span>h'
-    const wrapper = shallow(
-      <Highlighted content={content} highlightText={highlightText} />
+    expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
+      "SMITH #1234"
     )
-    expect(wrapper.html()).toEqual(expected)
   })
 
-  test("can highlight the whole string", () => {
-    const content: string = "abc"
-    const highlightText: string = "abc"
-    const expected = '<span class="highlighted">abc</span>'
-    const wrapper = shallow(
-      <Highlighted content={content} highlightText={highlightText} />
+  test("only includes operator last name when `operatorLastNameOnly` is set", () => {
+    const properties = vehicleProperties(
+      vehicleFactory.build({
+        operatorFirstName: "JOHN",
+        operatorLastName: "SMITH",
+        operatorId: "1234",
+      }),
+      true
     )
-    expect(wrapper.html()).toEqual(expected)
+
+    expect(properties.find((prop) => prop.label === "Operator")!.value).toEqual(
+      "SMITH #1234"
+    )
   })
 
-  test("renders the original content if no highlight text is specified", () => {
-    const content: string = "SMITH #201387"
+  test("logged out vehicles show only vehicle label", () => {
+    const vehicle = vehicleFactory.build({
+      operatorLogonTime: null,
+      runId: null,
+      blockId: undefined,
+    })
 
-    const wrapper = shallow(<Highlighted content={content} />)
+    expect(vehicleProperties(vehicle)).toStrictEqual([
+      { label: "Vehicle", value: vehicle.label },
+    ])
+  })
 
-    expect(wrapper.html()).toEqual(content)
+  test("operator information is marked sensitive", () => {
+    const vehicle = vehicleFactory.build()
+
+    const properties = vehicleProperties(vehicle)
+
+    expect(
+      properties.find((prop) => prop.label === "Operator")!.sensitive
+    ).toBe(true)
   })
 })
 

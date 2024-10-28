@@ -9,6 +9,81 @@ defmodule Realtime.VehiclesTest do
 
   @timepoint_names_by_id %{"garage" => "Somerville Garage", "other_garage" => "Other Garage"}
 
+  describe "group_by_route" do
+    test "when an interlining vehicle starts a trip on a new route before the previous trip was scheduled to finished, they are not included on that old route" do
+      date_of_trips = ~D[2019-01-01]
+      start_time_trip_1 = 0
+
+      trip_1 = %Trip{
+        id: "trip",
+        block_id: "block1",
+        route_id: "first_route",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop1",
+            time: 10,
+            timepoint_id: "t1"
+          }
+        ],
+        start_time: start_time_trip_1,
+        end_time: start_time_trip_1 + 10
+      }
+
+      trip_2 = %Trip{
+        id: "trip2",
+        block_id: trip_1.block_id,
+        route_id: "second_route",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: start_time_trip_1 + 20,
+        end_time: start_time_trip_1 + 30
+      }
+
+      reassign_env(:skate, :schedule_data_get_fn, fn _key, _fallback ->
+        {:loaded,
+         %Schedule.Data{
+           trips: %{trip_1.id => trip_1, trip_2.id => trip_2},
+           calendar: %{date_of_trips => ["service"]}
+         }}
+      end)
+
+      # trip 1 hasn't ended yet
+      now =
+        date_of_trips
+        |> DateTime.new!(Time.new!(0, 0, trip_1.end_time), "America/New_York")
+        |> DateTime.add(-5, :second)
+        |> DateTime.to_unix()
+
+      vehicle =
+        build(:vehicle,
+          route_id: trip_2.route_id,
+          block_id: "block1",
+          direction_id: 1,
+          # Vehicle has already started to trip_2, even though it is scheduled to start in the future
+          trip_id: trip_2.id
+        )
+
+      assert Vehicles.group_by_route(
+               [vehicle],
+               @timepoint_names_by_id,
+               now
+             ) == %{
+               "second_route" => [vehicle]
+             }
+    end
+  end
+
   describe "group_by_route_with_blocks" do
     setup do
       reassign_env(:realtime, :block_waivers_for_block_and_service_fn, fn _, _ ->
@@ -62,7 +137,8 @@ defmodule Realtime.VehiclesTest do
           id: "on_route_1",
           label: "on_route_1",
           route_id: "route1",
-          block_id: "block1"
+          block_id: "block1",
+          direction_id: 1
         )
 
       vehicle_2 =
@@ -124,7 +200,10 @@ defmodule Realtime.VehiclesTest do
                @timepoint_names_by_id
              ) == %{
                "route1" => [vehicle],
-               "route2" => [vehicle_2, vehicle]
+               "route2" => [
+                 vehicle_2,
+                 %{vehicle | incoming_trip_direction_id: trip_1.direction_id}
+               ]
              }
     end
 
@@ -163,7 +242,7 @@ defmodule Realtime.VehiclesTest do
                0,
                @timepoint_names_by_id
              ) == %{
-               "route2" => [vehicle]
+               "route2" => [%{vehicle | incoming_trip_direction_id: 0}]
              }
     end
 
@@ -210,7 +289,7 @@ defmodule Realtime.VehiclesTest do
                    layover_departure_time: nil,
                    scheduled_timepoint_status: %{
                      timepoint_id: "timepoint",
-                     fraction_until_timepoint: 0.0
+                     fraction_until_timepoint: +0.0
                    },
                    route_status: :on_route,
                    block_waivers: [
@@ -313,7 +392,7 @@ defmodule Realtime.VehiclesTest do
                layover_departure_time: 1_576_818_001,
                scheduled_timepoint_status: %{
                  timepoint_id: "timepoint",
-                 fraction_until_timepoint: 0.0
+                 fraction_until_timepoint: +0.0
                },
                route_status: :pulling_out,
                block_waivers: [
@@ -349,7 +428,8 @@ defmodule Realtime.VehiclesTest do
             )
           ],
           start_time: 1,
-          end_time: 2
+          end_time: 2,
+          direction_id: 0
         })
 
       trip2 =
@@ -368,7 +448,8 @@ defmodule Realtime.VehiclesTest do
             )
           ],
           start_time: 4,
-          end_time: 4
+          end_time: 4,
+          direction_id: 1
         })
 
       piece = build(:piece, %{trips: [trip1, trip2], start_time: 1, end_time: 4})
@@ -415,7 +496,7 @@ defmodule Realtime.VehiclesTest do
                @timepoint_names_by_id
              ) == %{
                "route1" => [ghost],
-               "route2" => [ghost]
+               "route2" => [%{ghost | incoming_trip_direction_id: 1}]
              }
     end
 
@@ -556,8 +637,8 @@ defmodule Realtime.VehiclesTest do
                %Vehicle{id: "pulling_out"},
                %Vehicle{id: "on_nil_route"}
              ] =
-               Vehicles.group_by_route_with_blocks(
-                 ungrouped_vehicles,
+               ungrouped_vehicles
+               |> Vehicles.group_by_route_with_blocks(
                  [trip_1, trip_2, trip_3],
                  %{~D[2019-12-20] => [run_1, run_2, run_3]},
                  %{~D[2019-12-20] => [block_1, block_2, block_3]},
@@ -568,42 +649,52 @@ defmodule Realtime.VehiclesTest do
     end
   end
 
-  describe "incoming_blocks_by_route" do
+  describe "incoming_blocks_and_directions_by_route/1" do
     test "returns a block in multiple routes if it's active in both" do
       incoming_trips = [
         %Trip{
           id: "first",
           block_id: "block",
-          route_id: "first"
+          route_id: "first",
+          start_time: 0,
+          direction_id: 0
         },
         %Trip{
           id: "second",
           block_id: "block",
-          route_id: "second"
+          route_id: "second",
+          start_time: 10,
+          direction_id: 1
         }
       ]
 
-      assert Vehicles.incoming_blocks_by_route(incoming_trips) == %{
-               "first" => ["block"],
-               "second" => ["block"]
+      assert Vehicles.incoming_blocks_and_directions_by_route(incoming_trips) == %{
+               "first" => [{"block", 0}],
+               "second" => [{"block", 1}]
              }
     end
 
     test "returns a block only once per route if it has multiple active trips" do
       incoming_trips = [
         %Trip{
-          id: "first",
-          block_id: "block",
-          route_id: "route"
-        },
-        %Trip{
           id: "second",
           block_id: "block",
-          route_id: "route"
+          route_id: "route",
+          start_time: 10,
+          direction_id: 1
+        },
+        %Trip{
+          id: "first",
+          block_id: "block",
+          route_id: "route",
+          start_time: 0,
+          direction_id: 0
         }
       ]
 
-      assert Vehicles.incoming_blocks_by_route(incoming_trips) == %{"route" => ["block"]}
+      assert Vehicles.incoming_blocks_and_directions_by_route(incoming_trips) == %{
+               "route" => [{"block", 0}]
+             }
     end
   end
 end

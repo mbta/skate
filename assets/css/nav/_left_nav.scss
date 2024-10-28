@@ -1,0 +1,203 @@
+@use "../color/tokens_2024" as tokens;
+
+.c-left-nav {
+  width: calc(11.5rem + 1px);
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+
+  border-right: 1px solid $color-gray-300;
+
+  .c-left-nav__icon {
+    height: 1.25rem;
+    width: 1.25rem;
+    flex-shrink: 0;
+    padding-right: 0.75rem;
+  }
+
+  @media not (prefers-reduced-motion: reduce) {
+    transition: all 0.3s;
+  }
+}
+
+.c-left-nav--collapsed {
+  width: 4.25rem;
+}
+
+.c-left-nav__modes-and-views {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  flex-grow: 1;
+  box-sizing: border-box;
+  width: 100%;
+
+  background-color: $color-gray-50;
+
+  padding: 1rem 0.875rem;
+
+  hr {
+    height: 1px;
+    background-color: $color-gray-300;
+    border: none;
+  }
+}
+
+.c-left-nav__menu-button {
+  @include button-icon(1.25rem);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 4rem;
+  min-height: 3rem;
+
+  background-color: $color-gray-200;
+}
+
+.c-left-nav__links {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% + 1px);
+  margin: 0;
+
+  :not(:last-child) {
+    padding-bottom: 0.625rem;
+  }
+}
+
+.c-left-nav__link {
+  @include button-icon(1.25rem);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  font-weight: 400;
+  @include font-body;
+  color: $color-gray-600;
+  text-decoration: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+
+  &:hover {
+    background-color: $color-gray-100;
+    color: $color-gray-700;
+    font-weight: 500;
+  }
+
+  &.c-left-nav__link--active {
+    background-color: tokens.$eggplant-500;
+    font-weight: 500;
+    color: $white;
+  }
+  &:focus-visible {
+    outline: 2px solid tokens.$eggplant-400;
+    border: 1px solid $white;
+  }
+}
+
+.c-left-nav__view {
+  background-color: $white;
+  border: 1px solid $color-gray-200;
+
+  &.c-left-nav__view--active {
+    background-color: $color-eggplant-200;
+    font-weight: 500;
+    color: $color-eggplant-700;
+    border: 1px solid transparent;
+
+    .c-left-nav__icon svg {
+      stroke: $color-eggplant-700;
+
+      circle {
+        fill: $color-eggplant-700;
+      }
+    }
+  }
+
+  &.c-left-nav__view--disabled {
+    cursor: not-allowed;
+    background-color: $color-gray-300;
+    color: $color-gray-500;
+    font-weight: var(--font-weight-reg);
+  }
+
+  .c-left-nav__icon {
+    svg {
+      fill: $color-gray-50;
+      stroke: $color-gray-600;
+
+      circle {
+        fill: $color-gray-600;
+      }
+
+      .clock {
+        stroke-width: 2;
+        fill: transparent;
+      }
+
+      .bang {
+        fill: $color-gray-50;
+        stroke: none;
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: $color-gray-500;
+            stroke: none;
+          }
+        }
+      }
+    }
+
+    &.c-left-nav__icon--swings-view svg {
+      fill: transparent;
+      transform: scaleX(-1);
+    }
+
+    &.c-left-nav__icon--notifications-view {
+      svg {
+        path {
+          fill: $color-gray-600;
+          stroke: none;
+        }
+
+        circle {
+          fill: $color-strawberry-500;
+          stroke: $color-strawberry-500;
+        }
+
+        &:hover {
+          svg {
+            circle {
+              fill: $color-strawberry-400;
+              stroke: $color-strawberry-400;
+            }
+          }
+        }
+      }
+    }
+
+    &.c-left-nav__icon--notifications-view--active {
+      svg {
+        path {
+          fill: $color-eggplant-800;
+          stroke: none;
+        }
+
+        circle {
+          fill: $color-strawberry-500;
+          stroke: $color-strawberry-500;
+        }
+      }
+    }
+  }
+}

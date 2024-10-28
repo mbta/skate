@@ -36,6 +36,7 @@ defmodule Skate.Repo.Migrations.CreateBlockWaivers do
     alter table("notifications") do
       remove :block_waiver_id
     end
+
     drop(table(:block_waivers))
   end
 end

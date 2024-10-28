@@ -1,59 +1,117 @@
-import React, { useContext, useEffect, useState } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
+import React, { useEffect, useState } from "react"
 import useSocket from "../hooks/useSocket"
 import useVehicleForId from "../hooks/useVehicleForId"
-import { isVehicle } from "../models/vehicle"
-import { VehicleOrGhost } from "../realtime.d"
-import { deselectVehicle } from "../state"
+import { isLoggedOut, isVehicle } from "../models/vehicle"
+import { Ghost, Vehicle } from "../realtime"
 import GhostPropertiesPanel from "./propertiesPanel/ghostPropertiesPanel"
+import StaleDataPropertiesPanel from "./propertiesPanel/staleDataPropertiesPanel"
 import VehiclePropertiesPanel from "./propertiesPanel/vehiclePropertiesPanel"
+import { TabMode } from "./propertiesPanel/tabPanels"
 
-interface Props {
-  selectedVehicleOrGhost: VehicleOrGhost
+interface Props extends IndividualPropertiesPanelProps {
+  selectedVehicleOrGhost: Vehicle | Ghost
+  openMapEnabled: boolean
 }
+
+export type TabModeProps = {
+  tabMode: TabMode
+  onChangeTabMode: (tabMode: TabMode) => void
+  onClosePanel: () => void
+}
+
+export type ClosePanelProps = {
+  onClosePanel: () => void
+}
+
+export type IndividualPropertiesPanelProps = TabModeProps & ClosePanelProps
 
 export const hideMeIfNoCrowdingTooltip = (hideMe: () => void) => {
   const noTooltipOpen =
-    document.getElementsByClassName("m-crowding-diagram__crowding-tooltip")
+    document.getElementsByClassName("c-crowding-diagram__crowding-tooltip")
       .length === 0
   if (noTooltipOpen) {
     hideMe()
   }
 }
 
-const PropertiesPanel = ({ selectedVehicleOrGhost }: Props) => {
-  const [, dispatch] = useContext(StateDispatchContext)
+const PropertiesPanel = ({
+  selectedVehicleOrGhost,
+  tabMode,
+  onChangeTabMode,
+  onClosePanel,
+  openMapEnabled,
+}: Props) => {
   const { socket } = useSocket()
   const liveVehicle = useVehicleForId(socket, selectedVehicleOrGhost.id)
-  const [vehicleToDisplay, setVehicleToDisplay] = useState<VehicleOrGhost>(
+  const [mostRecentVehicle, setMostRecentVehicle] = useState<Vehicle | Ghost>(
     liveVehicle || selectedVehicleOrGhost
   )
+
   useEffect(() => {
     if (liveVehicle) {
-      setVehicleToDisplay(liveVehicle)
+      setMostRecentVehicle(liveVehicle)
     }
   }, [liveVehicle])
 
-  const hideMe = () => dispatch(deselectVehicle())
-
   return (
     <>
-      <div id="m-properties-panel" className="m-properties-panel">
-        {isVehicle(vehicleToDisplay) ? (
-          <VehiclePropertiesPanel selectedVehicle={vehicleToDisplay} />
+      <div id="c-properties-panel" className="c-properties-panel">
+        {isVehicle(mostRecentVehicle) &&
+        (liveVehicle === null || isLoggedOut(mostRecentVehicle)) ? (
+          <StaleDataPropertiesPanel
+            selectedVehicle={mostRecentVehicle}
+            tabMode={tabMode}
+            onChangeTabMode={onChangeTabMode}
+            onClosePanel={onClosePanel}
+          />
+        ) : isVehicle(mostRecentVehicle) ? (
+          <VehiclePropertiesPanel
+            selectedVehicle={mostRecentVehicle}
+            tabMode={tabMode}
+            onChangeTabMode={onChangeTabMode}
+            onClosePanel={onClosePanel}
+            openMapEnabled={openMapEnabled}
+          />
         ) : (
-          <GhostPropertiesPanel selectedGhost={vehicleToDisplay} />
+          <GhostPropertiesPanel
+            selectedGhost={mostRecentVehicle}
+            tabMode={tabMode}
+            onChangeTabMode={onChangeTabMode}
+            onClosePanel={onClosePanel}
+          />
         )}
       </div>
       <div
-        className="m-properties-panel__modal-overlay"
+        className="c-properties-panel-backdrop"
         onClick={
           /* istanbul ignore next */
-          () => hideMeIfNoCrowdingTooltip(hideMe)
+          () => hideMeIfNoCrowdingTooltip(onClosePanel)
         }
+        aria-hidden={true}
       />
     </>
   )
 }
+
+interface PropertiesPanelWithTabsStateProps extends Props {
+  initialTab?: TabMode
+}
+
+const PropertiesPanelWithTabState = ({
+  initialTab = "status",
+  ...props
+}: Omit<PropertiesPanelWithTabsStateProps, "tabMode" | "onChangeTabMode">) => {
+  const [tabMode, setTabMode] = useState<TabMode>(initialTab)
+
+  return (
+    <PropertiesPanel
+      {...props}
+      tabMode={tabMode}
+      onChangeTabMode={setTabMode}
+    />
+  )
+}
+
+PropertiesPanel.WithTabState = PropertiesPanelWithTabState
 
 export default PropertiesPanel

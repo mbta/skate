@@ -1,37 +1,47 @@
-import { isVehicle } from "../models/vehicle"
-import { RunId, VehicleOrGhost } from "../realtime"
+import { isVehicle, isVehicleInScheduledService } from "../models/vehicle"
+import { Ghost, RunId, Vehicle } from "../realtime"
 import {
   UserSettings,
   vehicleLabelSetting,
   VehicleLabelSetting,
 } from "../userSettings"
 
-const vehicleLabel = (
-  vehicleOrGhost: VehicleOrGhost,
+export const runOrBusNumberLabel = (
+  vehicleOrGhost: Vehicle | Ghost,
   settings: UserSettings
 ): string => {
-  if (isVehicle(vehicleOrGhost) && vehicleOrGhost.isOverload) {
-    return "ADDED"
-  }
-  if (
-    isVehicle(vehicleOrGhost) &&
-    vehicleOrGhost.endOfTripType === "swing_off"
-  ) {
-    return "SW-OFF"
-  }
-  if (
-    isVehicle(vehicleOrGhost) &&
-    vehicleOrGhost.endOfTripType === "pull_back"
-  ) {
-    return "PULL-B"
-  }
-
   switch (vehicleLabelSetting(settings, vehicleOrGhost)) {
     case VehicleLabelSetting.RunNumber:
       return runIdToLabel(vehicleOrGhost.runId)
     case VehicleLabelSetting.VehicleNumber:
-      return isVehicle(vehicleOrGhost) ? vehicleOrGhost.label : "N/A"
+      return (isVehicle(vehicleOrGhost) && vehicleOrGhost.label) || "N/A"
   }
+}
+
+export const vehicleLabel = (
+  vehicleOrGhost: Vehicle | Ghost,
+  settings: UserSettings
+): string => {
+  if (
+    isVehicleInScheduledService(vehicleOrGhost) &&
+    vehicleOrGhost.isOverload
+  ) {
+    return "ADDED"
+  }
+  if (
+    isVehicleInScheduledService(vehicleOrGhost) &&
+    vehicleOrGhost.endOfTripType === "swing_off"
+  ) {
+    return "Sw-Off"
+  }
+  if (
+    isVehicleInScheduledService(vehicleOrGhost) &&
+    vehicleOrGhost.endOfTripType === "pull_back"
+  ) {
+    return "Pull-B"
+  }
+
+  return runOrBusNumberLabel(vehicleOrGhost, settings)
 }
 
 export const runIdToLabel = (runId: RunId | null): string => {
@@ -48,5 +58,3 @@ export const runIdToLabel = (runId: RunId | null): string => {
 
 const stripLeadingZero = (num: string): string =>
   num.startsWith("0") ? num.slice(1) : num
-
-export default vehicleLabel

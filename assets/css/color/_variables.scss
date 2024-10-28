@@ -1,0 +1,36 @@
+/**
+ * Defines SCSS variables for use in Skate CSS so that
+ * color usages point to CSS variables.
+ *
+ * Use these to reference semantic colors when writing custom CSS in Skate.
+**/
+
+// #region Theme Colors
+$primary: var(--color-primary);
+$secondary: var(--color-secondary);
+$info: var(--color-info);
+$ui-alert: var(--color-ui-alert);
+$service-alert: var(--color-service-alert);
+$light: var(--color-light);
+$dark: var(--color-dark);
+// #endregion Theme Colors
+
+// #region Service Colors
+$early: var(--color-early);
+$late: var(--color-late);
+$on-time: var(--color-on-time);
+
+$ghost: var(--color-ghost);
+$unknown-ghost: var(--color-unknown-ghost);
+$invalid: var(--color-invalid);
+$logged-off: var(--color-logged-off);
+
+$bus: var(--color-bus);
+$red-line: var(--color-red-line);
+$blue-line: var(--color-blue-line);
+$green-line: var(--color-green-line);
+$orange-line: var(--color-orange-line);
+$silver-line: var(--color-silver-line);
+$commuter-rail: var(--color-commuter-rail);
+$ferry: var(--color-ferry);
+// #endregion Service Colors

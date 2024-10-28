@@ -7,9 +7,15 @@ export const cleanUsername = (usernameWithPrefix: string): string =>
 const useAppcues = () => {
   const location = useLocation()
   useEffect(() => {
+    let username = document
+      .querySelector("meta[name=username]")
+      ?.getAttribute("content")
+
+    if (username == undefined || username == null) username = ""
+
     if (window.Appcues) {
       window.Appcues.page()
-      window.Appcues.identify(cleanUsername(window.username))
+      window.Appcues.identify(cleanUsername(username))
     }
   }, [location])
 }

@@ -1,0 +1,16 @@
+name: Deploy to Prod (ECS)
+
+on:
+  workflow_dispatch:
+  release:
+    types: [released]
+
+jobs:
+  deploy:
+    name: Deploy to Prod (ECS)
+    concurrency:
+      group: prod
+    uses: ./.github/workflows/deploy-base.yml
+    with:
+      env: prod
+    secrets: inherit

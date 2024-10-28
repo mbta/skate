@@ -93,14 +93,14 @@ defmodule Concentrate.Merge do
 
     _ =
       Logger.debug(fn ->
-        "#{__MODULE__} merge time=#{time / 1_000}"
+        "merge time=#{time / 1_000}"
       end)
 
     {time, grouped} = :timer.tc(&group/1, [merged])
 
     _ =
       Logger.debug(fn ->
-        "#{__MODULE__} group time=#{time / 1_000}"
+        "group time=#{time / 1_000}"
       end)
 
     state = %{state | timer: nil, demand: ask_demand(state.demand)}
@@ -109,8 +109,8 @@ defmodule Concentrate.Merge do
 
   def handle_info(msg, state) do
     _ =
-      Logger.warn(fn ->
-        "unknown message to #{__MODULE__} #{inspect(self())}: #{inspect(msg)}"
+      Logger.warning(fn ->
+        "unknown message to #{inspect(self())}: #{inspect(msg)}"
       end)
 
     {:noreply, [], state}

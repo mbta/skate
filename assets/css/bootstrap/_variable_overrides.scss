@@ -1,0 +1,38 @@
+@use "../color/definitions" as semantic;
+@use "../color/tokens_2021" as tokens;
+@use "../color/tokens_2024" as new_tokens;
+
+@import "../typography/variables";
+
+$component-active-bg: tokens.$eggplant-700;
+$list-group-border-color: tokens.$gray-300;
+
+$border-color: new_tokens.$gray-400;
+
+$primary: new_tokens.$eggplant-500;
+$secondary: new_tokens.$gray-500;
+$info: semantic.$info;
+$ui-alert: semantic.$ui-alert;
+$service-alert: semantic.$service-alert;
+$light: new_tokens.$gray-50;
+$dark: new_tokens.$gray-900;
+
+// These breakpoints are overridden in order to match with our old set
+// of breakpoints, defined in _skate_ui.scss. Our long-term goal is to
+// replace our "custom" breakpoint system with these bootstrap
+// breakpoints, and then possibly to change these values to match our
+// forward-looking designs.
+$grid-breakpoints: (
+  xs: 0,
+
+  // sm - Breakpoint between mobile and tablet
+  sm: 480px,
+
+  // md - Breakpoint between tablet and desktop
+  md: 800px,
+
+  // lg - Breakpoint between desktop and wide-screen desktop
+  lg: 1340px,
+);
+
+$icon-link-gap: 0.5rem;

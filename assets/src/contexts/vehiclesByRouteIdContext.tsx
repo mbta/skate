@@ -1,16 +1,16 @@
 import React, { createContext, ReactElement } from "react"
-import { VehicleOrGhost } from "../realtime"
+import { VehicleInScheduledService, Ghost } from "../realtime"
 import { ByRouteId } from "../schedule"
 
 export const VehiclesByRouteIdContext = createContext(
-  {} as ByRouteId<VehicleOrGhost[]>
+  {} as ByRouteId<(VehicleInScheduledService | Ghost)[]>
 )
 
 export const VehiclesByRouteIdProvider = ({
   vehiclesByRouteId,
   children,
 }: {
-  vehiclesByRouteId: ByRouteId<VehicleOrGhost[]>
+  vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]>
   children: ReactElement<HTMLElement>
 }) => {
   return (

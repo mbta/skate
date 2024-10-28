@@ -78,19 +78,44 @@ defmodule Schedule.Gtfs.StopTimeTest do
     }
   ]
 
+  describe "parse/1" do
+    test "parses stop time file into map by trip_id" do
+      assert %{
+               "t1" => [
+                 %StopTime{time: 60, stop_id: "s1", timepoint_id: "c1"},
+                 %StopTime{time: 120, stop_id: "s2", timepoint_id: nil}
+               ],
+               "t2" => [
+                 %StopTime{time: 180, stop_id: "s3", timepoint_id: "c2"}
+               ]
+             } ==
+               StopTime.parse(
+                 Enum.join(
+                   [
+                     "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+                     "t1,,00:01:00,s1,1,c1",
+                     "t1,,00:02:00,s2,2,",
+                     "t2,,00:03:00,s3,3,c2"
+                   ],
+                   "\n"
+                 )
+               )
+    end
+  end
+
   describe "trip_stop_times_from_csv/1" do
     test "builds a trip stops map from a list of stop time csv rows" do
       assert StopTime.trip_stop_times_from_csv(@csv_rows) == %{
                "39770780" => [
-                 %StopTime{stop_id: "64", time: 19140, timepoint_id: "dudly"},
-                 %StopTime{stop_id: "3", time: 19200, timepoint_id: "melwa"},
-                 %StopTime{stop_id: "4", time: 19200, timepoint_id: "tenner"}
+                 %StopTime{stop_id: "64", time: 19_140, timepoint_id: "dudly"},
+                 %StopTime{stop_id: "3", time: 19_200, timepoint_id: "melwa"},
+                 %StopTime{stop_id: "4", time: 19_200, timepoint_id: "tenner"}
                ],
                "39770783" => [
-                 %StopTime{stop_id: "23391", time: 36900, timepoint_id: "bbsta"},
+                 %StopTime{stop_id: "23391", time: 36_900, timepoint_id: "bbsta"},
                  # Does not allow empty strings for timepoint_id
-                 %StopTime{stop_id: "173", time: 37020, timepoint_id: nil},
-                 %StopTime{stop_id: "11388", time: 37200, timepoint_id: "hunbv"}
+                 %StopTime{stop_id: "173", time: 37_020, timepoint_id: nil},
+                 %StopTime{stop_id: "11388", time: 37_200, timepoint_id: "hunbv"}
                ]
              }
     end
@@ -137,22 +162,11 @@ defmodule Schedule.Gtfs.StopTimeTest do
 
       assert %{
                "trip" => [
-                 %StopTime{time: 18001},
-                 %StopTime{time: 18002},
-                 %StopTime{time: 18003}
+                 %StopTime{time: 18_001},
+                 %StopTime{time: 18_002},
+                 %StopTime{time: 18_003}
                ]
              } = StopTime.trip_stop_times_from_csv(csv_rows)
-    end
-  end
-
-  describe "row_in_trip_id_set?/2" do
-    test "returns whether the row's trip id is in the given set" do
-      assert StopTime.row_in_trip_id_set?(
-               List.first(@csv_rows),
-               MapSet.new(["39770779", "39770780"])
-             )
-
-      refute StopTime.row_in_trip_id_set?(List.first(@csv_rows), MapSet.new(["1", "2"]))
     end
   end
 
@@ -162,13 +176,13 @@ defmodule Schedule.Gtfs.StopTimeTest do
     end
   end
 
-  describe "is_timepoint?/1" do
+  describe "timepoint?/1" do
     test "returns true if there is a timepoint_id" do
       stop_time_with_timepoint = %StopTime{stop_id: "s1", time: 1, timepoint_id: "tmpt"}
       stop_time_without_timepoint = %StopTime{stop_id: "s2", time: 2, timepoint_id: nil}
 
-      assert StopTime.is_timepoint?(stop_time_with_timepoint)
-      refute StopTime.is_timepoint?(stop_time_without_timepoint)
+      assert StopTime.timepoint?(stop_time_with_timepoint)
+      refute StopTime.timepoint?(stop_time_without_timepoint)
     end
   end
 end

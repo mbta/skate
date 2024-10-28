@@ -8,9 +8,9 @@ defmodule SkateWeb.DataStatusChannelTest do
   alias SkateWeb.UserSocket
 
   setup do
-    reassign_env(:skate, :valid_token?, fn _socket -> true end)
+    reassign_env(:skate, :valid_token_fn, fn _socket -> true end)
 
-    socket = socket(UserSocket, "", %{guardian_default_resource: "test_uid"})
+    socket = socket(UserSocket, "", %{})
 
     start_supervised({Registry, keys: :duplicate, name: Realtime.Supervisor.registry_name()})
     start_supervised({Realtime.DataStatusPubSub, name: Realtime.DataStatusPubSub.default_name()})
@@ -30,13 +30,27 @@ defmodule SkateWeb.DataStatusChannelTest do
       assert {:error, %{message: "no such topic \"rooms:1\""}} =
                subscribe_and_join(socket, DataStatusChannel, "rooms:1")
     end
+
+    test "deny topic subscription when socket token validation fails", %{socket: socket} do
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      for route <- [
+            "data_status",
+            "random:topic:"
+          ],
+          do:
+            assert(
+              {:error, %{reason: :not_authenticated}} =
+                subscribe_and_join(socket, DataStatusChannel, route)
+            )
+    end
   end
 
   describe "handle_info/2" do
     test "pushes new data onto the socket", %{socket: socket} do
       {:ok, _, socket} = subscribe_and_join(socket, DataStatusChannel, "data_status")
 
-      assert {:noreply, socket} =
+      assert {:noreply, _socket} =
                DataStatusChannel.handle_info(
                  {:new_data_status, :good},
                  socket
@@ -46,9 +60,9 @@ defmodule SkateWeb.DataStatusChannelTest do
     end
 
     test "rejects sending vehicle data when socket is not authenticated", %{socket: socket} do
-      reassign_env(:skate, :valid_token?, fn _socket -> false end)
-
       {:ok, _, socket} = subscribe_and_join(socket, DataStatusChannel, "data_status")
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       assert {:stop, :normal, _socket} =
                DataStatusChannel.handle_info(

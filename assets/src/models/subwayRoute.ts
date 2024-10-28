@@ -1,56 +1,67 @@
-import shapesBlue from "../data/shapesBlue"
-import shapesGreen from "../data/shapesGreen"
-import shapesMattapan from "../data/shapesMattapan"
-import shapesOrange from "../data/shapesOrange"
-import shapesRed from "../data/shapesRed"
-import { RouteId, Shape } from "../schedule"
+import { RouteId, Shape, Stop } from "../schedule"
+
+type SubwayRouteId = "Blue" | "Green" | "Orange" | "Red" | "Mattapan"
 
 export interface SubwayRoute {
-  id: RouteId
+  id: SubwayRouteId
   name: string
-  shapes: Shape[]
+  gtfsRouteIds: RouteId[]
+  className: string
+  stops?: Stop[]
 }
 
-export const subwayRoutes: SubwayRoute[] = [
-  {
+export const subwayRoutes: Record<SubwayRouteId, SubwayRoute> = {
+  Blue: {
     id: "Blue",
     name: "Blue Line",
-    shapes: shapesBlue,
+    gtfsRouteIds: ["Blue"],
+    className: "route-shape--rail route-shape--blue",
   },
-  {
+  Green: {
     id: "Green",
     name: "Green Line",
-    shapes: shapesGreen,
+    gtfsRouteIds: ["Green-B", "Green-C", "Green-D", "Green-E"],
+    className: "route-shape--rail route-shape--green",
   },
-  {
+  Orange: {
     id: "Orange",
     name: "Orange Line",
-    shapes: shapesOrange,
+    gtfsRouteIds: ["Orange"],
+    className: "route-shape--rail route-shape--orange",
   },
-  {
+  Red: {
     id: "Red",
     name: "Red Line",
-    shapes: shapesRed,
+    gtfsRouteIds: ["Red"],
+    className: "route-shape--rail route-shape--red",
   },
-  {
+  Mattapan: {
     id: "Mattapan",
     name: "Mattapan Line",
-    shapes: shapesMattapan,
+    gtfsRouteIds: ["Mattapan"],
+    className: "route-shape--rail route-shape--red",
   },
-]
-
-const subwayRouteIds: RouteId[] = subwayRoutes.map(({ id }) => id)
-
-export const isASubwayRoute = (routeId: RouteId): boolean =>
-  subwayRouteIds.includes(routeId)
-
-export const subwayRouteShapes = (routeId: RouteId): Shape[] => {
-  const route = subwayRoutes.find(byId(routeId))
-
-  return route ? route.shapes : []
 }
 
-const byId =
-  (routeId: RouteId) =>
-  (subwayRoute: SubwayRoute): boolean =>
-    subwayRoute.id === routeId
+const subwayRouteIds: RouteId[] = Object.keys(subwayRoutes)
+
+export const isASubwayRoute = (routeId: RouteId): routeId is SubwayRouteId =>
+  subwayRouteIds.includes(routeId)
+
+export const enhanceShapeForSubwayRoute = (
+  apiShape: Shape,
+  subwayRouteId: SubwayRouteId,
+  stations: Stop[]
+): Shape => {
+  const subwayRoute = subwayRoutes[subwayRouteId]
+
+  const routeStations = stations.filter((station) =>
+    station.routes?.find((route) => subwayRoute.gtfsRouteIds.includes(route.id))
+  )
+
+  return {
+    ...apiShape,
+    className: subwayRoute.className,
+    stops: routeStations,
+  }
+}

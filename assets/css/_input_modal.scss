@@ -1,0 +1,112 @@
+.c-input-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2001;
+  padding: 1.5rem;
+  background: $color-gray-100;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
+  border-radius: 0.25rem;
+  line-height: 1.125rem;
+
+  & > :not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & > :not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.c-input-modal-backdrop {
+  @include modal-backdrop;
+  z-index: 2000;
+}
+
+.c-input-modal__title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-align: center;
+  color: $color-gray-900;
+}
+
+.c-input-modal__text {
+  font-size: 1.125rem;
+  font-weight: 400;
+}
+
+.c-input-modal__name-text {
+  color: $color-text-blue;
+}
+
+.c-input-modal__input {
+  input {
+    @include font-body;
+    background: inherit;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #9fa2ac;
+    padding: 0.25rem;
+    color: $color-gray-900;
+    font-weight: 400;
+
+    ::placeholder {
+      color: #9fa2ac;
+    }
+  }
+}
+
+.c-input-modal__buttons {
+  display: flex;
+
+  & > :not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+
+@mixin input-modal-button {
+  @include font-body;
+  font-weight: 500;
+  flex-grow: 1;
+  border: 1px solid #d3d5d9;
+  border-radius: 0.25rem;
+  box-sizing: border-box;
+  padding: 0.5rem 2.25rem;
+}
+
+.c-input-modal__button {
+  @include input-modal-button;
+  color: $color-component-dark;
+  background: #e5e7eb;
+}
+
+.c-input-modal__button--disabled {
+  @include input-modal-button;
+  cursor: default;
+  color: #4f535f;
+  background: #e5e7eb;
+}
+
+.c-input-modal__button--confirm {
+  @include input-modal-button;
+  color: $color-gray-50;
+  background: #118d86;
+}
+
+.c-input-modal__button--danger {
+  @include input-modal-button;
+  color: $color-gray-50;
+  background: #f00d55;
+}

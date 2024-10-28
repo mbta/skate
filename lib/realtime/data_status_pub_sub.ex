@@ -28,7 +28,9 @@ defmodule Realtime.DataStatusPubSub do
 
   @doc """
   The subscribing process will get a message when there's new data, with the form
+  ```
   {:new_data_status, data_status}
+  ```
   """
   @spec subscribe(GenServer.server()) :: DataStatus.t()
   def subscribe(server \\ default_name()) do

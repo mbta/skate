@@ -1,33 +1,16 @@
-import featureIsEnabled from "../../src/laboratoryFeatures"
+import { describe, test, expect } from "@jest/globals"
 import {
   drawnStatus,
-  HeadwaySpacing,
-  headwaySpacingToString,
-  humanReadableHeadwaySpacing,
   humanReadableScheduleAdherence,
   onTimeStatus,
   statusClasses,
 } from "../../src/models/vehicleStatus"
-import { Vehicle } from "../../src/realtime.d"
+import { Vehicle, VehicleInScheduledService } from "../../src/realtime"
 import {
   defaultUserSettings,
   VehicleAdherenceColorsSetting,
 } from "../../src/userSettings"
-
-jest.mock("../../src/laboratoryFeatures", () => ({
-  __esModule: true,
-  default: jest.fn(),
-}))
-
-const mockHeadwaysOn = () => {
-  const mockFeatureIsEnabled: jest.Mock = featureIsEnabled as jest.Mock
-  mockFeatureIsEnabled.mockReturnValue(true)
-}
-
-const mockHeadwaysOff = () => {
-  const mockFeatureIsEnabled: jest.Mock = featureIsEnabled as jest.Mock
-  mockFeatureIsEnabled.mockReturnValue(false)
-}
+import { vehicleFactory } from "../factories/vehicle"
 
 describe("onTimeStatus", () => {
   test("returns on-time", () => {
@@ -45,140 +28,82 @@ describe("onTimeStatus", () => {
 
 describe("drawnStatus", () => {
   test("returns 'off-course' if isOffCourse", () => {
-    mockHeadwaysOff()
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "y0001",
-      headwaySpacing: null,
       scheduleAdherenceSecs: 0,
       isOffCourse: true,
-    } as Vehicle
-    expect(drawnStatus(vehicle)).toEqual("off-course")
-  })
-
-  test("returns 'off-course' in headways mode", () => {
-    mockHeadwaysOn()
-    const vehicle: Vehicle = {
-      id: "y0001",
-      headwaySpacing: HeadwaySpacing.Bunched,
-      scheduleAdherenceSecs: 0,
-      isOffCourse: true,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(drawnStatus(vehicle)).toEqual("off-course")
   })
 
   test("returns 'plain' for a shuttle, even if off-course", () => {
-    mockHeadwaysOff()
-    const shuttle: Vehicle = {
+    const shuttle: VehicleInScheduledService = {
       id: "y0001",
-      headwaySpacing: null,
       scheduleAdherenceSecs: 0,
       isShuttle: true,
       isOffCourse: true,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(drawnStatus(shuttle)).toEqual("plain")
   })
 
+  test("returns 'logged-out' for a logged out vehicle", () => {
+    const vehicle = vehicleFactory.build({
+      runId: null,
+      blockId: undefined,
+      operatorLogonTime: null,
+    })
+    expect(drawnStatus(vehicle)).toEqual("logged-out")
+  })
+
   test("return scheduled status", () => {
-    mockHeadwaysOff()
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       id: "y0001",
-      headwaySpacing: null,
       scheduleAdherenceSecs: 500,
       isOffCourse: false,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(drawnStatus(vehicle)).toEqual("late")
   })
 
-  test("prefers scheduled status to headway status if headway mode is off", () => {
-    mockHeadwaysOff()
-    const vehicle: Vehicle = {
-      id: "y0001",
-      headwaySpacing: HeadwaySpacing.Bunched,
-      scheduleAdherenceSecs: 500,
-      isOffCourse: false,
-    } as Vehicle
-    expect(drawnStatus(vehicle)).toEqual("late")
-  })
-
-  test("in headway mode, returns plain", () => {
-    mockHeadwaysOn()
-    const vehicle: Vehicle = {
-      id: "y0001",
-      headwaySpacing: HeadwaySpacing.Bunched,
-      scheduleAdherenceSecs: 500,
-      isOffCourse: false,
-    } as Vehicle
+  test("returns 'plain' for all other vehicles", () => {
+    const vehicle: Vehicle = vehicleFactory.build({
+      isShuttle: false,
+    })
+    vehicle.scheduleAdherenceSecs = null
     expect(drawnStatus(vehicle)).toEqual("plain")
-  })
-
-  test("in headway mode, returns schedule time if there is no headway", () => {
-    mockHeadwaysOn()
-    const vehicle: Vehicle = {
-      id: "y0001",
-      headwaySpacing: null,
-      scheduleAdherenceSecs: 500,
-      isOffCourse: false,
-    } as Vehicle
-    expect(drawnStatus(vehicle)).toEqual("late")
   })
 })
 
 describe("humanReadableScheduleAdherence", () => {
   test("returns invalid for an off course vehicle", () => {
-    const vehicle: Vehicle = {
+    const vehicle: VehicleInScheduledService = {
       scheduleAdherenceSecs: 0,
       isOffCourse: true,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(vehicle)).toEqual("Invalid")
   })
 
   test("returns on time status for an on course vehicle", () => {
-    const onTime: Vehicle = {
+    const onTime: VehicleInScheduledService = {
       scheduleAdherenceSecs: 5,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(onTime)).toEqual("on time")
-    const early: Vehicle = {
+    const early: VehicleInScheduledService = {
       scheduleAdherenceSecs: -500,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(early)).toEqual("early")
-    const late: Vehicle = {
+    const late: VehicleInScheduledService = {
       scheduleAdherenceSecs: 500,
-    } as Vehicle
+    } as VehicleInScheduledService
     expect(humanReadableScheduleAdherence(late)).toEqual("late")
   })
-})
 
-describe("humanReadableHeadwaySpacing", () => {
-  test("when given null, returns good", () => {
-    expect(humanReadableHeadwaySpacing(null)).toEqual("good")
-  })
+  test("returns status for a vehicle that is pulling back when flag is set", () => {
+    const vehicle = vehicleFactory.build({
+      endOfTripType: "pull_back",
+      stopStatus: { stopId: null, stopName: null },
+    })
 
-  test("converts enum to string", () => {
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.VeryBunched)).toEqual(
-      "very bunched"
-    )
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.Bunched)).toEqual(
-      "bunched"
-    )
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.Ok)).toEqual("good")
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.Gapped)).toEqual("gapped")
-    expect(humanReadableHeadwaySpacing(HeadwaySpacing.VeryGapped)).toEqual(
-      "very gapped"
-    )
-  })
-})
-
-describe("headwaySpacingToString", () => {
-  test("converts enum to string", () => {
-    expect(headwaySpacingToString(HeadwaySpacing.VeryBunched)).toEqual(
-      "very-bunched"
-    )
-    expect(headwaySpacingToString(HeadwaySpacing.Bunched)).toEqual("bunched")
-    expect(headwaySpacingToString(HeadwaySpacing.Ok)).toEqual("ok")
-    expect(headwaySpacingToString(HeadwaySpacing.Gapped)).toEqual("gapped")
-    expect(headwaySpacingToString(HeadwaySpacing.VeryGapped)).toEqual(
-      "very-gapped"
-    )
+    expect(humanReadableScheduleAdherence(vehicle, true)).toEqual("Logged In")
   })
 })
 
@@ -189,15 +114,23 @@ describe("statusClasses", () => {
     ).toEqual([""])
   })
 
-  test("other statuses have a class", () => {
+  test("correct class for logged out", () => {
     expect(
-      statusClasses("off-course", defaultUserSettings.vehicleAdherenceColors)
-    ).toEqual(["off-course", "early-red"])
+      statusClasses("logged-out", defaultUserSettings.vehicleAdherenceColors)
+    ).toEqual(["logged-out"])
   })
 
-  test("other statuses have a class", () => {
-    expect(
-      statusClasses("off-course", VehicleAdherenceColorsSetting.EarlyBlue)
-    ).toEqual(["off-course", "early-blue"])
+  describe("other statuses have a class", () => {
+    test("early-red by default", () => {
+      expect(
+        statusClasses("off-course", defaultUserSettings.vehicleAdherenceColors)
+      ).toEqual(["off-course", "early-red"])
+    })
+
+    test("early-blue if user setting is `EarlyBlue`", () => {
+      expect(
+        statusClasses("off-course", VehicleAdherenceColorsSetting.EarlyBlue)
+      ).toEqual(["off-course", "early-blue"])
+    })
   })
 })

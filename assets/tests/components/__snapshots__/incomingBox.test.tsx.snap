@@ -2,7 +2,7 @@
 
 exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
 <div
-  className="m-incoming-box"
+  className="c-incoming-box"
 >
   <div
     className="mock-tippy"
@@ -44,18 +44,22 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
         Operator:
       </b>
        
-      OPPIE OPERATOR #1
+      <span
+        className="fs-mask"
+      >
+        OPPIE OPERATOR #1
+      </span>
     </div>
     <button
-      className="m-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div
-        className="m-incoming-box__vehicle-icon"
+        className="c-incoming-box__vehicle-icon"
       >
         <svg
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }
@@ -63,10 +67,10 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
           viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            className="c-vehicle-icon c-vehicle-icon--small"
           >
             <g
-              className="m-ladder__crowding m-ladder__crowding--no-data"
+              className="c-ladder__crowding c-ladder__crowding--no-data"
               transform="scale(0.38) translate(-24,-30)"
             >
               <rect
@@ -105,7 +109,7 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
         </svg>
       </div>
       <div
-        className="m-incoming-box__vehicle-label"
+        className="c-incoming-box__vehicle-label"
       >
         ?/?
       </div>
@@ -116,7 +120,7 @@ exports[`IncomingBox renders a crowding view missing crowding data 1`] = `
 
 exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
 <div
-  className="m-incoming-box"
+  className="c-incoming-box"
 >
   <div
     className="mock-tippy"
@@ -158,18 +162,22 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
         Operator:
       </b>
        
-      OPPIE OPERATOR #1
+      <span
+        className="fs-mask"
+      >
+        OPPIE OPERATOR #1
+      </span>
     </div>
     <button
-      className="m-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div
-        className="m-incoming-box__vehicle-icon"
+        className="c-incoming-box__vehicle-icon"
       >
         <svg
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }
@@ -177,10 +185,10 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
           viewBox="-8.36 -7.6 16.72 15.2"
         >
           <g
-            className="m-vehicle-icon m-vehicle-icon--small"
+            className="c-vehicle-icon c-vehicle-icon--small"
           >
             <g
-              className="m-ladder__crowding m-ladder__crowding--empty"
+              className="c-ladder__crowding c-ladder__crowding--empty"
               transform="scale(0.38) translate(-24,-30)"
             >
               <rect
@@ -219,7 +227,7 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
         </svg>
       </div>
       <div
-        className="m-incoming-box__vehicle-label"
+        className="c-incoming-box__vehicle-label"
       >
         0/18
       </div>
@@ -230,7 +238,7 @@ exports[`IncomingBox renders a crowding view of a vehicle 1`] = `
 
 exports[`IncomingBox renders a ghost 1`] = `
 <div
-  className="m-incoming-box"
+  className="c-incoming-box"
 >
   <div
     className="mock-tippy"
@@ -272,43 +280,51 @@ exports[`IncomingBox renders a ghost 1`] = `
         Operator:
       </b>
        
-      N/A
+      <span
+        className="fs-mask"
+      >
+        N/A
+      </span>
     </div>
     <button
-      className="m-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div
-        className="m-incoming-box__vehicle-icon"
+        className="c-incoming-box__vehicle-icon"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }
           }
           viewBox="-8.36 -7.6 16.72 15.2"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--small ghost early-red"
+            className="c-vehicle-icon c-vehicle-icon--small ghost early-red"
           >
             <g
               transform="scale(0.26599999999999996) translate(-24,-23)"
             >
               <path
-                className="m-vehicle-icon__ghost-highlight"
+                className="c-vehicle-icon__ghost-highlight"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-join="round"
+                strokeLinejoin="round"
               />
               <path
-                className="m-vehicle-icon__ghost-body"
+                className="c-vehicle-icon__ghost-body"
                 d="m43.79 19c0-9.68-8.79-17.49-19.59-17.49s-19.6 7.81-19.6 17.49v12.88 11a2 2 0 0 0 2.55 1.87l6.78-4.09 10.27 5.92 10.26-5.88 6.78 4.09a2 2 0 0 0 2.55-1.87z"
-                stroke-join="round"
+                strokeLinejoin="round"
               />
             </g>
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -351,7 +367,7 @@ exports[`IncomingBox renders a ghost 1`] = `
         </g>
       </svg>
       <div
-        className="m-incoming-box__vehicle-label"
+        className="c-incoming-box__vehicle-label"
       >
         1056
       </div>
@@ -362,7 +378,7 @@ exports[`IncomingBox renders a ghost 1`] = `
 
 exports[`IncomingBox renders a vehicle 1`] = `
 <div
-  className="m-incoming-box"
+  className="c-incoming-box"
 >
   <div
     className="mock-tippy"
@@ -404,34 +420,43 @@ exports[`IncomingBox renders a vehicle 1`] = `
         Operator:
       </b>
        
-      OPPIE OPERATOR #1
+      <span
+        className="fs-mask"
+      >
+        OPPIE OPERATOR #1
+      </span>
     </div>
     <button
-      className="m-incoming-box__vehicle "
+      className="c-incoming-box__vehicle"
       onClick={[Function]}
     >
       <div
-        className="m-incoming-box__vehicle-icon"
+        className="c-incoming-box__vehicle-icon"
       >
         <svg
+          role="img"
           style={
-            Object {
+            {
               "height": 15.2,
               "width": 16.72,
             }
           }
           viewBox="-8.36 -7.6 16.72 15.2"
         >
+          <title>
+            Vehicle Status Icon
+          </title>
           <g
-            className="m-vehicle-icon m-vehicle-icon--small on-time early-red"
+            className="c-vehicle-icon c-vehicle-icon--small on-time early-red"
           >
             <path
-              className="m-vehicle-icon__triangle"
+              className="c-vehicle-icon__triangle"
               d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
               transform="scale(0.38) rotate(0) translate(-24,-22)"
             />
             <text
-              className="m-vehicle-icon__variant"
+              className="c-vehicle-icon__variant"
               dominantBaseline="alphabetic"
               textAnchor="middle"
               x={0}
@@ -443,7 +468,7 @@ exports[`IncomingBox renders a vehicle 1`] = `
         </svg>
       </div>
       <div
-        className="m-incoming-box__vehicle-label"
+        className="c-incoming-box__vehicle-label"
       >
         1056
       </div>
@@ -452,8 +477,109 @@ exports[`IncomingBox renders a vehicle 1`] = `
 </div>
 `;
 
+exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1`] = `
+<div
+  className="c-incoming-box"
+>
+  <div
+    className="mock-tippy"
+  >
+    <div
+      className="mock-tippy-content"
+    >
+      <b>
+        Block:
+      </b>
+       
+      block
+      <br />
+      <b>
+        Run:
+      </b>
+       
+      run
+      <br />
+      <b>
+        Vehicle:
+      </b>
+       
+      vehicle
+      <br />
+      <b>
+        Variant:
+      </b>
+       
+      X
+      <br />
+      <b>
+        Adherence:
+      </b>
+       
+      0 min early
+      <br />
+      <b>
+        Operator:
+      </b>
+       
+      <span
+        className="fs-mask"
+      >
+        Fake Operator #1234
+      </span>
+    </div>
+    <button
+      className="c-incoming-box__vehicle"
+      onClick={[Function]}
+    >
+      <div
+        className="c-incoming-box__vehicle-icon"
+      >
+        <svg
+          role="img"
+          style={
+            {
+              "height": 15.2,
+              "width": 16.72,
+            }
+          }
+          viewBox="-8.36 -7.6 16.72 15.2"
+        >
+          <title>
+            Vehicle Status Icon
+          </title>
+          <g
+            className="c-vehicle-icon c-vehicle-icon--small on-time early-red"
+          >
+            <path
+              className="c-vehicle-icon__triangle"
+              d="m27.34 9.46 16.84 24.54a4.06 4.06 0 0 1 -1 5.64 4.11 4.11 0 0 1 -2.3.71h-33.72a4.06 4.06 0 0 1 -4.06-4.11 4 4 0 0 1 .72-2.24l16.84-24.54a4.05 4.05 0 0 1 5.64-1.05 4 4 0 0 1 1.04 1.05z"
+              data-testid="vehicle-triangle"
+              transform="scale(0.38) rotate(180) translate(-24,-22)"
+            />
+            <text
+              className="c-vehicle-icon__variant"
+              dominantBaseline="hanging"
+              textAnchor="middle"
+              x={0}
+              y={-5.6}
+            >
+              X
+            </text>
+          </g>
+        </svg>
+      </div>
+      <div
+        className="c-incoming-box__vehicle-label"
+      >
+        run
+      </div>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`IncomingBox renders empty state 1`] = `
 <div
-  className="m-incoming-box"
+  className="c-incoming-box"
 />
 `;

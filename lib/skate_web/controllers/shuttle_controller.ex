@@ -9,8 +9,7 @@ defmodule SkateWeb.ShuttleController do
 
     routes =
       routes_fn.()
-      |> Enum.filter(&Route.shuttle_route?/1)
-      |> Enum.filter(&has_shape?/1)
+      |> Enum.filter(fn route -> Route.shuttle_route?(route) && has_shape?(route) end)
       |> Enum.map(&use_route_pattern_name/1)
 
     json(conn, %{data: routes})

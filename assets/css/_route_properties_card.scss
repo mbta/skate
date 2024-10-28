@@ -1,0 +1,204 @@
+.c-route-properties-card {
+  background-color: white;
+  border: 1px solid $color-gray-400;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+
+  font-size: var(--font-size-xs);
+}
+
+.c-route-properties-card__header {
+  flex: none;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  padding: 0.5rem 0.5rem;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.c-route-properties-card__route-title {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  h2 {
+    font-size: 1.125rem;
+    line-height: 1.1;
+    margin: 0px 0px 4px 0px;
+  }
+}
+
+.c-route-properties-card__route-description {
+  font-size: var(--font-size-s);
+  color: $color-gray-700;
+  font-weight: var(--font-weight-reg);
+  line-height: 1.1;
+}
+
+.c-route-properties-card__direction-picker {
+  flex: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  margin: 0rem 1rem 1rem 1rem;
+  gap: 4px;
+  background-color: $color-gray-100;
+  border-radius: 0.5rem;
+  height: 44px;
+  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.075);
+
+  input[type="radio"] {
+    display: none;
+  }
+}
+
+.c-route-properties-card__direction-picker .direction-button {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  height: 36px;
+  cursor: pointer;
+  color: $color-gray-600;
+
+  label {
+    flex: 1;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  &--selected {
+    color: $color-gray-900;
+    background-color: $white;
+    font-weight: var(--font-weight-semi);
+    border: 1px solid $color-gray-500;
+    border-radius: 0.5rem;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.075);
+  }
+}
+
+.c-route-properties-card__disclosure_toggle {
+  &::after {
+    display: inline-block;
+    content: "▼";
+    text-decoration: none;
+    font-size: var(--font-size-xxs);
+    margin-left: 0.25rem;
+  }
+
+  &[aria-expanded="true"]::after {
+    content: "▲";
+  }
+}
+
+.c-route-properties-card__disclosure_toggle {
+  text-align: left;
+  font-size: var(--font-size-sm);
+  text-decoration: underline;
+  color: $color-eggplant-700;
+  padding: 0rem 1rem;
+  &[aria-expanded="true"] {
+    font-weight: var(--font-weight-semi);
+  }
+}
+
+.c-route-properties-card__details-section {
+  min-height: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.c-route-properties-card__details-section:not(
+    .c-route-properties-card__details-section--open
+  ) {
+  flex: none;
+}
+
+.c-route-properties-card__details {
+  overflow-y: auto;
+}
+
+.c-route-properties-card__details.variant-picker fieldset {
+  border: none;
+  padding: 0rem;
+  margin: 0rem;
+}
+
+.c-route-properties-card__variant-option {
+  input[type="radio"] {
+    display: none;
+  }
+
+  label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    font-size: var(--font-size-s);
+    padding: 0.5rem 1rem;
+  }
+
+  &:hover {
+    background-color: $color-eggplant-100;
+  }
+
+  & > * {
+    cursor: pointer;
+  }
+
+  .variant-check {
+    visibility: hidden;
+    vertical-align: middle;
+    fill: $color-eggplant-800;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.c-route-properties-card__variant-option--selected {
+  background-color: $color-eggplant-100;
+  color: $color-eggplant-800;
+
+  .c-route-properties-card__variant-option-description {
+    color: $color-eggplant-700;
+  }
+  .variant-check {
+    visibility: visible;
+  }
+}
+
+.c-route-properties-card__variant-option-name {
+  font-weight: var(--font-weight-semi);
+}
+
+.c-route-properties-card__variant-option-description {
+  font-size: var(--font-size-xs);
+  color: $color-gray-700;
+}
+
+.c-route-properties-card hr {
+  flex: none;
+  height: 1px;
+  background-color: $color-gray-400;
+  width: 100%;
+  border: none;
+}
+
+.c-route-properties-card__details.variant-stop-list {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.c-route-properties-card__details.variant-stop-list ol {
+  max-height: 490px;
+  li {
+    margin-left: 1rem;
+  }
+}

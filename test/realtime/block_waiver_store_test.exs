@@ -20,17 +20,18 @@ defmodule Realtime.BlockWaiverStoreTest do
 
   describe "start_link/1" do
     test "starts up and lives" do
-      {:ok, server} = BlockWaiverStore.start_link(name: :start_link)
+      {:ok, pid} = BlockWaiverStore.start_link()
 
       Process.sleep(10)
 
-      assert Process.alive?(server)
+      assert Process.alive?(pid)
+      assert Process.whereis(BlockWaiverStore.default_name()) == pid
     end
   end
 
   describe "block_waivers_for_block_and_service/2" do
     setup do
-      {:ok, server} = BlockWaiverStore.start_link(name: :block_waivers_for_block_and_service)
+      {:ok, server} = BlockWaiverStore.start_link([])
 
       {:ok, server: server}
     end
@@ -70,7 +71,7 @@ defmodule Realtime.BlockWaiverStoreTest do
 
   describe "set/1" do
     setup do
-      {:ok, server} = BlockWaiverStore.start_link(name: :set)
+      {:ok, server} = BlockWaiverStore.start_link([])
 
       {:ok, server: server}
     end
@@ -90,7 +91,7 @@ defmodule Realtime.BlockWaiverStoreTest do
         fn waiver_message -> send(test_pid, waiver_message) end
       )
 
-      {:ok, server} = BlockWaiverStore.start_link(name: :send_test)
+      {:ok, server} = BlockWaiverStore.start_link([])
 
       # This is the first time we're storing waivers, so no notification.
       block_waivers_by_block_key = @block_waivers_by_block_key
@@ -153,8 +154,8 @@ defmodule Realtime.BlockWaiverStoreTest do
       Process.sleep(10)
 
       assert_received %{
-        {"service2", "block2"} => [new_waiver_2],
-        {"service3", "block3"} => [new_waiver_3]
+        {"service2", "block2"} => [_new_waiver_2],
+        {"service3", "block3"} => [_new_waiver_3]
       }
     end
   end

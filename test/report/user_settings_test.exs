@@ -1,28 +1,23 @@
 defmodule Report.UserSettingsTest do
   use Skate.DataCase
 
-  import Skate.Repo
+  import Skate.Factory, only: [insert: 2]
+  import Skate.Repo, only: [insert!: 2]
 
-  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings
 
   describe "run/0" do
     test "returns database contents" do
       username = "username"
 
-      user =
-        insert!(
-          DbUser.changeset(%DbUser{}, %{username: username}),
-          returning: true
-        )
+      user = insert(:user, %{username: username})
 
       insert!(
         DbUserSettings.changeset(%DbUserSettings{}, %{
           user_id: user.id,
           ladder_page_vehicle_label: :vehicle_id,
           shuttle_page_vehicle_label: :run_id,
-          vehicle_adherence_colors: :early_blue,
-          minischedules_trip_label: :origin
+          vehicle_adherence_colors: :early_blue
         }),
         returning: true
       )

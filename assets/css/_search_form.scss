@@ -1,69 +1,160 @@
-.m-search-form__row {
+.c-search-form {
   display: flex;
+  flex-flow: column nowrap;
+  gap: 1rem;
+
+  // Prevent intersection between accordion and autocomplete popup
+  .c-filter-accordion,
+  .c-search-form__search-control {
+    isolation: isolate;
+  }
+  .c-search-form__search-control {
+    // Stack items within search-control on top of accordion
+    z-index: 1;
+  }
+
+  // Make filter's text size larger
+  .c-filter-accordion__filters {
+    font-size: var(--font-size-s);
+  }
 }
 
-.m-search-form__text {
+.c-search-form__search-control {
+  // Make control area match designs
+  height: 2.25rem;
+
+  // Layout floating `input-controls` over the `search-input-container`
   position: relative;
-  flex: 1 0 auto;
 }
 
-.m-search-form__input {
+.c-search-form__search-input-container {
+  // Use bootstrap control as base for now
+  @extend .form-control;
+
+  // fill control defined valid area
+  height: 100%;
+  // Make space for `input-controls`
+  padding-right: calc(2.25rem * 2);
+  // Ignore bootstrap padding due to `input-controls`
+  padding-block: 0;
+
+  border-color: $color-gray-400;
+
+  &:focus,
+  &:focus-within,
+  &:active {
+    border: 1px solid $color-eggplant-500;
+    box-shadow: 0px 0px 0px 2px #aa4ef22b;
+    color: $color-gray-800;
+  }
+}
+
+.c-search-form__input {
+  // Align self within parent boundaries
   width: 100%;
+  height: 100%;
+
+  // Match font size from the Route Picker Search
+  @include font-small;
+
+  // Remove default displays
+  border: none;
 }
 
-.m-search-form__clear {
-  @include button-transparent;
-  @include button-icon(0.75rem);
-  right: 0;
-  padding: 0 0.375rem;
+// #region Search Input Buttons
+.c-search-form__input-controls {
   position: absolute;
-  top: 0.6rem;
-}
+  // Stick to right side of box, do not intercept mouse events to the text input
+  inset: 0;
+  left: unset;
 
-.m-search-form__submit {
-  @include button-primary;
-  @include button-icon(1.3125rem);
-  margin-left: 0.5rem;
-  padding: 0.375rem 0.5625rem;
-  vertical-align: -0.25rem;
+  width: 0;
 
-  &:disabled {
-    @include button-disabled;
-    padding: 0.375rem 0.5625rem;
-  }
-}
-
-.m-search-form__property-buttons {
+  // Layout controls from the right side
   display: flex;
-  flex: 1 0 auto;
-  list-style-type: none;
-  margin-top: 0.75rem;
+  flex-flow: row nowrap;
+  justify-content: end;
 }
 
-.m-search-form__property-button {
-  flex: 1 0 0;
-  margin-right: 0.3rem;
+.c-search-form__clear {
+  @include button-icon(0.875rem);
 
-  &:last-child {
-    margin-right: 0;
+  // Reserve space around icon in flex container
+  flex: 0;
+
+  height: 100%;
+  aspect-ratio: 1/1;
+}
+
+.c-search-form__submit {
+  span > svg {
+    fill: currentColor;
+
+    display: block;
+    height: 1rem;
+    aspect-ratio: 1/1;
+  }
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  aspect-ratio: 1/1;
+
+  color: $color-eggplant-700;
+  border-radius: 0.375rem;
+
+  &[disabled] {
+    color: $color-gray-700;
+  }
+
+  &:focus {
+    border: 1px solid $color-eggplant-500;
+    box-shadow: 0px 0px 0px 2px rgba(170, 78, 242, 0.17);
+  }
+
+  &:hover svg {
+    color: $color-eggplant-500;
   }
 }
+// #endregion Search Input Buttons
 
-.m-search-form__property-input {
+// #region Autocomplete Control
+// Hide the autocomplete control by default
+.c-search-form__autocomplete-container {
   display: none;
 }
 
-.m-search-form__property-label {
-  @include button-simple;
-  display: block;
-  padding-left: 0.8125rem;
-  padding-right: 0.8125rem;
-  text-align: center;
-  text-transform: uppercase;
+// When input controls have focus --
+.c-search-form__search-control[data-autocomplete-visible="true"]:focus-within {
+  // -- Show Autocomplete control
+  .c-search-form__autocomplete-container {
+    display: block;
+  }
 
-  .m-search-form__property-input:checked + & {
-    @include button-primary;
-    padding-left: 0.8125rem;
-    padding-right: 0.8125rem;
+  // -- Visually join the bottom of the input bar with autocomplete by squaring
+  //    off the bottom
+  .c-search-form__search-input-container {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }
+
+.c-search-form__autocomplete-container {
+  // Isolate to ensure that floating on top of other elements doesn't intersect
+  // in the Z axis.
+  isolation: isolate;
+  // Move behind the input control so focus styles overlap the autocomplete
+  // control
+  position: relative;
+  z-index: -1;
+
+  &:focus-within {
+    // Attempt to put the autocomplete control on top of the input control if
+    // the autocomplete control has focus
+    z-index: 1;
+  }
+}
+// #endregion Autocomplete Control

@@ -2,6 +2,7 @@ defmodule Schedule.Health.Checkers.TimepointsChecker do
   @moduledoc """
   Check that Schedules returns at least a minimum number of timepoints for each configured route.
   """
+  require Logger
 
   @type config :: [timepoint_config()]
   @type timepoint_config :: %{
@@ -18,6 +19,13 @@ defmodule Schedule.Health.Checkers.TimepointsChecker do
     timepoints_on_route_fn =
       Application.get_env(:skate_web, :timepoints_on_route_fn, &Schedule.timepoints_on_route/1)
 
-    timepoints_on_route_fn.(route_id) |> length() >= min_length
+    length = route_id |> timepoints_on_route_fn.() |> length()
+    pass? = length >= min_length
+
+    if !pass? do
+      Logger.warning("failed on route_id=#{route_id}. min_length=#{min_length} length=#{length}")
+    end
+
+    pass?
   end
 end

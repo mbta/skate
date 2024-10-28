@@ -1,0 +1,95 @@
+.c-old-search-form__row {
+  display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.c-old-search-form__text {
+  position: relative;
+  flex: 1 1 auto;
+}
+
+.c-old-search-form__input {
+  width: 100%;
+  height: 2.375rem;
+  box-sizing: border-box;
+
+  border-radius: 4px 0 0 4px;
+  border: none;
+
+  padding: 7px 0 7px 13px;
+
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-reg);
+  color: var(--font-color-on-light-600);
+
+  &:focus {
+    border: 1px solid $color-eggplant-500;
+  }
+}
+
+.c-old-search-form__clear {
+  @include button-icon(0.875rem);
+  right: 0.75rem;
+  position: absolute;
+  top: 0.75rem;
+
+  color: $color-gray-600;
+
+  &:hover,
+  &:focus-within {
+    color: $color-eggplant-500;
+  }
+}
+
+.c-old-search-form__submit {
+  @include button-icon(1rem);
+
+  flex: 1 0 auto;
+  max-width: 2.625rem;
+  max-height: 2.375rem;
+
+  border-radius: 0 4px 4px 0;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.c-old-search-form__property-buttons {
+  display: flex;
+  flex: 1 0 auto;
+  list-style-type: none;
+  margin: 0;
+}
+
+.c-old-search-form__property-button {
+  flex: 1 0 0;
+  margin-right: 0.75rem;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.c-old-search-form__property-input {
+  display: none;
+}
+
+.c-old-search-form__property-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 1.5625rem;
+
+  text-transform: capitalize;
+
+  // Override base button-search-filter style by giving a more specific selector
+  &.button-search-filter {
+    font-size: var(--font-size-xs);
+  }
+}

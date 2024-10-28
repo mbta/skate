@@ -1,43 +1,145 @@
-import React, { useContext } from "react"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { crowdingIcon, reverseIcon, reverseIconReversed } from "../helpers/icon"
+import React, { useId } from "react"
+import { CrowdingIcon, ReverseIcon, ReverseIconReversed } from "../helpers/icon"
 import {
   getLadderCrowdingToggleForRoute,
   LadderCrowdingToggle,
+  LadderCrowdingToggles,
 } from "../models/ladderCrowdingToggle"
 import {
   getLadderDirectionForRoute,
   LadderDirection,
+  LadderDirections,
 } from "../models/ladderDirection"
-import { isVehicle } from "../models/vehicle"
+import { isVehicleInScheduledService } from "../models/vehicle"
 import {
   groupByPosition,
   VehiclesByPosition,
 } from "../models/vehiclesByPosition"
-import { VehicleId, VehicleOrGhost } from "../realtime.d"
+import { VehicleId, VehicleInScheduledService, Ghost } from "../realtime"
 import { LoadableTimepoints, Route, RouteId } from "../schedule.d"
-import { deselectRoute, flipLadder, toggleLadderCrowding } from "../state"
-import CloseButton from "./closeButton"
 import IncomingBox from "./incomingBox"
 import Ladder from "./ladder"
 import Loading from "./loading"
+import Tippy from "@tippyjs/react"
+import { tagManagerEvent } from "../helpers/googleTagManager"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
+import {
+  ExclamationTriangleFill,
+  PlusSquare,
+  ThreeDotsVertical,
+} from "../helpers/bsIcons"
+import { RoutePill } from "./routePill"
+import { Card, CloseButton, Dropdown } from "react-bootstrap"
+import { joinClasses, joinTruthy } from "../helpers/dom"
 
 interface Props {
   route: Route
   timepoints: LoadableTimepoints
-  vehiclesAndGhosts?: VehicleOrGhost[]
+  vehiclesAndGhosts?: (VehicleInScheduledService | Ghost)[]
   selectedVehicleId: VehicleId | undefined
+  deselectRoute: (routeId: RouteId) => void
+  reverseLadder: (routeId: RouteId) => void
+  toggleCrowding: (routeId: RouteId) => void
+  ladderDirections: LadderDirections
+  ladderCrowdingToggles: LadderCrowdingToggles
+  hasAlert: boolean
+  onAddDetour?: (route: Route) => void
 }
 
-const Header = ({ route }: { route: Route }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
+export const Header = ({
+  routeName,
+  onClose,
+  hasAlert,
+  showDropdown,
 
+  onClickAddDetour,
+}: {
+  routeName: string
+  onClose: () => void
+  hasAlert: boolean
+
+  showDropdown: boolean
+
+  onClickAddDetour?: () => void
+}) => {
+  const routePillId = "route-pill" + useId()
+  const routeOptionsToggleId = "route-options-toggle" + useId()
   return (
-    <div className="m-route-ladder__header">
-      <CloseButton onClick={() => dispatch(deselectRoute(route.id))} />
-
-      <div className="m-route-ladder__route-name">{route.name}</div>
-    </div>
+    <Card className="c-route-ladder__header">
+      <Card.Body>
+        <div
+          className={joinClasses([
+            "c-route-ladder__dropdown",
+            hasAlert && "c-route-ladder__dropdown--non-skate-alert",
+          ])}
+        >
+          {showDropdown && (
+            <Dropdown className="border-box inherit-box">
+              <Dropdown.Toggle
+                className="c-route-ladder__dropdown-button d-none d-sm-flex"
+                aria-labelledby={joinTruthy([
+                  routePillId,
+                  routeOptionsToggleId,
+                ])}
+              >
+                <ThreeDotsVertical />
+                <span className="visually-hidden" id={routeOptionsToggleId}>
+                  Route Options
+                </span>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Header>
+                  <div className="c-route-ladder__dropdown-header-text">
+                    Adjustments
+                  </div>
+                </Dropdown.Header>
+                <Dropdown.Item className="icon-link" onClick={onClickAddDetour}>
+                  <PlusSquare /> Add detour
+                </Dropdown.Item>
+                {hasAlert && (
+                  <>
+                    <Dropdown.Divider className="border-top-0" />
+                    <Dropdown.Header>
+                      <div className="c-route-ladder__dropdown-header-text">
+                        Active detours
+                      </div>
+                    </Dropdown.Header>
+                    <Dropdown.ItemText className="lh-base pb-4">
+                      This route has an active detour. View detour details on{" "}
+                      <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
+                    </Dropdown.ItemText>
+                  </>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
+          )}
+        </div>
+        <RoutePill
+          id={routePillId}
+          routeName={routeName}
+          largeFormat
+          className="c-route-pill--dynamic-size"
+        >
+          {hasAlert && (
+            <Tippy
+              content="Active detour"
+              trigger="click"
+              onShow={() => tagManagerEvent("alert_tooltip_clicked")}
+            >
+              <div
+                className="c-route-ladder__alert-icon"
+                aria-label="Route Alert"
+              >
+                <ExclamationTriangleFill />
+              </div>
+            </Tippy>
+          )}
+        </RoutePill>
+        <div className="c-route-ladder__close-button-container">
+          <CloseButton className="p-2" onClick={onClose} />
+        </div>
+      </Card.Body>
+    </Card>
   )
 }
 
@@ -55,32 +157,30 @@ const Controls = ({
   toggleCrowding: () => void
 }) => {
   return (
-    <div className="m-route-ladder__controls">
-      <button className="m-route-ladder__reverse" onClick={reverseLadder}>
-        {ladderDirection === LadderDirection.OneToZero
-          ? reverseIcon("m-route-ladder__reverse-icon")
-          : reverseIconReversed("m-route-ladder__reverse-icon")}
+    <div className="c-route-ladder__controls">
+      <button className="c-route-ladder__reverse" onClick={reverseLadder}>
+        {ladderDirection === LadderDirection.OneToZero ? (
+          <ReverseIcon className="c-route-ladder__reverse-icon" />
+        ) : (
+          <ReverseIconReversed className="c-route-ladder__reverse-icon" />
+        )}
         Reverse
       </button>
       {displayCrowdingToggleIcon &&
         (ladderCrowdingToggle ? (
           <button
-            className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--hide"
+            className="c-route-ladder__crowding-toggle c-route-ladder__crowding-toggle--hide"
             onClick={toggleCrowding}
           >
-            {crowdingIcon(
-              "m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
-            )}
+            <CrowdingIcon className="c-route-ladder__crowding-toggle-icon c-route-ladder__crowding-toggle-icon" />
             Hide riders
           </button>
         ) : (
           <button
-            className="m-route-ladder__crowding-toggle m-route-ladder__crowding-toggle--show"
+            className="c-route-ladder__crowding-toggle c-route-ladder__crowding-toggle--show"
             onClick={toggleCrowding}
           >
-            {crowdingIcon(
-              "m-route-ladder__crowding-toggle-icon m-route-ladder__crowding-toggle-icon"
-            )}
+            <CrowdingIcon className="c-route-ladder__crowding-toggle-icon c-route-ladder__crowding-toggle-icon" />
             Show riders
           </button>
         ))}
@@ -89,7 +189,7 @@ const Controls = ({
 }
 
 const someVehicleHasCrowding = (
-  vehiclesAndGhosts: VehicleOrGhost[] | undefined,
+  vehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] | undefined,
   routeId: RouteId
 ): boolean => {
   if (vehiclesAndGhosts === undefined) {
@@ -98,9 +198,9 @@ const someVehicleHasCrowding = (
 
   const vehicleWithCrowding = vehiclesAndGhosts.find(
     (vehicleOrGhost) =>
-      isVehicle(vehicleOrGhost) &&
+      isVehicleInScheduledService(vehicleOrGhost) &&
       vehicleOrGhost.routeId === routeId &&
-      vehicleOrGhost.hasOwnProperty("crowding") &&
+      Object.prototype.hasOwnProperty.call(vehicleOrGhost, "crowding") &&
       vehicleOrGhost.crowding !== null
   )
 
@@ -112,26 +212,25 @@ const RouteLadder = ({
   timepoints,
   vehiclesAndGhosts,
   selectedVehicleId,
+  deselectRoute,
+  reverseLadder,
+  toggleCrowding,
+  ladderDirections,
+  ladderCrowdingToggles,
+  hasAlert,
+  onAddDetour,
 }: Props) => {
-  const [{ ladderDirections, ladderCrowdingToggles }, dispatch] =
-    useContext(StateDispatchContext)
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, route.id)
-  const reverseLadder = () => {
-    dispatch(flipLadder(route.id))
-  }
 
   const ladderCrowdingToggle = getLadderCrowdingToggleForRoute(
     ladderCrowdingToggles,
     route.id
   )
-  const toggleCrowding = () => {
-    dispatch(toggleLadderCrowding(route.id))
-  }
 
   const byPosition: VehiclesByPosition = groupByPosition(
     vehiclesAndGhosts?.filter((vehicleOrGhost) => {
       const nonRevenueOffCourse =
-        isVehicle(vehicleOrGhost) &&
+        isVehicleInScheduledService(vehicleOrGhost) &&
         vehicleOrGhost.isOffCourse &&
         !vehicleOrGhost.isRevenue
 
@@ -145,13 +244,23 @@ const RouteLadder = ({
 
   return (
     <>
-      <Header route={route} />
+      <Header
+        routeName={route.name}
+        hasAlert={hasAlert}
+        onClose={() => {
+          deselectRoute(route.id)
+        }}
+        showDropdown={inTestGroup(TestGroups.DetoursPilot)}
+        onClickAddDetour={() => {
+          onAddDetour?.(route)
+        }}
+      />
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
         ladderDirection={ladderDirection}
         ladderCrowdingToggle={ladderCrowdingToggle}
-        reverseLadder={reverseLadder}
-        toggleCrowding={toggleCrowding}
+        reverseLadder={() => reverseLadder(route.id)}
+        toggleCrowding={() => toggleCrowding(route.id)}
       />
 
       {timepoints ? (

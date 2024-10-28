@@ -1,138 +1,267 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SearchForm renders 1`] = `
+exports[`Combobox renders 1`] = `
 <form
-  className="m-search-form"
+  autoComplete="off"
+  className="c-search-form"
   onSubmit={[Function]}
 >
   <div
-    className="m-search-form__row"
+    className="c-search-form__search-control"
+    data-autocomplete-visible={false}
+    onKeyDown={[Function]}
+    role="presentation"
   >
     <div
-      className="m-search-form__text"
+      className="c-search-form__search-input-container"
     >
       <input
-        autoFocus={true}
-        className="m-search-form__input"
+        aria-controls=":r0:"
+        aria-expanded={false}
+        aria-haspopup="listbox"
+        aria-owns=":r0:"
+        className="c-search-form__input"
         onChange={[Function]}
+        onFocus={[Function]}
         placeholder="Search"
+        role="combobox"
         type="text"
         value=""
       />
+    </div>
+    <div
+      className="c-search-form__input-controls"
+      onKeyDown={[Function]}
+      role="presentation"
+    >
       <button
-        className="m-search-form__clear"
+        className="c-search-form__clear c-circle-x-icon-container"
+        hidden={true}
         onClick={[Function]}
-        type="reset"
+        title="Clear Search"
+        type="button"
+      >
+        <svg
+          className="c-circle-x-icon"
+          viewBox="0 0 48 48"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            className="c-circle-x-icon__focus-circle"
+            cx="50%"
+            cy="50%"
+            r="75%"
+          />
+          <circle
+            className="c-circle-x-icon__white-fill"
+            cx="50%"
+            cy="50%"
+            r="75%"
+          />
+          <path
+            className="c-circle-x-icon__path"
+            d="m24 .05a24 24 0 1 0 24 23.95 24 24 0 0 0 -24-23.95zm13.19 32.54a3.33 3.33 0 1 1 -4.73 4.69l-8.46-8.57-8.57 8.48a3.33 3.33 0 1 1 -4.69-4.73l8.55-8.46-8.48-8.57a3.33 3.33 0 1 1 4.73-4.69l8.46 8.55 8.57-8.48a3.33 3.33 0 0 1 2.35-1 3.35 3.35 0 0 1 3.33 3.35 3.33 3.33 0 0 1 -1 2.35l-8.54 8.49z"
+          />
+        </svg>
+      </button>
+      <button
+        className="c-search-form__submit"
+        disabled={true}
+        onClick={[Function]}
+        title="Submit"
+        type="submit"
       >
         <span
-          className=""
           dangerouslySetInnerHTML={
-            Object {
-              "__html": "SVG",
+            {
+              "__html": "<svg/>",
             }
           }
         />
       </button>
     </div>
-    <button
-      className="m-search-form__submit"
-      disabled={true}
-      onClick={[Function]}
-      type="submit"
+    <div
+      className="c-search-form__autocomplete-container"
+      hidden={true}
     >
-      <span
-        className=""
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "SVG",
-          }
-        }
-      />
-    </button>
+      <div
+        className="c-autocomplete"
+      >
+        <h2
+          aria-hidden={true}
+          className="visually-hidden"
+          id=":r1:"
+          role="presentation"
+        >
+          Search Suggestions
+        </h2>
+        <div
+          aria-labelledby=":r1:"
+          className="c-autocomplete__list"
+          id=":r0:"
+          onBlur={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          role="listbox"
+          tabIndex={-1}
+        >
+          <div
+            aria-hidden={true}
+            className="c-autocomplete__group-heading"
+            id=":r2:"
+            role="presentation"
+            style={
+              {
+                "userSelect": "none",
+              }
+            }
+          />
+          <ul
+            aria-labelledby=":r2:"
+            className="c-autocomplete__group-list"
+            role="group"
+          >
+            <li
+              className="c-autocomplete__option"
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              role="option"
+              tabIndex={-1}
+            />
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
   <div
-    className="m-search-form__row"
+    aria-expanded={true}
+    className="c-filter-accordion"
   >
-    <ul
-      className="m-search-form__property-buttons"
+    <button
+      className="c-filter-accordion__toggle-button"
+      onClick={[Function]}
     >
-      <li
-        className="m-search-form__property-button"
+      <div
+        className="c-filter-accordion__header"
       >
-        <input
-          checked={true}
-          className="m-search-form__property-input"
-          id="property-all"
-          name="property"
-          onChange={[Function]}
-          type="radio"
-          value="all"
-        />
-        <label
-          className="m-search-form__property-label"
-          htmlFor="property-all"
-        >
-          all
-        </label>
-      </li>
-      <li
-        className="m-search-form__property-button"
+        Filter results
+      </div>
+      <div
+        className="c-filter-accordion__show-hide-icon"
       >
-        <input
-          checked={false}
-          className="m-search-form__property-input"
-          id="property-run"
-          name="property"
-          onChange={[Function]}
-          type="radio"
-          value="run"
+        <span
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
         />
-        <label
-          className="m-search-form__property-label"
-          htmlFor="property-run"
-        >
-          run
-        </label>
-      </li>
-      <li
-        className="m-search-form__property-button"
+      </div>
+    </button>
+    <div
+      className="c-filter-accordion__body"
+    >
+      <ul
+        className="c-filter-accordion__filters"
       >
-        <input
-          checked={false}
-          className="m-search-form__property-input"
-          id="property-vehicle"
-          name="property"
-          onChange={[Function]}
-          type="radio"
-          value="vehicle"
-        />
-        <label
-          className="m-search-form__property-label"
-          htmlFor="property-vehicle"
+        <li
+          className="form-check position-relative lh-base"
         >
-          vehicle
-        </label>
-      </li>
-      <li
-        className="m-search-form__property-button"
-      >
-        <input
-          checked={false}
-          className="m-search-form__property-input"
-          id="property-operator"
-          name="property"
-          onChange={[Function]}
-          type="radio"
-          value="operator"
-        />
-        <label
-          className="m-search-form__property-label"
-          htmlFor="property-operator"
+          <input
+            checked={true}
+            className="form-check-input"
+            id="property-all"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="all"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-all"
+          >
+            All
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
         >
-          operator
-        </label>
-      </li>
-    </ul>
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-vehicle"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="vehicle"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-vehicle"
+          >
+            Vehicles
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-operator"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="operator"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-operator"
+          >
+            Operators
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-run"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="run"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-run"
+          >
+            Runs
+          </label>
+        </li>
+        <li
+          className="form-check position-relative lh-base"
+        >
+          <input
+            checked={false}
+            className="form-check-input"
+            id="property-location"
+            name="property"
+            onChange={[Function]}
+            type="radio"
+            value="location"
+          />
+          <label
+            className="stretched-link form-check-label"
+            htmlFor="property-location"
+          >
+            Locations
+          </label>
+        </li>
+      </ul>
+    </div>
   </div>
 </form>
 `;

@@ -1,85 +1,67 @@
-.m-ladder {
-  grid-row-start: m-ladder;
+.c-ladder {
+  grid-row-start: c-ladder;
   margin: 0 auto;
   position: relative;
 }
 
-.m-ladder__svg {
+.c-ladder__svg {
   display: block;
   position: absolute;
 }
 
-.m-ladder__line {
+.c-ladder__line {
   fill: none;
   stroke: $color-line-normal;
   stroke-linecap: round;
   stroke-width: 7;
 }
 
-.m-ladder__headway-line {
-  &--bunched {
-    stroke: $color-line-bunched-light;
-  }
-
-  &--very-bunched {
-    stroke: $color-line-bunched;
-  }
-
-  &--gapped {
-    stroke: $color-line-gapped-light;
-  }
-
-  &--very-gapped {
-    stroke: $color-line-gapped;
-  }
-}
-
-.m-ladder__stop-circle {
+.c-ladder__stop-circle {
   fill: $white;
 }
 
-.m-ladder__timepoint-name {
+.c-ladder__timepoint-name {
   @include font-timepoint;
   cursor: pointer;
 }
 
-.m-ladder__vehicle {
+.c-ladder__vehicle {
   cursor: pointer;
 
   &:hover {
-    .m-vehicle-icon__triangle {
+    .c-vehicle-icon__triangle {
       stroke: $color-secondary-light;
     }
 
-    .m-vehicle-icon__ghost-highlight {
+    .c-vehicle-icon__ghost-highlight {
       stroke: $color-secondary-light;
     }
 
-    .m-vehicle-icon__label-background {
+    .c-vehicle-icon__label-background {
       fill: $color-secondary-light;
     }
   }
 
-  &.selected {
-    .m-vehicle-icon__triangle {
+  &--selected {
+    .c-vehicle-icon__triangle {
       stroke: $color-secondary-medium;
     }
 
-    .m-vehicle-icon__ghost-highlight {
+    .c-vehicle-icon__ghost-highlight {
       stroke: $color-secondary-medium;
     }
 
-    .m-vehicle-icon__label-background {
+    .c-vehicle-icon__label-background {
       fill: $color-secondary-medium;
     }
   }
 }
 
-.m-ladder__vehicle-label-text {
+.c-ladder__vehicle-label-text {
   @include font-tiny;
 }
 
-.m-ladder__scheduled-line {
+.c-ladder__scheduled-line {
   stroke: $color-vehicle-normal-line;
   stroke-width: 2;
 
@@ -98,6 +80,6 @@
   }
 }
 
-.m-ladder__crowding {
+.c-ladder__crowding {
   @include crowding-icon-colors;
 }

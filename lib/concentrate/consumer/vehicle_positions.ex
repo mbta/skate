@@ -9,7 +9,13 @@ defmodule Concentrate.Consumer.VehiclePositions do
   alias Realtime.{Vehicles, Server, Vehicle}
 
   def start_link(opts) do
-    GenStage.start_link(__MODULE__, opts)
+    # set fullsweep to periodically garbabe collect the fetched schedule data
+    # without having to hibernate after every event. 20 isn't a magic number:
+    # the Erlang documentation
+    # [https://erlang.org/doc/man/erlang.html#spawn_opt-4] says that processes
+    # which mostly have short-lived data can set this to a "suitable value" such
+    # as 10 or 20, and 20 appears to address the garbage being kept in memory.
+    GenStage.start_link(__MODULE__, opts, spawn_opt: [fullsweep_after: 20])
   end
 
   @impl GenStage
@@ -26,17 +32,21 @@ defmodule Concentrate.Consumer.VehiclePositions do
   def handle_events(events, _from, state) do
     groups = List.last(events)
 
+    timepoint_names_by_id = Schedule.timepoint_names_by_id()
+
     all_vehicles =
       groups
       |> vehicle_positions_from_groups()
-      |> Enum.map(&Vehicle.from_vehicle_position/1)
-
-    timepoint_names_by_id = Schedule.timepoint_names_by_id()
+      |> Enum.map(fn vp -> Vehicle.from_vehicle_position(vp, timepoint_names_by_id) end)
 
     by_route = Vehicles.group_by_route(all_vehicles, timepoint_names_by_id)
     shuttles = Enum.filter(all_vehicles, & &1.is_shuttle)
+    logged_out_vehicles = Enum.filter(all_vehicles, &is_nil(&1.run_id))
 
-    _ = Server.update({by_route, shuttles})
+    update_vehicles_fn =
+      Application.get_env(:skate, :update_vehicles_fn, &Server.update_vehicles/1)
+
+    _ = update_vehicles_fn.({by_route, shuttles, logged_out_vehicles})
 
     {:noreply, [], state}
   end

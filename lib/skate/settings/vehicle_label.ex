@@ -1,4 +1,6 @@
 defmodule Skate.Settings.VehicleLabel do
+  @moduledoc false
+
   use Ecto.Type
 
   @type t :: :run_id | :vehicle_id

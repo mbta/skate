@@ -1,0 +1,174 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomControls when a position is specified, puts the control in the expected corner 1`] = `
+<div
+  class="leaflet-control-container"
+>
+  <div
+    class="leaflet-top leaflet-left"
+  />
+  <div
+    class="leaflet-top leaflet-right"
+  >
+    <div
+      class="leaflet-control test-control"
+    >
+      <button
+        class="test-control-child-1"
+      >
+        Click Me
+      </button>
+    </div>
+  </div>
+  <div
+    class="leaflet-bottom leaflet-left"
+  />
+  <div
+    class="leaflet-bottom leaflet-right"
+  />
+</div>
+`;
+
+exports[`CustomControls when insertAfterSelector is specified and there is a node matching that selector, then the control is added after it 1`] = `
+<div
+  class="leaflet-control-container"
+>
+  <div
+    class="leaflet-top leaflet-left"
+  />
+  <div
+    class="leaflet-top leaflet-right"
+  >
+    <div
+      class="leaflet-control-zoom leaflet-bar leaflet-control"
+    >
+      <a
+        aria-disabled="false"
+        aria-label="Zoom in"
+        class="leaflet-control-zoom-in"
+        href="#"
+        role="button"
+        title="Zoom in"
+      >
+        <span
+          aria-hidden="true"
+        >
+          +
+        </span>
+      </a>
+      <a
+        aria-disabled="true"
+        aria-label="Zoom out"
+        class="leaflet-control-zoom-out leaflet-disabled"
+        href="#"
+        role="button"
+        title="Zoom out"
+      >
+        <span
+          aria-hidden="true"
+        >
+          −
+        </span>
+      </a>
+    </div>
+    <div
+      class="leaflet-control test-control"
+    >
+      <button
+        class="test-control-child-1"
+      >
+        Click Me
+      </button>
+    </div>
+    <div
+      class="leaflet-bar leaflet-control"
+    >
+      <a
+        aria-label="Full Screen"
+        class="leaflet-control-zoom-fullscreen fullscreen-icon"
+        href="#"
+        role="button"
+        title="Full Screen"
+      />
+    </div>
+  </div>
+  <div
+    class="leaflet-bottom leaflet-left"
+  />
+  <div
+    class="leaflet-bottom leaflet-right"
+  />
+</div>
+`;
+
+exports[`CustomControls when insertAfterSelector is specified and there is not a node matching that selector, then the control is added at the end of the leaflet-container 1`] = `
+<div
+  class="leaflet-control-container"
+>
+  <div
+    class="leaflet-top leaflet-left"
+  />
+  <div
+    class="leaflet-top leaflet-right"
+  >
+    <div
+      class="leaflet-control-zoom leaflet-bar leaflet-control"
+    >
+      <a
+        aria-disabled="false"
+        aria-label="Zoom in"
+        class="leaflet-control-zoom-in"
+        href="#"
+        role="button"
+        title="Zoom in"
+      >
+        <span
+          aria-hidden="true"
+        >
+          +
+        </span>
+      </a>
+      <a
+        aria-disabled="true"
+        aria-label="Zoom out"
+        class="leaflet-control-zoom-out leaflet-disabled"
+        href="#"
+        role="button"
+        title="Zoom out"
+      >
+        <span
+          aria-hidden="true"
+        >
+          −
+        </span>
+      </a>
+    </div>
+    <div
+      class="leaflet-bar leaflet-control"
+    >
+      <a
+        aria-label="Full Screen"
+        class="leaflet-control-zoom-fullscreen fullscreen-icon"
+        href="#"
+        role="button"
+        title="Full Screen"
+      />
+    </div>
+    <div
+      class="leaflet-control test-control"
+    >
+      <button
+        class="test-control-child-1"
+      >
+        Click Me
+      </button>
+    </div>
+  </div>
+  <div
+    class="leaflet-bottom leaflet-left"
+  />
+  <div
+    class="leaflet-bottom leaflet-right"
+  />
+</div>
+`;

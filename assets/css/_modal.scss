@@ -10,7 +10,7 @@
   z-index: 2001;
 }
 
-.c-modal-overlay {
-  @include modal-overlay;
+.c-modal-backdrop {
+  @include modal-backdrop;
   z-index: 2000;
 }

@@ -1,15 +1,17 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { jest, describe, test, expect } from "@jest/globals"
+import { renderHook, waitFor } from "@testing-library/react"
 import * as Api from "../../src/api"
-import shapesRed from "../../src/data/shapesRed"
 import { useRouteShapes, useTripShape } from "../../src/hooks/useShapes"
-import { Shape } from "../../src/schedule.d"
+import { Shape, Stop } from "../../src/schedule.d"
 import { instantPromise, mockUseStateOnce } from "../testHelpers/mockHelpers"
-
-// tslint:disable: react-hooks-nesting no-empty
+import { shapeFactory } from "../factories/shape"
+import { stopFactory } from "../factories/stop"
 
 jest.mock("../../src/api", () => ({
   __esModule: true,
+
   fetchShapeForRoute: jest.fn(() => new Promise<Shape[]>(() => {})),
+
   fetchShapeForTrip: jest.fn(() => new Promise<Shape[]>(() => {})),
 }))
 
@@ -33,15 +35,34 @@ describe("useRouteShapes", () => {
     expect(result.current).toEqual([])
   })
 
-  test("loads a subway route shape from hardcoded data", () => {
-    const mockFetchShape: jest.Mock = Api.fetchShapeForRoute as jest.Mock
+  test("loads a subway route shape from API", async () => {
+    const shape = shapeFactory.build({ className: undefined })
+    const mockFetchShape = jest
+      .mocked(Api.fetchShapeForRoute)
+      .mockReturnValueOnce(instantPromise([shape]))
 
-    const { result } = renderHook(() => {
-      return useRouteShapes(["Red"])
+    const { result, rerender } = renderHook(
+      (stops?: Stop[]) => useRouteShapes(["Red"], stops),
+      { initialProps: undefined }
+    )
+
+    rerender([
+      stopFactory.build({
+        routes: [{ id: "Red", type: 1, name: "Red Line" }],
+      }),
+    ])
+
+    const initialValue = result.current
+    await waitFor(() => {
+      expect(result.current).not.toBe(initialValue)
     })
 
-    expect(mockFetchShape).toHaveBeenCalledTimes(0)
-    expect(result.current).toEqual(shapesRed)
+    expect(mockFetchShape).toHaveBeenCalledTimes(1)
+    expect(mockFetchShape).toHaveBeenCalledWith("Red")
+    expect(result.current[0].className).toBe(
+      "route-shape--rail route-shape--red"
+    )
+    expect(result.current[0].stops).toHaveLength(1)
   })
 
   test("returns the shape when the api call returns", () => {
@@ -139,5 +160,42 @@ describe("useTripShape", () => {
     })
 
     expect(result.current).toEqual([shape])
+  })
+
+  test("doesn't refetch shape when trip Ids don't change", () => {
+    const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
+    const { rerender } = renderHook((tripId) => useTripShape(tripId), {
+      initialProps: "1",
+    })
+    rerender("1")
+    expect(mockFetchShape).toHaveBeenCalledTimes(1)
+  })
+
+  test("does refetch shape when the trip Id changes", () => {
+    const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
+    const { rerender } = renderHook((tripId) => useTripShape(tripId), {
+      initialProps: "1",
+    })
+    rerender("2")
+    expect(mockFetchShape).toHaveBeenCalledTimes(2)
+  })
+
+  test("returns null when trip id changes to null", () => {
+    const shape: Shape = {
+      id: "shape",
+      points: [{ lat: 42.41356, lon: -70.99211 }],
+    }
+    const mockFetchShape: jest.Mock = Api.fetchShapeForTrip as jest.Mock
+    mockFetchShape.mockImplementationOnce(() => instantPromise(shape))
+    const { rerender, result } = renderHook<Shape[], string | null>(
+      (tripId) => useTripShape(tripId),
+      {
+        initialProps: "1",
+      }
+    )
+    expect(result.current).toEqual([shape])
+
+    rerender(null)
+    expect(result.current).toEqual([])
   })
 })

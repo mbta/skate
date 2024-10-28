@@ -1,18 +1,16 @@
-use Mix.Config
+import Config
 
 config :skate,
-  api_key: {:secret, "ENV-api-key"},
-  bridge_api_username: {:secret, "ENV-bridge-api-username"},
-  bridge_api_password: {:secret, "ENV-bridge-api-password"},
   geonames_url_base: "https://ba-secure.geonames.net",
-  geonames_token: {:secret, "geonames-token"},
+  geonames_token: {:system, "GEONAMES_TOKEN"},
   redirect_http?: true,
-  record_fullstory: true,
   record_appcues: true,
+  record_fullstory: true,
   record_sentry: true,
-  secret_key_base: {:secret, "ENV-secret-key-base"},
-  static_href: {SkateWeb.Router.Helpers, :static_url},
-  swiftly_authorization_key: {:secret, "ENV-swiftly-authorization-key"}
+  static_href: {SkateWeb.Router.Helpers, :static_url}
+
+config :sentry,
+  release: System.get_env("SENTRY_RELEASE")
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
@@ -25,7 +23,7 @@ config :skate,
 # before starting your production server.
 config :skate, SkateWeb.Endpoint,
   server: true,
-  http: [:inet6, port: System.get_env("PORT") || 4000],
+  http: [:inet6, port: System.get_env("PORT") || 4000, compress: true],
   url: [host: {:system, "HOST"}, port: 80],
   static_url: [
     scheme: {:system, "STATIC_SCHEME"},
@@ -50,20 +48,15 @@ config :skate, Skate.Repo,
 config :logger, level: :info
 
 config :logger, :console,
-  format: "$time $metadata[$level] node=$node $message\n",
-  metadata: [:request_id]
+  format: "$time [$level] node=$node $metadata$message\n",
+  metadata: [:mfa, :request_id]
 
-# Configure Ueberauth to use Cognito
+# Configure Ueberauth to use Keycloak
 config :ueberauth, Ueberauth,
   providers: [
-    cognito: {Ueberauth.Strategy.Cognito, []}
+    keycloak:
+      {Ueberauth.Strategy.Oidcc, userinfo: true, uid_field: "email", scopes: ~w(openid email)}
   ]
-
-config :ueberauth, Ueberauth.Strategy.Cognito,
-  auth_domain: {System, :get_env, ["COGNITO_DOMAIN"]},
-  client_id: {System, :get_env, ["COGNITO_CLIENT_ID"]},
-  user_pool_id: {System, :get_env, ["COGNITO_USER_POOL_ID"]},
-  aws_region: {System, :get_env, ["COGNITO_AWS_REGION"]}
 
 config :ex_aws, json_codec: Jason
 

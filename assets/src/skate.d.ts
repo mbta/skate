@@ -1,5 +1,3 @@
-import ResizeObserver from "resize-observer-polyfill"
-
 declare global {
   interface Window {
     Appcues?: {
@@ -7,19 +5,8 @@ declare global {
       page: () => void
       show: (id: string) => void
     }
-    FS?: {
-      // FullStory
-      // see https://help.fullstory.com/develop-js/137379 for documentation
-      identify(
-        uid: string,
-        opts: {
-          displayName?: string
-          email?: string
-        }
-      ): void
-      event(event: string, properties?: object): void
-    }
-    ResizeObserver: typeof ResizeObserver
+    // for Google Tag Manager
+    dataLayer?: Record<string, any>[]
     drift: {
       api: {
         sidebar: {
@@ -27,9 +14,16 @@ declare global {
         }
       }
     }
-    username: string
-    sentry?: {
-      dsn: string
+    fullStoryInitialization?: {
+      organizationId?: string | null
+    }
+    sentryInitialization?: {
+      initArgs: {
+        dsn: string
+        environment: string
+        release: string
+      }
+      orgSlug: string
     }
   }
 }

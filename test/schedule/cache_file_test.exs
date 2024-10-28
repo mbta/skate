@@ -24,7 +24,7 @@ defmodule Schedule.CacheFileTest do
         calendar: %{}
       }
 
-      filepath = CacheFile.cache_filename() |> CacheFile.generate_filepath()
+      filepath = CacheFile.generate_filepath(CacheFile.cache_filename())
 
       assert CacheFile.save_gtfs(data) == :ok
 

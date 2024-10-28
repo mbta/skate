@@ -1,0 +1,48 @@
+/* Panel + Drawer(2rem) should have 100% viewport width - 10px to match leaflet margin */
+$map-page-search-panel-width: Min(24rem, calc((100vw - 2rem - 10px)));
+
+$z-map-page-context: (
+  "drawer-backdrop": 199,
+  "drawer": 200,
+);
+
+.c-drawer {
+  width: $map-page-search-panel-width;
+  height: 100%;
+  background-color: $color-gray-50;
+  position: relative;
+  z-index: map-get($z-map-page-context, "drawer");
+  transition: $transition-slide;
+
+  &--visible {
+    left: 0;
+  }
+
+  &--hidden {
+    width: $map-page-search-panel-width;
+    left: calc(-1 * #{$map-page-search-panel-width});
+  }
+}
+
+.c-drawer .c-drawer-tab {
+  @include button-primary-new;
+  left: 100%;
+}
+
+.c-drawer__backdrop-button {
+  display: none;
+
+  .c-drawer--visible ~ & {
+    display: block;
+    width: 100%;
+
+    // Ignore flex layout and fill screen
+    position: absolute;
+    inset: 48.8px 0 0 0;
+
+    // Inbetween panel and map
+    z-index: map-get($z-map-page-context, "drawer-backdrop");
+
+    backdrop-filter: blur(3.25px);
+  }
+}

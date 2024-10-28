@@ -1,17 +1,21 @@
 .c-drawer-tab {
   background-color: $color-bg-medium;
-  border-top-right-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+  border-top-right-radius: 1rem !important;
+  border-bottom-right-radius: 1rem !important;
+  border-bottom-left-radius: 0rem !important;
+  border-top-left-radius: 0rem !important;
   position: absolute;
-  top: 1.625rem;
-  width: 2.25rem;
+  top: 2.5rem;
+  width: $drawer-tab-width;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .c-drawer-tab__tab-button {
-  @include button-transparent;
   @include button-icon(0.9rem);
   font-size: 2rem;
   line-height: 1.5rem;
   margin: 0;
-  padding: 1.5rem 0.675rem 2rem;
+  padding: 2rem 0 !important;
 }

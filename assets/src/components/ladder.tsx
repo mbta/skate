@@ -4,9 +4,8 @@ import Tippy from "@tippyjs/react"
 import "tippy.js/dist/tippy.css"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { flatten, partition } from "../helpers/array"
-import { className } from "../helpers/dom"
-import vehicleLabel from "../helpers/vehicleLabel"
-import featureIsEnabled from "../laboratoryFeatures"
+import { joinClasses } from "../helpers/dom"
+import { vehicleLabel } from "../helpers/vehicleLabel"
 import { blockWaiverAlertStyle } from "../models/blockWaiver"
 import { crowdingLabel, OccupancyStatus } from "../models/crowding"
 import {
@@ -22,20 +21,23 @@ import {
   ladderVehiclesForLayovers,
   LayoverBoxPosition,
 } from "../models/layoverVehicle"
-import { isGhost, isVehicle } from "../models/vehicle"
+import { isGhost, isVehicleInScheduledService } from "../models/vehicle"
 import { VehiclesByPosition } from "../models/vehiclesByPosition"
 import { drawnStatus, statusClasses } from "../models/vehicleStatus"
-import { Vehicle, VehicleId, VehicleTimepointStatus } from "../realtime.d"
+import {
+  VehicleInScheduledService,
+  VehicleId,
+  VehicleTimepointStatus,
+} from "../realtime"
 import { Timepoint } from "../schedule.d"
-import { selectVehicle } from "../state"
 import { CrowdingIconSvgNode } from "./crowdingIcon"
-import HeadwayLines from "./headwayLines"
 import {
   Orientation,
   Size,
   VehicleIconSvgNode,
   VehicleTooltip,
 } from "./vehicleIcon"
+import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 export interface Props {
   timepoints: Timepoint[]
@@ -109,9 +111,9 @@ const Ladder = ({
   const viewBox = [-width / 2, -MARGIN_TOP_BOTTOM, width, height].join(" ")
 
   return (
-    <div className="m-ladder" style={{ width }} ref={elementRef}>
+    <div className="c-ladder" style={{ width }} ref={elementRef}>
       <svg
-        className="m-ladder__svg"
+        className="c-ladder__svg"
         viewBox={viewBox}
         width={width}
         height={height}
@@ -167,12 +169,6 @@ const Ladder = ({
           />
         ))}
         <RoadLines height={height} />
-        {featureIsEnabled("headway_ladder_colors") && (
-          <HeadwayLines
-            height={height - MARGIN_TOP_BOTTOM * 2}
-            ladderVehicles={ladderVehicles}
-          />
-        )}
         {orderedTimepoints.map((timepoint: Timepoint, index: number) => {
           const y = timepointSpacingY * index
           return (
@@ -195,13 +191,16 @@ const VehicleSvg = ({
   selectedVehicleId: VehicleId | undefined
   isLayingOver: boolean
 }) => {
-  displayCrowding = !!displayCrowding && isVehicle(ladderVehicle.vehicle)
+  displayCrowding =
+    !!displayCrowding && isVehicleInScheduledService(ladderVehicle.vehicle)
   const { vehicle, x, y, vehicleDirection } = ladderVehicle
-  const [{ userSettings }, dispatch] = useContext(StateDispatchContext)
-  const selectedClass = vehicle.id === selectedVehicleId ? "selected" : ""
+  const [{ userSettings }] = useContext(StateDispatchContext)
+  const { openVehiclePropertiesPanel } = usePanelStateFromStateDispatchContext()
   const alertIconStyle = blockWaiverAlertStyle(vehicle)
 
-  const crowding = isVehicle(vehicle) ? vehicle.crowding : null
+  const crowding = isVehicleInScheduledService(vehicle)
+    ? vehicle.crowding
+    : null
   const occupancyStatus: OccupancyStatus = crowding
     ? crowding.occupancyStatus
     : "NO_DATA"
@@ -209,9 +208,12 @@ const VehicleSvg = ({
   return (
     <VehicleTooltip vehicleOrGhost={vehicle}>
       <g
-        className={`m-ladder__vehicle ${selectedClass} `}
+        className={joinClasses([
+          "c-ladder__vehicle",
+          vehicle.id === selectedVehicleId && "c-ladder__vehicle--selected",
+        ])}
         transform={`translate(${x},${y})`}
-        onClick={() => dispatch(selectVehicle(vehicle))}
+        onClick={() => openVehiclePropertiesPanel(vehicle)}
       >
         {displayCrowding ? (
           <CrowdingIconSvgNode
@@ -220,7 +222,7 @@ const VehicleSvg = ({
               isLayingOver,
               vehicleDirection
             )}
-            label={crowdingLabel(vehicle as Vehicle)}
+            label={crowdingLabel(vehicle as VehicleInScheduledService)}
             occupancyStatus={occupancyStatus}
           />
         ) : (
@@ -246,14 +248,14 @@ const VehicleSvg = ({
 const RoadLines = ({ height }: { height: number }) => (
   <>
     <line
-      className="m-ladder__line"
+      className="c-ladder__line"
       x1={-CENTER_TO_LINE}
       y1="0"
       x2={-CENTER_TO_LINE}
       y2={height - MARGIN_TOP_BOTTOM * 2}
     />
     <line
-      className="m-ladder__line"
+      className="c-ladder__line"
       x1={CENTER_TO_LINE}
       y1="0"
       x2={CENTER_TO_LINE}
@@ -266,13 +268,13 @@ const LadderTimepoint = React.memo(
   ({ timepoint, y }: { timepoint: Timepoint; y: number }) => (
     <>
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={-CENTER_TO_LINE}
         cy={y}
         r="3"
       />
       <circle
-        className="m-ladder__stop-circle"
+        className="c-ladder__stop-circle"
         cx={CENTER_TO_LINE}
         cy={y}
         r="3"
@@ -280,18 +282,10 @@ const LadderTimepoint = React.memo(
       <Tippy
         content={timepoint.name}
         trigger="click"
-        className="m-ladder__timepoint-name-tooltip"
-        /* istanbul ignore next */
-        onShow={() => {
-          /* istanbul ignore next */
-          if (window.FS) {
-            /* istanbul ignore next */
-            window.FS.event("Timepoint names tooltip opened")
-          }
-        }}
+        className="c-ladder__timepoint-name-tooltip"
       >
         <text
-          className="m-ladder__timepoint-name"
+          className="c-ladder__timepoint-name"
           x="0"
           y={y}
           textAnchor="middle"
@@ -365,8 +359,8 @@ const ScheduledLine = ({
 
   return (
     <line
-      className={className(
-        ["m-ladder__scheduled-line"].concat(
+      className={joinClasses(
+        ["c-ladder__scheduled-line"].concat(
           statusClasses(status, userSettings.vehicleAdherenceColors)
         )
       )}

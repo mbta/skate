@@ -1,4 +1,6 @@
 defmodule Schedule.Gtfs.Calendar do
+  @moduledoc false
+
   alias Schedule.Csv
   alias Schedule.Gtfs.Service
 

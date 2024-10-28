@@ -13,14 +13,15 @@ defmodule Report.UserSettings do
   @impl Report
   def run() do
     {:ok,
-     from(s in DbUserSettings,
-       select: %{
-         "ladder_page_vehicle_label" => s.ladder_page_vehicle_label,
-         "shuttle_page_vehicle_label" => s.shuttle_page_vehicle_label,
-         "vehicle_adherence_colors" => s.vehicle_adherence_colors
-       }
-     )
-     |> Skate.Repo.all()}
+     Skate.Repo.all(
+       from(s in DbUserSettings,
+         select: %{
+           "ladder_page_vehicle_label" => s.ladder_page_vehicle_label,
+           "shuttle_page_vehicle_label" => s.shuttle_page_vehicle_label,
+           "vehicle_adherence_colors" => s.vehicle_adherence_colors
+         }
+       )
+     )}
   end
 
   @impl Report

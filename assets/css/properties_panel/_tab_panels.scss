@@ -1,4 +1,5 @@
-.m-tabs__tab-list {
+.c-tabs__tab-list {
+  box-sizing: border-box; // todo: fix usages of c-tabs to have border box
   border-bottom: 1px solid $color-button-simple;
   display: flex;
   margin: 0;
@@ -6,17 +7,24 @@
   margin-block-start: 0;
 }
 
-.m-tabs__tab {
+.c-tabs__tab {
   @include button-base;
   background-color: $color-button-simple;
   border-left: 1px solid $color-bg-base;
   border-radius: 0;
   color: $color-font-grey;
-  display: inline-block;
   flex: 1 0 auto;
   list-style: none;
-  padding: 0.75rem;
-  text-transform: uppercase;
+  padding: 0;
+
+  button {
+    width: 100%;
+    height: 100%;
+    padding: 0.75rem;
+    text-transform: uppercase;
+    text-align: start;
+    display: inline-block;
+  }
 
   &:first-of-type {
     border-width: 0;
@@ -33,32 +41,32 @@
   }
 }
 
-.m-tabs__tab-status-icon {
+.c-tabs__tab-status-icon {
   margin-right: 1rem;
 
   vertical-align: text-top;
 }
 
-.m-tabs__tab-status-icon-outer-circle {
+.c-tabs__tab-status-icon-outer-circle {
   fill: none;
   stroke: $color-component-medium;
 
-  .m-tabs__tab--selected & {
+  .c-tabs__tab--selected & {
     fill: $color-secondary-medium;
     stroke: $color-secondary-dark;
   }
 }
 
-.m-tabs__tab-status-icon-inner-circle {
+.c-tabs__tab-status-icon-inner-circle {
   fill: none;
   stroke: none;
 
-  .m-tabs__tab--selected & {
+  .c-tabs__tab--selected & {
     fill: $color-secondary-dark;
   }
 }
 
-.m-tabs__tab-panel {
+.c-tabs__tab-panel {
   display: flex;
   flex-direction: column;
   height: 100%;

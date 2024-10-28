@@ -1,0 +1,62 @@
+.c-presets-panel {
+  ul {
+    margin-top: 0rem;
+    margin-bottom: 0.5rem;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      line-height: 0.75rem;
+
+      .c-presets-panel__preset-button-container {
+        button {
+          color: #0041ea;
+          font-size: 0.85rem;
+          text-decoration-line: underline;
+          text-align: start;
+          hyphens: auto;
+          overflow-wrap: anywhere;
+          word-break: break-all;
+        }
+      }
+    }
+  }
+
+  .c-presets-panel__save-as-preset-button {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: $color-gray-50;
+    background: $color-primary-legacy;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    display: flex;
+    align-items: center;
+
+    .c-presets-panel__save-as-preset-button-icon {
+      padding-right: 0.25rem;
+      width: 0.75rem;
+      height: 0.75rem;
+
+      svg {
+        path {
+          stroke: $color-gray-50;
+        }
+      }
+    }
+
+    &:disabled {
+      cursor: default;
+      font-weight: 500;
+      color: #e5e7eb;
+      background: #9fa2ac;
+
+      svg {
+        path {
+          stroke: #e5e7eb;
+        }
+      }
+    }
+  }
+}

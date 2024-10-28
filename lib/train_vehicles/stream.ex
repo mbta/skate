@@ -83,6 +83,6 @@ defmodule TrainVehicles.Stream do
   end
 
   defp log_errors({:error, error}) do
-    Logger.error("module=#{__MODULE__} error=#{inspect(error)}")
+    Logger.error("error=#{inspect(error)}")
   end
 end

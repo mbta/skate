@@ -1,65 +1,154 @@
-$non-mobile-min-width: 768px;
-$mobile-max-width: $non-mobile-min-width - 1;
+$old-breakpoints: (
+  "mobile-max-width": 767px,
+  "mobile-portrait-max-width": 480px,
+);
 $tab-bar-width: 3rem;
-$picker-width-narrow: 9.5rem;
-$picker-width-wide: $picker-width-narrow + 3.1;
+$drawer-tab-width: 2rem;
+$route-picker-width: 21.875rem;
+$mobile-route-picker-width: 18.125rem;
+$shuttle-picker-width: 12.6rem;
+$view-header-height: 2.5rem;
+$vpp-location-padding: 1rem;
+
+@import "ui_kit";
+
+// #region External Libraries
+// Import External Libraries first so that css selectors specified after these
+// imports are more specific and do not require extra work to override styles
+// imported externally
+
+@import "./bootstrap.scss";
+
+// #region Leaflet
+@import "../node_modules/leaflet/dist/leaflet.css";
+// #endregion
+// #endregion
+
+@import "z_indexes";
 
 @import "base";
 @import "inter";
-@import "ui_kit";
 @import "leaflet";
-@import "pigeon";
+@import "skate_ui";
 
+@import "basic_notification_modal";
+@import "circle_x_icon";
+@import "card";
+@import "circle_button";
 @import "close_button";
 @import "crowding";
+@import "cutout_overlay";
 @import "data_status_banner";
+@import "detour_list_page";
+@import "detours/detour_map";
+@import "detours/detour_modal";
+@import "detours/detour_table";
+@import "directions_button";
 @import "disconnected_modal";
+@import "diversion_page";
+@import "drawer";
 @import "drawer_tab";
+@import "dropdown";
+@import "filter_accordion";
+@import "garage_filter";
+@import "grouped_autocomplete";
 @import "icon_alert_circle";
 @import "incoming_box";
-@import "inactive_notification_modal";
-@import "ladder";
+@import "input_modal";
 @import "ladder_page";
+@import "logged_in_as";
+@import "ladder";
 @import "late_view";
 @import "loading_modal";
 @import "loading_spinner";
+@import "location_card";
+@import "map_page";
+@import "map/tooltip";
+@import "map/controls/layers_control";
+@import "map/controls/map_button";
+@import "map/controls/recenter_control";
+@import "map/controls/street_view_switch";
+@import "map/controls/user_location_control";
+@import "map/markers/location_dot_icon";
+@import "map/markers/missed_stop_icon";
+@import "map/markers/stop_icon";
+@import "map/markers/user_location_marker";
+@import "map/markers/vehicle_marker";
+@import "minimal_ladder_page";
 @import "minischedule";
 @import "modal";
-@import "notifications";
+@import "nav";
+@import "nav/bottom_nav_mobile";
+@import "nav/left_nav";
+@import "nav/nav_menu";
+@import "nav/top_nav_mobile";
+@import "nav/top_nav";
 @import "notification_bell_icon";
-@import "notification_content";
 @import "notification_drawer";
+@import "notifications";
+@import "old_close_button";
+@import "old_search_form";
 @import "page";
 @import "picker_container";
+@import "presets";
 @import "properties_list";
 @import "properties_panel";
 @import "properties_panel/block_waiver_banner";
 @import "properties_panel/ghost_properties_panel";
 @import "properties_panel/header";
-@import "properties_panel/headway_diagram";
+@import "properties_panel/stale_data_properties_panel";
 @import "properties_panel/tab_panels";
 @import "properties_panel/vehicle_properties_panel";
 @import "recent_searches";
+@import "route_filter";
 @import "route_ladder";
 @import "route_ladders";
 @import "route_picker";
-@import "route_filter";
+@import "route_pill";
+@import "route_properties_card";
+@import "schedule_adherence";
 @import "search_form";
 @import "search_page";
 @import "search_results";
 @import "settings_page";
 @import "shuttle_map";
+@import "shuttle_picker_container";
+@import "shuttle_picker";
+@import "stop_card";
+@import "street_view_button";
 @import "swings_view";
-@import "tab_bar";
+@import "user_avatar";
 @import "vehicle_icon";
 @import "vehicle_map";
+@import "vehicle_properties_card";
+@import "vehicle_route_summary";
+@import "view_header";
+
+@import "utilities";
+
+// #region Effects
+@import "demo_mode";
+// #endregion
+
+[hidden] {
+  display: none !important;
+}
+
+.border-box {
+  box-sizing: border-box;
+}
+
+.inherit-box :where(*, *::before, *::after) {
+  box-sizing: inherit;
+}
 
 html,
 body,
 main,
 #app,
-.m-app {
+.l-app {
   height: 100%;
+  width: 100%;
 }
 
 body {
@@ -69,19 +158,22 @@ body {
   font-size: 16px;
 }
 
-.m-app {
+.l-app {
   display: flex;
   flex-direction: column;
-  width: 100vw;
 }
 
-.m-app__banner {
+.l-app__banner {
   width: 100%;
   flex: 0 0 0;
 }
 
-.m-app__main {
+.l-app__main {
   position: relative;
   flex: 1 1 0;
   min-height: 0;
+}
+
+main.container {
+  @extend .isolation-isolate;
 }

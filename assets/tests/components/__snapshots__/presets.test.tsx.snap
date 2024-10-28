@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Presets renders current presets 1`] = `
+<div
+  className="c-presets-panel u-hideable"
+>
+  <ul>
+    <li>
+      <div
+        className="c-presets-panel__preset-button-container"
+      >
+        <button
+          onClick={[Function]}
+        >
+          Another Preset
+        </button>
+      </div>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--large c-close-button--light"
+        onClick={[Function]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </li>
+    <li>
+      <div
+        className="c-presets-panel__preset-button-container"
+      >
+        <button
+          onClick={[Function]}
+        >
+          My Preset
+        </button>
+      </div>
+      <button
+        aria-label="Close"
+        className="c-close-button c-close-button--large c-close-button--light"
+        onClick={[Function]}
+      >
+        <span
+          aria-hidden={true}
+          aria-label=""
+          dangerouslySetInnerHTML={
+            {
+              "__html": "<svg/>",
+            }
+          }
+          role="img"
+        />
+      </button>
+    </li>
+  </ul>
+  <button
+    className="c-presets-panel__save-as-preset-button"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <span
+      className="c-presets-panel__save-as-preset-button-icon"
+      dangerouslySetInnerHTML={
+        {
+          "__html": "<svg/>",
+        }
+      }
+    />
+    Save as preset
+  </button>
+</div>
+`;

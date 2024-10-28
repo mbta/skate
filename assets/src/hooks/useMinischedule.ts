@@ -3,6 +3,7 @@ import { fetchScheduleBlock, fetchScheduleRun } from "../api"
 import { Block, Run } from "../minischedule"
 import { TripId } from "../schedule"
 import { RunId } from "../realtime"
+import { equalByElements } from "../helpers/array"
 
 /**
  * undefined means loading
@@ -15,7 +16,7 @@ export const useMinischeduleRun = (
   const [run, setRun] = useState<Run | null | undefined>(undefined)
   useEffect(() => {
     fetchScheduleRun(tripId, runId).then(setRun)
-  }, [tripId])
+  }, [tripId, runId])
   return run
 }
 
@@ -27,11 +28,18 @@ export const useMinischeduleRuns = (
   tripIds: TripId[]
 ): (Run | null)[] | undefined => {
   const [runs, setRuns] = useState<(Run | null)[] | undefined>(undefined)
+  const [currentTripIds, setCurrentTripIds] = useState<TripId[]>(tripIds)
+
+  if (!equalByElements(tripIds, currentTripIds)) {
+    setCurrentTripIds(tripIds)
+  }
+
   useEffect(() => {
-    Promise.all(tripIds.map((tripId) => fetchScheduleRun(tripId, null))).then(
-      setRuns
-    )
-  }, [JSON.stringify(tripIds)])
+    Promise.all(
+      currentTripIds.map((tripId) => fetchScheduleRun(tripId, null))
+    ).then(setRuns)
+  }, [currentTripIds])
+
   return runs
 }
 

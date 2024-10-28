@@ -1,6 +1,6 @@
 import { putUserSetting } from "./api"
 import { isVehicle } from "./models/vehicle"
-import { VehicleOrGhost } from "./realtime"
+import { Ghost, Vehicle } from "./realtime"
 
 export enum VehicleLabelSetting {
   RunNumber = 1,
@@ -26,7 +26,7 @@ export const defaultUserSettings: UserSettings = {
 
 export const vehicleLabelSetting = (
   settings: UserSettings,
-  vehicle: VehicleOrGhost
+  vehicle: Vehicle | Ghost
 ): VehicleLabelSetting =>
   isVehicle(vehicle) && vehicle.isShuttle
     ? settings.shuttleVehicleLabel

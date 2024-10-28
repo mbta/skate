@@ -1,6 +1,5 @@
-import React, { Dispatch, useContext } from "react"
+import React, { useContext } from "react"
 import RoutesContext from "../contexts/routesContext"
-import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import {
   filterRoutes,
   RouteFilter,
@@ -8,98 +7,108 @@ import {
   useRouteFilter,
 } from "../hooks/useRouteFilter"
 import { Route, RouteId } from "../schedule.d"
-import { deselectRoute, DeselectRouteAction, selectRoute } from "../state"
 import { routeNameOrId } from "../util/route"
 import Loading from "./loading"
-import PickerContainer from "./pickerContainer"
 import {
   GarageFilterData,
   useGarageFilter,
   GarageFilter,
   filterRoutesByGarage,
 } from "../hooks/useGarageFilter"
-import featureIsEnabled from "../laboratoryFeatures"
+import { OldCloseIcon } from "../helpers/icon"
 
 interface Props {
   selectedRouteIds: RouteId[]
+  selectRoute: (routeId: RouteId) => void
+  deselectRoute: (routeId: RouteId) => void
 }
 
-const RoutePicker = ({ selectedRouteIds }: Props) => {
+const RoutePicker = ({
+  selectedRouteIds,
+  selectRoute,
+  deselectRoute,
+}: Props) => {
   const routes = useContext(RoutesContext)
   const routeFilterData: RouteFilterData = useRouteFilter()
   const garageFilterData: GarageFilterData = useGarageFilter(routes)
 
-  const filteredRoutes = filterRoutesByGarage(
+  const selectableRoutes = filterRoutesByGarage(
     filterRoutes(routes || [], routeFilterData),
     garageFilterData
-  )
+  ).filter((route) => !selectedRouteIds.includes(route.id))
 
   return (
-    <PickerContainer>
-      <div className="m-route-picker">
-        <SelectedRoutesList
-          routes={routes}
-          selectedRouteIds={selectedRouteIds}
-        />
+    <div className="c-route-picker u-hideable">
+      <RouteFilter {...routeFilterData} />
 
-        <RouteFilter {...routeFilterData} />
+      <GarageFilter {...garageFilterData} />
 
-        {featureIsEnabled("presets_workspaces") ? (
-          <GarageFilter {...garageFilterData} />
-        ) : null}
-
+      <div className="c-route-picker__routes-container">
         {routes === null ? (
           <Loading />
         ) : (
           <RoutesList
-            routes={filteredRoutes}
-            selectedRouteIds={selectedRouteIds}
+            routes={selectableRoutes}
+            selectRoute={selectRoute}
+            deselectRoute={deselectRoute}
           />
         )}
+
+        <SelectedRoutesList
+          routes={routes}
+          selectedRouteIds={selectedRouteIds}
+          deselectRoute={deselectRoute}
+        />
       </div>
-    </PickerContainer>
+    </div>
   )
 }
 
 const SelectedRoutesList = ({
   routes,
   selectedRouteIds,
+  deselectRoute,
 }: {
   routes: Route[] | null
   selectedRouteIds: RouteId[]
+  deselectRoute: (routeId: RouteId) => void
 }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
-
-  return (
-    <ul className="m-route-picker__selected-routes">
-      {selectedRouteIds.map((routeId) => (
-        <SelectedRouteButton
-          key={routeId}
-          routeId={routeId}
-          routes={routes}
-          dispatch={dispatch}
-        />
-      ))}
-    </ul>
-  )
+  if (selectedRouteIds.length > 0) {
+    return (
+      <ul className="c-route-picker__selected-routes">
+        {selectedRouteIds.map((routeId) => (
+          <SelectedRouteButton
+            key={routeId}
+            routeId={routeId}
+            routes={routes}
+            deselectRoute={deselectRoute}
+          />
+        ))}
+      </ul>
+    )
+  } else {
+    return <p>Selected routes will show up here&hellip;</p>
+  }
 }
 
 const SelectedRouteButton = ({
   routeId,
   routes,
-  dispatch,
+  deselectRoute,
 }: {
   routeId: RouteId
   routes: Route[] | null
-  dispatch: Dispatch<DeselectRouteAction>
+  deselectRoute: (routeId: RouteId) => void
 }) => {
   return (
     <li>
       <button
-        className="m-route-picker__selected-routes-button"
-        onClick={() => dispatch(deselectRoute(routeId))}
+        className="c-route-picker__selected-routes-button"
+        onClick={() => deselectRoute(routeId)}
+        tabIndex={-1}
       >
         {routeNameOrId(routeId, routes)}
+        <OldCloseIcon className="c-route-picker__selected-routes-button-icon" />
       </button>
     </li>
   )
@@ -107,18 +116,16 @@ const SelectedRouteButton = ({
 
 const RoutesList = ({
   routes,
-  selectedRouteIds,
+  selectRoute,
 }: {
   routes: Route[]
-  selectedRouteIds: RouteId[]
+  selectRoute: (routeId: RouteId) => void
+  deselectRoute: (routeId: RouteId) => void
 }) => (
-  <ul className="m-route-picker__route-list">
+  <ul className="c-route-picker__route-list">
     {routes.map((route) => (
       <li key={route.id}>
-        <RouteListButton
-          route={route}
-          isSelected={selectedRouteIds.includes(route.id)}
-        />
+        <RouteListButton route={route} selectRoute={selectRoute} />
       </li>
     ))}
   </ul>
@@ -126,23 +133,16 @@ const RoutesList = ({
 
 const RouteListButton = ({
   route,
-  isSelected,
+  selectRoute,
 }: {
   route: Route
-  isSelected: boolean
+  selectRoute: (routeId: RouteId) => void
 }) => {
-  const [, dispatch] = useContext(StateDispatchContext)
-  const selectedClass = isSelected
-    ? "m-route-picker__route-list-button--selected"
-    : "m-route-picker__route-list-button--unselected"
-  const clickHandler = isSelected
-    ? () => dispatch(deselectRoute(route.id))
-    : () => dispatch(selectRoute(route.id))
-
   return (
     <button
-      className={`m-route-picker__route-list-button ${selectedClass}`}
-      onClick={clickHandler}
+      className="c-route-picker__route-list-button"
+      onClick={() => selectRoute(route.id)}
+      tabIndex={-1}
     >
       {route.name}
     </button>

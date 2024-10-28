@@ -1,0 +1,27 @@
+@use "../color/definitions" as semantic;
+@use "../color/tokens_2024" as new_tokens;
+
+$theme-colors: (
+  "primary": new_tokens.$eggplant-500,
+  "secondary": new_tokens.$gray-500,
+  "info": semantic.$info,
+  "ui-alert": semantic.$ui-alert,
+  "service-alert": semantic.$service-alert,
+  "light": new_tokens.$gray-50,
+  "dark": new_tokens.$gray-900,
+  "missed-stop": semantic.$missed-stop,
+  "active-detour": semantic.$active-detour,
+);
+
+$table-variants: $theme-colors;
+
+$utilities: (
+  // Shorthand for specifying utility classes `top-0 start-0 bottom-0 end-0`
+  "inset":
+    (
+      property: inset,
+      values: (
+        0: 0,
+      ),
+    )
+);

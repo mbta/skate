@@ -1,13 +1,16 @@
 defmodule Notifications.Notification do
+  @moduledoc """
+  Context for managing Notifications.
+  """
+
   import Skate.Repo
 
   import Ecto.Query
 
-  alias Schedule.Route
-  alias Schedule.Trip
-  alias Schedule.Hastus.Run
+  alias Notifications.Db.BlockWaiver
+  alias Notifications.Db.BridgeMovement
+  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.User
-  alias Notifications.NotificationReason
   alias Notifications.NotificationState
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
@@ -16,52 +19,130 @@ defmodule Notifications.Notification do
 
   @notification_expiration_threshold 8 * 60 * 60
 
+  # This "blackout" period is so that multiple unsynchronised Skate instances
+  # don't duplicate their work when polling the bridge API
   @bridge_lowering_blackout 120
   @chelsea_st_bridge_route_ids ~w[112 743]
 
   @type id :: integer()
 
-  @type t() :: %__MODULE__{
-          id: id() | nil,
-          created_at: Util.Time.timestamp(),
-          reason: NotificationReason.t(),
-          route_ids: [Route.id()],
-          run_ids: [Run.id()],
-          trip_ids: [Trip.id()],
-          operator_id: String.t() | nil,
-          operator_name: String.t() | nil,
-          route_id_at_creation: Route.id() | nil,
-          start_time: Util.Time.timestamp(),
-          end_time: Util.Time.timestamp(),
-          state: NotificationState.t() | nil
-        }
+  @type t() ::
+          %__MODULE__{
+            id: id(),
+            created_at: Util.Time.timestamp(),
+            state: NotificationState.t(),
+            content:
+              Notifications.Db.BlockWaiver.t()
+              | Notifications.Db.BridgeMovement.t()
+              | Notifications.Db.Detour.t()
+          }
 
   @derive Jason.Encoder
 
   @enforce_keys [
+    :id,
     :created_at,
-    :reason,
-    :route_ids,
-    :run_ids,
-    :trip_ids,
-    :start_time,
-    :end_time
+    :state,
+    :content
   ]
 
   defstruct [
     :id,
     :created_at,
-    :reason,
-    :route_ids,
-    :run_ids,
-    :trip_ids,
-    :operator_id,
-    :operator_name,
-    :route_id_at_creation,
-    :start_time,
-    :end_time,
-    :state
+    :state,
+    :content
   ]
+
+  @doc """
+  Inserts a new notification for an deactivated detour into the database
+  and returns the detour notification with notification info.
+  """
+  def create_deactivated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
+    import Notifications.Db.Notification.Queries
+
+    notification =
+      deactivated_detour_notification(detour)
+      |> unread_notifications_for_users(Skate.Settings.User.get_all())
+      |> Skate.Repo.insert!()
+
+    # We need the associated values in the Detour JSON, so query the DB with the
+    # id to load the extra data.
+    get_detour_notification(notification.id)
+  end
+
+  @doc """
+  Inserts a new notification for an activated detour into the database
+  and returns the detour notification with notification info.
+  """
+  def create_activated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
+    import Notifications.Db.Notification.Queries
+
+    notification =
+      activated_detour_notification(detour)
+      |> unread_notifications_for_users(Skate.Settings.User.get_all())
+      |> Skate.Repo.insert!()
+
+    # We need the associated values in the Detour JSON, so query the DB with the
+    # id to load the extra data.
+    get_detour_notification(notification.id)
+  end
+
+  def get_detour_notification(notification_id) do
+    import Notifications.Db.Notification.Queries
+
+    select_detour_info()
+    |> where([notification: n], n.id == ^notification_id)
+    |> Skate.Repo.one!()
+    |> from_db_notification()
+  end
+
+  # Creates a new notification set to the current time
+  defp new_notification_now() do
+    %Notifications.Db.Notification{
+      created_at: DateTime.to_unix(DateTime.utc_now())
+    }
+  end
+
+  # Adds a activated detour notification relation to a `Notifications.Db.Notification`
+  defp activated_detour_notification(%Skate.Detours.Db.Detour{} = detour) do
+    %Notifications.Db.Notification{
+      new_notification_now()
+      | detour: Notifications.Detour.activated_detour(detour)
+    }
+  end
+
+  # Adds a deactivated detour notification relation to a `Notifications.Db.Notification`
+  defp deactivated_detour_notification(%Skate.Detours.Db.Detour{} = detour) do
+    %Notifications.Db.Notification{
+      new_notification_now()
+      | detour: Notifications.Detour.deactivated_detour(detour)
+    }
+  end
+
+  defp notification_for_user(%Skate.Settings.Db.User{} = user) do
+    %Notifications.Db.NotificationUser{
+      user: user
+    }
+  end
+
+  defp unread_notification(%Notifications.Db.NotificationUser{} = user_notification) do
+    %{
+      user_notification
+      | state: :unread
+    }
+  end
+
+  defp unread_notifications_for_users(%Notifications.Db.Notification{} = notification, users) do
+    %{
+      notification
+      | notification_users:
+          for user <- users do
+            user
+            |> notification_for_user()
+            |> unread_notification()
+          end
+    }
+  end
 
   @spec get_or_create_from_block_waiver(map()) :: t()
   def get_or_create_from_block_waiver(block_waiver_values) do
@@ -71,15 +152,11 @@ defmodule Notifications.Notification do
         block_waiver_values
       )
 
-    notification_values = block_waiver_values |> Map.delete(:block_id) |> Map.delete(:service_id)
-
     db_record =
       case Skate.Repo.transaction(fn ->
              with {:ok, db_record} <- insert(changeset, on_conflict: :nothing),
-                  false <- is_nil(db_record.id),
-                  notification_with_id <-
-                    struct!(__MODULE__, Map.merge(notification_values, %{id: db_record.id})) do
-               log_creation(notification_with_id)
+                  false <- is_nil(db_record.id) do
+               log_creation(db_record)
 
                link_notification_to_users(
                  db_record.id,
@@ -98,6 +175,7 @@ defmodule Notifications.Notification do
           Skate.Repo.one!(
             from(n in DbNotification,
               join: bw in assoc(n, :block_waiver),
+              preload: [block_waiver: bw],
               where:
                 bw.start_time == ^block_waiver_values.start_time and
                   bw.end_time == ^block_waiver_values.end_time and
@@ -108,13 +186,13 @@ defmodule Notifications.Notification do
           )
       end
 
-    struct!(__MODULE__, Map.merge(notification_values, %{id: db_record.id}))
+    from_db_notification(db_record)
   end
 
   def get_or_create_from_bridge_movement(bridge_movement_values) do
-    created_at = DateTime.utc_now() |> DateTime.to_unix()
+    created_at = DateTime.to_unix(DateTime.utc_now())
 
-    {:ok, {source, db_record}} =
+    {:ok, db_record} =
       Skate.Repo.transaction(fn ->
         Skate.Repo.query!("LOCK TABLE bridge_movements")
 
@@ -122,20 +200,22 @@ defmodule Notifications.Notification do
         # so we assume that, if we see two bridge movements within a blackout
         # period, they are actually the same movement and what's happening is
         # that we have multiple servers trying to insert a movement at once.
-        cutoff_time = NaiveDateTime.utc_now() |> NaiveDateTime.add(-@bridge_lowering_blackout)
+        cutoff_time = NaiveDateTime.add(NaiveDateTime.utc_now(), -@bridge_lowering_blackout)
 
         existing_record =
           Skate.Repo.one(
             from(n in DbNotification,
               join: bm in assoc(n, :bridge_movement),
-              where: bm.inserted_at > ^cutoff_time,
+              preload: [bridge_movement: bm],
+              where:
+                bm.inserted_at > ^cutoff_time and bm.status == ^bridge_movement_values[:status],
               order_by: [desc: bm.inserted_at],
               limit: 1
             )
           )
 
         if existing_record do
-          {:existing_record, existing_record}
+          existing_record
         else
           changeset =
             DbNotification.bridge_movement_changeset(
@@ -143,66 +223,41 @@ defmodule Notifications.Notification do
               bridge_movement_values
             )
 
-          {:ok, new_record} = Skate.Repo.insert(changeset)
+          {:ok, new_record} = Skate.Repo.insert(changeset, returning: true)
           link_notification_to_users(new_record.id, @chelsea_st_bridge_route_ids)
-          {:new_record, new_record}
+          log_creation(new_record)
+          new_record
         end
       end)
 
-    {reason, end_time} =
-      if bridge_movement_values.status == :raised do
-        {:chelsea_st_bridge_raised, bridge_movement_values.lowering_time}
-      else
-        {:chelsea_st_bridge_lowered, nil}
-      end
-
-    notification = %__MODULE__{
-      id: db_record.id,
-      created_at: db_record.created_at,
-      reason: reason,
-      route_ids: @chelsea_st_bridge_route_ids,
-      run_ids: [],
-      trip_ids: [],
-      start_time: db_record.created_at,
-      end_time: end_time,
-      state: :unread
-    }
-
-    if source == :new_record, do: log_creation(notification)
-    notification
+    from_db_notification(db_record)
   end
 
-  def unexpired_notifications_for_user(username, now_fn \\ &Util.Time.now/0) do
+  @spec unexpired_notifications_for_user(DbUser.id(), (-> Util.Time.timestamp())) :: [t()]
+  def unexpired_notifications_for_user(user_id, now_fn \\ &Util.Time.now/0) do
+    import Notifications.Db.Notification.Queries
+
     cutoff_time = now_fn.() - @notification_expiration_threshold
 
-    query =
-      from(n in DbNotification,
-        join: nu in assoc(n, :notification_users),
-        join: u in assoc(nu, :user),
-        left_join: bw in assoc(n, :block_waiver),
-        left_join: bm in assoc(n, :bridge_movement),
-        select: %{
-          id: n.id,
-          created_at: n.created_at,
-          state: nu.state,
-          block_waiver: bw,
-          bridge_movement: bm
-        },
-        where: n.created_at > ^cutoff_time and u.username == ^username,
-        order_by: [desc: n.created_at]
-      )
-
-    query
+    base()
+    |> select_user_read_state(user_id)
+    |> select_bridge_movements()
+    |> select_block_waivers()
+    |> select_detour_info()
+    |> where([notification: n], n.created_at > ^cutoff_time)
+    |> order_by([notification: n], desc: n.created_at)
     |> Skate.Repo.all()
-    |> Enum.map(&convert_from_db_notification/1)
+    |> Enum.map(&from_db_notification/1)
   end
 
-  def update_read_states(username, notification_ids, read_state)
+  @spec update_read_states(DbUser.id(), [id()], NotificationState.t()) ::
+          {non_neg_integer(), nil | [term()]}
+  def update_read_states(user_id, notification_ids, read_state)
       when read_state in [:read, :unread, :deleted] do
     query =
       from(nu in DbNotificationUser,
         join: u in assoc(nu, :user),
-        where: u.username == ^username,
+        where: u.id == ^user_id,
         where: nu.notification_id in ^notification_ids
       )
 
@@ -210,7 +265,7 @@ defmodule Notifications.Notification do
   end
 
   defp log_creation(notification) do
-    Logger.warn("Notification created new_notification=#{inspect(notification)}")
+    Logger.info("Notification created new_notification=#{inspect(notification)}")
   end
 
   defp link_notification_to_users(notification_id, notification_route_ids) do
@@ -231,45 +286,39 @@ defmodule Notifications.Notification do
 
     Skate.Repo.insert_all(
       DbNotificationUser,
-      notification_user_maps
+      notification_user_maps,
+      on_conflict: :nothing
     )
   end
 
-  @spec convert_from_db_notification(DbNotification.t()) :: __MODULE__.t()
-  defp convert_from_db_notification(db_notification) do
-    basic_fields = %{
+  @spec from_db_notification(DbNotification.t()) :: __MODULE__.t()
+  defp from_db_notification(
+         %DbNotification{} =
+           db_notification
+       ) do
+    %__MODULE__{
       id: db_notification.id,
       created_at: db_notification.created_at,
-      state: db_notification.state
+      state: db_notification.state,
+      content: content_from_db_notification(db_notification)
     }
+  end
 
-    block_waiver = Map.get(db_notification, :block_waiver)
-    bridge_movement = Map.get(db_notification, :bridge_movement)
+  defp content_from_db_notification(%DbNotification{
+         block_waiver: %BlockWaiver{} = bw
+       }) do
+    bw
+  end
 
-    detail_fields =
-      cond do
-        block_waiver ->
-          Map.from_struct(block_waiver) |> Map.delete(:id)
+  defp content_from_db_notification(%DbNotification{
+         bridge_movement: %BridgeMovement{} = bm
+       }) do
+    bm
+  end
 
-        bridge_movement ->
-          {reason, end_time} =
-            if bridge_movement.status == :raised do
-              {:chelsea_st_bridge_raised, bridge_movement.lowering_time}
-            else
-              {:chelsea_st_bridge_lowered,
-               db_notification.created_at + @notification_expiration_threshold}
-            end
-
-          %{
-            reason: reason,
-            route_ids: @chelsea_st_bridge_route_ids,
-            run_ids: [],
-            trip_ids: [],
-            start_time: db_notification.created_at,
-            end_time: end_time
-          }
-      end
-
-    struct(__MODULE__, Map.merge(basic_fields, detail_fields))
+  defp content_from_db_notification(%DbNotification{
+         detour: %Notifications.Db.Detour{} = detour
+       }) do
+    detour
   end
 end

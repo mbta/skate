@@ -17,7 +17,7 @@ defmodule SkateWeb.ScheduleControllerTest do
          )
 
   describe "GET /api/schedule/run" do
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       reassign_env(:skate, :schedule_run_fn, fn _run_id, _trip_id -> @run end)
 
       conn =
@@ -25,7 +25,7 @@ defmodule SkateWeb.ScheduleControllerTest do
         |> api_headers()
         |> get("/api/schedule/run?trip_id=trip&run_id=run")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated
@@ -80,7 +80,7 @@ defmodule SkateWeb.ScheduleControllerTest do
   end
 
   describe "GET /api/schedule/block" do
-    test "when logged out, redirects you to cognito auth", %{conn: conn} do
+    test "when logged out, redirects you to keycloak auth", %{conn: conn} do
       reassign_env(:skate, :schedule_block_fn, fn _trip_id -> @block end)
 
       conn =
@@ -88,7 +88,7 @@ defmodule SkateWeb.ScheduleControllerTest do
         |> api_headers()
         |> get("/api/schedule/block?trip_id=trip")
 
-      assert redirected_to(conn) == "/auth/cognito"
+      assert redirected_to(conn) == ~p"/auth/keycloak"
     end
 
     @tag :authenticated

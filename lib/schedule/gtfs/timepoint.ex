@@ -1,14 +1,20 @@
 defmodule Schedule.Gtfs.Timepoint do
+  @moduledoc false
+
   alias Schedule.Csv
 
   @garage_names_by_id %{
+    "albny" => "Albany Garage",
+    "arbor" => "Arborway Garage",
     "cabot" => "Cabot Garage",
     "charl" => "Charlestown Garage",
     "fell" => "Fellsway Garage",
     "lynn" => "Lynn Garage",
     "ncamb" => "North Cambridge Garage",
     "prwb" => "Paul Revere Winthrop Garage",
-    "somvl" => "Somerville Garage"
+    "qubus" => "Quincy Garage",
+    "somvl" => "Bennett Garage",
+    "soham" => "Southampton Garage"
   }
 
   @type id :: String.t()

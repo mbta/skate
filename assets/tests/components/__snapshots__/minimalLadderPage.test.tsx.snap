@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MinimalLadderPage renders the preset selection page 1`] = `
+<DocumentFragment>
+  <div
+    class="c-minimal-ladder-page"
+  >
+    <h3>
+      Select a preset to display
+    </h3>
+    <a
+      class="btn btn-primary c-minimal-ladder-page__button"
+      href="/minimal/abcdef"
+    >
+      Preset 1
+    </a>
+    <a
+      class="btn btn-primary c-minimal-ladder-page__button"
+      href="/minimal/ghijkl"
+    >
+      Preset 2
+    </a>
+  </div>
+</DocumentFragment>
+`;

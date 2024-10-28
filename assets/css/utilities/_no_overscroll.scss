@@ -1,0 +1,6 @@
+.u-no-overscroll-y,
+html {
+  // Disable scrolling past the bottom of the page on iOS
+  // Disable pull to refresh
+  overscroll-behavior-y: none;
+}
