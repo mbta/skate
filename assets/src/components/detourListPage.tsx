@@ -61,6 +61,7 @@ export const DetourListPage = () => {
         <Button
           className="c-detour-list-page__button icon-link fw-light px-3 py-2 u-hide-for-mobile"
           onClick={() => setShowDetourModal(true)}
+          data-fs-element="Add Detour"
         >
           <PlusSquare />
           <span className="c-detour-list-page__button-text">Add detour</span>
