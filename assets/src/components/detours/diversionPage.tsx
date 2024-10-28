@@ -244,7 +244,11 @@ export const DiversionPage = ({
         <DetourFinishedPanel
           onNavigateBack={editDetour}
           copyableDetourText={copyableDetourText}
-          editableDirections={editedDirections || ""}
+          // Include fallback if editedDirections was not initialized on an older detour
+          editableDirections={
+            editedDirections ||
+            (extendedDirections?.map((v) => v.instruction).join("\n") ?? "")
+          }
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
             connectionPoints?.end?.name ?? "N/A",
