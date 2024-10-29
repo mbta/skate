@@ -2,18 +2,11 @@ import React, { PropsWithChildren } from "react"
 import { Button, Form } from "react-bootstrap"
 import * as BsIcons from "../../../helpers/bsIcons"
 import { Panel } from "../diversionPage"
-import {
-  ConnectionPoints,
-  CopyButton,
-  MissedStops,
-} from "../detourPanelComponents"
-import { Stop } from "../../../schedule"
+import { CopyButton } from "../detourPanelComponents"
 
 interface DetourFinishedPanelProps extends PropsWithChildren {
   onNavigateBack: () => void
   detourText: string
-  connectionPoints?: [string, string]
-  missedStops?: Stop[]
   onChangeDetourText: (value: string) => void
   onActivateDetour?: () => void
 }
@@ -21,8 +14,6 @@ interface DetourFinishedPanelProps extends PropsWithChildren {
 export const DetourFinishedPanel = ({
   onNavigateBack,
   detourText,
-  connectionPoints,
-  missedStops,
   onChangeDetourText,
   onActivateDetour,
   children,
@@ -54,11 +45,6 @@ export const DetourFinishedPanel = ({
           }}
           data-fs-element="Detour Text"
         />
-
-        {connectionPoints && (
-          <ConnectionPoints connectionPoints={connectionPoints} />
-        )}
-        {missedStops && <MissedStops missedStops={missedStops} />}
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex flex-column">
