@@ -24,6 +24,11 @@ import routeFactory from "../../factories/route"
 import routeTabFactory from "../../factories/routeTab"
 import userEvent from "@testing-library/user-event"
 
+// Avoid Halloween
+jest
+  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .setSystemTime(new Date("2024-08-29T20:00:00"))
+
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 
 const setTabMode = jest.fn()
