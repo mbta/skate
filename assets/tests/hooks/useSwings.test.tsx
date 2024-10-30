@@ -46,33 +46,30 @@ describe("useSwings", () => {
     ]
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
     mockFetchSwings.mockImplementationOnce(() => instantPromise(swings))
-    const { result } = renderHook(
-      useSwings,
-      {
-        wrapper: ({ children }) => (
-          <Wrapper
-            routeTabs={[
-              routeTabFactory.build({
-                ordering: 0,
-                isCurrentTab: true,
-                selectedRouteIds: ["1"],
-              }),
-              routeTabFactory.build({
-                ordering: 1,
-                isCurrentTab: false,
-                selectedRouteIds: ["2"],
-              }),
-              routeTabFactory.build({
-                ordering: undefined,
-                selectedRouteIds: ["3"],
-              }),
-            ]}
-          >
-            {children}
-          </Wrapper>
-        ),
-      }
-    )
+    const { result } = renderHook(useSwings, {
+      wrapper: ({ children }) => (
+        <Wrapper
+          routeTabs={[
+            routeTabFactory.build({
+              ordering: 0,
+              isCurrentTab: true,
+              selectedRouteIds: ["1"],
+            }),
+            routeTabFactory.build({
+              ordering: 1,
+              isCurrentTab: false,
+              selectedRouteIds: ["2"],
+            }),
+            routeTabFactory.build({
+              ordering: undefined,
+              selectedRouteIds: ["3"],
+            }),
+          ]}
+        >
+          {children}
+        </Wrapper>
+      ),
+    })
 
     expect(mockFetchSwings).toHaveBeenCalledWith(["1", "2"])
     expect(result.current).toEqual(swings)
@@ -80,18 +77,15 @@ describe("useSwings", () => {
 
   test("doesn't refetch swings on every render", () => {
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
-    const { rerender } = renderHook(
-      useSwings,
-      {
-        wrapper: ({ children }) => (
-          <Wrapper
-            routeTabs={[routeTabFactory.build({ selectedRouteIds: ["1"] })]}
-          >
-            {children}
-          </Wrapper>
-        ),
-      }
-    )
+    const { rerender } = renderHook(useSwings, {
+      wrapper: ({ children }) => (
+        <Wrapper
+          routeTabs={[routeTabFactory.build({ selectedRouteIds: ["1"] })]}
+        >
+          {children}
+        </Wrapper>
+      ),
+    })
     rerender()
     expect(mockFetchSwings).toHaveBeenCalledTimes(1)
   })
@@ -109,14 +103,11 @@ describe("useSwings", () => {
         isCurrentTab: false,
       }),
     ]
-    const { rerender } = renderHook(
-      useSwings,
-      {
-        wrapper: ({ children }) => (
-          <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
-        ),
-      }
-    )
+    const { rerender } = renderHook(useSwings, {
+      wrapper: ({ children }) => (
+        <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
+      ),
+    })
     routeTabs = [
       routeTabFactory.build({ selectedRouteIds: ["1"], isCurrentTab: false }),
       routeTabFactory.build({ selectedRouteIds: ["2"], isCurrentTab: true }),
@@ -129,14 +120,11 @@ describe("useSwings", () => {
     const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
 
     let routeTabs = [routeTabFactory.build({ selectedRouteIds: ["1"] })]
-    const { rerender } = renderHook(
-      useSwings,
-      {
-        wrapper: ({ children }) => (
-          <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
-        ),
-      }
-    )
+    const { rerender } = renderHook(useSwings, {
+      wrapper: ({ children }) => (
+        <Wrapper routeTabs={routeTabs}>{children}</Wrapper>
+      ),
+    })
     routeTabs = [routeTabFactory.build({ selectedRouteIds: ["2"] })]
     rerender()
     expect(mockFetchSwings).toHaveBeenCalledTimes(2)
