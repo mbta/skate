@@ -19,7 +19,7 @@ beforeEach(() => {
 
 describe("useSwings", () => {
   test("returns null while loading", () => {
-    const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
+    const mockFetchSwings = jest.mocked(Api.fetchSwings)
     const { result } = renderHook(useSwings)
     expect(mockFetchSwings).toHaveBeenCalledTimes(1)
     expect(result.current).toEqual(null)
@@ -27,7 +27,7 @@ describe("useSwings", () => {
 
   test("returns result when loaded", () => {
     const swings = swingFactory.buildList(2)
-    const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
+    const mockFetchSwings = jest.mocked(Api.fetchSwings)
     mockFetchSwings.mockImplementationOnce(() => instantPromise(swings))
 
     const { result } = renderHook(useSwings, {
@@ -60,7 +60,7 @@ describe("useSwings", () => {
   })
 
   test("doesn't refetch swings on every render", () => {
-    const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
+    const mockFetchSwings = jest.mocked(Api.fetchSwings)
     const { rerender } = renderHook(useSwings, {
       wrapper: ({ children }) => (
         <Wrapper
@@ -75,7 +75,7 @@ describe("useSwings", () => {
   })
 
   test("doesn't refetch swings when route Ids don't change", () => {
-    const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
+    const mockFetchSwings = jest.mocked(Api.fetchSwings)
 
     let routeTabs = [
       routeTabFactory.build({
@@ -101,7 +101,7 @@ describe("useSwings", () => {
   })
 
   test("does refetch swings when selected routes change", () => {
-    const mockFetchSwings: jest.Mock = Api.fetchSwings as jest.Mock
+    const mockFetchSwings = jest.mocked(Api.fetchSwings)
 
     let routeTabs = [routeTabFactory.build({ selectedRouteIds: ["1"] })]
     const { rerender } = renderHook(useSwings, {
