@@ -19,6 +19,11 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
+// Avoid Halloween
+jest
+  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .setSystemTime(new Date("2024-08-29T20:00:00"))
+
 jest.mock("../../src/hooks/useVehicles", () => ({
   __esModule: true,
   default: () => ({}),
