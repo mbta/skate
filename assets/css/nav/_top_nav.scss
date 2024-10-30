@@ -5,7 +5,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0;
 
   background-color: $color-gray-50;
 
@@ -14,7 +14,6 @@
 
 .c-top-nav__logo {
   width: 2.5rem;
-  height: 1.5rem;
 
   svg {
     width: 100%;
@@ -23,14 +22,26 @@
 }
 
 .c-top-nav__logo-icon {
+  &:not(.c-top-nav__logo-halloween-icon) {
+    margin-left: 1.5rem;
+  }
   svg {
     fill: $color-eggplant-900;
+  }
+}
+
+.c-top-nav__logo-halloween-icon {
+  background-color: #f4b347;
+  padding: 0 0.875rem;
+  @include media-breakpoint-up(lg) {
+    margin-left: 1.5rem;
   }
 }
 
 .c-top-nav__right-items {
   display: flex;
   align-items: center;
+  padding-right: 1.5rem;
 
   :not(:last-child) {
     padding-right: 1.5rem;
