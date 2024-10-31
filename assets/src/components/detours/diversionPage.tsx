@@ -282,13 +282,13 @@ export const DiversionPage = ({
                     "Share Detour": { Activating: "Selecting Duration" },
                   },
                 }) &&
-                  "Select Duration") ||
+                  "Confirm Duration") ||
                 (snapshot.matches({
                   "Detour Drawing": {
                     "Share Detour": { Activating: "Selecting Reason" },
                   },
                 }) &&
-                  "Select Reason") ||
+                  "Confirm Reason") ||
                 undefined
               }
               onCancel={() => {
