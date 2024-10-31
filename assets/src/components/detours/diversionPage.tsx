@@ -405,6 +405,7 @@ export const DiversionPage = ({
   return (
     <>
       <article
+        data-fs-element="Detours"
         className={`l-diversion-page l-diversion-page--${displayType} h-100 border-box inherit-box`}
       >
         <header

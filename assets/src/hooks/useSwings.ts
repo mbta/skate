@@ -12,9 +12,9 @@ const useSwings = (): Swing[] | null => {
     allOpenRouteIds(routeTabs)
   )
 
-  const newRouteIds = allOpenRouteIds(routeTabs)
+  const newRouteIds = routeTabs.find((v) => v.isCurrentTab)?.selectedRouteIds
 
-  if (!equalByElements(routeIds, newRouteIds)) {
+  if (newRouteIds && !equalByElements(routeIds, newRouteIds)) {
     setRouteIds(newRouteIds)
   }
 
