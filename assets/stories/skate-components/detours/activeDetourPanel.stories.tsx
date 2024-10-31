@@ -4,7 +4,7 @@ import React from "react"
 import { ActiveDetourPanel } from "../../../src/components/detours/detourPanels/activeDetourPanel"
 import { stopFactory } from "../../../tests/factories/stop"
 
-const defaulText = [
+const defaultText = [
   "Detour:",
   "66 Harvard via Allston from",
   "Andrew Station",
@@ -34,7 +34,7 @@ const meta = {
     stretch: true,
   },
   args: {
-    detourText: defaulText,
+    copyableDetourText: defaultText,
     directions: [
       { instruction: "Start at Centre St & John St" },
       { instruction: "Right on John St" },

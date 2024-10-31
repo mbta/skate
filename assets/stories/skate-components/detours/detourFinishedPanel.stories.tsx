@@ -33,7 +33,7 @@ const meta = {
     stretch: true,
   },
   args: {
-    detourText: defaultText,
+    copyableDetourText: defaultText,
   },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by
   // default, we should be able to remove this after that is added
