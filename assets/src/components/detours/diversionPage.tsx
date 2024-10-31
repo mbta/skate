@@ -271,6 +271,21 @@ export const DiversionPage = ({
             },
           }) ? (
             <ActivateDetour.Modal
+              nextStepLabel={
+                (snapshot.matches({
+                  "Detour Drawing": {
+                    "Share Detour": { Activating: "Selecting Duration" },
+                  },
+                }) &&
+                  "Confirm Duration") ||
+                (snapshot.matches({
+                  "Detour Drawing": {
+                    "Share Detour": { Activating: "Selecting Reason" },
+                  },
+                }) &&
+                  "Confirm Reason") ||
+                undefined
+              }
               onCancel={() => {
                 send({ type: "detour.share.activate-modal.cancel" })
               }}
