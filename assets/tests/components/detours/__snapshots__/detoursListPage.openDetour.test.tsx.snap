@@ -367,6 +367,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
   >
     <article
       class="l-diversion-page l-diversion-page--mobile h-100 border-box inherit-box"
+      data-fs-element="Detours"
     >
       <header
         class="l-diversion-page__header border-bottom text-bg-light"
@@ -409,6 +410,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
               </h1>
               <button
                 class="icon-link btn btn-outline-primary btn-sm"
+                data-fs-element="Copy Details"
                 type="button"
               >
                 <svg
@@ -464,6 +466,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 >
                   <textarea
                     class="form-control"
+                    data-fs-element="Detour Text"
                   >
                     From null
                   </textarea>
@@ -1173,6 +1176,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
   >
     <article
       class="l-diversion-page l-diversion-page--desktop h-100 border-box inherit-box"
+      data-fs-element="Detours"
     >
       <header
         class="l-diversion-page__header border-bottom text-bg-light"
@@ -1219,6 +1223,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             </h1>
             <button
               class="icon-link btn btn-outline-primary btn-sm"
+              data-fs-element="Copy Details"
               type="button"
             >
               <svg
@@ -1274,6 +1279,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
               >
                 <textarea
                   class="form-control"
+                  data-fs-element="Detour Text"
                 >
                   From null
                 </textarea>

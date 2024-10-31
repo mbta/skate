@@ -1,4 +1,4 @@
-import { test, expect } from "@jest/globals"
+import { test, expect, jest } from "@jest/globals"
 import React from "react"
 import renderer from "react-test-renderer"
 import VehicleIcon, {
@@ -8,6 +8,11 @@ import VehicleIcon, {
 } from "../../src/components/vehicleIcon"
 import { AlertIconStyle } from "../../src/components/iconAlertCircle"
 import { defaultUserSettings } from "../../src/userSettings"
+
+// Avoid Halloween
+jest
+  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .setSystemTime(new Date("2024-08-29T20:00:00"))
 
 test("renders in all directions and sizes", () => {
   const tree = renderer

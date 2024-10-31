@@ -66,6 +66,7 @@ export const DetourFinishedPanel = ({
             as="textarea"
             value={editableDirections}
             onChange={({ target: { value } }) => onChangeDetourText(value)}
+            data-fs-element="Detour Text"
           />
         </div>
 
@@ -80,6 +81,7 @@ export const DetourFinishedPanel = ({
           <Button
             className="m-3 flex-grow-1 icon-link justify-content-center"
             onClick={onActivateDetour}
+            data-fs-element="Begin Activate Detour"
           >
             <BsIcons.Power />
             Start Detour
