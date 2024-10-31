@@ -47,16 +47,28 @@ export const DetourFinishedPanel = ({
         </Button>
 
         <h2 className="c-diversion-panel__h2">Directions</h2>
-        <Form.Control
-          as="textarea"
-          value={editableDirections}
-          onChange={({ target: { value } }) => onChangeDetourText(value)}
-          className="flex-grow-1 mb-3"
-          style={{
-            resize: "none",
-          }}
-          data-fs-element="Detour Text"
-        />
+        {/* 
+            We need a way to let the form area take up exactly the space of its content
+            (to avoid double scrollbars). We used this approach:
+            https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas
+
+            The result is that the Form.Control has an invisible twin that helps the 
+            wrapper grow to the appropriate size, and then the Form.Control likewise 
+            assumes that space. All styles that affect layout must be identical
+            (e.g., `border`, `padding`, `margin`, `font`) between the `<Form.Control/>`
+            and the `.c-autosized-textarea::after` pseudo-element.
+        */}
+        <div
+          className="c-autosized-textarea"
+          data-replicated-value={editableDirections}
+        >
+          <Form.Control
+            as="textarea"
+            value={editableDirections}
+            onChange={({ target: { value } }) => onChangeDetourText(value)}
+            data-fs-element="Detour Text"
+          />
+        </div>
 
         {connectionPoints && (
           <ConnectionPoints connectionPoints={connectionPoints} />
