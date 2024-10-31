@@ -26,6 +26,12 @@ const defaultText = [
   "Harvard Ave @ Commonwealth Ave",
 ].join("\n")
 
+const turnByTurn = [
+  "From Harvard St & Babcock St",
+  "Right on Babcock St.",
+  "Regular Route",
+].join("\n")
+
 const meta = {
   component: DetourFinishedPanel,
   parameters: {
@@ -34,6 +40,7 @@ const meta = {
   },
   args: {
     copyableDetourText: defaultText,
+    editableDirections: turnByTurn,
   },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by
   // default, we should be able to remove this after that is added
