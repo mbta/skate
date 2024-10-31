@@ -248,7 +248,11 @@ export const DiversionPage = ({
         <DetourFinishedPanel
           onNavigateBack={editDetour}
           copyableDetourText={copyableDetourText}
-          editableDirections={editedDirections || ""}
+          // Include fallback if editedDirections was not initialized on an older detour
+          editableDirections={
+            editedDirections ||
+            (extendedDirections?.map((v) => v.instruction).join("\n") ?? "")
+          }
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
             connectionPoints?.end?.name ?? "N/A",
@@ -271,6 +275,21 @@ export const DiversionPage = ({
             },
           }) ? (
             <ActivateDetour.Modal
+              nextStepLabel={
+                (snapshot.matches({
+                  "Detour Drawing": {
+                    "Share Detour": { Activating: "Selecting Duration" },
+                  },
+                }) &&
+                  "Confirm Duration") ||
+                (snapshot.matches({
+                  "Detour Drawing": {
+                    "Share Detour": { Activating: "Selecting Reason" },
+                  },
+                }) &&
+                  "Confirm Reason") ||
+                undefined
+              }
               onCancel={() => {
                 send({ type: "detour.share.activate-modal.cancel" })
               }}
@@ -415,6 +434,7 @@ export const DiversionPage = ({
   return (
     <>
       <article
+        data-fs-element="Detours"
         className={`l-diversion-page l-diversion-page--${displayType} h-100 border-box inherit-box`}
       >
         <header

@@ -16,7 +16,6 @@ import {
   VehicleInScheduledService,
 } from "../../../src/realtime"
 import { Route } from "../../../src/schedule"
-import * as dateTime from "../../../src/util/dateTime"
 import { vehicleFactory, invalidVehicleFactory } from "../../factories/vehicle"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
@@ -32,9 +31,10 @@ import { closeButton } from "../../testHelpers/selectors/components/closeButton"
 import { MemoryRouter } from "react-router-dom"
 import { loading } from "../../../src/util/fetchResult"
 
+// Avoid Halloween for off-course vehicles
 jest
-  .spyOn(dateTime, "now")
-  .mockImplementation(() => new Date("2018-08-15T17:41:21.000Z"))
+  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .setSystemTime(new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)
 

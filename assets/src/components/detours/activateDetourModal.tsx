@@ -44,13 +44,18 @@ interface SurroundingModalProps extends PropsWithChildren {
   onActivate?: () => void
 }
 
+interface FSElementProps {
+  nextStepLabel: string | undefined
+}
+
 const SurroundingModal = ({
   onCancel,
   onNext,
   onBack,
   onActivate,
   children,
-}: SurroundingModalProps) => (
+  nextStepLabel,
+}: SurroundingModalProps & FSElementProps) => (
   <Modal show animation={false} onHide={onCancel}>
     <Modal.Header closeButton>
       <h3 className="fs-3 fw-semibold lh-sm my-1">Start detour</h3>
@@ -66,7 +71,11 @@ const SurroundingModal = ({
         Cancel
       </Button>
       {onActivate ? (
-        <Button variant="primary" onClick={onActivate}>
+        <Button
+          variant="primary"
+          onClick={onActivate}
+          data-fs-element="Confirm Activate Detour"
+        >
           Activate detour
         </Button>
       ) : (
@@ -74,6 +83,7 @@ const SurroundingModal = ({
           variant="primary"
           disabled={onNext === undefined}
           onClick={onNext}
+          data-fs-element={nextStepLabel}
         >
           Next
         </Button>

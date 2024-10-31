@@ -87,7 +87,7 @@ config :skate,
     "https://mbta.sharepoint.com/:b:/s/CTD/ER2vUlgzH_xMuNTwKZHsvb0B80yH5XIQFLX7A4e6crycMA?e=GwAHOn",
   user_guide_url:
     "https://mbta.sharepoint.com/:b:/s/CTD/EaGzb7ta6GtBjfwSiUiO014B7qVDfSEIkCWMlpqomH7_cA?e=BHOpjY",
-  training_url: "https://massdot.csod.com/GlobalSearch/search.aspx?s=&q=Skate"
+  training_url: "https://mbta.csod.com/GlobalSearch/search.aspx?s=&q=Skate"
 
 config :skate, Schedule.CacheFile, cache_filename: nil
 

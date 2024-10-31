@@ -54,8 +54,9 @@ export const DetourFinishedPanel = ({
 
             The result is that the Form.Control has an invisible twin that helps the 
             wrapper grow to the appropriate size, and then the Form.Control likewise 
-            assumes that space. All formatting between the Form.Control and the ::after
-            pseudo-element must be identical: border, padding, margin, font.
+            assumes that space. All styles that affect layout must be identical
+            (e.g., `border`, `padding`, `margin`, `font`) between the `<Form.Control/>`
+            and the `.c-autosized-textarea::after` pseudo-element.
         */}
         <div
           className="c-autosized-textarea"
@@ -65,6 +66,7 @@ export const DetourFinishedPanel = ({
             as="textarea"
             value={editableDirections}
             onChange={({ target: { value } }) => onChangeDetourText(value)}
+            data-fs-element="Detour Text"
           />
         </div>
 
@@ -79,6 +81,7 @@ export const DetourFinishedPanel = ({
           <Button
             className="m-3 flex-grow-1 icon-link justify-content-center"
             onClick={onActivateDetour}
+            data-fs-element="Begin Activate Detour"
           >
             <BsIcons.Power />
             Start Detour

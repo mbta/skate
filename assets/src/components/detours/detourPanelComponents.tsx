@@ -99,6 +99,7 @@ export const CopyButton = ({ detourText }: { detourText: string }) => (
       variant="outline-primary"
       size="sm"
       onClick={() => window.navigator.clipboard?.writeText(detourText)}
+      data-fs-element="Copy Details"
     >
       <Files />
       Copy details

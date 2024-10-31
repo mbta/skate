@@ -8,6 +8,7 @@ import { LoggedInAs } from "../loggedInAs"
 import getEmailAddress from "../../userEmailAddress"
 import { CircleButton } from "../circleButton"
 import { UserAvatar } from "../userAvatar"
+import { todayIsHalloween } from "../../helpers/date"
 
 const TopNav = (): JSX.Element => {
   const email = getEmailAddress()
@@ -17,7 +18,11 @@ const TopNav = (): JSX.Element => {
   return (
     <div className="c-top-nav">
       <Link className="c-top-nav__logo" to="/" title="Skate">
-        <LogoIcon className="c-top-nav__logo-icon" />
+        {todayIsHalloween() ? (
+          <HalloweenIcon className="c-top-nav__logo-icon c-top-nav__logo-halloween-icon" />
+        ) : (
+          <LogoIcon className="c-top-nav__logo-icon" />
+        )}
       </Link>
       <ul className="c-top-nav__right-items">
         <li>
@@ -68,5 +73,21 @@ const TopNav = (): JSX.Element => {
     </div>
   )
 }
+
+export const HalloweenIcon = (props: BsIcon.SvgProps) => (
+  <svg
+    viewBox="0 -25 55.49 72"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-hidden
+    {...props}
+  >
+    <path d="m6.74 17.1a42.17 42.17 0 0 0 18.33 3.31 2 2 0 0 1 2 2v1.59a2 2 0 0 0 1.93 2h3.83a2 2 0 0 0 1.93-2v-2a2 2 0 0 1 1.56-2 75.22 75.22 0 0 0 12.55-3.47 2 2 0 0 1 2.13 3.19c-3.66 4.47-10.74 9.71-24 9.71-12 0-18.82-4.83-22.46-9.18a2 2 0 0 1 2.2-3.15z" />
+    <g fillRule="evenodd">
+      <path d="m19.37 11a1.71 1.71 0 0 1 -1.68 1.41h-12.16a1.68 1.68 0 0 1 -1.2-.5 1.67 1.67 0 0 1 -.5-1.2 1.73 1.73 0 0 1 .31-1l6.08-8.6a1.68 1.68 0 0 1 1.1-.69 1.66 1.66 0 0 1 1.27.28 1.6 1.6 0 0 1 .41.41l6.08 8.6a1.71 1.71 0 0 1 .29 1.29z" />
+      <path d="m51.37 11a1.71 1.71 0 0 1 -1.68 1.41h-12.16a1.68 1.68 0 0 1 -1.2-.5 1.67 1.67 0 0 1 -.5-1.2 1.73 1.73 0 0 1 .31-1l6.08-8.6a1.68 1.68 0 0 1 1.1-.69 1.66 1.66 0 0 1 1.27.28 1.6 1.6 0 0 1 .41.41l6.08 8.6a1.71 1.71 0 0 1 .29 1.29z" />
+      <path d="m31 16.84a.7.7 0 0 1 -.29.46.69.69 0 0 1 -.41.13h-5.09a.71.71 0 0 1 -.5-.21.68.68 0 0 1 -.21-.5.76.76 0 0 1 .13-.41l2.54-3.58a.7.7 0 0 1 .45-.29.72.72 0 0 1 .53.12.69.69 0 0 1 .17.17l2.54 3.58a.72.72 0 0 1 .14.53z" />
+    </g>
+  </svg>
+)
 
 export default TopNav

@@ -27,6 +27,11 @@ import { viewFactory } from "../factories/pagePanelStateFactory"
 import userEvent from "@testing-library/user-event"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 
+// Avoid Halloween
+jest
+  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .setSystemTime(new Date("2018-08-15T17:41:21.000Z"))
+
 jest.mock("../../src/hooks/useDataStatus", () => ({
   __esModule: true,
   default: jest.fn(() => "good"),
