@@ -49,6 +49,10 @@ const displayFieldsFromRouteAndPattern = (
   return { routeName, routeDirection, routeOrigin, routeDescription, shape }
 }
 
+const parseIntoDirectionsList = (directions: string) => {
+  return directions.split("\n").map((direction) => ({ instruction: direction }))
+}
+
 interface DiversionPageFunctions {
   onClose: () => void
 }
@@ -356,7 +360,12 @@ export const DiversionPage = ({
       return (
         <ActiveDetourPanel
           copyableDetourText={copyableDetourText}
-          directions={extendedDirections}
+          directions={
+            editedDirections
+              ? parseIntoDirectionsList(editedDirections)
+              : // Include fallback if editedDirections was not initialized on an older detour
+                extendedDirections
+          }
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
             connectionPoints?.end?.name ?? "N/A",
@@ -397,7 +406,12 @@ export const DiversionPage = ({
       return (
         <PastDetourPanel
           copyableDetourText={copyableDetourText}
-          directions={extendedDirections}
+          directions={
+            editedDirections
+              ? parseIntoDirectionsList(editedDirections)
+              : // Include fallback if editedDirections was not initialized on an older detour
+                extendedDirections
+          }
           connectionPoints={[
             connectionPoints?.start?.name ?? "N/A",
             connectionPoints?.end?.name ?? "N/A",
