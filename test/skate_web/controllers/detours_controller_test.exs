@@ -280,23 +280,21 @@ defmodule SkateWeb.DetoursControllerTest do
       other_user = Skate.Settings.User.get_by_email("other_user@gmail.com")
 
       # Manually insert a detour by another user
-      Detours.update_or_create_detour_for_user(other_user.id, 10, %{
-        state: %{
-          "context" => %{
-            "route" => %{
-              "name" => "23",
-              "directionNames" => %{
-                "0" => "Outbound",
-                "1" => "Inbound"
-              }
-            },
-            "routePattern" => %{
-              "headsign" => "Headsign",
-              "directionId" => 0
-            },
-            "nearestIntersection" => "Street A & Avenue B",
-            "uuid" => 10
-          }
+      Detours.upsert_from_snapshot(other_user.id, %{
+        "context" => %{
+          "route" => %{
+            "name" => "23",
+            "directionNames" => %{
+              "0" => "Outbound",
+              "1" => "Inbound"
+            }
+          },
+          "routePattern" => %{
+            "headsign" => "Headsign",
+            "directionId" => 0
+          },
+          "nearestIntersection" => "Street A & Avenue B",
+          "uuid" => 10
         }
       })
 

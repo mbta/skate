@@ -11,15 +11,11 @@ defmodule SkateWeb.DetoursController do
   alias Util.Location
 
   @spec update_snapshot(Plug.Conn.t(), map()) :: Plug.Conn.t()
-  def update_snapshot(conn, %{"snapshot" => %{"context" => context} = snapshot}) do
-    uuid = Map.get(context, "uuid")
-
+  def update_snapshot(conn, %{"snapshot" => snapshot}) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
     {:ok, %Skate.Detours.Db.Detour{id: returned_uuid}} =
-      Detours.update_or_create_detour_for_user(user_id, uuid, %{
-        state: snapshot
-      })
+      Detours.upsert_from_snapshot(user_id, snapshot)
 
     json(conn, %{data: returned_uuid})
   end
