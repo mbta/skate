@@ -211,13 +211,7 @@ defmodule Skate.Detours.Detours do
         on_conflict: {:replace, [:state, :updated_at]}
       )
 
-    case detour_db_result do
-      {:ok, %Detour{} = new_record} ->
-        send_notification(new_record, previous_record, author_id)
-
-      _ ->
-        nil
-    end
+    send_notification(detour_db_result, previous_record, author_id)
 
     detour_db_result
   end
@@ -249,6 +243,19 @@ defmodule Skate.Detours.Detours do
           next: detour_type() | nil,
           previous: detour_type() | nil
         }) :: :ok | nil
+
+  defp send_notification(
+         {:ok, %Detour{} = new_record},
+         %Detour{} = previous_record,
+         user_id
+       ) do
+    send_notification(
+      new_record,
+      previous_record,
+      user_id
+    )
+  end
+
   defp send_notification(
          %Detour{} = new_record,
          %Detour{} = previous_record,
