@@ -31,12 +31,11 @@ config :skate, SkateWeb.Endpoint,
     port: {:system, "STATIC_PORT"},
     path: {:system, "STATIC_PATH"}
   ],
-  cache_static_manifest: "priv/static/cache_manifest.json"
-
-config :skate, :websocket_check_origin, [
-  "https://*.mbta.com",
-  "https://*.mbtace.com"
-]
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  check_origin: [
+    "https://*.mbta.com",
+    "https://*.mbtace.com"
+  ]
 
 config :skate, Skate.Repo,
   database: "skate",
