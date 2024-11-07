@@ -6,6 +6,7 @@ defmodule Skate.Detours.Detours do
   import Ecto.Query, warn: false
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
+  alias Skate.Detours.SnapshotSerde
   alias Skate.Detours.Detour.Detailed, as: DetailedDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Settings.User
@@ -155,7 +156,7 @@ defmodule Skate.Detours.Detours do
       |> Repo.one!()
 
     %DetourWithState{
-      state: detour.state,
+      state: SnapshotSerde.serialize(detour),
       updated_at: timestamp_to_unix(detour.updated_at),
       author: detour.author.email
     }
