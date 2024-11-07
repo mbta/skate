@@ -194,36 +194,33 @@ defmodule Skate.Detours.Detours do
   end
 
   @doc """
-  Update or create a detour given a user id & detour id.
+  Update or insert a detour given a user id and a XState Snapshot.
   """
-  def update_or_create_detour_for_user(user_id, uuid, attrs \\ %{}) do
-    user = User.get_by_id!(user_id)
-
-    previous_record = uuid != nil && Skate.Repo.get(Detour, uuid)
-
-    detour =
-      case uuid do
-        nil ->
-          create_detour_for_user(user_id, attrs)
-
-        _ ->
-          Repo.insert(
-            Detour.changeset(%Detour{author: user, id: uuid}, attrs),
-            returning: true,
-            conflict_target: [:id],
-            on_conflict: {:replace, [:state, :updated_at]}
-          )
+  def upsert_from_snapshot(author_id, %{} = snapshot) do
+    previous_record =
+      case Skate.Detours.SnapshotSerde.id_from_snapshot(snapshot) do
+        nil -> nil
+        id -> Skate.Repo.get(Detour, id)
       end
 
-    case detour do
+    detour_db_result =
+      author_id
+      |> Skate.Detours.SnapshotSerde.deserialize(snapshot)
+      |> Skate.Repo.insert(
+        returning: true,
+        conflict_target: [:id],
+        on_conflict: {:replace, [:state, :updated_at]}
+      )
+
+    case detour_db_result do
       {:ok, %Detour{} = new_record} ->
-        send_notification(new_record, previous_record, user_id)
+        send_notification(new_record, previous_record, author_id)
 
       _ ->
         nil
     end
 
-    detour
+    detour_db_result
   end
 
   @doc """

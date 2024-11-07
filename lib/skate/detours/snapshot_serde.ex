@@ -8,6 +8,33 @@ defmodule Skate.Detours.SnapshotSerde do
 
   alias Skate.Detours.Db.Detour
 
+  @doc """
+  Converts a XState JSON Snapshot to Detours Database Changeset
+  """
+  def deserialize(user_id, %{} = snapshot) do
+    Skate.Detours.Db.Detour.changeset(
+      %Skate.Detours.Db.Detour{
+        # `id` is `nil` by default, so a `nil` `id` should be fine
+        id: id_from_snapshot(snapshot),
+        author_id: user_id
+      },
+      %{
+        # Save Snapshot to DB until we've fully transitioned to serializing
+        # snapshots from DB data
+        state: snapshot
+      }
+    )
+  end
+
+  @doc """
+  Extracts the Detour ID from a XState Snapshot
+  """
+  def id_from_snapshot(%{"context" => %{"uuid" => id}}), do: id
+  def id_from_snapshot(%{"context" => %{}}), do: nil
+
+  @doc """
+  Builds XState Snapshot from Detours Database object
+  """
   def serialize(%Detour{} = detour) do
     %{
       "value" => state_from_detour(detour),
