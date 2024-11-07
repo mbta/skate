@@ -36,14 +36,16 @@ defmodule Skate.Detours.SnapshotSerde do
   Builds XState Snapshot from Detours Database object
   """
   def serialize(%Detour{} = detour) do
-    %{
-      "value" => state_from_detour(detour),
-      "status" => "active",
-      "context" => context_from_detour(detour),
-      "children" => snapshot_children_from_detour(detour),
-      "historyValue" => %{}
-    }
-    |> validate_serialized_snapshot(detour)
+    validate_serialized_snapshot(
+      %{
+        "value" => state_from_detour(detour),
+        "status" => "active",
+        "context" => context_from_detour(detour),
+        "children" => snapshot_children_from_detour(detour),
+        "historyValue" => %{}
+      },
+      detour
+    )
   end
 
   defp validate_serialized_snapshot(
@@ -54,6 +56,7 @@ defmodule Skate.Detours.SnapshotSerde do
       serialized_snapshot
     else
       log_fallback(id)
+      Logger.info(MapDiff.diff(state, serialized_snapshot))
       state
     end
   end
