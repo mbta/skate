@@ -80,6 +80,7 @@ defmodule Skate.MixProject do
       {:jason, "~> 1.0"},
       {:lcov_ex, "~> 0.2", only: [:dev, :test], runtime: false},
       {:logster, "~> 1.0"},
+      {:map_diff, "~> 1.3.4"},
       {:mox, "~> 1.1.0", only: :test},
       {:oban, "~> 2.15"},
       {:phoenix, "~> 1.7.0"},
