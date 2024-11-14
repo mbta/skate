@@ -197,7 +197,10 @@ defmodule SkateWeb.DetoursControllerTest do
 
   describe "detour/2" do
     @tag :authenticated
-    test "fetches single detour with its state from database", %{conn: conn} do
+    test "fetches single detour with its state from database", %{
+      conn: conn,
+      user: %{email: email}
+    } do
       populate_db_and_get_user(conn)
 
       conn = get(conn, "/api/detours/1")
@@ -206,7 +209,7 @@ defmodule SkateWeb.DetoursControllerTest do
 
       assert %{
                "data" => %{
-                 "author" => "test_user@test.com",
+                 "author" => ^email,
                  "state" => %{
                    "context" => %{
                      "nearestIntersection" => "Street A & Avenue B",
