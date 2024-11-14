@@ -58,6 +58,7 @@ defmodule Skate.Detours.SnapshotSerde do
       Logger.error(
         "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id} diff=#{inspect(MapDiff.diff(state, serialized_snapshot))}"
       )
+
       state
     end
   end
