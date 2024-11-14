@@ -55,8 +55,9 @@ defmodule Skate.Detours.SnapshotSerde do
     if serialized_snapshot === state do
       serialized_snapshot
     else
-      log_fallback(id)
-      Logger.info(MapDiff.diff(state, serialized_snapshot))
+      Logger.error(
+        "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id} diff=#{inspect(MapDiff.diff(state, serialized_snapshot))}"
+      )
       state
     end
   end
@@ -91,6 +92,12 @@ defmodule Skate.Detours.SnapshotSerde do
     }
     |> Enum.filter(fn {_, v} -> v != nil end)
     |> Enum.into(%{})
+  end
+
+  defmacrop log_fallback(field) do
+    quote do
+      Logger.warning("Unexpected detour structure. Using snapshot for field: #{unquote(field)}")
+    end
   end
 
   # defp state_from_detour(%Detour{detour_state: state}), do: state
@@ -298,13 +305,4 @@ defmodule Skate.Detours.SnapshotSerde do
   end
 
   defp snapshot_children_from_detour(_), do: nil
-
-  defp log_fallback(field) when is_binary(field),
-    do: Logger.warning("Unexpected detour structure. Using snapshot for field: #{field}")
-
-  defp log_fallback(id) when is_integer(id),
-    do:
-      Logger.error(
-        "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour id: #{id}"
-      )
 end
