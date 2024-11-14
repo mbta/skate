@@ -110,19 +110,7 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp state_from_detour(_), do: nil
 
-  # defp uuid_from_detour(%Detour{detour_state: state}), do: state
-  defp uuid_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "uuid" => uuid
-           }
-         }
-       }) do
-    log_fallback("uuid")
-    uuid
-  end
-
-  defp uuid_from_detour(_), do: nil
+  defp uuid_from_detour(%Detour{id: id}), do: id
 
   # defp route_from_detour(%Detour{route: route}), do: route
   defp route_from_detour(%Detour{
