@@ -75,7 +75,7 @@ defmodule Skate.Detours.SnapshotSerde do
   # it in the db.
 
   defp context_from_detour(%Detour{} = detour) do
-    %{
+    :maps.filter(fn _, v -> v != nil end, %{
       "uuid" => uuid_from_detour(detour),
       "route" => route_from_detour(detour),
       "routePattern" => routepattern_from_detour(detour),
@@ -89,9 +89,7 @@ defmodule Skate.Detours.SnapshotSerde do
       "editedDirections" => editeddirections_from_detour(detour),
       "selectedDuration" => selectedduration_from_detour(detour),
       "selectedReason" => selectedreason_from_detour(detour)
-    }
-    |> Enum.filter(fn {_, v} -> v != nil end)
-    |> Enum.into(%{})
+    })
   end
 
   defmacrop log_fallback(field) do
