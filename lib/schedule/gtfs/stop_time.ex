@@ -26,7 +26,8 @@ defmodule Schedule.Gtfs.StopTime do
   defstruct [
     :stop_id,
     :time,
-    :timepoint_id
+    :timepoint_id,
+    :stop_sequence
   ]
 
   @type timepoint_id :: String.t()
@@ -61,7 +62,8 @@ defmodule Schedule.Gtfs.StopTime do
         %__MODULE__{
           stop_id: stop_time_row["stop_id"],
           time: time,
-          timepoint_id: timepoint_id
+          timepoint_id: timepoint_id,
+          stop_sequence: stop_time_row["stop_sequence"] |> Integer.parse() |> elem(0)
         }
       end)
     end)

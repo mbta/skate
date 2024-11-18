@@ -32,6 +32,7 @@ defmodule Schedule.Gtfs.Stop do
     :latitude,
     :longitude,
     :vehicle_type,
+    :sequence,
     routes: [],
     location_type: :stop
   ]

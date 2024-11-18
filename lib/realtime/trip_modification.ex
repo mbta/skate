@@ -84,11 +84,11 @@ defmodule Realtime.TripModification do
     """
 
     @type t :: %__MODULE__{
-            stop_id: String.t()
+            stop_sequence: integer()
           }
 
     @derive Jason.Encoder
-    defstruct [:stop_id]
+    defstruct [:stop_sequence]
   end
 
   @type t :: %__MODULE__{
@@ -201,10 +201,10 @@ defmodule Realtime.TripModification do
            modifications: [
              %Modification{
                start_stop_selector: %StopSelector{
-                 stop_id: missed_stops |> List.first() |> Map.get(:id)
+                 stop_sequence: missed_stops |> Enum.at(0) |> Map.get(:sequence)
                },
                end_stop_selector: %StopSelector{
-                 stop_id: missed_stops |> List.last() |> Map.get(:id)
+                 stop_sequence: missed_stops |> Enum.at(-1) |> Map.get(:sequence)
                },
                last_modified_time: DateTime.to_unix(last_modified_time)
              }

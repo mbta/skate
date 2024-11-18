@@ -88,7 +88,14 @@ defmodule SkateWeb.DetoursController do
         missed_stops(%MissedStops{
           connection_start: connection_start_location,
           connection_end: connection_end_location,
-          stops: shape_with_stops.stops,
+          stops:
+            shape_with_stops.stops
+            |> Enum.map(fn %Schedule.Gtfs.Stop{} = stop ->
+              put_in(
+                stop.sequence,
+                Enum.find(trip.stop_times, &(&1.stop_id == stop.id)).stop_sequence
+              )
+            end)
           shape: shape_with_stops.points
         })
 
