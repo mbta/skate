@@ -199,14 +199,17 @@ defmodule SkateWeb.DetoursControllerTest do
 
   describe "detour/2" do
     @tag :authenticated
-    test "fetches single detour with its state from database", %{conn: conn} do
+    test "fetches single detour with its state from database", %{
+      conn: conn,
+      user: %{email: email}
+    } do
       populate_db_and_get_user(conn)
 
       conn = get(conn, "/api/detours/1")
 
       assert %{
                "data" => %{
-                 "author" => "test_user@test.com",
+                 "author" => ^email,
                  "state" => %{
                    "context" => %{
                      "nearestIntersection" => "Street A & Avenue B",
@@ -337,9 +340,7 @@ defmodule SkateWeb.DetoursControllerTest do
     test "will not return detours from other users", %{conn: conn} do
       current_user_id = populate_db_and_get_user(conn)
 
-      Skate.Settings.User.upsert("other_user", "other_user@gmail.com")
-
-      other_user = Skate.Settings.User.get_by_email("other_user@gmail.com")
+      other_user = build(:user)
 
       # Manually insert a detour by another user
       Detours.upsert_from_snapshot(other_user.id, %{

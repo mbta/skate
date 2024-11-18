@@ -222,17 +222,17 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
-    test "correct username set", %{conn: conn} do
+    test "correct username set", %{conn: conn, user: %{username: username}} do
       conn = get(conn, "/")
-      assert html_response(conn, 200) =~ "<meta name=\"username\" content=\"test_user\">"
+      assert html_response(conn, 200) =~ "<meta name=\"username\" content=\"#{username}\">"
     end
 
     @tag :authenticated
-    test "correct email address set", %{conn: conn} do
+    test "correct email address set", %{conn: conn, user: %{email: email}} do
       conn = get(conn, "/")
 
       assert html_response(conn, 200) =~
-               "data-email-address=\"test_user@test.com\""
+               "data-email-address=\"#{email}\""
     end
 
     @tag :authenticated
