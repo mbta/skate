@@ -225,63 +225,65 @@ defmodule SkateWeb.DetoursControllerTest do
     end
 
     @tag :authenticated
+    test "input snapshot matches the retrieved serialized detour", %{conn: conn} do
+      detour_id = 4
+
+      detour_snapshot =
+        :detour_snapshot
+        |> build()
+        |> with_id(detour_id)
+
+      put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
+
+      conn = get(conn, "/api/detours/#{detour_id}")
+
+      assert detour_snapshot == json_response(conn, 200)["data"]["state"]
+    end
+
+    @tag :authenticated
     test "log an error if the serialized detour does not match db state", %{conn: conn} do
       detour_id = 4
 
-      snapshot = %{
-        "context" => %{
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 0,
-            "route" => %{
-              "name" => "23"
-            }
-          },
-          "nearestIntersection" => "Street A & Avenue B",
-          "uuid" => detour_id
-        }
-      }
+      detour_snapshot =
+        :detour_snapshot
+        |> build()
+        |> with_id(detour_id)
 
-      put(conn, "/api/detours/update_snapshot", %{"snapshot" => snapshot})
+      put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
+
+      retrieved_detour = Detours.get_detour!(detour_id)
+      # Changing the status is a sure way to force a fallback, as it should always be "active"
+      edited_snapshot = put_in(detour_snapshot["status"], nil)
+      edited_detour = %{retrieved_detour | state: edited_snapshot}
 
       log =
         CaptureLog.capture_log(fn ->
-          get(conn, "/api/detours/#{detour_id}")
+          Skate.Detours.SnapshotSerde.serialize(edited_detour)
         end)
 
       assert log =~
-               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour id: #{detour_id}"
+               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{detour_id}"
     end
 
     @tag :authenticated
     test "fallback to snapshot if the serialized detour does not match db state", %{conn: conn} do
-      detour_id = 4
+      detour_id = 5
 
-      snapshot = %{
-        "context" => %{
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 0,
-            "route" => %{
-              "name" => "23"
-            }
-          },
-          "nearestIntersection" => "Street A & Avenue B",
-          "uuid" => detour_id
-        }
-      }
+      detour_snapshot =
+        :detour_snapshot
+        |> build()
+        |> with_id(detour_id)
 
-      put(conn, "/api/detours/update_snapshot", %{"snapshot" => snapshot})
+      put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
 
-      conn = get(conn, "/api/detours/#{detour_id}")
+      retrieved_detour = Detours.get_detour!(detour_id)
+      # Changing the status is a sure way to force a fallback, as it should always be "active"
+      edited_snapshot = put_in(detour_snapshot["status"], nil)
+      edited_detour = %{retrieved_detour | state: edited_snapshot}
 
-      assert %{
-               "data" => %{
-                 "author" => "test_user@test.com",
-                 "state" => ^snapshot,
-                 "updated_at" => _
-               }
-             } = json_response(conn, 200)
+      # Serializer returns the fallback original, instead of `"status" => "active"`,
+      # which it sets for all successful serializations
+      assert edited_snapshot == Skate.Detours.SnapshotSerde.serialize(edited_detour)
     end
   end
 
