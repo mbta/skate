@@ -46,8 +46,11 @@ defmodule Skate.DetourFactory do
       end
 
       def with_id(%Skate.Detours.Db.Detour{} = detour, id) do
-        detour_with_id = %{detour | id: id}
-        %{detour_with_id | state: with_id(detour.state, id)}
+       %{
+          detour
+          | id: id,
+            state: with_id(detour.state, id)
+        }
       end
 
       def with_id(%{"context" => %{"uuid" => _}} = snapshot, id) do
