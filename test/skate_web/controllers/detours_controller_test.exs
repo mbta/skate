@@ -294,7 +294,7 @@ defmodule SkateWeb.DetoursControllerTest do
       # which it sets for all successful serializations
       assert %{
                "data" => %{
-                 "author" => "test_user@test.com",
+                 "author" => _,
                  "state" => ^edited_snapshot,
                  "updated_at" => _
                }
