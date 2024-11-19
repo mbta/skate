@@ -46,7 +46,7 @@ defmodule Skate.DetourFactory do
       end
 
       def with_id(%Skate.Detours.Db.Detour{} = detour, id) do
-       %{
+        %{
           detour
           | id: id,
             state: with_id(detour.state, id)
