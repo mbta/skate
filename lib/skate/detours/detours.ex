@@ -6,6 +6,7 @@ defmodule Skate.Detours.Detours do
   import Ecto.Query, warn: false
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
+  alias Skate.Detours.Db.RoutePattern
   alias Skate.Detours.SnapshotSerde
   alias Skate.Detours.Detour.Detailed, as: DetailedDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
@@ -198,18 +199,18 @@ defmodule Skate.Detours.Detours do
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
     previous_record =
-      case Skate.Detours.SnapshotSerde.id_from_snapshot(snapshot) do
+      case SnapshotSerde.id_from_snapshot(snapshot) do
         nil -> nil
         id -> Skate.Repo.get(Detour, id)
       end
 
     detour_db_result =
       author_id
-      |> Skate.Detours.SnapshotSerde.deserialize(snapshot)
+      |> SnapshotSerde.deserialize(snapshot)
       |> Skate.Repo.insert(
         returning: true,
         conflict_target: [:id],
-        on_conflict: {:replace, [:state, :updated_at]}
+        on_conflict: {:replace, [:state, :updated_at, :route_pattern_id]}
       )
 
     case detour_db_result do
@@ -221,6 +222,24 @@ defmodule Skate.Detours.Detours do
     end
 
     detour_db_result
+  end
+
+  @doc """
+  Retrieve or insert-and-return a route_pattern given a deserialized route_pattern.
+  """
+  def get_or_create_route_pattern(route_pattern) do
+    route_pattern_hash = Map.get(route_pattern, :hash)
+
+    case Skate.Repo.get_by(RoutePattern, hash: route_pattern_hash) do
+      nil ->
+        Skate.Repo.insert!(
+          route_pattern,
+          returning: true
+        )
+
+      existing_route_pattern ->
+        existing_route_pattern
+    end
   end
 
   @doc """

@@ -12,11 +12,17 @@ defmodule Skate.Detours.SnapshotSerde do
   Converts a XState JSON Snapshot to Detours Database Changeset
   """
   def deserialize(user_id, %{} = snapshot) do
+    route_pattern =
+      snapshot
+      |> deserialize_route_pattern()
+      |> Skate.Detours.Detours.get_or_create_route_pattern()
+
     Skate.Detours.Db.Detour.changeset(
       %Skate.Detours.Db.Detour{
         # `id` is `nil` by default, so a `nil` `id` should be fine
         id: id_from_snapshot(snapshot),
-        author_id: user_id
+        author_id: user_id,
+        route_pattern_id: Map.get(route_pattern, :id)
       },
       %{
         # Save Snapshot to DB until we've fully transitioned to serializing
@@ -31,6 +37,45 @@ defmodule Skate.Detours.SnapshotSerde do
   """
   def id_from_snapshot(%{"context" => %{"uuid" => id}}), do: id
   def id_from_snapshot(%{"context" => %{}}), do: nil
+
+  @doc """
+  Extracts the RoutePattern from a XState Snapshot
+  """
+  defp deserialize_route_pattern(%{
+        "context" => %{
+          "route" =>
+            %{
+              "id" => route_id,
+              "name" => route_name,
+              "directionNames" => direction_map
+            } = route,
+          "routePattern" =>
+            %{
+              "id" => route_pattern_id,
+              "name" => route_pattern_name,
+              "headsign" => headsign,
+              "directionId" => direction_id,
+              "timeDescription" => time_description
+            } = routePattern
+        }
+      }) do
+    direction_name = direction_map[Integer.to_string(direction_id)]
+
+    %Skate.Detours.Db.RoutePattern{
+      hash: route_pattern_hash(Map.merge(route, routePattern)),
+      gtfs_route_pattern_id: route_pattern_id,
+      gtfs_route_pattern_name: route_pattern_name,
+      gtfs_route_pattern_headsign: headsign,
+      gtfs_route_pattern_direction_name: direction_name,
+      gtfs_route_id: route_id,
+      gtfs_route_name: route_name,
+      gtfs_route_pattern_time_description: time_description
+    }
+  end
+
+  defp route_pattern_from_snapshot(_), do: nil
+
+  defp route_pattern_hash(map), do: :erlang.phash2(map)
 
   @doc """
   Builds XState Snapshot from Detours Database object
