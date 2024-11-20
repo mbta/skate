@@ -6,7 +6,7 @@ defmodule Skate.Detours.Detours do
   import Ecto.Query, warn: false
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
-  alias Skate.Detours.Db.RoutePattern
+  # alias Skate.Detours.Db.RoutePattern
   alias Skate.Detours.SnapshotSerde
   alias Skate.Detours.Detour.Detailed, as: DetailedDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
@@ -228,18 +228,18 @@ defmodule Skate.Detours.Detours do
   Retrieve or insert-and-return a route_pattern given a deserialized route_pattern.
   """
   def get_or_create_route_pattern(route_pattern) do
-    route_pattern_hash = Map.get(route_pattern, :hash)
+    # route_pattern_hash = Map.get(route_pattern, :hash)
 
-    case Skate.Repo.get_by(RoutePattern, hash: route_pattern_hash) do
-      nil ->
+    # case Skate.Repo.get_by(RoutePattern, hash: route_pattern_hash) do
+    #   nil ->
         Skate.Repo.insert!(
           route_pattern,
           returning: true
         )
 
-      existing_route_pattern ->
-        existing_route_pattern
-    end
+    #   existing_route_pattern ->
+    #     existing_route_pattern
+    # end
   end
 
   @doc """

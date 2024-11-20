@@ -14,7 +14,7 @@ defmodule Skate.Detours.Db.RoutePattern do
   alias Skate.Detours.DirectionName
 
   @required_fields [
-    :hash,
+    # :hash,
     :gtfs_route_pattern_id,
     :gtfs_route_pattern_name,
     :gtfs_route_pattern_headsign,
@@ -25,7 +25,7 @@ defmodule Skate.Detours.Db.RoutePattern do
   ]
 
   typed_schema "route_patterns" do
-    field(:hash, :integer)
+    # field(:hash, :integer)
     field(:gtfs_route_pattern_id, :string)
     field(:gtfs_route_pattern_name, :string)
     field(:gtfs_route_pattern_headsign, :string)
@@ -49,6 +49,14 @@ defmodule Skate.Detours.Db.RoutePattern do
     route_pattern
     |> cast(attrs, @required_fields, [:gtfs_route_pattern_time_description])
     |> validate_required(@required_fields)
-    |> unique_constraint([:hash], name: :route_patterns_unique_index)
+    |> unique_constraint([
+        :gtfs_route_pattern_id,
+        :gtfs_route_pattern_name,
+        :gtfs_route_pattern_headsign,
+        :gtfs_route_pattern_direction_name,
+        :gtfs_route_id,
+        :gtfs_route_name,
+        :gtfs_route_pattern_time_description
+      ], name: :route_patterns_unique_index)
   end
 end
