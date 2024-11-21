@@ -329,6 +329,15 @@ export const DiversionPage = ({
                       duration: selectedDuration,
                     })
                   }}
+                  isError={snapshot.matches({
+                    "Detour Drawing": {
+                      "Share Detour": {
+                        Activating: {
+                          "Selecting Duration": "No Duration Selected - Error",
+                        },
+                      },
+                    },
+                  })}
                   selectedDuration={selectedDuration}
                 />
               ) : snapshot.matches({

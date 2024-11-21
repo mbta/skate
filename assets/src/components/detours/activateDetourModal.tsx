@@ -81,7 +81,7 @@ const SurroundingModal = ({
       ) : (
         <Button
           variant="primary"
-          disabled={onNext === undefined}
+          className={onNext ? "" : "disabled"}
           onClick={onNext}
           data-fs-element={nextStepLabel}
         >
@@ -100,9 +100,11 @@ const StepSubtitle = ({ children }: StepSubtitleProps) => (
 const SelectingDuration = ({
   onSelectDuration,
   selectedDuration,
+  isError,
 }: {
   onSelectDuration: (duration: string) => void
   selectedDuration?: string
+  isError: boolean
 }) => (
   <>
     <StepperBar totalSteps={3} currentStep={1} />
@@ -110,20 +112,29 @@ const SelectingDuration = ({
     <p>
       <span className="fw-bold">Time length</span> <span>(estimate)</span>
     </p>
-    <Form>
-      {possibleDurations.map((duration) => (
-        <Form.Check
-          className="mb-2"
-          onChange={() => {
-            onSelectDuration(duration)
-          }}
-          id={`duration-${duration}`}
-          key={`duration-${duration}`}
-          type="radio"
-          label={duration}
-          checked={selectedDuration === duration}
-        />
-      ))}
+    <Form noValidate>
+      <Form.Group>
+        {possibleDurations.map((duration) => (
+          <Form.Check
+            className="mb-2"
+            onChange={() => {
+              onSelectDuration(duration)
+            }}
+            id={`duration-${duration}`}
+            key={`duration-${duration}`}
+            type="radio"
+            label={duration}
+            checked={selectedDuration === duration}
+            isInvalid={isError}
+          />
+        ))}
+        <Form.Control.Feedback
+          type="invalid"
+          className={isError ? "d-block" : ""}
+        >
+          Time length is required
+        </Form.Control.Feedback>
+      </Form.Group>
     </Form>
   </>
 )
