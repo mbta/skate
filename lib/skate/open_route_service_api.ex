@@ -87,14 +87,8 @@ defmodule Skate.OpenRouteServiceAPI do
          segments
          |> Enum.flat_map(& &1["steps"])
          |> Enum.map(fn attrs -> Map.update!(attrs, "type", &map_type/1) end)
-         |> Enum.filter(fn %{"type" => type} ->
-           type not in [:goal, :depart, :straight, :error]
-         end)
-         |> Enum.map(
-           &%{
-             instruction: &1["instruction"]
-           }
-         )
+         |> Enum.map(&Skate.OpenRouteServiceAPI.DirectionsFormatter.MBTA.English.format/1)
+         |> Enum.reject(&is_nil/1)
      }}
   end
 
