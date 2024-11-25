@@ -2,6 +2,7 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsFormatter.MBTA.English do
   @moduledoc """
   Formats Directions from Open Route Service into MBTA English specific Directions Shorthand.
   """
+  require Logger
 
   @doc """
   Formats a Open Route Service Direction Instruction Map into
@@ -18,8 +19,17 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsFormatter.MBTA.English do
   # Converts ORS Instructions into string form, or `nil`
   # Ignore noisy instructions
   defp format_instruction(type, _name, _)
-       when type in [:goal, :depart, :straight, :error],
+       when type in [:goal, :depart, :straight],
        do: nil
+
+  # Ignore type errors
+  defp format_instruction({:error, value}, _name, attrs) do
+    Logger.error(
+      "Received :error, when formatting instruction, value=#{value} ors_attrs=#{inspect(attrs)}"
+    )
+
+    nil
+  end
 
   # ORS uses `-` as a value when a direction doesn't have a name
   # Reject instructions without a name

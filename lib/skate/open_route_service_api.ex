@@ -118,7 +118,7 @@ defmodule Skate.OpenRouteServiceAPI do
       11 -> :depart
       12 -> :keep_left
       13 -> :keep_right
-      _ -> :error
+      value -> {:error, value}
     end
   end
 end
