@@ -11,7 +11,7 @@ defmodule Skate.Detours.Db.RoutePattern do
   import Ecto.Changeset
 
   alias Skate.Detours.Db.Detour
-  alias Skate.Detours.DirectionName
+  alias Schedule.Gtfs.{Direction, Route, RoutePattern}
 
   @required_fields [
     :gtfs_route_pattern_id,
@@ -24,14 +24,14 @@ defmodule Skate.Detours.Db.RoutePattern do
   ]
 
   typed_schema "route_patterns" do
-    field(:gtfs_route_pattern_id, :string)
+    field(:gtfs_route_pattern_id, :string) :: RoutePattern.id()
     field(:gtfs_route_pattern_name, :string)
     field(:gtfs_route_pattern_headsign, :string)
-    field(:gtfs_route_pattern_direction_name, DirectionName)
+    field(:gtfs_route_pattern_direction_name, :string) :: Direction.name()
 
     # The given route pattern will always have the given route
     # Does it need to be stored here as well?
-    field(:gtfs_route_id, :string)
+    field(:gtfs_route_id, :string) :: Route.id()
     field(:gtfs_route_name, :string)
 
     field(:gtfs_route_pattern_time_description, :string)
