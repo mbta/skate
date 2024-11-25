@@ -41,26 +41,23 @@ defmodule Skate.Detours.SnapshotSerde do
   # Converts the RoutePattern from a XState Snapshot to ready for DB insertion
   defp deserialize_route_pattern(%{
          "context" => %{
-           "route" =>
-             %{
-               "id" => route_id,
-               "name" => route_name,
-               "directionNames" => direction_map
-             } = _route,
-           "routePattern" =>
-             %{
-               "id" => route_pattern_id,
-               "name" => route_pattern_name,
-               "headsign" => headsign,
-               "directionId" => direction_id,
-               "timeDescription" => time_description
-             } = _routePattern
+           "route" => %{
+             "id" => route_id,
+             "name" => route_name,
+             "directionNames" => direction_map
+           },
+           "routePattern" => %{
+             "id" => route_pattern_id,
+             "name" => route_pattern_name,
+             "headsign" => headsign,
+             "directionId" => direction_id,
+             "timeDescription" => time_description
+           }
          }
        }) do
     direction_name = direction_map[Integer.to_string(direction_id)]
 
     %Skate.Detours.Db.RoutePattern{
-      # hash: route_pattern_hash(Map.merge(route, routePattern)),
       gtfs_route_pattern_id: route_pattern_id,
       gtfs_route_pattern_name: route_pattern_name,
       gtfs_route_pattern_headsign: headsign,
@@ -70,8 +67,6 @@ defmodule Skate.Detours.SnapshotSerde do
       gtfs_route_pattern_time_description: time_description
     }
   end
-
-  # defp route_pattern_hash(map), do: :erlang.phash2(map)
 
   @doc """
   Builds XState Snapshot from Detours Database object
