@@ -14,8 +14,7 @@ defmodule SkateWeb.Endpoint do
 
   socket "/socket", SkateWeb.UserSocket,
     websocket: [
-      connect_info: [session: @session_options],
-      check_origin: Application.compile_env(:skate, :websocket_check_origin, false)
+      connect_info: [session: @session_options]
     ],
     longpoll: false
 
