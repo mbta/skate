@@ -37,9 +37,10 @@ RUN apk add --no-cache --update curl
 
 WORKDIR /root
 
-RUN curl https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem \
-    -o aws-cert-bundle.pem
-RUN echo "ed2b625ceeca0ebacf413972c33acbeb65a6c6b94d0c6434f1bb006cd4904ede  aws-cert-bundle.pem" | sha256sum -c -
+ADD \
+  --checksum=sha256:390fdc813e2e58ec5a0def8ce6422b83d75032899167052ab981d8e1b3b14ff2 \
+  https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem \
+  aws-cert-bundle.pem
 
 # Add frontend assets compiled in node container, required by phx.digest
 COPY --from=assets-builder /root/priv/static ./priv/static
