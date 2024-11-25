@@ -84,15 +84,18 @@ defmodule Skate.OpenRouteServiceAPITest do
                "steps" => [
                  %{
                    "instruction" => "not-in-results",
+                   "name" => "not-in-results",
                    # Depart
                    "type" => 11
                  },
                  %{
                    "instruction" => "1",
+                   "name" => "A Street",
                    "type" => 1
                  },
                  %{
                    "instruction" => "not-in-results",
+                   "name" => "not-in-results",
                    # Goal
                    "type" => 10
                  }
@@ -102,16 +105,19 @@ defmodule Skate.OpenRouteServiceAPITest do
                "steps" => [
                  %{
                    "instruction" => "not-in-results",
+                   "name" => "not-in-results",
                    # Depart
                    "type" => 11
                  },
                  %{
                    "instruction" => "not-in-results",
+                   "name" => "not-in-results",
                    # Straight
                    "type" => 6
                  },
                  %{
                    "instruction" => "2",
+                   "name" => "B Drive",
                    "type" => 0
                  }
                ]
@@ -124,8 +130,8 @@ defmodule Skate.OpenRouteServiceAPITest do
     assert {:ok,
             %DirectionsResponse{
               directions: [
-                %{instruction: "1"},
-                %{instruction: "2"}
+                %{instruction: "R - A Street"},
+                %{instruction: "L - B Drive"}
               ]
             }} =
              Skate.OpenRouteServiceAPI.directions([

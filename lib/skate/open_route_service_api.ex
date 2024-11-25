@@ -24,10 +24,10 @@ defmodule Skate.OpenRouteServiceAPI do
           ],
           directions: [
             %{
-              instruction: "Turn right onto 1st Avenue"
+              instruction: "R - 1st Avenue"
             },
             %{
-              instruction: "Turn left onto 2nd Place"
+              instruction: "L - 2nd Place"
             }
           ]
         }
