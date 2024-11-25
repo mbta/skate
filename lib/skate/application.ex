@@ -37,10 +37,10 @@ defmodule Skate.Application do
           []
         end ++
         [
+          Skate.Migrate,
           {Phoenix.PubSub, name: Skate.PubSub},
           {DNSCluster, Application.get_env(:skate, DNSCluster)},
           SkateWeb.Endpoint,
-          Skate.Migrate,
           {Oban, Application.fetch_env!(:skate, Oban)},
           {Skate.Detours.TripModificationPublisher,
            Application.get_env(:skate, Skate.Detours.TripModificationPublisher)}
