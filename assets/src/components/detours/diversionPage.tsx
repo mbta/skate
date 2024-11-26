@@ -151,7 +151,9 @@ export const DiversionPage = ({
     ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
     ,
     "Turn-by-Turn Directions:",
-    ...(extendedDirections?.map((v) => v.instruction) ?? []),
+    ...(editedDirections
+      ? [editedDirections]
+      : extendedDirections?.map((v) => v.instruction) ?? []),
   ].join("\n")
 
   const routes = useContext(RoutesContext)
