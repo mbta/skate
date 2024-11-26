@@ -5,11 +5,12 @@ defmodule Schedule.Gtfs.Direction do
   alias Schedule.Gtfs.Route
 
   @type id :: 0 | 1
+  @type name :: String.t()
 
   @type t :: %__MODULE__{
           route_id: Route.id(),
           direction_id: id(),
-          direction_name: String.t()
+          direction_name: name()
         }
 
   @enforce_keys [

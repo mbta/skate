@@ -12,11 +12,17 @@ defmodule Skate.Detours.SnapshotSerde do
   Converts a XState JSON Snapshot to Detours Database Changeset
   """
   def deserialize(user_id, %{} = snapshot) do
+    route_pattern =
+      snapshot
+      |> deserialize_route_pattern()
+      |> Skate.Detours.Detours.get_or_create_route_pattern()
+
     Skate.Detours.Db.Detour.changeset(
       %Skate.Detours.Db.Detour{
         # `id` is `nil` by default, so a `nil` `id` should be fine
         id: id_from_snapshot(snapshot),
-        author_id: user_id
+        author_id: user_id,
+        route_pattern_id: Map.get(route_pattern, :id)
       },
       %{
         # Save Snapshot to DB until we've fully transitioned to serializing
@@ -31,6 +37,36 @@ defmodule Skate.Detours.SnapshotSerde do
   """
   def id_from_snapshot(%{"context" => %{"uuid" => id}}), do: id
   def id_from_snapshot(%{"context" => %{}}), do: nil
+
+  # Converts the RoutePattern from a XState Snapshot to ready for DB insertion
+  defp deserialize_route_pattern(%{
+         "context" => %{
+           "route" => %{
+             "id" => route_id,
+             "name" => route_name,
+             "directionNames" => direction_map
+           },
+           "routePattern" =>
+             %{
+               "id" => route_pattern_id,
+               "name" => route_pattern_name,
+               "headsign" => headsign,
+               "directionId" => direction_id
+             } = route_pattern
+         }
+       }) do
+    direction_name = direction_map[Integer.to_string(direction_id)]
+
+    %Skate.Detours.Db.RoutePattern{
+      gtfs_route_pattern_id: route_pattern_id,
+      gtfs_route_pattern_name: route_pattern_name,
+      gtfs_route_pattern_headsign: headsign,
+      gtfs_route_pattern_direction_name: direction_name,
+      gtfs_route_id: route_id,
+      gtfs_route_name: route_name,
+      gtfs_route_pattern_time_description: Map.get(route_pattern, "timeDescription")
+    }
+  end
 
   @doc """
   Builds XState Snapshot from Detours Database object
