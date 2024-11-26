@@ -26,6 +26,7 @@ defmodule Skate.DetourFactory do
           "context" => %{
             "uuid" => nil,
             "route" => %{
+              "id" => sequence("detour_route_id:"),
               "name" => sequence("detour_route_name:"),
               "directionNames" => %{
                 "0" => "Outbound",
@@ -33,6 +34,7 @@ defmodule Skate.DetourFactory do
               }
             },
             "routePattern" => %{
+              "id" => sequence("detour_route_pattern_id:"),
               "name" => sequence("detour_route_pattern_name:"),
               "headsign" => sequence("detour_route_pattern_headsign:"),
               "directionId" => sequence(:detour_route_pattern_direction, [0, 1])
@@ -92,6 +94,28 @@ defmodule Skate.DetourFactory do
             :outbound
           ) do
         put_in(state["context"]["routePattern"]["directionId"], 0)
+      end
+
+      def with_route(%Skate.Detours.Db.Detour{} = detour, route) do
+        %{
+          detour
+          | state: with_route(detour.state, route)
+        }
+      end
+
+      def with_route(%{"context" => %{"route" => _}} = state, route) do
+        put_in(state["context"]["route"], route)
+      end
+
+      def with_route_pattern(%Skate.Detours.Db.Detour{} = detour, route_pattern) do
+        %{
+          detour
+          | state: with_route_pattern(detour.state, route_pattern)
+        }
+      end
+
+      def with_route_pattern(%{"context" => %{"routePattern" => _}} = state, route_pattern) do
+        put_in(state["context"]["routePattern"], route_pattern)
       end
     end
   end

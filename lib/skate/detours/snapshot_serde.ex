@@ -46,13 +46,13 @@ defmodule Skate.Detours.SnapshotSerde do
              "name" => route_name,
              "directionNames" => direction_map
            },
-           "routePattern" => %{
-             "id" => route_pattern_id,
-             "name" => route_pattern_name,
-             "headsign" => headsign,
-             "directionId" => direction_id,
-             "timeDescription" => time_description
-           }
+           "routePattern" =>
+             %{
+               "id" => route_pattern_id,
+               "name" => route_pattern_name,
+               "headsign" => headsign,
+               "directionId" => direction_id
+             } = route_pattern
          }
        }) do
     direction_name = direction_map[Integer.to_string(direction_id)]
@@ -64,7 +64,7 @@ defmodule Skate.Detours.SnapshotSerde do
       gtfs_route_pattern_direction_name: direction_name,
       gtfs_route_id: route_id,
       gtfs_route_name: route_name,
-      gtfs_route_pattern_time_description: time_description
+      gtfs_route_pattern_time_description: Map.get(route_pattern, "timeDescription")
     }
   end
 
