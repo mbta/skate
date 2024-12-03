@@ -66,11 +66,13 @@ defmodule SkateWeb.DetourRouteControllerTest do
                "steps" => [
                  %{
                    "instruction" => "1",
-                   "type" => 1
+                   "type" => 1,
+                   "name" => "First Street"
                  },
                  %{
                    "instruction" => "2",
-                   "type" => 0
+                   "type" => 0,
+                   "name" => "Second Street"
                  }
                ]
              },
@@ -78,7 +80,8 @@ defmodule SkateWeb.DetourRouteControllerTest do
                "steps" => [
                  %{
                    "instruction" => "3",
-                   "type" => 2
+                   "type" => 2,
+                   "name" => "Third Street"
                  }
                ]
              }
@@ -94,9 +97,9 @@ defmodule SkateWeb.DetourRouteControllerTest do
       assert %{
                "data" => %{
                  "directions" => [
-                   %{"instruction" => "1"},
-                   %{"instruction" => "2"},
-                   %{"instruction" => "3"}
+                   %{"instruction" => "R - First Street"},
+                   %{"instruction" => "L - Second Street"},
+                   %{"instruction" => "L - Third Street"}
                  ]
                }
              } =
