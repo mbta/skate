@@ -143,17 +143,17 @@ export const DiversionPage = ({
     `Detour ${routeName} ${routeDirection}`,
     routeOrigin,
     ,
+    "Turn-by-Turn Directions:",
+    ...(editedDirections
+      ? [editedDirections]
+      : extendedDirections?.map((v) => v.instruction) ?? []),
+    ,
     "Connection Points:",
     connectionPoints?.start?.name ?? "N/A",
     connectionPoints?.end?.name ?? "N/A",
     ,
     `Missed Stops (${missedStops?.length}):`,
     ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
-    ,
-    "Turn-by-Turn Directions:",
-    ...(editedDirections
-      ? [editedDirections]
-      : extendedDirections?.map((v) => v.instruction) ?? []),
   ].join("\n")
 
   const routes = useContext(RoutesContext)
