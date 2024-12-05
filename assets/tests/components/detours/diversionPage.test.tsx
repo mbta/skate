@@ -1335,6 +1335,34 @@ describe("DiversionPage", () => {
     expect(input.value).toBe(startText + "\nHello World!")
   })
 
+  test("Edited detour text is reflected in the copy button", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await userEvent.click(reviewDetourButton.get())
+
+    const input = screen.getByRole("textbox") as HTMLTextAreaElement
+
+    const startText = `From null`
+
+    await userEvent.type(input, "\nHello World!")
+
+    await userEvent.click(screen.getByRole("button", { name: "Copy details" }))
+
+    await waitFor(() =>
+      expect(window.navigator.clipboard.readText()).resolves.toMatch(
+        startText + "\nHello World!"
+      )
+    )
+  })
+
   test("Attempting to close the page calls the onClose callback", async () => {
     const onClose = jest.fn()
 

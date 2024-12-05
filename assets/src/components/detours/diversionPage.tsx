@@ -144,7 +144,9 @@ export const DiversionPage = ({
     routeOrigin,
     ,
     "Turn-by-Turn Directions:",
-    ...(extendedDirections?.map((v) => v.instruction) ?? []),
+    ...(editedDirections
+      ? [editedDirections]
+      : extendedDirections?.map((v) => v.instruction) ?? []),
     ,
     "Connection Points:",
     connectionPoints?.start?.name ?? "N/A",

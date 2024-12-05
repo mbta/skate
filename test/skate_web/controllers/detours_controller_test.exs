@@ -786,11 +786,13 @@ defmodule SkateWeb.DetoursControllerTest do
                "steps" => [
                  %{
                    "instruction" => "1",
-                   "type" => 1
+                   "type" => 1,
+                   "name" => "A"
                  },
                  %{
                    "instruction" => "2",
-                   "type" => 0
+                   "type" => 0,
+                   "name" => "B"
                  }
                ]
              },
@@ -798,7 +800,8 @@ defmodule SkateWeb.DetoursControllerTest do
                "steps" => [
                  %{
                    "instruction" => "3",
-                   "type" => 2
+                   "type" => 2,
+                   "name" => "C"
                  }
                ]
              }
@@ -836,9 +839,9 @@ defmodule SkateWeb.DetoursControllerTest do
                "data" => %{
                  "detour_shape" => %{
                    "directions" => [
-                     %{"instruction" => "1"},
-                     %{"instruction" => "2"},
-                     %{"instruction" => "3"}
+                     %{"instruction" => "R - A"},
+                     %{"instruction" => "L - B"},
+                     %{"instruction" => "L - C"}
                    ]
                  }
                }
