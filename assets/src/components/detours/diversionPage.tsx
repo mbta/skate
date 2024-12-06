@@ -30,6 +30,7 @@ import { DeactivateDetourModal } from "./deactivateDetourModal"
 import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
+import { AffectedRoute } from "./detourPanelComponents"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -269,6 +270,14 @@ export const DiversionPage = ({
                   send({ type: "detour.share.open-activate-modal" })
                 }
               : undefined
+          }
+          affectedRoute={
+            <AffectedRoute
+              routeName={routeName ?? "??"}
+              routeDescription={routeDescription ?? "??"}
+              routeOrigin={routeOrigin ?? "??"}
+              routeDirection={routeDirection ?? "??"}
+            />
           }
         >
           {snapshot.matches({
