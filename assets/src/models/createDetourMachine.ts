@@ -36,6 +36,8 @@ export const createDetourMachine = setup({
 
       selectedDuration?: string
       selectedReason?: string
+
+      activatedAt?: Date
     },
 
     input: {} as
@@ -624,6 +626,11 @@ export const createDetourMachine = setup({
                     },
                     "detour.share.activate-modal.activate": {
                       target: "Done",
+                      actions: assign({
+                        // Record current time, should be done on the backend,
+                        // but that requires a larger refactor of the state machine
+                        activatedAt: new Date(),
+                      }),
                     },
                   },
                 },
