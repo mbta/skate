@@ -11,6 +11,7 @@ import {
 } from "../api"
 import { DetourShape, FinishedDetour } from "./detour"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { type, optional, coerce, date, string } from "superstruct"
 
 export const createDetourMachine = setup({
   types: {
@@ -701,3 +702,15 @@ export const createDetourMachine = setup({
 export type CreateDetourMachineInput = InputFrom<
   ActorLogicFrom<typeof createDetourMachine>
 >
+
+/**
+ * Defines expected keys and type coercions in Superstruct to enable the
+ * {@linkcode createDetourMachine} to use rich types when rehydrating from a
+ * API response.
+ */
+export const DetourSnapshotData = type({
+  context: type({
+    // Convert serialized dates back into `Date`'s
+    activatedAt: optional(coerce(date(), string(), (str) => new Date(str))),
+  }),
+})

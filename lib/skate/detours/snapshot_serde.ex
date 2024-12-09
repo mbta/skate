@@ -96,7 +96,8 @@ defmodule Skate.Detours.SnapshotSerde do
       "finishedDetour" => finisheddetour_from_detour(detour),
       "editedDirections" => editeddirections_from_detour(detour),
       "selectedDuration" => selectedduration_from_detour(detour),
-      "selectedReason" => selectedreason_from_detour(detour)
+      "selectedReason" => selectedreason_from_detour(detour),
+      "activatedAt" => activated_at_from_detour(detour)
     })
   end
 
@@ -287,6 +288,11 @@ defmodule Skate.Detours.SnapshotSerde do
   end
 
   defp selectedreason_from_detour(_), do: nil
+
+  defp activated_at_from_detour(%Detour{activated_at: %DateTime{} = activated_at}),
+    do: DateTime.to_iso8601(activated_at)
+
+  defp activated_at_from_detour(%Detour{activated_at: nil}), do: nil
 
   # defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
   defp snapshot_children_from_detour(%Detour{
