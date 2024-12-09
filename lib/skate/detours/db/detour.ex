@@ -20,7 +20,7 @@ defmodule Skate.Detours.Db.Detour do
 
   def changeset(detour, attrs) do
     detour
-    |> cast(attrs, [:state])
+    |> cast(attrs, [:state, :activated_at])
     |> validate_required([:state])
   end
 end

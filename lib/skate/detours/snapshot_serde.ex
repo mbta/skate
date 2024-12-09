@@ -21,10 +21,17 @@ defmodule Skate.Detours.SnapshotSerde do
       %{
         # Save Snapshot to DB until we've fully transitioned to serializing
         # snapshots from DB data
-        state: snapshot
+        state: snapshot,
+        activated_at: activated_at_from_snapshot(snapshot)
       }
     )
   end
+
+  defp activated_at_from_snapshot(%{"context" => %{"activatedAt" => activated_at}}),
+    do: activated_at
+
+  defp activated_at_from_snapshot(_),
+    do: nil
 
   @doc """
   Extracts the Detour ID from a XState Snapshot
