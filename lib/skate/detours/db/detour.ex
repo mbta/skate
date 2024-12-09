@@ -12,6 +12,9 @@ defmodule Skate.Detours.Db.Detour do
     field :state, :map
     belongs_to :author, User
 
+    # When this detour was activated
+    field :activated_at, :utc_datetime_usec
+
     timestamps()
   end
 
