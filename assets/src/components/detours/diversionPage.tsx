@@ -274,7 +274,6 @@ export const DiversionPage = ({
           onDeleteDetour={
             inTestGroup(TestGroups.DeleteDraftDetours)
               ? () => {
-                  console.log("delete")
                   send({ type: "detour.delete.open-delete-modal" })
                 }
               : undefined
@@ -365,7 +364,6 @@ export const DiversionPage = ({
               ) : null}
             </ActivateDetour.Modal>
           ) : null}
-
 
           {snapshot.matches({
             "Detour Drawing": {
