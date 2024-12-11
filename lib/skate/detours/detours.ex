@@ -135,7 +135,7 @@ defmodule Skate.Detours.Detours do
   def categorize_detour(_, _), do: nil
   
   @spec get_detour_route(detour :: map()) :: String.t()
-  def get_detour_route(%{state: %{"context" => %{"route" => %{"name" => route_name}}}}),
+  defp get_detour_route(%{state: %{"context" => %{"route" => %{"name" => route_name}}}}),
     do: route_name
 
   @doc """
