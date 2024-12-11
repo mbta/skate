@@ -13,7 +13,7 @@ defmodule SkateWeb.DetoursAdminController do
 
     detours =
       Enum.map(raw_detours, fn detour ->
-        case Detours.db_detour_to_detour(detour, nil) do
+        case Detours.db_detour_to_detour(detour) do
           nil ->
             nil
 
