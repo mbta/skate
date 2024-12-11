@@ -9,6 +9,7 @@ export enum TestGroups {
   MinimalLadderPage = "minimal-ladder-page",
   LateView = "late-view",
   CopyButton = "copy-button",
+  DeleteDraftDetours = "delete-draft-detours",
 }
 
 const inTestGroup = (key: TestGroups): boolean => {
