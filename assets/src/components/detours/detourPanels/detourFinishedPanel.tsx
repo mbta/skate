@@ -17,6 +17,7 @@ interface DetourFinishedPanelProps extends PropsWithChildren {
   missedStops?: Stop[]
   onChangeDetourText: (value: string) => void
   onActivateDetour?: () => void
+  onDeleteDetour?: () => void
 }
 
 export const DetourFinishedPanel = ({
@@ -27,6 +28,7 @@ export const DetourFinishedPanel = ({
   missedStops,
   onChangeDetourText,
   onActivateDetour,
+  onDeleteDetour,
   children,
 }: DetourFinishedPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
@@ -77,15 +79,26 @@ export const DetourFinishedPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex flex-column">
-        {onActivateDetour && (
-          <Button
-            className="m-3 flex-grow-1 icon-link justify-content-center"
-            onClick={onActivateDetour}
-            data-fs-element="Begin Activate Detour"
-          >
-            <BsIcons.Power />
-            Start Detour
-          </Button>
+        {onDeleteDetour && (
+          <>
+            <Button
+              className="m-3 flex-grow-1 icon-link justify-content-center"
+              variant="outline-ui-alert"
+              onClick={onDeleteDetour}
+              data-fs-element="Delete Detour Draft"
+            >
+              <BsIcons.Trash />
+              Delete Draft
+            </Button>
+            <Button
+              className="m-3 flex-grow-1 icon-link justify-content-center"
+              onClick={onActivateDetour}
+              data-fs-element="Begin Activate Detour"
+            >
+              <BsIcons.Power />
+              Start Detour
+            </Button>
+          </>
         )}
       </Panel.Body.Footer>
     </Panel.Body>
