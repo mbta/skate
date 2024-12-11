@@ -130,13 +130,10 @@ defmodule Skate.Detours.Detours do
   def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}, _user_id),
     do: :past
 
-    @doc """
-  Takes a `Skate.Detours.Db.Detour` struct and a `Skate.Settings.Db.User` id
-  and returns a `t:detour_type/0` based on the state of the detour.
-
-  otherwise returns `nil` if it is a draft but does not belong to the provided
-  user
-  """
+  def categorize_detour(_detour_context, nil = _user_id), do: :draft
+  def categorize_detour(%{author_id: author_id}, user_id) when author_id == user_id, do: :draft
+  def categorize_detour(_, _), do: nil
+  
   @spec get_detour_route(detour :: map()) :: String.t()
   def get_detour_route(%{state: %{"context" => %{"route" => %{"name" => route_name}}}}),
     do: route_name
