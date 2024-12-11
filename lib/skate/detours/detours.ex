@@ -29,6 +29,22 @@ defmodule Skate.Detours.Detours do
   end
 
   @doc """
+  Returns the list of detours by route id with author, sorted by updated_at
+
+  ## Examples
+
+      iex> active_detours_by_route()
+      [%Detour{}, ...]
+  """
+  def active_detours_by_route(route_id) do
+    list_detours()
+    |> Enum.filter(fn detour ->
+      categorize_detour(detour) == :active and get_detour_route(detour) == route_id
+    end)
+    |> Enum.map(fn detour -> db_detour_to_detour(detour) end)
+  end
+
+  @doc """
   Returns the detours grouped by active, draft, and past.
 
   ## Examples
@@ -114,9 +130,16 @@ defmodule Skate.Detours.Detours do
   def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}, _user_id),
     do: :past
 
-  def categorize_detour(_detour_context, nil = _user_id), do: :draft
-  def categorize_detour(%{author_id: author_id}, user_id) when author_id == user_id, do: :draft
-  def categorize_detour(_, _), do: nil
+    @doc """
+  Takes a `Skate.Detours.Db.Detour` struct and a `Skate.Settings.Db.User` id
+  and returns a `t:detour_type/0` based on the state of the detour.
+
+  otherwise returns `nil` if it is a draft but does not belong to the provided
+  user
+  """
+  @spec get_detour_route(detour :: map()) :: String.t()
+  def get_detour_route(%{state: %{"context" => %{"route" => %{"name" => route_name}}}}),
+    do: route_name
 
   @doc """
   Gets a single detour.
@@ -214,13 +237,80 @@ defmodule Skate.Detours.Detours do
 
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
-        send_notification(new_record, previous_record, author_id)
+        new_record
+        |> categorize_detour()
+        |> broadcast_detour(new_record, author_id)
+
+        send_notification(new_record, previous_record)
 
       _ ->
         nil
     end
 
     detour_db_result
+  end
+
+  @spec broadcast_detour(detour_type(), Detour.t(), User.id()) :: nil
+  defp broadcast_detour(:draft, detour, author_id) do
+    author_uuid =
+      author_id
+      |> User.get_by_id!()
+      |> Map.get(:uuid)
+
+    Phoenix.PubSub.broadcast(
+      Skate.PubSub,
+      "detours:draft:" <> author_uuid,
+      {:detour_drafted, db_detour_to_detour(detour)}
+    )
+  end
+
+  defp broadcast_detour(:active, detour, author_id) do
+    author_uuid =
+      author_id
+      |> User.get_by_id!()
+      |> Map.get(:uuid)
+
+    route_id = get_detour_route(detour)
+
+    Phoenix.PubSub.broadcast(
+      Skate.PubSub,
+      "detours:draft:" <> author_uuid,
+      {:detour_activated, db_detour_to_detour(detour)}
+    )
+
+    Phoenix.PubSub.broadcast(
+      Skate.PubSub,
+      "detours:active" <> route_id,
+      {:detour_activated, db_detour_to_detour(detour)}
+    )
+
+    Phoenix.PubSub.broadcast(
+      Skate.PubSub,
+      "detours:active",
+      {:detour_activated, db_detour_to_detour(detour)}
+    )
+  end
+
+  defp broadcast_detour(:past, detour, _author_id) do
+    route_id = get_detour_route(detour)
+
+    Phoenix.PubSub.broadcast(
+      Skate.PubSub,
+      "detours:active" <> route_id,
+      {:detour_deactivated, db_detour_to_detour(detour)}
+    )
+
+    Phoenix.PubSub.broadcast(
+      Skate.PubSub,
+      "detours:active",
+      {:detour_deactivated, db_detour_to_detour(detour)}
+    )
+
+    Phoenix.PubSub.broadcast(
+      Skate.PubSub,
+      "detours:past",
+      {:detour_deactivated, db_detour_to_detour(detour)}
+    )
   end
 
   @doc """
