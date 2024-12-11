@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react"
+import React, { PropsWithChildren, ReactNode } from "react"
 import { Button, Form } from "react-bootstrap"
 import * as BsIcons from "../../../helpers/bsIcons"
 import { Panel } from "../diversionPage"
@@ -18,6 +18,7 @@ interface DetourFinishedPanelProps extends PropsWithChildren {
   onChangeDetourText: (value: string) => void
   onActivateDetour?: () => void
   onDeleteDetour?: () => void
+  affectedRoute?: ReactNode
 }
 
 export const DetourFinishedPanel = ({
@@ -30,6 +31,7 @@ export const DetourFinishedPanel = ({
   onActivateDetour,
   onDeleteDetour,
   children,
+  affectedRoute,
 }: DetourFinishedPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header>
@@ -48,14 +50,16 @@ export const DetourFinishedPanel = ({
           <BsIcons.ArrowLeft /> Edit
         </Button>
 
+        {affectedRoute}
+
         <h2 className="c-diversion-panel__h2">Directions</h2>
-        {/* 
+        {/*
             We need a way to let the form area take up exactly the space of its content
             (to avoid double scrollbars). We used this approach:
             https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas
 
-            The result is that the Form.Control has an invisible twin that helps the 
-            wrapper grow to the appropriate size, and then the Form.Control likewise 
+            The result is that the Form.Control has an invisible twin that helps the
+            wrapper grow to the appropriate size, and then the Form.Control likewise
             assumes that space. All styles that affect layout must be identical
             (e.g., `border`, `padding`, `margin`, `font`) between the `<Form.Control/>`
             and the `.c-autosized-textarea::after` pseudo-element.

@@ -456,6 +456,43 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   </svg>
                    Edit
                 </button>
+                <section
+                  class="pb-3"
+                >
+                  <h2
+                    class="c-diversion-panel__h2 c-detour-panel__subheader"
+                  >
+                    Affected route
+                  </h2>
+                  <div
+                    class="d-flex"
+                  >
+                    <div
+                      class="c-route-pill c-route-pill--bus me-2 align-top"
+                    >
+                      2
+                    </div>
+                    <div
+                      class="d-inline-block"
+                    >
+                      <p
+                        class="my-0 c-diversion-panel__description"
+                      >
+                        Headsign 2
+                      </p>
+                      <p
+                        class="my-0 text-muted c-diversion-panel__origin py-1"
+                      >
+                        Route pattern From A2 - To B2
+                      </p>
+                      <p
+                        class="my-0 small c-diversion-panel__direction py-1"
+                      >
+                        Outbound
+                      </p>
+                    </div>
+                  </div>
+                </section>
                 <h2
                   class="c-diversion-panel__h2"
                 >
@@ -1270,6 +1307,43 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 </svg>
                  Edit
               </button>
+              <section
+                class="pb-3"
+              >
+                <h2
+                  class="c-diversion-panel__h2 c-detour-panel__subheader"
+                >
+                  Affected route
+                </h2>
+                <div
+                  class="d-flex"
+                >
+                  <div
+                    class="c-route-pill c-route-pill--bus me-2 align-top"
+                  >
+                    1
+                  </div>
+                  <div
+                    class="d-inline-block"
+                  >
+                    <p
+                      class="my-0 c-diversion-panel__description"
+                    >
+                      Headsign 1
+                    </p>
+                    <p
+                      class="my-0 text-muted c-diversion-panel__origin py-1"
+                    >
+                      Route pattern From A1 - To B1
+                    </p>
+                    <p
+                      class="my-0 small c-diversion-panel__direction py-1"
+                    >
+                      Outbound
+                    </p>
+                  </div>
+                </div>
+              </section>
               <h2
                 class="c-diversion-panel__h2"
               >
