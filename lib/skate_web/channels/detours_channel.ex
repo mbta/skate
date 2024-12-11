@@ -16,8 +16,8 @@ defmodule SkateWeb.DetoursChannel do
   end
 
   @impl SkateWeb.AuthenticatedChannel
-  def join_authenticated("detours:active" <> route_id, _message, socket) do
-    SkateWeb.Endpoint.subscribe("detours:active" <> route_id)
+  def join_authenticated("detours:active:" <> route_id, _message, socket) do
+    SkateWeb.Endpoint.subscribe("detours:active:" <> route_id)
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
 
     detours = Detours.active_detours_by_route(route_id)
