@@ -20,6 +20,7 @@ import AppStateWrapper from "./components/appStateWrapper"
 import { tagManagerIdentify } from "./helpers/googleTagManager"
 import { fullStoryInit } from "./helpers/fullStory"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
+import { userUuid } from "./util/userUuid"
 
 document.documentElement.dataset.demoMode = inTestGroup(
   TestGroups.DemoMode
@@ -37,11 +38,7 @@ sentryInit(
   window.sentryInitialization?.orgSlug
 )
 
-const userUuid = document
-  .querySelector("meta[name=user-uuid]")
-  ?.getAttribute("content")
-
-tagManagerIdentify(userUuid)
+tagManagerIdentify(userUuid())
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const root = createRoot(document.getElementById("app")!)
