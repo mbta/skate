@@ -55,7 +55,7 @@ defmodule Skate.Detours.Detours do
     %{
       active: Map.get(detours, :active),
       draft:
-        Map.get(detours, :draft) |> Enum.filter(fn detour -> detour.author_id == user_id end),
+        detours |> Map.get(:draft) |> Enum.filter(fn detour -> detour.author_id == user_id end),
       past: Map.get(detours, :past)
     }
   end
