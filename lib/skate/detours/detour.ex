@@ -30,6 +30,59 @@ defmodule Skate.Detours.Detour do
       :author_id,
       :status
     ]
+
+    def from(
+          status,
+          %{
+            state: %{
+              "context" => %{
+                "route" => %{"name" => route_name, "directionNames" => direction_names},
+                "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
+                "nearestIntersection" => nearest_intersection
+              }
+            }
+          } = db_detour
+        ) do
+      direction = Map.get(direction_names, Integer.to_string(direction_id))
+
+      %__MODULE__{
+        id: db_detour.id,
+        route: route_name,
+        direction: direction,
+        name: headsign,
+        intersection: nearest_intersection,
+        updated_at: timestamp_to_unix(db_detour.updated_at),
+        author_id: db_detour.author_id,
+        status: status
+      }
+    end
+
+    def from(_status, _attrs), do: nil
+
+    # Converts the db timestamp to unix
+    defp timestamp_to_unix(db_date) do
+      db_date
+      |> DateTime.from_naive!("Etc/UTC")
+      |> DateTime.to_unix()
+    end
+  end
+
+  defmodule ActivatedDetourDetails do
+    @moduledoc """
+    Extended information for active detours
+    """
+
+    @type t :: %__MODULE__{
+            activated_at: DateTime.t(),
+            details: Detailed.t()
+          }
+
+    @derive Jason.Encoder
+
+    defstruct [
+      :activated_at,
+      :details
+    ]
   end
 
   defmodule WithState do

@@ -146,25 +146,29 @@ defmodule SkateWeb.DetoursControllerTest do
   defp populate_db_and_get_user(conn) do
     # Active detour
     put(conn, "/api/detours/update_snapshot", %{
-      "snapshot" => %{
-        "context" => %{
-          "route" => %{
-            "id" => "23",
-            "name" => "23",
-            "directionNames" => %{
-              "0" => "Outbound",
-              "1" => "Inbound"
-            }
+      "snapshot" =>
+        activated(
+          %{
+            "context" => %{
+              "route" => %{
+                "id" => "23",
+                "name" => "23",
+                "directionNames" => %{
+                  "0" => "Outbound",
+                  "1" => "Inbound"
+                }
+              },
+              "routePattern" => %{
+                "headsign" => "Headsign",
+                "directionId" => 0
+              },
+              "nearestIntersection" => "Street A & Avenue B",
+              "uuid" => 1
+            },
+            "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
           },
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 0
-          },
-          "nearestIntersection" => "Street A & Avenue B",
-          "uuid" => 1
-        },
-        "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
-      }
+          ~U[2024-01-01 13:00:00.000000Z]
+        )
     })
 
     # Past detour
@@ -367,13 +371,15 @@ defmodule SkateWeb.DetoursControllerTest do
                "data" => %{
                  "active" => [
                    %{
-                     "author_id" => ^author_id,
-                     "direction" => "Outbound",
-                     "intersection" => "Street A & Avenue B",
-                     "name" => "Headsign",
-                     "route" => "23",
-                     "status" => "active",
-                     "updated_at" => _
+                     "details" => %{
+                       "author_id" => ^author_id,
+                       "direction" => "Outbound",
+                       "intersection" => "Street A & Avenue B",
+                       "name" => "Headsign",
+                       "route" => "23",
+                       "status" => "active",
+                       "updated_at" => _
+                     }
                    }
                  ],
                  "draft" => [
@@ -433,15 +439,7 @@ defmodule SkateWeb.DetoursControllerTest do
       assert %{
                "data" => %{
                  "active" => [
-                   %{
-                     "author_id" => ^current_user_id,
-                     "direction" => "Outbound",
-                     "intersection" => "Street A & Avenue B",
-                     "name" => "Headsign",
-                     "route" => "23",
-                     "status" => "active",
-                     "updated_at" => _
-                   }
+                   _
                  ],
                  "draft" => [
                    %{
@@ -520,13 +518,16 @@ defmodule SkateWeb.DetoursControllerTest do
                "data" => %{
                  "active" => [
                    %{
-                     "author_id" => ^author_id,
-                     "direction" => "Outbound",
-                     "intersection" => "Street A & Avenue B",
-                     "name" => "Headsign",
-                     "route" => "23",
-                     "status" => "active",
-                     "updated_at" => _
+                     "activated_at" => "2024-01-01T13:00:00.000000Z",
+                     "details" => %{
+                       "author_id" => ^author_id,
+                       "direction" => "Outbound",
+                       "intersection" => "Street A & Avenue B",
+                       "name" => "Headsign",
+                       "route" => "23",
+                       "status" => "active",
+                       "updated_at" => _
+                     }
                    }
                  ],
                  "draft" => [
