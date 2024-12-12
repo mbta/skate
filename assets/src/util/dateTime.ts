@@ -114,3 +114,8 @@ export const timeAgoLabel = (
 
   return "Just now"
 }
+
+export const timeAgoLabelFromDate = (start: Date, end: Date) => {
+  const second = 1000
+  return timeAgoLabel(end.valueOf() / second, start.valueOf() / second)
+}
