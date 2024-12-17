@@ -48,7 +48,7 @@ defmodule Skate.Detours.Detours do
   def grouped_detours(user_id) do
     detours =
       list_detours()
-      |> Enum.map(fn detour -> db_detour_to_detour(detour) end)
+      |> Enum.map(&db_detour_to_detour/1)
       |> Enum.filter(& &1)
       |> Enum.group_by(fn detour -> detour.status end)
 
