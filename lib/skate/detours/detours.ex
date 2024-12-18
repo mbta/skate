@@ -48,18 +48,19 @@ defmodule Skate.Detours.Detours do
   def grouped_detours(user_id) do
     detours =
       list_detours()
-      |> Enum.map(fn detour -> db_detour_to_detour(detour, user_id) end)
+      |> Enum.map(&db_detour_to_detour/1)
       |> Enum.filter(& &1)
       |> Enum.group_by(fn detour -> detour.status end)
 
     %{
       active: Map.get(detours, :active),
-      draft: Map.get(detours, :draft),
+      draft:
+        detours |> Map.get(:draft) |> Enum.filter(fn detour -> detour.author_id == user_id end),
       past: Map.get(detours, :past)
     }
   end
 
-  @spec db_detour_to_detour(Detour.t(), integer() | nil) :: DetailedDetour.t() | nil
+  @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | nil
   def db_detour_to_detour(
         %{
           state: %{
@@ -69,8 +70,7 @@ defmodule Skate.Detours.Detours do
               "nearestIntersection" => nearest_intersection
             }
           }
-        } = db_detour,
-        user_id
+        } = db_detour
       ) do
     direction = Map.get(direction_names, Integer.to_string(direction_id))
 
@@ -82,11 +82,11 @@ defmodule Skate.Detours.Detours do
       intersection: nearest_intersection,
       updated_at: timestamp_to_unix(db_detour.updated_at),
       author_id: db_detour.author_id,
-      status: categorize_detour(db_detour, user_id)
+      status: categorize_detour(db_detour)
     }
   end
 
-  def db_detour_to_detour(invalid_detour, _) do
+  def db_detour_to_detour(invalid_detour) do
     Sentry.capture_message("Detour error: the detour has an outdated schema",
       extra: %{error: invalid_detour}
     )
@@ -103,20 +103,14 @@ defmodule Skate.Detours.Detours do
   otherwise returns `nil` if it is a draft but does not belong to the provided
   user
   """
-  @spec categorize_detour(detour :: map(), user_id :: Skate.Settings.Db.User.id()) ::
-          detour_type() | nil
-  def categorize_detour(
-        %{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}},
-        _user_id
-      ),
-      do: :active
+  @spec categorize_detour(detour :: map()) :: detour_type()
+  def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}),
+    do: :active
 
-  def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}, _user_id),
+  def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}),
     do: :past
 
-  def categorize_detour(_detour_context, nil = _user_id), do: :draft
-  def categorize_detour(%{author_id: author_id}, user_id) when author_id == user_id, do: :draft
-  def categorize_detour(_, _), do: nil
+  def categorize_detour(_detour_context), do: :draft
 
   @doc """
   Gets a single detour.
@@ -214,7 +208,7 @@ defmodule Skate.Detours.Detours do
 
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
-        send_notification(new_record, previous_record, author_id)
+        send_notification(new_record, previous_record)
 
       _ ->
         nil
@@ -227,23 +221,19 @@ defmodule Skate.Detours.Detours do
   Retrieves a `Skate.Detours.Db.Detour` from the database by it's ID and then resolves the
   detour's category via `categorize_detour/2`
   """
-  @spec categorize_detour_by_id(
-          detour_id :: nil | integer(),
-          user_id :: Skate.Settings.Db.User.id()
-        ) :: detour_type() | nil
-  def categorize_detour_by_id(nil = _detour_id, _user_id), do: nil
+  @spec categorize_detour_by_id(detour_id :: nil | integer()) :: detour_type() | nil
+  def categorize_detour_by_id(nil = _detour_id), do: nil
 
-  def categorize_detour_by_id(detour_id, user_id) do
+  def categorize_detour_by_id(detour_id) do
     case Skate.Repo.get(Detour, detour_id) do
-      %Detour{} = detour -> categorize_detour(detour, user_id)
+      %Detour{} = detour -> categorize_detour(detour)
       _ -> nil
     end
   end
 
   @spec send_notification(
           new_record :: Skate.Detours.Db.Detour.t() | nil,
-          previous_record :: Skate.Detours.Db.Detour.t() | nil,
-          user_id :: Skate.Settings.Db.User.id() | nil
+          previous_record :: Skate.Detours.Db.Detour.t() | nil
         ) :: :ok | nil
   @spec send_notification(%{
           next_detour: Skate.Detours.Db.Detour.t() | nil,
@@ -252,17 +242,16 @@ defmodule Skate.Detours.Detours do
         }) :: :ok | nil
   defp send_notification(
          %Detour{} = new_record,
-         %Detour{} = previous_record,
-         user_id
+         %Detour{} = previous_record
        ) do
     send_notification(%{
       next_detour: new_record,
-      previous: categorize_detour(previous_record, user_id),
-      next: categorize_detour(new_record, user_id)
+      previous: categorize_detour(previous_record),
+      next: categorize_detour(new_record)
     })
   end
 
-  defp send_notification(_, _, _), do: nil
+  defp send_notification(_, _), do: nil
 
   defp send_notification(%{
          next: :active,
