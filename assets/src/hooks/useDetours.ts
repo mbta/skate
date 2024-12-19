@@ -31,7 +31,7 @@ const subscribe = (
   channel
     .join()
     .receive("ok", ({ data: data }: { data: SimpleDetour[] }) => {
-      const detoursMap = Object.fromEntries(data.map(v => [v.id, v]))
+      const detoursMap = Object.fromEntries(data.map((v) => [v.id, v]))
       initializeChannel(detoursMap)
     })
 
@@ -154,7 +154,7 @@ export const useDraftDetours = (socket: Socket | undefined) => {
         channel = undefined
       }
     }
-  }, [socket])
+  }, [socket, topic])
   return draftDetours
 }
 
@@ -183,8 +183,11 @@ const subscribeByRoute = (
   channel
     .join()
     .receive("ok", ({ data: data }: { data: SimpleDetour[] }) => {
-      const detoursMap = Object.fromEntries(data.map(v => [v.id, v]))
-      setDetours((detoursByRouteId) => ({...detoursByRouteId, [routeId]: detoursMap}))
+      const detoursMap = Object.fromEntries(data.map((v) => [v.id, v]))
+      setDetours((detoursByRouteId) => ({
+        ...detoursByRouteId,
+        [routeId]: detoursMap,
+      }))
     })
 
     .receive("error", ({ reason }) => {
@@ -206,7 +209,9 @@ export const useActiveDetoursByRoute = (
   routeIds: RouteId[]
 ): ByRouteId<DetoursMap> => {
   const baseTopic = "detours:active:"
-  const [activeDetoursByRoute, setactiveDetoursByRoute] = useState<ByRouteId<DetoursMap>>({})
+  const [activeDetoursByRoute, setActiveDetoursByRoute] = useState<
+    ByRouteId<DetoursMap>
+  >({})
   // eslint-disable-next-line react/hook-use-state
   const [, setChannelsByRouteId] = useState<ByRouteId<Channel>>({})
 
@@ -235,7 +240,7 @@ export const useActiveDetoursByRoute = (
               socket,
               baseTopic,
               routeId,
-              setactiveDetoursByRoute
+              setActiveDetoursByRoute
             )
           }
         })

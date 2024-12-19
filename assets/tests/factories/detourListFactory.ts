@@ -15,11 +15,13 @@ export const detourListFactory = Factory.define<GroupedSimpleDetours>(() => {
   }
 })
 
-export const simpleDetourFactory = Factory.define<SimpleDetour>(({ sequence }) => ({
-  id: sequence,
-  route: `${sequence}`,
-  direction: "Inbound",
-  name: `Headsign ${sequence}`,
-  intersection: `Street A${sequence} & Avenue B${sequence}`,
-  updatedAt: 1724866392,
-}))
+export const simpleDetourFactory = Factory.define<SimpleDetour>(
+  ({ sequence }) => ({
+    id: sequence,
+    route: `${sequence}`,
+    direction: "Inbound",
+    name: `Headsign ${sequence}`,
+    intersection: `Street A${sequence} & Avenue B${sequence}`,
+    updatedAt: 1724866392,
+  })
+)

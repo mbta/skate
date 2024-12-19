@@ -180,7 +180,7 @@ defmodule SkateWeb.DetoursChannelTest do
       {:ok, _, socket} =
         subscribe_and_join(socket, DetoursChannel, "detours:draft:" <> Integer.to_string(user_id))
 
-      detour = :detour_snapshot |> build()
+      detour = build(:detour_snapshot)
 
       assert {:noreply, _socket} =
                DetoursChannel.handle_info(

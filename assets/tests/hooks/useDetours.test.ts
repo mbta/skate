@@ -2,7 +2,12 @@ import { describe, expect, test } from "@jest/globals"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import { act, renderHook } from "@testing-library/react"
 import { simpleDetourFactory } from "../factories/detourListFactory"
-import { useActiveDetours, useActiveDetoursByRoute, useDraftDetours, usePastDetours } from "../../src/hooks/useDetours"
+import {
+  useActiveDetours,
+  useActiveDetoursByRoute,
+  useDraftDetours,
+  usePastDetours,
+} from "../../src/hooks/useDetours"
 import { SimpleDetour } from "../../src/models/detoursList"
 import { RouteId } from "../../src/schedule"
 
@@ -16,23 +21,26 @@ const detours = [detourA, detourB, detourC]
 describe("useActiveDetours", () => {
   test("parses initial detours message from joining a channel", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {data: detours})
+    const mockChannel = makeMockChannel("ok", { data: detours })
     mockSocket.channel.mockImplementation(() => mockChannel)
     const { result } = renderHook(() => useActiveDetours(mockSocket))
-    
+
     expect(result.current).toStrictEqual({
       [detourA.id]: detourA,
       [detourB.id]: detourB,
-      [detourC.id]: detourC
+      [detourC.id]: detourC,
     })
   })
 
   test("parses an activated detour event", async () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {data: detours})
+    const mockChannel = makeMockChannel("ok", { data: detours })
 
-    let mockEvents: Record<string, undefined | ((data: {data: SimpleDetour}) => void)> = {
-      "activated": undefined
+    const mockEvents: Record<
+      string,
+      undefined | ((data: { data: SimpleDetour }) => void)
+    > = {
+      activated: undefined,
     }
     mockChannel.on.mockImplementation((event, fn) => {
       mockEvents[event] = fn
@@ -49,16 +57,19 @@ describe("useActiveDetours", () => {
       [detourA.id]: detourA,
       [detourB.id]: detourB,
       [detourC.id]: detourC,
-      [detourD.id]: detourD
+      [detourD.id]: detourD,
     })
   })
 
   test("parses a deactivated detour event", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {data: detours})
+    const mockChannel = makeMockChannel("ok", { data: detours })
 
-    let mockEvents: Record<string, undefined | ((data: {data: SimpleDetour}) => void)> = {
-      "deactivated": undefined
+    const mockEvents: Record<
+      string,
+      undefined | ((data: { data: SimpleDetour }) => void)
+    > = {
+      deactivated: undefined,
     }
     mockChannel.on.mockImplementation((event, fn) => {
       mockEvents[event] = fn
@@ -81,23 +92,26 @@ describe("useActiveDetours", () => {
 describe("usePastDetours", () => {
   test("parses initial detours message", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {data: detours})
+    const mockChannel = makeMockChannel("ok", { data: detours })
     mockSocket.channel.mockImplementation(() => mockChannel)
     const { result } = renderHook(() => usePastDetours(mockSocket))
-    
+
     expect(result.current).toStrictEqual({
       [detourA.id]: detourA,
       [detourB.id]: detourB,
-      [detourC.id]: detourC
+      [detourC.id]: detourC,
     })
   })
 
   test("parses a deactivated detour event", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {data: detours})
+    const mockChannel = makeMockChannel("ok", { data: detours })
 
-    let mockEvents: Record<string, undefined | ((data: {data: SimpleDetour}) => void)> = {
-      "deactivated": undefined
+    const mockEvents: Record<
+      string,
+      undefined | ((data: { data: SimpleDetour }) => void)
+    > = {
+      deactivated: undefined,
     }
     mockChannel.on.mockImplementation((event, fn) => {
       mockEvents[event] = fn
@@ -114,7 +128,7 @@ describe("usePastDetours", () => {
       [detourA.id]: detourA,
       [detourB.id]: detourB,
       [detourC.id]: detourC,
-      [detourD.id]: detourD
+      [detourD.id]: detourD,
     })
   })
 })
@@ -122,23 +136,26 @@ describe("usePastDetours", () => {
 describe("useDraftDetours", () => {
   test("parses initial detours message", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {data: detours})
+    const mockChannel = makeMockChannel("ok", { data: detours })
     mockSocket.channel.mockImplementation(() => mockChannel)
     const { result } = renderHook(() => useDraftDetours(mockSocket))
-    
+
     expect(result.current).toStrictEqual({
       [detourA.id]: detourA,
       [detourB.id]: detourB,
-      [detourC.id]: detourC
+      [detourC.id]: detourC,
     })
   })
 
   test("parses a drafted detour event", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {data: detours})
+    const mockChannel = makeMockChannel("ok", { data: detours })
 
-    let mockEvents: Record<string, undefined | ((data: {data: SimpleDetour}) => void)> = {
-      "drafted": undefined
+    const mockEvents: Record<
+      string,
+      undefined | ((data: { data: SimpleDetour }) => void)
+    > = {
+      drafted: undefined,
     }
     mockChannel.on.mockImplementation((event, fn) => {
       mockEvents[event] = fn
@@ -155,16 +172,19 @@ describe("useDraftDetours", () => {
       [detourA.id]: detourA,
       [detourB.id]: detourB,
       [detourC.id]: detourC,
-      [detourD.id]: detourD
+      [detourD.id]: detourD,
     })
   })
 
   test("parses an activated detour event", () => {
     const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("ok", {data: detours})
+    const mockChannel = makeMockChannel("ok", { data: detours })
 
-    let mockEvents: Record<string, undefined | ((data: {data: SimpleDetour}) => void)> = {
-      "activated": undefined
+    const mockEvents: Record<
+      string,
+      undefined | ((data: { data: SimpleDetour }) => void)
+    > = {
+      activated: undefined,
     }
     mockChannel.on.mockImplementation((event, fn) => {
       mockEvents[event] = fn
@@ -192,7 +212,9 @@ describe("useActiveDetoursByRoute", () => {
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementation(() => mockChannel)
 
-    const { rerender } = renderHook(() => useActiveDetoursByRoute(mockSocket, ["1", "2"]))
+    const { rerender } = renderHook(() =>
+      useActiveDetoursByRoute(mockSocket, ["1", "2"])
+    )
 
     // Needs to be kicked to do the effects again after the socket initializes
     rerender()
@@ -209,7 +231,8 @@ describe("useActiveDetoursByRoute", () => {
     mockSocket.channel.mockImplementation(() => mockChannel)
 
     const { rerender } = renderHook(
-      (selectedRouteIds: RouteId[]) => useActiveDetoursByRoute(mockSocket, selectedRouteIds),
+      (selectedRouteIds: RouteId[]) =>
+        useActiveDetoursByRoute(mockSocket, selectedRouteIds),
       { initialProps: ["1", "2"] }
     )
     rerender(["1"]) // Deselect the route
@@ -228,13 +251,15 @@ describe("useActiveDetoursByRoute", () => {
       return mockChannel
     })
 
-    const { result } = renderHook(() => useActiveDetoursByRoute(mockSocket, ["1"]))
+    const { result } = renderHook(() =>
+      useActiveDetoursByRoute(mockSocket, ["1"])
+    )
 
     expect(result.current).toEqual({
       "1": {
         [detourA.id]: detourA,
         [detourB.id]: detourB,
-        [detourC.id]: detourC
+        [detourC.id]: detourC,
       },
     })
   })
@@ -250,11 +275,13 @@ describe("useActiveDetoursByRoute", () => {
       return 1
     })
 
-    const { result } = renderHook(() => useActiveDetoursByRoute(mockSocket, ["1"]))
+    const { result } = renderHook(() =>
+      useActiveDetoursByRoute(mockSocket, ["1"])
+    )
 
     expect(result.current).toEqual({
       "1": {
-        [detourD.id]: detourD
+        [detourD.id]: detourD,
       },
     })
   })
