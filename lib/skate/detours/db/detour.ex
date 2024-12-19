@@ -19,5 +19,6 @@ defmodule Skate.Detours.Db.Detour do
     detour
     |> cast(attrs, [:state])
     |> validate_required([:state])
+    |> foreign_key_constraint(:author_id)
   end
 end
