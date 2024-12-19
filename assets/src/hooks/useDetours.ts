@@ -3,7 +3,8 @@ import { SimpleDetour } from "../models/detoursList"
 import { useEffect, useState } from "react"
 import { reload } from "../models/browser"
 import { userUuid } from "../util/userUuid"
-import { RouteId } from "../schedule"
+import { ByRouteId, RouteId } from "../schedule"
+import { equalByElements } from "../helpers/array"
 
 interface DetoursMap {
   [key: number]: SimpleDetour
@@ -30,10 +31,7 @@ const subscribe = (
   channel
     .join()
     .receive("ok", ({ data: data }: { data: SimpleDetour[] }) => {
-      const detoursMap = data.reduce(
-        (acc, detour) => ({ ...acc, [detour.id]: detour }),
-        {}
-      )
+      const detoursMap = Object.fromEntries(data.map(v => [v.id, v]))
       initializeChannel(detoursMap)
     })
 
@@ -160,17 +158,13 @@ export const useDraftDetours = (socket: Socket | undefined) => {
   return draftDetours
 }
 
-interface DetoursMapByRoute {
-  [key: string]: DetoursMap
-}
-
 const subscribeByRoute = (
   socket: Socket,
   topic: string,
   routeId: string,
-  setDetours: React.Dispatch<React.SetStateAction<DetoursMapByRoute>>
+  setDetours: React.Dispatch<React.SetStateAction<ByRouteId<DetoursMap>>>
 ): Channel => {
-  const channel = socket.channel(topic)
+  const channel = socket.channel(topic + routeId)
 
   channel.on("activated", ({ data: data }) => {
     setDetours((activeDetours) => ({
@@ -189,13 +183,8 @@ const subscribeByRoute = (
   channel
     .join()
     .receive("ok", ({ data: data }: { data: SimpleDetour[] }) => {
-      const detoursMap = {
-        [routeId]: data.reduce(
-          (acc, detour) => ({ ...acc, [detour.id]: detour }),
-          {}
-        ),
-      }
-      setDetours(detoursMap)
+      const detoursMap = Object.fromEntries(data.map(v => [v.id, v]))
+      setDetours((detoursByRouteId) => ({...detoursByRouteId, [routeId]: detoursMap}))
     })
 
     .receive("error", ({ reason }) => {
@@ -215,30 +204,46 @@ const subscribeByRoute = (
 export const useActiveDetoursByRoute = (
   socket: Socket | undefined,
   routeIds: RouteId[]
-) => {
+): ByRouteId<DetoursMap> => {
   const baseTopic = "detours:active:"
-  const [activeDetours, setActiveDetours] = useState<DetoursMapByRoute>({})
+  const [activeDetoursByRoute, setactiveDetoursByRoute] = useState<ByRouteId<DetoursMap>>({})
+  // eslint-disable-next-line react/hook-use-state
+  const [, setChannelsByRouteId] = useState<ByRouteId<Channel>>({})
+
+  const [currentRouteIds, setCurrentRouteIds] = useState<RouteId[]>(routeIds)
+
+  if (!equalByElements(currentRouteIds, routeIds)) {
+    setCurrentRouteIds(routeIds)
+  }
 
   useEffect(() => {
-    let channel: Channel | undefined
     if (socket) {
-      routeIds.forEach(
-        (routeId) =>
-          (channel = subscribeByRoute(
-            socket,
-            baseTopic,
-            routeId,
-            setActiveDetours
-          ))
-      )
-    }
+      setChannelsByRouteId((oldChannelsByRoutId) => {
+        const channelsByRouteId: ByRouteId<Channel> = {}
 
-    return () => {
-      if (channel !== undefined) {
-        channel.leave()
-        channel = undefined
-      }
+        Object.entries(oldChannelsByRoutId).forEach(([routeId, channel]) => {
+          if (!currentRouteIds.includes(routeId)) {
+            channel.leave()
+          }
+        })
+
+        currentRouteIds.forEach((routeId) => {
+          if (routeId in oldChannelsByRoutId) {
+            channelsByRouteId[routeId] = oldChannelsByRoutId[routeId]
+          } else {
+            channelsByRouteId[routeId] = subscribeByRoute(
+              socket,
+              baseTopic,
+              routeId,
+              setactiveDetoursByRoute
+            )
+          }
+        })
+
+        return channelsByRouteId
+      })
     }
-  }, [socket])
-  return activeDetours
+  }, [socket, currentRouteIds])
+
+  return activeDetoursByRoute
 }
