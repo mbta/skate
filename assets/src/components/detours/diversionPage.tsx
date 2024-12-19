@@ -30,6 +30,7 @@ import { DeactivateDetourModal } from "./deactivateDetourModal"
 import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
+import { AffectedRoute } from "./detourPanelComponents"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -143,17 +144,17 @@ export const DiversionPage = ({
     `Detour ${routeName} ${routeDirection}`,
     routeOrigin,
     ,
+    "Turn-by-Turn Directions:",
+    ...(editedDirections
+      ? [editedDirections]
+      : extendedDirections?.map((v) => v.instruction) ?? []),
+    ,
     "Connection Points:",
     connectionPoints?.start?.name ?? "N/A",
     connectionPoints?.end?.name ?? "N/A",
     ,
     `Missed Stops (${missedStops?.length}):`,
     ...(missedStops?.map(({ name }) => name) ?? ["no stops"]),
-    ,
-    "Turn-by-Turn Directions:",
-    ...(editedDirections
-      ? [editedDirections]
-      : extendedDirections?.map((v) => v.instruction) ?? []),
   ].join("\n")
 
   const routes = useContext(RoutesContext)
@@ -269,6 +270,14 @@ export const DiversionPage = ({
                   send({ type: "detour.share.open-activate-modal" })
                 }
               : undefined
+          }
+          affectedRoute={
+            <AffectedRoute
+              routeName={routeName ?? "??"}
+              routeDescription={routeDescription ?? "??"}
+              routeOrigin={routeOrigin ?? "??"}
+              routeDirection={routeDirection ?? "??"}
+            />
           }
         >
           {snapshot.matches({

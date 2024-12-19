@@ -80,12 +80,6 @@ export const ActiveDetourPanel = ({
             routeDirection={routeDirection}
           />
 
-          {connectionPoints && (
-            <ConnectionPoints connectionPoints={connectionPoints} />
-          )}
-
-          {missedStops && <MissedStops missedStops={missedStops} />}
-
           <section className="pb-3">
             <h2 className="c-diversion-panel__h2">Detour Directions</h2>
             {directions ? (
@@ -102,6 +96,12 @@ export const ActiveDetourPanel = ({
               </ListGroup>
             ) : null}
           </section>
+
+          {connectionPoints && (
+            <ConnectionPoints connectionPoints={connectionPoints} />
+          )}
+
+          {missedStops && <MissedStops missedStops={missedStops} />}
         </Panel.Body.ScrollArea>
 
         <Panel.Body.Footer>
