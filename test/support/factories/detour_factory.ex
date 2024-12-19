@@ -57,12 +57,21 @@ defmodule Skate.DetourFactory do
         put_in(snapshot["context"]["uuid"], id)
       end
 
-      def activated(%Skate.Detours.Db.Detour{} = detour) do
-        %{detour | state: activated(detour.state)}
+      def update_id(%Skate.Detours.Db.Detour{id: id} = detour) do
+        with_id(detour, id)
       end
 
-      def activated(%{"value" => %{}} = state) do
-        put_in(state["value"], %{"Detour Drawing" => %{"Active" => "Reviewing"}})
+      def activated(update_arg, activated_at \\ DateTime.utc_now())
+
+      def activated(%Skate.Detours.Db.Detour{} = detour, activated_at) do
+        %{detour | state: activated(detour.state, activated_at), activated_at: activated_at}
+      end
+
+      def activated(%{"value" => %{}, "context" => %{}} = state, activated_at) do
+        state =
+          put_in(state["value"], %{"Detour Drawing" => %{"Active" => "Reviewing"}})
+
+        put_in(state["context"]["activatedAt"], DateTime.to_iso8601(activated_at))
       end
 
       def deactivated(%Skate.Detours.Db.Detour{} = detour) do

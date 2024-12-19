@@ -203,7 +203,7 @@ defmodule Skate.Detours.Detours do
       |> Skate.Repo.insert(
         returning: true,
         conflict_target: [:id],
-        on_conflict: {:replace, [:state, :updated_at]}
+        on_conflict: {:replace_all_except, [:inserted_at]}
       )
 
     case detour_db_result do

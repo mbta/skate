@@ -1,7 +1,10 @@
 import { LatLngLiteral } from "leaflet"
 import { ShapePoint, Stop } from "../schedule"
-import { CreateDetourMachineInput } from "./createDetourMachine"
-import { any, Infer, number, string, type } from "superstruct"
+import {
+  CreateDetourMachineInput,
+  DetourSnapshotData,
+} from "./createDetourMachine"
+import { Infer, number, string, type } from "superstruct"
 
 export interface DetourWithState {
   author: string
@@ -11,7 +14,7 @@ export interface DetourWithState {
 
 export const DetourWithStateData = type({
   author: string(),
-  state: any(),
+  state: DetourSnapshotData,
   updated_at: number(),
 })
 
