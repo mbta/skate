@@ -36,7 +36,8 @@ defmodule Skate.DetourFactory do
               "name" => sequence("detour_route_pattern_name:"),
               "headsign" => sequence("detour_route_pattern_headsign:"),
               "directionId" => sequence(:detour_route_pattern_direction, [0, 1])
-            }
+            },
+            "nearestIntersection" => sequence("detour_nearest_intersection:")
           },
           "value" => %{},
           "children" => %{},
@@ -71,6 +72,14 @@ defmodule Skate.DetourFactory do
 
       def deactivated(%{"value" => %{}} = state) do
         put_in(state["value"], %{"Detour Drawing" => "Past"})
+      end
+
+      def with_route_name(%Skate.Detours.Db.Detour{} = detour, route_name) do
+        %{detour | state: with_route_name(detour.state, route_name)}
+      end
+
+      def with_route_name(%{"context" => %{"route" => %{"name" => _}}} = state, route_name) do
+        put_in(state["context"]["route"]["name"], route_name)
       end
 
       def with_direction(%Skate.Detours.Db.Detour{} = detour, direction) do
