@@ -69,10 +69,12 @@ defmodule Skate.Detours.Detours do
       |> Enum.group_by(fn detour -> detour.status end)
 
     %{
-      active: Map.get(detours, :active),
+      active: Map.get(detours, :active, []),
       draft:
-        detours |> Map.get(:draft) |> Enum.filter(fn detour -> detour.author_id == user_id end),
-      past: Map.get(detours, :past)
+        detours
+        |> Map.get(:draft, [])
+        |> Enum.filter(fn detour -> detour.author_id == user_id end),
+      past: Map.get(detours, :past, [])
     }
   end
 
@@ -128,7 +130,7 @@ defmodule Skate.Detours.Detours do
 
   def categorize_detour(_detour_context), do: :draft
 
-    @spec get_detour_route(detour :: map()) :: String.t()
+  @spec get_detour_route(detour :: map()) :: String.t()
   defp get_detour_route(%{state: %{"context" => %{"route" => %{"name" => route_name}}}}),
     do: route_name
 
