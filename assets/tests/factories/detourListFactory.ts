@@ -15,7 +15,7 @@ export const detourListFactory = Factory.define<GroupedSimpleDetours>(() => {
   }
 })
 
-const simpleDetourFactory = Factory.define<SimpleDetour>(({ sequence }) => ({
+export const simpleDetourFactory = Factory.define<SimpleDetour>(({ sequence }) => ({
   id: sequence,
   route: `${sequence}`,
   direction: "Inbound",
