@@ -352,7 +352,7 @@ defmodule SkateWeb.DetoursControllerTest do
     test "will not return detours from other users", %{conn: conn} do
       current_user_id = populate_db_and_get_user(conn)
 
-      other_user = Skate.Settings.User.upsert("secondary_user_uid", "secondary_user@test.com")
+      other_user = insert(:user)
 
       # Manually insert a detour by another user
       Detours.upsert_from_snapshot(other_user.id, %{
