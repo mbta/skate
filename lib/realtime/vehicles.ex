@@ -1,5 +1,6 @@
 defmodule Realtime.Vehicles do
   @moduledoc false
+  require Logger
 
   alias Realtime.{Ghost, Vehicle, VehicleOrGhost}
   alias Schedule.{Block, Route, Trip}
