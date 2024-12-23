@@ -38,7 +38,7 @@ defmodule Realtime.Vehicles do
 
   @doc """
   Exposed for testing.
-  Returns a map of vehicles & ghosts by route_id, omitting those without a route_id.
+  Returns a map of vehicles & ghosts by route_id, omitting those without a route_id. # is this omission a problem?
   """
   @spec group_by_route_with_blocks(
           [Vehicle.t()],
@@ -57,6 +57,11 @@ defmodule Realtime.Vehicles do
         now,
         timepoint_names_by_id
       ) do
+
+    Logger.debug(fn ->
+      "in group_by_route_with_blocks, potential_interlining_blocks_by_date=#{potential_interlining_blocks_by_date}"
+    end)
+
     ghosts = Ghost.ghosts(active_runs_by_date, ungrouped_vehicles, now, timepoint_names_by_id)
     vehicles_and_ghosts = ghosts ++ ungrouped_vehicles
 
@@ -69,7 +74,7 @@ defmodule Realtime.Vehicles do
       {pulling_out, not_pulling_out} =
         Enum.split_with(on_route, &(&1.route_status == :pulling_out))
 
-      date_by_block_id =
+      date_by_block_id = # this is missing Lynn blocks?
         potential_interlining_blocks_by_date
         |> Enum.flat_map(fn {date, blocks} ->
           Enum.map(blocks, &{&1.id, date})
@@ -112,7 +117,7 @@ defmodule Realtime.Vehicles do
               trip.block_id == vehicle_or_ghost.block_id && trip.route_id == route_id
             end)
 
-          block_date = Map.fetch!(date_by_block_id, incoming_trip.block_id)
+          block_date = Map.fetch!(date_by_block_id, incoming_trip.block_id) # ERROR: Incoming block_id "L442-125" not found in the map
 
           incoming_trip_start_timestamp =
             Util.Time.timestamp_for_time_of_day(incoming_trip.start_time, block_date)
