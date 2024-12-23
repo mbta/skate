@@ -207,6 +207,83 @@ defmodule Realtime.VehiclesTest do
              }
     end
 
+    test "does THE RIGHT THING when a block is missing from the schedule" do
+      vehicle =
+        build(:vehicle,
+          id: "on_route_1",
+          label: "on_route_1",
+          route_id: "route1",
+          block_id: "block1",
+          direction_id: 1
+        )
+
+      vehicle_2 =
+        build(:vehicle,
+          id: "on_route_2",
+          label: "on_route_2",
+          route_id: "route2",
+          trip_id: "trip",
+          block_id: "block2"
+        )
+
+      trip_1 = %Trip{
+        id: "trip",
+        block_id: "block1",
+        route_id: "route2",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 4,
+        end_time: 4
+      }
+
+      trip_2 = %Trip{
+        id: "trip2",
+        block_id: "block2",
+        route_id: "route2",
+        service_id: "service",
+        headsign: "headsign2",
+        direction_id: 0,
+        stop_times: [
+          %StopTime{
+            stop_id: "stop3",
+            time: 4,
+            timepoint_id: "t3"
+          }
+        ],
+        start_time: 4,
+        end_time: 4
+      }
+
+      # block_1 = build(:block, id: trip_1.block_id, pieces: [build(:piece, trips: [trip_1])])
+      block_2 = build(:block, id: trip_2.block_id, pieces: [build(:piece, trips: [trip_2])])
+
+      ungrouped_vehicles = [vehicle, vehicle_2]
+
+      # This assertion is wrong. 
+      assert Vehicles.group_by_route_with_blocks(
+               ungrouped_vehicles,
+               [trip_1],
+               %{},
+               %{~D[2019-12-20] => [block_2]},
+               0,
+               @timepoint_names_by_id
+             ) == %{
+               "route1" => [vehicle],
+               "route2" => [
+                 vehicle_2,
+                 %{vehicle | incoming_trip_direction_id: trip_1.direction_id}
+               ]
+             }
+    end
+
     test "includes incoming vehicles that aren't currently assigned to a route" do
       vehicle =
         build(:vehicle,
