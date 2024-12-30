@@ -10,6 +10,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Detours.Detour.Detailed, as: DetailedDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Settings.User
+  alias Skate.Settings.Db.User, as: DbUser
 
   @doc """
   Returns the list of detours with author, sorted by updated_at
@@ -243,7 +244,7 @@ defmodule Skate.Detours.Detours do
     detour_db_result
   end
 
-  @spec broadcast_detour(detour_type(), Detour.t(), User.id()) :: nil
+  @spec broadcast_detour(detour_type(), Detour.t(), DbUser.id()) :: :ok
   defp broadcast_detour(:draft, detour, author_id) do
     author_uuid =
       author_id
