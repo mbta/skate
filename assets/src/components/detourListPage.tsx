@@ -10,12 +10,11 @@ import {
   SvgProps,
 } from "../helpers/bsIcons"
 import { DetourModal } from "./detours/detourModal"
-import { fetchDetour, fetchDetours } from "../api"
+import { fetchDetours } from "../api"
 import { useApiCall } from "../hooks/useApiCall"
-import { isErr, isOk } from "../util/result"
-import { isValidSnapshot } from "../util/isValidSnapshot"
-import { createDetourMachine } from "../models/createDetourMachine"
+import { isOk } from "../util/result"
 import { joinClasses } from "../helpers/dom"
+import { useLoadDetour } from "../hooks/useLoadDetour"
 
 export const DetourListPage = () => {
   const [showDetourModal, setShowDetourModal] = useState(false)
@@ -25,25 +24,7 @@ export const DetourListPage = () => {
   })
   const detours = result && isOk(result) && result.ok
 
-  const { result: detour } = useApiCall({
-    apiCall: useCallback(async () => {
-      if (detourId === undefined) {
-        return undefined
-      }
-      const detourResponse = await fetchDetour(detourId)
-      if (isErr(detourResponse)) {
-        return undefined
-      }
-      const snapshot = isValidSnapshot(
-        createDetourMachine,
-        detourResponse.ok.state
-      )
-      if (isErr(snapshot)) {
-        return undefined
-      }
-      return detourResponse.ok
-    }, [detourId]),
-  })
+  const detour = useLoadDetour(detourId)
 
   const onOpenDetour = (detourId: number) => {
     setDetourId(detourId)
