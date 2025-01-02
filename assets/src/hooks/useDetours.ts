@@ -6,7 +6,7 @@ import { userUuid } from "../util/userUuid"
 import { ByRouteId, RouteId } from "../schedule"
 import { equalByElements } from "../helpers/array"
 
-interface DetoursMap {
+export interface DetoursMap {
   [key: number]: SimpleDetour
 }
 
