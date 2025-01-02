@@ -20,7 +20,7 @@ export const RouteVariantName = ({
   const route = useRoute(vehicle.routeId)
 
   const { routeId, viaVariant, headsign } = vehicle
-  const viaVariantFormatted = viaVariant && viaVariant !== "_" ? viaVariant : ""
+  const viaVariantFormatted = viaVariant && viaVariant !== "_" ? "_" + viaVariant : ""
 
   const isShuttle = isVehicle(vehicle) && vehicle.isShuttle
 
@@ -44,7 +44,7 @@ export const RouteVariantName = ({
             aria-label="Route & Variant"
             className="c-route-variant-name__route-id"
           >
-            {`${route?.name || routeId}_${viaVariantFormatted}`}
+            {`${route?.name || routeId}${viaVariantFormatted}`}
           </output>
           <span>
             {/* Underline does not work on this space unless it is inside of a span */}
