@@ -274,7 +274,7 @@ defmodule Skate.Detours.Detours do
 
     Phoenix.PubSub.broadcast(
       Skate.PubSub,
-      "detours:active" <> route_id,
+      "detours:active:" <> route_id,
       {:detour_activated, db_detour_to_detour(detour)}
     )
 
@@ -290,7 +290,7 @@ defmodule Skate.Detours.Detours do
 
     Phoenix.PubSub.broadcast(
       Skate.PubSub,
-      "detours:active" <> route_id,
+      "detours:active:" <> route_id,
       {:detour_deactivated, db_detour_to_detour(detour)}
     )
 
