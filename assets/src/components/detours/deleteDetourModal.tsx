@@ -1,21 +1,14 @@
-import React from "react"
+import React, { ReactNode } from "react"
 import { Button, Modal } from "react-bootstrap"
-import { RoutePill } from "../routePill"
 
 export const DeleteDetourModal = ({
   onDelete,
   onCancel,
-  routeName,
-  routeDescription,
-  routeOrigin,
-  routeDirection,
+  affectedRoute,
 }: {
   onDelete: () => void
   onCancel: () => void
-  routeName: string
-  routeDescription: string
-  routeOrigin: string
-  routeDirection: string
+  affectedRoute: ReactNode
 }) => {
   return (
     <Modal show animation={false} onHide={onCancel}>
@@ -24,14 +17,7 @@ export const DeleteDetourModal = ({
       </Modal.Header>
       <Modal.Body>
         <div className="d-flex flex-row gap-2 mb-3">
-          <RoutePill routeName={routeName} />
-          <div>
-            <div className="fw-semibold mb-1">{routeDescription}</div>
-            <div className="fw-normal text-body-secondary fs-6 mb-1">
-              From {routeOrigin.split(" - ")[0]}
-            </div>
-            <div className="fw-normal fs-6">{routeDirection}</div>
-          </div>
+          {affectedRoute}
         </div>
         <p>Are you sure you want to delete this draft?</p>
       </Modal.Body>

@@ -386,10 +386,15 @@ export const DiversionPage = ({
               onCancel={() =>
                 send({ type: "detour.delete.delete-modal.cancel" })
               }
-              routeName={routeName || "??"}
-              routeDescription={routeDescription || "??"}
-              routeOrigin={routeOrigin || "??"}
-              routeDirection={routeDirection || "??"}
+              affectedRoute={
+                <AffectedRoute
+                routeName={routeName ?? "??"}
+                routeDescription={routeDescription ?? "??"}
+                routeOrigin={routeOrigin ?? "??"}
+                routeDirection={routeDirection ?? "??"}
+                />
+              }
+              
             />
           ) : null}
         </DetourFinishedPanel>

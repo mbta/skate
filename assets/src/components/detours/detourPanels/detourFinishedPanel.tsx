@@ -84,25 +84,25 @@ export const DetourFinishedPanel = ({
 
       <Panel.Body.Footer className="d-flex flex-column">
         {onDeleteDetour && (
-          <>
-            <Button
-              className="m-3 flex-grow-1 icon-link justify-content-center"
-              variant="outline-ui-alert"
-              onClick={onDeleteDetour}
-              data-fs-element="Delete Detour Draft"
-            >
-              <BsIcons.Trash />
-              Delete Draft
-            </Button>
-            <Button
-              className="m-3 flex-grow-1 icon-link justify-content-center"
-              onClick={onActivateDetour}
-              data-fs-element="Begin Activate Detour"
-            >
-              <BsIcons.Power />
-              Start Detour
-            </Button>
-          </>
+          <Button
+            className="m-3 flex-grow-1 icon-link justify-content-center"
+            variant="outline-ui-alert"
+            onClick={onDeleteDetour}
+            data-fs-element="Delete Detour Draft"
+          >
+            <BsIcons.Trash />
+            Delete Draft
+          </Button>
+        )}
+        {onActivateDetour && (
+          <Button
+            className="m-3 flex-grow-1 icon-link justify-content-center"
+            onClick={onActivateDetour}
+            data-fs-element="Begin Activate Detour"
+          >
+            <BsIcons.Power />
+            Start Detour
+          </Button>
         )}
       </Panel.Body.Footer>
     </Panel.Body>
