@@ -242,6 +242,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           show={showDetourModal}
           onClose={() => {
             setShowDetourModal(false)
+            setRouteForDetour(null)
           }}
         />
       )}
@@ -249,6 +250,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
         <DetourModal
           onClose={() => {
             setShowDetourModal(false)
+            setDetourId(undefined)
           }}
           show
           key={detourId ?? ""}
