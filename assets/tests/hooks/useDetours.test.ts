@@ -1,20 +1,28 @@
 import { describe, expect, test } from "@jest/globals"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import { act, renderHook } from "@testing-library/react"
-import { simpleDetourFactory } from "../factories/detourListFactory"
+import { simpleDetourDataFactory } from "../factories/detourListFactory"
 import {
   useActiveDetours,
   useActiveDetoursByRoute,
   useDraftDetours,
   usePastDetours,
 } from "../../src/hooks/useDetours"
-import { SimpleDetour } from "../../src/models/detoursList"
+import {
+  SimpleDetourData,
+  simpleDetourFromData,
+} from "../../src/models/detoursList"
 import { RouteId } from "../../src/schedule"
 
-const detourA = simpleDetourFactory.build()
-const detourB = simpleDetourFactory.build()
-const detourC = simpleDetourFactory.build()
-const detourD = simpleDetourFactory.build()
+const detourA = simpleDetourDataFactory.build()
+const detourB = simpleDetourDataFactory.build()
+const detourC = simpleDetourDataFactory.build()
+const detourD = simpleDetourDataFactory.build()
+
+const parsedDetourA = simpleDetourFromData(detourA)
+const parsedDetourB = simpleDetourFromData(detourB)
+const parsedDetourC = simpleDetourFromData(detourC)
+const parsedDetourD = simpleDetourFromData(detourD)
 
 const detours = [detourA, detourB, detourC]
 
@@ -26,9 +34,9 @@ describe("useActiveDetours", () => {
     const { result } = renderHook(() => useActiveDetours(mockSocket))
 
     expect(result.current).toStrictEqual({
-      [detourA.id]: detourA,
-      [detourB.id]: detourB,
-      [detourC.id]: detourC,
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
     })
   })
 
@@ -38,7 +46,7 @@ describe("useActiveDetours", () => {
 
     const mockEvents: Record<
       string,
-      undefined | ((data: { data: SimpleDetour }) => void)
+      undefined | ((data: { data: SimpleDetourData }) => void)
     > = {
       activated: undefined,
     }
@@ -54,10 +62,10 @@ describe("useActiveDetours", () => {
     act(() => mockEvents["activated"]?.({ data: detourD }))
 
     expect(result.current).toStrictEqual({
-      [detourA.id]: detourA,
-      [detourB.id]: detourB,
-      [detourC.id]: detourC,
-      [detourD.id]: detourD,
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
+      [detourD.id]: parsedDetourD,
     })
   })
 
@@ -67,7 +75,7 @@ describe("useActiveDetours", () => {
 
     const mockEvents: Record<
       string,
-      undefined | ((data: { data: SimpleDetour }) => void)
+      undefined | ((data: { data: SimpleDetourData }) => void)
     > = {
       deactivated: undefined,
     }
@@ -83,8 +91,8 @@ describe("useActiveDetours", () => {
     act(() => mockEvents["deactivated"]?.({ data: detourA }))
 
     expect(result.current).toStrictEqual({
-      [detourB.id]: detourB,
-      [detourC.id]: detourC,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
     })
   })
 })
@@ -97,9 +105,9 @@ describe("usePastDetours", () => {
     const { result } = renderHook(() => usePastDetours(mockSocket))
 
     expect(result.current).toStrictEqual({
-      [detourA.id]: detourA,
-      [detourB.id]: detourB,
-      [detourC.id]: detourC,
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
     })
   })
 
@@ -109,7 +117,7 @@ describe("usePastDetours", () => {
 
     const mockEvents: Record<
       string,
-      undefined | ((data: { data: SimpleDetour }) => void)
+      undefined | ((data: { data: SimpleDetourData }) => void)
     > = {
       deactivated: undefined,
     }
@@ -125,10 +133,10 @@ describe("usePastDetours", () => {
     act(() => mockEvents["deactivated"]?.({ data: detourD }))
 
     expect(result.current).toStrictEqual({
-      [detourA.id]: detourA,
-      [detourB.id]: detourB,
-      [detourC.id]: detourC,
-      [detourD.id]: detourD,
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
+      [detourD.id]: parsedDetourD,
     })
   })
 })
@@ -141,9 +149,9 @@ describe("useDraftDetours", () => {
     const { result } = renderHook(() => useDraftDetours(mockSocket))
 
     expect(result.current).toStrictEqual({
-      [detourA.id]: detourA,
-      [detourB.id]: detourB,
-      [detourC.id]: detourC,
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
     })
   })
 
@@ -153,7 +161,7 @@ describe("useDraftDetours", () => {
 
     const mockEvents: Record<
       string,
-      undefined | ((data: { data: SimpleDetour }) => void)
+      undefined | ((data: { data: SimpleDetourData }) => void)
     > = {
       drafted: undefined,
     }
@@ -169,10 +177,10 @@ describe("useDraftDetours", () => {
     act(() => mockEvents["drafted"]?.({ data: detourD }))
 
     expect(result.current).toStrictEqual({
-      [detourA.id]: detourA,
-      [detourB.id]: detourB,
-      [detourC.id]: detourC,
-      [detourD.id]: detourD,
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
+      [detourD.id]: parsedDetourD,
     })
   })
 
@@ -182,7 +190,7 @@ describe("useDraftDetours", () => {
 
     const mockEvents: Record<
       string,
-      undefined | ((data: { data: SimpleDetour }) => void)
+      undefined | ((data: { data: SimpleDetourData }) => void)
     > = {
       activated: undefined,
     }
@@ -198,8 +206,8 @@ describe("useDraftDetours", () => {
     act(() => mockEvents["activated"]?.({ data: detourA }))
 
     expect(result.current).toStrictEqual({
-      [detourB.id]: detourB,
-      [detourC.id]: detourC,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
     })
   })
 })
@@ -257,9 +265,9 @@ describe("useActiveDetoursByRoute", () => {
 
     expect(result.current).toEqual({
       "1": {
-        [detourA.id]: detourA,
-        [detourB.id]: detourB,
-        [detourC.id]: detourC,
+        [detourA.id]: parsedDetourA,
+        [detourB.id]: parsedDetourB,
+        [detourC.id]: parsedDetourC,
       },
     })
   })
@@ -281,7 +289,7 @@ describe("useActiveDetoursByRoute", () => {
 
     expect(result.current).toEqual({
       "1": {
-        [detourD.id]: detourD,
+        [detourD.id]: parsedDetourD,
       },
     })
   })

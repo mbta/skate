@@ -30,10 +30,10 @@ defmodule SkateWeb.DetoursChannelTest do
     draft_detour = :detour_snapshot |> build() |> with_id(1)
 
     active_detour_one =
-      :detour_snapshot |> build() |> activated |> with_id(2) |> with_route_name("57")
+      :detour_snapshot |> build() |> activated |> with_id(2) |> with_route("57")
 
     active_detour_two =
-      :detour_snapshot |> build() |> activated |> with_id(3) |> with_route_name("66")
+      :detour_snapshot |> build() |> activated |> with_id(3) |> with_route("66")
 
     past_detour = :detour_snapshot |> build() |> deactivated |> with_id(4)
 
