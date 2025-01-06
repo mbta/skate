@@ -40,7 +40,7 @@ defmodule Skate.Detours.Detours do
   def active_detours_by_route(route_id) do
     list_detours()
     |> Enum.filter(fn detour ->
-      categorize_detour(detour) == :active and get_detour_route(detour) == route_id
+      categorize_detour(detour) == :active and get_detour_route_id(detour) == route_id
     end)
     |> Enum.map(fn detour -> db_detour_to_detour(detour) end)
   end
@@ -131,9 +131,9 @@ defmodule Skate.Detours.Detours do
 
   def categorize_detour(_detour_context), do: :draft
 
-  @spec get_detour_route(detour :: map()) :: String.t()
-  defp get_detour_route(%{state: %{"context" => %{"route" => %{"name" => route_name}}}}),
-    do: route_name
+  @spec get_detour_route_id(detour :: map()) :: String.t()
+  defp get_detour_route_id(%{state: %{"context" => %{"route" => %{"id" => route_id}}}}),
+    do: route_id
 
   @doc """
   Gets a single detour.
@@ -264,7 +264,7 @@ defmodule Skate.Detours.Detours do
       |> User.get_by_id!()
       |> Map.get(:uuid)
 
-    route_id = get_detour_route(detour)
+    route_id = get_detour_route_id(detour)
 
     Phoenix.PubSub.broadcast(
       Skate.PubSub,
@@ -286,7 +286,7 @@ defmodule Skate.Detours.Detours do
   end
 
   defp broadcast_detour(:past, detour, _author_id) do
-    route_id = get_detour_route(detour)
+    route_id = get_detour_route_id(detour)
 
     Phoenix.PubSub.broadcast(
       Skate.PubSub,

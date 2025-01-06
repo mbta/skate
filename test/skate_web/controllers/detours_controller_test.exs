@@ -132,6 +132,7 @@ defmodule SkateWeb.DetoursControllerTest do
       "snapshot" => %{
         "context" => %{
           "route" => %{
+            "id" => "23",
             "name" => "23",
             "directionNames" => %{
               "0" => "Outbound",
@@ -154,6 +155,7 @@ defmodule SkateWeb.DetoursControllerTest do
       "snapshot" => %{
         "context" => %{
           "route" => %{
+            "id" => "47",
             "name" => "47",
             "directionNames" => %{
               "0" => "Outbound",
@@ -176,6 +178,7 @@ defmodule SkateWeb.DetoursControllerTest do
       "snapshot" => %{
         "context" => %{
           "route" => %{
+            "id" => "75",
             "name" => "75",
             "directionNames" => %{
               "0" => "Outbound",
@@ -358,6 +361,7 @@ defmodule SkateWeb.DetoursControllerTest do
       Detours.upsert_from_snapshot(other_user.id, %{
         "context" => %{
           "route" => %{
+            # "id" => "23",
             "name" => "23",
             "directionNames" => %{
               "0" => "Outbound",
@@ -423,6 +427,7 @@ defmodule SkateWeb.DetoursControllerTest do
         "snapshot" => %{
           "context" => %{
             "route" => %{
+              "id" => "23",
               "name" => "23",
               "directionNames" => %{
                 "0" => "Outbound",
@@ -444,6 +449,7 @@ defmodule SkateWeb.DetoursControllerTest do
         "snapshot" => %{
           "context" => %{
             "route" => %{
+              "id" => "23",
               "name" => "23"
             },
             "routePattern" => %{
