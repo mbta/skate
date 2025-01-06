@@ -1,5 +1,9 @@
 import { Channel, Socket } from "phoenix"
-import { SimpleDetour } from "../models/detoursList"
+import {
+  SimpleDetour,
+  SimpleDetourData,
+  simpleDetourFromData,
+} from "../models/detoursList"
 import { useEffect, useState } from "react"
 import { reload } from "../models/browser"
 import { userUuid } from "../util/userUuid"
@@ -21,17 +25,25 @@ const subscribe = (
   const channel = socket.channel(topic)
 
   handleDrafted &&
-    channel.on("drafted", ({ data: data }) => handleDrafted(data))
+    channel.on("drafted", ({ data: data }) =>
+      handleDrafted(simpleDetourFromData(data))
+    )
   handleActivated &&
-    channel.on("activated", ({ data: data }) => handleActivated(data))
+    channel.on("activated", ({ data: data }) =>
+      handleActivated(simpleDetourFromData(data))
+    )
   handleDeactivated &&
-    channel.on("deactivated", ({ data: data }) => handleDeactivated(data))
+    channel.on("deactivated", ({ data: data }) =>
+      handleDeactivated(simpleDetourFromData(data))
+    )
   channel.on("auth_expired", reload)
 
   channel
     .join()
-    .receive("ok", ({ data: data }: { data: SimpleDetour[] }) => {
-      const detoursMap = Object.fromEntries(data.map((v) => [v.id, v]))
+    .receive("ok", ({ data: data }: { data: SimpleDetourData[] }) => {
+      const detoursMap = Object.fromEntries(
+        data.map((v) => [v.id, simpleDetourFromData(v)])
+      )
       initializeChannel(detoursMap)
     })
 
@@ -182,8 +194,10 @@ const subscribeByRoute = (
 
   channel
     .join()
-    .receive("ok", ({ data: data }: { data: SimpleDetour[] }) => {
-      const detoursMap = Object.fromEntries(data.map((v) => [v.id, v]))
+    .receive("ok", ({ data: data }: { data: SimpleDetourData[] }) => {
+      const detoursMap = Object.fromEntries(
+        data.map((v) => [v.id, simpleDetourFromData(v)])
+      )
       setDetours((detoursByRouteId) => ({
         ...detoursByRouteId,
         [routeId]: detoursMap,
