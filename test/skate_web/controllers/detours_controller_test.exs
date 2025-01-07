@@ -31,17 +31,16 @@ defmodule SkateWeb.DetoursControllerTest do
   describe "update_snapshot/2" do
     @tag :authenticated
     test "adds new detour to database", %{conn: conn} do
-      conn =
-        put(conn, "/api/detours/update_snapshot", %{
-          "snapshot" => %{"context" => %{}}
-        })
+      %Skate.Detours.Db.Detour{id: id, state: %{"context" => context} = snapshot} = insert(:detour)
 
-      assert %{"data" => number} = json_response(conn, 200)
+      put(conn, ~p"/api/detours/update_snapshot", %{
+        "snapshot" => snapshot |> activated
+      })
 
       assert %Skate.Detours.Db.Detour{
-               id: ^number,
-               state: %{"context" => %{}}
-             } = Detours.get_detour!(number)
+               id: ^id,
+               state: ^snapshot
+             } = Detours.get_detour!(id)
     end
 
     defp setup_notification_server do
@@ -54,10 +53,11 @@ defmodule SkateWeb.DetoursControllerTest do
 
     @tag :authenticated
     test "updates detour in database if detour uuid provided", %{conn: conn} do
-      conn =
-        put(conn, "/api/detours/update_snapshot", %{
-          "snapshot" => %{"context" => %{"uuid" => 8}}
-        })
+      %Skate.Detours.Db.Detour{state: snapshot} = :detour
+        |> build
+        |> with_id(8) |> insert
+
+      conn = put(conn, "/api/detours/update_snapshot", %{"snapshot" => snapshot})
 
       assert %{"data" => 8} = json_response(conn, 200)
 
@@ -128,68 +128,43 @@ defmodule SkateWeb.DetoursControllerTest do
 
   defp populate_db_and_get_user(conn) do
     # Active detour
-    put(conn, "/api/detours/update_snapshot", %{
-      "snapshot" => %{
-        "context" => %{
-          "route" => %{
-            "name" => "23",
-            "directionNames" => %{
-              "0" => "Outbound",
-              "1" => "Inbound"
-            }
-          },
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 0
-          },
-          "nearestIntersection" => "Street A & Avenue B",
-          "uuid" => 1
-        },
-        "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
-      }
+    snapshot =
+      :detour_snapshot |> build |> activated |> with_id(1)
+      |> with_route(%{
+        "id" => "23",
+                "name" => "23",
+                "directionNames" => %{
+                  "0" => "Outbound",
+                  "1" => "Inbound"
+                }
+              })
+      |> with_route_pattern(%{
+        "id" => "23-1",
+        "name" => "23-1",
+        "headsign" => "Headsign",
+        "directionId" => 0
+      })
+      
+
+    put(conn, ~p"/api/detours/update_snapshot", %{
+      "snapshot" => snapshot
     })
 
     # Past detour
-    put(conn, "/api/detours/update_snapshot", %{
-      "snapshot" => %{
-        "context" => %{
-          "route" => %{
-            "name" => "47",
-            "directionNames" => %{
-              "0" => "Outbound",
-              "1" => "Inbound"
-            }
-          },
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 1
-          },
-          "nearestIntersection" => "Street C & Avenue D",
-          "uuid" => 2
-        },
-        "value" => %{"Detour Drawing" => "Past"}
-      }
+    snapshot =
+      :detour_snapshot |> build |> deactivated |> with_id(2)
+      |> IO.inspect()
+
+    put(conn, ~p"/api/detours/update_snapshot", %{
+      "snapshot" => snapshot
     })
 
     # Draft detour
-    put(conn, "/api/detours/update_snapshot", %{
-      "snapshot" => %{
-        "context" => %{
-          "route" => %{
-            "name" => "75",
-            "directionNames" => %{
-              "0" => "Outbound",
-              "1" => "Inbound"
-            }
-          },
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 0
-          },
-          "nearestIntersection" => "Street Y & Avenue Z",
-          "uuid" => 3
-        }
-      }
+    snapshot =
+      :detour_snapshot |> build |> with_id(3)
+
+    put(conn, ~p"/api/detours/update_snapshot", %{
+      "snapshot" => snapshot
     })
 
     1
@@ -212,7 +187,6 @@ defmodule SkateWeb.DetoursControllerTest do
                  "author" => ^email,
                  "state" => %{
                    "context" => %{
-                     "nearestIntersection" => "Street A & Avenue B",
                      "route" => %{
                        "directionNames" => %{"0" => "Outbound", "1" => "Inbound"},
                        "name" => "23"
@@ -354,24 +328,10 @@ defmodule SkateWeb.DetoursControllerTest do
 
       other_user = build(:user)
 
+      snapshot = :detour_snapshot |> build |> with_id(10)
+
       # Manually insert a detour by another user
-      Detours.upsert_from_snapshot(other_user.id, %{
-        "context" => %{
-          "route" => %{
-            "name" => "23",
-            "directionNames" => %{
-              "0" => "Outbound",
-              "1" => "Inbound"
-            }
-          },
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 0
-          },
-          "nearestIntersection" => "Street A & Avenue B",
-          "uuid" => 10
-        }
-      })
+      Detours.upsert_from_snapshot(other_user.id, snapshot)
 
       conn = get(conn, ~p"/api/detours")
 

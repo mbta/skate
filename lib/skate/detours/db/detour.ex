@@ -7,10 +7,12 @@ defmodule Skate.Detours.Db.Detour do
   import Ecto.Changeset
 
   alias Skate.Settings.Db.User
+  alias Skate.Detours.Db.RoutePattern
 
   typed_schema "detours" do
     field :state, :map
     belongs_to :author, User
+    belongs_to :route_pattern, RoutePattern
 
     timestamps()
   end

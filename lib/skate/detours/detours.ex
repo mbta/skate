@@ -192,18 +192,18 @@ defmodule Skate.Detours.Detours do
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
     previous_record =
-      case Skate.Detours.SnapshotSerde.id_from_snapshot(snapshot) do
+      case SnapshotSerde.id_from_snapshot(snapshot) do
         nil -> nil
         id -> Skate.Repo.get(Detour, id)
       end
 
     detour_db_result =
       author_id
-      |> Skate.Detours.SnapshotSerde.deserialize(snapshot)
+      |> SnapshotSerde.deserialize(snapshot)
       |> Skate.Repo.insert(
         returning: true,
         conflict_target: [:id],
-        on_conflict: {:replace, [:state, :updated_at]}
+        on_conflict: {:replace, [:state, :updated_at, :route_pattern_id]}
       )
 
     case detour_db_result do
@@ -215,6 +215,17 @@ defmodule Skate.Detours.Detours do
     end
 
     detour_db_result
+  end
+
+  @doc """
+  Retrieve or insert-and-return a route_pattern given a deserialized route_pattern.
+  """
+  def get_or_create_route_pattern(route_pattern) do
+    Skate.Repo.insert!(
+      route_pattern,
+      returning: true,
+      on_conflict: :nothing
+    )
   end
 
   @doc """
