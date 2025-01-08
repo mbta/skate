@@ -21,43 +21,17 @@ defmodule SkateWeb.DetoursChannelTest do
 
     start_supervised({Phoenix.PubSub, name: Skate.PubSub})
 
-    populate_db(conn)
-
     {:ok, %{conn: conn, socket: socket}}
-  end
-
-  def populate_db(conn) do
-    draft_detour = :detour_snapshot |> build() |> with_id(1)
-
-    active_detour_one =
-      :detour_snapshot |> build() |> activated |> with_id(2) |> with_route("57")
-
-    active_detour_two =
-      :detour_snapshot |> build() |> activated |> with_id(3) |> with_route("66")
-
-    past_detour = :detour_snapshot |> build() |> deactivated |> with_id(4)
-
-    conn =
-      conn
-      |> put(~p"/api/detours/update_snapshot", %{
-        "snapshot" => draft_detour
-      })
-      |> put(~p"/api/detours/update_snapshot", %{
-        "snapshot" => active_detour_one
-      })
-      |> put(~p"/api/detours/update_snapshot", %{
-        "snapshot" => active_detour_two
-      })
-      |> put(~p"/api/detours/update_snapshot", %{
-        "snapshot" => past_detour
-      })
-
-    response(conn, 200)
   end
 
   describe "join/3" do
     @tag :authenticated
     test "subscribes to all active detours with initial detours", %{socket: socket} do
+      :detour |> build() |> with_id(1) |> insert()
+      :detour |> build() |> activated |> with_id(2) |> with_route("57") |> insert()
+      :detour |> build() |> activated |> with_id(3) |> with_route("66") |> insert()
+      :detour |> build() |> deactivated |> with_id(4) |> insert()
+
       assert {:ok,
               %{
                 data: [
@@ -89,6 +63,11 @@ defmodule SkateWeb.DetoursChannelTest do
 
     @tag :authenticated
     test "subscribes to active detours for one route", %{socket: socket} do
+      :detour |> build() |> with_id(1) |> insert()
+      :detour |> build() |> activated |> with_id(2) |> with_route("57") |> insert()
+      :detour |> build() |> activated |> with_id(3) |> with_route("66") |> insert()
+      :detour |> build() |> deactivated |> with_id(4) |> insert()
+
       assert {:ok,
               %{
                 data: [
@@ -112,13 +91,21 @@ defmodule SkateWeb.DetoursChannelTest do
     test "subscribes to draft detours with initial detours", %{conn: conn, socket: socket} do
       %{id: authenticated_user_id} = SkateWeb.AuthManager.Plug.current_resource(conn)
 
+      :detour |> build() |> with_id(1) |> insert()
+      :detour |> build() |> with_id(2) |> insert()
+      :detour |> build() |> with_id(3) |> insert()
+
+      put(conn, ~p"/api/detours/update_snapshot", %{
+        "snapshot" => :detour_snapshot |> build() |> with_id(4)
+      })
+
       assert {:ok,
               %{
                 data: [
                   %Skate.Detours.Detour.Detailed{
                     author_id: ^authenticated_user_id,
                     direction: _,
-                    id: 1,
+                    id: 4,
                     intersection: "detour_nearest_intersection:" <> _,
                     name: "detour_route_pattern_headsign:" <> _,
                     route: "detour_route_name:" <> _,
@@ -137,6 +124,11 @@ defmodule SkateWeb.DetoursChannelTest do
 
     @tag :authenticated
     test "subscribes to past detours with initial detours", %{socket: socket} do
+      :detour |> build() |> with_id(1) |> insert()
+      :detour |> build() |> activated |> with_id(2) |> with_route("57") |> insert()
+      :detour |> build() |> activated |> with_id(3) |> with_route("66") |> insert()
+      :detour |> build() |> deactivated |> with_id(4) |> insert()
+
       assert {:ok,
               %{
                 data: [
@@ -158,6 +150,11 @@ defmodule SkateWeb.DetoursChannelTest do
 
     @tag :authenticated
     test "deny topic subscription when socket token validation fails", %{socket: socket} do
+      :detour |> build() |> with_id(1) |> insert()
+      :detour |> build() |> activated |> with_id(2) |> with_route("57") |> insert()
+      :detour |> build() |> activated |> with_id(3) |> with_route("66") |> insert()
+      :detour |> build() |> deactivated |> with_id(4) |> insert()
+
       reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
 
       for route <- [
