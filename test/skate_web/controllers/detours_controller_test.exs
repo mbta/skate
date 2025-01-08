@@ -82,6 +82,23 @@ defmodule SkateWeb.DetoursControllerTest do
     end
 
     @tag :authenticated
+    test "adds `activated_at` field when provided", %{conn: conn} do
+      %Skate.Detours.Db.Detour{id: id, state: snapshot, activated_at: nil} = insert(:detour)
+
+      activated_at_time =
+        DateTime.utc_now() |> Skate.DetourFactory.browser_date() |> Skate.DetourFactory.db_date()
+
+      put(conn, ~p"/api/detours/update_snapshot", %{
+        "snapshot" => snapshot |> activated(activated_at_time) |> with_id(id)
+      })
+
+      Process.sleep(10)
+
+      assert Skate.Detours.Detours.get_detour!(id).activated_at ==
+               activated_at_time
+    end
+
+    @tag :authenticated
     test "does not create a new notification if detour was already activated", %{conn: conn} do
       setup_notification_server()
 
@@ -238,9 +255,43 @@ defmodule SkateWeb.DetoursControllerTest do
 
       put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
 
-      conn = get(conn, "/api/detours/#{detour_id}")
+      {conn, log} =
+        CaptureLog.with_log(fn ->
+          get(conn, "/api/detours/#{detour_id}")
+        end)
+
+      refute log =~
+               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{detour_id}"
 
       assert detour_snapshot == json_response(conn, 200)["data"]["state"]
+    end
+
+    @tag :authenticated
+    test "serialized snapshot `activatedAt` value is formatted as iso-8601", %{conn: conn} do
+      activated_at = Skate.DetourFactory.browser_date()
+
+      %{id: id} =
+        detour =
+        :detour
+        |> build()
+        |> activated(activated_at)
+        |> insert()
+
+      # Make ID match snapshot
+      detour
+      |> Skate.Detours.Detours.change_detour(detour |> update_id() |> Map.from_struct())
+      |> Skate.Repo.update!()
+
+      {conn, log} =
+        CaptureLog.with_log(fn ->
+          get(conn, "/api/detours/#{id}")
+        end)
+
+      refute log =~
+               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id}"
+
+      assert DateTime.to_iso8601(activated_at) ==
+               json_response(conn, 200)["data"]["state"]["context"]["activatedAt"]
     end
 
     @tag :authenticated
