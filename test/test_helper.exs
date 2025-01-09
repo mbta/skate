@@ -6,6 +6,9 @@
 
 ExUnit.start(
   capture_log: true,
+  # MQTT Tests tend to take longer than 100ms, so we extend the assert receive
+  # for those test failures
+  assert_receive_timeout: 1000,
   exclude: [
     # By default for local development, exclude tests that rely on
     # non-essential external services, e.g., MQTT tests
