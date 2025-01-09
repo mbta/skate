@@ -132,8 +132,8 @@ export const Header = ({
                           </div>
                         </Dropdown.Item>
                       ))}
-                    {skateDetoursForRoute &&
-                      Object.values(skateDetoursForRoute).length == 0 && (
+                    {(!skateDetoursForRoute ||
+                      Object.values(skateDetoursForRoute).length == 0) && (
                         <Dropdown.ItemText className="lh-base pb-4">
                           This route has an active detour. View detour details
                           on <a href="https://www.mbta.com/">mbta.com</a> or in

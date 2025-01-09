@@ -34,6 +34,7 @@ import useAlerts from "../../src/hooks/useAlerts"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
 import { blockWaiverNotificationFactory } from "../factories/notification"
+import { useLoadDetour } from "../../src/hooks/useLoadDetour"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -58,11 +59,18 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
 
 jest.mock("../../src/helpers/fullStory")
 jest.mock("../../src/userTestGroups")
+jest.mock("../../src/hooks/useLoadDetour")
 
 const mockDispatch = jest.fn()
 
 beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([])
+  // we _should_ mock the promise, but this file already are mocking hooks here,
+  // and there are a lot of tests, so mocking the hook here too for now
+  jest.mocked(useLoadDetour).mockReturnValue(undefined)
+
+  // Also, `useAlerts` should be mocked in beforeEach. To be done in future PR
+  // jest.mocked(useAlerts).mockReturnValue({})
 })
 
 describe("LadderPage", () => {
