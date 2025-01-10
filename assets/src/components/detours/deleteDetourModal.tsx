@@ -16,9 +16,7 @@ export const DeleteDetourModal = ({
         <h3 className="fs-3 fw-semibold lh-sm my-1">Delete Draft</h3>
       </Modal.Header>
       <Modal.Body>
-        <div className="d-flex flex-row gap-2 mb-3">
-          {affectedRoute}
-        </div>
+        <div className="d-flex flex-row gap-2 mb-3">{affectedRoute}</div>
         <p>Are you sure you want to delete this draft?</p>
       </Modal.Body>
       <Modal.Footer>

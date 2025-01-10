@@ -388,13 +388,12 @@ export const DiversionPage = ({
               }
               affectedRoute={
                 <AffectedRoute
-                routeName={routeName ?? "??"}
-                routeDescription={routeDescription ?? "??"}
-                routeOrigin={routeOrigin ?? "??"}
-                routeDirection={routeDirection ?? "??"}
+                  routeName={routeName ?? "??"}
+                  routeDescription={routeDescription ?? "??"}
+                  routeOrigin={routeOrigin ?? "??"}
+                  routeDirection={routeDirection ?? "??"}
                 />
               }
-              
             />
           ) : null}
         </DetourFinishedPanel>
