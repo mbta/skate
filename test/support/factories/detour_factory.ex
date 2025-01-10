@@ -75,23 +75,41 @@ defmodule Skate.DetourFactory do
         put_in(state["value"], %{"Detour Drawing" => "Past"})
       end
 
-      def with_route(%Skate.Detours.Db.Detour{} = detour, route) do
+      def with_route(%Skate.Detours.Db.Detour{} = detour, %{name: _, id: _} = route) do
         %{detour | state: with_route(detour.state, route)}
       end
 
       def with_route(
-            %{
-              "context" => %{
-                "route" => %{"name" => _, "id" => _, "directionNames" => direction_names}
-              }
-            } = state,
-            route
+            %{"context" => %{"route" => %{"directionNames" => direction_names}}} = state,
+            %{name: route_name, id: route_id}
           ) do
         put_in(state["context"]["route"], %{
-          "name" => route,
-          "id" => route,
+          "id" => route_id,
+          "name" => route_name,
           "directionNames" => direction_names
         })
+      end
+
+      def with_route_name(%Skate.Detours.Db.Detour{} = detour, name) do
+        %{detour | state: with_route_name(detour.state, name)}
+      end
+
+      def with_route_name(
+            %{"context" => %{"route" => %{"name" => _}}} = state,
+            name
+          ) do
+        put_in(state["context"]["route"]["name"], name)
+      end
+
+      def with_route_id(%Skate.Detours.Db.Detour{} = detour, id) do
+        %{detour | state: with_route_id(detour.state, id)}
+      end
+
+      def with_route_id(
+            %{"context" => %{"route" => %{"id" => _}}} = state,
+            id
+          ) do
+        put_in(state["context"]["route"]["id"], id)
       end
 
       def with_direction(%Skate.Detours.Db.Detour{} = detour, direction) do

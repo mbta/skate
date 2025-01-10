@@ -28,8 +28,21 @@ defmodule SkateWeb.DetoursChannelTest do
     @tag :authenticated
     test "subscribes to all active detours with initial detours", %{socket: socket} do
       :detour |> build() |> with_id(1) |> insert()
-      :detour |> build() |> activated |> with_id(2) |> with_route("57") |> insert()
-      :detour |> build() |> activated |> with_id(3) |> with_route("66") |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(2)
+      |> with_route(%{name: "57", id: "57"})
+      |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(3)
+      |> with_route(%{name: "66", id: "66"})
+      |> insert()
+
       :detour |> build() |> deactivated |> with_id(4) |> insert()
 
       assert {:ok,
@@ -64,8 +77,21 @@ defmodule SkateWeb.DetoursChannelTest do
     @tag :authenticated
     test "subscribes to active detours for one route", %{socket: socket} do
       :detour |> build() |> with_id(1) |> insert()
-      :detour |> build() |> activated |> with_id(2) |> with_route("57") |> insert()
-      :detour |> build() |> activated |> with_id(3) |> with_route("66") |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(2)
+      |> with_route(%{name: "57", id: "57"})
+      |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(3)
+      |> with_route(%{name: "66", id: "66"})
+      |> insert()
+
       :detour |> build() |> deactivated |> with_id(4) |> insert()
 
       assert {:ok,
@@ -85,6 +111,38 @@ defmodule SkateWeb.DetoursChannelTest do
               },
               %Socket{}} =
                subscribe_and_join(socket, DetoursChannel, "detours:active:66")
+    end
+
+    @tag :authenticated
+    test "subscribes to active detours for SL1", %{socket: socket} do
+      :detour |> build() |> with_id(1) |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(2)
+      |> with_route(%{name: "SL1", id: "741"})
+      |> insert()
+
+      :detour |> build() |> deactivated |> with_id(3) |> insert()
+
+      assert {:ok,
+              %{
+                data: [
+                  %Skate.Detours.Detour.Detailed{
+                    author_id: _,
+                    direction: _,
+                    id: 2,
+                    intersection: "detour_nearest_intersection:" <> _,
+                    name: "detour_route_pattern_headsign:" <> _,
+                    route: "SL1",
+                    status: :active,
+                    updated_at: _
+                  }
+                ]
+              },
+              %Socket{}} =
+               subscribe_and_join(socket, DetoursChannel, "detours:active:741")
     end
 
     @tag :authenticated
@@ -125,8 +183,21 @@ defmodule SkateWeb.DetoursChannelTest do
     @tag :authenticated
     test "subscribes to past detours with initial detours", %{socket: socket} do
       :detour |> build() |> with_id(1) |> insert()
-      :detour |> build() |> activated |> with_id(2) |> with_route("57") |> insert()
-      :detour |> build() |> activated |> with_id(3) |> with_route("66") |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(2)
+      |> with_route(%{name: "57", id: "57"})
+      |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(3)
+      |> with_route(%{name: "66", id: "66"})
+      |> insert()
+
       :detour |> build() |> deactivated |> with_id(4) |> insert()
 
       assert {:ok,
@@ -151,8 +222,21 @@ defmodule SkateWeb.DetoursChannelTest do
     @tag :authenticated
     test "deny topic subscription when socket token validation fails", %{socket: socket} do
       :detour |> build() |> with_id(1) |> insert()
-      :detour |> build() |> activated |> with_id(2) |> with_route("57") |> insert()
-      :detour |> build() |> activated |> with_id(3) |> with_route("66") |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(2)
+      |> with_route(%{name: "57", id: "57"})
+      |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(3)
+      |> with_route(%{name: "66", id: "66"})
+      |> insert()
+
       :detour |> build() |> deactivated |> with_id(4) |> insert()
 
       reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
