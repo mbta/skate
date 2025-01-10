@@ -146,16 +146,17 @@ defmodule SkateWeb.DetoursChannelTest do
     end
 
     @tag :authenticated
-    test "subscribes to draft detours with initial detours", %{conn: conn, socket: socket} do
+    test "subscribes to draft detours with initial detours", %{
+      conn: conn,
+      socket: socket,
+      user: user
+    } do
       %{id: authenticated_user_id} = SkateWeb.AuthManager.Plug.current_resource(conn)
 
       :detour |> build() |> with_id(1) |> insert()
       :detour |> build() |> with_id(2) |> insert()
       :detour |> build() |> with_id(3) |> insert()
-
-      put(conn, ~p"/api/detours/update_snapshot", %{
-        "snapshot" => :detour_snapshot |> build() |> with_id(4)
-      })
+      :detour |> build(author: user) |> with_id(4) |> insert()
 
       assert {:ok,
               %{
