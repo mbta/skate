@@ -1,6 +1,12 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
-import { render, fireEvent, within, screen } from "@testing-library/react"
+import {
+  render,
+  fireEvent,
+  within,
+  screen,
+  waitFor,
+} from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { BrowserRouter } from "react-router-dom"
 import LadderPage from "../../src/components/ladderPage"
@@ -34,7 +40,11 @@ import useAlerts from "../../src/hooks/useAlerts"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
 import { blockWaiverNotificationFactory } from "../factories/notification"
-import { useLoadDetour } from "../../src/hooks/useLoadDetour"
+import { useActiveDetoursByRoute } from "../../src/hooks/useDetours"
+import { activeDetourFactory } from "../factories/detourStateMachineFactory"
+import { fetchDetour, fetchRoutePatterns } from "../../src/api"
+import { Ok } from "../../src/util/result"
+import { neverPromise } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -59,31 +69,34 @@ jest.mock("../../src/helpers/googleTagManager", () => ({
 
 jest.mock("../../src/helpers/fullStory")
 jest.mock("../../src/userTestGroups")
-jest.mock("../../src/hooks/useLoadDetour")
+jest.mock("../../src/hooks/useDetours")
+jest.mock("../../src/api")
 
 const mockDispatch = jest.fn()
 
 beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([])
-  // we _should_ mock the promise, but this file already are mocking hooks here,
-  // and there are a lot of tests, so mocking the hook here too for now
-  jest.mocked(useLoadDetour).mockReturnValue(undefined)
+  jest.mocked(fetchDetour).mockReturnValue(neverPromise())
+  jest.mocked(useActiveDetoursByRoute).mockReturnValue({})
+
+  // To get the "Add new detour modal" test working
+  jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
 
   // Also, `useAlerts` should be mocked in beforeEach. To be done in future PR
   // jest.mocked(useAlerts).mockReturnValue({})
 })
 
 describe("LadderPage", () => {
-  test("renders the empty state", () => {
+  test("renders the empty state", async () => {
     const result = render(
       <BrowserRouter>
         <LadderPage />
       </BrowserRouter>
     )
-    expect(result.asFragment()).toMatchSnapshot()
+    await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
   })
 
-  test("renders with route tabs", () => {
+  test("renders with route tabs", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -105,7 +118,7 @@ describe("LadderPage", () => {
       ],
     }
     const result = render(
-      <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
+      <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
         <BrowserRouter>
           <RoutesProvider routes={routes}>
             <LadderPage />
@@ -113,7 +126,7 @@ describe("LadderPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.asFragment()).toMatchSnapshot()
+    await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
   })
 
   test("can select a different route tab by clicking", async () => {
@@ -151,7 +164,7 @@ describe("LadderPage", () => {
     )
   })
 
-  test("can select a different route tab by key press", () => {
+  test("can select a different route tab by key press", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -180,8 +193,10 @@ describe("LadderPage", () => {
 
     fireEvent.keyDown(result.getByText("My Preset"), { key: "Enter" })
 
-    expect(mockDispatch).toHaveBeenCalledWith(
-      selectRouteTab(mockState.routeTabs[1].uuid)
+    await waitFor(() =>
+      expect(mockDispatch).toHaveBeenCalledWith(
+        selectRouteTab(mockState.routeTabs[1].uuid)
+      )
     )
   })
 
@@ -289,7 +304,7 @@ describe("LadderPage", () => {
     )
   })
 
-  test("omits save icon for unedited preset", () => {
+  test("omits save icon for unedited preset", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -312,7 +327,7 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTitle("Save")).toBeNull()
+    await waitFor(() => expect(result.queryByTitle("Save")).toBeNull())
   })
 
   test("can add a new route tab", async () => {
@@ -375,7 +390,7 @@ describe("LadderPage", () => {
     expect(result.getByPlaceholderText("Search routes")).toBeVisible()
   })
 
-  test("creates a blank route tab if no route tabs are present", () => {
+  test("creates a blank route tab if no route tabs are present", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -398,10 +413,12 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
+    await waitFor(() =>
+      expect(mockDispatch).toHaveBeenCalledWith(createRouteTab())
+    )
   })
 
-  test("renders with selectedRoutes in different order than routes data", () => {
+  test("renders with selectedRoutes in different order than routes data", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -421,10 +438,10 @@ describe("LadderPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.asFragment()).toMatchSnapshot()
+    await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
   })
 
-  test("renders with timepoints", () => {
+  test("renders with timepoints", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -445,10 +462,10 @@ describe("LadderPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.asFragment()).toMatchSnapshot()
+    await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
   })
 
-  test("renders with alerts", () => {
+  test("renders with alerts", async () => {
     const mockState = {
       ...initialState,
       routeTabs: [
@@ -469,7 +486,7 @@ describe("LadderPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.asFragment()).toMatchSnapshot()
+    await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
   })
 
   test("can click a vehicle to select it", async () => {
@@ -493,7 +510,6 @@ describe("LadderPage", () => {
       selectedVehicleOrGhost: vehicle,
     }
 
-    const mockDispatch = jest.fn()
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
         <VehiclesByRouteIdProvider vehiclesByRouteId={{ "1": [vehicle] }}>
@@ -510,7 +526,7 @@ describe("LadderPage", () => {
     )
   })
 
-  test("if a vehicle from a notification is loading, show nothing", () => {
+  test("if a vehicle from a notification is loading, show nothing", async () => {
     const notification: Notification = blockWaiverNotificationFactory.build({
       content: {
         runIds: ["run_id"],
@@ -527,10 +543,10 @@ describe("LadderPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.queryByText("Vehicles")).toBeNull()
+    await waitFor(() => expect(result.queryByText("Vehicles")).toBeNull())
   })
 
-  test("if a vehicle from a notification failed to load, show nothing", () => {
+  test("if a vehicle from a notification failed to load, show nothing", async () => {
     const notification: Notification = blockWaiverNotificationFactory.build({
       content: {
         runIds: ["run_id"],
@@ -547,10 +563,10 @@ describe("LadderPage", () => {
         </BrowserRouter>
       </StateDispatchProvider>
     )
-    expect(result.queryByText("Vehicles")).toBeNull()
+    await waitFor(() => expect(result.queryByText("Vehicles")).toBeNull())
   })
 
-  test("opens the detour modal", async () => {
+  test("clicking 'Add detour' opens the detour modal for that route", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 
     const mockState = stateFactory.build({
@@ -582,6 +598,59 @@ describe("LadderPage", () => {
     expect(screen.getByRole("heading", { name: "Create Detour" })).toBeVisible()
   })
 
+  test("clicking an active detour opens the detour modal", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+    jest.mocked(fetchDetour).mockResolvedValue(Ok(activeDetourFactory.build()))
+    jest.mocked(useActiveDetoursByRoute).mockReturnValue({
+      "1": {
+        "1": {
+          id: 1,
+          route: "1",
+          direction: "Inbound",
+          name: "",
+          intersection: "A St & B Av",
+          updatedAt: 1724866392,
+        },
+        "2": {
+          id: 2,
+          route: "1",
+          direction: "Outbound",
+          name: "",
+          intersection: "C Rd & D Ct",
+          updatedAt: 1724866392,
+        },
+      },
+    })
+
+    const mockState = stateFactory.build({
+      routeTabs: [
+        routeTabFactory.build({
+          selectedRouteIds: ["1"],
+          isCurrentTab: true,
+        }),
+      ],
+    })
+    const { container } = render(
+      <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
+        <BrowserRouter>
+          <RoutesProvider routes={routes}>
+            <LadderPage />
+          </RoutesProvider>
+        </BrowserRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(container.querySelector(".c-route-ladder__header")).toBeVisible()
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /1 Route Options/ })
+    )
+
+    await userEvent.click(screen.getByRole("button", { name: /1 - A St/ }))
+
+    expect(screen.getByRole("heading", { name: "Active Detour" })).toBeVisible()
+  })
+
   test("detour dropdown is not visible to users outside of the test group", async () => {
     jest.mocked(getTestGroups).mockReturnValue([])
 
@@ -603,7 +672,9 @@ describe("LadderPage", () => {
       </StateDispatchProvider>
     )
 
-    expect(container.querySelector(".c-route-ladder__header")).toBeVisible()
+    await waitFor(() =>
+      expect(container.querySelector(".c-route-ladder__header")).toBeVisible()
+    )
 
     expect(
       screen.queryByRole("button", { name: "1 Route Options" })
