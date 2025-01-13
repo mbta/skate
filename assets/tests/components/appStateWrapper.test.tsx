@@ -3,6 +3,7 @@ import React from "react"
 import { render, waitFor } from "@testing-library/react"
 import AppStateWrapper from "../../src/components/appStateWrapper"
 import { fetchDetour, fetchRoutes, putRouteTabs } from "../../src/api"
+import { neverPromise } from "../testHelpers/mockHelpers"
 
 // Avoid Halloween
 jest
@@ -17,9 +18,9 @@ jest.mock("userTestGroups", () => ({
 jest.mock("../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchRoutes).mockImplementation(() => new Promise(() => {}))
-  jest.mocked(putRouteTabs).mockImplementation(() => new Promise(() => {}))
-  jest.mocked(fetchDetour).mockImplementation(() => new Promise(() => {}))
+  jest.mocked(fetchRoutes).mockReturnValue(neverPromise())
+  jest.mocked(putRouteTabs).mockReturnValue(neverPromise())
+  jest.mocked(fetchDetour).mockReturnValue(neverPromise())
 })
 
 test("renders", async () => {
