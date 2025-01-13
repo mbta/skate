@@ -11,6 +11,7 @@ import {
 } from "../api"
 import { DetourShape, FinishedDetour } from "./detour"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { type, optional, coerce, date, string } from "superstruct"
 
 export const createDetourMachine = setup({
   types: {
@@ -35,6 +36,8 @@ export const createDetourMachine = setup({
 
       selectedDuration?: string
       selectedReason?: string
+
+      activatedAt?: Date
     },
 
     input: {} as
@@ -629,6 +632,11 @@ export const createDetourMachine = setup({
                     },
                     "detour.share.activate-modal.activate": {
                       target: "Done",
+                      actions: assign({
+                        // Record current time, should be done on the backend,
+                        // but that requires a larger refactor of the state machine
+                        activatedAt: new Date(),
+                      }),
                     },
                   },
                 },
@@ -728,3 +736,15 @@ export const createDetourMachine = setup({
 export type CreateDetourMachineInput = InputFrom<
   ActorLogicFrom<typeof createDetourMachine>
 >
+
+/**
+ * Defines expected keys and type coercions in Superstruct to enable the
+ * {@linkcode createDetourMachine} to use rich types when rehydrating from a
+ * API response.
+ */
+export const DetourSnapshotData = type({
+  context: type({
+    // Convert serialized dates back into `Date`'s
+    activatedAt: optional(coerce(date(), string(), (str) => new Date(str))),
+  }),
+})
