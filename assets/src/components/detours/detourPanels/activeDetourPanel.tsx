@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react"
+import React, { PropsWithChildren, useId } from "react"
 import { DetourDirection } from "../../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
 import { Panel } from "../diversionPage"
@@ -15,6 +15,8 @@ import {
   MissedStops,
 } from "../detourPanelComponents"
 import inTestGroup, { TestGroups } from "../../../userInTestGroup"
+import { timeAgoLabelFromDate } from "../../../util/dateTime"
+import useCurrentTime from "../../../hooks/useCurrentTime"
 
 export interface ActiveDetourPanelProps extends PropsWithChildren {
   copyableDetourText: string
@@ -27,6 +29,10 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
   routeDirection: string
   onOpenDeactivateModal?: () => void
   onNavigateBack: () => void
+
+  detourReason: string
+  detourDuration: string
+  activatedAt: Date
 }
 
 export const ActiveDetourPanel = ({
@@ -41,6 +47,9 @@ export const ActiveDetourPanel = ({
   onOpenDeactivateModal,
   onNavigateBack,
   children,
+  activatedAt,
+  detourDuration,
+  detourReason,
 }: ActiveDetourPanelProps) => {
   const backButton = (
     <Button
@@ -53,6 +62,13 @@ export const ActiveDetourPanel = ({
       Back
     </Button>
   )
+
+  const currentTime = useCurrentTime()
+
+  const idSuffix = useId()
+  const dlReasonId = "dl-reason" + idSuffix
+  const dlActiveSinceId = "dl-active-since" + idSuffix
+  const dlDurationId = "dl-duration" + idSuffix
 
   return (
     <Panel as="article" className="c-diversion-panel">
@@ -79,6 +95,25 @@ export const ActiveDetourPanel = ({
             routeOrigin={routeOrigin}
             routeDirection={routeDirection}
           />
+
+          <dl className="l-inline-dl m-0">
+            <dt id={dlReasonId} className="fw-bold me-2">
+              Reason
+            </dt>
+            <dd aria-labelledby={dlReasonId}>{detourReason}</dd>
+
+            <dt id={dlActiveSinceId} className="fw-bold me-2">
+              On detour since
+            </dt>
+            <dd aria-labelledby={dlActiveSinceId}>
+              {timeAgoLabelFromDate(currentTime, activatedAt)}
+            </dd>
+
+            <dt id={dlDurationId} className="fw-bold me-2">
+              Est. Duration
+            </dt>
+            <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
+          </dl>
 
           <section className="pb-3">
             <h2 className="c-diversion-panel__h2">Detour Directions</h2>
