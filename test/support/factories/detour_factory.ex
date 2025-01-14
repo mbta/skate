@@ -80,14 +80,12 @@ defmodule Skate.DetourFactory do
       end
 
       def with_route(
-            %{"context" => %{"route" => %{"directionNames" => direction_names}}} = state,
+            %{"context" => %{"route" => %{}}} = state,
             %{name: route_name, id: route_id}
           ) do
-        put_in(state["context"]["route"], %{
-          "id" => route_id,
-          "name" => route_name,
-          "directionNames" => direction_names
-        })
+        state
+        |> with_route_id(route_id)
+        |> with_route_name(route_name)
       end
 
       def with_route_name(%Skate.Detours.Db.Detour{} = detour, name) do
