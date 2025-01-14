@@ -380,11 +380,15 @@ export const DiversionPage = ({
             },
           }) ? (
             <DeleteDetourModal
-              onDelete={() =>
+              onDelete={() => {
+                console.log("ON DELETE!")
                 send({ type: "detour.delete.delete-modal.delete-draft" })
               }
-              onCancel={() =>
+              }
+              onCancel={() => {
+                console.log("ON CANCEL")
                 send({ type: "detour.delete.delete-modal.cancel" })
+              }
               }
               affectedRoute={
                 <AffectedRoute

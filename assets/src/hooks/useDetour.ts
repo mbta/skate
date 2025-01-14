@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { ShapePoint } from "../schedule"
-import { fetchUnfinishedDetour, putDetourUpdate } from "../api"
+import { fetchUnfinishedDetour, putDetourUpdate, deleteDetour } from "../api"
 import { useApiCall } from "./useApiCall"
 import { isErr, isOk } from "../util/result"
 import { useMachine } from "@xstate/react"
@@ -32,7 +32,14 @@ export const useDetour = (input: UseDetourInput) => {
       localStorage.setItem("snapshot", serializedSnapshot)
 
       // check for no-save tag before
-      if (snap.hasTag("no-save")) {
+      console.log(snap)
+      if (snap.hasTag("delete-draft")) {
+        deleteDetour(snap.context.uuid).then(console.log)
+        console.log("delete draft tag")
+        console.log(snap.context.uuid)
+        return
+      } else if (snap.hasTag("no-save")) {
+        console.log("no save tag")
         return
       }
 

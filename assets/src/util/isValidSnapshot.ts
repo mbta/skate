@@ -15,6 +15,7 @@ export const isValidSnapshot = (
 
   // Check that machine initializes from snapshot without errors
   const actor = createActor(actorLogic, {
+    inspect: (event) => console.log(event),
     snapshot: snapshot as any,
     input: undefined,
   })

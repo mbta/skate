@@ -143,6 +143,14 @@ defmodule SkateWeb.DetoursController do
     end
   end
 
+  require Logger
+
+  @spec delete_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def delete_detour(conn, %{"detour_id" => detour_id}) do
+    Logger.error(inspect(detour_id))
+    json(conn, %{data: true})
+  end
+
   defp format(%RouteSegments.UnfinishedResult{
          before_start_point: before_start_point,
          after_start_point: after_start_point
