@@ -149,6 +149,7 @@ defmodule SkateWeb.DetoursControllerTest do
       "snapshot" => %{
         "context" => %{
           "route" => %{
+            "id" => "23",
             "name" => "23",
             "directionNames" => %{
               "0" => "Outbound",
@@ -171,6 +172,7 @@ defmodule SkateWeb.DetoursControllerTest do
       "snapshot" => %{
         "context" => %{
           "route" => %{
+            "id" => "47",
             "name" => "47",
             "directionNames" => %{
               "0" => "Outbound",
@@ -193,6 +195,7 @@ defmodule SkateWeb.DetoursControllerTest do
       "snapshot" => %{
         "context" => %{
           "route" => %{
+            "id" => "75",
             "name" => "75",
             "directionNames" => %{
               "0" => "Outbound",
@@ -403,12 +406,13 @@ defmodule SkateWeb.DetoursControllerTest do
     test "will not return detours from other users", %{conn: conn} do
       current_user_id = populate_db_and_get_user(conn)
 
-      other_user = build(:user)
+      other_user = insert(:user)
 
       # Manually insert a detour by another user
       Detours.upsert_from_snapshot(other_user.id, %{
         "context" => %{
           "route" => %{
+            # "id" => "23",
             "name" => "23",
             "directionNames" => %{
               "0" => "Outbound",
@@ -474,6 +478,7 @@ defmodule SkateWeb.DetoursControllerTest do
         "snapshot" => %{
           "context" => %{
             "route" => %{
+              "id" => "23",
               "name" => "23",
               "directionNames" => %{
                 "0" => "Outbound",
@@ -495,6 +500,7 @@ defmodule SkateWeb.DetoursControllerTest do
         "snapshot" => %{
           "context" => %{
             "route" => %{
+              "id" => "23",
               "name" => "23"
             },
             "routePattern" => %{
