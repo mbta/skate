@@ -128,17 +128,17 @@ export const Header = ({
                           <ArrowUpRightSquare />
                         )}
                         <div>
-                          {detour.route} - {detour.intersection}
+                          {detour.route} {detour.direction} -{" "}
+                          {detour.intersection}
                         </div>
                       </Dropdown.Item>
                     ))}
-                  {skateDetoursForRoute &&
-                    Object.values(skateDetoursForRoute).length == 0 && (
-                      <Dropdown.ItemText className="lh-base pb-4">
-                        This route has an active detour. View detour details on{" "}
-                        <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
-                      </Dropdown.ItemText>
-                    )}
+                  {!skateDetoursForRoute && (
+                    <Dropdown.ItemText className="lh-base pb-4">
+                      This route has an active detour. View detour details on{" "}
+                      <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
+                    </Dropdown.ItemText>
+                  )}
                 </>
               )}
               {!hasAlert && (
@@ -292,7 +292,11 @@ const RouteLadder = ({
           onAddDetour?.(route)
         }}
         onOpenDetour={onOpenDetour}
-        skateDetoursForRoute={skateDetoursForRoute}
+        skateDetoursForRoute={
+          skateDetoursForRoute && Object.values(skateDetoursForRoute).length > 0
+            ? skateDetoursForRoute
+            : undefined
+        }
       />
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
