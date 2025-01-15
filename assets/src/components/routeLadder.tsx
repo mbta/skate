@@ -33,7 +33,7 @@ import {
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinClasses, joinTruthy } from "../helpers/dom"
-import { DetourId, SimpleDetour } from "../models/detoursList"
+import { DetourId } from "../models/detoursList"
 import { DetoursMap } from "../hooks/useDetours"
 
 interface Props {
@@ -56,7 +56,7 @@ export const Header = ({
   routeName,
   onClose,
   hasAlert,
-  showDropdown,
+  isAdmin,
   onClickAddDetour,
   onOpenDetour,
   skateDetoursForRoute,
@@ -64,7 +64,7 @@ export const Header = ({
   routeName: string
   onClose: () => void
   hasAlert: boolean
-  showDropdown: boolean
+  isAdmin: boolean
   onClickAddDetour?: () => void
   onOpenDetour?: (detourId: DetourId) => void
   skateDetoursForRoute?: DetoursMap
@@ -80,78 +80,74 @@ export const Header = ({
             hasAlert && "c-route-ladder__dropdown--non-skate-alert",
           ])}
         >
-          {showDropdown && (
-            <Dropdown className="border-box inherit-box">
-              <Dropdown.Toggle
-                className="c-route-ladder__dropdown-button d-none d-sm-flex"
-                aria-labelledby={joinTruthy([
-                  routePillId,
-                  routeOptionsToggleId,
-                ])}
-              >
-                <ThreeDotsVertical />
-                <span className="visually-hidden" id={routeOptionsToggleId}>
-                  Route Options
-                </span>
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Header>
-                  <div className="c-route-ladder__dropdown-header-text">
-                    Adjustments
-                  </div>
-                </Dropdown.Header>
-                <Dropdown.Item
-                  className="icon-link"
-                  onClick={onClickAddDetour}
-                  data-fs-element="Add Detour on Route"
-                >
-                  <PlusSquare /> Add detour
-                </Dropdown.Item>
-                <Dropdown.Divider className="border-top-0" />
-                <Dropdown.Header>
-                  <div className="c-route-ladder__dropdown-header-text">
-                    Active detours
-                  </div>
-                </Dropdown.Header>
-                {hasAlert && (
-                  <>
-                    {skateDetoursForRoute &&
-                      Object.values(skateDetoursForRoute).map(
-                        (detour: SimpleDetour) => (
-                          <Dropdown.Item
-                            key={detour.id}
-                            className="icon-link"
-                            onClick={() => onOpenDetour?.(detour.id)}
-                          >
-                            {detour.direction === "Outbound" ? (
-                              <ArrowDownLeftSquare />
-                            ) : (
-                              <ArrowUpRightSquare />
-                            )}
-                            <div>
-                              {detour.route} {detour.direction} -{" "}
-                              {detour.intersection}
-                            </div>
-                          </Dropdown.Item>
-                        )
-                      )}
-                    {(!skateDetoursForRoute ||
-                      Object.values(skateDetoursForRoute).length == 0) && (
+          <Dropdown className="border-box inherit-box">
+            <Dropdown.Toggle
+              className="c-route-ladder__dropdown-button d-none d-sm-flex"
+              aria-labelledby={joinTruthy([routePillId, routeOptionsToggleId])}
+            >
+              <ThreeDotsVertical />
+              <span className="visually-hidden" id={routeOptionsToggleId}>
+                Route Options
+              </span>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {isAdmin && (
+                <>
+                  <Dropdown.Header>
+                    <div className="c-route-ladder__dropdown-header-text">
+                      Adjustments
+                    </div>
+                  </Dropdown.Header>
+                  <Dropdown.Item
+                    className="icon-link"
+                    onClick={onClickAddDetour}
+                    data-fs-element="Add Detour on Route"
+                  >
+                    <PlusSquare /> Add detour
+                  </Dropdown.Item>
+                  <Dropdown.Divider className="border-top-0" />
+                </>
+              )}
+              <Dropdown.Header>
+                <div className="c-route-ladder__dropdown-header-text">
+                  Active detours
+                </div>
+              </Dropdown.Header>
+              {hasAlert && (
+                <>
+                  {skateDetoursForRoute &&
+                    Object.values(skateDetoursForRoute).map((detour) => (
+                      <Dropdown.Item
+                        key={detour.id}
+                        className="icon-link"
+                        onClick={() => onOpenDetour?.(detour.id)}
+                      >
+                        {detour.direction === "Outbound" ? (
+                          <ArrowDownLeftSquare />
+                        ) : (
+                          <ArrowUpRightSquare />
+                        )}
+                        <div>
+                          {detour.route} - {detour.intersection}
+                        </div>
+                      </Dropdown.Item>
+                    ))}
+                  {skateDetoursForRoute &&
+                    Object.values(skateDetoursForRoute).length == 0 && (
                       <Dropdown.ItemText className="lh-base pb-4">
                         This route has an active detour. View detour details on{" "}
                         <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
                       </Dropdown.ItemText>
                     )}
-                  </>
-                )}
-                {!hasAlert && (
-                  <Dropdown.ItemText className="lh-base pb-4">
-                    No active detours
-                  </Dropdown.ItemText>
-                )}
-              </Dropdown.Menu>
-            </Dropdown>
-          )}
+                </>
+              )}
+              {!hasAlert && (
+                <Dropdown.ItemText className="lh-base pb-4">
+                  No active detours
+                </Dropdown.ItemText>
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
         <RoutePill
           id={routePillId}
@@ -291,7 +287,7 @@ const RouteLadder = ({
         onClose={() => {
           deselectRoute(route.id)
         }}
-        showDropdown={inTestGroup(TestGroups.DetoursPilot)}
+        isAdmin={inTestGroup(TestGroups.DetoursPilot)}
         onClickAddDetour={() => {
           onAddDetour?.(route)
         }}
