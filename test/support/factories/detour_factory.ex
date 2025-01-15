@@ -26,6 +26,7 @@ defmodule Skate.DetourFactory do
           "context" => %{
             "uuid" => nil,
             "route" => %{
+              "id" => sequence("detour_route_id:"),
               "name" => sequence("detour_route_name:"),
               "directionNames" => %{
                 "0" => "Outbound",
@@ -36,7 +37,8 @@ defmodule Skate.DetourFactory do
               "name" => sequence("detour_route_pattern_name:"),
               "headsign" => sequence("detour_route_pattern_headsign:"),
               "directionId" => sequence(:detour_route_pattern_direction, [0, 1])
-            }
+            },
+            "nearestIntersection" => sequence("detour_nearest_intersection:")
           },
           "value" => %{},
           "children" => %{},
@@ -86,6 +88,41 @@ defmodule Skate.DetourFactory do
 
       def deactivated(%{"value" => %{}} = state) do
         put_in(state["value"], %{"Detour Drawing" => "Past"})
+      end
+
+      def with_route(%Skate.Detours.Db.Detour{} = detour, %{name: _, id: _} = route) do
+        %{detour | state: with_route(detour.state, route)}
+      end
+
+      def with_route(
+            %{"context" => %{"route" => %{}}} = state,
+            %{name: route_name, id: route_id}
+          ) do
+        state
+        |> with_route_id(route_id)
+        |> with_route_name(route_name)
+      end
+
+      def with_route_name(%Skate.Detours.Db.Detour{} = detour, name) do
+        %{detour | state: with_route_name(detour.state, name)}
+      end
+
+      def with_route_name(
+            %{"context" => %{"route" => %{"name" => _}}} = state,
+            name
+          ) do
+        put_in(state["context"]["route"]["name"], name)
+      end
+
+      def with_route_id(%Skate.Detours.Db.Detour{} = detour, id) do
+        %{detour | state: with_route_id(detour.state, id)}
+      end
+
+      def with_route_id(
+            %{"context" => %{"route" => %{"id" => _}}} = state,
+            id
+          ) do
+        put_in(state["context"]["route"]["id"], id)
       end
 
       def with_direction(%Skate.Detours.Db.Detour{} = detour, direction) do
