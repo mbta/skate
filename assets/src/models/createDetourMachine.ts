@@ -91,7 +91,10 @@ export const createDetourMachine = setup({
       | { type: "detour.active.deactivate-modal.deactivate" }
       | { type: "detour.active.deactivate-modal.cancel" }
       | { type: "detour.save.begin-save" }
-      | { type: "detour.save.set-uuid"; uuid: number },
+      | { type: "detour.save.set-uuid"; uuid: number }
+      | { type: "detour.delete.open-delete-modal" }
+      | { type: "detour.delete.delete-modal.cancel" }
+      | { type: "detour.delete.delete-modal.delete-draft" },
 
     // We're making an assumption that we'll never want to save detour edits to the database when in particular stages
     // of detour drafting:
@@ -531,6 +534,9 @@ export const createDetourMachine = setup({
                     editedDirections: ({ event }) => event.detourText,
                   }),
                 },
+                "detour.delete.open-delete-modal": {
+                  target: "Deleting",
+                },
               },
             },
             Activating: {
@@ -631,6 +637,27 @@ export const createDetourMachine = setup({
                         // but that requires a larger refactor of the state machine
                         activatedAt: new Date(),
                       }),
+                    },
+                  },
+                },
+                Done: { type: "final" },
+              },
+              onDone: {
+                target: "Done",
+              },
+            },
+            Deleting: {
+              initial: "Confirming",
+              on: {
+                "detour.delete.delete-modal.cancel": {
+                  target: "Reviewing",
+                },
+              },
+              states: {
+                Confirming: {
+                  on: {
+                    "detour.delete.delete-modal.delete-draft": {
+                      target: "Done",
                     },
                   },
                 },
