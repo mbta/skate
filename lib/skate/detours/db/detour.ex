@@ -12,12 +12,15 @@ defmodule Skate.Detours.Db.Detour do
     field :state, :map
     belongs_to :author, User
 
+    # When this detour was activated
+    field :activated_at, :utc_datetime_usec
+
     timestamps()
   end
 
   def changeset(detour, attrs) do
     detour
-    |> cast(attrs, [:state])
+    |> cast(attrs, [:state, :activated_at])
     |> validate_required([:state])
     |> foreign_key_constraint(:author_id)
   end

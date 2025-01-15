@@ -9,6 +9,7 @@ import { reload } from "../models/browser"
 import { userUuid } from "../util/userUuid"
 import { ByRouteId, RouteId } from "../schedule"
 import { equalByElements } from "../helpers/array"
+import { array, create } from "superstruct"
 
 export interface DetoursMap {
   [key: number]: SimpleDetour
@@ -25,22 +26,27 @@ const subscribe = (
   const channel = socket.channel(topic)
 
   handleDrafted &&
-    channel.on("drafted", ({ data: data }: { data: SimpleDetourData }) =>
+    channel.on("drafted", ({ data: unknownData }: { data: unknown }) => {
+      const data = create(unknownData, SimpleDetourData)
       handleDrafted(simpleDetourFromData(data))
-    )
+    })
   handleActivated &&
-    channel.on("activated", ({ data: data }: { data: SimpleDetourData }) =>
+    channel.on("activated", ({ data: unknownData }: { data: unknown }) => {
+      const data = create(unknownData, SimpleDetourData)
       handleActivated(simpleDetourFromData(data))
-    )
+    })
   handleDeactivated &&
-    channel.on("deactivated", ({ data: data }: { data: SimpleDetourData }) =>
+    channel.on("deactivated", ({ data: unknownData }: { data: unknown }) => {
+      const data = create(unknownData, SimpleDetourData)
       handleDeactivated(simpleDetourFromData(data))
-    )
+    })
   channel.on("auth_expired", reload)
 
   channel
     .join()
-    .receive("ok", ({ data: data }: { data: SimpleDetourData[] }) => {
+    .receive("ok", ({ data: unknownData }: { data: unknown }) => {
+      const data = create(unknownData, array(SimpleDetourData))
+
       const detoursMap = Object.fromEntries(
         data.map((v) => [v.id, simpleDetourFromData(v)])
       )
@@ -178,7 +184,8 @@ const subscribeByRoute = (
 ): Channel => {
   const channel = socket.channel(topic + routeId)
 
-  channel.on("activated", ({ data: data }: { data: SimpleDetourData }) => {
+  channel.on("activated", ({ data: unknownData }: { data: unknown }) => {
+    const data = create(unknownData, SimpleDetourData)
     setDetours((activeDetours) => ({
       ...activeDetours,
       [routeId]: {
@@ -187,7 +194,8 @@ const subscribeByRoute = (
       },
     }))
   })
-  channel.on("deactivated", ({ data: data }: { data: SimpleDetourData }) => {
+  channel.on("deactivated", ({ data: unknownData }: { data: unknown }) => {
+    const data = create(unknownData, SimpleDetourData)
     setDetours((activeDetours) => {
       delete activeDetours[routeId][data.id]
       return activeDetours
@@ -197,7 +205,8 @@ const subscribeByRoute = (
 
   channel
     .join()
-    .receive("ok", ({ data: data }: { data: SimpleDetourData[] }) => {
+    .receive("ok", ({ data: unknownData }: { data: unknown }) => {
+      const data = create(unknownData, array(SimpleDetourData))
       const detoursMap = Object.fromEntries(
         data.map((v) => [v.id, simpleDetourFromData(v)])
       )
