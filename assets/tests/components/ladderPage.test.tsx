@@ -647,7 +647,9 @@ describe("LadderPage", () => {
       screen.getByRole("button", { name: /1 Route Options/ })
     )
 
-    await userEvent.click(screen.getByRole("button", { name: /1 - A St/ }))
+    await userEvent.click(
+      screen.getByRole("button", { name: /1 Inbound - A St/ })
+    )
 
     expect(screen.getByRole("heading", { name: "Active Detour" })).toBeVisible()
   })
