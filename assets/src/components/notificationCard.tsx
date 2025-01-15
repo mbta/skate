@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useState } from "react"
+import React, { ReactNode, useState } from "react"
 import { useRoute, useRoutes } from "../contexts/routesContext"
 import {
   BlockWaiverNotification,
@@ -14,13 +14,9 @@ import { CardBody, CardProperties, CardReadable } from "./card"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { RoutePill } from "./routePill"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
-import { useApiCall } from "../hooks/useApiCall"
-import { fetchDetour } from "../api"
-import { createDetourMachine } from "../models/createDetourMachine"
-import { isValidSnapshot } from "../util/isValidSnapshot"
-import { isErr } from "../util/result"
 import { DetourModal } from "./detours/detourModal"
 import { DetourId } from "../models/detoursList"
+import { useLoadDetour } from "../hooks/useLoadDetour"
 
 export const NotificationCard = ({
   notification,
@@ -139,25 +135,7 @@ const DetourNotificationModal = ({
   show: boolean
   onClose: () => void
 }) => {
-  const { result: detour } = useApiCall({
-    apiCall: useCallback(async () => {
-      if (detourId === undefined) {
-        return undefined
-      }
-      const detourResponse = await fetchDetour(detourId)
-      if (isErr(detourResponse)) {
-        return undefined
-      }
-      const snapshot = isValidSnapshot(
-        createDetourMachine,
-        detourResponse.ok.state
-      )
-      if (isErr(snapshot)) {
-        return undefined
-      }
-      return detourResponse.ok
-    }, [detourId]),
-  })
+  const detour = useLoadDetour(detourId)
 
   return detour ? (
     <DetourModal
