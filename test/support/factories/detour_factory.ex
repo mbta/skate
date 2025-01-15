@@ -59,12 +59,27 @@ defmodule Skate.DetourFactory do
         put_in(snapshot["context"]["uuid"], id)
       end
 
-      def activated(%Skate.Detours.Db.Detour{} = detour) do
-        %{detour | state: activated(detour.state)}
+      def update_id(%Skate.Detours.Db.Detour{id: id} = detour) do
+        with_id(detour, id)
       end
 
-      def activated(%{"value" => %{}} = state) do
-        put_in(state["value"], %{"Detour Drawing" => %{"Active" => "Reviewing"}})
+      def activated(update_arg, activated_at \\ DateTime.utc_now())
+
+      def activated(%Skate.Detours.Db.Detour{} = detour, activated_at) do
+        activated_at = Skate.DetourFactory.browser_date(activated_at)
+        %{detour | state: activated(detour.state, activated_at), activated_at: activated_at}
+      end
+
+      def activated(%{"value" => %{}, "context" => %{}} = state, activated_at) do
+        state =
+          put_in(state["value"], %{"Detour Drawing" => %{"Active" => "Reviewing"}})
+
+        put_in(
+          state["context"]["activatedAt"],
+          activated_at
+          |> Skate.DetourFactory.browser_date()
+          |> DateTime.to_iso8601()
+        )
       end
 
       def deactivated(%Skate.Detours.Db.Detour{} = detour) do
@@ -75,23 +90,39 @@ defmodule Skate.DetourFactory do
         put_in(state["value"], %{"Detour Drawing" => "Past"})
       end
 
-      def with_route(%Skate.Detours.Db.Detour{} = detour, route) do
+      def with_route(%Skate.Detours.Db.Detour{} = detour, %{name: _, id: _} = route) do
         %{detour | state: with_route(detour.state, route)}
       end
 
       def with_route(
-            %{
-              "context" => %{
-                "route" => %{"name" => _, "id" => _, "directionNames" => direction_names}
-              }
-            } = state,
-            route
+            %{"context" => %{"route" => %{}}} = state,
+            %{name: route_name, id: route_id}
           ) do
-        put_in(state["context"]["route"], %{
-          "name" => route,
-          "id" => route,
-          "directionNames" => direction_names
-        })
+        state
+        |> with_route_id(route_id)
+        |> with_route_name(route_name)
+      end
+
+      def with_route_name(%Skate.Detours.Db.Detour{} = detour, name) do
+        %{detour | state: with_route_name(detour.state, name)}
+      end
+
+      def with_route_name(
+            %{"context" => %{"route" => %{"name" => _}}} = state,
+            name
+          ) do
+        put_in(state["context"]["route"]["name"], name)
+      end
+
+      def with_route_id(%Skate.Detours.Db.Detour{} = detour, id) do
+        %{detour | state: with_route_id(detour.state, id)}
+      end
+
+      def with_route_id(
+            %{"context" => %{"route" => %{"id" => _}}} = state,
+            id
+          ) do
+        put_in(state["context"]["route"]["id"], id)
       end
 
       def with_direction(%Skate.Detours.Db.Detour{} = detour, direction) do
@@ -115,5 +146,33 @@ defmodule Skate.DetourFactory do
         put_in(state["context"]["routePattern"]["directionId"], 0)
       end
     end
+  end
+
+  @doc """
+  Browsers cannot generate javascript `Date` objects with more precision than a
+  `millisecond` for security reasons.
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now#reduced_time_precision
+
+  This function truncates a `DateTime` to milliseconds to create `DateTime` objects
+  that are similar to that of one made in a Browser JS context.
+  """
+  def browser_date(%DateTime{} = date \\ DateTime.utc_now()) do
+    DateTime.truncate(date, :millisecond)
+  end
+
+  @doc """
+  While a Browser may generate a date truncated to milliseconds
+  (see `browser_date` for more context) a `DateTime` stored into Postgres with
+  the `:utc_datetime_usec` type does not store the extra information about the
+  non-presence of nanoseconds that a `DateTime` object does.
+  This means a `DateTime` object that's been truncated by `browser_date` cannot
+  be compared to a `DateTime` object reconstructed by Ecto after a Database query.
+
+  This function adds 0 nanoseconds to a `DateTime` object to make the `DateTime`
+  object match what Ecto would return to make testing easier when comparing
+  values.
+  """
+  def db_date(%DateTime{} = date) do
+    DateTime.add(date, 0, :nanosecond)
   end
 end

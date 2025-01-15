@@ -11,6 +11,7 @@ import {
 } from "../api"
 import { DetourShape, FinishedDetour } from "./detour"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { type, optional, coerce, date, string } from "superstruct"
 
 export const createDetourMachine = setup({
   types: {
@@ -35,6 +36,8 @@ export const createDetourMachine = setup({
 
       selectedDuration?: string
       selectedReason?: string
+
+      activatedAt?: Date
     },
 
     input: {} as
@@ -88,7 +91,10 @@ export const createDetourMachine = setup({
       | { type: "detour.active.deactivate-modal.deactivate" }
       | { type: "detour.active.deactivate-modal.cancel" }
       | { type: "detour.save.begin-save" }
-      | { type: "detour.save.set-uuid"; uuid: number },
+      | { type: "detour.save.set-uuid"; uuid: number }
+      | { type: "detour.delete.open-delete-modal" }
+      | { type: "detour.delete.delete-modal.cancel" }
+      | { type: "detour.delete.delete-modal.delete-draft" },
 
     // We're making an assumption that we'll never want to save detour edits to the database when in particular stages
     // of detour drafting:
@@ -528,6 +534,9 @@ export const createDetourMachine = setup({
                     editedDirections: ({ event }) => event.detourText,
                   }),
                 },
+                "detour.delete.open-delete-modal": {
+                  target: "Deleting",
+                },
               },
             },
             Activating: {
@@ -623,6 +632,32 @@ export const createDetourMachine = setup({
                     },
                     "detour.share.activate-modal.activate": {
                       target: "Done",
+                      actions: assign({
+                        // Record current time, should be done on the backend,
+                        // but that requires a larger refactor of the state machine
+                        activatedAt: new Date(),
+                      }),
+                    },
+                  },
+                },
+                Done: { type: "final" },
+              },
+              onDone: {
+                target: "Done",
+              },
+            },
+            Deleting: {
+              initial: "Confirming",
+              on: {
+                "detour.delete.delete-modal.cancel": {
+                  target: "Reviewing",
+                },
+              },
+              states: {
+                Confirming: {
+                  on: {
+                    "detour.delete.delete-modal.delete-draft": {
+                      target: "Done",
                     },
                   },
                 },
@@ -701,3 +736,15 @@ export const createDetourMachine = setup({
 export type CreateDetourMachineInput = InputFrom<
   ActorLogicFrom<typeof createDetourMachine>
 >
+
+/**
+ * Defines expected keys and type coercions in Superstruct to enable the
+ * {@linkcode createDetourMachine} to use rich types when rehydrating from a
+ * API response.
+ */
+export const DetourSnapshotData = type({
+  context: type({
+    // Convert serialized dates back into `Date`'s
+    activatedAt: optional(coerce(date(), string(), (str) => new Date(str))),
+  }),
+})

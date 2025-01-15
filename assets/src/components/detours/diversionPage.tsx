@@ -27,6 +27,7 @@ import { timeAgoLabel } from "../../util/dateTime"
 import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
+import { DeleteDetourModal } from "./deleteDetourModal"
 import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
@@ -271,6 +272,13 @@ export const DiversionPage = ({
                 }
               : undefined
           }
+          onDeleteDetour={
+            inTestGroup(TestGroups.DeleteDraftDetours)
+              ? () => {
+                  send({ type: "detour.delete.open-delete-modal" })
+                }
+              : undefined
+          }
           affectedRoute={
             <AffectedRoute
               routeName={routeName ?? "??"}
@@ -364,6 +372,29 @@ export const DiversionPage = ({
                 <ActivateDetour.Confirming />
               ) : null}
             </ActivateDetour.Modal>
+          ) : null}
+
+          {snapshot.matches({
+            "Detour Drawing": {
+              "Share Detour": "Deleting",
+            },
+          }) ? (
+            <DeleteDetourModal
+              onDelete={() =>
+                send({ type: "detour.delete.delete-modal.delete-draft" })
+              }
+              onCancel={() =>
+                send({ type: "detour.delete.delete-modal.cancel" })
+              }
+              affectedRoute={
+                <AffectedRoute
+                  routeName={routeName ?? "??"}
+                  routeDescription={routeDescription ?? "??"}
+                  routeOrigin={routeOrigin ?? "??"}
+                  routeDirection={routeDirection ?? "??"}
+                />
+              }
+            />
           ) : null}
         </DetourFinishedPanel>
       )
