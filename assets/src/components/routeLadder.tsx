@@ -33,7 +33,7 @@ import {
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinClasses, joinTruthy } from "../helpers/dom"
-import { DetourId } from "../models/detoursList"
+import { DetourId, SimpleDetour } from "../models/detoursList"
 import { DetoursMap } from "../hooks/useDetours"
 
 interface Props {
@@ -116,22 +116,25 @@ export const Header = ({
                 {hasAlert && (
                   <>
                     {skateDetoursForRoute &&
-                      Object.values(skateDetoursForRoute).map((detour) => (
-                        <Dropdown.Item
-                          key={detour.id}
-                          className="icon-link"
-                          onClick={() => onOpenDetour?.(detour.id)}
-                        >
-                          {detour.direction === "Outbound" ? (
-                            <ArrowDownLeftSquare />
-                          ) : (
-                            <ArrowUpRightSquare />
-                          )}
-                          <div>
-                            {detour.route} - {detour.intersection}
-                          </div>
-                        </Dropdown.Item>
-                      ))}
+                      Object.values(skateDetoursForRoute).map(
+                        (detour: SimpleDetour) => (
+                          <Dropdown.Item
+                            key={detour.id}
+                            className="icon-link"
+                            onClick={() => onOpenDetour?.(detour.id)}
+                          >
+                            {detour.direction === "Outbound" ? (
+                              <ArrowDownLeftSquare />
+                            ) : (
+                              <ArrowUpRightSquare />
+                            )}
+                            <div>
+                              {detour.route} {detour.direction} -{" "}
+                              {detour.intersection}
+                            </div>
+                          </Dropdown.Item>
+                        )
+                      )}
                     {(!skateDetoursForRoute ||
                       Object.values(skateDetoursForRoute).length == 0) && (
                       <Dropdown.ItemText className="lh-base pb-4">

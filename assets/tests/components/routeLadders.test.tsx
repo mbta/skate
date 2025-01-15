@@ -1,4 +1,5 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
+import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { render, fireEvent } from "@testing-library/react"
 import routeFactory from "../factories/route"
@@ -6,6 +7,9 @@ import RouteLadders, { findRouteById } from "../../src/components/routeLadders"
 import { Route, TimepointsByRouteId } from "../../src/schedule.d"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
+import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
+import useAlerts from "../../src/hooks/useAlerts"
+import { useActiveDetoursByRoute } from "../../src/hooks/useDetours"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -30,6 +34,14 @@ const timepointsByRouteId: TimepointsByRouteId = {
   "71": undefined,
   "73": null,
 }
+
+jest.mock("../../src/hooks/useAlerts")
+jest.mock("../../src/hooks/useDetours")
+
+beforeEach(() => {
+  jest.mocked(useActiveDetoursByRoute).mockReturnValue({})
+  jest.mocked(useAlerts).mockReturnValue({})
+})
 
 describe("RouteLadders", () => {
   test("renders a route ladder", () => {
@@ -71,6 +83,95 @@ describe("RouteLadders", () => {
     fireEvent.wheel(routeLaddersDiv, { deltaY: 10 })
 
     expect(routeLaddersDiv.scrollTo).toHaveBeenCalled()
+  })
+
+  describe("alert icon on a route ladder", () => {
+    test("renders with a non-skate detour", () => {
+      jest
+        .mocked(useTimepoints)
+        .mockImplementationOnce(() => timepointsByRouteId)
+      jest.mocked(useAlerts).mockReturnValue({ 28: [], 1: ["Route 1 detour"] })
+
+      render(
+        <RoutesProvider routes={routes}>
+          <RouteLadders
+            selectedRouteIds={routes.map((route) => route.id)}
+            selectedVehicleId={undefined}
+            deselectRoute={jest.fn()}
+            reverseLadder={jest.fn()}
+            toggleCrowding={jest.fn()}
+            ladderDirections={{}}
+            ladderCrowdingToggles={{}}
+          />
+        </RoutesProvider>
+      )
+
+      expect(routeAlert.get()).toBeVisible()
+    })
+
+    test("renders with a skate detour", () => {
+      jest
+        .mocked(useTimepoints)
+        .mockImplementationOnce(() => timepointsByRouteId)
+      jest.mocked(useActiveDetoursByRoute).mockReturnValue({
+        "1": {
+          "1": {
+            id: 1,
+            route: "1",
+            direction: "Inbound",
+            name: "",
+            intersection: "A St & B Av",
+            updatedAt: 1724866392,
+          },
+          "2": {
+            id: 2,
+            route: "1",
+            direction: "Outbound",
+            name: "",
+            intersection: "C Rd & D Ct",
+            updatedAt: 1724866392,
+          },
+        },
+      })
+
+      render(
+        <RoutesProvider routes={routes}>
+          <RouteLadders
+            selectedRouteIds={routes.map((route) => route.id)}
+            selectedVehicleId={undefined}
+            deselectRoute={jest.fn()}
+            reverseLadder={jest.fn()}
+            toggleCrowding={jest.fn()}
+            ladderDirections={{}}
+            ladderCrowdingToggles={{}}
+          />
+        </RoutesProvider>
+      )
+
+      expect(routeAlert.get()).toBeVisible()
+    })
+
+    test("doesn't render without an active detour", () => {
+      jest
+        .mocked(useTimepoints)
+        .mockImplementationOnce(() => timepointsByRouteId)
+
+      render(
+        <RoutesProvider routes={routes}>
+          <RouteLadders
+            selectedRouteIds={routes.map((route) => route.id)}
+            selectedVehicleId={undefined}
+            deselectRoute={jest.fn()}
+            reverseLadder={jest.fn()}
+            toggleCrowding={jest.fn()}
+            ladderDirections={{}}
+            ladderCrowdingToggles={{}}
+          />
+        </RoutesProvider>
+      )
+
+      expect(routeAlert.query()).not.toBeInTheDocument()
+    })
   })
 
   describe("findRouteById", () => {

@@ -655,7 +655,62 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  test("renders alert icon on a route ladder with an active detour", () => {
+  test("renders active detours in dropdown that were made in skate", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+    const skateDetours = {
+      "1": {
+        id: 1,
+        route: "28",
+        direction: "Inbound",
+        name: "",
+        intersection: "Main St @ South St",
+        updatedAt: 1,
+      },
+      "2": {
+        id: 2,
+        route: "28",
+        direction: "Outbound",
+        name: "",
+        intersection: "Main St @ South St",
+        updatedAt: 2,
+      },
+    }
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={true}
+        skateDetoursForRoute={skateDetours}
+      />
+    )
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /28 Route Options/ })
+    )
+
+    expect(screen.getByText(/28 Inbound - Main St @ South St/)).toBeVisible()
+    expect(screen.getByText(/28 Outbound - Main St @ South St/)).toBeVisible()
+  })
+
+  test("renders alert icon on a route ladder", () => {
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
