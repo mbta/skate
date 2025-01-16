@@ -41,7 +41,10 @@ defmodule SkateWeb.DetoursChannel do
   end
 
   @impl SkateWeb.AuthenticatedChannel
-  def handle_info_authenticated({:detour_activated, detour}, socket) do
+  def handle_info_authenticated(
+        {:detour_activated, %Skate.Detours.Detour.ActivatedDetourDetails{} = detour},
+        socket
+      ) do
     :ok = push(socket, "activated", %{data: detour})
     {:noreply, socket}
   end
