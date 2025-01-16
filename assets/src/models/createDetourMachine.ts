@@ -648,7 +648,6 @@ export const createDetourMachine = setup({
             },
             Deleting: {
               initial: "Confirming",
-              tags: "no-save",
               on: {
                 "detour.delete.delete-modal.cancel": {
                   target: "Reviewing",
@@ -658,21 +657,14 @@ export const createDetourMachine = setup({
                 Confirming: {
                   on: {
                     "detour.delete.delete-modal.delete-draft": {
-                      target: "Deleted",
-                      actions: assign({
-                        uuid: ({ context }) => context.uuid,
-                      }),
+                      target: "Done",
                     },
                   },
                 },
-                Deleted: { 
-                  tags: "delete-draft",
-                  target: "Done"
-                },
-                Done: { tags: "no-save", type: "final" },
+                Done: { type: "final" },
               },
               onDone: {
-                target: "DoneNoSave",
+                target: "Done",
               },
             },
             Done: { type: "final" },
