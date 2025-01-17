@@ -48,25 +48,29 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
-                    author_id: _,
-                    direction: _,
-                    id: 2,
-                    intersection: "detour_nearest_intersection:" <> _,
-                    name: "detour_route_pattern_headsign:" <> _,
-                    route: "57",
-                    status: :active,
-                    updated_at: _
+                  %Skate.Detours.Detour.ActivatedDetourDetails{
+                    details: %Skate.Detours.Detour.Detailed{
+                      author_id: _,
+                      direction: _,
+                      id: 2,
+                      intersection: "detour_nearest_intersection:" <> _,
+                      name: "detour_route_pattern_headsign:" <> _,
+                      route: "57",
+                      status: :active,
+                      updated_at: _
+                    }
                   },
-                  %Skate.Detours.Detour.Detailed{
-                    author_id: _,
-                    direction: _,
-                    id: 3,
-                    intersection: "detour_nearest_intersection:" <> _,
-                    name: "detour_route_pattern_headsign:" <> _,
-                    route: "66",
-                    status: :active,
-                    updated_at: _
+                  %Skate.Detours.Detour.ActivatedDetourDetails{
+                    details: %Skate.Detours.Detour.Detailed{
+                      author_id: _,
+                      direction: _,
+                      id: 3,
+                      intersection: "detour_nearest_intersection:" <> _,
+                      name: "detour_route_pattern_headsign:" <> _,
+                      route: "66",
+                      status: :active,
+                      updated_at: _
+                    }
                   }
                 ]
               },
@@ -97,15 +101,17 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
-                    author_id: _,
-                    direction: _,
-                    id: 3,
-                    intersection: "detour_nearest_intersection:" <> _,
-                    name: "detour_route_pattern_headsign:" <> _,
-                    route: "66",
-                    status: :active,
-                    updated_at: _
+                  %Skate.Detours.Detour.ActivatedDetourDetails{
+                    details: %Skate.Detours.Detour.Detailed{
+                      author_id: _,
+                      direction: _,
+                      id: 3,
+                      intersection: "detour_nearest_intersection:" <> _,
+                      name: "detour_route_pattern_headsign:" <> _,
+                      route: "66",
+                      status: :active,
+                      updated_at: _
+                    }
                   }
                 ]
               },
@@ -129,15 +135,17 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
-                    author_id: _,
-                    direction: _,
-                    id: 2,
-                    intersection: "detour_nearest_intersection:" <> _,
-                    name: "detour_route_pattern_headsign:" <> _,
-                    route: "SL1",
-                    status: :active,
-                    updated_at: _
+                  %Skate.Detours.Detour.ActivatedDetourDetails{
+                    details: %Skate.Detours.Detour.Detailed{
+                      author_id: _,
+                      direction: _,
+                      id: 2,
+                      intersection: "detour_nearest_intersection:" <> _,
+                      name: "detour_route_pattern_headsign:" <> _,
+                      route: "SL1",
+                      status: :active,
+                      updated_at: _
+                    }
                   }
                 ]
               },
@@ -277,7 +285,8 @@ defmodule SkateWeb.DetoursChannelTest do
     test "pushes newly activated detour onto the active detour socket", %{socket: socket} do
       {:ok, _, socket} = subscribe_and_join(socket, DetoursChannel, "detours:active")
 
-      detour = :detour_snapshot |> build() |> activated
+      detour =
+        :detour |> build() |> activated |> insert() |> Skate.Detours.Detours.db_detour_to_detour()
 
       assert {:noreply, _socket} =
                DetoursChannel.handle_info(
@@ -298,7 +307,8 @@ defmodule SkateWeb.DetoursChannelTest do
       {:ok, _, socket} =
         subscribe_and_join(socket, DetoursChannel, "detours:draft:" <> Integer.to_string(user_id))
 
-      detour = :detour_snapshot |> build() |> activated
+      detour =
+        :detour |> build() |> activated |> insert() |> Skate.Detours.Detours.db_detour_to_detour()
 
       assert {:noreply, _socket} =
                DetoursChannel.handle_info(

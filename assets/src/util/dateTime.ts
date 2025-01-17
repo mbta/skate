@@ -98,9 +98,24 @@ export const timeAgoLabel = (
   epochNowInSeconds: number,
   epochTime: number
 ): string => {
-  const duration = epochNowInSeconds - epochTime
-  const diffHours = Math.floor(duration / 3_600)
-  const diffMinutes = Math.floor((duration % 3_600) / 60)
+  const second = 1
+  const minute = second * 60
+  const hour = minute * 60
 
-  return diffHours >= 1 ? `${diffHours} hours ago` : `${diffMinutes} min ago`
+  const duration = epochNowInSeconds - epochTime
+
+  if (duration > 1 * hour) {
+    return `${Math.floor(duration / hour)} hours ago`
+  }
+
+  if (duration > 1 * minute) {
+    return `${Math.floor(duration / minute)} min ago`
+  }
+
+  return "Just now"
+}
+
+export const timeAgoLabelFromDate = (start: Date, end: Date) => {
+  const second = 1000
+  return timeAgoLabel(end.valueOf() / second, start.valueOf() / second)
 }

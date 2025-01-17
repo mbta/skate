@@ -41,6 +41,7 @@ describe("DetourListPage", () => {
             name: "Headsign A",
             intersection: "Street A & Avenue B",
             updatedAt: 1724866392,
+            activatedAt: new Date(1724866392000),
           },
           {
             id: 8,
@@ -49,6 +50,7 @@ describe("DetourListPage", () => {
             name: "Headsign B",
             intersection: "Street C & Avenue D",
             updatedAt: 1724856392,
+            activatedAt: new Date(1724856392000),
           },
         ],
         draft: undefined,
@@ -99,6 +101,7 @@ describe("DetourListPage", () => {
             name: "Headsign A",
             intersection: "Street A & Avenue B",
             updatedAt: 1724866392,
+            activatedAt: new Date(1724866392000),
           },
           {
             id: 8,
@@ -107,6 +110,7 @@ describe("DetourListPage", () => {
             name: "Headsign B",
             intersection: "Street C & Avenue D",
             updatedAt: 1724856392,
+            activatedAt: new Date(1724856392000),
           },
         ],
         draft: undefined,
