@@ -425,6 +425,14 @@ export const DiversionPage = ({
                 }
               : undefined
           }
+          onOpenChangeDurationModal={
+            userInTestGroup(TestGroups.DetoursPilot) &&
+            userInTestGroup(TestGroups.ChangeDetourDuration)
+              ? () => {
+                  //send({ type: "detour.active.open-change-duration-modal" })
+                }
+              : undefined
+          }
         >
           {snapshot.matches({
             "Detour Drawing": { Active: "Deactivating" },

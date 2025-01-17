@@ -38,6 +38,7 @@ const meta = {
     routeOrigin: "from Andrew Station",
     routeDirection: "Outbound",
     onOpenDeactivateModal: undefined,
+    onOpenChangeDurationModal: undefined,
     onNavigateBack: undefined,
   },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by

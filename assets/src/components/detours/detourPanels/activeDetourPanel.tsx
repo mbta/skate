@@ -5,6 +5,7 @@ import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
 import {
   ArrowLeft,
+  ClockHistory,
   ExclamationTriangleFill,
   StopCircle,
 } from "../../../helpers/bsIcons"
@@ -26,6 +27,7 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
   routeOrigin: string
   routeDirection: string
   onOpenDeactivateModal?: () => void
+  onOpenChangeDurationModal?: () => void
   onNavigateBack: () => void
 }
 
@@ -39,6 +41,7 @@ export const ActiveDetourPanel = ({
   routeOrigin,
   routeDirection,
   onOpenDeactivateModal,
+  onOpenChangeDurationModal,
   onNavigateBack,
   children,
 }: ActiveDetourPanelProps) => {
@@ -104,11 +107,22 @@ export const ActiveDetourPanel = ({
           {missedStops && <MissedStops missedStops={missedStops} />}
         </Panel.Body.ScrollArea>
 
-        <Panel.Body.Footer>
+        <Panel.Body.Footer className="d-flex flex-column">
+          {onOpenChangeDurationModal && (
+            <Button
+              variant="outline-primary"
+              className="flex-grow-1 m-3 mb-0 icon-link"
+              onClick={onOpenChangeDurationModal}
+              data-fs-element="Change duration"
+            >
+              <ClockHistory />
+              Change duration
+            </Button>
+          )}
           {onOpenDeactivateModal && (
             <Button
               variant="ui-alert"
-              className="flex-grow-1 m-3 icon-link text-light justify-content-center"
+              className="flex-grow-1 m-3 icon-link text-light"
               onClick={onOpenDeactivateModal}
               data-fs-element="Return to Regular Route"
             >
