@@ -152,6 +152,22 @@ defmodule Skate.Detours.Detours do
   def get_detour!(id), do: Repo.get!(Detour, id)
 
   @doc """
+  Gets a single detour authored by the provided user_id.
+
+  Raises `Ecto.NoResultsError` if the Detour does not exist.
+
+  ## Examples
+
+      iex> get_detour_for_user!(123, 123)
+      %Detour{}
+
+      iex> get_detour_for_user!(456, 123)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_detour_for_user!(id, user_id), do: Repo.get_by!(Detour, id: id, author_id: user_id)
+
+  @doc """
   Gets a single detour with state intact.
 
   Raises `Ecto.NoResultsError` if the Detour does not exist.
@@ -242,6 +258,22 @@ defmodule Skate.Detours.Detours do
     end
 
     detour_db_result
+  end
+
+  @spec delete_draft_detour(Detour.t(), DbUser.id()) :: :ok
+  def delete_draft_detour(detour, author_id) do
+    author_uuid =
+      author_id
+      |> User.get_by_id!()
+      |> Map.get(:uuid)
+
+    {:ok, _} = delete_detour(detour)
+
+    Phoenix.PubSub.broadcast(
+      Skate.PubSub,
+      "detours:draft:" <> author_uuid,
+      {:draft_detour_deleted, detour.id}
+    )
   end
 
   @spec broadcast_detour(detour_type(), Detour.t(), DbUser.id()) :: :ok

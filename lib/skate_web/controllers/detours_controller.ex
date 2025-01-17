@@ -143,11 +143,12 @@ defmodule SkateWeb.DetoursController do
     end
   end
 
-  require Logger
-
   @spec delete_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete_detour(conn, %{"detour_id" => detour_id}) do
-    Logger.error(inspect(detour_id))
+    %{id: user_id} = AuthManager.Plug.current_resource(conn)
+    detour = Detours.get_detour_for_user!(detour_id, user_id)
+    :ok = Detours.delete_draft_detour(detour, user_id)
+
     json(conn, %{data: true})
   end
 

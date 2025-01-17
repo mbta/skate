@@ -21,7 +21,8 @@ const subscribe = (
   initializeChannel: React.Dispatch<React.SetStateAction<DetoursMap>>,
   handleDrafted: ((data: SimpleDetour) => void) | undefined,
   handleActivated: ((data: SimpleDetour) => void) | undefined,
-  handleDeactivated: ((data: SimpleDetour) => void) | undefined
+  handleDeactivated: ((data: SimpleDetour) => void) | undefined,
+  handleDeleted: ((detour_id: number) => void) | undefined
 ): Channel => {
   const channel = socket.channel(topic)
 
@@ -39,6 +40,12 @@ const subscribe = (
     channel.on("deactivated", ({ data: unknownData }: { data: unknown }) => {
       const data = create(unknownData, SimpleDetourData)
       handleDeactivated(simpleDetourFromData(data))
+    })
+  handleDeleted &&
+    channel.on("deleted", ({ data: detour_id }: { data: unknown }) => {
+      if (typeof detour_id === "number") {
+        handleDeleted(detour_id)
+      }
     })
   channel.on("auth_expired", reload)
 
@@ -91,7 +98,8 @@ export const useActiveDetours = (socket: Socket | undefined) => {
         setActiveDetours,
         undefined,
         handleActivated,
-        handleDeactivated
+        handleDeactivated,
+        undefined
       )
     }
 
@@ -123,7 +131,8 @@ export const usePastDetours = (socket: Socket | undefined) => {
         setPastDetours,
         undefined,
         undefined,
-        handleDeactivated
+        handleDeactivated,
+        undefined
       )
     }
 
@@ -153,6 +162,13 @@ export const useDraftDetours = (socket: Socket | undefined) => {
     })
   }
 
+  const handleDeleted = (detour_id: number) => {
+    setDraftDetours((draftDetours) => {
+      delete draftDetours[detour_id]
+      return draftDetours
+    })
+  }
+
   useEffect(() => {
     let channel: Channel | undefined
     if (socket) {
@@ -162,7 +178,8 @@ export const useDraftDetours = (socket: Socket | undefined) => {
         setDraftDetours,
         handleDrafted,
         handleActivated,
-        undefined
+        undefined,
+        handleDeleted
       )
     }
 

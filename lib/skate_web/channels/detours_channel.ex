@@ -57,4 +57,10 @@ defmodule SkateWeb.DetoursChannel do
     :ok = push(socket, "drafted", %{data: detour})
     {:noreply, socket}
   end
+
+  @impl SkateWeb.AuthenticatedChannel
+  def handle_info_authenticated({:draft_detour_deleted, detour_id}, socket) do
+    :ok = push(socket, "deleted", %{data: detour_id})
+    {:noreply, socket}
+  end
 end

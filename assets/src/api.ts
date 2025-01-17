@@ -560,7 +560,6 @@ export const fetchDetour = (
 export const deleteDetour = (
   id: number | undefined
 ): Promise<Result<boolean, never>> => {
-  console.log(`DELETE CALLED WITH ${id}`);
   return apiCallResult({
     url: `/api/detours/${id}`,
     OkStruct: boolean(),
@@ -570,7 +569,7 @@ export const deleteDetour = (
       headers: {
         "Content-Type": "application/json",
         "x-csrf-token": getCsrfToken(),
-      }
+      },
     },
   })
 }

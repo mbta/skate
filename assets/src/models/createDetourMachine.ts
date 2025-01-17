@@ -104,7 +104,7 @@ export const createDetourMachine = setup({
     // That leads to the following interface: if the user begins drafting a detour, adds waypoints, and then changes the route,
     // the database will reflect the old route and old waypoints up until the point where a new waypoint is added.
     // If that UX assumption isn't the right one, we can iterate in the future!
-    tags: {} as "no-save" | "delete-draft",
+    tags: "no-save",
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -210,6 +210,7 @@ export const createDetourMachine = setup({
       finishedDetour: undefined,
       detourShape: undefined,
     }),
+    "detour.deleted": assign(() => ({})),
   },
 }).createMachine({
   id: "Detours Machine",
@@ -657,14 +658,20 @@ export const createDetourMachine = setup({
                 Confirming: {
                   on: {
                     "detour.delete.delete-modal.delete-draft": {
-                      target: "Done",
+                      tags: "no-save",
+                      target: "Deleted",
+                      actions: "detour.deleted",
                     },
                   },
                 },
-                Done: { type: "final" },
+                Deleted: {
+                  tags: "no-save",
+                  target: ".onDone",
+                },
+                Done: { tags: "no-save", type: "final" },
               },
               onDone: {
-                target: "Done",
+                target: "DoneNoSave",
               },
             },
             Done: { type: "final" },
