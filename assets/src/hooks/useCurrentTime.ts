@@ -2,7 +2,7 @@ import { useState } from "react"
 import { now } from "../util/dateTime"
 import useInterval from "./useInterval"
 
-const useCurrentTime = (): Date => {
+export const useCurrentTime = (): Date => {
   const [currentTime, setCurrentTime] = useState(now())
   useInterval(() => setCurrentTime(now()), 1000)
   return currentTime
