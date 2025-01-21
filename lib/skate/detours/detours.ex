@@ -91,13 +91,17 @@ defmodule Skate.Detours.Detours do
 
   def db_detour_to_detour(
         :active,
-        %Detour{activated_at: activated_at} = db_detour
+        %Detour{
+          activated_at: activated_at,
+          state: %{"context" => %{"selectedDuration" => estimated_duration}}
+        } = db_detour
       ) do
     details = DetailedDetour.from(:active, db_detour)
 
     details &&
       %ActivatedDetourDetails{
         activated_at: activated_at,
+        estimated_duration: estimated_duration,
         details: details
       }
   end

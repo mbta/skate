@@ -39,5 +39,6 @@ export const activeDetourDataFactory = Factory.define<ActivatedDetourData>(
   () => ({
     details: simpleDetourDataFactory.build(),
     activated_at: new Date(),
+    estimated_duration: "2 hours",
   })
 )

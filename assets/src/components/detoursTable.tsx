@@ -51,6 +51,9 @@ export const DetoursTable = ({
         <th className="px-3 py-4 u-hide-for-mobile">
           {timestampLabelFromStatus(status)}
         </th>
+        {status === DetourStatus.Active && (
+          <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
+        )}
       </tr>
     </thead>
     <tbody>
@@ -102,6 +105,11 @@ const PopulatedDetourRows = ({
               ? timeAgoLabelFromDate(detour.activatedAt, epochNow)
               : timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
           </td>
+          {detour.estimatedDuration && (
+            <td className="align-middle p-3 u-hide-for-mobile">
+              {detour.estimatedDuration}
+            </td>
+          )}
         </tr>
       ))}
     </>
