@@ -28,6 +28,7 @@ import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
+import { simpleDetourFactory } from "../factories/detourListFactory"
 
 jest.mock("../../src/hooks/usePanelState")
 
@@ -668,22 +669,16 @@ describe("routeLadder", () => {
       { id: "MORTN", name: "MORTN Name" },
     ]
     const skateDetours = {
-      "1": {
-        id: 1,
+      "1": simpleDetourFactory.build({
         route: "28",
         direction: "Inbound",
-        name: "",
         intersection: "Main St @ South St",
-        updatedAt: 1,
-      },
-      "2": {
-        id: 2,
+      }),
+      "2": simpleDetourFactory.build({
         route: "28",
         direction: "Outbound",
-        name: "",
         intersection: "Main St @ South St",
-        updatedAt: 2,
-      },
+      }),
     }
 
     render(

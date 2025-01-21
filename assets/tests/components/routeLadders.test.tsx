@@ -10,6 +10,7 @@ import { RoutesProvider } from "../../src/contexts/routesContext"
 import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 import useAlerts from "../../src/hooks/useAlerts"
 import { useActiveDetoursByRoute } from "../../src/hooks/useDetours"
+import { simpleDetourFactory } from "../factories/detourListFactory"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -115,22 +116,8 @@ describe("RouteLadders", () => {
         .mockImplementationOnce(() => timepointsByRouteId)
       jest.mocked(useActiveDetoursByRoute).mockReturnValue({
         "1": {
-          "1": {
-            id: 1,
-            route: "1",
-            direction: "Inbound",
-            name: "",
-            intersection: "A St & B Av",
-            updatedAt: 1724866392,
-          },
-          "2": {
-            id: 2,
-            route: "1",
-            direction: "Outbound",
-            name: "",
-            intersection: "C Rd & D Ct",
-            updatedAt: 1724866392,
-          },
+          "1": simpleDetourFactory.build(),
+          "2": simpleDetourFactory.build(),
         },
       })
 
