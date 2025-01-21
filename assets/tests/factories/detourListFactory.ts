@@ -1,16 +1,20 @@
 import { Factory } from "fishery"
 import {
+  ActivatedDetourData,
   GroupedSimpleDetours,
   SimpleDetour,
   SimpleDetourData,
+  simpleDetourFromActivatedData,
   simpleDetourFromData,
 } from "../../src/models/detoursList"
 
 export const detourListFactory = Factory.define<GroupedSimpleDetours>(() => {
   return {
     active: [
-      simpleDetourFactory.build(),
-      simpleDetourFactory.build({ direction: "Outbound" }),
+      simpleDetourFromActivatedData(activeDetourDataFactory.build()),
+      simpleDetourFromActivatedData(
+        activeDetourDataFactory.build({ details: { direction: "Outbound" } })
+      ),
     ],
     draft: undefined,
     past: [simpleDetourFactory.build({ name: "Headsign Z" })],
@@ -30,4 +34,12 @@ export const simpleDetourDataFactory = Factory.define<SimpleDetourData>(
 
 export const simpleDetourFactory = Factory.define<SimpleDetour>(() =>
   simpleDetourFromData(simpleDetourDataFactory.build())
+)
+
+export const activeDetourDataFactory = Factory.define<ActivatedDetourData>(
+  () => ({
+    details: simpleDetourDataFactory.build(),
+    activated_at: new Date(),
+    estimated_duration: "2 hours",
+  })
 )
