@@ -2,6 +2,7 @@ import { Factory } from "fishery"
 import {
   ActivatedDetourData,
   GroupedSimpleDetours,
+  SimpleDetour,
   SimpleDetourData,
   simpleDetourFromActivatedData,
   simpleDetourFromData,
@@ -16,11 +17,7 @@ export const detourListFactory = Factory.define<GroupedSimpleDetours>(() => {
       ),
     ],
     draft: undefined,
-    past: [
-      simpleDetourFromData(
-        simpleDetourDataFactory.build({ name: "Headsign Z" })
-      ),
-    ],
+    past: [simpleDetourFactory.build({ name: "Headsign Z" })],
   }
 })
 
@@ -33,6 +30,10 @@ export const simpleDetourDataFactory = Factory.define<SimpleDetourData>(
     intersection: `Street A${sequence} & Avenue B${sequence}`,
     updated_at: 1724866392,
   })
+)
+
+export const simpleDetourFactory = Factory.define<SimpleDetour>(() =>
+  simpleDetourFromData(simpleDetourDataFactory.build())
 )
 
 export const activeDetourDataFactory = Factory.define<ActivatedDetourData>(

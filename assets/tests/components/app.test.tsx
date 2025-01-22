@@ -26,6 +26,7 @@ import { OpenView, PagePath } from "../../src/state/pagePanelState"
 import { viewFactory } from "../factories/pagePanelStateFactory"
 import userEvent from "@testing-library/user-event"
 import { mockUsePanelState } from "../testHelpers/usePanelStateMocks"
+import { useLoadDetour } from "../../src/hooks/useLoadDetour"
 
 // Avoid Halloween
 jest
@@ -48,9 +49,15 @@ jest.mock("userTestGroups", () => ({
 }))
 
 jest.mock("../../src/hooks/usePanelState")
+jest.mock("../../src/hooks/useLoadDetour")
 
 beforeEach(() => {
   mockUsePanelState()
+  // we _should_ mock the promise, but this file already are mocking hooks here,
+  // and there are a lot of tests, so mocking the hook here too for now
+  jest.mocked(useLoadDetour).mockReturnValue(undefined)
+
+  // Also, `useVehicles` should be mocked in beforeEach. To be done in future PR
 })
 
 describe("App", () => {

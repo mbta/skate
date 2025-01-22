@@ -1,7 +1,9 @@
-import { test, expect, jest } from "@jest/globals"
+import { test, expect, jest, beforeEach } from "@jest/globals"
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, waitFor } from "@testing-library/react"
 import AppStateWrapper from "../../src/components/appStateWrapper"
+import { fetchDetour, fetchRoutes, putRouteTabs } from "../../src/api"
+import { neverPromise } from "../testHelpers/mockHelpers"
 
 // Avoid Halloween
 jest
@@ -13,7 +15,15 @@ jest.mock("userTestGroups", () => ({
   default: jest.fn(() => []),
 }))
 
-test("renders", () => {
+jest.mock("../../src/api")
+
+beforeEach(() => {
+  jest.mocked(fetchRoutes).mockReturnValue(neverPromise())
+  jest.mocked(putRouteTabs).mockReturnValue(neverPromise())
+  jest.mocked(fetchDetour).mockReturnValue(neverPromise())
+})
+
+test("renders", async () => {
   const result = render(<AppStateWrapper />)
-  expect(result.asFragment()).toMatchSnapshot()
+  await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
 })

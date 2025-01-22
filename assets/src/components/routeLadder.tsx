@@ -24,6 +24,8 @@ import Tippy from "@tippyjs/react"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import {
+  ArrowDownLeftSquare,
+  ArrowUpRightSquare,
   ExclamationTriangleFill,
   PlusSquare,
   ThreeDotsVertical,
@@ -31,6 +33,8 @@ import {
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinClasses, joinTruthy } from "../helpers/dom"
+import { DetourId, SimpleDetour } from "../models/detoursList"
+import { DetoursMap } from "../hooks/useDetours"
 
 interface Props {
   route: Route
@@ -44,6 +48,8 @@ interface Props {
   ladderCrowdingToggles: LadderCrowdingToggles
   hasAlert: boolean
   onAddDetour?: (route: Route) => void
+  onOpenDetour?: (detourId: DetourId) => void
+  skateDetoursForRoute?: DetoursMap
 }
 
 export const Header = ({
@@ -51,16 +57,17 @@ export const Header = ({
   onClose,
   hasAlert,
   showDropdown,
-
   onClickAddDetour,
+  onOpenDetour,
+  skateDetoursForRoute,
 }: {
   routeName: string
   onClose: () => void
   hasAlert: boolean
-
   showDropdown: boolean
-
   onClickAddDetour?: () => void
+  onOpenDetour?: (detourId: DetourId) => void
+  skateDetoursForRoute?: DetoursMap
 }) => {
   const routePillId = "route-pill" + useId()
   const routeOptionsToggleId = "route-options-toggle" + useId()
@@ -100,19 +107,47 @@ export const Header = ({
                 >
                   <PlusSquare /> Add detour
                 </Dropdown.Item>
+                <Dropdown.Divider className="border-top-0" />
+                <Dropdown.Header>
+                  <div className="c-route-ladder__dropdown-header-text">
+                    Active detours
+                  </div>
+                </Dropdown.Header>
                 {hasAlert && (
                   <>
-                    <Dropdown.Divider className="border-top-0" />
-                    <Dropdown.Header>
-                      <div className="c-route-ladder__dropdown-header-text">
-                        Active detours
-                      </div>
-                    </Dropdown.Header>
-                    <Dropdown.ItemText className="lh-base pb-4">
-                      This route has an active detour. View detour details on{" "}
-                      <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
-                    </Dropdown.ItemText>
+                    {skateDetoursForRoute &&
+                      Object.values(skateDetoursForRoute).map(
+                        (detour: SimpleDetour) => (
+                          <Dropdown.Item
+                            key={detour.id}
+                            className="icon-link"
+                            onClick={() => onOpenDetour?.(detour.id)}
+                          >
+                            {detour.direction === "Outbound" ? (
+                              <ArrowDownLeftSquare />
+                            ) : (
+                              <ArrowUpRightSquare />
+                            )}
+                            <div>
+                              {detour.route} {detour.direction} -{" "}
+                              {detour.intersection}
+                            </div>
+                          </Dropdown.Item>
+                        )
+                      )}
+                    {(!skateDetoursForRoute ||
+                      Object.values(skateDetoursForRoute).length == 0) && (
+                      <Dropdown.ItemText className="lh-base pb-4">
+                        This route has an active detour. View detour details on{" "}
+                        <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
+                      </Dropdown.ItemText>
+                    )}
                   </>
+                )}
+                {!hasAlert && (
+                  <Dropdown.ItemText className="lh-base pb-4">
+                    No active detours
+                  </Dropdown.ItemText>
                 )}
               </Dropdown.Menu>
             </Dropdown>
@@ -223,6 +258,8 @@ const RouteLadder = ({
   ladderCrowdingToggles,
   hasAlert,
   onAddDetour,
+  onOpenDetour,
+  skateDetoursForRoute,
 }: Props) => {
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, route.id)
 
@@ -258,6 +295,8 @@ const RouteLadder = ({
         onClickAddDetour={() => {
           onAddDetour?.(route)
         }}
+        onOpenDetour={onOpenDetour}
+        skateDetoursForRoute={skateDetoursForRoute}
       />
       <Controls
         displayCrowdingToggleIcon={displayCrowding}
