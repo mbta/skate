@@ -295,7 +295,7 @@ describe("routeLadder", () => {
     expect(screen.getByText(/This route has an active detour./)).toBeVisible()
   })
 
-  test("renders 'Add detour' in the dropdown", async () => {
+  test("omits non-skate alert text in dropdown if not relevant", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 
     const route: Route = routeFactory.build({
@@ -330,8 +330,74 @@ describe("routeLadder", () => {
     expect(
       screen.queryByText(/This route has an active detour./)
     ).not.toBeInTheDocument()
+  })
+
+  test("renders 'Add detour' in the dropdown if an admin user", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /28 Route Options/ })
+    )
 
     expect(screen.getByText("Add detour")).toBeVisible()
+  })
+
+  test("does not render 'Add detour' in the dropdown if not an admin", async () => {
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={undefined}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    )
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /28 Route Options/ })
+    )
+
+    expect(screen.queryByText("Add detour")).not.toBeInTheDocument()
   })
 
   test("renders a route ladder with vehicles", () => {
