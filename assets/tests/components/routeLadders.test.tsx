@@ -116,8 +116,8 @@ describe("RouteLadders", () => {
         .mockImplementationOnce(() => timepointsByRouteId)
       jest.mocked(useActiveDetoursByRoute).mockReturnValue({
         "1": {
-          "1": simpleDetourFactory.build({id: 1}),
-          "2": simpleDetourFactory.build({id: 2}),
+          "1": simpleDetourFactory.build({ id: 1 }),
+          "2": simpleDetourFactory.build({ id: 2 }),
         },
       })
 
