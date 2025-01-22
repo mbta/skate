@@ -30,6 +30,8 @@ import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 import { DetourModal } from "./detours/detourModal"
 import { Route } from "../schedule"
+import { DetourId } from "../models/detoursList"
+import { useLoadDetour } from "../hooks/useLoadDetour"
 
 type DrawerContent = "route_picker" | "presets"
 
@@ -147,6 +149,8 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
 
   const [showDetourModal, setShowDetourModal] = useState(false)
   const [routeForDetour, setRouteForDetour] = useState<Route | null>(null)
+  const [detourId, setDetourId] = useState<DetourId | undefined>()
+  const detour = useLoadDetour(detourId)
 
   return (
     <div
@@ -226,6 +230,10 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
             setRouteForDetour(route)
             setShowDetourModal(true)
           }}
+          onOpenDetour={(detourId) => {
+            setDetourId(detourId)
+            setShowDetourModal(true)
+          }}
         />
       </div>
       {routeForDetour && (
@@ -234,7 +242,21 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           show={showDetourModal}
           onClose={() => {
             setShowDetourModal(false)
+            setRouteForDetour(null)
           }}
+        />
+      )}
+      {showDetourModal && detour && (
+        <DetourModal
+          onClose={() => {
+            setShowDetourModal(false)
+            setDetourId(undefined)
+          }}
+          show
+          key={detourId ?? ""}
+          snapshot={detour.state}
+          author={detour.author}
+          updatedAt={detour.updatedAt}
         />
       )}
     </div>

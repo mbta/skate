@@ -14,7 +14,7 @@ import { mockScreenSize, neverPromise } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
 import { detourListFactory } from "../../factories/detourListFactory"
 import { TestGroups } from "../../../src/userInTestGroup"
-import { detourStateMachineFactory } from "../../factories/detourStateMachineFactory"
+import { detourInProgressFactory } from "../../factories/detourStateMachineFactory"
 import { viewDraftDetourHeading } from "../../testHelpers/selectors/components/detours/diversionPage"
 
 jest
@@ -48,7 +48,7 @@ describe("Detours Page: Open a Detour", () => {
     // even if it doesn't match the detour clicked
     jest
       .mocked(fetchDetour)
-      .mockResolvedValue(Ok(detourStateMachineFactory.build()))
+      .mockResolvedValue(Ok(detourInProgressFactory.build()))
 
     const { baseElement } = render(<DetourListPage />)
 
@@ -69,7 +69,7 @@ describe("Detours Page: Open a Detour", () => {
 
     jest
       .mocked(fetchDetour)
-      .mockResolvedValue(Ok(detourStateMachineFactory.build()))
+      .mockResolvedValue(Ok(detourInProgressFactory.build()))
 
     const { baseElement } = render(<DetourListPage />)
 
@@ -85,7 +85,7 @@ describe("Detours Page: Open a Detour", () => {
 
     jest
       .mocked(fetchDetour)
-      .mockResolvedValue(Ok(detourStateMachineFactory.build()))
+      .mockResolvedValue(Ok(detourInProgressFactory.build()))
 
     render(<DetourListPage />)
 

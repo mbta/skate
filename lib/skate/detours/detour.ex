@@ -74,6 +74,7 @@ defmodule Skate.Detours.Detour do
 
     @type t :: %__MODULE__{
             activated_at: DateTime.t(),
+            estimated_duration: String.t(),
             details: Detailed.t()
           }
 
@@ -81,6 +82,7 @@ defmodule Skate.Detours.Detour do
 
     defstruct [
       :activated_at,
+      :estimated_duration,
       :details
     ]
   end

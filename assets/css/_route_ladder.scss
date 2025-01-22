@@ -21,13 +21,9 @@
       padding-right: 0.5rem;
     }
 
-    &.c-route-ladder__dropdown--non-skate-alert .dropdown-menu {
-      width: 20.5rem;
-    }
-
     .dropdown-menu {
       border-radius: 0.25rem;
-      max-width: 20.5rem;
+      min-width: 20.5rem;
     }
 
     .dropdown-divider {
