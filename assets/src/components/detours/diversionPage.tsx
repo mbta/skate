@@ -161,15 +161,15 @@ export const DiversionPage = ({
   const routes = useContext(RoutesContext)
   const epochNowInSeconds = useCurrentTimeSeconds()
 
-  const timestampLabelFromMachineState = (): string => {
+  const detourStatus = (() => {
     if (snapshot.matches({ "Detour Drawing": "Active" })) {
-      return timestampLabelFromStatus(DetourStatus.Active)
+      return DetourStatus.Active
     } else if (snapshot.matches({ "Detour Drawing": "Past" })) {
-      return timestampLabelFromStatus(DetourStatus.Closed)
+      return DetourStatus.Closed
     } else {
-      return timestampLabelFromStatus(DetourStatus.Draft)
+      return DetourStatus.Draft
     }
-  }
+  })()
 
   const detourPanel = () => {
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
@@ -491,12 +491,16 @@ export const DiversionPage = ({
         >
           {"snapshot" in useDetourProps && !isMobile(displayType) ? (
             <>
-              <span className="l-diversion-page__header-details">
-                <strong className="font-m-semi me-2">
-                  {timestampLabelFromMachineState()}
-                </strong>
-                {timeAgoLabel(epochNowInSeconds, useDetourProps.updatedAt)}
-              </span>
+              {detourStatus !== DetourStatus.Active && (
+                <>
+                  <span className="l-diversion-page__header-details">
+                    <strong className="font-m-semi me-2">
+                      {timestampLabelFromStatus(detourStatus)}
+                    </strong>
+                    {timeAgoLabel(epochNowInSeconds, useDetourProps.updatedAt)}
+                  </span>
+                </>
+              )}
               <span className="l-diversion-page__header-details">
                 <strong className="font-m-semi me-2">Created by</strong>
                 {useDetourProps.author}
