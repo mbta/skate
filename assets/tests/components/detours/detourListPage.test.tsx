@@ -42,6 +42,7 @@ describe("DetourListPage", () => {
             intersection: "Street A & Avenue B",
             updatedAt: 1724866392,
             activatedAt: new Date(1724866392000),
+            estimatedDuration: "2 hours",
           },
           {
             id: 8,
@@ -51,6 +52,7 @@ describe("DetourListPage", () => {
             intersection: "Street C & Avenue D",
             updatedAt: 1724856392,
             activatedAt: new Date(1724856392000),
+            estimatedDuration: "3 hours",
           },
         ],
         draft: undefined,
@@ -102,6 +104,7 @@ describe("DetourListPage", () => {
             intersection: "Street A & Avenue B",
             updatedAt: 1724866392,
             activatedAt: new Date(1724866392000),
+            estimatedDuration: "4 hours",
           },
           {
             id: 8,
@@ -111,6 +114,7 @@ describe("DetourListPage", () => {
             intersection: "Street C & Avenue D",
             updatedAt: 1724856392,
             activatedAt: new Date(1724856392000),
+            estimatedDuration: "Until end of service",
           },
         ],
         draft: undefined,

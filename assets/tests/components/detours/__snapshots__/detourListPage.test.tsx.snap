@@ -82,6 +82,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               On detour since
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Est. Duration
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -123,6 +128,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               26 hours ago
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              2 hours
+            </td>
           </tr>
           <tr>
             <td
@@ -161,6 +171,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
               class="align-middle p-3 u-hide-for-mobile"
             >
               29 hours ago
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              3 hours
             </td>
           </tr>
         </tbody>
@@ -453,6 +468,11 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             >
               On detour since
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Est. Duration
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -494,6 +514,11 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             >
               26 hours ago
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              4 hours
+            </td>
           </tr>
           <tr>
             <td
@@ -532,6 +557,11 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
               class="align-middle p-3 u-hide-for-mobile"
             >
               29 hours ago
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Until end of service
             </td>
           </tr>
         </tbody>

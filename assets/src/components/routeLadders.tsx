@@ -9,6 +9,8 @@ import RoutesContext from "../contexts/routesContext"
 import useTimepoints from "../hooks/useTimepoints"
 import { SocketContext } from "../contexts/socketContext"
 import useAlerts from "../hooks/useAlerts"
+import { useActiveDetoursByRoute } from "../hooks/useDetours"
+import { DetourId } from "../models/detoursList"
 
 export const findRouteById = (
   routes: Route[] | null,
@@ -24,6 +26,7 @@ interface Props {
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
   onAddDetour?: (route: Route) => void
+  onOpenDetour?: (detourId: DetourId) => void
 }
 
 const RouteLadders = ({
@@ -35,6 +38,7 @@ const RouteLadders = ({
   ladderDirections,
   ladderCrowdingToggles,
   onAddDetour,
+  onOpenDetour,
 }: Props) => {
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
     useContext(VehiclesByRouteIdContext)
@@ -59,8 +63,15 @@ const RouteLadders = ({
   const alerts = useAlerts(socket, selectedRouteIds)
   const routesWithAlerts: RouteId[] = []
 
+  const skateDetours = useActiveDetoursByRoute(socket, selectedRouteIds)
+
   for (const routeId in alerts) {
     if (alerts[routeId].length > 0) {
+      routesWithAlerts.push(routeId)
+    }
+  }
+  for (const routeId in skateDetours) {
+    if (Object.keys(skateDetours[routeId]).length > 0) {
       routesWithAlerts.push(routeId)
     }
   }
@@ -86,6 +97,8 @@ const RouteLadders = ({
           ladderCrowdingToggles={ladderCrowdingToggles}
           hasAlert={routesWithAlerts.includes(route.id)}
           onAddDetour={onAddDetour}
+          onOpenDetour={onOpenDetour}
+          skateDetoursForRoute={skateDetours[route.id]}
         />
       ))}
     </div>
