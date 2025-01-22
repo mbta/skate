@@ -85,6 +85,11 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             >
               On detour since
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Est. Duration
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -124,7 +129,12 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              26 hours ago
+              Just now
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              2 hours
             </td>
           </tr>
           <tr>
@@ -163,7 +173,12 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              26 hours ago
+              Just now
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              2 hours
             </td>
           </tr>
         </tbody>
@@ -932,6 +947,11 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             >
               On detour since
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Est. Duration
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -971,7 +991,12 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              26 hours ago
+              Just now
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              2 hours
             </td>
           </tr>
           <tr>
@@ -1010,7 +1035,12 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              26 hours ago
+              Just now
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              2 hours
             </td>
           </tr>
         </tbody>

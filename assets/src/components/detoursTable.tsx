@@ -1,8 +1,8 @@
 import React from "react"
 import { Table } from "react-bootstrap"
 import { RoutePill } from "./routePill"
-import { useCurrentTimeSeconds } from "../hooks/useCurrentTime"
-import { timeAgoLabel } from "../util/dateTime"
+import { useCurrentTime } from "../hooks/useCurrentTime"
+import { timeAgoLabel, timeAgoLabelFromDate } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
@@ -51,11 +51,18 @@ export const DetoursTable = ({
         <th className="px-3 py-4 u-hide-for-mobile">
           {timestampLabelFromStatus(status)}
         </th>
+        {status === DetourStatus.Active && (
+          <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
+        )}
       </tr>
     </thead>
     <tbody>
       {data ? (
-        <PopulatedDetourRows data={data} onOpenDetour={onOpenDetour} />
+        <PopulatedDetourRows
+          status={status}
+          data={data}
+          onOpenDetour={onOpenDetour}
+        />
       ) : (
         <EmptyDetourRows message={`No ${status} detours.`} />
       )}
@@ -65,12 +72,15 @@ export const DetoursTable = ({
 
 const PopulatedDetourRows = ({
   data,
+  status,
   onOpenDetour,
 }: {
   data: SimpleDetour[]
+  status: DetourStatus
   onOpenDetour: (detourId: number) => void
 }) => {
-  const epochNowInSeconds = useCurrentTimeSeconds()
+  const epochNow = useCurrentTime()
+  const epochNowInSeconds = epochNow.valueOf() / 1000
 
   return (
     <>
@@ -91,8 +101,15 @@ const PopulatedDetourRows = ({
             {detour.intersection}
           </td>
           <td className="align-middle p-3 u-hide-for-mobile">
-            {timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
+            {status === DetourStatus.Active && detour.activatedAt
+              ? timeAgoLabelFromDate(detour.activatedAt, epochNow)
+              : timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
           </td>
+          {detour.estimatedDuration && (
+            <td className="align-middle p-3 u-hide-for-mobile">
+              {detour.estimatedDuration}
+            </td>
+          )}
         </tr>
       ))}
     </>

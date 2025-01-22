@@ -4,6 +4,7 @@ defmodule Skate.Detours.Detours do
   """
 
   import Ecto.Query, warn: false
+  alias Skate.Detours.Detour.ActivatedDetourDetails
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
   alias Skate.Detours.SnapshotSerde
@@ -67,7 +68,10 @@ defmodule Skate.Detours.Detours do
       list_detours()
       |> Enum.map(&db_detour_to_detour/1)
       |> Enum.filter(& &1)
-      |> Enum.group_by(fn detour -> detour.status end)
+      |> Enum.group_by(fn
+        %ActivatedDetourDetails{details: %{status: status}} -> status
+        %{status: status} -> status
+      end)
 
     %{
       active: Map.get(detours, :active, []),
@@ -80,34 +84,38 @@ defmodule Skate.Detours.Detours do
   end
 
   @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | nil
-  def db_detour_to_detour(
-        %{
-          state: %{
-            "context" => %{
-              "route" => %{"name" => route_name, "directionNames" => direction_names},
-              "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
-              "nearestIntersection" => nearest_intersection
-            }
-          }
-        } = db_detour
-      ) do
-    direction = Map.get(direction_names, Integer.to_string(direction_id))
-
-    %DetailedDetour{
-      id: db_detour.id,
-      route: route_name,
-      direction: direction,
-      name: headsign,
-      intersection: nearest_intersection,
-      updated_at: timestamp_to_unix(db_detour.updated_at),
-      author_id: db_detour.author_id,
-      status: categorize_detour(db_detour)
-    }
+  @spec db_detour_to_detour(status :: detour_type(), Detour.t()) :: DetailedDetour.t() | nil
+  def db_detour_to_detour(%{} = db_detour) do
+    db_detour_to_detour(categorize_detour(db_detour), db_detour)
   end
 
-  def db_detour_to_detour(invalid_detour) do
+  def db_detour_to_detour(
+        :active,
+        %Detour{
+          activated_at: activated_at,
+          state: %{"context" => %{"selectedDuration" => estimated_duration}}
+        } = db_detour
+      ) do
+    details = DetailedDetour.from(:active, db_detour)
+
+    details &&
+      %ActivatedDetourDetails{
+        activated_at: activated_at,
+        estimated_duration: estimated_duration,
+        details: details
+      }
+  end
+
+  def db_detour_to_detour(
+        status,
+        %{} = db_detour
+      ) do
+    DetailedDetour.from(status, db_detour)
+  end
+
+  def db_detour_to_detour(state, invalid_detour) do
     Sentry.capture_message("Detour error: the detour has an outdated schema",
-      extra: %{error: invalid_detour}
+      extra: %{error: invalid_detour, state: state}
     )
 
     nil
