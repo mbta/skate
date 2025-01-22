@@ -33,7 +33,7 @@ import {
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinClasses, joinTruthy } from "../helpers/dom"
-import { DetourId } from "../models/detoursList"
+import { DetourId, SimpleDetour } from "../models/detoursList"
 import { DetoursMap } from "../hooks/useDetours"
 
 interface Props {
@@ -51,6 +51,9 @@ interface Props {
   onOpenDetour?: (detourId: DetourId) => void
   skateDetoursForRoute?: DetoursMap
 }
+
+const variantId = (detour: SimpleDetour) =>
+  detour.route + (detour.viaVariant !== "_" ? "_" + detour.viaVariant : "_")
 
 export const Header = ({
   routeName,
@@ -128,7 +131,7 @@ export const Header = ({
                           <ArrowUpRightSquare />
                         )}
                         <div>
-                          {detour.route} {detour.direction} -{" "}
+                          {variantId(detour)} {detour.direction} -{" "}
                           {detour.intersection}
                         </div>
                       </Dropdown.Item>
