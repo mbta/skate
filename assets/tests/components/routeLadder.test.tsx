@@ -670,11 +670,13 @@ describe("routeLadder", () => {
     ]
     const skateDetours = {
       "1": simpleDetourFactory.build({
+        id: 1,
         route: "28",
         direction: "Inbound",
         intersection: "Main St @ South St",
       }),
       "2": simpleDetourFactory.build({
+        id: 2,
         route: "28",
         direction: "Outbound",
         intersection: "Main St @ South St",
