@@ -45,6 +45,7 @@ import { activeDetourFactory } from "../factories/detourStateMachineFactory"
 import { fetchDetour, fetchRoutePatterns } from "../../src/api"
 import { Ok } from "../../src/util/result"
 import { neverPromise } from "../testHelpers/mockHelpers"
+import { simpleDetourFactory } from "../factories/detourListFactory"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
   __esModule: true,
@@ -604,22 +605,14 @@ describe("LadderPage", () => {
     jest.mocked(fetchDetour).mockResolvedValue(Ok(activeDetourFactory.build()))
     jest.mocked(useActiveDetoursByRoute).mockReturnValue({
       "1": {
-        "1": {
+        "1": simpleDetourFactory.build({
           id: 1,
           route: "1",
+          viaVariant: "C",
           direction: "Inbound",
-          name: "",
           intersection: "A St & B Av",
-          updatedAt: 1724866392,
-        },
-        "2": {
-          id: 2,
-          route: "1",
-          direction: "Outbound",
-          name: "",
-          intersection: "C Rd & D Ct",
-          updatedAt: 1724866392,
-        },
+        }),
+        "2": simpleDetourFactory.build({ id: 2, route: "1" }),
       },
     })
 
@@ -648,7 +641,7 @@ describe("LadderPage", () => {
     )
 
     await userEvent.click(
-      screen.getByRole("button", { name: /1 Inbound - A St/ })
+      screen.getByRole("button", { name: /1_C Inbound - A St/ })
     )
 
     expect(screen.getByRole("heading", { name: "Active Detour" })).toBeVisible()

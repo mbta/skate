@@ -41,7 +41,11 @@ defmodule Skate.Detours.Detour do
             state: %{
               "context" => %{
                 "route" => %{"name" => route_name, "directionNames" => direction_names},
-                "routePattern" => %{"headsign" => headsign, "directionId" => direction_id, "id" => route_pattern_id},
+                "routePattern" => %{
+                  "headsign" => headsign,
+                  "directionId" => direction_id,
+                  "id" => route_pattern_id
+                },
                 "nearestIntersection" => nearest_intersection
               }
             }

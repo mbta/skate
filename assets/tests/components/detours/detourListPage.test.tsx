@@ -37,6 +37,7 @@ describe("DetourListPage", () => {
           {
             id: 1,
             route: "1",
+            viaVariant: "X",
             direction: "Inbound",
             name: "Headsign A",
             intersection: "Street A & Avenue B",
@@ -47,6 +48,7 @@ describe("DetourListPage", () => {
           {
             id: 8,
             route: "2",
+            viaVariant: "Y",
             direction: "Outbound",
             name: "Headsign B",
             intersection: "Street C & Avenue D",
@@ -60,6 +62,7 @@ describe("DetourListPage", () => {
           {
             id: 10,
             route: "1",
+            viaVariant: "X",
             direction: "Inbound",
             name: "Headsign A",
             intersection: "Street E & Avenue F",
@@ -68,6 +71,7 @@ describe("DetourListPage", () => {
           {
             id: 7,
             route: "1",
+            viaVariant: "Z",
             direction: "Outbound",
             name: "Headsign Z",
             intersection: "Street C & Avenue D",
@@ -99,6 +103,7 @@ describe("DetourListPage", () => {
           {
             id: 1,
             route: "1",
+            viaVariant: "X",
             direction: "Inbound",
             name: "Headsign A",
             intersection: "Street A & Avenue B",
@@ -109,6 +114,7 @@ describe("DetourListPage", () => {
           {
             id: 8,
             route: "2",
+            viaVariant: "Y",
             direction: "Outbound",
             name: "Headsign B",
             intersection: "Street C & Avenue D",
@@ -122,6 +128,7 @@ describe("DetourListPage", () => {
           {
             id: 10,
             route: "1",
+            viaVariant: "X",
             direction: "Inbound",
             name: "Headsign A",
             intersection: "Street E & Avenue F",
@@ -130,6 +137,7 @@ describe("DetourListPage", () => {
           {
             id: 7,
             route: "1",
+            viaVariant: "Z",
             direction: "Outbound",
             name: "Headsign Z",
             intersection: "Street C & Avenue D",

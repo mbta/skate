@@ -160,7 +160,8 @@ defmodule SkateWeb.DetoursControllerTest do
               },
               "routePattern" => %{
                 "headsign" => "Headsign",
-                "directionId" => 0
+                "directionId" => 0,
+                "id" => "23-1-0"
               },
               "nearestIntersection" => "Street A & Avenue B",
               "uuid" => 1
@@ -185,7 +186,8 @@ defmodule SkateWeb.DetoursControllerTest do
           },
           "routePattern" => %{
             "headsign" => "Headsign",
-            "directionId" => 1
+            "directionId" => 1,
+            "id" => "47-A-1"
           },
           "nearestIntersection" => "Street C & Avenue D",
           "uuid" => 2
@@ -208,7 +210,8 @@ defmodule SkateWeb.DetoursControllerTest do
           },
           "routePattern" => %{
             "headsign" => "Headsign",
-            "directionId" => 0
+            "directionId" => 0,
+            "id" => "75-2-0"
           },
           "nearestIntersection" => "Street Y & Avenue Z",
           "uuid" => 3
@@ -241,7 +244,11 @@ defmodule SkateWeb.DetoursControllerTest do
                        "directionNames" => %{"0" => "Outbound", "1" => "Inbound"},
                        "name" => "23"
                      },
-                     "routePattern" => %{"directionId" => 0, "headsign" => "Headsign"},
+                     "routePattern" => %{
+                       "directionId" => 0,
+                       "headsign" => "Headsign",
+                       "id" => "23-1-0"
+                     },
                      "uuid" => 1
                    },
                    "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
@@ -377,6 +384,7 @@ defmodule SkateWeb.DetoursControllerTest do
                        "intersection" => "Street A & Avenue B",
                        "name" => "Headsign",
                        "route" => "23",
+                       "via_variant" => "1",
                        "status" => "active",
                        "updated_at" => _
                      }
@@ -389,6 +397,7 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street Y & Avenue Z",
                      "name" => "Headsign",
                      "route" => "75",
+                     "via_variant" => "2",
                      "status" => "draft",
                      "updated_at" => _
                    }
@@ -400,6 +409,7 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street C & Avenue D",
                      "name" => "Headsign",
                      "route" => "47",
+                     "via_variant" => "A",
                      "status" => "past",
                      "updated_at" => _
                    }
@@ -418,7 +428,7 @@ defmodule SkateWeb.DetoursControllerTest do
       Detours.upsert_from_snapshot(other_user.id, %{
         "context" => %{
           "route" => %{
-            # "id" => "23",
+            "id" => "23",
             "name" => "23",
             "directionNames" => %{
               "0" => "Outbound",
@@ -448,6 +458,7 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street Y & Avenue Z",
                      "name" => "Headsign",
                      "route" => "75",
+                     "via_variant" => "2",
                      "status" => "draft",
                      "updated_at" => _
                    }
@@ -459,6 +470,7 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street C & Avenue D",
                      "name" => "Headsign",
                      "route" => "47",
+                     "via_variant" => "A",
                      "status" => "past",
                      "updated_at" => _
                    }
@@ -503,7 +515,8 @@ defmodule SkateWeb.DetoursControllerTest do
             },
             "routePattern" => %{
               "headsign" => "Headsign",
-              "directionId" => 0
+              "directionId" => 0,
+              "id" => "23-1-0"
             },
             "nearestIntersection" => "Street A & Avenue B",
             "uuid" => 5
@@ -525,6 +538,7 @@ defmodule SkateWeb.DetoursControllerTest do
                        "intersection" => "Street A & Avenue B",
                        "name" => "Headsign",
                        "route" => "23",
+                       "via_variant" => "1",
                        "status" => "active",
                        "updated_at" => _
                      }
@@ -537,6 +551,7 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street Y & Avenue Z",
                      "name" => "Headsign",
                      "route" => "75",
+                     "via_variant" => "2",
                      "status" => "draft",
                      "updated_at" => _
                    }
@@ -548,6 +563,7 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street C & Avenue D",
                      "name" => "Headsign",
                      "route" => "47",
+                     "via_variant" => "A",
                      "status" => "past",
                      "updated_at" => _
                    }

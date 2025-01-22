@@ -37,7 +37,8 @@ defmodule Skate.DetourFactory do
             "routePattern" => %{
               "name" => sequence("detour_route_pattern_name:"),
               "headsign" => sequence("detour_route_pattern_headsign:"),
-              "directionId" => sequence(:detour_route_pattern_direction, [0, 1])
+              "directionId" => sequence(:detour_route_pattern_direction, [0, 1]),
+              "id" => sequence("detour_route_pattern_id:") <> "-_-0"
             },
             "nearestIntersection" => sequence("detour_nearest_intersection:")
           },
