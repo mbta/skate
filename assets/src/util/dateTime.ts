@@ -117,5 +117,5 @@ export const timeAgoLabel = (
 
 export const timeAgoLabelFromDate = (start: Date, end: Date) => {
   const second = 1000
-  return timeAgoLabel(end.valueOf() / second, start.valueOf() / second)
+  return timeAgoLabel(end.getTime() / second, start.getTime() / second)
 }
