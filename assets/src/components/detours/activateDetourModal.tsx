@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from "react"
 import { Button, Form, Modal } from "react-bootstrap"
 import { StepperBar } from "../stepperBar"
 
-const possibleDurations = [
+export const possibleDurations = [
   "1 hour",
   "2 hours",
   "3 hours",
@@ -42,23 +42,29 @@ interface SurroundingModalProps extends PropsWithChildren {
   onNext?: () => void
   onBack?: () => void
   onActivate?: () => void
+  nextStepButton?: string
+  modalTitle?: string
 }
 
 interface FSElementProps {
   nextStepLabel: string | undefined
 }
 
-const SurroundingModal = ({
+export const SurroundingModal = ({
   onCancel,
   onNext,
   onBack,
   onActivate,
   children,
   nextStepLabel,
+  nextStepButton,
+  modalTitle,
 }: SurroundingModalProps & FSElementProps) => (
   <Modal show animation={false} onHide={onCancel}>
     <Modal.Header closeButton>
-      <h3 className="fs-3 fw-semibold lh-sm my-1">Start detour</h3>
+      <h3 className="fs-3 fw-semibold lh-sm my-1">
+        {modalTitle || "Start detour"}
+      </h3>
     </Modal.Header>
     <Modal.Body>{children}</Modal.Body>
     <Modal.Footer>
@@ -85,7 +91,7 @@ const SurroundingModal = ({
           onClick={onNext}
           data-fs-element={nextStepLabel}
         >
-          Next
+          {nextStepButton || "Next"}
         </Button>
       )}
     </Modal.Footer>

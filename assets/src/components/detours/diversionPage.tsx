@@ -32,6 +32,7 @@ import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
 import { AffectedRoute } from "./detourPanelComponents"
+import { ChangeDuration } from "./changeDurationModal"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -112,6 +113,8 @@ export const DiversionPage = ({
 
     selectedDuration,
     selectedReason,
+
+    editedSelectedDuration,
   } = useDetour(
     "snapshot" in useDetourProps
       ? { snapshot: useDetourProps.snapshot }
@@ -429,7 +432,7 @@ export const DiversionPage = ({
             userInTestGroup(TestGroups.DetoursPilot) &&
             userInTestGroup(TestGroups.ChangeDetourDuration)
               ? () => {
-                  //send({ type: "detour.active.open-change-duration-modal" })
+                  send({ type: "detour.active.open-change-duration-modal" })
                 }
               : undefined
           }
@@ -449,6 +452,32 @@ export const DiversionPage = ({
               routeOrigin={routeOrigin || "??"}
               routeDirection={routeDirection || "??"}
             />
+          ) : null}
+          {snapshot.matches({
+            "Detour Drawing": { Active: "Changing Duration" },
+          }) ? (
+            <ChangeDuration.Modal
+              onCancel={() =>
+                send({ type: "detour.active.change-duration-modal.cancel" })
+              }
+              onNext={() =>
+                send({ type: "detour.active.change-duration-modal.done" })
+              }
+              nextStepButton="Done"
+              nextStepLabel="Confirm Duration"
+              modalTitle="Change detour duration"
+            >
+              <ChangeDuration.Body
+                onSelectDuration={(selectedDuration: string) => {
+                  send({
+                    type: "detour.active.change-duration-modal.select-duration",
+                    duration: selectedDuration,
+                  })
+                }}
+                selectedDuration={selectedDuration}
+                editedSelectedDuration={editedSelectedDuration}
+              />
+            </ChangeDuration.Modal>
           ) : null}
         </ActiveDetourPanel>
       )
