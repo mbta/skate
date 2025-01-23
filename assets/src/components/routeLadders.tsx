@@ -63,7 +63,7 @@ const RouteLadders = ({
   const alerts = useAlerts(socket, selectedRouteIds)
   const routesWithAlerts: RouteId[] = []
 
-  // TODO: once DB is normalized, we can open individual channels for each route ladder
+  // TODO: once DB is optimized for querying by route and status, we can open individual channels for each route ladder
   // const skateDetours = useActiveDetoursByRoute(socket, selectedRouteIds)
   const allActiveSkateDetours = useActiveDetours(socket)
 
