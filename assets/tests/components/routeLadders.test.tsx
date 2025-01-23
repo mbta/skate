@@ -9,7 +9,7 @@ import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 import useAlerts from "../../src/hooks/useAlerts"
-import { useActiveDetoursByRoute } from "../../src/hooks/useDetours"
+import { useActiveDetours } from "../../src/hooks/useDetours"
 import { simpleDetourFactory } from "../factories/detourListFactory"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
@@ -40,7 +40,7 @@ jest.mock("../../src/hooks/useAlerts")
 jest.mock("../../src/hooks/useDetours")
 
 beforeEach(() => {
-  jest.mocked(useActiveDetoursByRoute).mockReturnValue({})
+  jest.mocked(useActiveDetours).mockReturnValue({})
   jest.mocked(useAlerts).mockReturnValue({})
 })
 
@@ -114,11 +114,9 @@ describe("RouteLadders", () => {
       jest
         .mocked(useTimepoints)
         .mockImplementationOnce(() => timepointsByRouteId)
-      jest.mocked(useActiveDetoursByRoute).mockReturnValue({
-        "1": {
-          "1": simpleDetourFactory.build({ id: 1 }),
-          "2": simpleDetourFactory.build({ id: 2 }),
-        },
+      jest.mocked(useActiveDetours).mockReturnValue({
+        "1": simpleDetourFactory.build({ id: 1 }),
+        "2": simpleDetourFactory.build({ id: 2 }),
       })
 
       render(
