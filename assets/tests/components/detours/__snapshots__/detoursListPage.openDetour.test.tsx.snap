@@ -155,7 +155,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign 8
+                    Headsign A
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"
@@ -1017,7 +1017,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign 5
+                    Headsign A
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"

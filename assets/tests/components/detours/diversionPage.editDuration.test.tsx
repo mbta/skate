@@ -66,7 +66,7 @@ describe("DiversionPage edit duration workflow", () => {
       jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
-        .mockResolvedValue(Ok(detourInProgressFactory.build()))
+        .mockResolvedValue(Ok(detourActivatedStateFactory.build()))
 
       render(<DetourListPage />)
 
@@ -79,7 +79,7 @@ describe("DiversionPage edit duration workflow", () => {
       jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
-        .mockResolvedValue(Ok(detourActivatedStateFactory.build()))
+        .mockResolvedValue(Ok(detourInProgressFactory.build()))
 
       render(<DetourListPage />)
 

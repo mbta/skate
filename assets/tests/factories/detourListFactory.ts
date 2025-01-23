@@ -13,7 +13,9 @@ export const detourListFactory = Factory.define<GroupedSimpleDetours>(() => {
     active: [
       simpleDetourFromActivatedData(activeDetourDataFactory.build()),
       simpleDetourFromActivatedData(
-        activeDetourDataFactory.build({ details: { direction: "Outbound" } })
+        activeDetourDataFactory.build({
+          details: { name: "Headsign A", direction: "Outbound" },
+        })
       ),
     ],
     draft: undefined,
