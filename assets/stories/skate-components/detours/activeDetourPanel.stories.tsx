@@ -39,6 +39,9 @@ const meta = {
     routeDirection: "Outbound",
     onOpenDeactivateModal: undefined,
     onNavigateBack: undefined,
+    activatedAt: new Date(),
+    detourDuration: "3 hours",
+    detourReason: "Construction",
   },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by
   // default, we should be able to remove this after that is added

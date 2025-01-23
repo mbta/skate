@@ -169,3 +169,24 @@
   height: 1.5rem;
   width: 1.5rem;
 }
+
+// A layout component which makes a `<dl/>` layout it's terms and definitions
+// on the same line
+.l-inline-dl {
+  // Display `<dt/>`'s and `<dd/>`'s on the same line
+  dt,
+  dd {
+    display: inline;
+  }
+
+  // But display each `<dt/>` on it's own line
+  dt::before {
+    content: "";
+    display: block;
+  }
+
+  // Remove leading margin from `<dd/>`'s
+  dd {
+    margin: 0;
+  }
+}
