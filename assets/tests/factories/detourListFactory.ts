@@ -25,6 +25,7 @@ export const simpleDetourDataFactory = Factory.define<SimpleDetourData>(
   ({ sequence }) => ({
     id: sequence,
     route: `${sequence}`,
+    via_variant: `${sequence}`,
     direction: "Inbound",
     name: `Headsign ${sequence}`,
     intersection: `Street A${sequence} & Avenue B${sequence}`,
