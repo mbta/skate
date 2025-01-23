@@ -1,7 +1,6 @@
 defmodule Skate.Repo.Migrations.BackfillDetourActivatedAt do
   # https://fly.io/phoenix-files/backfilling-data/
 
-
   import Ecto.Query
   use Ecto.Migration
 
@@ -17,13 +16,14 @@ defmodule Skate.Repo.Migrations.BackfillDetourActivatedAt do
       from(
         r in Skate.Repo.Migrations.BackfillDetourActivatedAt.MigratingSchema,
         select: r.id,
-        where: not is_nil(r.state["value"]["Detour Drawing"]["Active"]) and is_nil(r.activated_at),
+        where:
+          not is_nil(r.state["value"]["Detour Drawing"]["Active"]) and is_nil(r.activated_at),
         update: [set: [activated_at: r.updated_at]]
       ),
       [],
       log: :info
     )
-   end
+  end
 
   def down, do: :ok
 end

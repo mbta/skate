@@ -1,10 +1,11 @@
-import React, { PropsWithChildren } from "react"
+import React, { PropsWithChildren, useId } from "react"
 import { DetourDirection } from "../../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
 import {
   ArrowLeft,
+  ClockHistory,
   ExclamationTriangleFill,
   StopCircle,
 } from "../../../helpers/bsIcons"
@@ -15,6 +16,8 @@ import {
   MissedStops,
 } from "../detourPanelComponents"
 import inTestGroup, { TestGroups } from "../../../userInTestGroup"
+import { timeAgoLabelFromDate } from "../../../util/dateTime"
+import useCurrentTime from "../../../hooks/useCurrentTime"
 
 export interface ActiveDetourPanelProps extends PropsWithChildren {
   copyableDetourText: string
@@ -26,7 +29,12 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
   routeOrigin: string
   routeDirection: string
   onOpenDeactivateModal?: () => void
+  onOpenChangeDurationModal?: () => void
   onNavigateBack: () => void
+
+  detourReason: string
+  detourDuration: string
+  activatedAt: Date
 }
 
 export const ActiveDetourPanel = ({
@@ -39,8 +47,12 @@ export const ActiveDetourPanel = ({
   routeOrigin,
   routeDirection,
   onOpenDeactivateModal,
+  onOpenChangeDurationModal,
   onNavigateBack,
   children,
+  activatedAt,
+  detourDuration,
+  detourReason,
 }: ActiveDetourPanelProps) => {
   const backButton = (
     <Button
@@ -53,6 +65,13 @@ export const ActiveDetourPanel = ({
       Back
     </Button>
   )
+
+  const currentTime = useCurrentTime()
+
+  const idSuffix = useId()
+  const dlReasonId = "dl-reason" + idSuffix
+  const dlActiveSinceId = "dl-active-since" + idSuffix
+  const dlDurationId = "dl-duration" + idSuffix
 
   return (
     <Panel as="article" className="c-diversion-panel">
@@ -80,6 +99,25 @@ export const ActiveDetourPanel = ({
             routeDirection={routeDirection}
           />
 
+          <dl className="l-inline-dl m-0">
+            <dt id={dlReasonId} className="fw-bold me-2">
+              Reason
+            </dt>
+            <dd aria-labelledby={dlReasonId}>{detourReason}</dd>
+
+            <dt id={dlActiveSinceId} className="fw-bold me-2">
+              On detour since
+            </dt>
+            <dd aria-labelledby={dlActiveSinceId}>
+              {timeAgoLabelFromDate(currentTime, activatedAt)}
+            </dd>
+
+            <dt id={dlDurationId} className="fw-bold me-2">
+              Est. Duration
+            </dt>
+            <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
+          </dl>
+
           <section className="pb-3">
             <h2 className="c-diversion-panel__h2">Detour Directions</h2>
             {directions ? (
@@ -104,11 +142,22 @@ export const ActiveDetourPanel = ({
           {missedStops && <MissedStops missedStops={missedStops} />}
         </Panel.Body.ScrollArea>
 
-        <Panel.Body.Footer>
+        <Panel.Body.Footer className="d-flex flex-column">
+          {onOpenChangeDurationModal && (
+            <Button
+              variant="outline-primary"
+              className="flex-grow-1 m-3 mb-0 icon-link"
+              onClick={onOpenChangeDurationModal}
+              data-fs-element="Change duration"
+            >
+              <ClockHistory />
+              Change duration
+            </Button>
+          )}
           {onOpenDeactivateModal && (
             <Button
               variant="ui-alert"
-              className="flex-grow-1 m-3 icon-link text-light justify-content-center"
+              className="flex-grow-1 m-3 icon-link text-light"
               onClick={onOpenDeactivateModal}
               data-fs-element="Return to Regular Route"
             >

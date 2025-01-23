@@ -411,7 +411,12 @@ export const DiversionPage = ({
           ) : null}
         </DetourFinishedPanel>
       )
-    } else if (snapshot.matches({ "Detour Drawing": "Active" })) {
+    } else if (
+      snapshot.matches({ "Detour Drawing": "Active" }) &&
+      snapshot.context.activatedAt &&
+      snapshot.context.selectedDuration !== undefined &&
+      snapshot.context.selectedReason !== undefined
+    ) {
       return (
         <ActiveDetourPanel
           copyableDetourText={copyableDetourText}
@@ -438,6 +443,17 @@ export const DiversionPage = ({
                 }
               : undefined
           }
+          onOpenChangeDurationModal={
+            userInTestGroup(TestGroups.DetoursPilot) &&
+            userInTestGroup(TestGroups.ChangeDetourDuration)
+              ? () => {
+                  //send({ type: "detour.active.open-change-duration-modal" })
+                }
+              : undefined
+          }
+          activatedAt={snapshot.context.activatedAt}
+          detourDuration={snapshot.context.selectedDuration}
+          detourReason={snapshot.context.selectedReason}
         >
           {snapshot.matches({
             "Detour Drawing": { Active: "Deactivating" },

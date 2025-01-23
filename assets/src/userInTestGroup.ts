@@ -10,6 +10,7 @@ export enum TestGroups {
   LateView = "late-view",
   CopyButton = "copy-button",
   DeleteDraftDetours = "delete-draft-detours",
+  ChangeDetourDuration = "change-detour-duration",
 }
 
 const inTestGroup = (key: TestGroups): boolean => {
