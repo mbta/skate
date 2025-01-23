@@ -430,6 +430,14 @@ export const DiversionPage = ({
                 }
               : undefined
           }
+          onOpenChangeDurationModal={
+            userInTestGroup(TestGroups.DetoursPilot) &&
+            userInTestGroup(TestGroups.ChangeDetourDuration)
+              ? () => {
+                  //send({ type: "detour.active.open-change-duration-modal" })
+                }
+              : undefined
+          }
           activatedAt={snapshot.context.activatedAt}
           detourDuration={snapshot.context.selectedDuration}
           detourReason={snapshot.context.selectedReason}
