@@ -34,8 +34,15 @@ export const detourInProgressFactory = Factory.define<DetourWithState>(() => {
   }
 })
 
-export const activeDetourFactory = Factory.define<DetourWithState>(() => {
-  // Stub out a detour machine, and start a detour-in-progress
+interface DetourWithStateTransientParams extends DetourWithState {
+  duration: string
+}
+
+export const detourActivatedStateFactory = Factory.define<
+  DetourWithState,
+  DetourWithStateTransientParams
+>(({ transientParams }) => {
+  // Activated detour machine
   const machine = createActor(createDetourMachine, {
     input: originalRouteFactory.build(),
   }).start()
@@ -55,12 +62,12 @@ export const activeDetourFactory = Factory.define<DetourWithState>(() => {
   machine.send({ type: "detour.share.open-activate-modal" })
   machine.send({
     type: "detour.share.activate-modal.select-duration",
-    duration: "",
+    duration: transientParams.duration ? transientParams.duration : "2 hours",
   })
   machine.send({ type: "detour.share.activate-modal.next" })
   machine.send({
     type: "detour.share.activate-modal.select-reason",
-    reason: "",
+    reason: "Emergency",
   })
   machine.send({ type: "detour.share.activate-modal.next" })
   machine.send({ type: "detour.share.activate-modal.activate" })
