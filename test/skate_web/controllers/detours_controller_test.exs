@@ -1069,4 +1069,27 @@ defmodule SkateWeb.DetoursControllerTest do
       assert response(conn, :bad_request)
     end
   end
+
+  describe "delete_detour/2" do
+    @tag :authenticated
+    test "delete detour based on detour and author id", %{conn: conn} do
+      populate_db_and_get_user(conn)
+      conn = delete(conn, ~p"/api/detours/3")
+      assert response(conn, :ok)
+    end
+
+    @tag :authenticated
+    test "cannot delete another user's detour", %{conn: conn} do
+      populate_db_and_get_user(conn)
+
+      different_user = Skate.Factory.insert(:user)
+
+      conn =
+        Phoenix.ConnTest.build_conn()
+        |> init_test_session(%{})
+        |> Guardian.Plug.sign_in(SkateWeb.AuthManager, %{id: different_user.id}, %{})
+
+      assert %Ecto.NoResultsError{} = catch_error(delete(conn, ~p"/api/detours/3"))
+    end
+  end
 end
