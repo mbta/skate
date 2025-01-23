@@ -558,7 +558,7 @@ export const fetchDetour = (
   }).then((v) => map(v, detourStateFromData))
 
 export const deleteDetour = (
-  id: number | undefined
+  id: number
 ): Promise<Result<boolean, never>> => {
   return apiCallResult({
     url: `/api/detours/${id}`,

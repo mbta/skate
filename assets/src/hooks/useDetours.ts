@@ -24,7 +24,7 @@ const subscribe = (
   handleDrafted: ((data: SimpleDetour) => void) | undefined,
   handleActivated: ((data: SimpleDetour) => void) | undefined,
   handleDeactivated: ((data: SimpleDetour) => void) | undefined,
-  handleDeleted: ((detour_id: number) => void) | undefined,
+  handleDeleted: ((detourId: number) => void) | undefined,
   initialMessageType: typeof SimpleDetourData | typeof ActivatedDetourData
 ): Channel => {
   const channel = socket.channel(topic)
@@ -45,9 +45,9 @@ const subscribe = (
       handleDeactivated(simpleDetourFromData(data))
     })
   handleDeleted &&
-    channel.on("deleted", ({ data: detour_id }: { data: unknown }) => {
-      if (typeof detour_id === "number") {
-        handleDeleted(detour_id)
+    channel.on("deleted", ({ data: detourId }: { data: unknown }) => {
+      if (typeof detourId === "number") {
+        handleDeleted(detourId)
       }
     })
   channel.on("auth_expired", reload)
@@ -179,9 +179,9 @@ export const useDraftDetours = (socket: Socket | undefined) => {
     })
   }
 
-  const handleDeleted = (detour_id: number) => {
+  const handleDeleted = (detourId: number) => {
     setDraftDetours((draftDetours) => {
-      delete draftDetours[detour_id]
+      delete draftDetours[detourId]
       return draftDetours
     })
   }
