@@ -3,6 +3,8 @@ defmodule Skate.Detours.Detour do
   Modules for different detour structures that can be read from the db
   """
 
+  alias Schedule.Gtfs.RoutePattern
+
   defmodule Detailed do
     @moduledoc """
     Detailed detours have had the db detour state parsed into attributes
@@ -10,6 +12,7 @@ defmodule Skate.Detours.Detour do
     @type t :: %__MODULE__{
             id: integer(),
             route: String.t(),
+            via_variant: String.t(),
             direction: String.t(),
             name: String.t(),
             intersection: String.t(),
@@ -23,6 +26,7 @@ defmodule Skate.Detours.Detour do
     defstruct [
       :id,
       :route,
+      :via_variant,
       :direction,
       :name,
       :intersection,
@@ -37,7 +41,11 @@ defmodule Skate.Detours.Detour do
             state: %{
               "context" => %{
                 "route" => %{"name" => route_name, "directionNames" => direction_names},
-                "routePattern" => %{"headsign" => headsign, "directionId" => direction_id},
+                "routePattern" => %{
+                  "headsign" => headsign,
+                  "directionId" => direction_id,
+                  "id" => route_pattern_id
+                },
                 "nearestIntersection" => nearest_intersection
               }
             }
@@ -48,6 +56,7 @@ defmodule Skate.Detours.Detour do
       %__MODULE__{
         id: db_detour.id,
         route: route_name,
+        via_variant: RoutePattern.via_variant(route_pattern_id),
         direction: direction,
         name: headsign,
         intersection: nearest_intersection,

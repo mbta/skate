@@ -38,7 +38,7 @@ interface DetourWithStateTransientParams extends DetourWithState {
   duration: string
 }
 
-export const detourActivatedStateFactory = Factory.define<
+export const activeDetourFactory = Factory.define<
   DetourWithState,
   DetourWithStateTransientParams
 >(({ transientParams }) => {
