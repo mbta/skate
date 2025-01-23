@@ -4,6 +4,7 @@ defmodule Skate.DetourFactory do
   `Skate.Detours`
   """
 
+  # credo:disable-for-this-file Credo.Check.Refactor.LongQuoteBlocks
   defmacro __using__(_opts) do
     quote do
       def missed_stops_result_factory do
@@ -22,6 +23,8 @@ defmodule Skate.DetourFactory do
       end
 
       def detour_snapshot_factory do
+        direction_id = sequence(:detour_route_pattern_direction, [0, 1])
+
         %{
           "context" => %{
             "uuid" => nil,
@@ -36,7 +39,9 @@ defmodule Skate.DetourFactory do
             "routePattern" => %{
               "name" => sequence("detour_route_pattern_name:"),
               "headsign" => sequence("detour_route_pattern_headsign:"),
-              "directionId" => sequence(:detour_route_pattern_direction, [0, 1])
+              "directionId" => direction_id,
+              "id" =>
+                sequence("detour_route_pattern_id:") <> "-_-" <> Integer.to_string(direction_id)
             },
             "nearestIntersection" => sequence("detour_nearest_intersection:")
           },
@@ -63,22 +68,37 @@ defmodule Skate.DetourFactory do
         with_id(detour, id)
       end
 
-      def activated(update_arg, activated_at \\ DateTime.utc_now())
+      def activated(
+            update_arg,
+            activated_at \\ DateTime.utc_now(),
+            estimated_duration \\ "1 hour"
+          )
 
-      def activated(%Skate.Detours.Db.Detour{} = detour, activated_at) do
+      def activated(%Skate.Detours.Db.Detour{} = detour, activated_at, estimated_duration) do
         activated_at = Skate.DetourFactory.browser_date(activated_at)
-        %{detour | state: activated(detour.state, activated_at), activated_at: activated_at}
+
+        %{
+          detour
+          | state: activated(detour.state, activated_at, estimated_duration),
+            activated_at: activated_at
+        }
       end
 
-      def activated(%{"value" => %{}, "context" => %{}} = state, activated_at) do
+      def activated(%{"value" => %{}, "context" => %{}} = state, activated_at, estimated_duration) do
         state =
           put_in(state["value"], %{"Detour Drawing" => %{"Active" => "Reviewing"}})
 
+        state =
+          put_in(
+            state["context"]["activatedAt"],
+            activated_at
+            |> Skate.DetourFactory.browser_date()
+            |> DateTime.to_iso8601()
+          )
+
         put_in(
-          state["context"]["activatedAt"],
-          activated_at
-          |> Skate.DetourFactory.browser_date()
-          |> DateTime.to_iso8601()
+          state["context"]["selectedDuration"],
+          estimated_duration
         )
       end
 

@@ -13,7 +13,7 @@ import { ByRouteId, RouteId } from "../schedule"
 import { equalByElements } from "../helpers/array"
 import { array, create } from "superstruct"
 
-interface DetoursMap {
+export interface DetoursMap {
   [key: number]: SimpleDetour
 }
 

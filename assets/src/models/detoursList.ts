@@ -13,17 +13,20 @@ export type DetourId = number
 export interface SimpleDetour {
   id: DetourId
   route: string
+  viaVariant: string
   direction: string
   name: string
   intersection: string
   updatedAt: number
   activatedAt?: Date
+  estimatedDuration?: string
 }
 
 export const detourId = number()
 export const SimpleDetourData = type({
   id: detourId,
   route: string(),
+  via_variant: string(),
   direction: string(),
   name: string(),
   intersection: string(),
@@ -34,6 +37,7 @@ export type SimpleDetourData = Infer<typeof SimpleDetourData>
 
 export const ActivatedDetourData = type({
   activated_at: coerce(date(), string(), (dateStr) => new Date(dateStr)),
+  estimated_duration: string(),
   details: SimpleDetourData,
 })
 
@@ -44,6 +48,7 @@ export const simpleDetourFromData = (
 ): SimpleDetour => ({
   id: detourData.id,
   route: detourData.route,
+  viaVariant: detourData.via_variant,
   direction: detourData.direction,
   name: detourData.name,
   intersection: detourData.intersection,
@@ -55,6 +60,7 @@ export const simpleDetourFromActivatedData = (
 ) => ({
   ...simpleDetourFromData(detourData.details),
   activatedAt: detourData.activated_at,
+  estimatedDuration: detourData.estimated_duration,
 })
 
 export interface GroupedSimpleDetours {
