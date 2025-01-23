@@ -11,7 +11,7 @@ import { DetourListPage } from "../../../src/components/detourListPage"
 import { Ok } from "../../../src/util/result"
 import { detourListFactory } from "../../factories/detourListFactory"
 import {
-  detourActivatedStateFactory,
+  activeDetourFactory,
   detourInProgressFactory,
 } from "../../factories/detourStateMachineFactory"
 import { neverPromise } from "../../testHelpers/mockHelpers"
@@ -66,7 +66,7 @@ describe("DiversionPage edit duration workflow", () => {
       jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
-        .mockResolvedValue(Ok(detourActivatedStateFactory.build()))
+        .mockResolvedValue(Ok(activeDetourFactory.build()))
 
       render(<DetourListPage />)
 
@@ -92,7 +92,7 @@ describe("DiversionPage edit duration workflow", () => {
       jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
-        .mockResolvedValue(Ok(detourActivatedStateFactory.build()))
+        .mockResolvedValue(Ok(activeDetourFactory.build()))
 
       render(<DetourListPage />)
 
@@ -105,7 +105,7 @@ describe("DiversionPage edit duration workflow", () => {
       jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
-        .mockResolvedValue(Ok(detourActivatedStateFactory.build()))
+        .mockResolvedValue(Ok(activeDetourFactory.build()))
 
       render(<DetourListPage />)
 
@@ -118,7 +118,7 @@ describe("DiversionPage edit duration workflow", () => {
       jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
-        .mockResolvedValue(Ok(detourActivatedStateFactory.build()))
+        .mockResolvedValue(Ok(activeDetourFactory.build()))
 
       render(<DetourListPage />)
 
@@ -131,7 +131,7 @@ describe("DiversionPage edit duration workflow", () => {
 
   describe("from the change duration modal", () => {
     test("clicking a new duration changes the radio selection but not the previous duration", async () => {
-      const { state } = detourActivatedStateFactory.build()
+      const { state } = activeDetourFactory.build()
 
       const result = render(<DiversionPage snapshot={state} />)
 
@@ -153,7 +153,7 @@ describe("DiversionPage edit duration workflow", () => {
         .mocked(fetchDetour)
         .mockResolvedValue(
           Ok(
-            detourActivatedStateFactory.build(
+            activeDetourFactory.build(
               {},
               { transient: { duration: "2 hours" } }
             )
@@ -180,7 +180,7 @@ describe("DiversionPage edit duration workflow", () => {
         .mocked(fetchDetour)
         .mockResolvedValue(
           Ok(
-            detourActivatedStateFactory.build(
+            activeDetourFactory.build(
               {},
               { transient: { duration: "2 hours" } }
             )
@@ -207,7 +207,7 @@ describe("DiversionPage edit duration workflow", () => {
         .mocked(fetchDetour)
         .mockResolvedValue(
           Ok(
-            detourActivatedStateFactory.build(
+            activeDetourFactory.build(
               {},
               { transient: { duration: "2 hours" } }
             )
