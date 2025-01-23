@@ -41,7 +41,7 @@ import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
 import { blockWaiverNotificationFactory } from "../factories/notification"
 import { useActiveDetoursByRoute } from "../../src/hooks/useDetours"
-import { activeDetourFactory } from "../factories/detourStateMachineFactory"
+import { detourActivatedStateFactory } from "../factories/detourStateMachineFactory"
 import { fetchDetour, fetchRoutePatterns } from "../../src/api"
 import { Ok } from "../../src/util/result"
 import { neverPromise } from "../testHelpers/mockHelpers"
@@ -601,7 +601,9 @@ describe("LadderPage", () => {
 
   test("clicking an active detour opens the detour modal", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
-    jest.mocked(fetchDetour).mockResolvedValue(Ok(activeDetourFactory.build()))
+    jest
+      .mocked(fetchDetour)
+      .mockResolvedValue(Ok(detourActivatedStateFactory.build()))
     jest.mocked(useActiveDetoursByRoute).mockReturnValue({
       "1": {
         "1": {
