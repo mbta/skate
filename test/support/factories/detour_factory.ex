@@ -23,6 +23,8 @@ defmodule Skate.DetourFactory do
       end
 
       def detour_snapshot_factory do
+        direction_id = sequence(:detour_route_pattern_direction, [0, 1])
+
         %{
           "context" => %{
             "uuid" => nil,
@@ -37,8 +39,9 @@ defmodule Skate.DetourFactory do
             "routePattern" => %{
               "name" => sequence("detour_route_pattern_name:"),
               "headsign" => sequence("detour_route_pattern_headsign:"),
-              "directionId" => sequence(:detour_route_pattern_direction, [0, 1]),
-              "id" => sequence("detour_route_pattern_id:") <> "-_-0"
+              "directionId" => direction_id,
+              "id" =>
+                sequence("detour_route_pattern_id:") <> "-_-" <> Integer.to_string(direction_id)
             },
             "nearestIntersection" => sequence("detour_nearest_intersection:")
           },
