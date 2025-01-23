@@ -210,7 +210,22 @@ export const createDetourMachine = setup({
       finishedDetour: undefined,
       detourShape: undefined,
     }),
-    "detour.deleted": assign(() => ({})),
+    "detour.deleted": assign({
+      uuid: undefined,
+      route: undefined,
+      routePattern: undefined,
+      routePatterns: undefined,
+      waypoints: [],
+      startPoint: undefined,
+      endPoint: undefined,
+      nearestIntersection: undefined,
+      detourShape: undefined,
+      finishedDetour: undefined,
+      editedDirections: undefined,
+      selectedDuration: undefined,
+      selectedReason: undefined,
+      activatedAt: undefined,
+    }),
   },
 }).createMachine({
   id: "Detours Machine",
@@ -648,37 +663,22 @@ export const createDetourMachine = setup({
               },
             },
             Deleting: {
-              initial: "Confirming",
               on: {
                 "detour.delete.delete-modal.cancel": {
                   target: "Reviewing",
                 },
-              },
-              states: {
-                Confirming: {
-                  on: {
-                    "detour.delete.delete-modal.delete-draft": {
-                      tags: "no-save",
-                      target: "Deleted",
-                      actions: "detour.deleted",
-                    },
-                  },
-                },
-                Deleted: {
+                "detour.delete.delete-modal.delete-draft": {
                   tags: "no-save",
-                  target: ".onDone",
+                  target: "Deleted",
+                  actions: "detour.deleted",
                 },
-                Done: { tags: "no-save", type: "final" },
-              },
-              onDone: {
-                target: "DoneNoSave",
               },
             },
+            Deleted: {
+              target: "Done",
+              tags: "no-save",
+            },
             Done: { type: "final" },
-            DoneNoSave: { tags: "no-save", type: "final" },
-          },
-          onDone: {
-            target: "Active",
           },
         },
         Active: {

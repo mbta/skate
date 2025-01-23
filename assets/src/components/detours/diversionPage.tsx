@@ -391,7 +391,7 @@ export const DiversionPage = ({
 
           {snapshot.matches({
             "Detour Drawing": {
-              "Share Detour": { Deleting: "Confirming" },
+              "Share Detour": "Deleting",
             },
           }) ? (
             <DeleteDetourModal
