@@ -5,7 +5,7 @@ import { DetourListPage } from "../../../src/components/detourListPage"
 import { fetchDetours } from "../../../src/api"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import { Ok } from "../../../src/util/result"
-import { render, screen } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
 import { byRole } from "testing-library-selector"
@@ -57,7 +57,7 @@ describe("DetourListPage", () => {
             estimatedDuration: "3 hours",
           },
         ],
-        draft: undefined,
+        draft: [],
         past: [
           {
             id: 10,
@@ -123,7 +123,7 @@ describe("DetourListPage", () => {
             estimatedDuration: "Until end of service",
           },
         ],
-        draft: undefined,
+        draft: [],
         past: [
           {
             id: 10,
@@ -160,5 +160,45 @@ describe("DetourListPage", () => {
     expect(addDetourButton.query()).not.toBeInTheDocument()
 
     expect(baseElement).toMatchSnapshot()
+  })
+
+  test("renders empty tables when needed", async () => {
+    jest.mocked(fetchDetours).mockResolvedValue(
+      Ok({
+        active: [
+          {
+            id: 1,
+            route: "1",
+            viaVariant: "X",
+            direction: "Inbound",
+            name: "Headsign A",
+            intersection: "Street A & Avenue B",
+            updatedAt: 1724866392,
+            activatedAt: new Date(1724866392000),
+            estimatedDuration: "4 hours",
+          },
+        ],
+        draft: [],
+        past: [
+          {
+            id: 10,
+            route: "1",
+            viaVariant: "X",
+            direction: "Inbound",
+            name: "Headsign A",
+            intersection: "Street E & Avenue F",
+            updatedAt: 1724866392,
+          },
+        ],
+      })
+    )
+
+    render(<DetourListPage />)
+
+    await waitFor(() =>
+      expect(screen.queryByText("No draft detours.")).toBeVisible()
+    )
+    expect(screen.queryByText("No active detours.")).not.toBeInTheDocument()
+    expect(screen.queryByText("No closed detours.")).not.toBeInTheDocument()
   })
 })
