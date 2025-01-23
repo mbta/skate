@@ -370,3 +370,19 @@ describe("DiversionPage activate workflow", () => {
     })
   })
 })
+
+describe("DiversionPage Activate Screen", () => {
+  test("has list of detour activation properties", async () => {
+    await diversionPageOnActiveDetourScreen()
+
+    expect(
+      screen.getByRole("definition", { name: "Reason" })
+    ).toHaveTextContent("Construction")
+    expect(
+      screen.getByRole("definition", { name: "On detour since" })
+    ).toHaveTextContent("Just now")
+    expect(
+      screen.getByRole("definition", { name: "Est. Duration" })
+    ).toHaveTextContent("3 hours")
+  })
+})
