@@ -34,7 +34,7 @@ export const detourInProgressFactory = Factory.define<DetourWithState>(() => {
   }
 })
 
-interface DetourWithStateTransientParams extends DetourWithState {
+interface DetourWithStateTransientParams {
   duration: string
 }
 
