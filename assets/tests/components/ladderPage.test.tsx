@@ -40,7 +40,7 @@ import useAlerts from "../../src/hooks/useAlerts"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
 import { blockWaiverNotificationFactory } from "../factories/notification"
-import { useActiveDetoursByRoute } from "../../src/hooks/useDetours"
+import { useActiveDetours } from "../../src/hooks/useDetours"
 import { activeDetourFactory } from "../factories/detourStateMachineFactory"
 import { fetchDetour, fetchRoutePatterns } from "../../src/api"
 import { Ok } from "../../src/util/result"
@@ -78,7 +78,7 @@ const mockDispatch = jest.fn()
 beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([])
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
-  jest.mocked(useActiveDetoursByRoute).mockReturnValue({})
+  jest.mocked(useActiveDetours).mockReturnValue({})
 
   // To get the "Add new detour modal" test working
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
@@ -603,17 +603,15 @@ describe("LadderPage", () => {
   test("clicking an active detour opens the detour modal", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
     jest.mocked(fetchDetour).mockResolvedValue(Ok(activeDetourFactory.build()))
-    jest.mocked(useActiveDetoursByRoute).mockReturnValue({
-      "1": {
-        "1": simpleDetourFactory.build({
-          id: 1,
-          route: "1",
-          viaVariant: "C",
-          direction: "Inbound",
-          intersection: "A St & B Av",
-        }),
-        "2": simpleDetourFactory.build({ id: 2, route: "1" }),
-      },
+    jest.mocked(useActiveDetours).mockReturnValue({
+      "1": simpleDetourFactory.build({
+        id: 1,
+        route: "1",
+        viaVariant: "C",
+        direction: "Inbound",
+        intersection: "A St & B Av",
+      }),
+      "2": simpleDetourFactory.build({ id: 2, route: "1" }),
     })
 
     const mockState = stateFactory.build({

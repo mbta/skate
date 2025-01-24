@@ -9,7 +9,7 @@ import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { routeAlert } from "../testHelpers/selectors/components/routeLadder"
 import useAlerts from "../../src/hooks/useAlerts"
-import { useActiveDetoursByRoute } from "../../src/hooks/useDetours"
+import { useActiveDetours } from "../../src/hooks/useDetours"
 import { simpleDetourFactory } from "../factories/detourListFactory"
 
 jest.mock("../../src/hooks/useTimepoints", () => ({
@@ -20,6 +20,7 @@ jest.mock("../../src/hooks/useTimepoints", () => ({
 const routes: Route[] = [
   routeFactory.build({ id: "1", name: "1" }),
   routeFactory.build({ id: "28", name: "28" }),
+  routeFactory.build({ id: "743", name: "SL3" }),
 ]
 const timepointsByRouteId: TimepointsByRouteId = {
   "1": [
@@ -40,7 +41,7 @@ jest.mock("../../src/hooks/useAlerts")
 jest.mock("../../src/hooks/useDetours")
 
 beforeEach(() => {
-  jest.mocked(useActiveDetoursByRoute).mockReturnValue({})
+  jest.mocked(useActiveDetours).mockReturnValue({})
   jest.mocked(useAlerts).mockReturnValue({})
 })
 
@@ -114,11 +115,35 @@ describe("RouteLadders", () => {
       jest
         .mocked(useTimepoints)
         .mockImplementationOnce(() => timepointsByRouteId)
-      jest.mocked(useActiveDetoursByRoute).mockReturnValue({
-        "1": {
-          "1": simpleDetourFactory.build({ id: 1 }),
-          "2": simpleDetourFactory.build({ id: 2 }),
-        },
+      jest.mocked(useActiveDetours).mockReturnValue({
+        "1": simpleDetourFactory.build({ id: 1, route: "28" }),
+        "2": simpleDetourFactory.build({ id: 2, route: "28" }),
+      })
+
+      render(
+        <RoutesProvider routes={routes}>
+          <RouteLadders
+            selectedRouteIds={routes.map((route) => route.id)}
+            selectedVehicleId={undefined}
+            deselectRoute={jest.fn()}
+            reverseLadder={jest.fn()}
+            toggleCrowding={jest.fn()}
+            ladderDirections={{}}
+            ladderCrowdingToggles={{}}
+          />
+        </RoutesProvider>
+      )
+
+      expect(routeAlert.get()).toBeVisible()
+    })
+
+    test("renders with a skate detour on a route where route name and id don't match", () => {
+      jest
+        .mocked(useTimepoints)
+        .mockImplementationOnce(() => timepointsByRouteId)
+      jest.mocked(useActiveDetours).mockReturnValue({
+        "1": simpleDetourFactory.build({ id: 1, route: "SL3" }),
+        "2": simpleDetourFactory.build({ id: 2, route: "SL3" }),
       })
 
       render(

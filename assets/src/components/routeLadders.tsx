@@ -9,8 +9,8 @@ import RoutesContext from "../contexts/routesContext"
 import useTimepoints from "../hooks/useTimepoints"
 import { SocketContext } from "../contexts/socketContext"
 import useAlerts from "../hooks/useAlerts"
-import { useActiveDetoursByRoute } from "../hooks/useDetours"
-import { DetourId } from "../models/detoursList"
+import { DetoursMap, useActiveDetours } from "../hooks/useDetours"
+import { DetourId, SimpleDetour } from "../models/detoursList"
 
 export const findRouteById = (
   routes: Route[] | null,
@@ -63,16 +63,27 @@ const RouteLadders = ({
   const alerts = useAlerts(socket, selectedRouteIds)
   const routesWithAlerts: RouteId[] = []
 
-  const skateDetours = useActiveDetoursByRoute(socket, selectedRouteIds)
+  // TODO: once DB is optimized for querying by route and status, we can open individual channels for each route ladder
+  // const skateDetours = useActiveDetoursByRoute(socket, selectedRouteIds)
+  const allActiveSkateDetours = useActiveDetours(socket)
+
+  const skateDetoursByRouteName = Object.values(allActiveSkateDetours).reduce(
+    (acc: ByRouteId<DetoursMap>, cur: SimpleDetour) => {
+      acc[cur.route] = { ...acc[cur.route], [cur.id]: cur }
+      return acc
+    },
+    {}
+  )
 
   for (const routeId in alerts) {
     if (alerts[routeId].length > 0) {
       routesWithAlerts.push(routeId)
     }
   }
-  for (const routeId in skateDetours) {
-    if (Object.keys(skateDetours[routeId]).length > 0) {
-      routesWithAlerts.push(routeId)
+  for (const routeName in skateDetoursByRouteName) {
+    if (Object.keys(skateDetoursByRouteName[routeName]).length > 0) {
+      const route = selectedRoutes.find((route) => route.name == routeName)
+      if (route) routesWithAlerts.push(route.id)
     }
   }
 
@@ -98,7 +109,7 @@ const RouteLadders = ({
           hasAlert={routesWithAlerts.includes(route.id)}
           onAddDetour={onAddDetour}
           onOpenDetour={onOpenDetour}
-          skateDetoursForRoute={skateDetours[route.id]}
+          skateDetoursForRoute={skateDetoursByRouteName[route.name]}
         />
       ))}
     </div>

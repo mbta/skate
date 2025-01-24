@@ -38,6 +38,7 @@ const meta = {
     routeOrigin: "from Andrew Station",
     routeDirection: "Outbound",
     onOpenDeactivateModal: undefined,
+    onOpenChangeDurationModal: undefined,
     onNavigateBack: undefined,
     activatedAt: new Date(),
     detourDuration: "3 hours",
