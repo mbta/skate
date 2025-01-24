@@ -635,7 +635,7 @@ export const createDetourMachine = setup({
                       actions: assign({
                         // Record current time, should be done on the backend,
                         // but that requires a larger refactor of the state machine
-                        activatedAt: new Date(),
+                        activatedAt: () => new Date(),
                       }),
                     },
                   },
