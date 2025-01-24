@@ -2,6 +2,7 @@ import React, {
   ComponentProps,
   ComponentPropsWithoutRef,
   PropsWithChildren,
+  useCallback,
   useContext,
   useState,
 } from "react"
@@ -33,6 +34,7 @@ import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
 import { AffectedRoute } from "./detourPanelComponents"
 import { ChangeDuration } from "./changeDurationModal"
+import { deleteDetour } from "../../api"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -121,6 +123,15 @@ export const DiversionPage = ({
       : { input: useDetourProps.originalRoute }
   )
 
+  const deleteDetourCallback = useCallback(() => {
+    if (snapshot.context.uuid) {
+      deleteDetour(snapshot.context.uuid).then(() => {
+        onClose()
+        return send({ type: "detour.delete.delete-modal.delete-draft" })
+      })
+    }
+  }, [onClose, send, snapshot.context.uuid])
+
   const nearestIntersectionDirection = [
     { instruction: "From " + nearestIntersection },
   ]
@@ -174,7 +185,11 @@ export const DiversionPage = ({
     }
   })()
 
-  const detourPanel = () => {
+  const detourPanel: ({
+    deleteDetourCallback,
+  }: {
+    deleteDetourCallback: () => void
+  }) => React.JSX.Element = () => {
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
       return (
         <DetourRouteSelectionPanel
@@ -276,7 +291,7 @@ export const DiversionPage = ({
               : undefined
           }
           onDeleteDetour={
-            inTestGroup(TestGroups.DeleteDraftDetours)
+            inTestGroup(TestGroups.DeleteDraftDetours) && snapshot.context.uuid
               ? () => {
                   send({ type: "detour.delete.open-delete-modal" })
                 }
@@ -383,9 +398,7 @@ export const DiversionPage = ({
             },
           }) ? (
             <DeleteDetourModal
-              onDelete={() =>
-                send({ type: "detour.delete.delete-modal.delete-draft" })
-              }
+              onDelete={deleteDetourCallback}
               onCancel={() =>
                 send({ type: "detour.delete.delete-modal.cancel" })
               }
@@ -567,9 +580,11 @@ export const DiversionPage = ({
           ])}
         >
           {isMobile(displayType) ? (
-            <Drawer.WithState startOpen>{detourPanel()}</Drawer.WithState>
+            <Drawer.WithState startOpen>
+              {detourPanel({ deleteDetourCallback })}
+            </Drawer.WithState>
           ) : (
-            detourPanel()
+            detourPanel({ deleteDetourCallback })
           )}
         </div>
         <div className="l-diversion-page__map position-relative">

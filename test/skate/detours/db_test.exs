@@ -26,6 +26,17 @@ defmodule Skate.Detours.DbTest do
              |> Skate.Repo.preload(:author) == detour
     end
 
+    test "get_detour_for_user!/2 returns the detour with the given detour id and author_id" do
+      detour = detour_fixture()
+
+      assert detour.id
+             |> Detours.get_detour_for_user!(detour.author_id)
+             |> Skate.Repo.preload(:author) == detour
+
+      assert %Ecto.NoResultsError{} =
+               catch_error(Detours.get_detour_for_user!(detour.id, detour.author_id + 1))
+    end
+
     test "create_detour/1 with valid data creates a detour" do
       valid_attrs = %{state: %{}}
 

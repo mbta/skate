@@ -57,17 +57,31 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp validate_serialized_snapshot(
          serialized_snapshot,
-         %Detour{id: id, state: state}
+         %Detour{id: id, state: state} = detour
        ) do
     if serialized_snapshot === state do
       serialized_snapshot
     else
+      state = fix_snapshot_activated_at(state, detour)
+
       Logger.error(
         "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id} diff=#{inspect(MapDiff.diff(state, serialized_snapshot))}"
       )
 
       state
     end
+  end
+
+  # BUG FIX:
+  # if `activated_at` is present but `validate_serialized_snapshot` failed, then
+  # we need to make sure that the `activatedAt` `context` value is added.
+  defp fix_snapshot_activated_at(snapshot, %Detour{activated_at: %DateTime{}} = detour) do
+    put_in(snapshot["context"]["activatedAt"], activated_at_from_detour(detour))
+  end
+
+  # If `activated_at` is otherwise invalid, return the existing snapshot
+  defp fix_snapshot_activated_at(snapshot, _detour) do
+    snapshot
   end
 
   # For each of these retrieve functions, the first function is the one

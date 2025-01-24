@@ -20,6 +20,7 @@ jest.mock("../../src/hooks/useTimepoints", () => ({
 const routes: Route[] = [
   routeFactory.build({ id: "1", name: "1" }),
   routeFactory.build({ id: "28", name: "28" }),
+  routeFactory.build({ id: "743", name: "SL3" }),
 ]
 const timepointsByRouteId: TimepointsByRouteId = {
   "1": [
@@ -117,6 +118,32 @@ describe("RouteLadders", () => {
       jest.mocked(useActiveDetours).mockReturnValue({
         "1": simpleDetourFactory.build({ id: 1, route: "28" }),
         "2": simpleDetourFactory.build({ id: 2, route: "28" }),
+      })
+
+      render(
+        <RoutesProvider routes={routes}>
+          <RouteLadders
+            selectedRouteIds={routes.map((route) => route.id)}
+            selectedVehicleId={undefined}
+            deselectRoute={jest.fn()}
+            reverseLadder={jest.fn()}
+            toggleCrowding={jest.fn()}
+            ladderDirections={{}}
+            ladderCrowdingToggles={{}}
+          />
+        </RoutesProvider>
+      )
+
+      expect(routeAlert.get()).toBeVisible()
+    })
+
+    test("renders with a skate detour on a route where route name and id don't match", () => {
+      jest
+        .mocked(useTimepoints)
+        .mockImplementationOnce(() => timepointsByRouteId)
+      jest.mocked(useActiveDetours).mockReturnValue({
+        "1": simpleDetourFactory.build({ id: 1, route: "SL3" }),
+        "2": simpleDetourFactory.build({ id: 2, route: "SL3" }),
       })
 
       render(

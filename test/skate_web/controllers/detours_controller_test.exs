@@ -309,6 +309,41 @@ defmodule SkateWeb.DetoursControllerTest do
     end
 
     @tag :authenticated
+    @tag :bug
+    test "defers to `activated_at` column when serialized detour doesn't match saved snapshot", %{
+      conn: conn
+    } do
+      activated_at = Skate.DetourFactory.browser_date()
+
+      %{id: id, state: snapshot} =
+        detour =
+        :detour
+        |> build()
+        |> activated(activated_at)
+        |> insert()
+
+      # Make ID match snapshot
+      snapshot = with_id(snapshot, id)
+      # Old snapshots will not have this key populated
+      {_value, snapshot} = pop_in(snapshot["context"]["activatedAt"])
+
+      detour
+      |> Skate.Detours.Detours.change_detour(%{state: snapshot})
+      |> Skate.Repo.update!()
+
+      {conn, log} =
+        CaptureLog.with_log(fn ->
+          get(conn, "/api/detours/#{id}")
+        end)
+
+      assert log =~
+               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id}"
+
+      assert DateTime.to_iso8601(activated_at) ==
+               json_response(conn, 200)["data"]["state"]["context"]["activatedAt"]
+    end
+
+    @tag :authenticated
     test "log an error if the serialized detour does not match db state", %{conn: conn} do
       detour_id = 4
 
@@ -1067,6 +1102,29 @@ defmodule SkateWeb.DetoursControllerTest do
         )
 
       assert response(conn, :bad_request)
+    end
+  end
+
+  describe "delete_detour/2" do
+    @tag :authenticated
+    test "delete detour based on detour and author id", %{conn: conn} do
+      populate_db_and_get_user(conn)
+      conn = delete(conn, ~p"/api/detours/3")
+      assert response(conn, :ok)
+    end
+
+    @tag :authenticated
+    test "cannot delete another user's detour", %{conn: conn} do
+      populate_db_and_get_user(conn)
+
+      different_user = Skate.Factory.insert(:user)
+
+      conn =
+        Phoenix.ConnTest.build_conn()
+        |> init_test_session(%{})
+        |> Guardian.Plug.sign_in(SkateWeb.AuthManager, %{id: different_user.id}, %{})
+
+      assert %Ecto.NoResultsError{} = catch_error(delete(conn, ~p"/api/detours/3"))
     end
   end
 end

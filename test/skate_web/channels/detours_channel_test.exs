@@ -382,5 +382,55 @@ defmodule SkateWeb.DetoursChannelTest do
 
       assert_push("auth_expired", _)
     end
+
+    @tag :authenticated
+    test "pushes deleted detour onto the draft detour socket", %{
+      conn: conn,
+      socket: socket
+    } do
+      %{id: user_id} = SkateWeb.AuthManager.Plug.current_resource(conn)
+
+      {:ok, _, socket} =
+        subscribe_and_join(socket, DetoursChannel, "detours:draft:" <> Integer.to_string(user_id))
+
+      detour = insert(:detour, author: build(:user))
+      Skate.Detours.Detours.delete_draft_detour(detour, user_id)
+
+      detour_id = detour.id
+
+      assert {:noreply, _socket} =
+               DetoursChannel.handle_info(
+                 {:draft_detour_deleted, detour_id},
+                 socket
+               )
+
+      assert_push("deleted", %{data: ^detour_id})
+    end
+
+    @tag :authenticated
+    test "rejects sending deleted detour when socket not authenticated", %{
+      conn: conn,
+      socket: socket
+    } do
+      %{id: user_id} = SkateWeb.AuthManager.Plug.current_resource(conn)
+
+      {:ok, _, socket} =
+        subscribe_and_join(socket, DetoursChannel, "detours:draft:" <> Integer.to_string(user_id))
+
+      reassign_env(:skate, :valid_token_fn, fn _socket -> false end)
+
+      detour = insert(:detour, author: build(:user))
+      Skate.Detours.Detours.delete_draft_detour(detour, user_id)
+
+      detour_id = detour.id
+
+      assert {:stop, :normal, _socket} =
+               DetoursChannel.handle_info(
+                 {:draft_detour_deleted, detour_id},
+                 socket
+               )
+
+      assert_push("auth_expired", _)
+    end
   end
 end

@@ -24,6 +24,7 @@ import {
   any,
   array,
   assert,
+  boolean,
   create,
   enums,
   Infer,
@@ -555,6 +556,21 @@ export const fetchDetour = (
     OkStruct: DetourWithStateData,
     ErrStruct: never(),
   }).then((v) => map(v, detourStateFromData))
+
+export const deleteDetour = (id: number): Promise<Result<boolean, never>> => {
+  return apiCallResult({
+    url: `/api/detours/${id}`,
+    OkStruct: boolean(),
+    ErrStruct: never(),
+    requestInit: {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": getCsrfToken(),
+      },
+    },
+  })
+}
 
 // #endregion Detour API functions
 
