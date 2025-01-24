@@ -6,6 +6,15 @@ export const activateDetourButton = byRole("button", {
   name: "Start Detour",
 })
 export const editDetourButton = byRole("button", { name: "Edit" })
+export const deleteDetourButton = byRole("button", {
+  name: "Delete Draft",
+  description: "Delete Draft",
+})
+export const confirmDeleteDetourButton = byRole("button", {
+  name: "Delete Draft",
+  description: "Confirm Delete Draft",
+})
+export const cancelButton = byRole("button", { name: "Cancel" })
 
 export const viewDraftDetourHeading = byRole("heading", {
   name: "View Draft Detour",

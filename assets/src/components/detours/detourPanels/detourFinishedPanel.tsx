@@ -89,6 +89,7 @@ export const DetourFinishedPanel = ({
             variant="outline-ui-alert"
             onClick={onDeleteDetour}
             data-fs-element="Delete Detour Draft"
+            title="Delete Draft"
           >
             <BsIcons.Trash />
             Delete Draft
