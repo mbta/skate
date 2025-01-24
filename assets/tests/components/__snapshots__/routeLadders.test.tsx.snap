@@ -403,7 +403,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
             <button
               aria-expanded="false"
               aria-labelledby="route-pill:r6: route-options-toggle:r7:"
-              class="c-route-ladder__dropdown-button d-none d-sm-flex dropdown-toggle btn btn-primary"
+              class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
               id="react-aria-:r8:"
               type="button"
             >
