@@ -109,7 +109,7 @@ export const ActiveDetourPanel = ({
               On detour since
             </dt>
             <dd aria-labelledby={dlActiveSinceId}>
-              {timeAgoLabelFromDate(currentTime, activatedAt)}
+              {timeAgoLabelFromDate(activatedAt, currentTime)}
             </dd>
 
             <dt id={dlDurationId} className="fw-bold me-2">

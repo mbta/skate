@@ -21,7 +21,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
             <button
               aria-expanded="false"
               aria-labelledby="route-pill:r0: route-options-toggle:r1:"
-              class="c-route-ladder__dropdown-button d-none d-sm-flex dropdown-toggle btn btn-primary"
+              class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
               id="react-aria-:r2:"
               type="button"
             >
@@ -212,7 +212,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
             <button
               aria-expanded="false"
               aria-labelledby="route-pill:r3: route-options-toggle:r4:"
-              class="c-route-ladder__dropdown-button d-none d-sm-flex dropdown-toggle btn btn-primary"
+              class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
               id="react-aria-:r5:"
               type="button"
             >
@@ -388,6 +388,79 @@ exports[`RouteLadders renders a route ladder 1`] = `
     <div
       class="c-incoming-box"
     />
+    <div
+      class="c-route-ladder__header card"
+    >
+      <div
+        class="card-body"
+      >
+        <div
+          class="c-route-ladder__dropdown"
+        >
+          <div
+            class="border-box inherit-box dropdown"
+          >
+            <button
+              aria-expanded="false"
+              aria-labelledby="route-pill:r6: route-options-toggle:r7:"
+              class="c-route-ladder__dropdown-button d-none d-sm-flex dropdown-toggle btn btn-primary"
+              id="react-aria-:r8:"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="bi bi-three-dots-vertical"
+                fill="currentColor"
+                height="16"
+                viewBox="0 0 16 16"
+                width="16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
+                />
+              </svg>
+              <span
+                class="visually-hidden"
+                id="route-options-toggle:r7:"
+              >
+                Route Options
+              </span>
+            </button>
+          </div>
+        </div>
+        <div
+          class="c-route-pill c-route-pill--silver c-route-pill--large-format c-route-pill--dynamic-size"
+          id="route-pill:r6:"
+        >
+          SL3
+        </div>
+        <div
+          class="c-route-ladder__close-button-container"
+        >
+          <button
+            aria-label="Close"
+            class="btn-close p-2"
+            type="button"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="c-route-ladder__controls"
+    >
+      <button
+        class="c-route-ladder__reverse"
+      >
+        <span
+          class="c-route-ladder__reverse-icon"
+        >
+          <svg />
+        </span>
+        Reverse
+      </button>
+    </div>
+    loading...
   </div>
 </DocumentFragment>
 `;
