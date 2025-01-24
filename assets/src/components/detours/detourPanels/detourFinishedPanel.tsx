@@ -85,7 +85,7 @@ export const DetourFinishedPanel = ({
       <Panel.Body.Footer className="d-flex flex-column">
         {onDeleteDetour && (
           <Button
-            className="m-3 mb-0 flex-grow-1 icon-link"
+            className="m-3 mb-0 flex-grow-1 icon-link c-diversion-panel__deletion-button"
             variant="outline-ui-alert"
             onClick={onDeleteDetour}
             data-fs-element="Delete Detour Draft"
