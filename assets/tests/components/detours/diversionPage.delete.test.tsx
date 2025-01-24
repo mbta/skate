@@ -50,7 +50,9 @@ beforeEach(() => {
 
 describe("Detours Page: Open a Detour", () => {
   test("calls API with correct detour ID", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
+    jest
+      .mocked(fetchDetours)
+      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
 
     render(<DetourListPage />)
 
@@ -59,7 +61,9 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("renders detour details modal with delete draft button", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
+    jest
+      .mocked(fetchDetours)
+      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
     jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
 
     render(<DetourListPage />)
@@ -70,7 +74,9 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("delete draft detour confirmation modal displays when Delete Draft button clicked", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
+    jest
+      .mocked(fetchDetours)
+      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
     jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
 
     render(<DetourListPage />)
@@ -84,7 +90,9 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("Clicking the Delete Draft button on the Delete Draft Detour confirmation modal calls the deleteDetour api function", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
+    jest
+      .mocked(fetchDetours)
+      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
     jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
 
     render(<DetourListPage />)
@@ -102,7 +110,9 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("Clicking the Cancel button on the Delete Draft Detour confirmation modal closes the modal", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
+    jest
+      .mocked(fetchDetours)
+      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
     jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
 
     render(<DetourListPage />)
