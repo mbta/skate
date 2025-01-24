@@ -29,7 +29,7 @@ export const DeleteDetourModal = ({
           className="text-white"
           data-fs-element="Confirm Delete Draft"
         >
-          Delete Draft
+          Delete draft
         </Button>
       </Modal.Footer>
     </Modal>
