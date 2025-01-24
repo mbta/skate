@@ -21,7 +21,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
             <button
               aria-expanded="false"
               aria-labelledby="route-pill:r0: route-options-toggle:r1:"
-              class="c-route-ladder__dropdown-button d-none d-sm-flex dropdown-toggle btn btn-primary"
+              class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
               id="react-aria-:r2:"
               type="button"
             >
@@ -212,7 +212,7 @@ exports[`RouteLadders renders a route ladder 1`] = `
             <button
               aria-expanded="false"
               aria-labelledby="route-pill:r3: route-options-toggle:r4:"
-              class="c-route-ladder__dropdown-button d-none d-sm-flex dropdown-toggle btn btn-primary"
+              class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
               id="react-aria-:r5:"
               type="button"
             >
