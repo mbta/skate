@@ -647,24 +647,14 @@ export const createDetourMachine = setup({
               },
             },
             Deleting: {
-              initial: "Confirming",
               on: {
                 "detour.delete.delete-modal.cancel": {
                   target: "Reviewing",
                 },
-              },
-              states: {
-                Confirming: {
-                  on: {
-                    "detour.delete.delete-modal.delete-draft": {
-                      target: "Done",
-                    },
-                  },
+                "detour.delete.delete-modal.delete-draft": {
+                  tags: "no-save",
+                  target: "#Deleted",
                 },
-                Done: { type: "final" },
-              },
-              onDone: {
-                target: "Done",
               },
             },
             Done: { type: "final" },
@@ -700,6 +690,11 @@ export const createDetourMachine = setup({
           },
         },
         Past: {},
+        Deleted: {
+          id: "Deleted",
+          tags: "no-save",
+          type: "final",
+        },
       },
     },
     SaveState: {
