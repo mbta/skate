@@ -127,7 +127,7 @@ describe("Detours Page: Open a Detour", () => {
     await userEvent.click(cancelButton.get())
 
     expect(
-      await screen.queryAllByText("Are you sure you want to delete this draft?")
-    ).toStrictEqual([])
+      screen.queryByText("Are you sure you want to delete this draft?")
+    ).not.toBeInTheDocument()
   })
 })
