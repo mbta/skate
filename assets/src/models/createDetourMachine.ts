@@ -659,6 +659,9 @@ export const createDetourMachine = setup({
             },
             Done: { type: "final" },
           },
+          onDone: {
+            target: "Active",
+          },
         },
         Active: {
           initial: "Reviewing",
