@@ -38,6 +38,8 @@ export const createDetourMachine = setup({
       selectedReason?: string
 
       activatedAt?: Date
+
+      editedSelectedDuration?: string
     },
 
     input: {} as
@@ -87,6 +89,13 @@ export const createDetourMachine = setup({
       | { type: "detour.share.activate-modal.cancel" }
       | { type: "detour.share.activate-modal.back" }
       | { type: "detour.share.activate-modal.activate" }
+      | { type: "detour.active.open-change-duration-modal" }
+      | {
+          type: "detour.active.change-duration-modal.select-duration"
+          duration: string
+        }
+      | { type: "detour.active.change-duration-modal.done" }
+      | { type: "detour.active.change-duration-modal.cancel" }
       | { type: "detour.active.open-deactivate-modal" }
       | { type: "detour.active.deactivate-modal.deactivate" }
       | { type: "detour.active.deactivate-modal.cancel" }
@@ -671,6 +680,14 @@ export const createDetourMachine = setup({
                 "detour.active.open-deactivate-modal": {
                   target: "Deactivating",
                 },
+                "detour.active.open-change-duration-modal": {
+                  target: "Changing Duration",
+                  actions: assign({
+                    editedSelectedDuration: ({
+                      context: { selectedDuration },
+                    }) => selectedDuration,
+                  }),
+                },
               },
             },
             Deactivating: {
@@ -679,6 +696,27 @@ export const createDetourMachine = setup({
                   target: "Done",
                 },
                 "detour.active.deactivate-modal.cancel": {
+                  target: "Reviewing",
+                },
+              },
+            },
+            "Changing Duration": {
+              on: {
+                "detour.active.change-duration-modal.select-duration": {
+                  target: "Changing Duration",
+                  actions: assign({
+                    editedSelectedDuration: ({ event }) => event.duration,
+                  }),
+                },
+                "detour.active.change-duration-modal.done": {
+                  target: "Reviewing",
+                  actions: assign({
+                    selectedDuration: ({
+                      context: { editedSelectedDuration },
+                    }) => editedSelectedDuration,
+                  }),
+                },
+                "detour.active.change-duration-modal.cancel": {
                   target: "Reviewing",
                 },
               },

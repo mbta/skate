@@ -66,6 +66,7 @@ export const useDetour = (input: UseDetourInput) => {
     nearestIntersection,
     selectedDuration,
     selectedReason,
+    editedSelectedDuration,
   } = snapshot.context
 
   const { result: unfinishedDetour } = useApiCall({
@@ -224,5 +225,10 @@ export const useDetour = (input: UseDetourInput) => {
      * Detour reason as selected in the activate-detour flow
      */
     selectedReason,
+
+    /**
+     * Detour duration while editing is in progress
+     */
+    editedSelectedDuration,
   }
 }
