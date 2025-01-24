@@ -67,7 +67,7 @@ const RouteLadders = ({
   // const skateDetours = useActiveDetoursByRoute(socket, selectedRouteIds)
   const allActiveSkateDetours = useActiveDetours(socket)
 
-  const skateDetoursByRoute = Object.values(allActiveSkateDetours).reduce(
+  const skateDetoursByRouteName = Object.values(allActiveSkateDetours).reduce(
     (acc: ByRouteId<DetoursMap>, cur: SimpleDetour) => {
       acc[cur.route] = { ...acc[cur.route], [cur.id]: cur }
       return acc
@@ -80,9 +80,10 @@ const RouteLadders = ({
       routesWithAlerts.push(routeId)
     }
   }
-  for (const routeId in skateDetoursByRoute) {
-    if (Object.keys(skateDetoursByRoute[routeId]).length > 0) {
-      routesWithAlerts.push(routeId)
+  for (const routeName in skateDetoursByRouteName) {
+    if (Object.keys(skateDetoursByRouteName[routeName]).length > 0) {
+      const route = selectedRoutes.find((route) => route.name == routeName)
+      if (route) routesWithAlerts.push(route.id)
     }
   }
 
@@ -108,7 +109,7 @@ const RouteLadders = ({
           hasAlert={routesWithAlerts.includes(route.id)}
           onAddDetour={onAddDetour}
           onOpenDetour={onOpenDetour}
-          skateDetoursForRoute={skateDetoursByRoute[route.id]}
+          skateDetoursForRoute={skateDetoursByRouteName[route.name]}
         />
       ))}
     </div>
