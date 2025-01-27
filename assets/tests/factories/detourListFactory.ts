@@ -13,13 +13,30 @@ export const detourListFactory = Factory.define<GroupedSimpleDetours>(() => {
     active: [
       simpleDetourFromActivatedData(activeDetourDataFactory.build()),
       simpleDetourFromActivatedData(
-        activeDetourDataFactory.build({ details: { direction: "Outbound" } })
+        activeDetourDataFactory.build({
+          details: { name: "Headsign A", direction: "Outbound" },
+        })
       ),
     ],
     draft: undefined,
     past: [simpleDetourFactory.build({ name: "Headsign Z" })],
   }
 })
+
+export const detourListFactoryWithDraft = Factory.define<GroupedSimpleDetours>(
+  () => {
+    return {
+      active: [
+        simpleDetourFromActivatedData(activeDetourDataFactory.build()),
+        simpleDetourFromActivatedData(
+          activeDetourDataFactory.build({ details: { direction: "Outbound" } })
+        ),
+      ],
+      draft: [simpleDetourFactory.build({ id: 123, name: "Draft Detour 123" })],
+      past: [simpleDetourFactory.build({ name: "Headsign Z" })],
+    }
+  }
+)
 
 export const simpleDetourDataFactory = Factory.define<SimpleDetourData>(
   ({ sequence }) => ({

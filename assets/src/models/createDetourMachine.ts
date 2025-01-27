@@ -38,6 +38,8 @@ export const createDetourMachine = setup({
       selectedReason?: string
 
       activatedAt?: Date
+
+      editedSelectedDuration?: string
     },
 
     input: {} as
@@ -87,6 +89,13 @@ export const createDetourMachine = setup({
       | { type: "detour.share.activate-modal.cancel" }
       | { type: "detour.share.activate-modal.back" }
       | { type: "detour.share.activate-modal.activate" }
+      | { type: "detour.active.open-change-duration-modal" }
+      | {
+          type: "detour.active.change-duration-modal.select-duration"
+          duration: string
+        }
+      | { type: "detour.active.change-duration-modal.done" }
+      | { type: "detour.active.change-duration-modal.cancel" }
       | { type: "detour.active.open-deactivate-modal" }
       | { type: "detour.active.deactivate-modal.deactivate" }
       | { type: "detour.active.deactivate-modal.cancel" }
@@ -647,24 +656,14 @@ export const createDetourMachine = setup({
               },
             },
             Deleting: {
-              initial: "Confirming",
               on: {
                 "detour.delete.delete-modal.cancel": {
                   target: "Reviewing",
                 },
-              },
-              states: {
-                Confirming: {
-                  on: {
-                    "detour.delete.delete-modal.delete-draft": {
-                      target: "Done",
-                    },
-                  },
+                "detour.delete.delete-modal.delete-draft": {
+                  tags: "no-save",
+                  target: "#Deleted",
                 },
-                Done: { type: "final" },
-              },
-              onDone: {
-                target: "Done",
               },
             },
             Done: { type: "final" },
@@ -681,6 +680,14 @@ export const createDetourMachine = setup({
                 "detour.active.open-deactivate-modal": {
                   target: "Deactivating",
                 },
+                "detour.active.open-change-duration-modal": {
+                  target: "Changing Duration",
+                  actions: assign({
+                    editedSelectedDuration: ({
+                      context: { selectedDuration },
+                    }) => selectedDuration,
+                  }),
+                },
               },
             },
             Deactivating: {
@@ -693,6 +700,27 @@ export const createDetourMachine = setup({
                 },
               },
             },
+            "Changing Duration": {
+              on: {
+                "detour.active.change-duration-modal.select-duration": {
+                  target: "Changing Duration",
+                  actions: assign({
+                    editedSelectedDuration: ({ event }) => event.duration,
+                  }),
+                },
+                "detour.active.change-duration-modal.done": {
+                  target: "Reviewing",
+                  actions: assign({
+                    selectedDuration: ({
+                      context: { editedSelectedDuration },
+                    }) => editedSelectedDuration,
+                  }),
+                },
+                "detour.active.change-duration-modal.cancel": {
+                  target: "Reviewing",
+                },
+              },
+            },
             Done: { type: "final" },
           },
           onDone: {
@@ -700,6 +728,11 @@ export const createDetourMachine = setup({
           },
         },
         Past: {},
+        Deleted: {
+          id: "Deleted",
+          tags: "no-save",
+          type: "final",
+        },
       },
     },
     SaveState: {

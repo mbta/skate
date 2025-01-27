@@ -28,6 +28,7 @@ export const DeleteDetourModal = ({
           onClick={onDelete}
           className="text-white"
           data-fs-element="Confirm Delete Draft"
+          title="Confirm Delete Draft"
         >
           Delete draft
         </Button>
