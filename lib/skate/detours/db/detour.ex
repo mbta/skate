@@ -79,6 +79,28 @@ defmodule Skate.Detours.Db.Detour do
       from(Skate.Detours.Db.Detour, as: :detour, select: [])
     end
 
+    @doc """
+    """
+    def select_fields(query \\ base(), fields) when is_list(fields) do
+      %{virtual_fields: wanted_virtual_fields, fields: wanted_fields} = split_fields(fields)
+
+      query
+      |> select_merge(^wanted_fields)
+      |> select_virtual_fields(wanted_virtual_fields)
+    end
+
+    defp split_fields(input_fields) do
+      schema_virtual_fields = Skate.Detours.Db.Detour.__schema__(:virtual_fields)
+
+      {virtual_fields, fields} =
+        Enum.split_with(input_fields, fn field -> field in schema_virtual_fields end)
+
+      %{
+        virtual_fields: virtual_fields,
+        fields: fields
+      }
+    end
+
     def select_virtual_fields(query \\ base(), fields) when is_list(fields) do
       Enum.reduce(fields, query, fn field, query ->
         case field do
@@ -110,13 +132,17 @@ defmodule Skate.Detours.Db.Detour do
 
     def select_detour_list_info(query \\ base()) do
       query
-      |> select_merge([
-        :author_id,
-        :updated_at,
-        :id,
-        :activated_at
+      |> preload([
+        :author
       ])
-      |> select_virtual_fields([
+      |> select_fields([
+        # Table Columns
+        :id,
+        :author_id,
+        :activated_at,
+        :updated_at,
+
+        # Virtual Fields
         :route_id,
         :route_name,
         :route_pattern_id,
@@ -125,10 +151,12 @@ defmodule Skate.Detours.Db.Detour do
         :direction,
         :nearest_intersection,
         :estimated_duration,
-        :state_value
+        :state_value,
+
+        # Nested Fields
+        author: [:email]
       ])
       |> sorted_by_last_updated()
-      |> with_author()
     end
 
     def select_route_id(query \\ base(), key \\ :route_id) do
