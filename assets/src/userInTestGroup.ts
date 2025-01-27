@@ -11,6 +11,7 @@ export enum TestGroups {
   CopyButton = "copy-button",
   DeleteDraftDetours = "delete-draft-detours",
   ChangeDetourDuration = "change-detour-duration",
+  DetoursOnLadder = "detours-on-ladder",
 }
 
 const inTestGroup = (key: TestGroups): boolean => {
