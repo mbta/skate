@@ -10,42 +10,10 @@ exports[`routeLadder displays loading if we are fetching the timepoints 1`] = `
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:r1a: route-options-toggle:r1b:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:r1c:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:r1b:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:r1a:"
+        id="route-pill:ru:"
       >
         28
       </div>
@@ -88,42 +56,10 @@ exports[`routeLadder displays no crowding data for a bus coming off a route with
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:r14: route-options-toggle:r15:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:r16:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:r15:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:r14:"
+        id="route-pill:rq:"
       >
         28
       </div>
@@ -389,42 +325,10 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:r17: route-options-toggle:r18:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:r19:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:r18:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:r17:"
+        id="route-pill:rs:"
       >
         28
       </div>
@@ -633,42 +537,10 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:r11: route-options-toggle:r12:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:r13:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:r12:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:r11:"
+        id="route-pill:ro:"
       >
         28
       </div>
@@ -844,39 +716,7 @@ exports[`routeLadder renders a route ladder 1`] = `
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:r0: route-options-toggle:r1:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:r2:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:r1:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
         id="route-pill:r0:"
@@ -1013,42 +853,10 @@ exports[`routeLadder renders a route ladder with crowding instead of vehicles 1`
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:ru: route-options-toggle:rv:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:r10:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:rv:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:ru:"
+        id="route-pill:rm:"
       >
         28
       </div>
@@ -1318,42 +1126,10 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:rr: route-options-toggle:rs:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:rt:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:rs:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:rr:"
+        id="route-pill:rk:"
       >
         28
       </div>
@@ -1568,9 +1344,9 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
         >
           <button
             aria-expanded="false"
-            aria-labelledby="route-pill:r6: route-options-toggle:r7:"
+            aria-labelledby="route-pill:r4: route-options-toggle:r5:"
             class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:r8:"
+            id="react-aria-:r6:"
             type="button"
           >
             <svg
@@ -1588,7 +1364,7 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
             </svg>
             <span
               class="visually-hidden"
-              id="route-options-toggle:r7:"
+              id="route-options-toggle:r5:"
             >
               Route Options
             </span>
@@ -1597,7 +1373,7 @@ exports[`routeLadder renders a route ladder with the new header and detour dropd
       </div>
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:r6:"
+        id="route-pill:r4:"
       >
         28
       </div>
@@ -1731,42 +1507,10 @@ exports[`routeLadder renders a route ladder with the new header format 1`] = `
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:r3: route-options-toggle:r4:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:r5:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:r4:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:r3:"
+        id="route-pill:r2:"
       >
         28
       </div>
@@ -1900,42 +1644,10 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:rl: route-options-toggle:rm:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:rn:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:rm:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:rl:"
+        id="route-pill:rg:"
       >
         28
       </div>
@@ -2236,42 +1948,10 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
     >
       <div
         class="c-route-ladder__dropdown"
-      >
-        <div
-          class="border-box inherit-box dropdown"
-        >
-          <button
-            aria-expanded="false"
-            aria-labelledby="route-pill:ro: route-options-toggle:rp:"
-            class="c-route-ladder__dropdown-button d-flex dropdown-toggle btn btn-primary"
-            id="react-aria-:rq:"
-            type="button"
-          >
-            <svg
-              aria-hidden="true"
-              class="bi bi-three-dots-vertical"
-              fill="currentColor"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"
-              />
-            </svg>
-            <span
-              class="visually-hidden"
-              id="route-options-toggle:rp:"
-            >
-              Route Options
-            </span>
-          </button>
-        </div>
-      </div>
+      />
       <div
         class="c-route-pill c-route-pill--bus c-route-pill--large-format c-route-pill--dynamic-size"
-        id="route-pill:ro:"
+        id="route-pill:ri:"
       >
         28
       </div>

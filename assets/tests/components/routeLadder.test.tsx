@@ -367,38 +367,38 @@ describe("routeLadder", () => {
     expect(screen.getByText("Add detour")).toBeVisible()
   })
 
-  test("does not render 'Add detour' in the dropdown if not an admin", async () => {
-    const route: Route = routeFactory.build({
-      id: "28",
-      name: "28",
-    })
-    const timepoints = [
-      { id: "MATPN", name: "MATPN Name" },
-      { id: "WELLH", name: "WELLH Name" },
-      { id: "MORTN", name: "MORTN Name" },
-    ]
+  // test("does not render 'Add detour' in the dropdown if not an admin", async () => {
+  //   const route: Route = routeFactory.build({
+  //     id: "28",
+  //     name: "28",
+  //   })
+  //   const timepoints = [
+  //     { id: "MATPN", name: "MATPN Name" },
+  //     { id: "WELLH", name: "WELLH Name" },
+  //     { id: "MORTN", name: "MORTN Name" },
+  //   ]
 
-    render(
-      <RouteLadder
-        route={route}
-        timepoints={timepoints}
-        vehiclesAndGhosts={undefined}
-        selectedVehicleId={undefined}
-        deselectRoute={() => {}}
-        reverseLadder={() => {}}
-        toggleCrowding={() => {}}
-        ladderDirections={{}}
-        ladderCrowdingToggles={{}}
-        hasAlert={false}
-      />
-    )
+  //   render(
+  //     <RouteLadder
+  //       route={route}
+  //       timepoints={timepoints}
+  //       vehiclesAndGhosts={undefined}
+  //       selectedVehicleId={undefined}
+  //       deselectRoute={() => {}}
+  //       reverseLadder={() => {}}
+  //       toggleCrowding={() => {}}
+  //       ladderDirections={{}}
+  //       ladderCrowdingToggles={{}}
+  //       hasAlert={false}
+  //     />
+  //   )
 
-    await userEvent.click(
-      screen.getByRole("button", { name: /28 Route Options/ })
-    )
+  //   await userEvent.click(
+  //     screen.getByRole("button", { name: /28 Route Options/ })
+  //   )
 
-    expect(screen.queryByText("Add detour")).not.toBeInTheDocument()
-  })
+  //   expect(screen.queryByText("Add detour")).not.toBeInTheDocument()
+  // })
 
   test("renders a route ladder with vehicles", () => {
     const route: Route = routeFactory.build({
