@@ -61,6 +61,23 @@ defmodule Skate.Detours.Db.Detour do
       from(Skate.Detours.Db.Detour, as: :detour, select: [])
     end
 
+    def select_virtual_fields(query \\ base(), fields) when is_list(fields) do
+      Enum.reduce(fields, query, fn field, query ->
+        case field do
+          :route_id -> select_route_id(query)
+          :route_name -> select_route_name(query)
+          :route_pattern_id -> select_route_pattern_id(query)
+          :route_pattern_name -> select_route_pattern_name(query)
+          :headsign -> select_route_pattern_headsign(query)
+          :direction -> select_direction(query)
+          :nearest_intersection -> select_starting_intersection(query)
+          :estimated_duration -> select_estimated_duration(query)
+          :state_value -> select_state_value(query, :state_value)
+          _unknown -> query
+        end
+      end)
+    end
+
     def sorted_by_last_updated(query \\ base()) do
       order_by(query, desc: :updated_at)
     end
@@ -81,16 +98,19 @@ defmodule Skate.Detours.Db.Detour do
         :id,
         :activated_at
       ])
+      |> select_virtual_fields([
+        :route_id,
+        :route_name,
+        :route_pattern_id,
+        :route_pattern_name,
+        :headsign,
+        :direction,
+        :nearest_intersection,
+        :estimated_duration,
+        :state_value
+      ])
       |> sorted_by_last_updated()
       |> with_author()
-      |> select_state_value()
-      |> select_starting_intersection()
-      |> select_route_id()
-      |> select_route_name()
-      |> select_route_pattern_headsign()
-      |> select_direction()
-      |> select_estimated_duration()
-      |> select_route_pattern_id()
     end
 
     def select_route_id(query \\ base(), key \\ :route_id) do
