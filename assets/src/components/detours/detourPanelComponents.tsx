@@ -18,7 +18,7 @@ interface ConnectionPointsProps {
 export const ConnectionPoints = ({
   connectionPoints: [connectionPointStart, connectionPointEnd],
 }: ConnectionPointsProps) => (
-  <section className="pb-3">
+  <section className="mb-4">
     <h2 className="c-diversion-panel__h2">Connection Points</h2>
     <ListGroup as="ul">
       <ListGroup.Item>{connectionPointStart}</ListGroup.Item>
@@ -32,7 +32,7 @@ interface MissedStopsProps {
 }
 
 export const MissedStops = ({ missedStops }: MissedStopsProps) => (
-  <section className="pb-3">
+  <section className="mb-4">
     <h2 className="c-diversion-panel__h2">
       Missed Stops
       <Badge pill bg="missed-stop" className="ms-2 fs-4">
@@ -60,7 +60,7 @@ export const AffectedRoute = ({
   routeOrigin,
   routeDirection,
 }: AffectedRouteProps) => (
-  <section className="pb-3">
+  <section className="mb-2">
     <h2 className="c-diversion-panel__h2 c-detour-panel__subheader">
       Affected route
     </h2>
