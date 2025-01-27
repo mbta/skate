@@ -11,6 +11,7 @@ import { SocketContext } from "../contexts/socketContext"
 import useAlerts from "../hooks/useAlerts"
 import { DetoursMap, useActiveDetours } from "../hooks/useDetours"
 import { DetourId, SimpleDetour } from "../models/detoursList"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 export const findRouteById = (
   routes: Route[] | null,
@@ -65,7 +66,10 @@ const RouteLadders = ({
 
   // TODO: once DB is optimized for querying by route and status, we can open individual channels for each route ladder
   // const skateDetours = useActiveDetoursByRoute(socket, selectedRouteIds)
-  const allActiveSkateDetours = useActiveDetours(socket)
+  const allActiveSkateDetours = useActiveDetours(
+    socket,
+    inTestGroup(TestGroups.DetoursOnLadder)
+  )
 
   const skateDetoursByRouteName = Object.values(allActiveSkateDetours).reduce(
     (acc: ByRouteId<DetoursMap>, cur: SimpleDetour) => {

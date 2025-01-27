@@ -89,7 +89,10 @@ const subscribe = (
 }
 
 // This is to refresh the Detours List page. We need all active detours
-export const useActiveDetours = (socket: Socket | undefined) => {
+export const useActiveDetours = (
+  socket: Socket | undefined,
+  enable: boolean = true
+) => {
   const topic = "detours:active"
   const [activeDetours, setActiveDetours] = useState<DetoursMap>({})
 
@@ -105,6 +108,10 @@ export const useActiveDetours = (socket: Socket | undefined) => {
   }
 
   useEffect(() => {
+    if (enable === false) {
+      return
+    }
+
     let channel: Channel | undefined
     if (socket) {
       channel = subscribe(
@@ -125,7 +132,7 @@ export const useActiveDetours = (socket: Socket | undefined) => {
         channel = undefined
       }
     }
-  }, [socket])
+  }, [socket, enable])
   return activeDetours
 }
 
