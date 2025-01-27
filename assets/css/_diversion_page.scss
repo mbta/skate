@@ -180,9 +180,13 @@
   }
 
   // But display each `<dt/>` on it's own line
-  dt::before {
+  dl > dt::before {
     content: "";
     display: block;
+  }
+
+  div {
+    margin-bottom: map-get($spacers, 1);
   }
 
   // Remove leading margin from `<dd/>`'s

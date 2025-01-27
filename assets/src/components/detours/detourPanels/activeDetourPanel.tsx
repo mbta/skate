@@ -100,22 +100,28 @@ export const ActiveDetourPanel = ({
           />
 
           <dl className="l-inline-dl m-0">
-            <dt id={dlReasonId} className="fw-bold me-2">
-              Reason
-            </dt>
-            <dd aria-labelledby={dlReasonId}>{detourReason}</dd>
+            <div>
+              <dt id={dlReasonId} className="fw-bold me-2">
+                Reason
+              </dt>
+              <dd aria-labelledby={dlReasonId}>{detourReason}</dd>
+            </div>
 
-            <dt id={dlActiveSinceId} className="fw-bold me-2">
-              On detour since
-            </dt>
-            <dd aria-labelledby={dlActiveSinceId}>
-              {timeAgoLabelFromDate(activatedAt, currentTime)}
-            </dd>
+            <div>
+              <dt id={dlActiveSinceId} className="fw-bold me-2">
+                On detour since
+              </dt>
+              <dd aria-labelledby={dlActiveSinceId}>
+                {timeAgoLabelFromDate(activatedAt, currentTime)}
+              </dd>
+            </div>
 
-            <dt id={dlDurationId} className="fw-bold me-2">
-              Est. Duration
-            </dt>
-            <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
+            <div>
+              <dt id={dlDurationId} className="fw-bold me-2">
+                Est. Duration
+              </dt>
+              <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
+            </div>
           </dl>
 
           <section className="pb-3">
