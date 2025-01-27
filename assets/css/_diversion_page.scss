@@ -157,8 +157,9 @@
 }
 
 .c-diversion-panel__h2 {
-  font-size: 1.125rem; // h4 font size
-  font-weight: var(--font-weight-semi);
+  @include font-size($h4-font-size);
+  // font-size: 1.125rem; // h4 font size
+  // font-weight: var(--font-weight-semi);
 }
 
 .c-diversion-panel__help-text {
