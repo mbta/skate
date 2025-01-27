@@ -7,11 +7,11 @@ export const activateDetourButton = byRole("button", {
 })
 export const editDetourButton = byRole("button", { name: "Edit" })
 export const deleteDetourButton = byRole("button", {
-  name: "Delete Draft",
+  name: "Delete draft",
   description: "Delete Draft",
 })
 export const confirmDeleteDetourButton = byRole("button", {
-  name: "Delete Draft",
+  name: "Delete draft",
   description: "Confirm Delete Draft",
 })
 export const cancelButton = byRole("button", { name: "Cancel" })
