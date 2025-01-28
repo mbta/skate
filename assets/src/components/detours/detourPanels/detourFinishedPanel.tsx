@@ -52,7 +52,7 @@ export const DetourFinishedPanel = ({
 
         {affectedRoute}
 
-        <h2 className="c-diversion-panel__h2">Directions</h2>
+        <h4>Directions</h4>
         {/*
             We need a way to let the form area take up exactly the space of its content
             (to avoid double scrollbars). We used this approach:

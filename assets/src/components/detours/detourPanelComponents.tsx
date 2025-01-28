@@ -19,7 +19,7 @@ export const ConnectionPoints = ({
   connectionPoints: [connectionPointStart, connectionPointEnd],
 }: ConnectionPointsProps) => (
   <section className="pb-3">
-    <h2 className="c-diversion-panel__h2">Connection Points</h2>
+    <h4>Connection Points</h4>
     <ListGroup as="ul">
       <ListGroup.Item>{connectionPointStart}</ListGroup.Item>
       <ListGroup.Item>{connectionPointEnd}</ListGroup.Item>
@@ -33,12 +33,12 @@ interface MissedStopsProps {
 
 export const MissedStops = ({ missedStops }: MissedStopsProps) => (
   <section className="pb-3">
-    <h2 className="c-diversion-panel__h2">
+    <h4>
       Missed Stops
       <Badge pill bg="missed-stop" className="ms-2 fs-4">
         {missedStops.length}
       </Badge>
-    </h2>
+    </h4>
     <ListGroup as="ul">
       {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
         <ListGroup.Item key={missedStop.id}>{missedStop.name}</ListGroup.Item>
@@ -61,9 +61,7 @@ export const AffectedRoute = ({
   routeDirection,
 }: AffectedRouteProps) => (
   <section className="pb-3">
-    <h2 className="c-diversion-panel__h2 c-detour-panel__subheader">
-      Affected route
-    </h2>
+    <h4 className="c-detour-panel__subheader">Affected route</h4>
     <div className="d-flex">
       <RoutePill className="me-2 align-top" routeName={routeName} />
 

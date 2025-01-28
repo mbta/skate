@@ -474,11 +474,11 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <section
                   class="pb-3"
                 >
-                  <h2
-                    class="c-diversion-panel__h2 c-detour-panel__subheader"
+                  <h4
+                    class="c-detour-panel__subheader"
                   >
                     Affected route
-                  </h2>
+                  </h4>
                   <div
                     class="d-flex"
                   >
@@ -508,11 +508,9 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                     </div>
                   </div>
                 </section>
-                <h2
-                  class="c-diversion-panel__h2"
-                >
+                <h4>
                   Directions
-                </h2>
+                </h4>
                 <div
                   class="c-autosized-textarea"
                   data-replicated-value="From null"
@@ -527,11 +525,9 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <section
                   class="pb-3"
                 >
-                  <h2
-                    class="c-diversion-panel__h2"
-                  >
+                  <h4>
                     Connection Points
-                  </h2>
+                  </h4>
                   <ul
                     class="list-group"
                   >
@@ -1340,11 +1336,11 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
               <section
                 class="pb-3"
               >
-                <h2
-                  class="c-diversion-panel__h2 c-detour-panel__subheader"
+                <h4
+                  class="c-detour-panel__subheader"
                 >
                   Affected route
-                </h2>
+                </h4>
                 <div
                   class="d-flex"
                 >
@@ -1374,11 +1370,9 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   </div>
                 </div>
               </section>
-              <h2
-                class="c-diversion-panel__h2"
-              >
+              <h4>
                 Directions
-              </h2>
+              </h4>
               <div
                 class="c-autosized-textarea"
                 data-replicated-value="From null"
@@ -1393,11 +1387,9 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
               <section
                 class="pb-3"
               >
-                <h2
-                  class="c-diversion-panel__h2"
-                >
+                <h4>
                   Connection Points
-                </h2>
+                </h4>
                 <ul
                   class="list-group"
                 >

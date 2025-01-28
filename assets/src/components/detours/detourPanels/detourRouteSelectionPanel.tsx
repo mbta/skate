@@ -73,9 +73,7 @@ export const DetourRouteSelectionPanel = ({
               noValidate={true}
             >
               <Form.Group>
-                <h2 className="c-diversion-panel__h2" id={selectId}>
-                  Choose route
-                </h2>
+                <h4 id={selectId}>Choose route</h4>
                 <Form.Select
                   // Never show the "valid" style
                   isValid={false}
@@ -108,7 +106,7 @@ export const DetourRouteSelectionPanel = ({
           </section>
 
           <section className="pb-3">
-            <h2 className="c-diversion-panel__h2">Choose direction</h2>
+            <h4>Choose direction</h4>
             {selectedRouteInfo.selectedRoute ? (
               <div className="position-relative">
                 {selectedRouteInfo.routePatterns ? (

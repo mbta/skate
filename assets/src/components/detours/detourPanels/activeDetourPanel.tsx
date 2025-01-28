@@ -119,7 +119,7 @@ export const ActiveDetourPanel = ({
           </dl>
 
           <section className="pb-3">
-            <h2 className="c-diversion-panel__h2">Detour Directions</h2>
+            <h4>Detour Directions</h4>
             {directions ? (
               <ListGroup as="ol">
                 {directions.map((d) => (
