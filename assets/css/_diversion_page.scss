@@ -165,6 +165,10 @@
   line-height: 1.5;
 }
 
+.c-diversion-panel__deletion-button {
+  --bs-btn-hover-color: #{$white};
+}
+
 .c-active-detour__alert-icon {
   height: 1.5rem;
   width: 1.5rem;

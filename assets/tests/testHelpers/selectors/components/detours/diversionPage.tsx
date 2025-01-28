@@ -3,15 +3,15 @@ import { byRole } from "testing-library-selector"
 
 export const reviewDetourButton = byRole("button", { name: "Review" })
 export const activateDetourButton = byRole("button", {
-  name: "Start Detour",
+  name: "Start detour",
 })
 export const editDetourButton = byRole("button", { name: "Edit" })
 export const deleteDetourButton = byRole("button", {
-  name: "Delete Draft",
+  name: "Delete draft",
   description: "Delete Draft",
 })
 export const confirmDeleteDetourButton = byRole("button", {
-  name: "Delete Draft",
+  name: "Delete draft",
   description: "Confirm Delete Draft",
 })
 export const cancelButton = byRole("button", { name: "Cancel" })
