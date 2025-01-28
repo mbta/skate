@@ -118,7 +118,7 @@ export const ActiveDetourPanel = ({
 
             <div>
               <dt id={dlDurationId} className="fw-bold me-2">
-                Est. duration
+                Est. Duration
               </dt>
               <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
             </div>
