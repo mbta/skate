@@ -15,7 +15,7 @@ const ChangingDuration = ({
     <span className="mb-4">
       <span className="fw-bold">Previous time length</span>{" "}
       <span>(estimate)</span>
-      <p className="mt-2" data-testid="change-detour-duration-previous-time">
+      <p className="mt-2 mb-4" data-testid="change-detour-duration-previous-time">
         {selectedDuration}
       </p>
     </span>
