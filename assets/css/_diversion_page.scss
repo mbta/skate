@@ -97,6 +97,11 @@
       display: none;
     }
   }
+
+  ol,
+  ul {
+    margin-top: unset;
+  }
 }
 
 .l-diversion-page-panel {
@@ -156,14 +161,15 @@
   font-weight: var(--font-weight-semi);
 }
 
-.c-diversion-panel__h2 {
+.c-diversion-panel__section-header {
   @include font-size($h4-font-size);
-  // font-size: 1.125rem; // h4 font size
-  // font-weight: var(--font-weight-semi);
+  font-weight: var(--font-weight-semi);
+  margin: 0 0 map-get($spacers, 2) 0;
 }
 
 .c-diversion-panel__help-text {
   line-height: 1.5;
+  margin-top: map-get($spacers, 2);
 }
 
 .c-active-detour__alert-icon {
@@ -188,6 +194,7 @@
 
   div {
     margin-bottom: map-get($spacers, 1);
+    line-height: 1.5rem;
   }
 
   // Remove leading margin from `<dd/>`'s

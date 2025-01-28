@@ -99,7 +99,7 @@ export const ActiveDetourPanel = ({
             routeDirection={routeDirection}
           />
 
-          <dl className="l-inline-dl m-0">
+          <dl className="l-inline-dl mt-2">
             <div>
               <dt id={dlReasonId} className="fw-bold me-2">
                 Reason
@@ -118,14 +118,16 @@ export const ActiveDetourPanel = ({
 
             <div>
               <dt id={dlDurationId} className="fw-bold me-2">
-                Est. Duration
+                Est. duration
               </dt>
               <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
             </div>
           </dl>
 
-          <section className="mb-4">
-            <h2 className="c-diversion-panel__h2">Detour Directions</h2>
+          <section className="my-4">
+            <h2 className="c-diversion-panel__section-header">
+              Detour Directions
+            </h2>
             {directions ? (
               <ListGroup as="ol">
                 {directions.map((d) => (

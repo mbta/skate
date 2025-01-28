@@ -19,7 +19,7 @@ export const ConnectionPoints = ({
   connectionPoints: [connectionPointStart, connectionPointEnd],
 }: ConnectionPointsProps) => (
   <section className="mb-4">
-    <h2 className="c-diversion-panel__h2">Connection Points</h2>
+    <h2 className="c-diversion-panel__section-header">Connection Points</h2>
     <ListGroup as="ul">
       <ListGroup.Item>{connectionPointStart}</ListGroup.Item>
       <ListGroup.Item>{connectionPointEnd}</ListGroup.Item>
@@ -33,7 +33,7 @@ interface MissedStopsProps {
 
 export const MissedStops = ({ missedStops }: MissedStopsProps) => (
   <section className="mb-4">
-    <h2 className="c-diversion-panel__h2">
+    <h2 className="c-diversion-panel__section-header">
       Missed Stops
       <Badge pill bg="missed-stop" className="ms-2 fs-4">
         {missedStops.length}
@@ -60,8 +60,8 @@ export const AffectedRoute = ({
   routeOrigin,
   routeDirection,
 }: AffectedRouteProps) => (
-  <section className="mb-2">
-    <h2 className="c-diversion-panel__h2 c-detour-panel__subheader">
+  <section className="mt-2">
+    <h2 className="c-diversion-panel__section-header c-detour-panel__subheader">
       Affected route
     </h2>
     <div className="d-flex">
@@ -71,10 +71,10 @@ export const AffectedRoute = ({
         <p className="my-0 c-diversion-panel__description">
           {routeDescription}
         </p>
-        <p className="my-0 text-muted c-diversion-panel__origin py-1">
+        <p className="my-1 text-muted c-diversion-panel__origin">
           {routeOrigin}
         </p>
-        <p className="my-0 small c-diversion-panel__direction py-1">
+        <p className="my-1 small c-diversion-panel__direction">
           {routeDirection}
         </p>
       </div>
