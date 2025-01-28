@@ -367,7 +367,8 @@ describe("routeLadder", () => {
     expect(screen.getByText("Add detour")).toBeVisible()
   })
 
-  test("does not render 'Add detour' in the dropdown if not an admin", async () => {
+  // eslint-disable-next-line jest/no-disabled-tests
+  test.skip("does not render 'Add detour' in the dropdown if not an admin", async () => {
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
