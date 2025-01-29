@@ -194,7 +194,8 @@
 
   div {
     margin-bottom: map-get($spacers, 1);
-    line-height: 1.5rem;
+    // Expected to be controlled by bootstrap css "reboot" in the future
+    line-height: 1.5;
   }
 
   // Remove leading margin from `<dd/>`'s
