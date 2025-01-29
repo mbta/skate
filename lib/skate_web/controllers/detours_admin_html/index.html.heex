@@ -16,16 +16,15 @@
   </thead>
 
   <tbody>
-    <%= for %{route: route, direction: direction, name: name, intersection: intersection, author_email: author_email, updated_at: updated_at, status: status} <- @detours do %>
+    <%= for detour <- @detours do %>
       <tr>
-        <td><%= route %>: <%= direction %> to <%= name %></td>
-        <td><%= intersection %></td>
-        <td><%= status %></td>
-        <td><%= author_email %></td>
+        <td><%= detour.route_name %>: <%= detour.direction %> to <%= detour.headsign %></td>
+        <td><%= detour.nearest_intersection %></td>
+        <td><%= detour.status %></td>
+        <td><%= detour.author.email %></td>
         <td>
-          <%= updated_at
-          |> DateTime.from_unix!()
-          |> DateTime.shift_zone!("America/New_York")
+          <%= detour.updated_at
+          |> DateTime.from_naive!("America/New_York")
           |> DateTime.to_string() %>
         </td>
       </tr>
