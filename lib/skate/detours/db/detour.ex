@@ -80,6 +80,11 @@ defmodule Skate.Detours.Db.Detour do
     end
 
     @doc """
+    Builds a query that _selects_ data from columns or extracts from the JSON `:state`.
+
+    **IMPORTANT**: When filtering fields for associations, you
+    MUST include the foreign keys used in the relationship,
+    otherwise Ecto will be unable to find associated records.
     """
     def select_fields(query \\ base(), fields) when is_list(fields) do
       %{virtual_fields: wanted_virtual_fields, fields: wanted_fields} = split_fields(fields)
@@ -101,7 +106,7 @@ defmodule Skate.Detours.Db.Detour do
       }
     end
 
-    def select_virtual_fields(query \\ base(), fields) when is_list(fields) do
+    defp select_virtual_fields(query, fields) when is_list(fields) do
       Enum.reduce(fields, query, fn field, query ->
         case field do
           :route_id -> select_route_id(query)
