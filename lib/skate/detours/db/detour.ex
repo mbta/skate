@@ -19,6 +19,7 @@ defmodule Skate.Detours.Db.Detour do
 
     ## Detour virtual fields
     # -------------------------------------------------------
+    field :status, Ecto.Enum, values: [:draft, :active, :past], virtual: true
 
     # Route properties
     field :route_id, :string, virtual: true
