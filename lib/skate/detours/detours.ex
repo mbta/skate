@@ -28,6 +28,7 @@ defmodule Skate.Detours.Detours do
   def list_detours(fields) do
     Skate.Detours.Db.Detour.Queries.select_fields(fields)
     |> preload([:author])
+    |> Skate.Detours.Db.Detour.Queries.sorted_by_last_updated()
     |> Repo.all()
   end
 
