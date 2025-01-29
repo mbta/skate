@@ -161,4 +161,65 @@ describe("DetourListPage", () => {
 
     expect(baseElement).toMatchSnapshot()
   })
+
+  test("orders active detour list by activatedAt value", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+
+    jest.mocked(fetchDetours).mockResolvedValue(
+      Ok({
+        active: [
+          {
+            // Drafted third
+            id: 8,
+            route: "2",
+            viaVariant: "Y",
+            direction: "Outbound",
+            name: "Headsign B",
+            intersection: "Street C & Avenue D",
+            // Updated second
+            updatedAt: 1724876500,
+            // Activated second
+            activatedAt: new Date(1724766392000),
+            estimatedDuration: "Until end of service",
+          },
+          {
+            // Drafted second
+            id: 7,
+            route: "2",
+            viaVariant: "Y",
+            direction: "Inbound",
+            name: "Headsign Z",
+            intersection: "Street C & Avenue D",
+            // Updated third
+            updatedAt: 1724876600,
+            // Activated first
+            activatedAt: new Date(1724656392000),
+            estimatedDuration: "Until end of service",
+          },
+          {
+            // Drafted first
+            id: 1,
+            route: "1",
+            viaVariant: "X",
+            direction: "Inbound",
+            name: "Headsign A",
+            intersection: "Street A & Avenue B",
+            // Updated first
+            updatedAt: 1724876400,
+            // Activated third
+            activatedAt: new Date(1724876392000),
+            estimatedDuration: "4 hours",
+          },
+        ],
+        draft: [],
+        past: [],
+      })
+    )
+
+    const { baseElement } = render(<DetourListPage />)
+
+    await screen.findByText("Headsign B")
+
+    expect(baseElement).toMatchSnapshot()
+  })
 })
