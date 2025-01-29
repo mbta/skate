@@ -18,7 +18,7 @@ export const detourListFactory = Factory.define<GroupedSimpleDetours>(() => {
         })
       ),
     ],
-    draft: undefined,
+    draft: [],
     past: [simpleDetourFactory.build({ name: "Headsign Z" })],
   }
 })

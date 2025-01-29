@@ -1,13 +1,4 @@
-import {
-  array,
-  coerce,
-  date,
-  Infer,
-  nullable,
-  number,
-  string,
-  type,
-} from "superstruct"
+import { array, coerce, date, Infer, number, string, type } from "superstruct"
 
 export type DetourId = number
 export interface SimpleDetour {
@@ -64,15 +55,15 @@ export const simpleDetourFromActivatedData = (
 })
 
 export interface GroupedSimpleDetours {
-  active?: SimpleDetour[]
-  draft?: SimpleDetour[]
-  past?: SimpleDetour[]
+  active: SimpleDetour[]
+  draft: SimpleDetour[]
+  past: SimpleDetour[]
 }
 
 export const GroupedDetoursData = type({
-  active: nullable(array(ActivatedDetourData)),
-  draft: nullable(array(SimpleDetourData)),
-  past: nullable(array(SimpleDetourData)),
+  active: array(ActivatedDetourData),
+  draft: array(SimpleDetourData),
+  past: array(SimpleDetourData),
 })
 
 export type GroupedDetoursData = Infer<typeof GroupedDetoursData>
@@ -80,7 +71,7 @@ export type GroupedDetoursData = Infer<typeof GroupedDetoursData>
 export const groupedDetoursFromData = (
   groupedDetours: GroupedDetoursData
 ): GroupedSimpleDetours => ({
-  active: groupedDetours.active?.map(simpleDetourFromActivatedData),
-  draft: groupedDetours.draft?.map((detour) => simpleDetourFromData(detour)),
-  past: groupedDetours.past?.map((detour) => simpleDetourFromData(detour)),
+  active: groupedDetours.active.map(simpleDetourFromActivatedData),
+  draft: groupedDetours.draft.map((detour) => simpleDetourFromData(detour)),
+  past: groupedDetours.past.map((detour) => simpleDetourFromData(detour)),
 })

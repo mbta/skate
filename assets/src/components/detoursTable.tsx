@@ -8,7 +8,7 @@ import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
 
 interface DetoursTableProps {
-  data: SimpleDetour[] | undefined
+  data: SimpleDetour[]
   onOpenDetour: (detourId: number) => void
   status: DetourStatus
   classNames?: string[]
@@ -40,7 +40,7 @@ export const DetoursTable = ({
   classNames = [],
 }: DetoursTableProps) => (
   <Table
-    hover={!!data}
+    hover={!!data.length}
     className={joinClasses([...classNames, "c-detours-table"])}
     variant={status === DetourStatus.Active ? "active-detour" : ""}
   >
@@ -57,7 +57,7 @@ export const DetoursTable = ({
       </tr>
     </thead>
     <tbody>
-      {data ? (
+      {data.length ? (
         <PopulatedDetourRows
           status={status}
           data={data}
@@ -118,7 +118,7 @@ const PopulatedDetourRows = ({
 
 const EmptyDetourRows = ({ message }: { message: string }) => (
   <tr aria-hidden>
-    <td colSpan={3} className="p-3 p-md-4">
+    <td colSpan={4} className="p-3 p-md-4">
       <div className="d-flex justify-content-center mb-3">
         <EmptyDetourTableIcon height="100px" width="100px" />
       </div>

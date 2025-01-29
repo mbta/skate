@@ -439,7 +439,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
           >
             <td
               class="p-3 p-md-4"
-              colspan="3"
+              colspan="4"
             >
               <div
                 class="d-flex justify-content-center mb-3"
