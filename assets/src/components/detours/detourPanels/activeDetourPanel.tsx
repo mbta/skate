@@ -99,27 +99,35 @@ export const ActiveDetourPanel = ({
             routeDirection={routeDirection}
           />
 
-          <dl className="l-inline-dl m-0">
-            <dt id={dlReasonId} className="fw-bold me-2">
-              Reason
-            </dt>
-            <dd aria-labelledby={dlReasonId}>{detourReason}</dd>
+          <dl className="l-inline-dl mt-2">
+            <div>
+              <dt id={dlReasonId} className="fw-bold me-2">
+                Reason
+              </dt>
+              <dd aria-labelledby={dlReasonId}>{detourReason}</dd>
+            </div>
 
-            <dt id={dlActiveSinceId} className="fw-bold me-2">
-              On detour since
-            </dt>
-            <dd aria-labelledby={dlActiveSinceId}>
-              {timeAgoLabelFromDate(activatedAt, currentTime)}
-            </dd>
+            <div>
+              <dt id={dlActiveSinceId} className="fw-bold me-2">
+                On detour since
+              </dt>
+              <dd aria-labelledby={dlActiveSinceId}>
+                {timeAgoLabelFromDate(activatedAt, currentTime)}
+              </dd>
+            </div>
 
-            <dt id={dlDurationId} className="fw-bold me-2">
-              Est. Duration
-            </dt>
-            <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
+            <div>
+              <dt id={dlDurationId} className="fw-bold me-2">
+                Est. Duration
+              </dt>
+              <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
+            </div>
           </dl>
 
-          <section className="pb-3">
-            <h2 className="c-diversion-panel__h2">Detour Directions</h2>
+          <section className="my-4">
+            <h2 className="c-diversion-panel__section-header">
+              Detour Directions
+            </h2>
             {directions ? (
               <ListGroup as="ol">
                 {directions.map((d) => (

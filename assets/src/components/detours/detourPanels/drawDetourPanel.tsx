@@ -60,8 +60,10 @@ export const DrawDetourPanel = ({
           routeDirection={routeDirection}
         />
 
-        <section className="pb-3">
-          <h2 className="c-diversion-panel__h2">Detour Directions</h2>
+        <section className="my-4">
+          <h2 className="c-diversion-panel__section-header">
+            Detour Directions
+          </h2>
           {directions ? (
             <ListGroup as="ol">
               {directions.map((d) => (

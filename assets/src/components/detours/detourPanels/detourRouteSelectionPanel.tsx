@@ -67,13 +67,13 @@ export const DetourRouteSelectionPanel = ({
 
       <Panel.Body className="d-flex flex-column">
         <Panel.Body.ScrollArea className="d-flex flex-column">
-          <section className="pb-3">
+          <section className="my-4">
             <Form
               // We're doing js validation, so disable HTML validation
               noValidate={true}
             >
               <Form.Group>
-                <h2 className="c-diversion-panel__h2" id={selectId}>
+                <h2 className="c-diversion-panel__section-header" id={selectId}>
                   Choose route
                 </h2>
                 <Form.Select
@@ -107,8 +107,10 @@ export const DetourRouteSelectionPanel = ({
             </Form>
           </section>
 
-          <section className="pb-3">
-            <h2 className="c-diversion-panel__h2">Choose direction</h2>
+          <section className="mb-4">
+            <h2 className="c-diversion-panel__section-header">
+              Choose direction
+            </h2>
             {selectedRouteInfo.selectedRoute ? (
               <div className="position-relative">
                 {selectedRouteInfo.routePatterns ? (
@@ -135,7 +137,7 @@ export const DetourRouteSelectionPanel = ({
                 )}
               </div>
             ) : (
-              <p className="fst-italic">
+              <p className="fst-italic my-2">
                 Select a route in order to choose a direction.
               </p>
             )}

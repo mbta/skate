@@ -97,6 +97,11 @@
       display: none;
     }
   }
+
+  ol,
+  ul {
+    margin-top: 0;
+  }
 }
 
 .l-diversion-page-panel {
@@ -156,13 +161,15 @@
   font-weight: var(--font-weight-semi);
 }
 
-.c-diversion-panel__h2 {
-  font-size: 1.125rem; // h4 font size
+.c-diversion-panel__section-header {
+  @include font-size($h4-font-size);
   font-weight: var(--font-weight-semi);
+  margin: 0 0 map-get($spacers, 2) 0;
 }
 
 .c-diversion-panel__help-text {
   line-height: 1.5;
+  margin-top: map-get($spacers, 2);
 }
 
 .c-diversion-panel__deletion-button {
@@ -184,9 +191,15 @@
   }
 
   // But display each `<dt/>` on it's own line
-  dt::before {
+  dl > dt::before {
     content: "";
     display: block;
+  }
+
+  div {
+    margin-bottom: map-get($spacers, 1);
+    // Expected to be controlled by bootstrap css "reboot" in the future
+    line-height: 1.5;
   }
 
   // Remove leading margin from `<dd/>`'s

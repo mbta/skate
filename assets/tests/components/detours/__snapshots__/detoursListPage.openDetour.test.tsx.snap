@@ -472,10 +472,10 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                    Edit
                 </button>
                 <section
-                  class="pb-3"
+                  class="mt-2"
                 >
                   <h2
-                    class="c-diversion-panel__h2 c-detour-panel__subheader"
+                    class="c-diversion-panel__section-header c-detour-panel__subheader"
                   >
                     Affected route
                   </h2>
@@ -496,39 +496,43 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                         Headsign 2
                       </p>
                       <p
-                        class="my-0 text-muted c-diversion-panel__origin py-1"
+                        class="my-1 text-muted c-diversion-panel__origin"
                       >
                         Route pattern From A2 - To B2
                       </p>
                       <p
-                        class="my-0 small c-diversion-panel__direction py-1"
+                        class="my-1 small c-diversion-panel__direction"
                       >
                         Outbound
                       </p>
                     </div>
                   </div>
                 </section>
-                <h2
-                  class="c-diversion-panel__h2"
-                >
-                  Directions
-                </h2>
-                <div
-                  class="c-autosized-textarea"
-                  data-replicated-value="From null"
-                >
-                  <textarea
-                    class="form-control"
-                    data-fs-element="Detour Text"
-                  >
-                    From null
-                  </textarea>
-                </div>
                 <section
-                  class="pb-3"
+                  class="mt-4"
                 >
                   <h2
-                    class="c-diversion-panel__h2"
+                    class="c-diversion-panel__section-header"
+                  >
+                    Directions
+                  </h2>
+                  <div
+                    class="c-autosized-textarea mb-2"
+                    data-replicated-value="From null"
+                  >
+                    <textarea
+                      class="form-control"
+                      data-fs-element="Detour Text"
+                    >
+                      From null
+                    </textarea>
+                  </div>
+                </section>
+                <section
+                  class="mb-4"
+                >
+                  <h2
+                    class="c-diversion-panel__section-header"
                   >
                     Connection Points
                   </h2>
@@ -1338,10 +1342,10 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                  Edit
               </button>
               <section
-                class="pb-3"
+                class="mt-2"
               >
                 <h2
-                  class="c-diversion-panel__h2 c-detour-panel__subheader"
+                  class="c-diversion-panel__section-header c-detour-panel__subheader"
                 >
                   Affected route
                 </h2>
@@ -1362,39 +1366,43 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                       Headsign 1
                     </p>
                     <p
-                      class="my-0 text-muted c-diversion-panel__origin py-1"
+                      class="my-1 text-muted c-diversion-panel__origin"
                     >
                       Route pattern From A1 - To B1
                     </p>
                     <p
-                      class="my-0 small c-diversion-panel__direction py-1"
+                      class="my-1 small c-diversion-panel__direction"
                     >
                       Outbound
                     </p>
                   </div>
                 </div>
               </section>
-              <h2
-                class="c-diversion-panel__h2"
-              >
-                Directions
-              </h2>
-              <div
-                class="c-autosized-textarea"
-                data-replicated-value="From null"
-              >
-                <textarea
-                  class="form-control"
-                  data-fs-element="Detour Text"
-                >
-                  From null
-                </textarea>
-              </div>
               <section
-                class="pb-3"
+                class="mt-4"
               >
                 <h2
-                  class="c-diversion-panel__h2"
+                  class="c-diversion-panel__section-header"
+                >
+                  Directions
+                </h2>
+                <div
+                  class="c-autosized-textarea mb-2"
+                  data-replicated-value="From null"
+                >
+                  <textarea
+                    class="form-control"
+                    data-fs-element="Detour Text"
+                  >
+                    From null
+                  </textarea>
+                </div>
+              </section>
+              <section
+                class="mb-4"
+              >
+                <h2
+                  class="c-diversion-panel__section-header"
                 >
                   Connection Points
                 </h2>
