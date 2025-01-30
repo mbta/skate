@@ -9,6 +9,8 @@ import { render, screen, waitFor } from "@testing-library/react"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
 import { byRole } from "testing-library-selector"
+import { groupedDetoursFromData } from "../../../src/models/detoursList"
+import { activeDetourDataFactory } from "../../factories/detourListFactory"
 
 jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
 
@@ -200,5 +202,56 @@ describe("DetourListPage", () => {
     )
     expect(screen.queryByText("No active detours.")).not.toBeInTheDocument()
     expect(screen.queryByText("No closed detours.")).not.toBeInTheDocument()
+  })
+
+  test("orders active detour list by activatedAt value", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+
+    jest.mocked(fetchDetours).mockResolvedValue(
+      Ok(
+        groupedDetoursFromData({
+          active: [
+            activeDetourDataFactory.build({
+              details: {
+                // Drafted third
+                id: 8,
+                // Updated second
+                updated_at: 1724876500,
+              },
+              // Activated second
+              activated_at: new Date(1724766392000),
+            }),
+            activeDetourDataFactory.build({
+              details: {
+                // Drafted second
+                id: 7,
+                // Updated third
+                updated_at: 1724876600,
+              },
+              // Activated first
+              activated_at: new Date(1724656392000),
+            }),
+            activeDetourDataFactory.build({
+              details: {
+                // Drafted first
+                id: 1,
+                // Updated first
+                updated_at: 1724876400,
+              },
+              // Activated third
+              activated_at: new Date(1724876392000),
+            }),
+          ],
+          draft: [],
+          past: [],
+        })
+      )
+    )
+
+    const { baseElement } = render(<DetourListPage />)
+
+    await screen.findAllByText(/Headsign/)
+
+    expect(baseElement).toMatchSnapshot()
   })
 })
