@@ -57,14 +57,7 @@ export const DetourListPage = () => {
             classNames={["d-flex"]}
           />
           <DetoursTable
-            data={detours.active?.sort((a, b) =>
-              // Ahhh exactly what Kayla warned about -- using a generalized type for all SimpleDetours
-              // means it's slightly more convoluted to work with the type. Active detours will always have
-              // an activatedAt value, but need this conditional because it is technically a conditional attribute
-              a.activatedAt && b.activatedAt
-                ? b.activatedAt.getTime() - a.activatedAt.getTime()
-                : 0
-            )}
+            data={detours.active}
             status={DetourStatus.Active}
             onOpenDetour={onOpenDetour}
             classNames={["mb-5"]}
