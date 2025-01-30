@@ -56,19 +56,28 @@ defmodule Skate.Detours.SnapshotSerde do
   end
 
   defp validate_serialized_snapshot(
-         serialized_snapshot,
-         %Detour{id: id, state: state} = detour
+         %{"context" => serialized_context} = serialized_snapshot,
+         %Detour{id: id, state: %{"context" => state_context} = state} = detour
        ) do
-    if serialized_snapshot === state do
+    relevant_state_keys = Map.keys(serialized_snapshot)
+    relevant_context_keys = Map.keys(serialized_context)
+    scoped_state_context = Map.take(state_context, relevant_context_keys)
+
+    scoped_state =
+      state
+      |> Map.take(relevant_state_keys)
+      |> Map.put("context", scoped_state_context)
+
+    if serialized_snapshot === scoped_state do
       serialized_snapshot
     else
-      state = fix_snapshot_activated_at(state, detour)
+      scoped_state = fix_snapshot_activated_at(scoped_state, detour)
 
       Logger.error(
         "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id} diff=#{inspect(MapDiff.diff(state, serialized_snapshot))}"
       )
 
-      state
+      scoped_state
     end
   end
 
