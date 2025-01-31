@@ -6,7 +6,6 @@ defmodule SkateWeb.DetoursAdminController do
   alias Skate.Detours.Detours
   alias Skate.Settings.User
   use SkateWeb, :controller
-  require Logger
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do

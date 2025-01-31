@@ -4,6 +4,12 @@ defmodule SkateWeb.DetoursAdminHTML do
   embed_templates "detours_admin_html/*"
 
   def extract_pre(map, field) do
-    inspect(Map.get(map, field), pretty: true, printable_limit: :infinity, limit: :infinity)
+    map
+    |> Map.get(field)
+    |> extract_pre()
+  end
+
+  def extract_pre(data) do
+    inspect(data, pretty: true, printable_limit: :infinity, limit: :infinity)
   end
 end
