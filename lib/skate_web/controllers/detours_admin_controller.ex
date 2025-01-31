@@ -24,9 +24,14 @@ defmodule SkateWeb.DetoursAdminController do
         # Status column; Required for categorizing the detour
         :state_value,
 
-        # For some reason, without the id explicitly present, we're not able to preload the association
-        :author_id,
-        author: [:email]
+        # For some reason, without the primary keys explicitly present in the
+        # query, we're not able to preload the association. So we need the
+        # `User.id` and `Detour.id` explicitly in the query.
+        :id,
+        author: [
+          :email,
+          :id
+        ]
       ]
       |> Detours.list_detours()
       |> Enum.map(fn detour ->
