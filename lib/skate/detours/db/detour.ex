@@ -127,11 +127,21 @@ defmodule Skate.Detours.Db.Detour do
       order_by(query, desc: :updated_at)
     end
 
-    def with_author(query \\ base(), key \\ :author) do
+    @doc """
+    Joins the `Skate.Settings.Db.User` struct into the `Skate.Detours.Db.Detour`
+    via Ecto preload.
+
+    > ### Primary Keys required in query when using `with_author/1` {:.warning}
+    > When preloading structs, Ecto requires that primary key fields are also
+    > queried on all preloaded structs.
+    > This means that when querying `:author` via `select_fields`, you need to
+    > explicitly request `:id` on both the `Skate.Detours.Db.Detour` and the
+    > `Skate.Settings.Db.User`.
+    """
+    def with_author(query \\ base()) do
       from([detour: d] in query,
         join: a in assoc(d, :author),
-        as: :author,
-        select_merge: %{^key => a}
+        preload: [author: a]
       )
     end
 
