@@ -10,6 +10,9 @@ defmodule Skate.Detours.Db.Detour do
 
   typed_schema "detours" do
     field :state, :map
+
+    field(:status, Ecto.Enum, values: [:draft, :active, :past])
+
     belongs_to :author, User
 
     # When this detour was activated
