@@ -18,7 +18,8 @@ defmodule Skate.DetourFactory do
       def detour_factory do
         %Skate.Detours.Db.Detour{
           author: build(:user),
-          state: build(:detour_snapshot)
+          state: build(:detour_snapshot),
+          status: :draft
         }
       end
 
@@ -80,7 +81,8 @@ defmodule Skate.DetourFactory do
         %{
           detour
           | state: activated(detour.state, activated_at, estimated_duration),
-            activated_at: activated_at
+            activated_at: activated_at,
+            status: :active
         }
       end
 
@@ -103,7 +105,7 @@ defmodule Skate.DetourFactory do
       end
 
       def deactivated(%Skate.Detours.Db.Detour{} = detour) do
-        %{detour | state: deactivated(detour.state)}
+        %{detour | state: deactivated(detour.state), status: :past}
       end
 
       def deactivated(%{"value" => %{}} = state) do
