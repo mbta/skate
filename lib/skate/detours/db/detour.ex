@@ -8,6 +8,8 @@ defmodule Skate.Detours.Db.Detour do
 
   alias Skate.Settings.Db.User
 
+  @type detour_status :: :active | :draft | :past
+
   typed_schema "detours" do
     field :state, :map
     belongs_to :author, User
@@ -20,7 +22,7 @@ defmodule Skate.Detours.Db.Detour do
     ## Detour virtual fields
     # -------------------------------------------------------
     field(:status, Ecto.Enum, values: [:draft, :active, :past], virtual: true) ::
-      simple_status() | nil
+      detour_status() | nil
 
     # Route properties
     field :route_id, :string, virtual: true
