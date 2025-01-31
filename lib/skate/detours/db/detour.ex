@@ -8,6 +8,8 @@ defmodule Skate.Detours.Db.Detour do
 
   alias Skate.Settings.Db.User
 
+  @type detour_status :: :active | :draft | :past
+
   typed_schema "detours" do
     field :state, :map
     belongs_to :author, User
@@ -19,6 +21,8 @@ defmodule Skate.Detours.Db.Detour do
 
     ## Detour virtual fields
     # -------------------------------------------------------
+    field(:status, Ecto.Enum, values: [:draft, :active, :past], virtual: true) ::
+      detour_status() | nil
 
     # Route properties
     field :route_id, :string, virtual: true
@@ -61,36 +65,101 @@ defmodule Skate.Detours.Db.Detour do
       from(Skate.Detours.Db.Detour, as: :detour, select: [])
     end
 
+    @doc """
+    Builds a query that _selects_ data from columns or extracts from the JSON `:state`.
+    """
+    def select_fields(query \\ base(), fields) when is_list(fields) do
+      %{virtual_fields: wanted_virtual_fields, fields: wanted_fields} = split_fields(fields)
+
+      query
+      |> add_author?(wanted_fields)
+      |> select_merge(^wanted_fields)
+      |> select_virtual_fields(wanted_virtual_fields)
+    end
+
+    defp split_fields(input_fields) do
+      schema_virtual_fields = Skate.Detours.Db.Detour.__schema__(:virtual_fields)
+
+      {virtual_fields, fields} =
+        Enum.split_with(input_fields, fn field -> field in schema_virtual_fields end)
+
+      %{
+        virtual_fields: virtual_fields,
+        fields: fields
+      }
+    end
+
+    defp select_virtual_fields(query, fields) when is_list(fields) do
+      Enum.reduce(fields, query, fn field, query ->
+        case field do
+          :route_id -> select_route_id(query)
+          :route_name -> select_route_name(query)
+          :route_pattern_id -> select_route_pattern_id(query)
+          :route_pattern_name -> select_route_pattern_name(query)
+          :headsign -> select_route_pattern_headsign(query)
+          :direction -> select_direction(query)
+          :nearest_intersection -> select_starting_intersection(query)
+          :estimated_duration -> select_estimated_duration(query)
+          :state_value -> select_state_value(query, :state_value)
+          _unknown -> query
+        end
+      end)
+    end
+
     def sorted_by_last_updated(query \\ base()) do
       order_by(query, desc: :updated_at)
     end
 
-    def with_author(query \\ base(), key \\ :author) do
+    defp add_author?(query, fields) do
+      if Keyword.has_key?(fields, :author) do
+        with_author(query)
+      else
+        query
+      end
+    end
+
+    @doc """
+    Joins the `Skate.Settings.Db.User` struct into the `Skate.Detours.Db.Detour`
+    via Ecto preload.
+
+    > ### Primary Keys required in query when using `with_author/1` {:.warning}
+    > When preloading structs, Ecto requires that primary key fields are also
+    > queried on all preloaded structs.
+    > This means that when querying `:author` via `select_fields`, you need to
+    > explicitly request `:id` on both the `Skate.Detours.Db.Detour` and the
+    > `Skate.Settings.Db.User`.
+    """
+    def with_author(query \\ base()) do
       from([detour: d] in query,
         join: a in assoc(d, :author),
-        as: :author,
-        select_merge: %{^key => a}
+        preload: [author: a]
       )
     end
 
     def select_detour_list_info(query \\ base()) do
       query
-      |> select_merge([
-        :author_id,
-        :updated_at,
+      |> select_fields([
+        # Table Columns
         :id,
-        :activated_at
+        :author_id,
+        :activated_at,
+        :updated_at,
+
+        # Virtual Fields
+        :route_id,
+        :route_name,
+        :route_pattern_id,
+        :route_pattern_name,
+        :headsign,
+        :direction,
+        :nearest_intersection,
+        :estimated_duration,
+        :state_value,
+
+        # Nested Fields
+        author: [:email, :id]
       ])
       |> sorted_by_last_updated()
-      |> with_author()
-      |> select_state_value()
-      |> select_starting_intersection()
-      |> select_route_id()
-      |> select_route_name()
-      |> select_route_pattern_headsign()
-      |> select_direction()
-      |> select_estimated_duration()
-      |> select_route_pattern_id()
     end
 
     def select_route_id(query \\ base(), key \\ :route_id) do

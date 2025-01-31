@@ -25,6 +25,12 @@ defmodule Skate.Detours.Detours do
     Repo.all(Skate.Detours.Db.Detour.Queries.select_detour_list_info())
   end
 
+  def list_detours(fields) do
+    Skate.Detours.Db.Detour.Queries.select_fields(fields)
+    |> Skate.Detours.Db.Detour.Queries.sorted_by_last_updated()
+    |> Repo.all()
+  end
+
   @doc """
   Returns the list of detours by route id with author, sorted by updated_at
 
@@ -116,7 +122,7 @@ defmodule Skate.Detours.Detours do
     nil
   end
 
-  @type detour_type :: :active | :draft | :past
+  @type detour_type :: Skate.Detours.Db.Detour.detour_status()
 
   @doc """
   Takes a `Skate.Detours.Db.Detour` struct and a `Skate.Settings.Db.User` id
