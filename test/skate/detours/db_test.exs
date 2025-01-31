@@ -58,5 +58,20 @@ defmodule Skate.Detours.DbTest do
       detour = detour_fixture()
       assert %Ecto.Changeset{} = Detours.change_detour(detour)
     end
+
+    test "change_detour/1 does not allow a non-nil activated_at column to be updated with nil" do
+      detour = detour_fixture()
+
+      activated_at = DateTime.to_iso8601(Skate.DetourFactory.browser_date())
+
+      changeset = Detours.change_detour(detour, %{"activated_at" => activated_at})
+      assert {:ok, _} = fetch_change(changeset, :activated_at)
+
+      assert :error =
+               changeset
+               |> Map.get(:data)
+               |> Detours.change_detour(%{"activated_at" => nil})
+               |> fetch_change(:activated_at)
+    end
   end
 end
