@@ -1,0 +1,46 @@
+<p>Valid?: <%= @matches %></p>
+<p>Route: <%= @detour.route %>: <%= @detour.direction %> to <%= @detour.name %></p>
+<p>Intersection: <%= @detour.intersection %></p>
+<p>Status: <%= @detour.status %></p>
+<p>Author: <%= @author.email %></p>
+<p>
+  Updated At: <%= @detour.updated_at
+  |> DateTime.from_unix!()
+  |> DateTime.shift_zone!("America/New_York")
+  |> DateTime.to_string() %>
+</p>
+<p>
+  Activated At: <%= Map.get(@detour, :activated_at) &&
+    Map.get(@detour, :activated_at)
+    |> DateTime.from_unix!()
+    |> DateTime.shift_zone!("America/New_York")
+    |> DateTime.to_string() %>
+</p>
+
+<details>
+  <summary>Changed</summary>
+  <pre>
+    <%= extract_pre(@detour_diff, :changed) %>
+  </pre>
+</details>
+
+<details>
+  <summary>Added (Present in serialized snapshot)</summary>
+  <pre>
+    <%= extract_pre(@detour_diff, :added) %>
+  </pre>
+</details>
+
+<details>
+  <summary>Removed (Present in state)</summary>
+  <pre>
+    <%= extract_pre(@detour_diff, :removed) %>
+  </pre>
+</details>
+
+<details>
+  <summary>Value</summary>
+  <pre>
+    <%= extract_pre(@detour_diff, :value) %>
+  </pre>
+</details>

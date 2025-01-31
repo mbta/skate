@@ -4,7 +4,9 @@ defmodule SkateWeb.DetoursAdminController do
   """
 
   alias Skate.Detours.Detours
+  alias Skate.Settings.User
   use SkateWeb, :controller
+  require Logger
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -29,6 +31,22 @@ defmodule SkateWeb.DetoursAdminController do
     conn
     |> assign(:detours, detours)
     |> render(:index,
+      layout: {SkateWeb.Layouts, "barebones.html"},
+      title: "Skate Detours"
+    )
+  end
+
+  def show(conn, %{"id" => id}) do
+    detour = Detours.get_detour!(id)
+    author = User.get_by_id(detour.author_id)
+    {matches, detour_diff} = Skate.Detours.SnapshotSerde.compare_snapshots(detour)
+
+    conn
+    |> assign(:detour, Detours.db_detour_to_detour(detour))
+    |> assign(:author, author)
+    |> assign(:detour_diff, detour_diff)
+    |> assign(:matches, matches)
+    |> render(:show,
       layout: {SkateWeb.Layouts, "barebones.html"},
       title: "Skate Detours"
     )
