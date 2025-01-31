@@ -76,7 +76,7 @@ defmodule Skate.Detours.SnapshotSerde do
       serialized_snapshot
     else
       state = fix_snapshot_activated_at(state, detour)
-      Sentry.capture_message(mismatch_message(id), extra: diff)
+      Sentry.capture_message(mismatch_message(id), extra: %{diff: diff})
 
       Logger.error("#{mismatch_message(id)} #{diff_details(diff)}")
 
