@@ -151,7 +151,8 @@ defmodule Notifications.Db.Notification do
     @spec select_detour_info() :: Ecto.Query.t()
     def select_detour_info(query \\ base()) do
       from([notification: n] in query,
-        left_join: detour in subquery(Notifications.Db.Detour.Queries.get_derived_info()),
+        left_join:
+          detour in subquery(Notifications.Db.Detour.Queries.select_detour_notification_info()),
         on: detour.id == n.detour_id,
         select_merge: %{
           detour: detour
