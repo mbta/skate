@@ -71,7 +71,9 @@ export type GroupedDetoursData = Infer<typeof GroupedDetoursData>
 export const groupedDetoursFromData = (
   groupedDetours: GroupedDetoursData
 ): GroupedSimpleDetours => ({
-  active: groupedDetours.active.map(simpleDetourFromActivatedData),
+  active: groupedDetours.active
+    .map(simpleDetourFromActivatedData)
+    .sort((a, b) => b.activatedAt.getTime() - a.activatedAt.getTime()),
   draft: groupedDetours.draft.map((detour) => simpleDetourFromData(detour)),
   past: groupedDetours.past.map((detour) => simpleDetourFromData(detour)),
 })
