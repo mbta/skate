@@ -90,6 +90,7 @@ defmodule Skate.Detours.Db.Detour do
       %{virtual_fields: wanted_virtual_fields, fields: wanted_fields} = split_fields(fields)
 
       query
+      |> add_author?(wanted_fields)
       |> select_merge(^wanted_fields)
       |> select_virtual_fields(wanted_virtual_fields)
     end
@@ -127,6 +128,14 @@ defmodule Skate.Detours.Db.Detour do
       order_by(query, desc: :updated_at)
     end
 
+    defp add_author?(query, fields) do
+      if Keyword.has_key?(fields, :author) do
+        with_author(query)
+      else
+        query
+      end
+    end
+
     @doc """
     Joins the `Skate.Settings.Db.User` struct into the `Skate.Detours.Db.Detour`
     via Ecto preload.
@@ -147,9 +156,6 @@ defmodule Skate.Detours.Db.Detour do
 
     def select_detour_list_info(query \\ base()) do
       query
-      |> preload([
-        :author
-      ])
       |> select_fields([
         # Table Columns
         :id,
@@ -169,7 +175,7 @@ defmodule Skate.Detours.Db.Detour do
         :state_value,
 
         # Nested Fields
-        author: [:email]
+        author: [:email, :id]
       ])
       |> sorted_by_last_updated()
     end
