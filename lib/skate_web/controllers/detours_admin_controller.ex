@@ -8,22 +8,34 @@ defmodule SkateWeb.DetoursAdminController do
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    raw_detours =
-      Detours.list_detours()
-
     detours =
-      Enum.map(raw_detours, fn detour ->
-        case Detours.db_detour_to_detour(detour) do
-          nil ->
-            nil
+      [
+        # Route column
+        :route_name,
+        :direction,
+        :headsign,
 
-          map ->
-            Map.put(
-              map,
-              :author_email,
-              detour.author.email
-            )
-        end
+        # Intersection column
+        :nearest_intersection,
+
+        # Updated At column
+        :updated_at,
+
+        # Status column; Required for categorizing the detour
+        :state_value,
+
+        # For some reason, without the primary keys explicitly present in the
+        # query, we're not able to preload the association. So we need the
+        # `User.id` and `Detour.id` explicitly in the query.
+        :id,
+        author: [
+          :email,
+          :id
+        ]
+      ]
+      |> Detours.list_detours()
+      |> Enum.map(fn detour ->
+        %{detour | status: Skate.Detours.Detours.categorize_detour(detour)}
       end)
 
     conn
