@@ -58,7 +58,7 @@ defmodule Skate.Repo.Migrations.BackfillDetourStatus do
       # function in this or "vendor" it into this file
       |> Ecto.Changeset.put_change(
         :status,
-        Skate.Detours.Detours.categorize_detour(%{state: state})
+        categorize_detour_frozen(state)
       )
       |> repo().update()
       |> case do
@@ -68,6 +68,15 @@ defmodule Skate.Repo.Migrations.BackfillDetourStatus do
     end)
     |> (fn changed -> {:ok, changed} end).()
   end
+
+  # "Vendored" version of `categorize_detour` at this current point in time.
+  defp categorize_detour_frozen(%{"value" => %{"Detour Drawing" => %{"Active" => _}}}),
+    do: :active
+
+  defp categorize_detour_frozen(%{"value" => %{"Detour Drawing" => "Past"}}),
+    do: :past
+
+  defp categorize_detour_frozen(_detour_context), do: :draft
 
   defp throttle_change_in_batches(query_fun, change_fun, last_pos \\ 0)
   defp throttle_change_in_batches(_query_fun, _change_fun, nil), do: :ok
