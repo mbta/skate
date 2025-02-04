@@ -121,7 +121,7 @@ defmodule Skate.Detours.Detours do
     nil
   end
 
-  @type detour_type :: :active | :draft | :past
+  @type detour_type :: Skate.Detours.Db.Detour.status()
 
   @doc """
   Takes a `Skate.Detours.Db.Detour` struct and a `Skate.Settings.Db.User` id

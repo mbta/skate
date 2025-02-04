@@ -8,11 +8,12 @@ defmodule Skate.Detours.Db.Detour do
 
   alias Skate.Settings.Db.User
 
+  @type status :: :active | :draft | :past
+
   typed_schema "detours" do
     field :state, :map
 
-    field(:status, Ecto.Enum, values: [:draft, :active, :past]) ::
-      Skate.Detours.Detours.detour_type()
+    field(:status, Ecto.Enum, values: [:draft, :active, :past]) :: status()
 
     belongs_to :author, User
 
