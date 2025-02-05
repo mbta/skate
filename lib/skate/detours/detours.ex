@@ -445,4 +445,137 @@ defmodule Skate.Detours.Detours do
     |> DateTime.from_naive!("Etc/UTC")
     |> DateTime.to_unix()
   end
+
+  @spec normalize_from_frontend(map(), any()) :: %{
+          :author_id => binary(),
+          :state => map(),
+          optional(:activated_at) => any(),
+          optional(:deactivated_at) => any(),
+          optional(:id) => any(),
+          optional(:status) => :active | :draft | :past
+        }
+  def normalize_from_frontend(params, author_id) do
+    allowed_params = Map.take(params, ["id", "state", "activated_at", "deactivated_at"])
+
+    normalized_params =
+      Map.merge(
+        %{"id" => nil, "state" => nil, "activated_at" => nil, "deactivated_at" => nil},
+        allowed_params
+      )
+
+    do_normalize_from_frontend(normalized_params, author_id)
+  end
+
+  # create
+  defp do_normalize_from_frontend(%{"id" => nil, "state" => state}, author_id) do
+    %{
+      state: state,
+      author_id: author_id,
+      status: :draft
+    }
+  end
+
+  # update
+  defp do_normalize_from_frontend(
+         %{"id" => id, "state" => state, "activated_at" => nil},
+         author_id
+       ) do
+    %{
+      id: id,
+      state: state,
+      author_id: author_id
+    }
+  end
+
+  # activate
+  defp do_normalize_from_frontend(
+         %{"id" => id, "state" => state, "activated_at" => activated_at, "deactivated_at" => nil},
+         author_id
+       )
+       when not is_nil(activated_at) do
+    %{
+      id: id,
+      state: state,
+      author_id: author_id,
+      activated_at: activated_at,
+      status: :active
+    }
+  end
+
+  # de-activate
+  defp do_normalize_from_frontend(
+         %{"id" => id, "state" => state, "deactivated_at" => deactivated_at},
+         author_id
+       )
+       when not is_nil(deactivated_at) do
+    %{
+      id: id,
+      state: state,
+      author_id: author_id,
+      deactivated_at: deactivated_at,
+      status: :past
+    }
+  end
+
+  @spec normalize_from_backend(
+          Skate.Detours.Detour.WithState.t()
+          | Skate.Detours.Detour.Detailed.t()
+          | %{
+              active: [Skate.Detours.Detour.Detailed.t()],
+              draft: [Skate.Detours.Detour.Detailed.t()],
+              past: [Skate.Detours.Detour.Detailed.t()]
+            }
+        ) :: %{
+          my_activated_at: nil,
+          my_direction: nil,
+          my_estimated_duration: nil,
+          my_id: nil,
+          my_intersection: nil,
+          my_name: nil,
+          my_route: nil,
+          my_updated_at: nil,
+          my_via_variant: nil
+        }
+  def normalize_from_backend(%Skate.Detours.Detour.WithState{} = _detour) do
+    # unpack data into decided upon interface from current struct type
+    %{
+      my_id: nil,
+      my_route: nil,
+      my_via_variant: nil,
+      my_direction: nil,
+      my_name: nil,
+      my_intersection: nil,
+      my_updated_at: nil,
+      my_activated_at: nil,
+      my_estimated_duration: nil
+    }
+  end
+
+  def normalize_from_backend(%{active: active, draft: draft, past: past}) do
+    %{
+      active: normalize_from_backend(active),
+      draft: normalize_from_backend(draft),
+      past: normalize_from_backend(past)
+    }
+  end
+
+  def normalize_from_backend(nil), do: nil
+
+  def normalize_from_backend([%Skate.Detours.Detour.Detailed{} | _] = detours),
+    do: Enum.map(detours, &normalize_from_backend/1)
+
+  def normalize_from_backend(%Skate.Detours.Detour.Detailed{} = _detour) do
+    # unpack data into decided upon interface from current struct type
+    %{
+      my_id: nil,
+      my_route: nil,
+      my_via_variant: nil,
+      my_direction: nil,
+      my_name: nil,
+      my_intersection: nil,
+      my_updated_at: nil,
+      my_activated_at: nil,
+      my_estimated_duration: nil
+    }
+  end
 end

@@ -14,6 +14,9 @@ defmodule SkateWeb.DetoursController do
   def update_snapshot(conn, %{"snapshot" => snapshot}) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
+    # normalized_request = Detours.normalize_from_frontend(snapshot, user_id)
+    # {:ok, %{id: returned_uuid}} = Detours.upsert(normalized_request)
+
     {:ok, %Skate.Detours.Db.Detour{id: returned_uuid}} =
       Detours.upsert_from_snapshot(user_id, snapshot)
 
@@ -24,6 +27,9 @@ defmodule SkateWeb.DetoursController do
   def detour(conn, %{"detour_id" => detour_id}) do
     detour = Detours.get_detour_with_state!(detour_id)
 
+    # normalized_detour = Detours.normalize_from_backend(detour)
+    # json(conn, %{data: normalized_detour})
+
     json(conn, %{data: detour})
   end
 
@@ -32,6 +38,9 @@ defmodule SkateWeb.DetoursController do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
     detours = Detours.grouped_detours(user_id)
+
+    # normalized_detours = Enum.map(detours, &Detours.normalize_from_backend/1)
+    # json(conn, %{data: normalized_detours})
 
     json(conn, %{data: detours})
   end
