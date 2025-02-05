@@ -16,6 +16,8 @@ defmodule Skate.Application do
 
     start_data_processes? = Application.get_env(:skate, :start_data_processes)
 
+    Skate.Telemetry.setup_telemetry()
+
     # List all child processes to be supervised
     children =
       [{Skate.Repo, []}] ++
