@@ -123,18 +123,7 @@ defmodule SkateWeb.DetoursController do
                shape_id: shape_id
              }) do
         try do
-          case trip_modification_publisher().publish_modification(modification, shape,
-                 is_draft?: true
-               ) do
-            {:ok, _} ->
-              Logger.info(fn -> "publish_modification: message successfully sent" end)
-
-            {{:error, error}, _} ->
-              Logger.warning(fn -> "publish_modification returned error: #{error}" end)
-
-            _ ->
-              nil
-          end
+          trip_modification_publisher().publish_modification(modification, shape, is_draft?: true)
         catch
           # May throw if the publishing server doesn't exist, which we can ignore.
           :exit, {:noproc, _} ->

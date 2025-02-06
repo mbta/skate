@@ -1,5 +1,7 @@
 defmodule Skate.Detours.TripModificationPublisher do
   @behaviour Skate.Detours.TripModificationPublisher
+  require Logger
+
   @moduledoc """
   Connects to the MQTT Broker, then allows sending `Realtime.TripModification`'s
   to the Broker.
@@ -152,9 +154,12 @@ defmodule Skate.Detours.TripModificationPublisher do
                # Send at least once
                qos: 1
              }) do
+        Logger.info(fn -> "publish_modification: message successfully sent" end)
         :ok
       else
-        res -> res
+        {:error, error} ->
+          Logger.warning(fn -> "publish_modification returned error: #{error}" end)
+          {:error, error}
       end
 
     {
