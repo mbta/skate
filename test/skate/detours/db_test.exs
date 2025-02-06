@@ -58,5 +58,29 @@ defmodule Skate.Detours.DbTest do
       detour = detour_fixture()
       assert %Ecto.Changeset{} = Detours.change_detour(detour)
     end
+
+    test "change_detour/1 changes :status when :state updates" do
+      detour = build(:detour, status: nil)
+
+      assert nil ==
+               detour
+               |> Detours.change_detour(%{})
+               |> Ecto.Changeset.get_change(:status)
+
+      assert :draft ==
+               detour
+               |> Detours.change_detour(%{state: with_id(detour.state, 100)})
+               |> Ecto.Changeset.get_change(:status)
+
+      assert :active ==
+               detour
+               |> Detours.change_detour(%{state: activated(detour.state)})
+               |> Ecto.Changeset.get_change(:status)
+
+      assert :past ==
+               detour
+               |> Detours.change_detour(%{state: deactivated(detour.state)})
+               |> Ecto.Changeset.get_change(:status)
+    end
   end
 end

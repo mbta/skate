@@ -84,7 +84,7 @@ defmodule Skate.Detours.Detours do
   end
 
   @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | nil
-  @spec db_detour_to_detour(status :: detour_type(), Detour.t()) :: DetailedDetour.t() | nil
+  @spec db_detour_to_detour(status :: Detour.status(), Detour.t()) :: DetailedDetour.t() | nil
   def db_detour_to_detour(%{} = db_detour) do
     db_detour_to_detour(categorize_detour(db_detour), db_detour)
   end
@@ -121,16 +121,14 @@ defmodule Skate.Detours.Detours do
     nil
   end
 
-  @type detour_type :: :active | :draft | :past
-
   @doc """
   Takes a `Skate.Detours.Db.Detour` struct and a `Skate.Settings.Db.User` id
-  and returns a `t:detour_type/0` based on the state of the detour.
+  and returns a `t:Detour.status/0` based on the state of the detour.
 
   otherwise returns `nil` if it is a draft but does not belong to the provided
   user
   """
-  @spec categorize_detour(detour :: map()) :: detour_type()
+  @spec categorize_detour(detour :: map()) :: Detour.status()
   def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}),
     do: :active
 
@@ -284,7 +282,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  @spec broadcast_detour(detour_type(), Detour.t(), DbUser.id()) :: :ok
+  @spec broadcast_detour(Detour.status(), Detour.t(), DbUser.id()) :: :ok
   defp broadcast_detour(:draft, detour, author_id) do
     author_uuid =
       author_id
@@ -351,7 +349,7 @@ defmodule Skate.Detours.Detours do
   Retrieves a `Skate.Detours.Db.Detour` from the database by it's ID and then resolves the
   detour's category via `categorize_detour/2`
   """
-  @spec categorize_detour_by_id(detour_id :: nil | integer()) :: detour_type() | nil
+  @spec categorize_detour_by_id(detour_id :: nil | integer()) :: Detour.status() | nil
   def categorize_detour_by_id(nil = _detour_id), do: nil
 
   def categorize_detour_by_id(detour_id) do
@@ -367,8 +365,8 @@ defmodule Skate.Detours.Detours do
         ) :: :ok | nil
   @spec send_notification(%{
           next_detour: Skate.Detours.Db.Detour.t() | nil,
-          next: detour_type() | nil,
-          previous: detour_type() | nil
+          next: Detour.status() | nil,
+          previous: Detour.status() | nil
         }) :: :ok | nil
   defp send_notification(
          %Detour{} = new_record,
