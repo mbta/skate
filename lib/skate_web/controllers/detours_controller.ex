@@ -1,4 +1,5 @@
 defmodule SkateWeb.DetoursController do
+  require Logger
   alias Realtime.Shape
   alias Realtime.TripModification
   alias Skate.OpenRouteServiceAPI
@@ -125,7 +126,9 @@ defmodule SkateWeb.DetoursController do
           trip_modification_publisher().publish_modification(modification, shape, is_draft?: true)
         catch
           # May throw if the publishing server doesn't exist, which we can ignore.
-          :exit, {:noproc, _} -> nil
+          :exit, {:noproc, _} ->
+            Logger.warning(fn -> "trip_modification_publisher: Publishing server not found" end)
+            nil
         end
       end
 
