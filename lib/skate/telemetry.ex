@@ -14,13 +14,20 @@ defmodule Skate.Telemetry do
       )
   end
 
-  def handle_event([:skate, :repo, :query], measurements, metadata, _config) do
-    if metadata.source == "detours" do
-      {:ok, result} = metadata.result
-
-      Logger.info(fn ->
-        "Telemetry for Detours query, connection_id=#{result.connection_id} num_rows=#{result.num_rows} decode_time=#{measurements.decode_time} query_time=#{measurements.query_time} total_time=#{measurements.total_time} query='#{metadata.query}'"
-      end)
-    end
+  def handle_event(
+        [:skate, :repo, :query],
+        %{decode_time: decode_time, query_time: query_time, total_time: total_time},
+        %{
+          source: "detours",
+          result: %{connection_id: connection_id, num_rows: num_rows},
+          query: query
+        },
+        _config
+      ) do
+    Logger.info(fn ->
+      "Telemetry for Detours query, connection_id=#{connection_id} num_rows=#{num_rows} decode_time=#{decode_time} query_time=#{query_time} total_time=#{total_time} query='#{query}'"
+    end)
   end
+
+  def handle_event(_event, _measurements, _metadata, _config), do: nil
 end
