@@ -447,8 +447,7 @@ export const DiversionPage = ({
               : undefined
           }
           onOpenChangeDurationModal={
-            userInTestGroup(TestGroups.DetoursPilot) &&
-            userInTestGroup(TestGroups.ChangeDetourDuration)
+            userInTestGroup(TestGroups.DetoursPilot)
               ? () => {
                   send({ type: "detour.active.open-change-duration-modal" })
                 }
