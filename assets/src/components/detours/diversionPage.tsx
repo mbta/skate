@@ -619,11 +619,7 @@ export const DiversionPage = ({
             startPoint={startPoint ?? undefined}
             endPoint={endPoint ?? undefined}
             waypoints={waypoints}
-            unfinishedRouteSegments={
-              inTestGroup(TestGroups.BackwardsDetourPrevention)
-                ? unfinishedRouteSegments
-                : undefined
-            }
+            unfinishedRouteSegments={unfinishedRouteSegments}
             routeSegments={routeSegments}
             onAddWaypoint={addWaypoint}
             onClickOriginalShape={addConnectionPoint ?? (() => {})}
