@@ -5,13 +5,12 @@ defmodule Skate.Telemetry do
   require Logger
 
   def setup_telemetry do
-    _ =
-      :telemetry.attach(
-        "skate",
-        [:skate, :repo, :query],
-        &Skate.Telemetry.handle_event/4,
-        %{}
-      )
+    :telemetry.attach(
+      "skate",
+      [:skate, :repo, :query],
+      &Skate.Telemetry.handle_event/4,
+      %{}
+    )
   end
 
   def handle_event(
