@@ -1,7 +1,6 @@
 import getTestGroups from "./userTestGroups"
 
 export enum TestGroups {
-  BackwardsDetourPrevention = "backwards-detour-prevention",
   DemoMode = "demo-mode",
   DetoursList = "detours-list",
   DetoursNotifications = "detours-notifications",
