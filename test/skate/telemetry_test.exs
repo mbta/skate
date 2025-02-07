@@ -39,6 +39,6 @@ defmodule Skate.TelemetryTest do
                       source: "detours"
                     }}
 
-    assert log =~ "Telemetry for Detours query"
+    assert log =~ "Telemetry for db query, source=detours"
   end
 end
