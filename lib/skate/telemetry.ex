@@ -19,7 +19,7 @@ defmodule Skate.Telemetry do
         %{decode_time: decode_time, query_time: query_time, total_time: total_time},
         %{
           source: "detours",
-          result: %{connection_id: connection_id, num_rows: num_rows},
+          result: {:ok, %{connection_id: connection_id, num_rows: num_rows}},
           query: query
         },
         _config

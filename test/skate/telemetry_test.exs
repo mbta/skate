@@ -32,8 +32,12 @@ defmodule Skate.TelemetryTest do
       end)
 
     assert_receive {[:skate, :repo, :query], _ref,
-                    %{decode_time: _, query_time: _, queue_time: _, total_time: _},
-                    %{query: _, result: _, source: "detours"}}
+                    %{decode_time: _, query_time: _, total_time: _},
+                    %{
+                      query: _,
+                      result: {:ok, %{connection_id: _, num_rows: _}},
+                      source: "detours"
+                    }}
 
     assert log =~ "Telemetry for Detours query"
   end
