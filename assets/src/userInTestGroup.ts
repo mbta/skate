@@ -8,7 +8,6 @@ export enum TestGroups {
   DetoursPilot = "detours-pilot",
   MinimalLadderPage = "minimal-ladder-page",
   LateView = "late-view",
-  CopyButton = "copy-button",
   DeleteDraftDetours = "delete-draft-detours",
   ChangeDetourDuration = "change-detour-duration",
   DetoursOnLadder = "detours-on-ladder",
