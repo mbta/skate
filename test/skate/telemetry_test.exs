@@ -6,6 +6,7 @@ defmodule Skate.TelemetryTest do
   import Test.Support.Helpers, only: [set_log_level: 1]
 
   alias Skate.Detours.Detours
+  alias Skate.Detours.Db.Detour
 
   setup tags do
     if events = tags[:telemetry_listen] do
@@ -24,11 +25,11 @@ defmodule Skate.TelemetryTest do
   @tag telemetry_listen: [[:skate, :repo, :query]]
   test "logs exception info" do
     set_log_level(:info)
-    detour = detour_fixture()
+    %Detour{id: id} = detour_fixture()
 
     log =
       capture_log([level: :info], fn ->
-        assert Skate.Repo.preload(Detours.list_detours(), :author) == [detour]
+        assert [%Detour{id: ^id}] = Detours.list_detours([:id])
       end)
 
     assert_receive {[:skate, :repo, :query], _ref,
