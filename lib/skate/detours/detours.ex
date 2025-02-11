@@ -40,9 +40,7 @@ defmodule Skate.Detours.Detours do
       [%Detour{}, ...]
   """
   def active_detours_by_route(route_id) do
-    Skate.Detours.Db.Detour
-    |> from(as: :detour)
-    |> Skate.Detours.Db.Detour.Queries.with_virtual_fields()
+    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> where([detour: d], d.status == :active)
     |> Repo.all()
     |> Enum.filter(fn detour ->
@@ -77,11 +75,8 @@ defmodule Skate.Detours.Detours do
   end
 
   def detours_for_user(user_id, status) do
-    Skate.Detours.Db.Detour
-    |> from(as: :detour)
-    |> preload([:author])
+    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_user_and_status_filter(user_id, status)
-    |> order_by([detour: d], desc: d.updated_at)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)

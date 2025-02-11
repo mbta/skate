@@ -166,6 +166,7 @@ defmodule Skate.Detours.Db.Detour do
         :author_id,
         :activated_at,
         :updated_at,
+        :status,
 
         # Virtual Fields
         :route_id,
