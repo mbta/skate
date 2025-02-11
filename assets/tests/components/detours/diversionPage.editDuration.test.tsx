@@ -32,11 +32,7 @@ beforeEach(() => {
 
   jest
     .mocked(getTestGroups)
-    .mockReturnValue([
-      TestGroups.DetoursPilot,
-      TestGroups.DetoursList,
-      TestGroups.ChangeDetourDuration,
-    ])
+    .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
 })
 
 const DiversionPage = (props: Partial<DiversionPageProps>) => {
@@ -59,22 +55,6 @@ const changeDurationHeading = byRole("heading", {
 
 describe("DiversionPage edit duration workflow", () => {
   describe("before change duration modal", () => {
-    test("does not have a change duration button if not in the ChangeDetourDuration group", async () => {
-      jest
-        .mocked(getTestGroups)
-        .mockReturnValue([TestGroups.DetoursList, TestGroups.DetoursPilot])
-      jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
-      jest
-        .mocked(fetchDetour)
-        .mockResolvedValue(Ok(activeDetourFactory.build()))
-
-      render(<DetourListPage />)
-
-      await userEvent.click(await screen.findByText("Headsign A"))
-
-      expect(changeDurationButton.query()).not.toBeInTheDocument()
-    })
-
     test("does not have a change duration button if not an active detour", async () => {
       jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest

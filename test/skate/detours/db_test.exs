@@ -14,8 +14,8 @@ defmodule Skate.Detours.DbTest do
     end
 
     test "list_detours/0 returns all detours" do
-      detour = detour_fixture()
-      assert Skate.Repo.preload(Detours.list_detours(), :author) == [detour]
+      %{id: id} = detour_fixture()
+      assert [%{id: ^id}] = Skate.Repo.preload(Detours.list_detours(), :author)
     end
 
     test "get_detour!/1 returns the detour with given id" do
@@ -72,6 +72,30 @@ defmodule Skate.Detours.DbTest do
                |> Map.get(:data)
                |> Detours.change_detour(%{"activated_at" => nil})
                |> fetch_change(:activated_at)
+    end
+
+    test "change_detour/1 changes :status when :state updates" do
+      detour = build(:detour, status: nil)
+
+      assert nil ==
+               detour
+               |> Detours.change_detour(%{})
+               |> Ecto.Changeset.get_change(:status)
+
+      assert :draft ==
+               detour
+               |> Detours.change_detour(%{state: with_id(detour.state, 100)})
+               |> Ecto.Changeset.get_change(:status)
+
+      assert :active ==
+               detour
+               |> Detours.change_detour(%{state: activated(detour.state)})
+               |> Ecto.Changeset.get_change(:status)
+
+      assert :past ==
+               detour
+               |> Detours.change_detour(%{state: deactivated(detour.state)})
+               |> Ecto.Changeset.get_change(:status)
     end
   end
 end

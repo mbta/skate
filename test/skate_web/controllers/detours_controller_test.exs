@@ -68,6 +68,31 @@ defmodule SkateWeb.DetoursControllerTest do
     end
 
     @tag :authenticated
+    test "updates :status to match snapshot", %{conn: conn} do
+      setup_notification_server()
+
+      draft_id = 1
+      activated_id = 2
+      past_id = 3
+
+      conn
+      |> put(~p"/api/detours/update_snapshot", %{
+        "snapshot" => :detour_snapshot |> build() |> with_id(draft_id)
+      })
+      |> put(~p"/api/detours/update_snapshot", %{
+        "snapshot" => :detour_snapshot |> build() |> activated |> with_id(activated_id)
+      })
+      |> put(~p"/api/detours/update_snapshot", %{
+        "snapshot" => :detour_snapshot |> build() |> deactivated |> with_id(past_id)
+      })
+
+      Process.sleep(10)
+      assert Skate.Detours.Detours.get_detour!(draft_id).status === :draft
+      assert Skate.Detours.Detours.get_detour!(activated_id).status === :active
+      assert Skate.Detours.Detours.get_detour!(past_id).status === :past
+    end
+
+    @tag :authenticated
     test "creates a new notification when detour is activated", %{conn: conn} do
       setup_notification_server()
 
@@ -490,24 +515,10 @@ defmodule SkateWeb.DetoursControllerTest do
       other_user = insert(:user)
 
       # Manually insert a detour by another user
-      Detours.upsert_from_snapshot(other_user.id, %{
-        "context" => %{
-          "route" => %{
-            "id" => "23",
-            "name" => "23",
-            "directionNames" => %{
-              "0" => "Outbound",
-              "1" => "Inbound"
-            }
-          },
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 0
-          },
-          "nearestIntersection" => "Street A & Avenue B",
-          "uuid" => 10
-        }
-      })
+      Detours.upsert_from_snapshot(
+        other_user.id,
+        build(:detour_snapshot)
+      )
 
       conn = get(conn, ~p"/api/detours")
 

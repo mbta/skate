@@ -67,6 +67,12 @@ defmodule Notifications.Db.Detour do
       from(d in Notifications.Db.Detour, as: :detour_notification, select_merge: d)
     end
 
+    def with_detour(query \\ base()) do
+      with_named_binding(query, :detour, fn query, binding ->
+        join(query, :left, [detour_notification: n], assoc(n, ^binding), as: ^binding)
+      end)
+    end
+
     @doc """
     Retrieves detour information for notifications from the `Notifications.Db.Detour` table
 
@@ -77,7 +83,7 @@ defmodule Notifications.Db.Detour do
         ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
         iex> all_detour_notifications =
-        ...>   Notifications.Db.Detour.Queries.get_derived_info()
+        ...>   Notifications.Db.Detour.Queries.select_detour_notification_info()
         ...>   |> Skate.Repo.all()
         ...>
         iex> [
@@ -92,42 +98,13 @@ defmodule Notifications.Db.Detour do
         false
 
     """
-    def get_derived_info(query \\ base()) do
-      from(
-        [detour_notification: dn] in query,
-        left_join: ad in assoc(dn, :detour),
-        as: :associated_detour,
-        select_merge: %{
-          route: ad.state["context"]["route"]["name"],
-          origin: ad.state["context"]["routePattern"]["name"],
-          headsign: ad.state["context"]["routePattern"]["headsign"],
-
-          # Ecto can't figure out how to index a JSON map via another JSON value
-          # because (in the ways it was tried) Ecto won't allow us to use the
-          # value from the associated detour, `ad`, as a value in the
-          # ["JSON path"](https://hexdocs.pm/ecto/Ecto.Query.API.html#json_extract_path/2).
-          #
-          # i.e., this
-          #   ad.state["context"]["route"]["directionNames"][
-          #      ad.state["context"]["routePattern"]["directionId"]
-          #   ]
-          #
-          # But, Postgres _is_ able to do this, _if_ we get the types correct.
-          # A JSON value in Postgres is either of type JSON or JSONB, but
-          # - indexing a JSON array requires an `INTEGER`,
-          # - accessing a JSON map, requires Postgres's `TEXT` type.
-          #
-          # So because we know the `directionId` will correspond to the keys in
-          # `directionNames`, casting the `directionId` to `TEXT` allows us to
-          # access the `directionNames` JSON map
-          direction:
-            fragment(
-              "? -> CAST(? AS TEXT)",
-              ad.state["context"]["route"]["directionNames"],
-              ad.state["context"]["routePattern"]["directionId"]
-            )
-        }
-      )
+    def select_detour_notification_info(query \\ base()) do
+      query
+      |> with_detour()
+      |> Skate.Detours.Db.Detour.Queries.select_route_name(:route)
+      |> Skate.Detours.Db.Detour.Queries.select_route_pattern_name(:origin)
+      |> Skate.Detours.Db.Detour.Queries.select_route_pattern_headsign(:headsign)
+      |> Skate.Detours.Db.Detour.Queries.select_direction(:direction)
     end
   end
 end

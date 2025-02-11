@@ -22,11 +22,12 @@ defmodule Skate.Detours.Detours do
       [%Detour{}, ...]
   """
   def list_detours do
-    (detour in Skate.Detours.Db.Detour)
-    |> from(
-      preload: [:author],
-      order_by: [desc: detour.updated_at]
-    )
+    Repo.all(Skate.Detours.Db.Detour.Queries.select_detour_list_info())
+  end
+
+  def list_detours(fields) do
+    Skate.Detours.Db.Detour.Queries.select_fields(fields)
+    |> Skate.Detours.Db.Detour.Queries.sorted_by_last_updated()
     |> Repo.all()
   end
 
@@ -41,7 +42,7 @@ defmodule Skate.Detours.Detours do
   def active_detours_by_route(route_id) do
     list_detours()
     |> Enum.filter(fn detour ->
-      categorize_detour(detour) == :active and get_detour_route_id(detour) == route_id
+      categorize_detour(detour) == :active and detour.route_id == route_id
     end)
     |> Enum.map(fn detour -> db_detour_to_detour(detour) end)
   end
@@ -84,16 +85,16 @@ defmodule Skate.Detours.Detours do
   end
 
   @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | nil
-  @spec db_detour_to_detour(status :: detour_type(), Detour.t()) :: DetailedDetour.t() | nil
+  @spec db_detour_to_detour(status :: Detour.status(), Detour.t()) :: DetailedDetour.t() | nil
   def db_detour_to_detour(%{} = db_detour) do
     db_detour_to_detour(categorize_detour(db_detour), db_detour)
   end
 
   def db_detour_to_detour(
         :active,
-        %Detour{
+        %{
           activated_at: activated_at,
-          state: %{"context" => %{"selectedDuration" => estimated_duration}}
+          estimated_duration: estimated_duration
         } = db_detour
       ) do
     details = DetailedDetour.from(:active, db_detour)
@@ -121,16 +122,18 @@ defmodule Skate.Detours.Detours do
     nil
   end
 
-  @type detour_type :: :active | :draft | :past
-
   @doc """
   Takes a `Skate.Detours.Db.Detour` struct and a `Skate.Settings.Db.User` id
-  and returns a `t:detour_type/0` based on the state of the detour.
+  and returns a `t:Detour.status/0` based on the state of the detour.
 
   otherwise returns `nil` if it is a draft but does not belong to the provided
   user
   """
-  @spec categorize_detour(detour :: map()) :: detour_type()
+  @spec categorize_detour(detour :: map()) :: Detour.status()
+  def categorize_detour(%{state_value: state_value}) when not is_nil(state_value) do
+    categorize_detour(%{state: state_value})
+  end
+
   def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}),
     do: :active
 
@@ -284,7 +287,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  @spec broadcast_detour(detour_type(), Detour.t(), DbUser.id()) :: :ok
+  @spec broadcast_detour(Detour.status(), Detour.t(), DbUser.id()) :: :ok
   defp broadcast_detour(:draft, detour, author_id) do
     author_uuid =
       author_id
@@ -351,7 +354,7 @@ defmodule Skate.Detours.Detours do
   Retrieves a `Skate.Detours.Db.Detour` from the database by it's ID and then resolves the
   detour's category via `categorize_detour/2`
   """
-  @spec categorize_detour_by_id(detour_id :: nil | integer()) :: detour_type() | nil
+  @spec categorize_detour_by_id(detour_id :: nil | integer()) :: Detour.status() | nil
   def categorize_detour_by_id(nil = _detour_id), do: nil
 
   def categorize_detour_by_id(detour_id) do
@@ -367,8 +370,8 @@ defmodule Skate.Detours.Detours do
         ) :: :ok | nil
   @spec send_notification(%{
           next_detour: Skate.Detours.Db.Detour.t() | nil,
-          next: detour_type() | nil,
-          previous: detour_type() | nil
+          next: Detour.status() | nil,
+          previous: Detour.status() | nil
         }) :: :ok | nil
   defp send_notification(
          %Detour{} = new_record,

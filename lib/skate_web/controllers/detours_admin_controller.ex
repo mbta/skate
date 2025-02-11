@@ -4,31 +4,57 @@ defmodule SkateWeb.DetoursAdminController do
   """
 
   alias Skate.Detours.Detours
+  alias Skate.Settings.User
   use SkateWeb, :controller
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    raw_detours =
-      Detours.list_detours()
-
     detours =
-      Enum.map(raw_detours, fn detour ->
-        case Detours.db_detour_to_detour(detour) do
-          nil ->
-            nil
+      Detours.list_detours([
+        :id,
 
-          map ->
-            Map.put(
-              map,
-              :author_email,
-              detour.author.email
-            )
-        end
-      end)
+        # Route column
+        :route_name,
+        :direction,
+        :headsign,
+
+        # Intersection column
+        :nearest_intersection,
+
+        # Updated At column
+        :updated_at,
+
+        # Detour Status Column
+        :status,
+
+        # For some reason, without the primary keys explicitly present in the
+        # query, we're not able to preload the association. So we need the
+        # `User.id` and `Detour.id` explicitly in the query.
+        author: [
+          :email,
+          :id
+        ]
+      ])
 
     conn
     |> assign(:detours, detours)
     |> render(:index,
+      layout: {SkateWeb.Layouts, "barebones.html"},
+      title: "Skate Detours"
+    )
+  end
+
+  def show(conn, %{"id" => id}) do
+    detour = Detours.get_detour!(id)
+    author = User.get_by_id(detour.author_id)
+    {matches, detour_diff} = Skate.Detours.SnapshotSerde.compare_snapshots(detour)
+
+    conn
+    |> assign(:detour, Detours.db_detour_to_detour(detour))
+    |> assign(:author, author)
+    |> assign(:detour_diff, detour_diff)
+    |> assign(:matches, matches)
+    |> render(:show,
       layout: {SkateWeb.Layouts, "barebones.html"},
       title: "Skate Detours"
     )
