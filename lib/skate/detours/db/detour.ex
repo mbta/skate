@@ -154,6 +154,10 @@ defmodule Skate.Detours.Db.Detour do
       )
     end
 
+    def with_virtual_fields(query \\ base()) do
+      select_virtual_fields(query, Skate.Detours.Db.Detour.__schema__(:virtual_fields))
+    end
+
     def select_detour_list_info(query \\ base()) do
       query
       |> select_fields([

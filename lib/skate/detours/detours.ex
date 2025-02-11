@@ -40,11 +40,15 @@ defmodule Skate.Detours.Detours do
       [%Detour{}, ...]
   """
   def active_detours_by_route(route_id) do
-    list_detours()
+    Skate.Detours.Db.Detour
+    |> from(as: :detour)
+    |> Skate.Detours.Db.Detour.Queries.with_virtual_fields()
+    |> where([detour: d], d.status == :active)
+    |> Repo.all()
     |> Enum.filter(fn detour ->
-      categorize_detour(detour) == :active and detour.route_id == route_id
+      detour.route_id == route_id
     end)
-    |> Enum.map(fn detour -> db_detour_to_detour(detour) end)
+    |> Enum.map(&db_detour_to_detour/1)
   end
 
   @doc """
@@ -65,34 +69,36 @@ defmodule Skate.Detours.Detours do
           past: list(DetailedDetour.t()) | nil
         }
   def grouped_detours(user_id) do
-    detours =
-      list_detours()
-      |> Enum.map(&db_detour_to_detour/1)
-      |> Enum.filter(& &1)
-      |> Enum.group_by(fn
-        %ActivatedDetourDetails{details: %{status: status}} -> status
-        %{status: status} -> status
-      end)
-
     %{
-      active: Map.get(detours, :active, []),
-      draft:
-        detours
-        |> Map.get(:draft, [])
-        |> Enum.filter(fn detour -> detour.author_id == user_id end),
-      past: Map.get(detours, :past, [])
+      active: detours_for_user(user_id, :active),
+      draft: detours_for_user(user_id, :draft),
+      past: detours_for_user(user_id, :past)
     }
   end
 
-  @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | nil
-  @spec db_detour_to_detour(status :: Detour.status(), Detour.t()) :: DetailedDetour.t() | nil
-  def db_detour_to_detour(%{} = db_detour) do
-    db_detour_to_detour(categorize_detour(db_detour), db_detour)
+  def detours_for_user(user_id, status) do
+    Skate.Detours.Db.Detour
+    |> from(as: :detour)
+    |> preload([:author])
+    |> apply_user_and_status_filter(user_id, status)
+    |> order_by([detour: d], desc: d.updated_at)
+    |> Repo.all()
+    |> Enum.map(&db_detour_to_detour/1)
+    |> Enum.reject(&is_nil/1)
   end
 
+  defp apply_user_and_status_filter(query, user_id, :draft) do
+    where(query, [detour: d], d.status == :draft and d.author_id == ^user_id)
+  end
+
+  defp apply_user_and_status_filter(query, _user_id, status) do
+    where(query, [detour: d], d.status == ^status)
+  end
+
+  @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | ActivatedDetourDetails.t() | nil
   def db_detour_to_detour(
-        :active,
         %{
+          status: :active,
           activated_at: activated_at,
           estimated_duration: estimated_duration
         } = db_detour
@@ -107,19 +113,8 @@ defmodule Skate.Detours.Detours do
       }
   end
 
-  def db_detour_to_detour(
-        status,
-        %{} = db_detour
-      ) do
+  def db_detour_to_detour(%{status: status} = db_detour) do
     DetailedDetour.from(status, db_detour)
-  end
-
-  def db_detour_to_detour(state, invalid_detour) do
-    Sentry.capture_message("Detour error: the detour has an outdated schema",
-      extra: %{error: invalid_detour, state: state}
-    )
-
-    nil
   end
 
   @doc """

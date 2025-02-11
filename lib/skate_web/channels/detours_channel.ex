@@ -11,7 +11,7 @@ defmodule SkateWeb.DetoursChannel do
   def join_authenticated("detours:active", _message, socket) do
     SkateWeb.Endpoint.subscribe("detours:active")
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
-    detours = Detours.grouped_detours(user_id)[:active]
+    detours = Detours.detours_for_user(user_id, :active)
     {:ok, %{data: detours}, socket}
   end
 
@@ -27,7 +27,7 @@ defmodule SkateWeb.DetoursChannel do
   def join_authenticated("detours:past", _message, socket) do
     SkateWeb.Endpoint.subscribe("detours:past")
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
-    detours = Detours.grouped_detours(user_id)[:past]
+    detours = Detours.detours_for_user(user_id, :past)
     {:ok, %{data: detours}, socket}
   end
 
@@ -36,7 +36,7 @@ defmodule SkateWeb.DetoursChannel do
   def join_authenticated("detours:draft:" <> author_uuid, _message, socket) do
     SkateWeb.Endpoint.subscribe("detours:draft:" <> author_uuid)
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)
-    detours = Detours.grouped_detours(user_id)[:draft]
+    detours = Detours.detours_for_user(user_id, :draft)
     {:ok, %{data: detours}, socket}
   end
 
