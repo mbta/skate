@@ -485,24 +485,10 @@ defmodule SkateWeb.DetoursControllerTest do
       other_user = insert(:user)
 
       # Manually insert a detour by another user
-      Detours.upsert_from_snapshot(other_user.id, %{
-        "context" => %{
-          "route" => %{
-            "id" => "23",
-            "name" => "23",
-            "directionNames" => %{
-              "0" => "Outbound",
-              "1" => "Inbound"
-            }
-          },
-          "routePattern" => %{
-            "headsign" => "Headsign",
-            "directionId" => 0
-          },
-          "nearestIntersection" => "Street A & Avenue B",
-          "uuid" => 10
-        }
-      })
+      Detours.upsert_from_snapshot(
+        other_user.id,
+        build(:detour_snapshot)
+      )
 
       conn = get(conn, ~p"/api/detours")
 

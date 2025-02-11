@@ -22,11 +22,12 @@ defmodule Skate.Detours.Detours do
       [%Detour{}, ...]
   """
   def list_detours do
-    (detour in Skate.Detours.Db.Detour)
-    |> from(
-      preload: [:author],
-      order_by: [desc: detour.updated_at]
-    )
+    Repo.all(Skate.Detours.Db.Detour.Queries.select_detour_list_info())
+  end
+
+  def list_detours(fields) do
+    Skate.Detours.Db.Detour.Queries.select_fields(fields)
+    |> Skate.Detours.Db.Detour.Queries.sorted_by_last_updated()
     |> Repo.all()
   end
 
@@ -41,7 +42,7 @@ defmodule Skate.Detours.Detours do
   def active_detours_by_route(route_id) do
     list_detours()
     |> Enum.filter(fn detour ->
-      categorize_detour(detour) == :active and get_detour_route_id(detour) == route_id
+      categorize_detour(detour) == :active and detour.route_id == route_id
     end)
     |> Enum.map(fn detour -> db_detour_to_detour(detour) end)
   end
@@ -91,9 +92,9 @@ defmodule Skate.Detours.Detours do
 
   def db_detour_to_detour(
         :active,
-        %Detour{
+        %{
           activated_at: activated_at,
-          state: %{"context" => %{"selectedDuration" => estimated_duration}}
+          estimated_duration: estimated_duration
         } = db_detour
       ) do
     details = DetailedDetour.from(:active, db_detour)
@@ -129,6 +130,10 @@ defmodule Skate.Detours.Detours do
   user
   """
   @spec categorize_detour(detour :: map()) :: Detour.status()
+  def categorize_detour(%{state_value: state_value}) when not is_nil(state_value) do
+    categorize_detour(%{state: state_value})
+  end
+
   def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}),
     do: :active
 
