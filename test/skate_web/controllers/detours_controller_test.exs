@@ -402,11 +402,11 @@ defmodule SkateWeb.DetoursControllerTest do
         :detour_snapshot
         |> build()
         |> with_id(detour_id)
+        |> with_direction(:inbound)
 
       conn = put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
 
-      # Changing the status is a sure way to force a fallback, as it should always be "active"
-      edited_snapshot = put_in(detour_snapshot["status"], nil)
+      edited_snapshot = put_in(detour_snapshot["context"]["routePattern"]["directionId"], 0)
 
       detour_id
       |> Detours.get_detour!()
@@ -421,6 +421,36 @@ defmodule SkateWeb.DetoursControllerTest do
                "data" => %{
                  "author" => _,
                  "state" => ^edited_snapshot,
+                 "updated_at" => _
+               }
+             } = json_response(conn, 200)
+    end
+
+    @tag :authenticated
+    test "does not log an error if mismatch is an irrelevant field", %{conn: conn} do
+      detour_id = 5
+
+      detour_snapshot =
+        :detour_snapshot
+        |> build()
+        |> with_id(detour_id)
+
+      conn = put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
+
+      edited_snapshot = put_in(detour_snapshot["irrelevantField"], "someData")
+
+      detour_id
+      |> Detours.get_detour!()
+      |> Detours.change_detour(%{state: edited_snapshot})
+      |> Skate.Repo.update()
+
+      conn = get(conn, "/api/detours/#{detour_id}")
+
+      # Serializer does not return the extra data
+      assert %{
+               "data" => %{
+                 "author" => _,
+                 "state" => ^detour_snapshot,
                  "updated_at" => _
                }
              } = json_response(conn, 200)

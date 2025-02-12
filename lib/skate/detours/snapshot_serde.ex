@@ -51,11 +51,23 @@ defmodule Skate.Detours.SnapshotSerde do
     compare_snapshots(detour, serialized_snapshot)
   end
 
-  def compare_snapshots(%Detour{state: state}, serialized_snapshot) do
-    matches = serialized_snapshot === state
+  def compare_snapshots(
+        %Detour{state: %{"context" => state_context} = state},
+        %{"context" => serialized_context} = serialized_snapshot
+      ) do
+    relevant_state_keys = Map.keys(serialized_snapshot)
+    relevant_context_keys = Map.keys(serialized_context)
+    scoped_state_context = Map.take(state_context, relevant_context_keys)
+
+    scoped_state =
+      state
+      |> Map.take(relevant_state_keys)
+      |> Map.put("context", scoped_state_context)
+
+    matches = serialized_snapshot === scoped_state
     diff = MapDiff.diff(state, serialized_snapshot)
 
-    {matches, diff}
+    {matches, diff, scoped_state}
   end
 
   defp serialize_snapshot(detour) do
@@ -68,19 +80,19 @@ defmodule Skate.Detours.SnapshotSerde do
     }
   end
 
-  defp validate_serialized_snapshot(%Detour{id: id, state: state} = detour) do
+  defp validate_serialized_snapshot(%Detour{id: id} = detour) do
     serialized_snapshot = serialize_snapshot(detour)
-    {matches, diff} = compare_snapshots(detour, serialized_snapshot)
+    {matches, diff, scoped_state} = compare_snapshots(detour, serialized_snapshot)
 
     if matches do
       serialized_snapshot
     else
-      state = fix_snapshot_activated_at(state, detour)
+      scoped_state = fix_snapshot_activated_at(scoped_state, detour)
       Sentry.capture_message(mismatch_message(id), extra: %{diff: diff})
 
       Logger.error("#{mismatch_message(id)} #{diff_details(diff)}")
 
-      state
+      scoped_state
     end
   end
 
