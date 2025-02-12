@@ -10,7 +10,6 @@ import {
   CopyButton,
   MissedStops,
 } from "../detourPanelComponents"
-import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 
 export interface PastDetourPanelProps {
   copyableDetourText: string
@@ -38,10 +37,7 @@ export const PastDetourPanel = ({
   <Panel as="article">
     <Panel.Header className="">
       <h1 className="c-diversion-panel__h1 my-3">View Past Detour</h1>
-      {/* TODO: temporary test group until I get the copy logic hooked up */}
-      {inTestGroup(TestGroups.CopyButton) && (
-        <CopyButton detourText={copyableDetourText} />
-      )}
+      <CopyButton detourText={copyableDetourText} />
     </Panel.Header>
 
     <Panel.Body className="d-flex flex-column">

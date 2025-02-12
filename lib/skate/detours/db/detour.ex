@@ -49,9 +49,17 @@ defmodule Skate.Detours.Db.Detour do
   def changeset(detour, attrs) do
     detour
     |> cast(attrs, [:state, :activated_at])
+    |> validate_activated_at()
     |> add_status()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
+  end
+
+  defp validate_activated_at(changeset) do
+    case fetch_change(changeset, :activated_at) do
+      {:ok, nil} -> delete_change(changeset, :activated_at)
+      _ -> changeset
+    end
   end
 
   defp add_status(changeset) do
