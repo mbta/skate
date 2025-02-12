@@ -45,8 +45,6 @@ import { Err, Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
-import getTestGroups from "../../../src/userTestGroups"
-import { TestGroups } from "../../../src/userInTestGroup"
 import { routePatternFactory } from "../../factories/routePattern"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import routeFactory from "../../factories/route"
@@ -76,7 +74,6 @@ beforeEach(() => {
 })
 
 jest.mock("../../../src/api")
-jest.mock("../../../src/userTestGroups")
 
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockReturnValue(neverPromise())
@@ -84,7 +81,6 @@ beforeEach(() => {
   jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
-  jest.mocked(getTestGroups).mockReturnValue([])
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 })
 
@@ -958,10 +954,7 @@ describe("DiversionPage", () => {
     expect(originalRouteShape.get(container)).toBeVisible()
   })
 
-  test("replaces the original route shape with an unfinished segment after the start point is added if the user is in the right test group", async () => {
-    jest
-      .mocked(getTestGroups)
-      .mockReturnValue([TestGroups.BackwardsDetourPrevention])
+  test("replaces the original route shape with an unfinished segment after the start point is added", async () => {
     jest
       .mocked(fetchUnfinishedDetour)
       .mockResolvedValue(unfinishedDetourFactory.build())
@@ -985,34 +978,6 @@ describe("DiversionPage", () => {
     expect(
       originalRouteShape.afterStartPoint.interactive.getAll(container)
     ).toHaveLength(1)
-  })
-
-  test("does not replace the original route shape with an unfinished segment after the start point is added if the user is not in the right test group", async () => {
-    jest.mocked(getTestGroups).mockReturnValue([])
-    const promise = Promise.resolve(unfinishedDetourFactory.build())
-    jest.mocked(fetchUnfinishedDetour).mockReturnValue(promise)
-
-    const { container } = render(<DiversionPage />)
-
-    act(() => {
-      fireEvent.click(originalRouteShape.get(container))
-    })
-
-    await act(async () => {
-      await promise
-    })
-
-    expect(originalRouteShape.interactive.getAll(container)).toHaveLength(1)
-    expect(originalRouteShape.diverted.getAll(container)).toHaveLength(0)
-
-    expect(originalRouteShape.not.interactive.getAll(container)).toHaveLength(1)
-
-    expect(
-      originalRouteShape.afterStartPoint.not.interactive.getAll(container)
-    ).toHaveLength(0)
-    expect(
-      originalRouteShape.afterStartPoint.interactive.getAll(container)
-    ).toHaveLength(0)
   })
 
   test("replaces the original route shape with a diverted segment after the end point is added", async () => {
