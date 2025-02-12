@@ -27,9 +27,9 @@ export const DetourListPage = () => {
   // Wait for the detour channels to initialize
   const { socket } = useContext(SocketContext)
 
-  let activeDetoursMap = useActiveDetours(socket)
-  let draftDetoursMap = useDraftDetours(socket)
-  let pastDetoursMap = usePastDetours(socket)
+  const activeDetoursMap = useActiveDetours(socket)
+  const draftDetoursMap = useDraftDetours(socket)
+  const pastDetoursMap = usePastDetours(socket)
 
   const activeDetours: SimpleDetour[] | null = activeDetoursMap
     ? Object.values(activeDetoursMap).sort(
