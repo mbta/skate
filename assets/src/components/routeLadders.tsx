@@ -71,13 +71,15 @@ const RouteLadders = ({
     inTestGroup(TestGroups.DetoursOnLadder)
   )
 
-  const skateDetoursByRouteName = Object.values(allActiveSkateDetours).reduce(
-    (acc: ByRouteId<DetoursMap>, cur: SimpleDetour) => {
-      acc[cur.route] = { ...acc[cur.route], [cur.id]: cur }
-      return acc
-    },
-    {}
-  )
+  const skateDetoursByRouteName = allActiveSkateDetours
+    ? Object.values(allActiveSkateDetours).reduce(
+        (acc: ByRouteId<DetoursMap>, cur: SimpleDetour) => {
+          acc[cur.route] = { ...acc[cur.route], [cur.id]: cur }
+          return acc
+        },
+        {}
+      )
+    : {}
 
   for (const routeId in alerts) {
     if (alerts[routeId].length > 0) {

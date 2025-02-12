@@ -11,14 +11,12 @@ import { DetourListPage } from "../../../src/components/detourListPage"
 import { TestGroups } from "../../../src/userInTestGroup"
 import getTestGroups from "../../../src/userTestGroups"
 import { neverPromise } from "../../testHelpers/mockHelpers"
-import { fetchDetour, fetchDetours } from "../../../src/api"
+import { fetchDetour } from "../../../src/api"
 
 jest.mock("../../../src/userTestGroups")
-
 jest.mock("../../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetours).mockReturnValue(neverPromise())
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
 })
 

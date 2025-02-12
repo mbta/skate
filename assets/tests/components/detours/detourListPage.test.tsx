@@ -2,27 +2,41 @@ import { describe, test, expect, jest, beforeEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { DetourListPage } from "../../../src/components/detourListPage"
-import { fetchDetours } from "../../../src/api"
-import { neverPromise } from "../../testHelpers/mockHelpers"
-import { Ok } from "../../../src/util/result"
 import { render, screen, waitFor } from "@testing-library/react"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
 import { byRole } from "testing-library-selector"
-import { groupedDetoursFromData } from "../../../src/models/detoursList"
-import { activeDetourDataFactory } from "../../factories/detourListFactory"
+import {
+  activeDetourDataFactory,
+  simpleDetourFactory,
+} from "../../factories/detourListFactory"
+import {
+  useActiveDetours,
+  useDraftDetours,
+  usePastDetours,
+} from "../../../src/hooks/useDetours"
+import { simpleDetourFromActivatedData } from "../../../src/models/detoursList"
 
 jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
 
-jest.mock("../../../src/api")
+jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/userTestGroups")
 
 beforeEach(() => {
-  jest.mocked(fetchDetours).mockReturnValue(neverPromise())
-
+  jest.mocked(useActiveDetours).mockReturnValue([
+    simpleDetourFromActivatedData(activeDetourDataFactory.build()),
+    simpleDetourFromActivatedData(
+      activeDetourDataFactory.build({
+        details: { name: "Headsign A", direction: "Outbound" },
+      })
+    ),
+  ])
+  jest.mocked(useDraftDetours).mockReturnValue([])
   jest
-    .mocked(getTestGroups)
-    .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
+    .mocked(usePastDetours)
+    .mockReturnValue([simpleDetourFactory.build({ name: "Headsign Z" })])
+
+  jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 })
 
 const activeTableHeading = byRole("heading", { name: "Active detours" })
@@ -33,56 +47,6 @@ const addDetourButton = byRole("button", { name: "Add detour" })
 
 describe("DetourListPage", () => {
   test("renders detour list page for dispatchers", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(
-      Ok({
-        active: [
-          {
-            id: 1,
-            route: "1",
-            viaVariant: "X",
-            direction: "Inbound",
-            name: "Headsign A",
-            intersection: "Street A & Avenue B",
-            updatedAt: 1724866392,
-            activatedAt: new Date(1724866392000),
-            estimatedDuration: "2 hours",
-          },
-          {
-            id: 8,
-            route: "2",
-            viaVariant: "Y",
-            direction: "Outbound",
-            name: "Headsign B",
-            intersection: "Street C & Avenue D",
-            updatedAt: 1724856392,
-            activatedAt: new Date(1724856392000),
-            estimatedDuration: "3 hours",
-          },
-        ],
-        draft: [],
-        past: [
-          {
-            id: 10,
-            route: "1",
-            viaVariant: "X",
-            direction: "Inbound",
-            name: "Headsign A",
-            intersection: "Street E & Avenue F",
-            updatedAt: 1724866392,
-          },
-          {
-            id: 7,
-            route: "1",
-            viaVariant: "Z",
-            direction: "Outbound",
-            name: "Headsign Z",
-            intersection: "Street C & Avenue D",
-            updatedAt: 1724866392,
-          },
-        ],
-      })
-    )
-
     const { baseElement } = render(<DetourListPage />)
 
     await screen.findByText("Headsign Z")
@@ -99,59 +63,9 @@ describe("DetourListPage", () => {
   test("renders limited detour list page for non-dispatchers", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
-    jest.mocked(fetchDetours).mockResolvedValue(
-      Ok({
-        active: [
-          {
-            id: 1,
-            route: "1",
-            viaVariant: "X",
-            direction: "Inbound",
-            name: "Headsign A",
-            intersection: "Street A & Avenue B",
-            updatedAt: 1724866392,
-            activatedAt: new Date(1724866392000),
-            estimatedDuration: "4 hours",
-          },
-          {
-            id: 8,
-            route: "2",
-            viaVariant: "Y",
-            direction: "Outbound",
-            name: "Headsign B",
-            intersection: "Street C & Avenue D",
-            updatedAt: 1724856392,
-            activatedAt: new Date(1724856392000),
-            estimatedDuration: "Until end of service",
-          },
-        ],
-        draft: [],
-        past: [
-          {
-            id: 10,
-            route: "1",
-            viaVariant: "X",
-            direction: "Inbound",
-            name: "Headsign A",
-            intersection: "Street E & Avenue F",
-            updatedAt: 1724866392,
-          },
-          {
-            id: 7,
-            route: "1",
-            viaVariant: "Z",
-            direction: "Outbound",
-            name: "Headsign Z",
-            intersection: "Street C & Avenue D",
-            updatedAt: 1724866392,
-          },
-        ],
-      })
-    )
-
     const { baseElement } = render(<DetourListPage />)
 
-    await screen.findByText("Headsign B")
+    await screen.findByText("Headsign A")
 
     expect(screen.queryByText("Headsign Z")).not.toBeInTheDocument()
 
@@ -165,36 +79,6 @@ describe("DetourListPage", () => {
   })
 
   test("renders empty tables when needed", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(
-      Ok({
-        active: [
-          {
-            id: 1,
-            route: "1",
-            viaVariant: "X",
-            direction: "Inbound",
-            name: "Headsign A",
-            intersection: "Street A & Avenue B",
-            updatedAt: 1724866392,
-            activatedAt: new Date(1724866392000),
-            estimatedDuration: "4 hours",
-          },
-        ],
-        draft: [],
-        past: [
-          {
-            id: 10,
-            route: "1",
-            viaVariant: "X",
-            direction: "Inbound",
-            name: "Headsign A",
-            intersection: "Street E & Avenue F",
-            updatedAt: 1724866392,
-          },
-        ],
-      })
-    )
-
     render(<DetourListPage />)
 
     await waitFor(() =>
@@ -207,46 +91,34 @@ describe("DetourListPage", () => {
   test("orders active detour list by activatedAt value", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
-    jest.mocked(fetchDetours).mockResolvedValue(
-      Ok(
-        groupedDetoursFromData({
-          active: [
-            activeDetourDataFactory.build({
-              details: {
-                // Drafted third
-                id: 8,
-                // Updated second
-                updated_at: 1724876500,
-              },
-              // Activated second
-              activated_at: new Date(1724766392000),
-            }),
-            activeDetourDataFactory.build({
-              details: {
-                // Drafted second
-                id: 7,
-                // Updated third
-                updated_at: 1724876600,
-              },
-              // Activated first
-              activated_at: new Date(1724656392000),
-            }),
-            activeDetourDataFactory.build({
-              details: {
-                // Drafted first
-                id: 1,
-                // Updated first
-                updated_at: 1724876400,
-              },
-              // Activated third
-              activated_at: new Date(1724876392000),
-            }),
-          ],
-          draft: [],
-          past: [],
-        })
-      )
-    )
+    jest.mocked(useActiveDetours).mockReturnValue({
+      "8": simpleDetourFactory.build({
+        // Drafted third
+        id: 8,
+        // Updated second
+        updatedAt: 1724876500,
+        // Activated second
+        activatedAt: new Date(1724766392000),
+      }),
+      "7": simpleDetourFactory.build({
+        // Drafted second
+        id: 7,
+        // Updated third
+        updatedAt: 1724876600,
+        // Activated first
+        activatedAt: new Date(1724656392000),
+      }),
+      "1": simpleDetourFactory.build({
+        // Drafted first
+        id: 1,
+        // Updated first
+        updatedAt: 1724876400,
+        // Activated third
+        activatedAt: new Date(1724876392000),
+      }),
+    })
+    jest.mocked(useDraftDetours).mockReturnValue({})
+    jest.mocked(usePastDetours).mockReturnValue({})
 
     const { baseElement } = render(<DetourListPage />)
 
