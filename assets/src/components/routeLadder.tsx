@@ -83,7 +83,7 @@ export const Header = ({
             hasAlert && "c-route-ladder__dropdown--non-skate-alert",
           ])}
         >
-          {isAdmin && (
+          {(isAdmin || inTestGroup(TestGroups.DetoursOnLadder)) && (
             <Dropdown className="border-box inherit-box">
               <Dropdown.Toggle
                 className="c-route-ladder__dropdown-button d-flex"
@@ -116,7 +116,7 @@ export const Header = ({
                 )}
                 {hasAlert && (
                   <>
-                    <Dropdown.Divider className="border-top-0" />
+                    {isAdmin && <Dropdown.Divider className="border-top-0" />}
                     <Dropdown.Header>
                       <div className="c-route-ladder__dropdown-header-text">
                         Active detours
@@ -148,11 +148,11 @@ export const Header = ({
                     )}
                   </>
                 )}
-                {/* {!hasAlert && (
-                <Dropdown.ItemText className="lh-base pb-4">
-                  No active detours
-                </Dropdown.ItemText>
-              )} */}
+                {!hasAlert && inTestGroup(TestGroups.DetoursOnLadder) && (
+                  <Dropdown.ItemText className="lh-base pb-4">
+                    No active detours
+                  </Dropdown.ItemText>
+                )}
               </Dropdown.Menu>
             </Dropdown>
           )}
