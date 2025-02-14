@@ -96,6 +96,24 @@ defmodule Skate.Detours.Detours do
           activated_at: activated_at,
           estimated_duration: estimated_duration
         } = db_detour
+      )
+      when estimated_duration != nil do
+    details = DetailedDetour.from(:active, db_detour)
+
+    details &&
+      %ActivatedDetourDetails{
+        activated_at: activated_at,
+        estimated_duration: estimated_duration,
+        details: details
+      }
+  end
+
+  def db_detour_to_detour(
+        :active,
+        %{
+          activated_at: activated_at,
+          state: %{"context" => %{"selectedDuration" => estimated_duration}}
+        } = db_detour
       ) do
     details = DetailedDetour.from(:active, db_detour)
 
@@ -123,11 +141,8 @@ defmodule Skate.Detours.Detours do
   end
 
   @doc """
-  Takes a `Skate.Detours.Db.Detour` struct and a `Skate.Settings.Db.User` id
+  Takes a `Skate.Detours.Db.Detour` struct
   and returns a `t:Detour.status/0` based on the state of the detour.
-
-  otherwise returns `nil` if it is a draft but does not belong to the provided
-  user
   """
   @spec categorize_detour(detour :: map()) :: Detour.status()
   def categorize_detour(%{state_value: state_value}) when not is_nil(state_value) do
