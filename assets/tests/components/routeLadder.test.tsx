@@ -367,8 +367,9 @@ describe("routeLadder", () => {
     expect(screen.getByText("Add detour")).toBeVisible()
   })
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  test.skip("does not render 'Add detour' in the dropdown if not an admin", async () => {
+  test("does not render 'Add detour' in the dropdown if not an admin", async () => {
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursOnLadder])
+
     const route: Route = routeFactory.build({
       id: "28",
       name: "28",
