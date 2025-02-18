@@ -60,10 +60,14 @@ defmodule Skate.Detours.Db.Detour do
 
   defp add_status(changeset) do
     case fetch_change(changeset, :state) do
-      {:ok, state} ->
-        # Once this column is added for all detours, `categorize_detour` logic
-        # should be moved here and should not be needed anymore
-        put_change(changeset, :status, Skate.Detours.Detours.categorize_detour(%{state: state}))
+      {:ok, %{"value" => %{"Detour Drawing" => %{"Active" => _}}}} ->
+        put_change(changeset, :status, :active)
+
+      {:ok, %{"value" => %{"Detour Drawing" => "Past"}}} ->
+        put_change(changeset, :status, :past)
+
+      {:ok, _state} ->
+        put_change(changeset, :status, :draft)
 
       _ ->
         changeset
