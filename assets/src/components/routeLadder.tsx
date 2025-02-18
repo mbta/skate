@@ -112,16 +112,16 @@ export const Header = ({
                     >
                       <PlusSquare /> Add detour
                     </Dropdown.Item>
+                    { (hasAlert || inTestGroup(TestGroups.DetoursOnLadder)) && <Dropdown.Divider className="border-top-0" /> }
                   </>
                 )}
+                {(hasAlert || inTestGroup(TestGroups.DetoursOnLadder)) && <Dropdown.Header>
+                  <div className="c-route-ladder__dropdown-header-text">
+                    Active detours
+                  </div>
+                </Dropdown.Header>}
                 {hasAlert && (
                   <>
-                    {isAdmin && <Dropdown.Divider className="border-top-0" />}
-                    <Dropdown.Header>
-                      <div className="c-route-ladder__dropdown-header-text">
-                        Active detours
-                      </div>
-                    </Dropdown.Header>
                     {skateDetoursForRoute &&
                       Object.values(skateDetoursForRoute).map((detour) => (
                         <Dropdown.Item
