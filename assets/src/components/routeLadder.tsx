@@ -141,7 +141,7 @@ export const Header = ({
                         </Dropdown.Item>
                       ))}
                     {!skateDetoursForRoute && (
-                      <Dropdown.ItemText className="lh-base pb-4">
+                      <Dropdown.ItemText className="lh-base pb-3">
                         This route has an active detour. View detour details on{" "}
                         <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
                       </Dropdown.ItemText>
@@ -149,7 +149,7 @@ export const Header = ({
                   </>
                 )}
                 {!hasAlert && inTestGroup(TestGroups.DetoursOnLadder) && (
-                  <Dropdown.ItemText className="lh-base pb-4">
+                  <Dropdown.ItemText className="lh-base pb-3">
                     No active detours
                   </Dropdown.ItemText>
                 )}
