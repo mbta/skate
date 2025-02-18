@@ -49,31 +49,6 @@ defmodule Skate.Detours.Detours do
     |> Enum.map(&db_detour_to_detour/1)
   end
 
-  @doc """
-  Returns the detours grouped by active, draft, and past.
-
-  ## Examples
-
-      iex> grouped_detours(my_user_id)
-      %{
-        active: [%DetailedDetour{}, ...],
-        draft: nil,
-        past: [%DetailedDetour{}, ...]
-      }
-  """
-  @spec grouped_detours(integer()) :: %{
-          active: list(DetailedDetour.t()) | nil,
-          draft: list(DetailedDetour.t()) | nil,
-          past: list(DetailedDetour.t()) | nil
-        }
-  def grouped_detours(user_id) do
-    %{
-      active: detours_for_user(user_id, :active),
-      draft: detours_for_user(user_id, :draft),
-      past: detours_for_user(user_id, :past)
-    }
-  end
-
   def detours_for_user(user_id, status) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_user_and_status_filter(user_id, status)
