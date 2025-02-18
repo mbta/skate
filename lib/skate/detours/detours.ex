@@ -330,20 +330,6 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  @doc """
-  Retrieves a `Skate.Detours.Db.Detour` from the database by it's ID and then resolves the
-  detour's category via `categorize_detour/2`
-  """
-  @spec categorize_detour_by_id(detour_id :: nil | integer()) :: Detour.status() | nil
-  def categorize_detour_by_id(nil = _detour_id), do: nil
-
-  def categorize_detour_by_id(detour_id) do
-    case Skate.Repo.get(Detour, detour_id) do
-      %Detour{} = detour -> categorize_detour(detour)
-      _ -> nil
-    end
-  end
-
   @spec send_notification(
           new_record :: Skate.Detours.Db.Detour.t() | nil,
           previous_record :: Skate.Detours.Db.Detour.t() | nil
