@@ -39,10 +39,6 @@ defmodule Skate.Detours.Db.Detour do
     # Activated properties
     field :estimated_duration, :string, virtual: true
 
-    # Temporary field to make querying the `:state` faster and avoid needing to
-    # pull the entire `:state` value
-    field :state_value, :map, virtual: true
-
     # -------------------------------------------------------
   end
 
@@ -126,7 +122,6 @@ defmodule Skate.Detours.Db.Detour do
           :direction -> select_direction(query)
           :nearest_intersection -> select_starting_intersection(query)
           :estimated_duration -> select_estimated_duration(query)
-          :state_value -> select_state_value(query, :state_value)
           _unknown -> query
         end
       end)
@@ -181,7 +176,6 @@ defmodule Skate.Detours.Db.Detour do
         :direction,
         :nearest_intersection,
         :estimated_duration,
-        :state_value,
 
         # Nested Fields
         author: [:email, :id]
@@ -248,10 +242,6 @@ defmodule Skate.Detours.Db.Detour do
       select_merge(query, [detour: d], %{
         ^key => d.state["context"]["selectedDuration"]
       })
-    end
-
-    def select_state_value(query \\ base(), key \\ :state_value) do
-      select_merge(query, [detour: d], %{^key => %{"value" => d.state["value"]}})
     end
   end
 end

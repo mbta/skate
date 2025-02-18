@@ -95,10 +95,6 @@ defmodule Skate.Detours.Detours do
   user
   """
   @spec categorize_detour(detour :: map()) :: Detour.status()
-  def categorize_detour(%{state_value: state_value}) when not is_nil(state_value) do
-    categorize_detour(%{state: state_value})
-  end
-
   def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}),
     do: :active
 
