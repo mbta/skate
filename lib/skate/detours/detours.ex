@@ -110,10 +110,6 @@ defmodule Skate.Detours.Detours do
   and returns a `t:Detour.status/0` based on the state of the detour.
   """
   @spec categorize_detour(detour :: map()) :: Detour.status()
-  def categorize_detour(%{state_value: state_value}) when not is_nil(state_value) do
-    categorize_detour(%{state: state_value})
-  end
-
   def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}),
     do: :active
 
@@ -141,6 +137,27 @@ defmodule Skate.Detours.Detours do
 
   """
   def get_detour!(id), do: Repo.get!(Detour, id)
+
+  @doc """
+  Gets a single detour.
+
+  Returns `nil` if the Detour does not exist.
+
+  Raises `ArgumentError` if `id` is `nil`
+
+  ## Examples
+
+      iex> get_detour(123)
+      %Detour{}
+
+      iex> get_detour(456)
+      nil
+
+      iex> get_detour(nil)
+      ** (ArgumentError)
+
+  """
+  def get_detour(id), do: Repo.get(Detour, id)
 
   @doc """
   Gets a single detour authored by the provided user_id.
@@ -184,37 +201,6 @@ defmodule Skate.Detours.Detours do
       updated_at: timestamp_to_unix(detour.updated_at),
       author: detour.author.email
     }
-  end
-
-  @doc """
-  Creates a detour.
-
-  ## Examples
-
-      iex> create_detour(%{field: value})
-      {:ok, %Detour{}}
-
-      iex> create_detour(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_detour(attrs \\ %{}) do
-    %Detour{}
-    |> Detour.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Creates a detour given a user id & detour id.
-  """
-  def create_detour_for_user(user_id, attrs \\ %{}) do
-    user = User.get_by_id!(user_id)
-
-    %Detour{
-      author: user
-    }
-    |> Detour.changeset(attrs)
-    |> Repo.insert()
   end
 
   @doc """
@@ -328,20 +314,6 @@ defmodule Skate.Detours.Detours do
       "detours:past",
       {:detour_deactivated, db_detour_to_detour(detour)}
     )
-  end
-
-  @doc """
-  Retrieves a `Skate.Detours.Db.Detour` from the database by it's ID and then resolves the
-  detour's category via `categorize_detour/2`
-  """
-  @spec categorize_detour_by_id(detour_id :: nil | integer()) :: Detour.status() | nil
-  def categorize_detour_by_id(nil = _detour_id), do: nil
-
-  def categorize_detour_by_id(detour_id) do
-    case Skate.Repo.get(Detour, detour_id) do
-      %Detour{} = detour -> categorize_detour(detour)
-      _ -> nil
-    end
   end
 
   @spec send_notification(
