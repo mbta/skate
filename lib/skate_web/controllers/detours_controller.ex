@@ -32,11 +32,13 @@ defmodule SkateWeb.DetoursController do
   def detours(conn, _params) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
 
-    detours = %{
-      active: Detours.detours_for_user(user_id, :active),
-      draft: Detours.detours_for_user(user_id, :draft),
-      past: Detours.detours_for_user(user_id, :past)
-    }
+    detours =
+      [:active, :draft, :past]
+      |> Enum.map(fn status ->
+        Task.async(fn -> {status, Detours.detours_for_user(user_id, status)} end)
+      end)
+      |> Task.await_many()
+      |> Map.new()
 
     json(conn, %{data: detours})
   end
