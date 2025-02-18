@@ -143,6 +143,27 @@ defmodule Skate.Detours.Detours do
   def get_detour!(id), do: Repo.get!(Detour, id)
 
   @doc """
+  Gets a single detour.
+
+  Returns `nil` if the Detour does not exist.
+
+  Raises `ArgumentError` if `id` is `nil`
+
+  ## Examples
+
+      iex> get_detour(123)
+      %Detour{}
+
+      iex> get_detour(456)
+      nil
+
+      iex> get_detour(nil)
+      ** (ArgumentError)
+
+  """
+  def get_detour(id), do: Repo.get(Detour, id)
+
+  @doc """
   Gets a single detour authored by the provided user_id.
 
   Raises `Ecto.NoResultsError` if the Detour does not exist.
