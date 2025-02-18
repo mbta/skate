@@ -194,16 +194,11 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    previous_record =
-      case Skate.Detours.SnapshotSerde.id_from_snapshot(snapshot) do
-        nil -> nil
-        id -> Skate.Repo.get(Detour, id)
-      end
+    detour_changes = Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
     detour_db_result =
-      author_id
-      |> Skate.Detours.SnapshotSerde.deserialize(snapshot)
-      |> Skate.Repo.insert(
+      Skate.Repo.insert(
+        detour_changes,
         returning: true,
         conflict_target: [:id],
         on_conflict: {:replace_all_except, [:inserted_at]}
@@ -212,7 +207,7 @@ defmodule Skate.Detours.Detours do
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
         broadcast_detour(new_record, author_id)
-        send_notification(new_record, previous_record)
+        send_notification(detour_changes, new_record)
 
       _ ->
         nil
@@ -300,21 +295,22 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  @spec send_notification(
-          new_record :: Skate.Detours.Db.Detour.t() | nil,
-          previous_record :: Skate.Detours.Db.Detour.t() | nil
-        ) :: :ok | nil
-
   defp send_notification(
-         %Detour{status: :active} = detour,
-         %Detour{status: :draft}
+         %Ecto.Changeset{
+           data: %Detour{status: :draft},
+           changes: %{status: :active}
+         },
+         %Detour{} = detour
        ) do
     Notifications.NotificationServer.detour_activated(detour)
   end
 
   defp send_notification(
-         %Detour{status: :past} = detour,
-         %Detour{status: :active}
+         %Ecto.Changeset{
+           data: %Detour{status: :active},
+           changes: %{status: :past}
+         },
+         %Detour{} = detour
        ) do
     Notifications.NotificationServer.detour_deactivated(detour)
   end
