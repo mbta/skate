@@ -105,23 +105,6 @@ defmodule Skate.Detours.Detours do
     DetailedDetour.from(status, db_detour)
   end
 
-  @doc """
-  Takes a `Skate.Detours.Db.Detour` struct
-  and returns a `t:Detour.status/0` based on the state of the detour.
-  """
-  @spec categorize_detour(detour :: map()) :: Detour.status()
-  def categorize_detour(%{state_value: state_value}) when not is_nil(state_value) do
-    categorize_detour(%{state: state_value})
-  end
-
-  def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}),
-    do: :active
-
-  def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}),
-    do: :past
-
-  def categorize_detour(_detour_context), do: :draft
-
   @spec get_detour_route_id(detour :: map()) :: String.t()
   defp get_detour_route_id(%{state: %{"context" => %{"route" => %{"id" => route_id}}}}),
     do: route_id
