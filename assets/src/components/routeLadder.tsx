@@ -83,7 +83,7 @@ export const Header = ({
             hasAlert && "c-route-ladder__dropdown--non-skate-alert",
           ])}
         >
-          {isAdmin && (
+          {(isAdmin || inTestGroup(TestGroups.DetoursOnLadder)) && (
             <Dropdown className="border-box inherit-box">
               <Dropdown.Toggle
                 className="c-route-ladder__dropdown-button d-flex"
@@ -112,16 +112,20 @@ export const Header = ({
                     >
                       <PlusSquare /> Add detour
                     </Dropdown.Item>
+                    {(hasAlert || inTestGroup(TestGroups.DetoursOnLadder)) && (
+                      <Dropdown.Divider className="border-top-0" />
+                    )}
                   </>
+                )}
+                {(hasAlert || inTestGroup(TestGroups.DetoursOnLadder)) && (
+                  <Dropdown.Header>
+                    <div className="c-route-ladder__dropdown-header-text">
+                      Active detours
+                    </div>
+                  </Dropdown.Header>
                 )}
                 {hasAlert && (
                   <>
-                    <Dropdown.Divider className="border-top-0" />
-                    <Dropdown.Header>
-                      <div className="c-route-ladder__dropdown-header-text">
-                        Active detours
-                      </div>
-                    </Dropdown.Header>
                     {skateDetoursForRoute &&
                       Object.values(skateDetoursForRoute).map((detour) => (
                         <Dropdown.Item
@@ -141,18 +145,18 @@ export const Header = ({
                         </Dropdown.Item>
                       ))}
                     {!skateDetoursForRoute && (
-                      <Dropdown.ItemText className="lh-base pb-4">
+                      <Dropdown.ItemText className="lh-base pb-3">
                         This route has an active detour. View detour details on{" "}
                         <a href="https://www.mbta.com/">mbta.com</a> or in IRIS.
                       </Dropdown.ItemText>
                     )}
                   </>
                 )}
-                {/* {!hasAlert && (
-                <Dropdown.ItemText className="lh-base pb-4">
-                  No active detours
-                </Dropdown.ItemText>
-              )} */}
+                {!hasAlert && inTestGroup(TestGroups.DetoursOnLadder) && (
+                  <Dropdown.ItemText className="lh-base pb-3">
+                    No active detours
+                  </Dropdown.ItemText>
+                )}
               </Dropdown.Menu>
             </Dropdown>
           )}
