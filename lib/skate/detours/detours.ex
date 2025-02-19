@@ -85,8 +85,8 @@ defmodule Skate.Detours.Detours do
   end
 
   def db_detour_to_detour(
-        :active,
         %{
+          status: :active,
           activated_at: activated_at,
           state: %{"context" => %{"selectedDuration" => estimated_duration}}
         } = db_detour
