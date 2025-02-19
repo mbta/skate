@@ -64,10 +64,34 @@ defmodule Skate.Detours.SnapshotSerde do
       |> Map.take(relevant_state_keys)
       |> Map.put("context", scoped_state_context)
 
-    matches = serialized_snapshot === scoped_state
-    diff = MapDiff.diff(state, serialized_snapshot)
+    {scoped_state, serialized_snapshot} =
+      reconsile_activated_at(scoped_state, serialized_snapshot)
+
+    diff = MapDiff.diff(scoped_state, serialized_snapshot)
+
+    matches = Map.get(diff, :changed) == :equal
 
     {matches, diff, scoped_state}
+  end
+
+  defp reconsile_activated_at(
+         %{"context" => %{"activatedAt" => activated_at}} = a,
+         %{"context" => %{"activatedAt" => activated_at}} = b
+       )
+       when not is_nil(activated_at) do
+    {a, b}
+  end
+
+  defp reconsile_activated_at(
+         scoped_state,
+         %{"context" => %{"activatedAt" => activated_at}} = serialized_context
+       )
+       when not is_nil(activated_at) do
+    {put_in(scoped_state, ["context", "activatedAt"], activated_at), serialized_context}
+  end
+
+  defp reconsile_activated_at(a, b) do
+    {a, b}
   end
 
   defp serialize_snapshot(detour) do
