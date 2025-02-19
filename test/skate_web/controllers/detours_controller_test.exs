@@ -335,9 +335,10 @@ defmodule SkateWeb.DetoursControllerTest do
 
     @tag :authenticated
     @tag :bug
-    test "defers to `activated_at` column when serialized detour doesn't match saved snapshot and does not log error", %{
-      conn: conn
-    } do
+    test "defers to `activated_at` column when serialized detour doesn't match saved snapshot and does not log error",
+         %{
+           conn: conn
+         } do
       activated_at = Skate.DetourFactory.browser_date()
 
       %{id: id, state: snapshot} =
