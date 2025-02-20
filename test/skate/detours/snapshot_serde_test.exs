@@ -24,7 +24,7 @@ defmodule Skate.Detours.SnapshotSerdeTest do
         |> Skate.Detours.Detours.change_detour(%{state: snapshot})
         |> Skate.Repo.update!()
 
-      assert {true, _, _} = SnapshotSerde.compare_snapshots(detour)
+      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
     end
 
     test "true: compares activatedAt stored in state prop with activatedAt in serialized detour snapshot" do
@@ -45,7 +45,7 @@ defmodule Skate.Detours.SnapshotSerdeTest do
         |> Skate.Detours.Detours.change_detour(%{state: snapshot})
         |> Skate.Repo.update!()
 
-      assert {true, _, _} = SnapshotSerde.compare_snapshots(detour)
+      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
     end
 
     test "true: compares activatedAt stored in state prop with activatedAt in serialized detour snapshot, defer to prop level vaule" do
@@ -67,7 +67,7 @@ defmodule Skate.Detours.SnapshotSerdeTest do
         |> Skate.Detours.Detours.change_detour(%{state: snapshot})
         |> Skate.Repo.update!()
 
-      assert {true, _, _} = SnapshotSerde.compare_snapshots(detour)
+      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
     end
 
     test "returns true when state snapshot matches serialized snapshot" do
@@ -84,7 +84,7 @@ defmodule Skate.Detours.SnapshotSerdeTest do
         |> Skate.Detours.Detours.change_detour(%{state: snapshot})
         |> Skate.Repo.update!()
 
-      assert {true, _, _} = SnapshotSerde.compare_snapshots(detour)
+      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
     end
 
     test "returns true when state snapshot matches serialized snapshot even with extra, untracked fields in state snapshot" do
@@ -102,7 +102,7 @@ defmodule Skate.Detours.SnapshotSerdeTest do
         |> Skate.Detours.Detours.change_detour(%{state: snapshot})
         |> Skate.Repo.update!()
 
-      assert {true, _, _} = SnapshotSerde.compare_snapshots(detour)
+      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
     end
   end
 end
