@@ -187,37 +187,6 @@ defmodule Skate.Detours.Detours do
   end
 
   @doc """
-  Creates a detour.
-
-  ## Examples
-
-      iex> create_detour(%{field: value})
-      {:ok, %Detour{}}
-
-      iex> create_detour(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_detour(attrs \\ %{}) do
-    %Detour{}
-    |> Detour.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Creates a detour given a user id & detour id.
-  """
-  def create_detour_for_user(user_id, attrs \\ %{}) do
-    user = User.get_by_id!(user_id)
-
-    %Detour{
-      author: user
-    }
-    |> Detour.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
