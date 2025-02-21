@@ -47,7 +47,7 @@ defmodule SkateWeb.DetoursAdminController do
   def show(conn, %{"id" => id}) do
     detour = Detours.get_detour!(id)
     author = User.get_by_id(detour.author_id)
-    {matches, detour_diff, _} = Skate.Detours.SnapshotSerde.compare_snapshots(detour)
+    {matches, detour_diff} = Skate.Detours.SnapshotSerde.compare_snapshots(detour)
 
     conn
     |> assign(:detour, Detours.db_detour_to_detour(detour))
