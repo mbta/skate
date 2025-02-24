@@ -320,43 +320,22 @@ defmodule Skate.Detours.Detours do
           new_record :: Skate.Detours.Db.Detour.t() | nil,
           previous_record :: Skate.Detours.Db.Detour.t() | nil
         ) :: :ok | nil
-  @spec send_notification(%{
-          next_detour: Skate.Detours.Db.Detour.t() | nil,
-          next: Detour.status() | nil,
-          previous: Detour.status() | nil
-        }) :: :ok | nil
+
   defp send_notification(
-         %Detour{} = new_record,
-         %Detour{} = previous_record
+         %Detour{status: :active} = detour,
+         %Detour{status: :draft}
        ) do
-    send_notification(%{
-      next_detour: new_record,
-      previous: categorize_detour(previous_record),
-      next: categorize_detour(new_record)
-    })
-  end
-
-  defp send_notification(_, _), do: nil
-
-  defp send_notification(%{
-         next: :active,
-         next_detour: detour,
-         previous: previous_status
-       })
-       when previous_status != :active do
     Notifications.NotificationServer.detour_activated(detour)
   end
 
-  defp send_notification(%{
-         next: :past,
-         next_detour: detour,
-         previous: previous_status
-       })
-       when previous_status != :past do
+  defp send_notification(
+         %Detour{status: :past} = detour,
+         %Detour{status: :active}
+       ) do
     Notifications.NotificationServer.detour_deactivated(detour)
   end
 
-  defp send_notification(_), do: nil
+  defp send_notification(_, _), do: nil
 
   @doc """
   Deletes a detour.
