@@ -228,10 +228,7 @@ defmodule Skate.Detours.Detours do
 
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
-        new_record
-        |> categorize_detour()
-        |> broadcast_detour(new_record, author_id)
-
+        broadcast_detour(new_record, author_id)
         send_notification(new_record, previous_record)
 
       _ ->
@@ -257,8 +254,8 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  @spec broadcast_detour(Detour.status(), Detour.t(), DbUser.id()) :: :ok
-  defp broadcast_detour(:draft, detour, author_id) do
+  @spec broadcast_detour(Detour.t(), DbUser.id()) :: :ok
+  defp broadcast_detour(%Detour{status: :draft} = detour, author_id) do
     author_uuid =
       author_id
       |> User.get_by_id!()
@@ -271,7 +268,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp broadcast_detour(:active, detour, author_id) do
+  defp broadcast_detour(%Detour{status: :active} = detour, author_id) do
     author_uuid =
       author_id
       |> User.get_by_id!()
@@ -298,7 +295,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp broadcast_detour(:past, detour, _author_id) do
+  defp broadcast_detour(%Detour{status: :past} = detour, _author_id) do
     route_id = get_detour_route_id(detour)
 
     Phoenix.PubSub.broadcast(
