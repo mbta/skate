@@ -142,7 +142,8 @@ defmodule SkateWeb.DetoursControllerTest do
     test "creates a new notification when detour is deactivated", %{conn: conn} do
       setup_notification_server()
 
-      %Skate.Detours.Db.Detour{id: id, state: snapshot} = insert(:detour)
+      %Skate.Detours.Db.Detour{id: id, state: snapshot} =
+        :detour |> build() |> activated |> insert()
 
       put(conn, ~p"/api/detours/update_snapshot", %{
         "snapshot" => snapshot |> deactivated |> with_id(id)
