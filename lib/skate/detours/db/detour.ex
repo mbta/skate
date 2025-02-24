@@ -181,7 +181,6 @@ defmodule Skate.Detours.Db.Detour do
         :direction,
         :nearest_intersection,
         :estimated_duration,
-        :state_value,
 
         # Nested Fields
         author: [:email, :id]

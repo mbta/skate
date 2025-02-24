@@ -143,6 +143,27 @@ defmodule Skate.Detours.Detours do
   def get_detour!(id), do: Repo.get!(Detour, id)
 
   @doc """
+  Gets a single detour.
+
+  Returns `nil` if the Detour does not exist.
+
+  Raises `ArgumentError` if `id` is `nil`
+
+  ## Examples
+
+      iex> get_detour(123)
+      %Detour{}
+
+      iex> get_detour(456)
+      nil
+
+      iex> get_detour(nil)
+      ** (ArgumentError)
+
+  """
+  def get_detour(id), do: Repo.get(Detour, id)
+
+  @doc """
   Gets a single detour authored by the provided user_id.
 
   Raises `Ecto.NoResultsError` if the Detour does not exist.
@@ -184,37 +205,6 @@ defmodule Skate.Detours.Detours do
       updated_at: timestamp_to_unix(detour.updated_at),
       author: detour.author.email
     }
-  end
-
-  @doc """
-  Creates a detour.
-
-  ## Examples
-
-      iex> create_detour(%{field: value})
-      {:ok, %Detour{}}
-
-      iex> create_detour(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_detour(attrs \\ %{}) do
-    %Detour{}
-    |> Detour.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Creates a detour given a user id & detour id.
-  """
-  def create_detour_for_user(user_id, attrs \\ %{}) do
-    user = User.get_by_id!(user_id)
-
-    %Detour{
-      author: user
-    }
-    |> Detour.changeset(attrs)
-    |> Repo.insert()
   end
 
   @doc """
@@ -330,61 +320,26 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  @doc """
-  Retrieves a `Skate.Detours.Db.Detour` from the database by it's ID and then resolves the
-  detour's category via `categorize_detour/2`
-  """
-  @spec categorize_detour_by_id(detour_id :: nil | integer()) :: Detour.status() | nil
-  def categorize_detour_by_id(nil = _detour_id), do: nil
-
-  def categorize_detour_by_id(detour_id) do
-    case Skate.Repo.get(Detour, detour_id) do
-      %Detour{} = detour -> categorize_detour(detour)
-      _ -> nil
-    end
-  end
-
   @spec send_notification(
           new_record :: Skate.Detours.Db.Detour.t() | nil,
           previous_record :: Skate.Detours.Db.Detour.t() | nil
         ) :: :ok | nil
-  @spec send_notification(%{
-          next_detour: Skate.Detours.Db.Detour.t() | nil,
-          next: Detour.status() | nil,
-          previous: Detour.status() | nil
-        }) :: :ok | nil
+
   defp send_notification(
-         %Detour{} = new_record,
-         %Detour{} = previous_record
+         %Detour{status: :active} = detour,
+         %Detour{status: :draft}
        ) do
-    send_notification(%{
-      next_detour: new_record,
-      previous: categorize_detour(previous_record),
-      next: categorize_detour(new_record)
-    })
-  end
-
-  defp send_notification(_, _), do: nil
-
-  defp send_notification(%{
-         next: :active,
-         next_detour: detour,
-         previous: previous_status
-       })
-       when previous_status != :active do
     Notifications.NotificationServer.detour_activated(detour)
   end
 
-  defp send_notification(%{
-         next: :past,
-         next_detour: detour,
-         previous: previous_status
-       })
-       when previous_status != :past do
+  defp send_notification(
+         %Detour{status: :past} = detour,
+         %Detour{status: :active}
+       ) do
     Notifications.NotificationServer.detour_deactivated(detour)
   end
 
-  defp send_notification(_), do: nil
+  defp send_notification(_, _), do: nil
 
   @doc """
   Deletes a detour.
