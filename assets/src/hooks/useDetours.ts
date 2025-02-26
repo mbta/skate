@@ -20,7 +20,9 @@ export interface DetoursMap {
 const subscribe = (
   socket: Socket,
   topic: string,
-  initializeChannel: React.Dispatch<React.SetStateAction<DetoursMap | null>>,
+  initializeChannel: React.Dispatch<
+    React.SetStateAction<DetoursMap | undefined>
+  >,
   handleDrafted: ((data: SimpleDetour) => void) | undefined,
   handleActivated: ((data: SimpleDetour) => void) | undefined,
   handleDeactivated: ((data: SimpleDetour) => void) | undefined,
@@ -94,7 +96,7 @@ export const useActiveDetours = (
   enable: boolean = true
 ) => {
   const topic = "detours:active"
-  const [activeDetours, setActiveDetours] = useState<DetoursMap | null>(null)
+  const [activeDetours, setActiveDetours] = useState<DetoursMap | undefined>()
 
   const handleActivated = (data: SimpleDetour) => {
     setActiveDetours((activeDetours) => ({ ...activeDetours, [data.id]: data }))
@@ -139,7 +141,7 @@ export const useActiveDetours = (
 // This is to refresh the Detours List page, past detours section
 export const usePastDetours = (socket: Socket | undefined) => {
   const topic = "detours:past"
-  const [pastDetours, setPastDetours] = useState<DetoursMap | null>(null)
+  const [pastDetours, setPastDetours] = useState<DetoursMap | undefined>()
 
   const handleDeactivated = (data: SimpleDetour) => {
     setPastDetours((pastDetours) => ({ ...pastDetours, [data.id]: data }))
@@ -173,7 +175,7 @@ export const usePastDetours = (socket: Socket | undefined) => {
 // This is to refresh the Detours List page, just the current user drafts
 export const useDraftDetours = (socket: Socket | undefined) => {
   const topic = "detours:draft:" + userUuid()
-  const [draftDetours, setDraftDetours] = useState<DetoursMap | null>(null)
+  const [draftDetours, setDraftDetours] = useState<DetoursMap | undefined>()
 
   const handleDrafted = (data: SimpleDetour) => {
     setDraftDetours((draftDetours) => ({ ...draftDetours, [data.id]: data }))
