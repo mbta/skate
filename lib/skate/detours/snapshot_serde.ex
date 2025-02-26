@@ -89,15 +89,13 @@ defmodule Skate.Detours.SnapshotSerde do
     serialized_snapshot = serialize_snapshot(detour)
     {matches, diff} = compare_snapshots(detour, serialized_snapshot)
 
-    if matches do
-      serialized_snapshot
-    else
+    if !matches do
       Sentry.capture_message(mismatch_message(id), extra: %{diff: diff})
 
       Logger.error("#{mismatch_message(id)} #{diff_details(diff)}")
-
-      serialized_snapshot
     end
+
+    serialized_snapshot
   end
 
   defp mismatch_message(id) do
