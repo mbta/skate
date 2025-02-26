@@ -18,7 +18,6 @@ import {
   usePastDetours,
 } from "../hooks/useDetours"
 import { SocketContext } from "../contexts/socketContext"
-import { SimpleDetour } from "../models/detoursList"
 
 export const DetourListPage = () => {
   const [showDetourModal, setShowDetourModal] = useState(false)
@@ -31,17 +30,17 @@ export const DetourListPage = () => {
   const draftDetoursMap = useDraftDetours(socket)
   const pastDetoursMap = usePastDetours(socket)
 
-  const activeDetours: SimpleDetour[] | null = activeDetoursMap
-    ? Object.values(activeDetoursMap).sort(
-        (a, b) => b.activatedAt - a.activatedAt
-      )
-    : null
-  const draftDetours: SimpleDetour[] | null = draftDetoursMap
-    ? Object.values(draftDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
-    : null
-  const pastDetours: SimpleDetour[] | null = pastDetoursMap
-    ? Object.values(pastDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
-    : null
+  const activeDetours =
+    activeDetoursMap &&
+    Object.values(activeDetoursMap).sort(
+      (a, b) => b.activatedAt - a.activatedAt
+    )
+  const draftDetours =
+    draftDetoursMap &&
+    Object.values(draftDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
+  const pastDetours =
+    pastDetoursMap &&
+    Object.values(pastDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
   // --- End of detour channel initialization
 
   const detour = useLoadDetour(detourId)
