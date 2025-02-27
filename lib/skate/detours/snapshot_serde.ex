@@ -12,6 +12,8 @@ defmodule Skate.Detours.SnapshotSerde do
   Converts a XState JSON Snapshot to Detours Database Changeset
   """
   def deserialize(user_id, %{} = snapshot) do
+    {activated_at, snapshot} = pop_in(snapshot, ["context", "activatedAt"])
+
     Skate.Detours.Db.Detour.changeset(
       %Skate.Detours.Db.Detour{
         # `id` is `nil` by default, so a `nil` `id` should be fine
@@ -22,16 +24,10 @@ defmodule Skate.Detours.SnapshotSerde do
         # Save Snapshot to DB until we've fully transitioned to serializing
         # snapshots from DB data
         state: snapshot,
-        activated_at: activated_at_from_snapshot(snapshot)
+        activated_at: activated_at
       }
     )
   end
-
-  defp activated_at_from_snapshot(%{"context" => %{"activatedAt" => activated_at}}),
-    do: activated_at
-
-  defp activated_at_from_snapshot(_),
-    do: nil
 
   @doc """
   Extracts the Detour ID from a XState Snapshot
@@ -64,10 +60,19 @@ defmodule Skate.Detours.SnapshotSerde do
       |> Map.take(relevant_state_keys)
       |> Map.put("context", scoped_state_context)
 
-    matches = serialized_snapshot === scoped_state
-    diff = MapDiff.diff(state, serialized_snapshot)
+    diff = diff_snapshots(scoped_state, serialized_snapshot)
 
-    {matches, diff, scoped_state}
+    {Map.get(diff, :changed) == :equal, diff}
+  end
+
+  # As fields are moved to their own property within the detour struct, we can remove them from this serialization
+  # check as the prop level value should always be the source of truth. This function removes the now prop-level
+  # keys and only compares the data currently stored within the :state prop.
+  defp diff_snapshots(scoped_state, serialized_snapshot) do
+    {_, cleaned_state} = pop_in(scoped_state, ["context", "activatedAt"])
+    {_, cleaned_serialized_snapshot} = pop_in(serialized_snapshot, ["context", "activatedAt"])
+
+    MapDiff.diff(cleaned_state, cleaned_serialized_snapshot)
   end
 
   defp serialize_snapshot(detour) do
@@ -82,18 +87,15 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp validate_serialized_snapshot(%Detour{id: id} = detour) do
     serialized_snapshot = serialize_snapshot(detour)
-    {matches, diff, scoped_state} = compare_snapshots(detour, serialized_snapshot)
+    {matches, diff} = compare_snapshots(detour, serialized_snapshot)
 
-    if matches do
-      serialized_snapshot
-    else
-      scoped_state = fix_snapshot_activated_at(scoped_state, detour)
+    if !matches do
       Sentry.capture_message(mismatch_message(id), extra: %{diff: diff})
 
       Logger.error("#{mismatch_message(id)} #{diff_details(diff)}")
-
-      scoped_state
     end
+
+    serialized_snapshot
   end
 
   defp mismatch_message(id) do
@@ -109,18 +111,6 @@ defmodule Skate.Detours.SnapshotSerde do
         "#{key}=#{inspect(val, printable_limit: :infinity, limit: :infinity)}"
       end
     )
-  end
-
-  # BUG FIX:
-  # if `activated_at` is present but `validate_serialized_snapshot` failed, then
-  # we need to make sure that the `activatedAt` `context` value is added.
-  defp fix_snapshot_activated_at(snapshot, %Detour{activated_at: %DateTime{}} = detour) do
-    put_in(snapshot["context"]["activatedAt"], activated_at_from_detour(detour))
-  end
-
-  # If `activated_at` is otherwise invalid, return the existing snapshot
-  defp fix_snapshot_activated_at(snapshot, _detour) do
-    snapshot
   end
 
   # For each of these retrieve functions, the first function is the one
