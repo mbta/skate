@@ -1,4 +1,11 @@
-import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
+import {
+  setup,
+  assign,
+  fromPromise,
+  ActorLogicFrom,
+  InputFrom,
+  sendTo,
+} from "xstate"
 import { RoutePatternId, ShapePoint } from "../schedule"
 import { Route, RouteId, RoutePattern } from "../schedule"
 import { isOk, Ok, Result } from "../util/result"
@@ -12,98 +19,113 @@ import {
 import { DetourShape, FinishedDetour } from "./detour"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { type, optional, coerce, date, string } from "superstruct"
+import { detourApiActor } from "../state/detourApiActor"
+
+const tracked = () => ({
+  saved: false,
+})
+
+type SaveableContext = {
+  uuid: number | undefined
+  route?: Route
+  routePattern?: RoutePattern
+
+  routePatterns?: RoutePattern[]
+
+  waypoints: ShapePoint[]
+  startPoint: ShapePoint | undefined
+  endPoint: ShapePoint | undefined
+
+  nearestIntersection: string | null
+
+  detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
+
+  finishedDetour: FinishedDetour | undefined | null
+
+  editedDirections?: string
+
+  selectedDuration?: string
+  selectedReason?: string
+
+  activatedAt?: Date
+
+  editedSelectedDuration?: string
+}
+
+type Context = SaveableContext & {
+  saved: boolean
+}
+
+type Input =
+  | {
+      // Caller has target route pattern
+      route: Route
+      routePattern: RoutePattern
+    }
+  | {
+      // Caller has target route
+      route: Route
+      routePattern?: undefined
+    }
+  | {
+      // Caller has no prior selection
+      route?: undefined
+      routePattern?: undefined
+    }
+
+type Events =
+  | { type: "detour.route-pattern.open" }
+  | { type: "detour.route-pattern.done" }
+  | { type: "detour.route-pattern.delete-route" }
+  | { type: "detour.route-pattern.select-route"; route: Route }
+  | {
+      type: "detour.route-pattern.select-pattern"
+      routePattern: RoutePattern
+    }
+  | { type: "detour.edit.done" }
+  | { type: "detour.edit.resume" }
+  | { type: "detour.edit.clear-detour" }
+  | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
+  | { type: "detour.edit.place-waypoint"; location: ShapePoint }
+  | { type: "detour.edit.undo" }
+  | { type: "detour.share.edit-directions"; detourText: string }
+  | { type: "detour.share.copy-detour"; detourText: string }
+  | { type: "detour.share.open-activate-modal" }
+  | {
+      type: "detour.share.activate-modal.select-duration"
+      duration: string
+    }
+  | {
+      type: "detour.share.activate-modal.select-reason"
+      reason: string
+    }
+  | { type: "detour.share.activate-modal.next" }
+  | { type: "detour.share.activate-modal.cancel" }
+  | { type: "detour.share.activate-modal.back" }
+  | { type: "detour.share.activate-modal.activate" }
+  | { type: "detour.active.open-change-duration-modal" }
+  | {
+      type: "detour.active.change-duration-modal.select-duration"
+      duration: string
+    }
+  | { type: "detour.active.change-duration-modal.done" }
+  | { type: "detour.active.change-duration-modal.cancel" }
+  | { type: "detour.active.open-deactivate-modal" }
+  | { type: "detour.active.deactivate-modal.deactivate" }
+  | { type: "detour.active.deactivate-modal.cancel" }
+  | { type: "detour.save.begin-save" }
+  | { type: "detour.save.set-uuid"; uuid: number }
+  | { type: "detour.delete.open-delete-modal" }
+  | { type: "detour.delete.delete-modal.cancel" }
+  | { type: "detour.delete.delete-modal.delete-draft" }
 
 export const createDetourMachine = setup({
   types: {
-    context: {} as {
-      uuid: number | undefined
-      route?: Route
-      routePattern?: RoutePattern
+    context: {} as Context,
 
-      routePatterns?: RoutePattern[]
+    input: {} as Input,
 
-      waypoints: ShapePoint[]
-      startPoint: ShapePoint | undefined
-      endPoint: ShapePoint | undefined
-
-      nearestIntersection: string | null
-
-      detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
-
-      finishedDetour: FinishedDetour | undefined | null
-
-      editedDirections?: string
-
-      selectedDuration?: string
-      selectedReason?: string
-
-      activatedAt?: Date
-
-      editedSelectedDuration?: string
-    },
-
-    input: {} as
-      | {
-          // Caller has target route pattern
-          route: Route
-          routePattern: RoutePattern
-        }
-      | {
-          // Caller has target route
-          route: Route
-          routePattern?: undefined
-        }
-      | {
-          // Caller has no prior selection
-          route?: undefined
-          routePattern?: undefined
-        },
-
-    events: {} as
-      | { type: "detour.route-pattern.open" }
-      | { type: "detour.route-pattern.done" }
-      | { type: "detour.route-pattern.delete-route" }
-      | { type: "detour.route-pattern.select-route"; route: Route }
-      | {
-          type: "detour.route-pattern.select-pattern"
-          routePattern: RoutePattern
-        }
-      | { type: "detour.edit.done" }
-      | { type: "detour.edit.resume" }
-      | { type: "detour.edit.clear-detour" }
-      | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
-      | { type: "detour.edit.place-waypoint"; location: ShapePoint }
-      | { type: "detour.edit.undo" }
-      | { type: "detour.share.edit-directions"; detourText: string }
-      | { type: "detour.share.copy-detour"; detourText: string }
-      | { type: "detour.share.open-activate-modal" }
-      | {
-          type: "detour.share.activate-modal.select-duration"
-          duration: string
-        }
-      | {
-          type: "detour.share.activate-modal.select-reason"
-          reason: string
-        }
-      | { type: "detour.share.activate-modal.next" }
-      | { type: "detour.share.activate-modal.cancel" }
-      | { type: "detour.share.activate-modal.back" }
-      | { type: "detour.share.activate-modal.activate" }
-      | { type: "detour.active.open-change-duration-modal" }
-      | {
-          type: "detour.active.change-duration-modal.select-duration"
-          duration: string
-        }
-      | { type: "detour.active.change-duration-modal.done" }
-      | { type: "detour.active.change-duration-modal.cancel" }
-      | { type: "detour.active.open-deactivate-modal" }
-      | { type: "detour.active.deactivate-modal.deactivate" }
-      | { type: "detour.active.deactivate-modal.cancel" }
-      | { type: "detour.save.begin-save" }
-      | { type: "detour.save.set-uuid"; uuid: number }
-      | { type: "detour.delete.open-delete-modal" }
-      | { type: "detour.delete.delete-modal.cancel" }
-      | { type: "detour.delete.delete-modal.delete-draft" },
+    events: {} as Events,
 
     // We're making an assumption that we'll never want to save detour edits to the database when in particular stages
     // of detour drafting:
@@ -180,6 +202,8 @@ export const createDetourMachine = setup({
         )
       }
     ),
+
+    detourApiActor,
   },
   actions: {
     "set.route-pattern": assign({
@@ -190,29 +214,36 @@ export const createDetourMachine = setup({
       route: (_, params: { route: Route }) => params.route,
     }),
     "detour.add-start-point": assign({
+      ...tracked(),
       startPoint: (_, params: { location: ShapePoint }) => params.location,
     }),
     "detour.remove-start-point": assign({
+      ...tracked(),
       startPoint: undefined,
       detourShape: undefined,
     }),
     "detour.add-waypoint": assign({
+      ...tracked(),
       waypoints: ({ context }, params: { location: ShapePoint }) => [
         ...context.waypoints,
         params.location,
       ],
     }),
     "detour.remove-last-waypoint": assign({
+      ...tracked(),
       waypoints: ({ context }) => context.waypoints.slice(0, -1),
     }),
     "detour.add-end-point": assign({
+      ...tracked(),
       endPoint: (_, params: { location: ShapePoint }) => params.location,
     }),
     "detour.remove-end-point": assign({
+      ...tracked(),
       endPoint: undefined,
       finishedDetour: undefined,
     }),
     "detour.clear": assign({
+      ...tracked(),
       startPoint: undefined,
       waypoints: [],
       endPoint: undefined,
@@ -231,11 +262,28 @@ export const createDetourMachine = setup({
     nearestIntersection: null,
     finishedDetour: undefined,
     detourShape: undefined,
+    saved: true,
   }),
   type: "parallel",
   initial: "Detour Drawing",
   states: {
     "Detour Drawing": {
+      invoke: {
+        id: "detourApi",
+        src: "detourApiActor",
+      },
+      always: {
+        actions: [
+          sendTo("detourApi", ({ context }) => ({
+            type: "put-detour-update",
+            data: { context },
+          })),
+          assign({ saved: true }),
+        ],
+        guard: ({ context }) => {
+          return !context.saved && !!context.nearestIntersection
+        },
+      },
       initial: "Begin",
       states: {
         Begin: {
@@ -391,6 +439,7 @@ export const createDetourMachine = setup({
 
                   onDone: {
                     actions: assign({
+                      ...tracked(),
                       nearestIntersection: ({ event }) => event.output,
                     }),
                   },
@@ -407,6 +456,7 @@ export const createDetourMachine = setup({
 
                   onDone: {
                     actions: assign({
+                      ...tracked(),
                       detourShape: ({ event }) => event.output,
                     }),
                   },
@@ -472,6 +522,7 @@ export const createDetourMachine = setup({
 
                 onDone: {
                   actions: assign({
+                    ...tracked(),
                     finishedDetour: ({ event }) => event.output,
                     detourShape: ({ event }) =>
                       event.output?.detourShape &&
@@ -507,6 +558,7 @@ export const createDetourMachine = setup({
           onDone: {
             target: "Share Detour",
             actions: assign({
+              ...tracked(),
               editedDirections: ({ context }) => {
                 const detourShape =
                   context.detourShape && isOk(context.detourShape)
@@ -540,6 +592,7 @@ export const createDetourMachine = setup({
                 "detour.share.edit-directions": {
                   target: "Reviewing",
                   actions: assign({
+                    ...tracked(),
                     editedDirections: ({ event }) => event.detourText,
                   }),
                 },
@@ -586,6 +639,7 @@ export const createDetourMachine = setup({
                     "detour.share.activate-modal.select-duration": {
                       target: "Selecting Duration",
                       actions: assign({
+                        ...tracked(),
                         selectedDuration: ({ event }) => event.duration,
                       }),
                     },
@@ -626,6 +680,7 @@ export const createDetourMachine = setup({
                     "detour.share.activate-modal.select-reason": {
                       target: "Selecting Reason",
                       actions: assign({
+                        ...tracked(),
                         selectedReason: ({ event }) => event.reason,
                       }),
                     },
@@ -642,6 +697,7 @@ export const createDetourMachine = setup({
                     "detour.share.activate-modal.activate": {
                       target: "Done",
                       actions: assign({
+                        ...tracked(),
                         // Record current time, should be done on the backend,
                         // but that requires a larger refactor of the state machine
                         activatedAt: () => new Date(),
@@ -683,6 +739,7 @@ export const createDetourMachine = setup({
                 "detour.active.open-change-duration-modal": {
                   target: "Changing Duration",
                   actions: assign({
+                    ...tracked(),
                     editedSelectedDuration: ({
                       context: { selectedDuration },
                     }) => selectedDuration,
@@ -705,12 +762,14 @@ export const createDetourMachine = setup({
                 "detour.active.change-duration-modal.select-duration": {
                   target: "Changing Duration",
                   actions: assign({
+                    ...tracked(),
                     editedSelectedDuration: ({ event }) => event.duration,
                   }),
                 },
                 "detour.active.change-duration-modal.done": {
                   target: "Reviewing",
                   actions: assign({
+                    ...tracked(),
                     selectedDuration: ({
                       context: { editedSelectedDuration },
                     }) => editedSelectedDuration,
@@ -751,6 +810,7 @@ export const createDetourMachine = setup({
             "detour.save.set-uuid": {
               target: "Saved",
               actions: assign({
+                ...tracked(),
                 uuid: ({ event }) => event.uuid,
               }),
             },
