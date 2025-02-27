@@ -25,107 +25,98 @@ const tracked = () => ({
   saved: false,
 })
 
-type SaveableContext = {
-  uuid: number | undefined
-  route?: Route
-  routePattern?: RoutePattern
-
-  routePatterns?: RoutePattern[]
-
-  waypoints: ShapePoint[]
-  startPoint: ShapePoint | undefined
-  endPoint: ShapePoint | undefined
-
-  nearestIntersection: string | null
-
-  detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
-
-  finishedDetour: FinishedDetour | undefined | null
-
-  editedDirections?: string
-
-  selectedDuration?: string
-  selectedReason?: string
-
-  activatedAt?: Date
-
-  editedSelectedDuration?: string
-}
-
-type Context = SaveableContext & {
-  saved: boolean
-}
-
-type Input =
-  | {
-      // Caller has target route pattern
-      route: Route
-      routePattern: RoutePattern
-    }
-  | {
-      // Caller has target route
-      route: Route
-      routePattern?: undefined
-    }
-  | {
-      // Caller has no prior selection
-      route?: undefined
-      routePattern?: undefined
-    }
-
-type Events =
-  | { type: "detour.route-pattern.open" }
-  | { type: "detour.route-pattern.done" }
-  | { type: "detour.route-pattern.delete-route" }
-  | { type: "detour.route-pattern.select-route"; route: Route }
-  | {
-      type: "detour.route-pattern.select-pattern"
-      routePattern: RoutePattern
-    }
-  | { type: "detour.edit.done" }
-  | { type: "detour.edit.resume" }
-  | { type: "detour.edit.clear-detour" }
-  | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
-  | { type: "detour.edit.place-waypoint"; location: ShapePoint }
-  | { type: "detour.edit.undo" }
-  | { type: "detour.share.edit-directions"; detourText: string }
-  | { type: "detour.share.copy-detour"; detourText: string }
-  | { type: "detour.share.open-activate-modal" }
-  | {
-      type: "detour.share.activate-modal.select-duration"
-      duration: string
-    }
-  | {
-      type: "detour.share.activate-modal.select-reason"
-      reason: string
-    }
-  | { type: "detour.share.activate-modal.next" }
-  | { type: "detour.share.activate-modal.cancel" }
-  | { type: "detour.share.activate-modal.back" }
-  | { type: "detour.share.activate-modal.activate" }
-  | { type: "detour.active.open-change-duration-modal" }
-  | {
-      type: "detour.active.change-duration-modal.select-duration"
-      duration: string
-    }
-  | { type: "detour.active.change-duration-modal.done" }
-  | { type: "detour.active.change-duration-modal.cancel" }
-  | { type: "detour.active.open-deactivate-modal" }
-  | { type: "detour.active.deactivate-modal.deactivate" }
-  | { type: "detour.active.deactivate-modal.cancel" }
-  | { type: "detour.save.begin-save" }
-  | { type: "detour.save.set-uuid"; uuid: number }
-  | { type: "detour.delete.open-delete-modal" }
-  | { type: "detour.delete.delete-modal.cancel" }
-  | { type: "detour.delete.delete-modal.delete-draft" }
-
 export const createDetourMachine = setup({
   types: {
-    context: {} as Context,
+    context: {} as {
+      uuid: number | undefined
+      route?: Route
+      routePattern?: RoutePattern
 
-    input: {} as Input,
+      routePatterns?: RoutePattern[]
 
-    events: {} as Events,
+      waypoints: ShapePoint[]
+      startPoint: ShapePoint | undefined
+      endPoint: ShapePoint | undefined
+
+      nearestIntersection: string | null
+
+      detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
+
+      finishedDetour: FinishedDetour | undefined | null
+
+      editedDirections?: string
+
+      selectedDuration?: string
+      selectedReason?: string
+
+      activatedAt?: Date
+
+      editedSelectedDuration?: string
+      saved: boolean
+    },
+
+    input: {} as
+      | {
+          // Caller has target route pattern
+          route: Route
+          routePattern: RoutePattern
+        }
+      | {
+          // Caller has target route
+          route: Route
+          routePattern?: undefined
+        }
+      | {
+          // Caller has no prior selection
+          route?: undefined
+          routePattern?: undefined
+        },
+
+    events: {} as
+      | { type: "detour.route-pattern.open" }
+      | { type: "detour.route-pattern.done" }
+      | { type: "detour.route-pattern.delete-route" }
+      | { type: "detour.route-pattern.select-route"; route: Route }
+      | {
+          type: "detour.route-pattern.select-pattern"
+          routePattern: RoutePattern
+        }
+      | { type: "detour.edit.done" }
+      | { type: "detour.edit.resume" }
+      | { type: "detour.edit.clear-detour" }
+      | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
+      | { type: "detour.edit.place-waypoint"; location: ShapePoint }
+      | { type: "detour.edit.undo" }
+      | { type: "detour.share.edit-directions"; detourText: string }
+      | { type: "detour.share.copy-detour"; detourText: string }
+      | { type: "detour.share.open-activate-modal" }
+      | {
+          type: "detour.share.activate-modal.select-duration"
+          duration: string
+        }
+      | {
+          type: "detour.share.activate-modal.select-reason"
+          reason: string
+        }
+      | { type: "detour.share.activate-modal.next" }
+      | { type: "detour.share.activate-modal.cancel" }
+      | { type: "detour.share.activate-modal.back" }
+      | { type: "detour.share.activate-modal.activate" }
+      | { type: "detour.active.open-change-duration-modal" }
+      | {
+          type: "detour.active.change-duration-modal.select-duration"
+          duration: string
+        }
+      | { type: "detour.active.change-duration-modal.done" }
+      | { type: "detour.active.change-duration-modal.cancel" }
+      | { type: "detour.active.open-deactivate-modal" }
+      | { type: "detour.active.deactivate-modal.deactivate" }
+      | { type: "detour.active.deactivate-modal.cancel" }
+      | { type: "detour.save.begin-save" }
+      | { type: "detour.save.set-uuid"; uuid: number }
+      | { type: "detour.delete.open-delete-modal" }
+      | { type: "detour.delete.delete-modal.cancel" }
+      | { type: "detour.delete.delete-modal.delete-draft" },
 
     // We're making an assumption that we'll never want to save detour edits to the database when in particular stages
     // of detour drafting:
