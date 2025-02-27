@@ -5,7 +5,7 @@ defmodule Skate.Detours.SnapshotSerdeTest do
   alias Skate.Detours.SnapshotSerde
 
   describe "compare_snapshots" do
-    test "true: compares activate_at prop with activatedAt in serialized detour snapshot" do
+    test "true: compares activated_at prop with activatedAt in serialized detour snapshot" do
       activated_at = Skate.DetourFactory.browser_date()
 
       %{id: id, state: snapshot} =
