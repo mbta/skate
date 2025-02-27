@@ -193,7 +193,6 @@ export const createDetourMachine = setup({
         )
       }
     ),
-
     detourApiActor,
   },
   actions: {
@@ -241,6 +240,10 @@ export const createDetourMachine = setup({
       finishedDetour: undefined,
       detourShape: undefined,
     }),
+    "detour.auto-save": sendTo("detourApi", ({ context }) => ({
+      type: "put-detour-update",
+      data: { context },
+    })),
   },
 }).createMachine({
   id: "Detours Machine",
@@ -264,13 +267,7 @@ export const createDetourMachine = setup({
         src: "detourApiActor",
       },
       always: {
-        actions: [
-          sendTo("detourApi", ({ context }) => ({
-            type: "put-detour-update",
-            data: { context },
-          })),
-          assign({ saved: true }),
-        ],
+        actions: ["detour.auto-save", assign({ saved: true })],
         guard: ({ context }) => {
           return !context.saved && !!context.nearestIntersection
         },
