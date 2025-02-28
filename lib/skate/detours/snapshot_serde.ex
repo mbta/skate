@@ -14,12 +14,12 @@ defmodule Skate.Detours.SnapshotSerde do
   def deserialize(user_id, %{} = snapshot) do
     {activated_at, snapshot} = pop_in(snapshot, ["context", "activatedAt"])
 
+    id = id_from_snapshot(snapshot)
+
+    detour = (id && Skate.Detours.Detours.get_detour(id)) || %Detour{id: id, author_id: user_id}
+
     Skate.Detours.Db.Detour.changeset(
-      %Skate.Detours.Db.Detour{
-        # `id` is `nil` by default, so a `nil` `id` should be fine
-        id: id_from_snapshot(snapshot),
-        author_id: user_id
-      },
+      detour,
       %{
         # Save Snapshot to DB until we've fully transitioned to serializing
         # snapshots from DB data
