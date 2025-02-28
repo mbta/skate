@@ -76,11 +76,25 @@ defmodule SkateWeb.DetoursControllerTest do
       past_id = 3
 
       conn
+      # Draft Detour
       |> put(~p"/api/detours/update_snapshot", %{
         "snapshot" => :detour_snapshot |> build() |> with_id(draft_id)
       })
+
+      # Activated Detour
+      |> put(~p"/api/detours/update_snapshot", %{
+        "snapshot" => :detour_snapshot |> build() |> with_id(activated_id)
+      })
       |> put(~p"/api/detours/update_snapshot", %{
         "snapshot" => :detour_snapshot |> build() |> activated |> with_id(activated_id)
+      })
+
+      # Deactivated Detour
+      |> put(~p"/api/detours/update_snapshot", %{
+        "snapshot" => :detour_snapshot |> build() |> with_id(past_id)
+      })
+      |> put(~p"/api/detours/update_snapshot", %{
+        "snapshot" => :detour_snapshot |> build() |> activated |> with_id(past_id)
       })
       |> put(~p"/api/detours/update_snapshot", %{
         "snapshot" => :detour_snapshot |> build() |> deactivated |> with_id(past_id)

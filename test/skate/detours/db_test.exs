@@ -76,11 +76,17 @@ defmodule Skate.Detours.DbTest do
 
       assert :active ==
                detour
+               |> Detours.change_detour(%{state: with_id(detour.state, 100)})
+               |> Ecto.Changeset.apply_changes()
                |> Detours.change_detour(%{state: activated(detour.state)})
                |> Ecto.Changeset.get_change(:status)
 
       assert :past ==
                detour
+               |> Detours.change_detour(%{state: with_id(detour.state, 100)})
+               |> Ecto.Changeset.apply_changes()
+               |> Detours.change_detour(%{state: activated(detour.state)})
+               |> Ecto.Changeset.apply_changes()
                |> Detours.change_detour(%{state: deactivated(detour.state)})
                |> Ecto.Changeset.get_change(:status)
     end
