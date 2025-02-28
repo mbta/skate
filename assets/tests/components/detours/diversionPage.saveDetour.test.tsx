@@ -40,7 +40,7 @@ beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([])
   jest
     .mocked(fetchNearestIntersection)
-    .mockReturnValue(Promise.resolve("Returned Intersection"))
+    .mockResolvedValue("Returned Intersection")
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 })
 
