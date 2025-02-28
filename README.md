@@ -59,7 +59,7 @@ ___OR___
 
 Update them independently with the following commands
 1. Update Elixir dependencies with `mix deps.get`
-1. Install Node.js dependencies with `cd assets && npm ci` 
+1. Install Node.js dependencies with `npm --prefix assets ci`
 
 ## Running the application
 
@@ -71,11 +71,11 @@ If you see the “data outage” banner when you open your local version of Skat
 ## Running tests
 
 - Run Elixir tests with `` mix test ``
-- Run Javascript tests with `cd assets && npm test`
+- Run Javascript tests with `npm --prefix assets test`
 
 ## Running Storybook
 
-Storybook is a tool to create and test UI components in isolation. To run: `cd assets && npm run storybook`
+Storybook is a tool to create and test UI components in isolation. To run: `npm --prefix assets run storybook`
 
 ## Browser Support Policy
 
