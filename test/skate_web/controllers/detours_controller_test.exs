@@ -184,46 +184,61 @@ defmodule SkateWeb.DetoursControllerTest do
   end
 
   defp populate_db_and_get_user(conn) do
-    %{id: author_id} = SkateWeb.AuthManager.Plug.current_resource(conn)
-    user = Skate.Settings.User.get_by_id(author_id)
-
     # Active detour
-    :detour
-    |> build(author: user)
-    |> with_id(1)
-    |> with_route_id("23")
-    |> with_route_name("23")
-    |> with_direction(:outbound)
-    |> with_route_pattern_id("23-1-0")
-    |> with_headsign("Headsign")
-    |> with_nearest_intersection("Street A & Avenue B")
-    |> activated(~U[2024-01-01 13:00:00.000000Z])
-    |> insert()
+    active_detour_snapshot =
+      :detour_snapshot
+      |> build()
+      |> with_id(1)
+      |> with_route_id("23")
+      |> with_route_name("23")
+      |> with_direction(:outbound)
+      |> with_route_pattern_id("23-1-0")
+      |> with_headsign("Headsign")
+      |> with_nearest_intersection("Street A & Avenue B")
+
+    conn =
+      conn
+      |> put("/api/detours/update_snapshot", %{"snapshot" => active_detour_snapshot})
+      |> put("/api/detours/update_snapshot", %{
+        "snapshot" => activated(active_detour_snapshot, ~U[2024-01-01 13:00:00.000000Z])
+      })
 
     # Past detour
-    :detour
-    |> build(author: user)
-    |> with_id(2)
-    |> with_route_id("47")
-    |> with_route_name("47")
-    |> with_direction(:inbound)
-    |> with_route_pattern_id("47-A-1")
-    |> with_headsign("Headsign")
-    |> with_nearest_intersection("Street C & Avenue D")
-    |> deactivated()
-    |> insert()
+    deactived_detour_snapshot =
+      :detour_snapshot
+      |> build()
+      |> with_id(2)
+      |> with_route_id("47")
+      |> with_route_name("47")
+      |> with_direction(:inbound)
+      |> with_route_pattern_id("47-A-1")
+      |> with_headsign("Headsign")
+      |> with_nearest_intersection("Street C & Avenue D")
+
+    conn =
+      conn
+      |> put("/api/detours/update_snapshot", %{"snapshot" => deactived_detour_snapshot})
+      |> put("/api/detours/update_snapshot", %{
+        "snapshot" => activated(deactived_detour_snapshot)
+      })
+      |> put("/api/detours/update_snapshot", %{
+        "snapshot" => deactivated(deactived_detour_snapshot)
+      })
 
     # Draft detour
-    :detour
-    |> build(author: user)
-    |> with_id(3)
-    |> with_route_id("75")
-    |> with_route_name("75")
-    |> with_direction(:outbound)
-    |> with_route_pattern_id("75-2-0")
-    |> with_headsign("Headsign")
-    |> with_nearest_intersection("Street Y & Avenue Z")
-    |> insert()
+    draft_detour =
+      :detour_snapshot
+      |> build()
+      |> with_id(3)
+      |> with_route_id("75")
+      |> with_route_name("75")
+      |> with_direction(:outbound)
+      |> with_route_pattern_id("75-2-0")
+      |> with_headsign("Headsign")
+      |> with_nearest_intersection("Street Y & Avenue Z")
+
+    conn =
+      put(conn, "/api/detours/update_snapshot", %{"snapshot" => draft_detour})
 
     1
     |> Detours.get_detour!()
