@@ -8,12 +8,7 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
 import { DetourListPage } from "../../../src/components/detourListPage"
-import {
-  deleteDetour,
-  fetchDetour,
-  fetchDetours,
-  putDetourUpdate,
-} from "../../../src/api"
+import { deleteDetour, fetchDetour, putDetourUpdate } from "../../../src/api"
 import { Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
@@ -25,17 +20,26 @@ import {
   deleteDetourButton,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
 import { draftDetourFactory } from "../../factories/detourStateMachineFactory"
+import {
+  useActiveDetours,
+  useDraftDetours,
+  usePastDetours,
+} from "../../../src/hooks/useDetours"
 
 jest
   .useFakeTimers({ doNotFake: ["setTimeout"] })
   .setSystemTime(new Date("2024-08-29T20:00:00"))
 
 jest.mock("../../../src/userTestGroups")
-
+jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetours).mockReturnValue(neverPromise())
+  const detours = detourListFactoryWithDraft.build()
+  jest.mocked(useActiveDetours).mockReturnValue(detours.active)
+  jest.mocked(useDraftDetours).mockReturnValue(detours.draft)
+  jest.mocked(usePastDetours).mockReturnValue(detours.past)
+
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
   jest.mocked(deleteDetour).mockReturnValue(neverPromise())
@@ -50,10 +54,6 @@ beforeEach(() => {
 
 describe("Detours Page: Open a Detour", () => {
   test("calls API with correct detour ID", async () => {
-    jest
-      .mocked(fetchDetours)
-      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
-
     render(<DetourListPage />)
 
     await userEvent.click(await screen.findByText("Draft Detour 123"))
@@ -61,9 +61,6 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("renders detour details modal with delete draft button", async () => {
-    jest
-      .mocked(fetchDetours)
-      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
     jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
 
     render(<DetourListPage />)
@@ -74,9 +71,6 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("delete draft detour confirmation modal displays when Delete Draft button clicked", async () => {
-    jest
-      .mocked(fetchDetours)
-      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
     jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
 
     render(<DetourListPage />)
@@ -90,9 +84,6 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("Clicking the Delete Draft button on the Delete Draft Detour confirmation modal calls the deleteDetour api function", async () => {
-    jest
-      .mocked(fetchDetours)
-      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
     jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
 
     render(<DetourListPage />)
@@ -110,9 +101,6 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("Clicking the Cancel button on the Delete Draft Detour confirmation modal closes the modal", async () => {
-    jest
-      .mocked(fetchDetours)
-      .mockResolvedValue(Ok(detourListFactoryWithDraft.build()))
     jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
 
     render(<DetourListPage />)

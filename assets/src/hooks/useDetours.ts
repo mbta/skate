@@ -20,7 +20,9 @@ export interface DetoursMap {
 const subscribe = (
   socket: Socket,
   topic: string,
-  initializeChannel: React.Dispatch<React.SetStateAction<DetoursMap>>,
+  initializeChannel: React.Dispatch<
+    React.SetStateAction<DetoursMap | undefined>
+  >,
   handleDrafted: ((data: SimpleDetour) => void) | undefined,
   handleActivated: ((data: SimpleDetour) => void) | undefined,
   handleDeactivated: ((data: SimpleDetour) => void) | undefined,
@@ -94,7 +96,7 @@ export const useActiveDetours = (
   enable: boolean = true
 ) => {
   const topic = "detours:active"
-  const [activeDetours, setActiveDetours] = useState<DetoursMap>({})
+  const [activeDetours, setActiveDetours] = useState<DetoursMap | undefined>()
 
   const handleActivated = (data: SimpleDetour) => {
     setActiveDetours((activeDetours) => ({ ...activeDetours, [data.id]: data }))
@@ -102,7 +104,7 @@ export const useActiveDetours = (
 
   const handleDeactivated = (data: SimpleDetour) => {
     setActiveDetours((activeDetours) => {
-      delete activeDetours[data.id]
+      if (activeDetours) delete activeDetours[data.id]
       return activeDetours
     })
   }
@@ -139,7 +141,7 @@ export const useActiveDetours = (
 // This is to refresh the Detours List page, past detours section
 export const usePastDetours = (socket: Socket | undefined) => {
   const topic = "detours:past"
-  const [pastDetours, setPastDetours] = useState<DetoursMap>({})
+  const [pastDetours, setPastDetours] = useState<DetoursMap | undefined>()
 
   const handleDeactivated = (data: SimpleDetour) => {
     setPastDetours((pastDetours) => ({ ...pastDetours, [data.id]: data }))
@@ -173,7 +175,7 @@ export const usePastDetours = (socket: Socket | undefined) => {
 // This is to refresh the Detours List page, just the current user drafts
 export const useDraftDetours = (socket: Socket | undefined) => {
   const topic = "detours:draft:" + userUuid()
-  const [draftDetours, setDraftDetours] = useState<DetoursMap>({})
+  const [draftDetours, setDraftDetours] = useState<DetoursMap | undefined>()
 
   const handleDrafted = (data: SimpleDetour) => {
     setDraftDetours((draftDetours) => ({ ...draftDetours, [data.id]: data }))
@@ -181,14 +183,14 @@ export const useDraftDetours = (socket: Socket | undefined) => {
 
   const handleActivated = (data: SimpleDetour) => {
     setDraftDetours((draftDetours) => {
-      delete draftDetours[data.id]
+      if (draftDetours) delete draftDetours[data.id]
       return draftDetours
     })
   }
 
   const handleDeleted = (detourId: number) => {
     setDraftDetours((draftDetours) => {
-      delete draftDetours[detourId]
+      if (draftDetours) delete draftDetours[detourId]
       return draftDetours
     })
   }

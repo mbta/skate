@@ -2,7 +2,11 @@ import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import React from "react"
 import "@testing-library/jest-dom/jest-globals"
-import { fetchRoutePatterns, putDetourUpdate } from "../../../src/api"
+import {
+  fetchNearestIntersection,
+  fetchRoutePatterns,
+  putDetourUpdate,
+} from "../../../src/api"
 import {
   DiversionPage as DiversionPageDefault,
   DiversionPageProps,
@@ -34,6 +38,9 @@ jest.mock("../../../src/userTestGroups")
 beforeEach(() => {
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
   jest.mocked(getTestGroups).mockReturnValue([])
+  jest
+    .mocked(fetchNearestIntersection)
+    .mockResolvedValue("Returned Intersection")
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 })
 
@@ -65,6 +72,10 @@ describe("DiversionPage autosave flow", () => {
 
     act(() => {
       fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    await waitFor(() => {
+      expect(putDetourUpdate).toHaveBeenCalledTimes(1)
     })
 
     act(() => {

@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react"
+import React, { useContext, useState } from "react"
 import { DetoursTable, DetourStatus } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
-import { Button } from "react-bootstrap"
+import { Button, Spinner } from "react-bootstrap"
 import {
   GlobeAmericas,
   LockFill,
@@ -10,19 +10,38 @@ import {
   SvgProps,
 } from "../helpers/bsIcons"
 import { DetourModal } from "./detours/detourModal"
-import { fetchDetours } from "../api"
-import { useApiCall } from "../hooks/useApiCall"
-import { isOk } from "../util/result"
 import { joinClasses } from "../helpers/dom"
 import { useLoadDetour } from "../hooks/useLoadDetour"
+import {
+  useActiveDetours,
+  useDraftDetours,
+  usePastDetours,
+} from "../hooks/useDetours"
+import { SocketContext } from "../contexts/socketContext"
 
 export const DetourListPage = () => {
   const [showDetourModal, setShowDetourModal] = useState(false)
   const [detourId, setDetourId] = useState<number | undefined>()
-  const { result } = useApiCall({
-    apiCall: useCallback(async () => fetchDetours(), []),
-  })
-  const detours = result && isOk(result) && result.ok
+
+  // Wait for the detour channels to initialize
+  const { socket } = useContext(SocketContext)
+
+  const activeDetoursMap = useActiveDetours(socket)
+  const draftDetoursMap = useDraftDetours(socket)
+  const pastDetoursMap = usePastDetours(socket)
+
+  const activeDetours =
+    activeDetoursMap &&
+    Object.values(activeDetoursMap).sort(
+      (a, b) => b.activatedAt - a.activatedAt
+    )
+  const draftDetours =
+    draftDetoursMap &&
+    Object.values(draftDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
+  const pastDetours =
+    pastDetoursMap &&
+    Object.values(pastDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
+  // --- End of detour channel initialization
 
   const detour = useLoadDetour(detourId)
 
@@ -48,7 +67,7 @@ export const DetourListPage = () => {
           <span className="c-detour-list-page__button-text">Add detour</span>
         </Button>
       )}
-      {detours && (
+      {activeDetours && draftDetours && pastDetours ? (
         <>
           <Title
             title="Active detours"
@@ -57,7 +76,7 @@ export const DetourListPage = () => {
             classNames={["d-flex"]}
           />
           <DetoursTable
-            data={detours.active}
+            data={activeDetours}
             status={DetourStatus.Active}
             onOpenDetour={onOpenDetour}
             classNames={["mb-5"]}
@@ -71,7 +90,7 @@ export const DetourListPage = () => {
                 classNames={["u-hide-for-mobile", "d-md-flex"]}
               />
               <DetoursTable
-                data={detours.draft}
+                data={draftDetours}
                 status={DetourStatus.Draft}
                 onOpenDetour={onOpenDetour}
                 classNames={["mb-5", "u-hide-for-mobile"]}
@@ -83,7 +102,7 @@ export const DetourListPage = () => {
                 classNames={["u-hide-for-mobile", "d-md-flex"]}
               />
               <DetoursTable
-                data={detours.past}
+                data={pastDetours}
                 status={DetourStatus.Closed}
                 onOpenDetour={onOpenDetour}
                 classNames={["u-hide-for-mobile"]}
@@ -91,6 +110,10 @@ export const DetourListPage = () => {
             </>
           )}
         </>
+      ) : (
+        <div className="position-absolute inset-0 opacity-75 d-flex justify-content-center align-items-center">
+          <Spinner />
+        </div>
       )}
 
       {/* `detourId` exists before `stateOfDetourModal` does, so need this conditional

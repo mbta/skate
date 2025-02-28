@@ -30,9 +30,8 @@ export const useDetour = (input: UseDetourInput) => {
       const persistedSnapshot = actorRef.getPersistedSnapshot()
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
-
       // check for no-save tag before
-      if (snap.hasTag("no-save")) {
+      if (snap.hasTag("no-save") || !snap.context.nearestIntersection) {
         return
       }
 

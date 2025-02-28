@@ -8,7 +8,7 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
 import { DetourListPage } from "../../../src/components/detourListPage"
-import { fetchDetour, fetchDetours } from "../../../src/api"
+import { fetchDetour } from "../../../src/api"
 import { Ok } from "../../../src/util/result"
 import { mockScreenSize, neverPromise } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
@@ -16,25 +16,32 @@ import { detourListFactory } from "../../factories/detourListFactory"
 import { TestGroups } from "../../../src/userInTestGroup"
 import { detourInProgressFactory } from "../../factories/detourStateMachineFactory"
 import { viewDraftDetourHeading } from "../../testHelpers/selectors/components/detours/diversionPage"
+import {
+  useActiveDetours,
+  useDraftDetours,
+  usePastDetours,
+} from "../../../src/hooks/useDetours"
 
 jest
   .useFakeTimers({ doNotFake: ["setTimeout"] })
   .setSystemTime(new Date("2024-08-29T20:00:00"))
 
 jest.mock("../../../src/userTestGroups")
-
+jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/api")
 
 beforeEach(() => {
-  jest.mocked(fetchDetours).mockReturnValue(neverPromise())
+  const detourList = detourListFactory.build()
+  jest.mocked(useActiveDetours).mockReturnValue(detourList.active)
+  jest.mocked(useDraftDetours).mockReturnValue(detourList.draft)
+  jest.mocked(usePastDetours).mockReturnValue(detourList.past)
+
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
   jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
 })
 
 describe("Detours Page: Open a Detour", () => {
   test("calls API with correct detour ID", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
-
     render(<DetourListPage />)
 
     await userEvent.click(await screen.findByText("Headsign 1"))
@@ -42,8 +49,6 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("renders detour details modal to match mocked fetchDetour", async () => {
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
-
     // Return the state of the machine as the fetchDetour mocked value,
     // even if it doesn't match the detour clicked
     jest
@@ -65,8 +70,6 @@ describe("Detours Page: Open a Detour", () => {
   test("renders detour details in an open drawer on mobile", async () => {
     mockScreenSize("mobile")
 
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
-
     jest
       .mocked(fetchDetour)
       .mockResolvedValue(Ok(detourInProgressFactory.build()))
@@ -80,8 +83,6 @@ describe("Detours Page: Open a Detour", () => {
 
   test("detour details drawer is collapsible on mobile", async () => {
     mockScreenSize("mobile")
-
-    jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
 
     jest
       .mocked(fetchDetour)

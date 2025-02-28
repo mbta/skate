@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event"
 import { screen } from "@testing-library/dom"
 import { render } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
-import { fetchDetours, fetchDetour, putDetourUpdate } from "../../../src/api"
+import { fetchDetour, putDetourUpdate } from "../../../src/api"
 import { DetourListPage } from "../../../src/components/detourListPage"
 import { Ok } from "../../../src/util/result"
 import { detourListFactory } from "../../factories/detourListFactory"
@@ -21,12 +21,22 @@ import {
   DiversionPageProps,
 } from "../../../src/components/detours/diversionPage"
 import { byRole } from "testing-library-selector"
+import {
+  useActiveDetours,
+  useDraftDetours,
+  usePastDetours,
+} from "../../../src/hooks/useDetours"
 
 jest.mock("../../../src/api")
+jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/userTestGroups")
 
 beforeEach(() => {
-  jest.mocked(fetchDetours).mockReturnValue(neverPromise())
+  const detours = detourListFactory.build()
+  jest.mocked(useActiveDetours).mockReturnValue(detours.active)
+  jest.mocked(useDraftDetours).mockReturnValue(detours.draft)
+  jest.mocked(usePastDetours).mockReturnValue(detours.past)
+
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 
@@ -56,7 +66,6 @@ const changeDurationHeading = byRole("heading", {
 describe("DiversionPage edit duration workflow", () => {
   describe("before change duration modal", () => {
     test("does not have a change duration button if not an active detour", async () => {
-      jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
         .mockResolvedValue(Ok(detourInProgressFactory.build()))
@@ -69,7 +78,6 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("has a change duration button on the review details screen", async () => {
-      jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
         .mockResolvedValue(Ok(activeDetourFactory.build()))
@@ -82,7 +90,6 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("does not show change duration modal before clicking the button", async () => {
-      jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
         .mockResolvedValue(Ok(activeDetourFactory.build()))
@@ -95,7 +102,6 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("clicking change duration button shows the modal", async () => {
-      jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
         .mockResolvedValue(Ok(activeDetourFactory.build()))
@@ -128,7 +134,6 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("changing duration and clicking cancel does not save the duration", async () => {
-      jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
         .mockResolvedValue(
@@ -155,7 +160,6 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("changing the duration and clicking done saves the duration", async () => {
-      jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
         .mockResolvedValue(
@@ -182,7 +186,6 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("not changing duration and clicking done doesn't change the duration", async () => {
-      jest.mocked(fetchDetours).mockResolvedValue(Ok(detourListFactory.build()))
       jest
         .mocked(fetchDetour)
         .mockResolvedValue(
