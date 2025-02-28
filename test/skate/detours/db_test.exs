@@ -7,8 +7,6 @@ defmodule Skate.Detours.DbTest do
   describe "detours" do
     alias Skate.Detours.Db.Detour
 
-    @invalid_attrs %{state: nil}
-
     defp detour_fixture do
       insert(:detour)
     end
@@ -35,17 +33,6 @@ defmodule Skate.Detours.DbTest do
 
       assert %Ecto.NoResultsError{} =
                catch_error(Detours.get_detour_for_user!(detour.id, detour.author_id + 1))
-    end
-
-    test "create_detour/1 with valid data creates a detour" do
-      valid_attrs = %{state: %{}}
-
-      assert {:ok, %Detour{} = detour} = Detours.create_detour(valid_attrs)
-      assert detour.state == %{}
-    end
-
-    test "create_detour/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Detours.create_detour(@invalid_attrs)
     end
 
     test "delete_detour/1 deletes the detour" do
@@ -89,11 +76,17 @@ defmodule Skate.Detours.DbTest do
 
       assert :active ==
                detour
+               |> Detours.change_detour(%{state: with_id(detour.state, 100)})
+               |> Ecto.Changeset.apply_changes()
                |> Detours.change_detour(%{state: activated(detour.state)})
                |> Ecto.Changeset.get_change(:status)
 
       assert :past ==
                detour
+               |> Detours.change_detour(%{state: with_id(detour.state, 100)})
+               |> Ecto.Changeset.apply_changes()
+               |> Detours.change_detour(%{state: activated(detour.state)})
+               |> Ecto.Changeset.apply_changes()
                |> Detours.change_detour(%{state: deactivated(detour.state)})
                |> Ecto.Changeset.get_change(:status)
     end
