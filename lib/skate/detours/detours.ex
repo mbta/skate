@@ -105,19 +105,6 @@ defmodule Skate.Detours.Detours do
     DetailedDetour.from(status, db_detour)
   end
 
-  @doc """
-  Takes a `Skate.Detours.Db.Detour` struct
-  and returns a `t:Detour.status/0` based on the state of the detour.
-  """
-  @spec categorize_detour(detour :: map()) :: Detour.status()
-  def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}),
-    do: :active
-
-  def categorize_detour(%{state: %{"value" => %{"Detour Drawing" => "Past"}}}),
-    do: :past
-
-  def categorize_detour(_detour_context), do: :draft
-
   @spec get_detour_route_id(detour :: map()) :: String.t()
   defp get_detour_route_id(%{state: %{"context" => %{"route" => %{"id" => route_id}}}}),
     do: route_id
@@ -207,16 +194,11 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    previous_record =
-      case Skate.Detours.SnapshotSerde.id_from_snapshot(snapshot) do
-        nil -> nil
-        id -> Skate.Repo.get(Detour, id)
-      end
+    detour_changes = Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
     detour_db_result =
-      author_id
-      |> Skate.Detours.SnapshotSerde.deserialize(snapshot)
-      |> Skate.Repo.insert(
+      Skate.Repo.insert(
+        detour_changes,
         returning: true,
         conflict_target: [:id],
         on_conflict: {:replace_all_except, [:inserted_at]}
@@ -224,11 +206,8 @@ defmodule Skate.Detours.Detours do
 
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
-        new_record
-        |> categorize_detour()
-        |> broadcast_detour(new_record, author_id)
-
-        send_notification(new_record, previous_record)
+        broadcast_detour(new_record, author_id)
+        send_notification(detour_changes, new_record)
 
       _ ->
         nil
@@ -253,8 +232,8 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  @spec broadcast_detour(Detour.status(), Detour.t(), DbUser.id()) :: :ok
-  defp broadcast_detour(:draft, detour, author_id) do
+  @spec broadcast_detour(Detour.t(), DbUser.id()) :: :ok
+  defp broadcast_detour(%Detour{status: :draft} = detour, author_id) do
     author_uuid =
       author_id
       |> User.get_by_id!()
@@ -267,7 +246,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp broadcast_detour(:active, detour, author_id) do
+  defp broadcast_detour(%Detour{status: :active} = detour, author_id) do
     author_uuid =
       author_id
       |> User.get_by_id!()
@@ -294,7 +273,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp broadcast_detour(:past, detour, _author_id) do
+  defp broadcast_detour(%Detour{status: :past} = detour, _author_id) do
     route_id = get_detour_route_id(detour)
 
     Phoenix.PubSub.broadcast(
@@ -316,47 +295,27 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  @spec send_notification(
-          new_record :: Skate.Detours.Db.Detour.t() | nil,
-          previous_record :: Skate.Detours.Db.Detour.t() | nil
-        ) :: :ok | nil
-  @spec send_notification(%{
-          next_detour: Skate.Detours.Db.Detour.t() | nil,
-          next: Detour.status() | nil,
-          previous: Detour.status() | nil
-        }) :: :ok | nil
   defp send_notification(
-         %Detour{} = new_record,
-         %Detour{} = previous_record
+         %Ecto.Changeset{
+           data: %Detour{status: :draft},
+           changes: %{status: :active}
+         },
+         %Detour{} = detour
        ) do
-    send_notification(%{
-      next_detour: new_record,
-      previous: categorize_detour(previous_record),
-      next: categorize_detour(new_record)
-    })
-  end
-
-  defp send_notification(_, _), do: nil
-
-  defp send_notification(%{
-         next: :active,
-         next_detour: detour,
-         previous: previous_status
-       })
-       when previous_status != :active do
     Notifications.NotificationServer.detour_activated(detour)
   end
 
-  defp send_notification(%{
-         next: :past,
-         next_detour: detour,
-         previous: previous_status
-       })
-       when previous_status != :past do
+  defp send_notification(
+         %Ecto.Changeset{
+           data: %Detour{status: :active},
+           changes: %{status: :past}
+         },
+         %Detour{} = detour
+       ) do
     Notifications.NotificationServer.detour_deactivated(detour)
   end
 
-  defp send_notification(_), do: nil
+  defp send_notification(_, _), do: nil
 
   @doc """
   Deletes a detour.

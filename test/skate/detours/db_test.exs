@@ -62,27 +62,32 @@ defmodule Skate.Detours.DbTest do
     end
 
     test "change_detour/1 changes :status when :state updates" do
-      detour = build(:detour, status: nil)
+      detour_snapshot = build(:detour_snapshot)
 
-      assert nil ==
-               detour
-               |> Detours.change_detour(%{})
-               |> Ecto.Changeset.get_change(:status)
+      assert %Detour{status: nil} =
+               detour =
+               build(:detour, status: nil, state: nil)
 
-      assert :draft ==
-               detour
-               |> Detours.change_detour(%{state: with_id(detour.state, 100)})
-               |> Ecto.Changeset.get_change(:status)
+      {:ok, draft_detour} =
+        detour
+        |> Detours.change_detour(%{state: detour_snapshot})
+        |> Ecto.Changeset.apply_action(:update)
 
-      assert :active ==
-               detour
-               |> Detours.change_detour(%{state: activated(detour.state)})
-               |> Ecto.Changeset.get_change(:status)
+      assert %Detour{status: :draft} = draft_detour
 
-      assert :past ==
-               detour
-               |> Detours.change_detour(%{state: deactivated(detour.state)})
-               |> Ecto.Changeset.get_change(:status)
+      {:ok, active_detour} =
+        draft_detour
+        |> Detours.change_detour(%{state: activated(draft_detour.state)})
+        |> Ecto.Changeset.apply_action(:update)
+
+      assert %Detour{status: :active} = active_detour
+
+      {:ok, past_detour} =
+        active_detour
+        |> Detours.change_detour(%{state: deactivated(active_detour.state)})
+        |> Ecto.Changeset.apply_action(:update)
+
+      assert %Detour{status: :past} = past_detour
     end
   end
 end
