@@ -1,9 +1,9 @@
 import React from "react"
 import { Button, Modal } from "react-bootstrap"
 import { RoutePill } from "../routePill"
-import { StopCircle } from "../../helpers/bsIcons"
+import { ClockHistory, StopCircle } from "../../helpers/bsIcons"
 
-export const DeactivateDetourModal = ({
+export const ExtendDetourModal = ({
   onDeactivate,
   onCancel,
   routeName,
@@ -22,7 +22,7 @@ export const DeactivateDetourModal = ({
     <Modal show animation={false} onHide={onCancel}>
       <Modal.Header closeButton>
         <h3 className="fs-3 fw-semibold lh-sm my-1">
-          Return to regular route?
+          Extend time or close detour
         </h3>
       </Modal.Header>
       <Modal.Body>
@@ -37,22 +37,29 @@ export const DeactivateDetourModal = ({
           </div>
         </div>
         <p>
-          Are you sure that you want to stop this detour and return to the
-          regular route?
+          This detour has reached its estimated <strong>[X HOUR]</strong>{" "}
+          duration.
         </p>
+        <p>Do you want to extend this detour or close the detour?</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-primary" onClick={onCancel}>
-          Cancel
+        <Button
+          variant="outline-primary"
+          className="icon-link"
+          onClick={onCancel}
+          data-fs-element="Close detour from reminder modal"
+        >
+          <StopCircle />
+          Return to regular route
         </Button>
         <Button
           variant="ui-alert"
           onClick={onDeactivate}
-          className="text-white"
+          className="text-white icon-link"
           data-fs-element="Confirm Return to Regular Route"
         >
-          <StopCircle />
-          Return to regular route
+          <ClockHistory />
+          Extend time
         </Button>
       </Modal.Footer>
     </Modal>
