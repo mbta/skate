@@ -167,6 +167,39 @@ defmodule Skate.DetourFactory do
           ) do
         put_in(state["context"]["routePattern"]["directionId"], 0)
       end
+
+      def with_route_pattern_id(%Skate.Detours.Db.Detour{} = detour, id) do
+        %{detour | state: with_route_pattern_id(detour.state, id)}
+      end
+
+      def with_route_pattern_id(
+            %{"context" => %{"routePattern" => %{"id" => _}}} = state,
+            id
+          ) do
+        put_in(state["context"]["routePattern"]["id"], id)
+      end
+
+      def with_headsign(%Skate.Detours.Db.Detour{} = detour, headsign) do
+        %{detour | state: with_headsign(detour.state, headsign)}
+      end
+
+      def with_headsign(
+            %{"context" => %{"routePattern" => %{"headsign" => _}}} = state,
+            id
+          ) do
+        put_in(state["context"]["routePattern"]["headsign"], id)
+      end
+
+      def with_nearest_intersection(%Skate.Detours.Db.Detour{} = detour, headsign) do
+        %{detour | state: with_nearest_intersection(detour.state, headsign)}
+      end
+
+      def with_nearest_intersection(
+            %{"context" => %{"nearestIntersection" => _}} = state,
+            headsign
+          ) do
+        put_in(state["context"]["nearestIntersection"], headsign)
+      end
     end
   end
 
