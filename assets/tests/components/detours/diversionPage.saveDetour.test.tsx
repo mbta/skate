@@ -38,9 +38,7 @@ jest.mock("../../../src/userTestGroups")
 beforeEach(() => {
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
   jest.mocked(getTestGroups).mockReturnValue([])
-  jest
-    .mocked(fetchNearestIntersection)
-    .mockResolvedValue("Returned Intersection")
+  jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 })
 
@@ -83,7 +81,7 @@ describe("DiversionPage autosave flow", () => {
     })
 
     await waitFor(() => {
-      expect(putDetourUpdate).toHaveBeenCalledTimes(3)
+      expect(putDetourUpdate).toHaveBeenCalledTimes(5)
     })
   })
 
