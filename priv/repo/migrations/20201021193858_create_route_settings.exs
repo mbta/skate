@@ -6,7 +6,7 @@ defmodule Skate.Repo.Migrations.CreateRouteSettings do
     create table(:route_settings, primary_key: false) do
       add(
         :user_id,
-        references(:users, on_delete: :delete_all, on_update: :update_all, primary_key: true),
+        references(:users, on_delete: :delete_all, on_update: :update_all),
         primary_key: true
       )
 
