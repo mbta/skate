@@ -297,9 +297,20 @@ const description = (
               </div>
               <div className="fw-normal">{notification.content.direction}</div>
               <div className="fw-normal">
-                {notification.content.expiresIn > 0
-                  ? `This detour will reach its estimated ${notification.content.estimatedDuration} duration in ${notification.content.expiresIn} minutes.`
-                  : `This detour has reached its estimated ${notification.content.estimatedDuration} duration.`}
+                {notification.content.expiresIn > 0 ? (
+                  <>
+                    This detour will reach its estimated{" "}
+                    <strong>{notification.content.estimatedDuration}</strong>{" "}
+                    duration in{" "}
+                    <strong>{notification.content.expiresIn} minutes</strong>.
+                  </>
+                ) : (
+                  <>
+                    This detour has reached its estimated{" "}
+                    <strong>{notification.content.estimatedDuration}</strong>{" "}
+                    duration.
+                  </>
+                )}
               </div>
               {notification.content.isDispatcher ? (
                 <div className="fw-normal">
