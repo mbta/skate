@@ -176,6 +176,7 @@ export const title = (notification: Notification) => {
         case "raised":
           return "Chelsea St Bridge Raised"
       }
+      break
     }
 
     case NotificationType.DetourExpiration: {
@@ -283,6 +284,7 @@ const description = (
         case "lowered":
           return "OCC reported that the Chelsea St bridge has been lowered."
       }
+      break
     }
 
     case NotificationType.DetourExpiration: {
