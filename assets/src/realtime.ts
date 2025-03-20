@@ -61,6 +61,7 @@ export enum NotificationType {
   BridgeMovement = "Elixir.Notifications.Db.BridgeMovement",
   BlockWaiver = "Elixir.Notifications.Db.BlockWaiver",
   Detour = "Elixir.Notifications.Db.Detour",
+  DetourExpiration = "Elixir.Notification.Db.DetourExpiration",
 }
 
 export interface BridgeLoweredNotification {
@@ -107,10 +108,26 @@ export type DetourNotification = {
   origin: string
 }
 
+export type ExpirationNotificationTime = 0 | 30
+
+export type DetourExpirationNotification = {
+  $type: NotificationType.DetourExpiration
+  status: DetourNotificationStatus.Activated
+  detourId: DetourId
+  headsign: string
+  route: string
+  direction: string
+  origin: string
+  isDispatcher: boolean
+  expiresIn: ExpirationNotificationTime
+  estimatedDuration: string
+}
+
 export type NotificationContentTypes =
   | BridgeNotification
   | BlockWaiverNotification
   | DetourNotification
+  | DetourExpirationNotification
 
 export interface Notification<
   TNotification extends NotificationContentTypes = NotificationContentTypes
