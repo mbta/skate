@@ -518,13 +518,13 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   </h2>
                   <div
                     class="c-autosized-textarea mb-2"
-                    data-replicated-value="From null"
+                    data-replicated-value="From —"
                   >
                     <textarea
                       class="form-control"
                       data-fs-element="Detour Text"
                     >
-                      From null
+                      From —
                     </textarea>
                   </div>
                 </section>
@@ -1388,13 +1388,13 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 </h2>
                 <div
                   class="c-autosized-textarea mb-2"
-                  data-replicated-value="From null"
+                  data-replicated-value="From —"
                 >
                   <textarea
                     class="form-control"
                     data-fs-element="Detour Text"
                   >
-                    From null
+                    From —
                   </textarea>
                 </div>
               </section>

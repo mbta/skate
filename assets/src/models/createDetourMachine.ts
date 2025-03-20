@@ -131,7 +131,7 @@ export const createDetourMachine = setup({
     }),
 
     "fetch-nearest-intersection": fromPromise<
-      Awaited<ReturnType<typeof fetchNearestIntersection>>,
+      Awaited<string>,
       {
         startPoint?: ShapePoint
       }
@@ -139,7 +139,15 @@ export const createDetourMachine = setup({
       if (!startPoint) {
         throw "Missing nearest intersection inputs"
       }
-      return fetchNearestIntersection(startPoint.lat, startPoint.lon)
+
+      const intersection = await fetchNearestIntersection(
+        startPoint.lat,
+        startPoint.lon
+      )
+      if (intersection === null) {
+        throw new Error("Retrieving Intersection Failed")
+      }
+      return intersection
     }),
 
     "fetch-detour-directions": fromPromise<
@@ -218,6 +226,9 @@ export const createDetourMachine = setup({
       endPoint: undefined,
       finishedDetour: undefined,
       detourShape: undefined,
+    }),
+    "set.nearest-intersection-fallback": assign({
+      nearestIntersection: "—",
     }),
   },
 }).createMachine({
@@ -377,6 +388,7 @@ export const createDetourMachine = setup({
                     () => {
                       fullStoryEvent("Placed Detour Start Point", {})
                     },
+                    "set.nearest-intersection-fallback",
                   ],
                 },
               },
@@ -395,7 +407,10 @@ export const createDetourMachine = setup({
                     }),
                   },
 
-                  onError: {},
+                  onError: {
+                    // fallback to an em-dash on error
+                    actions: "set.nearest-intersection-fallback",
+                  },
                 },
                 {
                   src: "fetch-detour-directions",

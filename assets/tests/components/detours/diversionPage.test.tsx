@@ -260,6 +260,84 @@ describe("DiversionPage", () => {
     })
   })
 
+  test("nearest intersection falls back to an em-dash if the return value is null", async () => {
+    jest.mocked(fetchNearestIntersection).mockResolvedValue(null)
+
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      Ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
+      )
+    )
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    await waitFor(() => {
+      const { getByText } = within(
+        screen
+          .getByRole("heading", { name: "Detour Directions" })
+          .closest("section")!
+      )
+
+      expect(getByText("From —")).toBeVisible()
+      expect(getByText("Turn left on Main Street")).toBeVisible()
+      expect(getByText("Turn right on High Street")).toBeVisible()
+      expect(getByText("Turn sharp right on Broadway")).toBeVisible()
+    })
+  })
+
+  test("nearest intersection falls back to an em-dash if fetch fails", async () => {
+    jest.mocked(fetchNearestIntersection).mockRejectedValue(null)
+
+    jest.mocked(fetchDetourDirections).mockResolvedValue(
+      Ok(
+        detourShapeFactory.build({
+          directions: [
+            { instruction: "Turn left on Main Street" },
+            { instruction: "Turn right on High Street" },
+            { instruction: "Turn sharp right on Broadway" },
+          ],
+        })
+      )
+    )
+
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    await waitFor(() => {
+      const { getByText } = within(
+        screen
+          .getByRole("heading", { name: "Detour Directions" })
+          .closest("section")!
+      )
+
+      expect(getByText("From —")).toBeVisible()
+      expect(getByText("Turn left on Main Street")).toBeVisible()
+      expect(getByText("Turn right on High Street")).toBeVisible()
+      expect(getByText("Turn sharp right on Broadway")).toBeVisible()
+    })
+  })
+
   test("can click on route shape again to end detour", async () => {
     const { container } = render(<DiversionPage />)
 
@@ -1293,7 +1371,7 @@ describe("DiversionPage", () => {
 
     const input = screen.getByRole("textbox") as HTMLTextAreaElement
 
-    const startText = `From null`
+    const startText = `From —`
 
     await userEvent.type(input, "\nHello World!")
 
@@ -1315,7 +1393,7 @@ describe("DiversionPage", () => {
 
     const input = screen.getByRole("textbox") as HTMLTextAreaElement
 
-    const startText = `From null`
+    const startText = `From —`
 
     await userEvent.type(input, "\nHello World!")
 
