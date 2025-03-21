@@ -4,7 +4,7 @@ defmodule Swiftly.API.ServiceAdjustments.DetourV0CreationDetailsV1 do
   """
 
   @type t :: %__MODULE__{
-          adjustmentType: String.t(),
+          adjustmentType: :DETOUR_V0,
           beginTime: DateTime.t() | nil,
           detourRouteDirectionDetails:
             [Swiftly.API.ServiceAdjustments.DetourRouteDirectionCreationDetails.t()] | nil,
@@ -14,10 +14,10 @@ defmodule Swiftly.API.ServiceAdjustments.DetourV0CreationDetailsV1 do
 
   @derive Jason.Encoder
   defstruct [
-    :adjustmentType,
     :beginTime,
     :detourRouteDirectionDetails,
     :endTime,
-    :recurrenceProperties
+    :recurrenceProperties,
+    adjustmentType: :DETOUR_V0
   ]
 end
