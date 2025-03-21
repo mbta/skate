@@ -23,6 +23,7 @@ defmodule Skate.Detours.RequestTest do
         build(:detour)
         |> with_route(%{name: "test_route_name", id: "test_route_id"})
         |> with_direction(:inbound)
+        |> with_coordinates()
         |> activated()
         |> insert()
 
@@ -53,6 +54,7 @@ defmodule Skate.Detours.RequestTest do
         build(:detour)
         |> with_route(%{name: "test_route_name", id: "test_route_id"})
         |> with_direction(:inbound)
+        |> with_coordinates()
         |> insert()
 
       detour = get_detour_with_all_virtual_fields(detour.id)
@@ -71,6 +73,7 @@ defmodule Skate.Detours.RequestTest do
       build(:detour)
       |> with_route(%{name: "test_route_name", id: "test_route_id"})
       |> with_direction(:inbound)
+      |> with_coordinates()
       |> activated()
       |> deactivated()
       |> insert()
