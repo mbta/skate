@@ -8,4 +8,11 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
 
     :ok
   end
+
+  @default_arguments [
+    client: @mock_client_module,
+    base_url: URI.parse("https://localhost"),
+    agency: "fake-agency",
+    api_key: "fake-api-key"
+  ]
 end
