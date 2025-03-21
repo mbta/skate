@@ -14,6 +14,7 @@ defmodule Swiftly.API.ServiceAdjustments.DetourRouteDirectionCreationDetails do
           skippedStops: [String.t()] | nil
         }
 
+  @derive Jason.Encoder
   defstruct [
     :direction,
     :newStops,

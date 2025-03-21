@@ -29,5 +29,6 @@ defmodule Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1 do
           userId: String.t() | nil
         }
 
+  @derive Jason.Encoder
   defstruct [:details, :feedId, :feedName, :notes, :reason, :userFullname, :userId]
 end

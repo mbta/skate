@@ -12,6 +12,7 @@ defmodule Swiftly.API.ServiceAdjustments.DetourV0CreationDetailsV1 do
           recurrenceProperties: Swiftly.API.ServiceAdjustments.RecurrenceProperties.t() | nil
         }
 
+  @derive Jason.Encoder
   defstruct [
     :adjustmentType,
     :beginTime,

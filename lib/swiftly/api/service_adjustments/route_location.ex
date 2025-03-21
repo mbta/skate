@@ -10,5 +10,6 @@ defmodule Swiftly.API.ServiceAdjustments.RouteLocation do
           previousStopId: String.t() | nil
         }
 
+  @derive Jason.Encoder
   defstruct [:distanceFromPreviousStop, :latLon, :nextStopId, :previousStopId]
 end

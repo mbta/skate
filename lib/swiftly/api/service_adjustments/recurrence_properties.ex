@@ -9,5 +9,6 @@ defmodule Swiftly.API.ServiceAdjustments.RecurrenceProperties do
           recurrenceRule: String.t()
         }
 
+  @derive Jason.Encoder
   defstruct [:firstOccurrenceEndTime, :firstOccurrenceStartTime, :recurrenceRule]
 end
