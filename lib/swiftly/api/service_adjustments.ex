@@ -55,7 +55,7 @@ defmodule Swiftly.API.ServiceAdjustments do
     * `feedId`: Feed ID the created the adjustment, required if the adjustment is feed-managed.
 
   """
-  @spec delete_adjustment_v1(String.t(), keyword) ::
+  @spec delete_adjustment_v1(Swiftly.Api.ServiceAdjustments.AdjustmentId.t(), keyword) ::
           {:ok, map} | {:error, any}
   def delete_adjustment_v1(adjustment_id, opts \\ []) do
     client = opts[:client] || @default_client
