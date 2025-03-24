@@ -37,7 +37,7 @@ defmodule Skate.Detours.Request do
 
   require Logger
 
-  @spec to_swiftly(Detour.t()) :: Swiftly.CreateDetour.t()
+  @spec to_swiftly(Detour.t()) :: {:ok, Swiftly.CreateDetour.t()} | :error
   def to_swiftly(%Detour{status: :active} = detour) do
     {:ok,
      %Swiftly.CreateDetour{
