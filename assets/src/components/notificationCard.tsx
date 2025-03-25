@@ -176,6 +176,15 @@ export const title = (notification: Notification) => {
         case "raised":
           return "Chelsea St Bridge Raised"
       }
+      break
+    }
+
+    case NotificationType.DetourExpiration: {
+      if (notification.content.expiresIn > 0) {
+        return `Detour duration - ${notification.content.expiresIn} min warning`
+      } else {
+        return "Detour duration reached"
+      }
     }
   }
 }
@@ -275,6 +284,49 @@ const description = (
         case "lowered":
           return "OCC reported that the Chelsea St bridge has been lowered."
       }
+      break
+    }
+
+    case NotificationType.DetourExpiration: {
+      return (
+        <>
+          <div className="d-flex flex-row gap-2">
+            <RoutePill routeName={notification.content.route} />
+            <div>
+              <div className="fw-semibold">{notification.content.headsign}</div>
+              <div className="fw-normal text-body-secondary">
+                From {notification.content.origin.split(" - ")[0]}
+              </div>
+              <div className="fw-normal">{notification.content.direction}</div>
+              <div className="fw-normal">
+                {notification.content.expiresIn > 0 ? (
+                  <>
+                    This detour will reach its estimated{" "}
+                    <strong>{notification.content.estimatedDuration}</strong>{" "}
+                    duration in{" "}
+                    <strong>{notification.content.expiresIn} minutes</strong>.
+                  </>
+                ) : (
+                  <>
+                    This detour has reached its estimated{" "}
+                    <strong>{notification.content.estimatedDuration}</strong>{" "}
+                    duration.
+                  </>
+                )}
+              </div>
+              {notification.content.isDispatcher ? (
+                <div className="fw-normal">
+                  Please extend or close the detour.
+                </div>
+              ) : (
+                <div className="fw-normal">
+                  Please work with the dispatcher to extend or close the detour.
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+      )
     }
   }
 }
