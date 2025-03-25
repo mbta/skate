@@ -36,6 +36,11 @@ config :skate, Skate.OpenRouteServiceAPI,
   api_key: System.get_env("OPEN_ROUTE_SERVICE_API_KEY"),
   client: Skate.OpenRouteServiceAPI.Client
 
+config :skate, Swiftly.API.ServiceAdjustments,
+  api_base_url: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_API_BASE_URL"),
+  api_key: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_API_KEY"),
+  agency_id: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_AGENCY")
+
 config :skate, SkateWeb.AuthManager, secret_key: System.get_env("GUARDIAN_SECRET_KEY")
 
 pool_size =
