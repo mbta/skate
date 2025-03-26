@@ -32,7 +32,7 @@ defmodule Swiftly.API.ServiceAdjustments do
       |> assert_agency_param!()
       |> Keyword.take([:agency])
 
-    client.request(%HTTPoison.Request{
+    %HTTPoison.Request{
       method: :post,
       url: fetch_base_url(opts) |> URI.append_path("/adjustments") |> URI.to_string(),
       params: params,
@@ -42,7 +42,15 @@ defmodule Swiftly.API.ServiceAdjustments do
         authorization: fetch_api_key(opts),
         accept: "application/json"
       ]
-    })
+    }
+    |> client.request()
+    |> case do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, Jason.decode!(body, keys: :atoms!)}
+
+      _response ->
+        :error
+    end
   end
 
   @doc """
@@ -59,7 +67,7 @@ defmodule Swiftly.API.ServiceAdjustments do
 
   """
   @spec delete_adjustment_v1(Swiftly.Api.ServiceAdjustments.AdjustmentId.t(), keyword) ::
-          {:ok, map} | {:error, any}
+          :ok | {:error, any}
   def delete_adjustment_v1(adjustment_id, opts \\ []) do
     client = fetch_client(opts)
 
@@ -68,7 +76,7 @@ defmodule Swiftly.API.ServiceAdjustments do
       |> assert_agency_param!()
       |> Keyword.take([:agency, :feedId])
 
-    client.request(%HTTPoison.Request{
+    %HTTPoison.Request{
       method: :delete,
       url:
         fetch_base_url(opts)
@@ -79,7 +87,12 @@ defmodule Swiftly.API.ServiceAdjustments do
         authorization: fetch_api_key(opts),
         accept: "application/json"
       ]
-    })
+    }
+    |> client.request()
+    |> case do
+      {:ok, %HTTPoison.Response{status_code: 204}} -> :ok
+      _response -> :error
+    end
   end
 
   @doc """
@@ -126,7 +139,7 @@ defmodule Swiftly.API.ServiceAdjustments do
         :validityStates
       ])
 
-    client.request(%HTTPoison.Request{
+    %HTTPoison.Request{
       method: :get,
       url: fetch_base_url(opts) |> URI.append_path("/adjustments") |> URI.to_string(),
       params: params,
@@ -134,7 +147,15 @@ defmodule Swiftly.API.ServiceAdjustments do
         authorization: fetch_api_key(opts),
         accept: "application/json"
       ]
-    })
+    }
+    |> client.request()
+    |> case do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, Jason.decode!(body, keys: :atoms!)}
+
+      _response ->
+        :error
+    end
   end
 
   defp fetch_client(opts), do: opts[:client] || @default_client
