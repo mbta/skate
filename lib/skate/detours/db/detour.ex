@@ -134,7 +134,7 @@ defmodule Skate.Detours.Db.Detour do
           :nearest_intersection -> select_starting_intersection(query)
           :estimated_duration -> select_estimated_duration(query)
           :direction_id -> select_direction_id(query)
-          :coordinates -> select_coordiantes(query)
+          :coordinates -> select_coordinates(query)
           _unknown -> query
         end
       end)
@@ -263,7 +263,7 @@ defmodule Skate.Detours.Db.Detour do
       })
     end
 
-    def select_coordiantes(query \\ base(), key \\ :coordinates) do
+    def select_coordinates(query \\ base(), key \\ :coordinates) do
       select_merge(query, [detour: d], %{
         ^key => d.state["context"]["detourShape"]["ok"]["coordinates"]
       })
