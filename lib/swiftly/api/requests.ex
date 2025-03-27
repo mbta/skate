@@ -20,7 +20,7 @@ defmodule Swiftly.Api.Requests do
          beginTime: parse_begin_time(detour),
          detourRouteDirectionDetails: [
            %{
-             routeShortName: detour.route_id,
+             routeShortName: detour.route_name,
              direction: Integer.to_string(detour.direction_id),
              shape: parse_shape(detour)
            }

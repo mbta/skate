@@ -40,7 +40,7 @@ defmodule Swiftly.Api.RequestTest do
                   beginTime: "2025-03-27T08:45:00.000000-04:00",
                   detourRouteDirectionDetails: [
                     %{
-                      routeShortName: "test_route_id",
+                      routeShortName: "test_route_name",
                       direction: "1",
                       shape: [
                         [42.337949, -71.074936],
