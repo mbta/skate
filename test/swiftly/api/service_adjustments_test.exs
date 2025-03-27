@@ -209,4 +209,61 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       )
     end
   end
+
+  describe "delete_adjustment_v1/2" do
+    test "HTTP method is :delete" do
+      Mox.expect(@mock_client_module, :request, fn request ->
+        assert %HTTPoison.Request{
+                 method: :delete
+               } = request
+      end)
+
+      Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+        "test-adjustment-id",
+        @default_arguments
+      )
+    end
+
+    test "url ends with `/adjustments/:adjustment_id`" do
+      Mox.expect(@mock_client_module, :request, 1, fn request ->
+        assert %HTTPoison.Request{
+                 url: "https://localhost/adjustments/test-adjustment-id"
+               } = request
+      end)
+
+      Mox.expect(@mock_client_module, :request, 2, fn request ->
+        assert %HTTPoison.Request{
+                 url: "https://localhost/test-prefix/adjustments/test-adjustment-id"
+               } = request
+      end)
+
+      Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+        "test-adjustment-id",
+        [base_url: URI.parse("https://localhost")] ++
+          @default_arguments
+      )
+
+      Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+        "test-adjustment-id",
+        [base_url: URI.parse("https://localhost/test-prefix")] ++
+          @default_arguments
+      )
+    end
+
+    test "when API returns `204`, returns :ok" do
+      Mox.expect(@mock_client_module, :request, fn request ->
+        {:ok,
+         %HTTPoison.Response{
+           request: request,
+           status_code: 204
+         }}
+      end)
+
+      assert :ok ==
+               Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+                 "test-adjustment-id",
+                 @default_arguments
+               )
+    end
+  end
 end
