@@ -5,7 +5,7 @@ defmodule Swiftly.API.ServiceAdjustments do
   https://swiftly-inc.stoplight.io/docs/service-adjustments/a6a0871d5c7a5-swiftly-service-adjustments
   """
 
-  @default_client HTTPoison
+  @default_client Swiftly.API.Client
 
   @doc """
   https://swiftly-inc.stoplight.io/docs/service-adjustments/10cf60084522d-create-adjustment
