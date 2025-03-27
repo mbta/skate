@@ -1,9 +1,10 @@
-defmodule Skate.Detours.RequestTest do
+defmodule Swiftly.Api.RequestTest do
   use Skate.DataCase
   import Skate.Factory
   import ExUnit.CaptureLog
 
-  alias Skate.Detours.Request
+  import Swiftly.Api.Requests
+  alias Swiftly.Api.Requests.{CreateAdjustmentRequestV1, DetourV0CreationDetailsV1}
 
   defp get_detour_with_all_virtual_fields(id) do
     [detour] =
@@ -30,23 +31,30 @@ defmodule Skate.Detours.RequestTest do
       detour = get_detour_with_all_virtual_fields(detour.id)
 
       assert {:ok,
-              %Request.Swiftly.CreateDetour{
-                adjustmentType: "DETOUR_V0",
-                detourRouteDirectionDetails: [
-                  %{
-                    routeShortName: "test_route_id",
-                    direction: "1",
-                    shape: [
-                      [42.337949, -71.074936],
-                      [42.338488, -71.066487],
-                      [42.339672, -71.067018],
-                      [42.339848, -71.067554],
-                      [42.340134, -71.068427],
-                      [42.340216, -71.068579]
-                    ]
-                  }
-                ]
-              }} = Request.to_swiftly(detour)
+              %CreateAdjustmentRequestV1{
+                feedId: "TEMP_FEED_ID",
+                feedName: "TEMP_FEED_NAME",
+                notes: notes,
+                details: %DetourV0CreationDetailsV1{
+                  adjustmentType: :DETOUR_V0,
+                  detourRouteDirectionDetails: [
+                    %{
+                      routeShortName: "test_route_id",
+                      direction: "1",
+                      shape: [
+                        [42.337949, -71.074936],
+                        [42.338488, -71.066487],
+                        [42.339672, -71.067018],
+                        [42.339848, -71.067554],
+                        [42.340134, -71.068427],
+                        [42.340216, -71.068579]
+                      ]
+                    }
+                  ]
+                }
+              }} = to_swiftly(detour)
+
+      assert notes == Integer.to_string(detour.id)
     end
 
     test "it returns :error if detour provided is not :active and logs a warning for :draft" do
@@ -61,7 +69,7 @@ defmodule Skate.Detours.RequestTest do
 
       log =
         capture_log(fn ->
-          assert :error = Request.to_swiftly(detour)
+          assert :error = to_swiftly(detour)
         end)
 
       assert log =~ "detour_not_active_to_swiftly detour_id=#{detour.id} status=:draft"
@@ -82,7 +90,7 @@ defmodule Skate.Detours.RequestTest do
 
     log =
       capture_log(fn ->
-        assert :error = Request.to_swiftly(detour)
+        assert :error = to_swiftly(detour)
       end)
 
     assert log =~ "detour_not_active_to_swiftly detour_id=#{detour.id} status=:past"
