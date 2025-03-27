@@ -16,6 +16,73 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
     api_key: "fake-api-key"
   ]
 
+  describe "all" do
+    for %{api_call: api_call, name: name} <- [
+          %{
+            name: "create_adjustment_v1/2",
+            api_call:
+              quote do
+                Swiftly.API.ServiceAdjustments.create_adjustment_v1(
+                  %Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1{},
+                  @default_arguments
+                )
+              end
+          },
+          %{
+            name: "delete_adjustment/2",
+            api_call:
+              quote do
+                Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+                  "test-adjustment-id",
+                  @default_arguments
+                )
+              end
+          },
+          %{
+            name: "get_adjustments_v1/1",
+            api_call:
+              quote do
+                Swiftly.API.ServiceAdjustments.get_adjustments_v1(@default_arguments)
+              end
+          }
+        ] do
+      test "endpoint requests have `authorization` header (#{name})" do
+        Mox.expect(@mock_client_module, :request, fn request ->
+          %HTTPoison.Request{
+            headers: headers
+          } = request
+
+          assert headers[:authorization] == "fake-api-key"
+        end)
+
+        Code.eval_quoted(unquote(api_call))
+      end
+
+      test "endpoint requests have `accept: application/json` header (#{name})" do
+        Mox.expect(@mock_client_module, :request, fn request ->
+          %HTTPoison.Request{
+            headers: headers
+          } = request
+
+          assert headers[:accept] == "application/json"
+        end)
+
+        Code.eval_quoted(unquote(api_call))
+      end
+
+      test "endpoint requests have `agency` parameter (#{name})" do
+        Mox.expect(@mock_client_module, :request, fn request ->
+          %HTTPoison.Request{
+            params: params
+          } = request
+
+          assert params[:agency] == "fake-agency"
+        end)
+
+        Code.eval_quoted(unquote(api_call))
+      end
+    end
+  end
 
   describe "create_adjustment_v1/2" do
     test "HTTP method is :post" do
