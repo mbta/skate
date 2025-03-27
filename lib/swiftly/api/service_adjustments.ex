@@ -125,6 +125,16 @@ defmodule Swiftly.API.ServiceAdjustments do
         :validOnly,
         :validityStates
       ])
+      |> Enum.map(fn
+        {key, value} when key in [:adjustmentTypes, :validityStates] and is_list(value) ->
+          {key, Jason.encode!(value)}
+
+        {:createdBefore = key, %DateTime{} = value} ->
+          {key, DateTime.to_iso8601(value)}
+
+        keyword ->
+          keyword
+      end)
 
     client.request(%HTTPoison.Request{
       method: :get,
