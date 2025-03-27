@@ -17,6 +17,7 @@ defmodule Swiftly.Api.Requests do
        notes: Integer.to_string(detour.id),
        details: %DetourV0CreationDetailsV1{
          adjustmentType: :DETOUR_V0,
+         beginTime: parse_begin_time(detour),
          detourRouteDirectionDetails: [
            %{
              routeShortName: detour.route_id,
@@ -34,6 +35,10 @@ defmodule Swiftly.Api.Requests do
     )
 
     :error
+  end
+
+  defp parse_begin_time(%Detour{activated_at: activated_at}) do
+    activated_at |> DateTime.shift_zone!("America/New_York") |> DateTime.to_iso8601()
   end
 
   defp parse_shape(%Detour{coordinates: coordinates}) when not is_nil(coordinates) do

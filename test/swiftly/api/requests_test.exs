@@ -25,7 +25,7 @@ defmodule Swiftly.Api.RequestTest do
         |> with_route(%{name: "test_route_name", id: "test_route_id"})
         |> with_direction(:inbound)
         |> with_coordinates()
-        |> activated()
+        |> activated(~U[2025-03-27 12:45:00.00Z])
         |> insert()
 
       detour = get_detour_with_all_virtual_fields(detour.id)
@@ -37,6 +37,7 @@ defmodule Swiftly.Api.RequestTest do
                 notes: notes,
                 details: %DetourV0CreationDetailsV1{
                   adjustmentType: :DETOUR_V0,
+                  beginTime: "2025-03-27T08:45:00.000000-04:00",
                   detourRouteDirectionDetails: [
                     %{
                       routeShortName: "test_route_id",

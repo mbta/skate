@@ -4,6 +4,7 @@ defmodule Swiftly.Api.Requests.DetourV0CreationDetailsV1 do
   """
   defstruct [
     :adjustmentType,
+    :beginTime,
     :detourRouteDirectionDetails
   ]
 
@@ -20,6 +21,7 @@ defmodule Swiftly.Api.Requests.DetourV0CreationDetailsV1 do
 
   @type t :: %__MODULE__{
           adjustmentType: adjustment_type(),
+          beginTime: DateTime.t(),
           detourRouteDirectionDetails: %{
             routeShortName: String.t(),
             direction: direction_id(),
