@@ -351,5 +351,52 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
               }} ==
                Swiftly.API.ServiceAdjustments.get_adjustments_v1(@default_arguments)
     end
+
+    test "encodes `adjustmentTypes` as JSON array" do
+      Mox.expect(@mock_client_module, :request, fn request ->
+        %HTTPoison.Request{
+          params: params
+        } = request
+
+        assert Jason.decode!(params[:adjustmentTypes]) == ["DETOUR_V0"]
+      end)
+
+      Swiftly.API.ServiceAdjustments.get_adjustments_v1(
+        [adjustmentTypes: [:DETOUR_V0]] ++
+          @default_arguments
+      )
+    end
+
+    test "encodes `validityStates` as JSON array" do
+      Mox.expect(@mock_client_module, :request, fn request ->
+        %HTTPoison.Request{
+          params: params
+        } = request
+
+        assert Jason.decode!(params[:validityStates]) == ["INVALID", "PENDING", "VALID"]
+      end)
+
+      Swiftly.API.ServiceAdjustments.get_adjustments_v1(
+        [validityStates: [:INVALID, :PENDING, :VALID]] ++
+          @default_arguments
+      )
+    end
+
+    test "encodes `createdBefore` as ISO8601" do
+      created_before = DateTime.utc_now()
+
+      Mox.expect(@mock_client_module, :request, fn request ->
+        %HTTPoison.Request{
+          params: params
+        } = request
+
+        assert params[:createdBefore] == DateTime.to_iso8601(created_before)
+      end)
+
+      Swiftly.API.ServiceAdjustments.get_adjustments_v1(
+        [createdBefore: created_before] ++
+          @default_arguments
+      )
+    end
   end
 end
