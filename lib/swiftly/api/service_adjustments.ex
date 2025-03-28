@@ -24,7 +24,8 @@ defmodule Swiftly.API.ServiceAdjustments do
           Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1.t(),
           keyword
         ) ::
-          {:ok, Swiftly.API.ServiceAdjustments.AdjustmentIdResponse.t()} | {:error, any}
+          {:ok, Swiftly.API.ServiceAdjustments.AdjustmentIdResponse.t()}
+          | {:error, :bad_request | :unknown}
   def create_adjustment_v1(body, opts \\ []) do
     client = fetch_client(opts)
 
@@ -73,7 +74,7 @@ defmodule Swiftly.API.ServiceAdjustments do
 
   """
   @spec delete_adjustment_v1(Swiftly.Api.ServiceAdjustments.AdjustmentId.t(), keyword) ::
-          :ok | {:error, any}
+          :ok | {:error, :bad_request | :not_found | :unknown}
   def delete_adjustment_v1(adjustment_id, opts \\ []) do
     client = fetch_client(opts)
 
@@ -136,7 +137,8 @@ defmodule Swiftly.API.ServiceAdjustments do
 
   """
   @spec get_adjustments_v1(keyword) ::
-          {:ok, Swiftly.API.ServiceAdjustments.AdjustmentsResponseV1.t()} | {:error, any}
+          {:ok, Swiftly.API.ServiceAdjustments.AdjustmentsResponseV1.t()}
+          | {:error, :bad_request | :unknown}
   def get_adjustments_v1(opts \\ []) do
     client = fetch_client(opts)
 
