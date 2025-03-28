@@ -25,7 +25,7 @@ defmodule Swiftly.API.ServiceAdjustments do
         ) ::
           {:ok, Swiftly.API.ServiceAdjustments.AdjustmentIdResponse.t()} | {:error, any}
   def create_adjustment_v1(body, opts \\ []) do
-    client = opts[:client] || @default_client
+    client = fetch_client(opts)
 
     params =
       opts
@@ -61,7 +61,7 @@ defmodule Swiftly.API.ServiceAdjustments do
   @spec delete_adjustment_v1(Swiftly.Api.ServiceAdjustments.AdjustmentId.t(), keyword) ::
           {:ok, map} | {:error, any}
   def delete_adjustment_v1(adjustment_id, opts \\ []) do
-    client = opts[:client] || @default_client
+    client = fetch_client(opts)
 
     params =
       opts
@@ -107,7 +107,7 @@ defmodule Swiftly.API.ServiceAdjustments do
   @spec get_adjustments_v1(keyword) ::
           {:ok, Swiftly.API.ServiceAdjustments.AdjustmentsResponseV1.t()} | {:error, any}
   def get_adjustments_v1(opts \\ []) do
-    client = opts[:client] || @default_client
+    client = fetch_client(opts)
 
     params =
       opts
@@ -136,6 +136,8 @@ defmodule Swiftly.API.ServiceAdjustments do
       ]
     })
   end
+
+  defp fetch_client(opts), do: opts[:client] || @default_client
 
   defp fetch_api_key(opts), do: Keyword.fetch!(opts, :api_key)
 
