@@ -7,17 +7,13 @@ defmodule Swiftly.API.ServiceAdjustments.DetourV0CreationDetailsV1 do
           adjustmentType: :DETOUR_V0,
           beginTime: DateTime.t() | nil,
           detourRouteDirectionDetails:
-            [Swiftly.API.ServiceAdjustments.DetourRouteDirectionCreationDetails.t()] | nil,
-          endTime: DateTime.t() | nil,
-          recurrenceProperties: Swiftly.API.ServiceAdjustments.RecurrenceProperties.t() | nil
+            [Swiftly.API.ServiceAdjustments.DetourRouteDirectionCreationDetails.t()] | nil
         }
 
   @derive Jason.Encoder
   defstruct [
     :beginTime,
     :detourRouteDirectionDetails,
-    :endTime,
-    :recurrenceProperties,
     adjustmentType: :DETOUR_V0
   ]
 end
