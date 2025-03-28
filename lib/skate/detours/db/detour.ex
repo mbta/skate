@@ -32,6 +32,8 @@ defmodule Skate.Detours.Db.Detour do
     field :route_pattern_name, :string, virtual: true
     field :headsign, :string, virtual: true
     field :direction, :string, virtual: true
+    field :direction_id, :integer, virtual: true
+    field :coordinates, {:array, :map}, virtual: true
 
     # Default detour properties
     field :nearest_intersection, :string, virtual: true
@@ -94,7 +96,12 @@ defmodule Skate.Detours.Db.Detour do
     MUST include the foreign keys used in the relationship,
     otherwise Ecto will be unable to find associated records.
     """
-    def select_fields(query \\ base(), fields) when is_list(fields) do
+    def select_fields(query \\ base(), fields)
+
+    def select_fields(query, :all),
+      do: select_fields(query, Skate.Detours.Db.Detour.__schema__(:virtual_fields))
+
+    def select_fields(query, fields) when is_list(fields) do
       %{virtual_fields: wanted_virtual_fields, fields: wanted_fields} = split_fields(fields)
 
       query
@@ -126,6 +133,8 @@ defmodule Skate.Detours.Db.Detour do
           :direction -> select_direction(query)
           :nearest_intersection -> select_starting_intersection(query)
           :estimated_duration -> select_estimated_duration(query)
+          :direction_id -> select_direction_id(query)
+          :coordinates -> select_coordinates(query)
           _unknown -> query
         end
       end)
@@ -236,6 +245,12 @@ defmodule Skate.Detours.Db.Detour do
       })
     end
 
+    def select_direction_id(query \\ base(), key \\ :direction_id) do
+      select_merge(query, [detour: d], %{
+        ^key => d.state["context"]["routePattern"]["directionId"]
+      })
+    end
+
     def select_starting_intersection(query \\ base(), key \\ :nearest_intersection) do
       select_merge(query, [detour: d], %{
         ^key => d.state["context"]["nearestIntersection"]
@@ -245,6 +260,12 @@ defmodule Skate.Detours.Db.Detour do
     def select_estimated_duration(query \\ base(), key \\ :estimated_duration) do
       select_merge(query, [detour: d], %{
         ^key => d.state["context"]["selectedDuration"]
+      })
+    end
+
+    def select_coordinates(query \\ base(), key \\ :coordinates) do
+      select_merge(query, [detour: d], %{
+        ^key => d.state["context"]["detourShape"]["ok"]["coordinates"]
       })
     end
   end

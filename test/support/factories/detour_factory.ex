@@ -200,6 +200,47 @@ defmodule Skate.DetourFactory do
           ) do
         put_in(state["context"]["nearestIntersection"], headsign)
       end
+
+      def with_coordinates(
+            detour,
+            coordinates \\ [
+              %{
+                lat: 42.337949,
+                lon: -71.074936
+              },
+              %{
+                lat: 42.338488,
+                lon: -71.066487
+              },
+              %{
+                lat: 42.339672,
+                lon: -71.067018
+              },
+              %{
+                lat: 42.339848,
+                lon: -71.067554
+              },
+              %{
+                lat: 42.340134,
+                lon: -71.068427
+              },
+              %{
+                lat: 42.340216,
+                lon: -71.068579
+              }
+            ]
+          )
+
+      def with_coordinates(
+            %Skate.Detours.Db.Detour{} = detour,
+            coordinates
+          ) do
+        %{detour | state: with_coordinates(detour.state, coordinates)}
+      end
+
+      def with_coordinates(state, coordinates) do
+        put_in(state["context"]["detourShape"], %{"ok" => %{"coordinates" => coordinates}})
+      end
     end
   end
 
