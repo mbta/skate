@@ -27,12 +27,15 @@ defmodule Swiftly.API.ServiceAdjustments do
   def create_adjustment_v1(body, opts \\ []) do
     client = opts[:client] || @default_client
 
-    query = Keyword.take(opts, [:agency])
+    params =
+      opts
+      |> assert_agency_param!()
+      |> Keyword.take([:agency])
 
     client.request(%HTTPoison.Request{
       method: :post,
       url: fetch_base_url(opts) |> URI.append_path("/adjustments") |> URI.to_string(),
-      params: query,
+      params: params,
       body: Jason.encode!(body),
       headers: [
         "content-type": "application/json",
@@ -60,7 +63,10 @@ defmodule Swiftly.API.ServiceAdjustments do
   def delete_adjustment_v1(adjustment_id, opts \\ []) do
     client = opts[:client] || @default_client
 
-    query = Keyword.take(opts, [:agency, :feedId])
+    params =
+      opts
+      |> assert_agency_param!()
+      |> Keyword.take([:agency, :feedId])
 
     client.request(%HTTPoison.Request{
       method: :delete,
@@ -68,7 +74,7 @@ defmodule Swiftly.API.ServiceAdjustments do
         fetch_base_url(opts)
         |> URI.append_path("/adjustments/#{adjustment_id}")
         |> URI.to_string(),
-      params: query,
+      params: params,
       headers: [
         authorization: fetch_api_key(opts),
         accept: "application/json"
@@ -103,8 +109,10 @@ defmodule Swiftly.API.ServiceAdjustments do
   def get_adjustments_v1(opts \\ []) do
     client = opts[:client] || @default_client
 
-    query =
-      Keyword.take(opts, [
+    params =
+      opts
+      |> assert_agency_param!()
+      |> Keyword.take([
         :agency,
         :activeAfter,
         :activeBefore,
@@ -121,7 +129,7 @@ defmodule Swiftly.API.ServiceAdjustments do
     client.request(%HTTPoison.Request{
       method: :get,
       url: fetch_base_url(opts) |> URI.append_path("/adjustments") |> URI.to_string(),
-      params: query,
+      params: params,
       headers: [
         authorization: fetch_api_key(opts),
         accept: "application/json"
@@ -132,4 +140,10 @@ defmodule Swiftly.API.ServiceAdjustments do
   defp fetch_api_key(opts), do: Keyword.fetch!(opts, :api_key)
 
   defp fetch_base_url(opts), do: %URI{} = Keyword.fetch!(opts, :base_url)
+
+  defp assert_agency_param!(opts) do
+    _ = Keyword.fetch!(opts, :agency)
+
+    opts
+  end
 end
