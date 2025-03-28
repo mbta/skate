@@ -237,7 +237,7 @@ defmodule SkateWeb.DetoursControllerTest do
       |> with_headsign("Headsign")
       |> with_nearest_intersection("Street Y & Avenue Z")
 
-    conn =
+    _conn =
       put(conn, "/api/detours/update_snapshot", %{"snapshot" => draft_detour})
 
     1
