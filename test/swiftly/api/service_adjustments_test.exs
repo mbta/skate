@@ -1,5 +1,6 @@
 defmodule Swiftly.API.ServiceAdjustmentsTest do
   use ExUnit.Case
+  import ExUnit.CaptureLog
 
   @mock_client_module Swiftly.API.MockClient
 
@@ -81,6 +82,27 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
 
         Code.eval_quoted(unquote(api_call))
       end
+
+      test "endpoints, when client errors, log and return {:error, :unknown} (#{name})" do
+        Mox.expect(@mock_client_module, :request, fn _ ->
+          {:error,
+           %HTTPoison.Error{
+             reason: "closed"
+           }}
+        end)
+
+        {result, log} =
+          with_log(fn ->
+            {result, _binding} = Code.eval_quoted(unquote(api_call))
+            result
+          end)
+
+        assert result == {:error, :unknown}
+
+        assert log =~ "mfa=Swiftly.API.ServiceAdjustments."
+        assert log =~ "unknown"
+        assert log =~ "response={:error, %HTTPoison.Error{reason: \"closed\", id: nil}}"
+      end
     end
   end
 
@@ -141,6 +163,39 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
                  %Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1{},
                  @default_arguments
                )
+    end
+
+    test "when API returns 400, logs and returns {:error, :bad_request}" do
+      response_body =
+        Jason.encode!(%{
+          errorCode: 400,
+          errorMessage: "Request failed with status code 400"
+        })
+
+      Mox.expect(@mock_client_module, :request, fn request ->
+        {:ok,
+         %HTTPoison.Response{
+           request: request,
+           status_code: 400,
+           body: response_body,
+           request_url: request.url
+         }}
+      end)
+
+      {result, log} =
+        with_log(fn ->
+          Swiftly.API.ServiceAdjustments.create_adjustment_v1(
+            %Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1{},
+            @default_arguments
+          )
+        end)
+
+      assert result == {:error, :bad_request}
+
+      assert log =~ "mfa=Swiftly.API.ServiceAdjustments.create_adjustment_v1/2"
+      assert log =~ "status_code=400"
+      assert log =~ "request_url=\"https://localhost/adjustments\""
+      assert log =~ "body=#{inspect(response_body)}"
     end
 
     test "request `body` is encoded as json" do
@@ -265,6 +320,71 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
                  @default_arguments
                )
     end
+
+    test "when API returns 400, logs and returns {:error, :bad_request}" do
+      response_body =
+        Jason.encode!(%{
+          errorCode: 400,
+          errorMessage: "Request failed with status code 400"
+        })
+
+      Mox.expect(@mock_client_module, :request, fn request ->
+        {:ok,
+         %HTTPoison.Response{
+           request: request,
+           status_code: 400,
+           body: response_body,
+           request_url: request.url
+         }}
+      end)
+
+      {result, log} =
+        with_log(fn ->
+          Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+            "test-adjustment-id",
+            @default_arguments
+          )
+        end)
+
+      assert result == {:error, :bad_request}
+
+      assert log =~ "mfa=Swiftly.API.ServiceAdjustments.delete_adjustment_v1/2"
+      assert log =~ "status_code=400"
+      assert log =~ "request_url=\"https://localhost/adjustments/test-adjustment-id\""
+      assert log =~ "body=#{inspect(response_body)}"
+    end
+
+    test "when API returns 404, logs and returns {:error, :not_found}" do
+      response_body =
+        Jason.encode!(%{
+          errorCode: 404
+        })
+
+      Mox.expect(@mock_client_module, :request, fn request ->
+        {:ok,
+         %HTTPoison.Response{
+           request: request,
+           status_code: 404,
+           body: response_body,
+           request_url: request.url
+         }}
+      end)
+
+      {result, log} =
+        with_log(fn ->
+          Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+            "test-adjustment-id",
+            @default_arguments
+          )
+        end)
+
+      assert result == {:error, :not_found}
+
+      assert log =~ "mfa=Swiftly.API.ServiceAdjustments.delete_adjustment_v1/2"
+      assert log =~ "status_code=404"
+      assert log =~ "request_url=\"https://localhost/adjustments/test-adjustment-id\""
+      assert log =~ "body=#{inspect(response_body)}"
+    end
   end
 
   describe "get_adjustments_v1/1" do
@@ -350,6 +470,36 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
                 ]
               }} ==
                Swiftly.API.ServiceAdjustments.get_adjustments_v1(@default_arguments)
+    end
+
+    test "when API returns 400, logs and returns {:error, :bad_request}" do
+      response_body =
+        Jason.encode!(%{
+          errorCode: 400,
+          errorMessage: "Request failed with status code 400"
+        })
+
+      Mox.expect(@mock_client_module, :request, fn request ->
+        {:ok,
+         %HTTPoison.Response{
+           request: request,
+           status_code: 400,
+           body: response_body,
+           request_url: request.url
+         }}
+      end)
+
+      {result, log} =
+        with_log(fn ->
+          Swiftly.API.ServiceAdjustments.get_adjustments_v1(@default_arguments)
+        end)
+
+      assert result == {:error, :bad_request}
+
+      assert log =~ "mfa=Swiftly.API.ServiceAdjustments.get_adjustments_v1/1"
+      assert log =~ "status_code=400"
+      assert log =~ "request_url=\"https://localhost/adjustments\""
+      assert log =~ "body=#{inspect(response_body)}"
     end
 
     test "encodes `adjustmentTypes` as JSON array" do

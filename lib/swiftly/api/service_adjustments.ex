@@ -4,6 +4,7 @@ defmodule Swiftly.API.ServiceAdjustments do
 
   https://swiftly-inc.stoplight.io/docs/service-adjustments/a6a0871d5c7a5-swiftly-service-adjustments
   """
+  require Logger
 
   @default_client Swiftly.API.Client
 
@@ -48,8 +49,13 @@ defmodule Swiftly.API.ServiceAdjustments do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, Jason.decode!(body, keys: :atoms!)}
 
-      _response ->
-        :error
+      {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
+        Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
+        {:error, :bad_request}
+
+      response ->
+        Logger.error("unknown response=#{inspect(response)}")
+        {:error, :unknown}
     end
   end
 
@@ -90,8 +96,20 @@ defmodule Swiftly.API.ServiceAdjustments do
     }
     |> client.request()
     |> case do
-      {:ok, %HTTPoison.Response{status_code: 204}} -> :ok
-      _response -> :error
+      {:ok, %HTTPoison.Response{status_code: 204}} ->
+        :ok
+
+      {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
+        Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
+        {:error, :bad_request}
+
+      {:ok, %HTTPoison.Response{status_code: 404, body: body, request_url: request_url}} ->
+        Logger.error("status_code=404 request_url=#{inspect(request_url)} body=#{inspect(body)}")
+        {:error, :not_found}
+
+      response ->
+        Logger.error("unknown response=#{inspect(response)}")
+        {:error, :unknown}
     end
   end
 
@@ -163,8 +181,13 @@ defmodule Swiftly.API.ServiceAdjustments do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, Jason.decode!(body, keys: :atoms!)}
 
-      _response ->
-        :error
+      {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
+        Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
+        {:error, :bad_request}
+
+      response ->
+        Logger.error("unknown response=#{inspect(response)}")
+        {:error, :unknown}
     end
   end
 
