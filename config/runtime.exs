@@ -37,9 +37,19 @@ config :skate, Skate.OpenRouteServiceAPI,
   client: Skate.OpenRouteServiceAPI.Client
 
 config :skate, Swiftly.API.ServiceAdjustments,
-  api_base_url: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_API_BASE_URL"),
+  base_url:
+    (with(
+       base_url_var when is_binary(base_url_var) <-
+         System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_API_BASE_URL"),
+       {:ok, uri} <- URI.new(base_url_var)
+     ) do
+       uri
+     else
+       _ ->
+         nil
+     end),
   api_key: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_API_KEY"),
-  agency_id: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_AGENCY")
+  agency: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_AGENCY")
 
 config :skate, SkateWeb.AuthManager, secret_key: System.get_env("GUARDIAN_SECRET_KEY")
 
