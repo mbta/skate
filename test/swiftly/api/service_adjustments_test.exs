@@ -12,7 +12,7 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
 
   @default_arguments [
     client: @mock_client_module,
-    base_url: URI.parse("https://localhost"),
+    base_url: URI.parse("https://localhost/adjustments"),
     agency: "fake-agency",
     api_key: "fake-api-key"
   ]
@@ -158,7 +158,8 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
          }}
       end)
 
-      assert {:ok, %{adjustmentId: adjustment_id}} ==
+      assert {:ok,
+              %Swiftly.API.ServiceAdjustments.AdjustmentIdResponse{adjustmentId: adjustment_id}} ==
                Swiftly.API.ServiceAdjustments.create_adjustment_v1(
                  %Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1{},
                  @default_arguments
@@ -451,7 +452,7 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       end)
 
       assert {:ok,
-              %{
+              %Swiftly.API.ServiceAdjustments.AdjustmentsResponseV1{
                 adjustments: [
                   %{
                     adjustmentType: "DETOUR_V0",
@@ -540,7 +541,11 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
           params: params
         } = request
 
-        assert params[:createdBefore] == DateTime.to_iso8601(created_before)
+        assert params[:createdBefore] ==
+                 created_before
+                 |> DateTime.shift_zone!("America/New_York")
+                 |> DateTime.truncate(:second)
+                 |> DateTime.to_iso8601()
       end)
 
       Swiftly.API.ServiceAdjustments.get_adjustments_v1(

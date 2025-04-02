@@ -347,11 +347,11 @@ defmodule Skate.Detours.Detours do
     case Swiftly.API.ServiceAdjustments.get_adjustments_v1(build_swiftly_opts()) do
       {:ok, adjustments_response} ->
         adjustments_response
-        |> Map.get("adjustments")
+        |> Map.get(:adjustments, [])
         |> Enum.filter(fn adjustment ->
-          Map.get(adjustment, "notes") == Integer.to_string(detour.id)
+          Map.get(adjustment, :notes) == Integer.to_string(detour.id)
         end)
-        |> Enum.map(fn adjustment -> Map.get(adjustment, "id") end)
+        |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
         |> Enum.at(0)
         |> Swiftly.API.ServiceAdjustments.delete_adjustment_v1(build_swiftly_opts())
 

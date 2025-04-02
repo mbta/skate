@@ -48,13 +48,11 @@ defmodule Swiftly.API.ServiceAdjustments do
     |> client.request()
     |> case do
       {:ok, %HTTPoison.Response{status_code: 200, body: response_body}} ->
-        body = Jason.decode!(response_body)
+        body = Jason.decode!(response_body, keys: :atoms!)
 
-        Logger.info(
-          "adjustment_created_in_swiftly adjustment_id=#{Map.get(body, "adjustmentId")}"
-        )
+        Logger.info("adjustment_created_in_swiftly adjustment_id=#{Map.get(body, :adjustmentId)}")
 
-        {:ok, body}
+        {:ok, struct(Swiftly.API.ServiceAdjustments.AdjustmentIdResponse, body)}
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
         Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
@@ -197,7 +195,11 @@ defmodule Swiftly.API.ServiceAdjustments do
     |> client.request()
     |> case do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, Jason.decode!(body)}
+        {:ok,
+         struct(
+           Swiftly.API.ServiceAdjustments.AdjustmentsResponseV1,
+           Jason.decode!(body, keys: :atoms!)
+         )}
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
         Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
