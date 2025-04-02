@@ -1,14 +1,14 @@
-defmodule Swiftly.Api.Requests do
+defmodule Swiftly.API.Requests do
   @moduledoc """
   Module for constructing request objects for swiftly api requests.
   """
 
   alias Skate.Detours.Db.Detour
-  alias Swiftly.Api.Requests.{CreateAdjustmentRequestV1, DetourV0CreationDetailsV1}
+  alias Swiftly.API.ServiceAdjustments.{CreateAdjustmentRequestV1, DetourV0CreationDetailsV1}
 
   require Logger
 
-  @spec to_swiftly(Detour.t()) :: {:ok, DetourV0CreationDetailsV1.t()} | :error
+  @spec to_swiftly(Detour.t()) :: {:ok, CreateAdjustmentRequestV1.t()} | :error
   def to_swiftly(%Detour{status: :active} = detour) do
     {:ok,
      %CreateAdjustmentRequestV1{
@@ -20,8 +20,8 @@ defmodule Swiftly.Api.Requests do
          beginTime: parse_begin_time(detour),
          detourRouteDirectionDetails: [
            %{
-             routeShortName: detour.route_name,
-             direction: Integer.to_string(detour.direction_id),
+             routeShortName: detour.state["context"]["route"]["name"],
+             direction: Integer.to_string(detour.state["context"]["routePattern"]["directionId"]),
              shape: parse_shape(detour)
            }
          ]
@@ -38,7 +38,10 @@ defmodule Swiftly.Api.Requests do
   end
 
   defp parse_begin_time(%Detour{activated_at: activated_at}) do
-    activated_at |> DateTime.shift_zone!("America/New_York") |> DateTime.to_iso8601()
+    activated_at
+    |> DateTime.shift_zone!("America/New_York")
+    |> DateTime.truncate(:second)
+    |> DateTime.to_iso8601()
   end
 
   defp parse_shape(%Detour{coordinates: coordinates}) when not is_nil(coordinates) do

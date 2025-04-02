@@ -3,8 +3,8 @@ defmodule Swiftly.Api.RequestTest do
   import Skate.Factory
   import ExUnit.CaptureLog
 
-  import Swiftly.Api.Requests
-  alias Swiftly.Api.Requests.{CreateAdjustmentRequestV1, DetourV0CreationDetailsV1}
+  import Swiftly.API.Requests
+  alias Swiftly.API.ServiceAdjustments.{CreateAdjustmentRequestV1, DetourV0CreationDetailsV1}
 
   defp get_detour_with_all_virtual_fields(id) do
     [detour] =

@@ -208,6 +208,7 @@ defmodule Skate.Detours.Detours do
       {:ok, %Detour{} = new_record} ->
         broadcast_detour(new_record, author_id)
         send_notification(detour_changes, new_record)
+        update_swiftly(detour_changes, new_record)
 
       _ ->
         nil
@@ -316,6 +317,54 @@ defmodule Skate.Detours.Detours do
   end
 
   defp send_notification(_, _), do: nil
+
+  defp update_swiftly(
+         %Ecto.Changeset{
+           data: %Detour{status: :draft},
+           changes: %{status: :active}
+         },
+         %Detour{} = detour
+       ) do
+    case Swiftly.API.Requests.to_swiftly(detour) do
+      {:ok, adjustment_request} ->
+        Swiftly.API.ServiceAdjustments.create_adjustment_v1(
+          adjustment_request,
+          build_swiftly_opts()
+        )
+
+      :error ->
+        nil
+    end
+  end
+
+  defp update_swiftly(
+         %Ecto.Changeset{
+           data: %Detour{status: :active},
+           changes: %{status: :past}
+         },
+         %Detour{} = detour
+       ) do
+    case Swiftly.API.ServiceAdjustments.get_adjustments_v1(build_swiftly_opts()) do
+      {:ok, adjustments_response} ->
+        adjustments_response
+        |> Map.get("adjustments")
+        |> Enum.filter(fn adjustment ->
+          Map.get(adjustment, "notes") == Integer.to_string(detour.id)
+        end)
+        |> Enum.map(fn adjustment -> Map.get(adjustment, "id") end)
+        |> Enum.at(0)
+        |> Swiftly.API.ServiceAdjustments.delete_adjustment_v1(build_swiftly_opts())
+
+      _ ->
+        nil
+    end
+  end
+
+  defp update_swiftly(_, _), do: nil
+
+  defp build_swiftly_opts() do
+    Application.get_env(:skate, Swiftly.API.ServiceAdjustments)
+  end
 
   @doc """
   Deletes a detour.

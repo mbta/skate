@@ -36,7 +36,7 @@ defmodule Swiftly.API.ServiceAdjustments do
 
     %HTTPoison.Request{
       method: :post,
-      url: fetch_base_url(opts) |> URI.append_path("/adjustments") |> URI.to_string(),
+      url: opts |> fetch_base_url() |> URI.to_string(),
       params: params,
       body: Jason.encode!(body),
       headers: [
@@ -47,8 +47,14 @@ defmodule Swiftly.API.ServiceAdjustments do
     }
     |> client.request()
     |> case do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, Jason.decode!(body, keys: :atoms!)}
+      {:ok, %HTTPoison.Response{status_code: 200, body: response_body}} ->
+        body = Jason.decode!(response_body)
+
+        Logger.info(
+          "adjustment_created_in_swiftly adjustment_id=#{Map.get(body, "adjustmentId")}"
+        )
+
+        {:ok, body}
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
         Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
@@ -87,7 +93,7 @@ defmodule Swiftly.API.ServiceAdjustments do
       method: :delete,
       url:
         fetch_base_url(opts)
-        |> URI.append_path("/adjustments/#{adjustment_id}")
+        |> URI.append_path("/#{adjustment_id}")
         |> URI.to_string(),
       params: params,
       headers: [
@@ -98,6 +104,7 @@ defmodule Swiftly.API.ServiceAdjustments do
     |> client.request()
     |> case do
       {:ok, %HTTPoison.Response{status_code: 204}} ->
+        "adjustment_deleted_in_swiftly adjustment_id=#{adjustment_id}"
         :ok
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
@@ -144,6 +151,11 @@ defmodule Swiftly.API.ServiceAdjustments do
 
     params =
       opts
+      |> Keyword.put_new(:createdBefore, DateTime.utc_now())
+      |> Keyword.put_new(
+        :createdAfter,
+        DateTime.new!(~D[2025-01-01], ~T[00:00:00], "America/New_York")
+      )
       |> assert_agency_param!()
       |> Keyword.take([
         :agency,
@@ -162,8 +174,12 @@ defmodule Swiftly.API.ServiceAdjustments do
         {key, value} when key in [:adjustmentTypes, :validityStates] and is_list(value) ->
           {key, Jason.encode!(value)}
 
-        {:createdBefore = key, %DateTime{} = value} ->
-          {key, DateTime.to_iso8601(value)}
+        {key, %DateTime{} = value} when key in [:createdAfter, :createdBefore] ->
+          {key,
+           value
+           |> DateTime.shift_zone!("America/New_York")
+           |> DateTime.truncate(:second)
+           |> DateTime.to_iso8601()}
 
         keyword ->
           keyword
@@ -171,7 +187,7 @@ defmodule Swiftly.API.ServiceAdjustments do
 
     %HTTPoison.Request{
       method: :get,
-      url: fetch_base_url(opts) |> URI.append_path("/adjustments") |> URI.to_string(),
+      url: fetch_base_url(opts),
       params: params,
       headers: [
         authorization: fetch_api_key(opts),
@@ -181,7 +197,7 @@ defmodule Swiftly.API.ServiceAdjustments do
     |> client.request()
     |> case do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, Jason.decode!(body, keys: :atoms!)}
+        {:ok, Jason.decode!(body)}
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
         Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
