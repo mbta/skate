@@ -65,13 +65,15 @@ defmodule Swiftly.API.ServiceAdjustments do
 
   defp add_feed_info_from_opts(body, opts) do
     opts
-    |> Keyword.take([:feedId, :feedName])
-    |> Enum.into(%{})
-    |> Map.merge(body, fn
-      :feedId, opt_value, nil -> opt_value
-      :feedName, opt_value, nil -> opt_value
-      _key, _left, body_value -> body_value
-    end)
+    |> Keyword.take([:feed_id, :feed_name])
+    |> Enum.reduce(
+      body,
+      fn
+        {:feed_id, value}, %{feedId: nil} = acc -> %{acc | feedId: value}
+        {:feed_name, value}, %{feedName: nil} = acc -> %{acc | feedName: value}
+        _value, acc -> acc
+      end
+    )
   end
 
   @doc """
@@ -95,6 +97,10 @@ defmodule Swiftly.API.ServiceAdjustments do
     params =
       opts
       |> assert_agency_param!()
+      |> Enum.map(fn
+        {:feed_id, value} -> {:feedId, value}
+        element -> element
+      end)
       |> Keyword.take([:agency, :feedId])
 
     %HTTPoison.Request{
