@@ -12,8 +12,6 @@ defmodule Swiftly.API.Requests do
   def to_swiftly(%Detour{status: :active} = detour) do
     {:ok,
      %CreateAdjustmentRequestV1{
-       feedId: "TEMP_FEED_ID",
-       feedName: "TEMP_FEED_NAME",
        notes: Integer.to_string(detour.id),
        details: %DetourV0CreationDetailsV1{
          adjustmentType: :DETOUR_V0,
@@ -40,7 +38,6 @@ defmodule Swiftly.API.Requests do
   defp parse_begin_time(%Detour{activated_at: activated_at}) do
     activated_at
     |> DateTime.shift_zone!("America/New_York")
-    |> DateTime.truncate(:second)
     |> DateTime.to_iso8601()
   end
 

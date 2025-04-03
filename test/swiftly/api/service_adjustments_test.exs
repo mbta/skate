@@ -12,7 +12,7 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
 
   @default_arguments [
     client: @mock_client_module,
-    base_url: URI.parse("https://localhost/adjustments"),
+    base_url: URI.parse("https://localhost"),
     agency: "fake-agency",
     api_key: "fake-api-key"
   ]
@@ -533,19 +533,25 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       assert {:ok,
               %Swiftly.API.ServiceAdjustments.AdjustmentsResponseV1{
                 adjustments: [
-                  %{
+                  %Swiftly.API.ServiceAdjustments.AdjustmentWithStatusV1{
                     adjustmentType: "DETOUR_V0",
                     notes: "test-note-1",
                     status: "ACTIVE",
                     feedId: "test-feed-id",
-                    validity: "VALID"
+                    validity: "VALID",
+                    id: nil,
+                    originalId: nil,
+                    validityReason: nil
                   },
-                  %{
+                  %Swiftly.API.ServiceAdjustments.AdjustmentWithStatusV1{
                     adjustmentType: "DETOUR_V0",
                     notes: "test-note-2",
                     status: "ACTIVE",
                     feedId: "test-feed-id",
-                    validity: "INVALID"
+                    validity: "INVALID",
+                    id: nil,
+                    originalId: nil,
+                    validityReason: nil
                   }
                 ]
               }} ==
@@ -623,7 +629,6 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
         assert params[:createdBefore] ==
                  created_before
                  |> DateTime.shift_zone!("America/New_York")
-                 |> DateTime.truncate(:second)
                  |> DateTime.to_iso8601()
       end)
 

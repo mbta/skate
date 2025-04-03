@@ -24,4 +24,16 @@ defmodule Swiftly.API.ServiceAdjustments.AdjustmentWithStatusV1 do
     :validity,
     :validityReason
   ]
+
+  def load(adjustment) do
+    fields =
+      Enum.map(__MODULE__.__info__(:struct), fn %{field: field} -> Atom.to_string(field) end)
+
+    atomized_adjustment =
+      adjustment
+      |> Map.take(fields)
+      |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+
+    struct(__MODULE__, atomized_adjustment)
+  end
 end

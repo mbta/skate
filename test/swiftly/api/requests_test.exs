@@ -32,8 +32,8 @@ defmodule Swiftly.Api.RequestTest do
 
       assert {:ok,
               %CreateAdjustmentRequestV1{
-                feedId: "TEMP_FEED_ID",
-                feedName: "TEMP_FEED_NAME",
+                feedId: nil,
+                feedName: nil,
                 notes: notes,
                 details: %DetourV0CreationDetailsV1{
                   adjustmentType: :DETOUR_V0,
