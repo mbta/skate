@@ -4,7 +4,12 @@ defmodule Swiftly.API.Requests do
   """
 
   alias Skate.Detours.Db.Detour
-  alias Swiftly.API.ServiceAdjustments.{CreateAdjustmentRequestV1, DetourV0CreationDetailsV1}
+
+  alias Swiftly.API.ServiceAdjustments.{
+    CreateAdjustmentRequestV1,
+    DetourRouteDirectionCreationDetails,
+    DetourV0CreationDetailsV1
+  }
 
   require Logger
 
@@ -17,7 +22,7 @@ defmodule Swiftly.API.Requests do
          adjustmentType: :DETOUR_V0,
          beginTime: parse_begin_time(detour),
          detourRouteDirectionDetails: [
-           %{
+           %DetourRouteDirectionCreationDetails{
              routeShortName: detour.state["context"]["route"]["name"],
              direction: Integer.to_string(detour.state["context"]["routePattern"]["directionId"]),
              shape: parse_shape(detour)
