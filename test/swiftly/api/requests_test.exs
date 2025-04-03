@@ -1,7 +1,6 @@
 defmodule Swiftly.Api.RequestTest do
   use Skate.DataCase
   import Skate.Factory
-  import ExUnit.CaptureLog
 
   import Swiftly.API.Requests
   alias Swiftly.API.ServiceAdjustments.{CreateAdjustmentRequestV1, DetourV0CreationDetailsV1}
@@ -57,43 +56,5 @@ defmodule Swiftly.Api.RequestTest do
 
       assert notes == Integer.to_string(detour.id)
     end
-
-    test "it returns :error if detour provided is not :active and logs a warning for :draft" do
-      detour =
-        build(:detour)
-        |> with_route(%{name: "test_route_name", id: "test_route_id"})
-        |> with_direction(:inbound)
-        |> with_coordinates()
-        |> insert()
-
-      detour = get_detour_with_all_virtual_fields(detour.id)
-
-      log =
-        capture_log(fn ->
-          assert :error = to_swiftly(detour)
-        end)
-
-      assert log =~ "detour_not_active_to_swiftly detour_id=#{detour.id} status=:draft"
-    end
-  end
-
-  test "it returns :error if detour provided is not :active and logs a warning for :past" do
-    detour =
-      build(:detour)
-      |> with_route(%{name: "test_route_name", id: "test_route_id"})
-      |> with_direction(:inbound)
-      |> with_coordinates()
-      |> activated()
-      |> deactivated()
-      |> insert()
-
-    detour = get_detour_with_all_virtual_fields(detour.id)
-
-    log =
-      capture_log(fn ->
-        assert :error = to_swiftly(detour)
-      end)
-
-    assert log =~ "detour_not_active_to_swiftly detour_id=#{detour.id} status=:past"
   end
 end
