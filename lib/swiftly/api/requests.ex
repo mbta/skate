@@ -13,8 +13,8 @@ defmodule Swiftly.API.Requests do
 
   require Logger
 
-  @spec to_swiftly(Detour.t()) :: {:ok, CreateAdjustmentRequestV1.t()} | :error
-  def to_swiftly(%Detour{status: :active} = detour) do
+  @spec to_swiftly(Detour.t()) :: {:ok, CreateAdjustmentRequestV1.t()}
+  def to_swiftly(detour) do
     {:ok,
      %CreateAdjustmentRequestV1{
        notes: Integer.to_string(detour.id),
@@ -32,19 +32,13 @@ defmodule Swiftly.API.Requests do
      }}
   end
 
-  def to_swiftly(detour) do
-    Logger.warning(
-      "detour_not_active_to_swiftly detour_id=#{detour.id} status=#{inspect(detour.status)}"
-    )
-
-    :error
-  end
-
-  defp parse_begin_time(%Detour{activated_at: activated_at}) do
+  defp parse_begin_time(%Detour{activated_at: activated_at}) when not is_nil(activated_at) do
     activated_at
     |> DateTime.shift_zone!("America/New_York")
     |> DateTime.to_iso8601()
   end
+
+  defp parse_begin_time(_), do: nil
 
   defp parse_shape(%Detour{coordinates: coordinates}) when not is_nil(coordinates) do
     map_coordinates(coordinates)

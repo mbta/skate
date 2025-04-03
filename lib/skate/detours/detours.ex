@@ -325,16 +325,12 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    case Swiftly.API.Requests.to_swiftly(detour) do
-      {:ok, adjustment_request} ->
-        service_adjustments_module().create_adjustment_v1(
-          adjustment_request,
-          build_swiftly_opts()
-        )
+    {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
 
-      _ ->
-        nil
-    end
+    service_adjustments_module().create_adjustment_v1(
+      adjustment_request,
+      build_swiftly_opts()
+    )
   end
 
   defp update_swiftly(
