@@ -249,6 +249,55 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       )
     end
 
+    test "request integrates `feedId` and `feedName` from opts config" do
+      begin_time = DateTime.utc_now()
+
+      Mox.expect(@mock_client_module, :request, fn request ->
+        %HTTPoison.Request{
+          body: body
+        } = request
+
+        assert %{
+                 "feedId" => "test_feed_id",
+                 "feedName" => "test_feed_name",
+                 "notes" => "test_note",
+                 "details" => %{
+                   "adjustmentType" => "DETOUR_V0",
+                   "beginTime" => DateTime.to_iso8601(begin_time),
+                   "detourRouteDirectionDetails" => %{
+                     "direction" => "1",
+                     "routeShortName" => "route_name",
+                     "shape" => [[0, 0], [1, 0]],
+                     "skippedStops" => ["stop_1", "stop_2"]
+                   }
+                 }
+               } == Jason.decode!(body)
+      end)
+
+      Swiftly.API.ServiceAdjustments.create_adjustment_v1(
+        %Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1{
+          notes: "test_note",
+          details: %Swiftly.API.ServiceAdjustments.DetourV0CreationDetailsV1{
+            beginTime: begin_time,
+            detourRouteDirectionDetails:
+              %Swiftly.API.ServiceAdjustments.DetourRouteDirectionCreationDetails{
+                direction: "1",
+                routeShortName: "route_name",
+                shape: [
+                  [0, 0],
+                  [1, 0]
+                ],
+                skippedStops: [
+                  "stop_1",
+                  "stop_2"
+                ]
+              }
+          }
+        },
+        [feedId: "test_feed_id", feedName: "test_feed_name"] ++ @default_arguments
+      )
+    end
+
     test "request `content-type` header is json" do
       Mox.expect(@mock_client_module, :request, fn request ->
         %HTTPoison.Request{
