@@ -163,7 +163,7 @@ defmodule Schedule.Fetcher do
 
     case fetch_remote_files(latest_gtfs_timestamp, latest_hastus_timestamp) do
       {:files, files, gtfs_timestamp, hastus_timestamp} ->
-        Logger.info("Updated schedule data found, parsing")
+        Logger.info("Updated schedule data found, parsing version=#{files.version}")
 
         try do
           data = Data.parse_files(files)
