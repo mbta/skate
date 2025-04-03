@@ -36,4 +36,6 @@ config :ueberauth_oidcc,
     ]
   ]
 
+config :skate, :swiftly, adjustments_module: Swiftly.API.FakeServiceAdjustments
+
 config :logger, level: :warning

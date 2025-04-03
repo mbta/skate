@@ -327,7 +327,7 @@ defmodule Skate.Detours.Detours do
        ) do
     case Swiftly.API.Requests.to_swiftly(detour) do
       {:ok, adjustment_request} ->
-        Swiftly.API.ServiceAdjustments.create_adjustment_v1(
+        service_adjustments_module().create_adjustment_v1(
           adjustment_request,
           build_swiftly_opts()
         )
@@ -344,7 +344,9 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    case Swiftly.API.ServiceAdjustments.get_adjustments_v1(build_swiftly_opts()) do
+    service_adjustments_module = service_adjustments_module()
+
+    case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
       {:ok, adjustments_response} ->
         adjustments_response
         |> Map.get(:adjustments, [])
@@ -353,7 +355,7 @@ defmodule Skate.Detours.Detours do
         end)
         |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
         |> Enum.at(0)
-        |> Swiftly.API.ServiceAdjustments.delete_adjustment_v1(build_swiftly_opts())
+        |> service_adjustments_module.delete_adjustment_v1(build_swiftly_opts())
 
       _ ->
         nil
@@ -364,6 +366,10 @@ defmodule Skate.Detours.Detours do
 
   defp build_swiftly_opts() do
     Application.get_env(:skate, Swiftly.API.ServiceAdjustments)
+  end
+
+  defp service_adjustments_module() do
+    Application.get_env(:skate, :swiftly)[:adjustments_module]
   end
 
   @doc """
