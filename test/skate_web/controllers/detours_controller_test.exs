@@ -28,6 +28,14 @@ defmodule SkateWeb.DetoursControllerTest do
 
   setup :verify_on_exit!
 
+  @mock_client_module Swiftly.API.MockClient
+
+  setup_all do
+    Mox.defmock(@mock_client_module, for: Swiftly.API.Client)
+
+    :ok
+  end
+
   describe "update_snapshot/2" do
     @tag :authenticated
     test "adds new detour to database", %{conn: conn} do
