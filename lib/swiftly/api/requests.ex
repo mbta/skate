@@ -50,10 +50,11 @@ defmodule Swiftly.API.Requests do
     map_coordinates(coordinates)
   end
 
-  defp parse_shape(%Detour{state: state}) do
-    coordinates = Map.get(state["context"]["detourShape"]["ok"], "coordinates")
+  defp parse_shape(%Detour{state: %{"context" => %{"detourShape" => %{"ok" => %{"coordinates" => coordinates}}}}}) when not is_nil(coordinates) do
     map_coordinates(coordinates)
   end
+
+  defp parse_shape(_), do: []
 
   defp map_coordinates(coordinates) do
     Enum.map(coordinates, fn %{"lat" => lat, "lon" => lon} -> [lat, lon] end)

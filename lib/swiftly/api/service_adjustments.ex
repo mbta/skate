@@ -22,7 +22,7 @@ defmodule Swiftly.API.ServiceAdjustments do
   """
   @spec create_adjustment_v1(
           Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1.t(),
-          keyword()
+          keyword
         ) ::
           {:ok, Swiftly.API.ServiceAdjustments.AdjustmentIdResponse.t()}
           | {:error, :bad_request | :unknown}
