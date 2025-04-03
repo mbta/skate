@@ -32,7 +32,7 @@ defmodule Swiftly.API.ServiceAdjustments.AdjustmentWithStatusV1 do
     atomized_adjustment =
       adjustment
       |> Map.take(fields)
-      |> Map.new(fn {k, v} -> {String.to_atom(k), v} end)
+      |> Map.new(fn {k, v} -> {String.to_existing_atom(k), v} end)
 
     struct(__MODULE__, atomized_adjustment)
   end
