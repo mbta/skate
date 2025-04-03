@@ -38,7 +38,10 @@ defmodule Swiftly.API.ServiceAdjustments do
       method: :post,
       url: fetch_base_url(opts) |> URI.append_path("/adjustments") |> URI.to_string(),
       params: params,
-      body: Jason.encode!(body),
+      body:
+        body
+        |> add_feed_info_from_opts(opts)
+        |> Jason.encode!(),
       headers: [
         "content-type": "application/json",
         authorization: fetch_api_key(opts),
@@ -58,6 +61,19 @@ defmodule Swiftly.API.ServiceAdjustments do
         Logger.error("unknown response=#{inspect(response)}")
         {:error, :unknown}
     end
+  end
+
+  defp add_feed_info_from_opts(body, opts) do
+    opts
+    |> Keyword.take([:feed_id, :feed_name])
+    |> Enum.reduce(
+      body,
+      fn
+        {:feed_id, value}, %{feedId: nil} = acc -> %{acc | feedId: value}
+        {:feed_name, value}, %{feedName: nil} = acc -> %{acc | feedName: value}
+        _value, acc -> acc
+      end
+    )
   end
 
   @doc """
@@ -81,6 +97,10 @@ defmodule Swiftly.API.ServiceAdjustments do
     params =
       opts
       |> assert_agency_param!()
+      |> Enum.map(fn
+        {:feed_id, value} -> {:feedId, value}
+        element -> element
+      end)
       |> Keyword.take([:agency, :feedId])
 
     %HTTPoison.Request{
