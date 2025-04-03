@@ -385,6 +385,21 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       assert log =~ "request_url=\"https://localhost/adjustments/test-adjustment-id\""
       assert log =~ "body=#{inspect(response_body)}"
     end
+
+    test "retrieves `feedId` parameter from opts" do
+      Mox.expect(@mock_client_module, :request, fn request ->
+        %HTTPoison.Request{
+          params: params
+        } = request
+
+        assert params[:feedId] == "fake-feed-id"
+      end)
+
+      Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+        "test-adjustment-id",
+        [feedId: "fake-feed-id"] ++ @default_arguments
+      )
+    end
   end
 
   describe "get_adjustments_v1/1" do
