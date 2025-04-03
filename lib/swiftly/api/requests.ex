@@ -50,7 +50,10 @@ defmodule Swiftly.API.Requests do
     map_coordinates(coordinates)
   end
 
-  defp parse_shape(%Detour{state: %{"context" => %{"detourShape" => %{"ok" => %{"coordinates" => coordinates}}}}}) when not is_nil(coordinates) do
+  defp parse_shape(%Detour{
+         state: %{"context" => %{"detourShape" => %{"ok" => %{"coordinates" => coordinates}}}}
+       })
+       when not is_nil(coordinates) do
     map_coordinates(coordinates)
   end
 
