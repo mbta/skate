@@ -250,6 +250,55 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       )
     end
 
+    test "request integrates `feedId` and `feedName` from opts config" do
+      begin_time = DateTime.utc_now()
+
+      Mox.expect(@mock_client_module, :request, fn request ->
+        %HTTPoison.Request{
+          body: body
+        } = request
+
+        assert %{
+                 "feedId" => "test_feed_id",
+                 "feedName" => "test_feed_name",
+                 "notes" => "test_note",
+                 "details" => %{
+                   "adjustmentType" => "DETOUR_V0",
+                   "beginTime" => DateTime.to_iso8601(begin_time),
+                   "detourRouteDirectionDetails" => %{
+                     "direction" => "1",
+                     "routeShortName" => "route_name",
+                     "shape" => [[0, 0], [1, 0]],
+                     "skippedStops" => ["stop_1", "stop_2"]
+                   }
+                 }
+               } == Jason.decode!(body)
+      end)
+
+      Swiftly.API.ServiceAdjustments.create_adjustment_v1(
+        %Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1{
+          notes: "test_note",
+          details: %Swiftly.API.ServiceAdjustments.DetourV0CreationDetailsV1{
+            beginTime: begin_time,
+            detourRouteDirectionDetails:
+              %Swiftly.API.ServiceAdjustments.DetourRouteDirectionCreationDetails{
+                direction: "1",
+                routeShortName: "route_name",
+                shape: [
+                  [0, 0],
+                  [1, 0]
+                ],
+                skippedStops: [
+                  "stop_1",
+                  "stop_2"
+                ]
+              }
+          }
+        },
+        [feed_id: "test_feed_id", feed_name: "test_feed_name"] ++ @default_arguments
+      )
+    end
+
     test "request `content-type` header is json" do
       Mox.expect(@mock_client_module, :request, fn request ->
         %HTTPoison.Request{
@@ -385,6 +434,36 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       assert log =~ "status_code=404"
       assert log =~ "request_url=\"https://localhost/adjustments/test-adjustment-id\""
       assert log =~ "body=#{inspect(response_body)}"
+    end
+
+    test "retrieves `feedId` parameter from opts" do
+      Mox.expect(@mock_client_module, :request, fn request ->
+        %HTTPoison.Request{
+          params: params
+        } = request
+
+        assert params[:feedId] == "fake-feed-id"
+      end)
+
+      Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+        "test-adjustment-id",
+        [feedId: "fake-feed-id"] ++ @default_arguments
+      )
+    end
+
+    test "retrieves snake_case `feed_id` parameter from config opts" do
+      Mox.expect(@mock_client_module, :request, fn request ->
+        %HTTPoison.Request{
+          params: params
+        } = request
+
+        assert params[:feedId] == "fake-feed-id"
+      end)
+
+      Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
+        "test-adjustment-id",
+        [feed_id: "fake-feed-id"] ++ @default_arguments
+      )
     end
   end
 

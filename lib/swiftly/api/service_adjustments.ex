@@ -38,7 +38,10 @@ defmodule Swiftly.API.ServiceAdjustments do
       method: :post,
       url: opts |> fetch_base_url() |> URI.to_string(),
       params: params,
-      body: Jason.encode!(body),
+      body:
+        body
+        |> add_feed_info_from_opts(opts)
+        |> Jason.encode!(),
       headers: [
         "content-type": "application/json",
         authorization: fetch_api_key(opts),
@@ -64,6 +67,19 @@ defmodule Swiftly.API.ServiceAdjustments do
     end
   end
 
+  defp add_feed_info_from_opts(body, opts) do
+    opts
+    |> Keyword.take([:feed_id, :feed_name])
+    |> Enum.reduce(
+      body,
+      fn
+        {:feed_id, value}, %{feedId: nil} = acc -> %{acc | feedId: value}
+        {:feed_name, value}, %{feedName: nil} = acc -> %{acc | feedName: value}
+        _value, acc -> acc
+      end
+    )
+  end
+
   @doc """
   https://swiftly-inc.stoplight.io/docs/service-adjustments/4e09fdd538867-delete-adjustment
 
@@ -85,6 +101,10 @@ defmodule Swiftly.API.ServiceAdjustments do
     params =
       opts
       |> assert_agency_param!()
+      |> Enum.map(fn
+        {:feed_id, value} -> {:feedId, value}
+        element -> element
+      end)
       |> Keyword.take([:agency, :feedId])
 
     %HTTPoison.Request{

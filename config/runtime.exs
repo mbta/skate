@@ -50,8 +50,9 @@ config :skate, Swiftly.API.ServiceAdjustments,
      end),
   api_key: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_API_KEY"),
   agency: System.get_env("SWIFTLY_SERVICE_ADJUSTMENTS_AGENCY"),
-  feedId: "TEMP_FEED_ID",
-  feedName: "TEMP_FEED_NAME"
+  feed_id: "skate.#{System.get_env("ENVIRONMENT_NAME", "missing-env")}.service-adjustments",
+  feed_name:
+    "Skate (#{System.get_env("ENVIRONMENT_NAME", "missing-env")}) Service Adjustments Feed"
 
 config :skate, SkateWeb.AuthManager, secret_key: System.get_env("GUARDIAN_SECRET_KEY")
 
