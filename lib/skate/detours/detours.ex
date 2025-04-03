@@ -332,7 +332,7 @@ defmodule Skate.Detours.Detours do
           build_swiftly_opts()
         )
 
-      :error ->
+      _ ->
         nil
     end
   end
