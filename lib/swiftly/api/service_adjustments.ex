@@ -122,7 +122,7 @@ defmodule Swiftly.API.ServiceAdjustments do
     |> client.request()
     |> case do
       {:ok, %HTTPoison.Response{status_code: 204}} ->
-        "adjustment_deleted_in_swiftly adjustment_id=#{adjustment_id}"
+        Logger.info("adjustment_deleted_in_swiftly adjustment_id=#{adjustment_id}")
         :ok
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
