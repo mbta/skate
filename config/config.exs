@@ -164,6 +164,8 @@ config :skate, Skate.MqttConnection,
   broker_configs: ["mqtt://system:manager@localhost/"],
   broker_client_prefix: "skate"
 
+config :skate, :swiftly, adjustments_module: Swiftly.API.ServiceAdjustments
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

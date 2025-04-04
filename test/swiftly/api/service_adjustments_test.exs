@@ -158,7 +158,8 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
          }}
       end)
 
-      assert {:ok, %{adjustmentId: adjustment_id}} ==
+      assert {:ok,
+              %Swiftly.API.ServiceAdjustments.AdjustmentIdResponse{adjustmentId: adjustment_id}} ==
                Swiftly.API.ServiceAdjustments.create_adjustment_v1(
                  %Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1{},
                  @default_arguments
@@ -530,21 +531,27 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       end)
 
       assert {:ok,
-              %{
+              %Swiftly.API.ServiceAdjustments.AdjustmentsResponseV1{
                 adjustments: [
-                  %{
+                  %Swiftly.API.ServiceAdjustments.AdjustmentWithStatusV1{
                     adjustmentType: "DETOUR_V0",
                     notes: "test-note-1",
                     status: "ACTIVE",
                     feedId: "test-feed-id",
-                    validity: "VALID"
+                    validity: "VALID",
+                    id: nil,
+                    originalId: nil,
+                    validityReason: nil
                   },
-                  %{
+                  %Swiftly.API.ServiceAdjustments.AdjustmentWithStatusV1{
                     adjustmentType: "DETOUR_V0",
                     notes: "test-note-2",
                     status: "ACTIVE",
                     feedId: "test-feed-id",
-                    validity: "INVALID"
+                    validity: "INVALID",
+                    id: nil,
+                    originalId: nil,
+                    validityReason: nil
                   }
                 ]
               }} ==
@@ -619,7 +626,10 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
           params: params
         } = request
 
-        assert params[:createdBefore] == DateTime.to_iso8601(created_before)
+        assert params[:createdBefore] ==
+                 created_before
+                 |> DateTime.shift_zone!("America/New_York")
+                 |> DateTime.to_iso8601()
       end)
 
       Swiftly.API.ServiceAdjustments.get_adjustments_v1(

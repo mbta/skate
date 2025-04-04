@@ -4,8 +4,8 @@ defmodule Swiftly.API.ServiceAdjustments.CreateAdjustmentRequestV1 do
   """
 
   @type t :: %__MODULE__{
-          feedId: String.t(),
-          feedName: String.t(),
+          feedId: String.t() | nil,
+          feedName: String.t() | nil,
           notes: String.t(),
           details: Swiftly.API.ServiceAdjustments.DetourV0CreationDetailsV1.t()
         }
