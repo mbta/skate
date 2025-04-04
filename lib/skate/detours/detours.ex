@@ -10,7 +10,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Detours.SnapshotSerde
   alias Skate.Detours.Detour.Detailed, as: DetailedDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
-  alias Skate.Settings.User
+  alias Skate.Settings.{TestGroup, User}
   alias Skate.Settings.Db.User, as: DbUser
 
   @doc """
@@ -318,12 +318,23 @@ defmodule Skate.Detours.Detours do
 
   defp send_notification(_, _), do: nil
 
+  defp update_swiftly(changeset, detour) do
+    enabled? =
+      case TestGroup.get_by_name("send-detours-to-swiftly-enabled") do
+        %TestGroup{override: :enabled} -> true
+        _ -> false
+      end
+
+    update_swiftly(changeset, detour, enabled?)
+  end
+
   defp update_swiftly(
          %Ecto.Changeset{
            data: %Detour{status: :draft},
            changes: %{status: :active}
          },
-         %Detour{} = detour
+         %Detour{} = detour,
+         true
        ) do
     {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
 
@@ -338,27 +349,32 @@ defmodule Skate.Detours.Detours do
            data: %Detour{status: :active},
            changes: %{status: :past}
          },
-         %Detour{} = detour
+         %Detour{} = detour,
+         true
        ) do
     service_adjustments_module = service_adjustments_module()
 
     case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
       {:ok, adjustments_response} ->
-        adjustments_response
-        |> Map.get(:adjustments, [])
-        |> Enum.filter(fn adjustment ->
-          Map.get(adjustment, :notes) == Integer.to_string(detour.id)
-        end)
-        |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
-        |> Enum.at(0)
-        |> service_adjustments_module.delete_adjustment_v1(build_swiftly_opts())
+        adjustment_id =
+          adjustments_response
+          |> Map.get(:adjustments, [])
+          |> Enum.filter(fn adjustment ->
+            Map.get(adjustment, :notes) == Integer.to_string(detour.id)
+          end)
+          |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
+          |> Enum.at(0)
+
+        if adjustment_id do
+          service_adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())
+        end
 
       _ ->
         nil
     end
   end
 
-  defp update_swiftly(_, _), do: nil
+  defp update_swiftly(_, _, _), do: nil
 
   defp build_swiftly_opts() do
     Application.get_env(:skate, Swiftly.API.ServiceAdjustments)

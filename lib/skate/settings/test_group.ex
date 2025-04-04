@@ -84,6 +84,21 @@ defmodule Skate.Settings.TestGroup do
     |> convert_from_db_test_group()
   end
 
+  require Logger
+
+  @spec get_by_name(binary()) :: t() | nil
+  def get_by_name(name) do
+    test_group = DbTestGroup |> Skate.Repo.get_by(name: name) |> Skate.Repo.preload(:users)
+
+    if test_group do
+      t = convert_from_db_test_group(test_group)
+      Logger.error(inspect(t))
+      t
+    else
+      nil
+    end
+  end
+
   @spec convert_from_db_test_group(DbTestGroup.t()) :: __MODULE__.t()
   defp convert_from_db_test_group(db_test_group) do
     %__MODULE__{
