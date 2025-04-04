@@ -1,5 +1,5 @@
 import { RunId } from "./realtime"
-import { BlockId, DirectionId, RouteId, TripId, ViaVariant } from "./schedule"
+import { BlockId, DirectionId, RouteId, StopId, TimepointId, TripId, ViaVariant } from "./schedule"
 
 export type Activity = Break | Piece
 
@@ -53,6 +53,13 @@ export interface Trip {
   endTime: Time
   startPlace: string
   endPlace: string
+  stopTimes: StopTime[]
+}
+
+export interface StopTime {
+  time: Time
+  stopId: StopId,
+  timepointId: TimepointId | null
 }
 
 export type Time = number
