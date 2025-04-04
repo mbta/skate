@@ -53,7 +53,9 @@ defmodule Swiftly.API.ServiceAdjustments do
       {:ok, %HTTPoison.Response{status_code: 200, body: response_body}} ->
         body = Jason.decode!(response_body)
 
-        Logger.info("adjustment_created_in_swiftly adjustment_id=#{Map.get(body, "adjustmentId")}")
+        Logger.info(
+          "adjustment_created_in_swiftly adjustment_id=#{Map.get(body, "adjustmentId")}"
+        )
 
         {:ok, Swiftly.API.ServiceAdjustments.AdjustmentIdResponse.load(body)}
 
