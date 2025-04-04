@@ -143,6 +143,32 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--past c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--current on-time early-red"
         >
           <div
@@ -192,6 +218,32 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
             className="c-minischedule__left-text"
           >
             R_X Red Square
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--future c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -394,6 +446,32 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
             className="c-minischedule__left-text"
           >
             R_X Red Square
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--future c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -642,6 +720,32 @@ exports[`MinischeduleBlock renders a block 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -790,6 +894,32 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-15
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -891,6 +1021,32 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-15
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -914,6 +1070,32 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
             className="c-minischedule__right-text"
           >
             12:05 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-18
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
           </div>
         </div>
         <div
@@ -1065,6 +1247,32 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-15
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:08 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -1166,6 +1374,32 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-15
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:08 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -1189,6 +1423,32 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
             className="c-minischedule__right-text"
           >
             12:13 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-18
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:08 AM
           </div>
         </div>
         <div
@@ -1357,6 +1617,32 @@ exports[`MinischeduleBlock renders block with revenue trip, pulls, and deadhead 
             className="c-minischedule__left-text"
           >
             R_X Red Square
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:08 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -1768,6 +2054,32 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -1794,6 +2106,32 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-9
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -1817,6 +2155,32 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
             className="c-minischedule__right-text"
           >
             12:10 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-12
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
           </div>
         </div>
         <div
@@ -1999,6 +2363,32 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--past c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--past c-minischedule__layover-row"
         >
           <div
@@ -2042,6 +2432,32 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--past c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-9
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--current on-time early-red c-minischedule__layover-row"
         >
           <div
@@ -2082,6 +2498,32 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
             className="c-minischedule__right-text"
           >
             12:10 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--future c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-21
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
           </div>
         </div>
         <div
@@ -2264,6 +2706,32 @@ exports[`MinischeduleRun renders a mid route swing off 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-15
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -2415,6 +2883,32 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
         </div>
       </div>
       <div
+        className="c-minischedule__row c-minischedule__row--unknown c-minischedule__row--mid-route-first-half c-minischedule__timepoint-row"
+      >
+        <div
+          className="c-minischedule__icon"
+        >
+          <span
+            className="c-minischedule__svg--revenue"
+            dangerouslySetInnerHTML={
+              {
+                "__html": "<svg/>",
+              }
+            }
+          />
+        </div>
+        <div
+          className="c-minischedule__left-text"
+        >
+          timepoint-15
+        </div>
+        <div
+          className="c-minischedule__right-text"
+        >
+          12:00 AM
+        </div>
+      </div>
+      <div
         className="c-minischedule__piece-rows"
       >
         <div
@@ -2475,6 +2969,32 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-15
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown c-minischedule__layover-row"
         >
           <div
@@ -2515,6 +3035,32 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
             className="c-minischedule__right-text"
           >
             12:05 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-18
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
           </div>
         </div>
         <div
@@ -2722,6 +3268,32 @@ exports[`MinischeduleRun renders a run 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown c-minischedule__layover-row"
         >
           <div
@@ -2762,6 +3334,32 @@ exports[`MinischeduleRun renders a run 1`] = `
             className="c-minischedule__right-text"
           >
             12:05 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-9
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
           </div>
         </div>
         <div
@@ -2967,6 +3565,32 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown c-minischedule__layover-row"
         >
           <div
@@ -3007,6 +3631,32 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
             className="c-minischedule__right-text"
           >
             12:05 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-9
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
           </div>
         </div>
         <div
@@ -3189,6 +3839,32 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--past c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--current on-time early-red c-minischedule__layover-row"
         >
           <div
@@ -3229,6 +3905,32 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
             className="c-minischedule__right-text"
           >
             12:05 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--future c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-9
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
           </div>
         </div>
         <div
@@ -3403,6 +4105,32 @@ exports[`MinischeduleRun renders a run with a layover before an as-directed 1`] 
             className="c-minischedule__left-text"
           >
             R_X Red Square
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -3624,6 +4352,32 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--past c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--past c-minischedule__layover-row"
         >
           <div
@@ -3664,6 +4418,32 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
             className="c-minischedule__right-text"
           >
             12:05 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--current on-time early-red c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-9
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
           </div>
         </div>
         <div
@@ -3869,6 +4649,32 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:08 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown c-minischedule__layover-row"
         >
           <div
@@ -3909,6 +4715,32 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
             className="c-minischedule__right-text"
           >
             12:13 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-9
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:08 AM
           </div>
         </div>
         <div
@@ -4091,6 +4923,32 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
           </div>
         </div>
         <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-6
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
           className="c-minischedule__row c-minischedule__row--unknown"
         >
           <div
@@ -4109,6 +4967,32 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
             className="c-minischedule__left-text"
           >
             R_X Sometown Center
+          </div>
+          <div
+            className="c-minischedule__right-text"
+          >
+            12:00 AM
+          </div>
+        </div>
+        <div
+          className="c-minischedule__row c-minischedule__row--unknown c-minischedule__timepoint-row"
+        >
+          <div
+            className="c-minischedule__icon"
+          >
+            <span
+              className="c-minischedule__svg--revenue"
+              dangerouslySetInnerHTML={
+                {
+                  "__html": "<svg/>",
+                }
+              }
+            />
+          </div>
+          <div
+            className="c-minischedule__left-text"
+          >
+            timepoint-9
           </div>
           <div
             className="c-minischedule__right-text"
