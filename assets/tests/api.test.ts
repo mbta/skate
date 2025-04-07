@@ -886,6 +886,12 @@ describe("fetchScheduleBlock", () => {
                 start_place: "start place",
                 end_time: 567,
                 end_place: "end place",
+                stop_times: [
+                  { time: 1, stop_id: 10, timepoint_id: null },
+                  { time: 2, stop_id: 20, timepoint_id: "test-timepoint-id-1" },
+                  { time: 3, stop_id: 30, timepoint_id: null },
+                  { time: 4, stop_id: 40, timepoint_id: "test-timepoint-id-2" },
+                ],
               },
               {
                 kind: "rad",
@@ -924,6 +930,12 @@ describe("fetchScheduleBlock", () => {
                 startPlace: "start place",
                 endTime: 567,
                 endPlace: "end place",
+                stopTimes: [
+                  { time: 1, stopId: 10, timepointId: null },
+                  { time: 2, stopId: 20, timepointId: "test-timepoint-id-1" },
+                  { time: 3, stopId: 30, timepointId: null },
+                  { time: 4, stopId: 40, timepointId: "test-timepoint-id-2" },
+                ],
               },
               {
                 kind: "rad",

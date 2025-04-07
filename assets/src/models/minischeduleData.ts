@@ -9,7 +9,15 @@ import {
   Trip,
 } from "../minischedule"
 import { RunId } from "../realtime"
-import { BlockId, DirectionId, RouteId, StopId, TimepointId, TripId, ViaVariant } from "../schedule"
+import {
+  BlockId,
+  DirectionId,
+  RouteId,
+  StopId,
+  TimepointId,
+  TripId,
+  ViaVariant,
+} from "../schedule"
 
 type ActivityData = BreakData | PieceData
 
@@ -64,8 +72,8 @@ interface TripData {
 }
 
 interface StopTimeData {
-  time: Time,
-  stop_id: StopId,
+  time: Time
+  stop_id: StopId
   timepoint_id: TimepointId | null
 }
 
@@ -118,7 +126,7 @@ const pieceFromData = (pieceData: PieceData): Piece => ({
 const stopTimeFromData = (stopTimeData: StopTimeData): StopTime => ({
   time: stopTimeData.time,
   stopId: stopTimeData.stop_id,
-  timepointId: stopTimeData.timepoint_id
+  timepointId: stopTimeData.timepoint_id,
 })
 
 const tripFromData = (tripData: TripData): Trip => ({
@@ -133,7 +141,7 @@ const tripFromData = (tripData: TripData): Trip => ({
   endTime: tripData.end_time,
   startPlace: tripData.start_place || "",
   endPlace: tripData.end_place || "",
-  stopTimes: tripData.stop_times.map(stopTimeFromData)
+  stopTimes: tripData.stop_times.map(stopTimeFromData),
 })
 
 const asDirectedFromData = (asDirectedData: AsDirectedData): AsDirected => ({
