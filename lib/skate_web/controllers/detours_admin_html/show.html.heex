@@ -1,9 +1,11 @@
-<%= if @adjustment && @detour_status == :past do %>
-  <p>Detour is still active in swiftly.</p>
+<%= if @adjustment do %>
+  <%= if @detour_status == :past do %>
+    <p>Detour is still active in swiftly.</p>
 
-  <.form for={@conn} method="delete" action={~p"/detours_admin/#{@detour_id}/swiftly_delete"}>
-    <%= submit("Delete") %>
-  </.form>
+    <.form for={@conn} method="delete" action={~p"/detours_admin/#{@detour_id}/swiftly_delete"}>
+      <%= submit("Delete") %>
+    </.form>
+  <% end %>
 
   <pre>
     <%= extract_pre(@adjustment) %>
