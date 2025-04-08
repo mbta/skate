@@ -1,6 +1,6 @@
 <%= if @adjustment && @detour_status == :past do %>
   <p>Detour is still active in swiftly.</p>
-  
+
   <.form for={@conn} method="delete" action={~p"/detours_admin/#{@detour_id}/swiftly_delete"}>
     <%= submit("Delete") %>
   </.form>
