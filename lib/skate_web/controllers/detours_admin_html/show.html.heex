@@ -1,3 +1,23 @@
+<%= if @adjustment && @detour_status == :past do %>
+  <p>Detour is still active in swiftly.</p>
+  
+  <.form for={@conn} method="delete" action={~p"/detours_admin/#{@detour_id}/swiftly_delete"}>
+    <%= submit("Delete") %>
+  </.form>
+
+  <pre>
+    <%= extract_pre(@adjustment) %>
+  </pre>
+<% end %>
+
+<%= if !@adjustment && @detour_status == :active do %>
+  <p>Detour not present in Swiftly.</p>
+
+  <.form for={@conn} action={~p"/detours_admin/#{@detour_id}/swiftly_create"}>
+    <%= submit("Create") %>
+  </.form>
+<% end %>
+
 <p>Valid?: <%= @matches %></p>
 
 <p>Detour Info</p>
