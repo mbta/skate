@@ -12,14 +12,17 @@
       <th>Status</th>
       <th>Author</th>
       <th>Last Modified</th>
-      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <%= for detour <- @detours do %>
       <tr>
-        <td><%= detour.route_name %>: <%= detour.direction %> to <%= detour.headsign %></td>
+        <td>
+          <.link href={~p"/detours_admin/#{detour.id}"}>
+            <%= detour.route_name %>: <%= detour.direction %> to <%= detour.headsign %>
+          </.link>
+        </td>
         <td><%= detour.nearest_intersection %></td>
         <td><%= detour.status %></td>
         <td><%= detour.author.email %></td>
@@ -28,7 +31,6 @@
           |> DateTime.from_naive!("America/New_York")
           |> DateTime.to_string() %>
         </td>
-        <td><.link href={~p"/detours_admin/#{detour.id}"}>verify</.link></td>
       </tr>
     <% end %>
   </tbody>
