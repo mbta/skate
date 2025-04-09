@@ -264,11 +264,21 @@ defmodule Schedule do
 
   @spec update_state(state(), term()) :: :ok
   def update_state(state, key \\ __MODULE__) do
-    {time, :ok} = :timer.tc(:persistent_term, :put, [key, state])
+    %{count: count, memory: memory} = :persistent_term.info()
+    Logger.info("persistent_term_info_before_write count=#{count} memory=#{memory}")
+
+    {time1, :ok} = :timer.tc(:persistent_term, :put, [key, state])
     %{count: count, memory: memory} = :persistent_term.info()
 
     Logger.info(
-      "wrote state to persistent term time_in_ms=#{System.convert_time_unit(time, :microsecond, :millisecond)} count=#{count} memory=#{memory}"
+      "persistent_term_info_after_write_1 wrote state to persistent term time_in_ms=#{System.convert_time_unit(time1, :microsecond, :millisecond)} count=#{count} memory=#{memory}"
+    )
+
+    {time2, :ok} = :timer.tc(:persistent_term, :put, ["#{key}-dupe", state])
+    %{count: count, memory: memory} = :persistent_term.info()
+
+    Logger.info(
+      "persistent_term_info_after_write_2 wrote state to persistent term time_in_ms=#{System.convert_time_unit(time2, :microsecond, :millisecond)} count=#{count} memory=#{memory}"
     )
 
     :ok
