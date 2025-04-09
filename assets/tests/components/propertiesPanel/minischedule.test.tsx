@@ -30,7 +30,7 @@ jest.mock("../../../src/hooks/useMinischedule", () => ({
   useMinischeduleBlock: jest.fn(),
 }))
 
-const nonrevenueTrip: Trip = {
+const nonrevenueTrip: Trip = TripFactory.build({
   id: "nonrevenue",
   blockId: "block",
   routeId: null,
@@ -42,9 +42,9 @@ const nonrevenueTrip: Trip = {
   endTime: 1,
   startPlace: "1st Street and A Ave",
   endPlace: "999th Street and ZZZ Ave",
-}
+})
 
-const revenueTrip: Trip = {
+const revenueTrip: Trip = TripFactory.build({
   id: "trip",
   blockId: "block",
   routeId: "R",
@@ -56,9 +56,9 @@ const revenueTrip: Trip = {
   endTime: 1,
   startPlace: "Red Square",
   endPlace: "Blue Triangle",
-}
+})
 
-const revenueTrip2: Trip = {
+const revenueTrip2: Trip = TripFactory.build({
   id: "trip2",
   blockId: "block",
   routeId: "R",
@@ -70,9 +70,9 @@ const revenueTrip2: Trip = {
   endTime: 351,
   startPlace: "Sometown Center",
   endPlace: "Othertown Village",
-}
+})
 
-const tripWithoutDirection: Trip = {
+const tripWithoutDirection: Trip = TripFactory.build({
   id: "trip3",
   blockId: "block",
   routeId: "R",
@@ -84,7 +84,7 @@ const tripWithoutDirection: Trip = {
   endTime: 653,
   startPlace: "Highway 1",
   endPlace: "Trouble",
-}
+})
 
 const piece: Piece = {
   runId: "run",
@@ -127,7 +127,7 @@ const asDirectedPiece: Piece = {
   endMidRoute: false,
 }
 
-const midRouteSwingTrip1: Trip = {
+const midRouteSwingTrip1: Trip = TripFactory.build({
   id: "trip1",
   blockId: "block",
   routeId: "R",
@@ -139,9 +139,9 @@ const midRouteSwingTrip1: Trip = {
   endTime: 240,
   startPlace: "terminal1",
   endPlace: "terminal2",
-}
+})
 
-const midRouteSwingTrip2: Trip = {
+const midRouteSwingTrip2: Trip = TripFactory.build({
   id: "trip2",
   blockId: "block",
   routeId: "R",
@@ -153,7 +153,7 @@ const midRouteSwingTrip2: Trip = {
   endTime: 480,
   startPlace: "terminal2",
   endPlace: "terminal1",
-}
+})
 
 const midRouteSwingPiece1: Piece = {
   runId: "run1",
@@ -429,7 +429,7 @@ describe("MinischeduleRun", () => {
   })
 
   test("on a run with multiple layovers, marks the correct one current", () => {
-    const revenueTrip3: Trip = {
+    const revenueTrip3: Trip = TripFactory.build({
       id: "trip3",
       blockId: "block",
       routeId: "R",
@@ -441,7 +441,7 @@ describe("MinischeduleRun", () => {
       endTime: 651,
       startPlace: "A Streetcorner",
       endPlace: "Prominent Landmark",
-    }
+    })
 
     const threeTripPiece = {
       ...piece,
