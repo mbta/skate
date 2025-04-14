@@ -67,6 +67,10 @@
     border-top: 1px solid $color-component-light;
   }
 
+  // The timepoint-row and layover rows are very similar at the moment, both
+  // with their borders and padding/height, so timepoint-rows are tagging along
+  // with some layover row styling, _for now_.
+  &.c-minischedule__timepoint-row,
   &.c-minischedule__layover-row {
     border-top-style: none;
     padding-top: 0;
@@ -76,6 +80,20 @@
     .c-minischedule__right-text {
       border-top: 1px solid $color-component-light;
       padding-top: 0.25rem;
+    }
+  }
+
+  &.c-minischedule__timepoint-row {
+    .c-minischedule__left-text {
+      // Indent the stop text slightly to visually associate the stops with the trip
+      margin-left: 0.25rem;
+    }
+
+    // Use block layout mode to remove any issues from inline layout
+    // (i.e., vertical layout offsets from `line-height`)
+    .c-minischedule__svg--revenue,
+    svg {
+      display: block;
     }
   }
 }
@@ -88,6 +106,19 @@
   padding: 0.25rem;
   width: 1rem;
   z-index: 2;
+
+  .c-minischedule__timepoint-row & {
+    // Make the icon smaller
+    height: 0.5rem;
+    width: 0.5rem;
+
+    // Restore space around the icon that was removed by making the icon smaller.
+    //
+    // The icon space is important for making sure the "left-text" element is aligned
+    // properly, because this current design doesn't use `grid` or `table` layout.
+    margin-top: 0.25rem;
+    margin-left: 0.25rem;
+  }
 }
 
 .c-minischedule__left-text {
