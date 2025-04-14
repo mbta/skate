@@ -67,7 +67,8 @@
     border-top: 1px solid $color-component-light;
   }
 
-  &.c-minischedule__layover-row {
+  &.c-minischedule__layover-row,
+  &.c-minischedule__timepoint-row {
     border-top-style: none;
     padding-top: 0;
     padding-bottom: 0.25rem;
@@ -78,16 +79,41 @@
       padding-top: 0.25rem;
     }
   }
+
+  &.c-minischedule__timepoint-row {
+    .c-minischedule__left-text {
+      margin-left: 0.25rem;
+    }
+
+    .c-minischedule__svg--revenue,
+    svg {
+      display: block;
+    }
+  }
 }
 
 .c-minischedule__icon {
+  // Trip/Stop Circle
   border-radius: 50%;
-  flex: 0 0 auto;
+  // Icon spacing/sizing
   height: 1rem;
-  margin-right: 0.5rem;
-  padding: 0.25rem;
   width: 1rem;
+  padding: 0.25rem;
+
+  // spacing between icon and text
+  margin-right: 0.5rem;
+
+  // Align svg within icon
+  flex: 0 0 auto;
+  // ????
   z-index: 2;
+
+  .c-minischedule__timepoint-row & {
+    margin-top: 0.25rem;
+    margin-left: 0.25rem;
+    height: 0.5rem;
+    width: 0.5rem;
+  }
 }
 
 .c-minischedule__left-text {
