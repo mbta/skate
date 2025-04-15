@@ -726,7 +726,7 @@ const Row = ({
   activeStatus,
   extraClasses,
 }: {
-  icon?: ReactElement
+  icon?: ReactNode
   text: string
   rightText?: string
   belowText?: string
