@@ -712,43 +712,31 @@ const RevenueTrip = ({
   // store the computed state, because otherwise that tracking state would be
   // lost when this component's state would be dropped.
   const isCurrentTrip = timeBasedStyle === "current"
-  const { stopTimeRows } = trip.stopTimes.reduce<{
-    stopTimeStyle: TimeBasedStyle
-    stopTimeRows: ReactNode[]
-  }>(
-    (acc, stopTime, index) => {
-      const approachingThisStop = nextStop === stopTime.stopId
-      // We want to switch to a TimeBasedStyle of `current` to `future` _at_ and
-      // after the next stop that the bus is traveling to.
-      //
-      // But if we're currently rendering a trip that is not `current`, then we
-      // want to use the `timeBasedStyle` for this `RevenueTrip`, which is the
-      // initial value of `acc.stopTimeStyle`
-      const stopTimeStyle: TimeBasedStyle =
-        isCurrentTrip && approachingThisStop ? "future" : acc.stopTimeStyle
 
-      return {
-        stopTimeStyle,
-        stopTimeRows: [
-          ...acc.stopTimeRows,
-          // We don't want to show non-timepoint stops.
-          stopTime.timepointId && (
-            <Row
-              icon={directionIcon}
-              text={stopTime.timepointId}
-              rightText={formattedScheduledTime(stopTime.time, overloadOffset)}
-              timeBasedStyle={stopTimeStyle}
-              activeStatus={activeStatus}
-              extraClasses={[...extraClasses, "c-minischedule__timepoint-row"]}
-              // Stops may be visited twice, but unlikely to move around in `index`
-              key={`${index}-${stopTime.stopId}`}
-            />
-          ),
-        ],
-      }
-    },
-    { stopTimeStyle: timeBasedStyle, stopTimeRows: [] }
+  const stopIndex = trip.stopTimes.findIndex(
+    (stopTime) => stopTime.stopId === nextStop
   )
+
+  const stopTimeRows = trip.stopTimes.map((stopTime, index) => {
+    const isFutureStop = stopIndex !== -1 && index > stopIndex
+
+    return (
+      stopTime.timepointId && (
+        <Row
+          icon={directionIcon}
+          text={stopTime.timepointId}
+          rightText={formattedScheduledTime(stopTime.time, overloadOffset)}
+          timeBasedStyle={
+            isCurrentTrip && isFutureStop ? "future" : timeBasedStyle
+          }
+          activeStatus={activeStatus}
+          extraClasses={[...extraClasses, "c-minischedule__timepoint-row"]}
+          // Stops may be visited twice, but unlikely to move around in `index`
+          key={`${index}-${stopTime.stopId}`}
+        />
+      )
+    )
+  })
 
   return (
     <>
