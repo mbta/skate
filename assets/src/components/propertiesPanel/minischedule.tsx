@@ -1,6 +1,7 @@
 import React, {
   Dispatch,
   ReactElement,
+  ReactNode,
   SetStateAction,
   useContext,
   useState,
@@ -45,11 +46,12 @@ import {
   statusClasses,
 } from "../../models/vehicleStatus"
 import { RouteStatus, VehicleInScheduledService, Ghost } from "../../realtime"
-import { DirectionId, RouteId, TripId } from "../../schedule"
+import { DirectionId, RouteId, StopId, TripId } from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
 import { currentRouteTab } from "../../models/routeTab"
 import { isVehicleInScheduledService } from "../../models/vehicle"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 export interface Props {
   vehicleOrGhost: VehicleInScheduledService | Ghost
@@ -559,6 +561,11 @@ const TripSchedule = ({
             timeBasedStyle={onRouteTimeBasedStyle}
             activeStatus={onRouteActiveStatus}
             overloadOffset={overloadOffset}
+            nextStop={
+              (isVehicleInScheduledService(vehicleOrGhost) &&
+                vehicleOrGhost.stopStatus.stopId) ||
+              undefined
+            }
           />
         )
       ) : (
@@ -652,7 +659,8 @@ const RevenueTrip = ({
   activeStatus,
   overloadOffset,
   belowText,
-  extraClasses,
+  extraClasses = [],
+  nextStop,
 }: {
   trip: Trip
   timeBasedStyle: TimeBasedStyle
@@ -660,6 +668,7 @@ const RevenueTrip = ({
   overloadOffset: number | undefined
   belowText?: string
   extraClasses?: string[]
+  nextStop?: StopId
 }) => {
   const startTime: string = formattedScheduledTime(
     trip.startTime,
@@ -687,16 +696,95 @@ const RevenueTrip = ({
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     iconForDirectionOnLadder(trip.directionId, ladderDirections, trip.routeId!)
 
+  const shouldShowTimepoints = inTestGroup(TestGroups.MinischeduleTimepoints)
+
   return (
-    <Row
-      icon={directionIcon}
-      text={formattedRouteAndPlaceName}
-      rightText={startTime}
-      belowText={belowText}
-      timeBasedStyle={timeBasedStyle}
-      activeStatus={activeStatus}
-      extraClasses={extraClasses}
-    />
+    <>
+      <Row
+        icon={directionIcon}
+        text={formattedRouteAndPlaceName}
+        rightText={startTime}
+        belowText={belowText}
+        timeBasedStyle={timeBasedStyle}
+        activeStatus={activeStatus}
+        extraClasses={extraClasses}
+      />
+      {shouldShowTimepoints && (
+        <TimePointRows
+          directionIcon={directionIcon}
+          activeStatus={activeStatus}
+          extraClasses={extraClasses}
+          trip={trip}
+          overloadOffset={overloadOffset}
+          timeBasedStyle={timeBasedStyle}
+          nextStop={nextStop}
+        />
+      )}
+    </>
+  )
+}
+
+const TimePointRows = ({
+  timeBasedStyle,
+  trip,
+  nextStop,
+  directionIcon,
+  activeStatus,
+  extraClasses,
+  overloadOffset,
+}: {
+  timeBasedStyle: TimeBasedStyle
+  trip: Trip
+  nextStop: StopId | undefined
+  directionIcon: ReactNode
+  overloadOffset: number | undefined
+  activeStatus: DrawnStatus | null
+  extraClasses: string[]
+}) => {
+  // Bug: when the Trip has 2 or more StopTime's with the same StopId, this
+  // implementation will "rewind time" to the first instance of that StopId when
+  // `nextStop` is set to that StopId.
+  //
+  // Fixing this would require either
+  //  - using Stop Sequence (which would be idempotent and remove the need for `reduce`)
+  //  - or tracking the Vehicle's stops through time, and accumulating which
+  //    stops it _has_ been to.
+  //
+  // While tracking the stops it has been to _could_ work, Stop Sequence would
+  // be a better implementation since Swiftly is already in charge of tracking
+  // which stops we've been to, and an implementation which tracks it locally
+  // would either require more backend work to track it, or have some way to
+  // store the computed state, because otherwise that tracking state would be
+  // lost when this component's state would be dropped.
+  const isCurrentTrip = timeBasedStyle === "current"
+
+  const stopIndex = trip.stopTimes.findIndex(
+    (stopTime) => stopTime.stopId === nextStop
+  )
+
+  return (
+    <>
+      {trip.stopTimes.map((stopTime, index) => {
+        const isFutureStop = stopIndex !== -1 && index > stopIndex
+
+        return (
+          stopTime.timepointId && (
+            <Row
+              icon={directionIcon}
+              text={stopTime.timepointId}
+              rightText={formattedScheduledTime(stopTime.time, overloadOffset)}
+              timeBasedStyle={
+                isCurrentTrip && isFutureStop ? "future" : timeBasedStyle
+              }
+              activeStatus={activeStatus}
+              extraClasses={[...extraClasses, "c-minischedule__timepoint-row"]}
+              // Stops may be visited twice, but unlikely to move around in `index`
+              key={`${index}-${stopTime.stopId}`}
+            />
+          )
+        )
+      })}
+    </>
   )
 }
 
@@ -726,7 +814,7 @@ const Row = ({
   activeStatus,
   extraClasses,
 }: {
-  icon?: ReactElement
+  icon?: ReactNode
   text: string
   rightText?: string
   belowText?: string
