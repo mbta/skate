@@ -6,6 +6,7 @@ import { Break, Piece, Trip } from "../../../src/minischedule"
 import { useMinischeduleRuns } from "../../../src/hooks/useMinischedule"
 import * as dateTime from "../../../src/util/dateTime"
 import { blockWaiverNotificationFactory } from "../../factories/notification"
+import { TripFactory } from "../../factories/trip"
 
 jest.mock("../../../src/hooks/useMinischedule")
 
@@ -25,7 +26,7 @@ const futureNotificationFactory = otherNotificationFactory.params({
 })
 
 describe("InactiveNotificationModal", () => {
-  const revenueTrip: Trip = {
+  const revenueTrip: Trip = TripFactory.build({
     id: "trip",
     blockId: "block",
     routeId: "R",
@@ -37,7 +38,7 @@ describe("InactiveNotificationModal", () => {
     endTime: 1100,
     startPlace: "Red Square",
     endPlace: "Blue Triangle",
-  }
+  })
 
   const piece: Piece = {
     runId: "111",
