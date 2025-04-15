@@ -110,7 +110,7 @@ jobs:
           POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
           POSTGRES_HOSTNAME: ${{env.DATABASE_HOST}}
           GUARDIAN_SECRET_KEY: ${{env.GUARDIAN_SECRET_KEY}}
-      - uses: mbta/actions/dialyzer@v1
+      - uses: mbta/actions/dialyzer@v2
 
   build_typescript:
     name: Build and test TypeScript
