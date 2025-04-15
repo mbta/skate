@@ -698,13 +698,58 @@ const RevenueTrip = ({
 
   const shouldShowTimepoints = inTestGroup(TestGroups.MinischeduleTimepoints)
 
+  return (
+    <>
+      <Row
+        icon={directionIcon}
+        text={formattedRouteAndPlaceName}
+        rightText={startTime}
+        belowText={belowText}
+        timeBasedStyle={timeBasedStyle}
+        activeStatus={activeStatus}
+        extraClasses={extraClasses}
+      />
+      {shouldShowTimepoints && (
+        <TimePointRows
+          directionIcon={directionIcon}
+          activeStatus={activeStatus}
+          extraClasses={extraClasses}
+          trip={trip}
+          overloadOffset={overloadOffset}
+          timeBasedStyle={timeBasedStyle}
+          nextStop={nextStop}
+        />
+      )}
+    </>
+  )
+}
+
+const TimePointRows = ({
+  timeBasedStyle,
+  trip,
+  nextStop,
+  directionIcon,
+  activeStatus,
+  extraClasses,
+  overloadOffset,
+}: {
+  timeBasedStyle: TimeBasedStyle
+  trip: Trip
+  nextStop: StopId | undefined
+  directionIcon: ReactNode
+  overloadOffset: number | undefined
+  activeStatus: DrawnStatus | null
+  extraClasses: string[]
+}) => {
   // Bug: when the Trip has 2 or more StopTime's with the same StopId, this
   // implementation will "rewind time" to the first instance of that StopId when
   // `nextStop` is set to that StopId.
+  //
   // Fixing this would require either
   //  - using Stop Sequence (which would be idempotent and remove the need for `reduce`)
   //  - or tracking the Vehicle's stops through time, and accumulating which
   //    stops it _has_ been to.
+  //
   // While tracking the stops it has been to _could_ work, Stop Sequence would
   // be a better implementation since Swiftly is already in charge of tracking
   // which stops we've been to, and an implementation which tracks it locally
@@ -717,39 +762,28 @@ const RevenueTrip = ({
     (stopTime) => stopTime.stopId === nextStop
   )
 
-  const stopTimeRows = trip.stopTimes.map((stopTime, index) => {
-    const isFutureStop = stopIndex !== -1 && index > stopIndex
-
-    return (
-      stopTime.timepointId && (
-        <Row
-          icon={directionIcon}
-          text={stopTime.timepointId}
-          rightText={formattedScheduledTime(stopTime.time, overloadOffset)}
-          timeBasedStyle={
-            isCurrentTrip && isFutureStop ? "future" : timeBasedStyle
-          }
-          activeStatus={activeStatus}
-          extraClasses={[...extraClasses, "c-minischedule__timepoint-row"]}
-          // Stops may be visited twice, but unlikely to move around in `index`
-          key={`${index}-${stopTime.stopId}`}
-        />
-      )
-    )
-  })
-
   return (
     <>
-      <Row
-        icon={directionIcon}
-        text={formattedRouteAndPlaceName}
-        rightText={startTime}
-        belowText={belowText}
-        timeBasedStyle={timeBasedStyle}
-        activeStatus={activeStatus}
-        extraClasses={extraClasses}
-      />
-      {shouldShowTimepoints && stopTimeRows}
+      {trip.stopTimes.map((stopTime, index) => {
+        const isFutureStop = stopIndex !== -1 && index > stopIndex
+
+        return (
+          stopTime.timepointId && (
+            <Row
+              icon={directionIcon}
+              text={stopTime.timepointId}
+              rightText={formattedScheduledTime(stopTime.time, overloadOffset)}
+              timeBasedStyle={
+                isCurrentTrip && isFutureStop ? "future" : timeBasedStyle
+              }
+              activeStatus={activeStatus}
+              extraClasses={[...extraClasses, "c-minischedule__timepoint-row"]}
+              // Stops may be visited twice, but unlikely to move around in `index`
+              key={`${index}-${stopTime.stopId}`}
+            />
+          )
+        )
+      })}
     </>
   )
 }
@@ -780,7 +814,7 @@ const Row = ({
   activeStatus,
   extraClasses,
 }: {
-  icon?: ReactElement
+  icon?: ReactNode
   text: string
   rightText?: string
   belowText?: string
