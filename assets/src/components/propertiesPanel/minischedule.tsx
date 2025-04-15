@@ -51,6 +51,7 @@ import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
 import { currentRouteTab } from "../../models/routeTab"
 import { isVehicleInScheduledService } from "../../models/vehicle"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 export interface Props {
   vehicleOrGhost: VehicleInScheduledService | Ghost
@@ -695,6 +696,8 @@ const RevenueTrip = ({
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     iconForDirectionOnLadder(trip.directionId, ladderDirections, trip.routeId!)
 
+  const shouldShowTimepoints = inTestGroup(TestGroups.MinischeduleTimepoints)
+
   // Bug: when the Trip has 2 or more StopTime's with the same StopId, this
   // implementation will "rewind time" to the first instance of that StopId when
   // `nextStop` is set to that StopId.
@@ -758,7 +761,7 @@ const RevenueTrip = ({
         activeStatus={activeStatus}
         extraClasses={extraClasses}
       />
-      {stopTimeRows}
+      {shouldShowTimepoints && stopTimeRows}
     </>
   )
 }

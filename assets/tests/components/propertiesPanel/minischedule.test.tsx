@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
@@ -23,12 +23,16 @@ import { RunFactory } from "../../factories/run"
 import { DeadheadTripFactory, TripFactory } from "../../factories/trip"
 import { vehicleFactory } from "../../factories/vehicle"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
+import getTestGroups from "../../../src/userTestGroups"
+import { TestGroups } from "../../../src/userInTestGroup"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
   useMinischeduleRun: jest.fn(),
   useMinischeduleBlock: jest.fn(),
 }))
+
+jest.mock("../../../src/userTestGroups")
 
 const nonrevenueTrip: Trip = TripFactory.build({
   id: "nonrevenue",
@@ -310,6 +314,12 @@ const vehicleWithOffset: VehicleInScheduledService = {
   overloadOffset: 480,
   isOverload: true,
 }
+
+beforeEach(() => {
+  jest
+    .mocked(getTestGroups)
+    .mockReturnValue([TestGroups.MinischeduleTimepoints])
+})
 
 describe("MinischeduleRun", () => {
   test("renders the loading state", () => {
