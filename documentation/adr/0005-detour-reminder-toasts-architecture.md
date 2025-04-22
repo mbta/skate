@@ -673,3 +673,34 @@ later, once we have experience with this in production with users, we'll
 be in a better position to determine if we need to reevaluate this decision
 and rebuild that particular part.
 
+See [using a polling based architecture section](#using-a-polling-based-architecture-instead-of-a-event-based-one)
+for more details on alternatives to this that was considered.
+
+
+
+## Alternatives Considered
+### Using a polling based architecture instead of a Event based one
+An idempotent system based on polling the detours database for active detours
+that have matching expiration criteria was considered instead of an event
+based approach; This was determined to be a bit more complex than we may
+otherwise need because there is not a consistent criteria with our current
+data to create queries that would easily and accurately find detours which
+need notifications created.
+
+Firstly, we do not have the expiration time stored as a column in the detours
+schema at this time. We have avoided Refactoring or adding to the detours system
+until we can come back and refactor or re-architect the system. If we wanted
+to use the existing database to track state for the notifications, we have
+to decide on the criteria by which detours are considered "notification ready".
+
+_If_ we could create expiration notifications when the expiration time
+is _exactly_ 30m or 0m away, then using this polling solution would work.
+But because we have decided we'll still create and send notifications even
+after we have missed the "proper window" for sending the notification (and
+that we'll backdate the notification time) we need a solution that can track
+if a notification has been sent for this _specific_ expiration time. Because
+the expiration time can change, and we need to create new notifications
+once the criteria is met for the new expiration time, the state that needs
+to be tracked and queries that determine if a new notification should
+be created are less straightforward than the event based solution.
+
