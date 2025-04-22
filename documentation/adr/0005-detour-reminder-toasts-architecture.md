@@ -660,3 +660,16 @@ Frontend:
     `expires_at` rather than fixed cutoff
 1. Convert `created_at` to timestamp
 
+
+## Consequences
+This ADR describes an event based approach to tracking which detours
+should be considered for creating expiration notifications for, where
+the `Skate.Detours` module is responsible for notifying the `Scheduler`
+of changes to a detour.  This does bring a risk that we'll fail to create
+and send notifications to users if the application or BEAM process crashes
+in the middle of processing the events.  Currently, this seems to be is
+an acceptable tradeoff, and something that would be possible to refactor
+later, once we have experience with this in production with users, we'll
+be in a better position to determine if we need to reevaluate this decision
+and rebuild that particular part.
+
