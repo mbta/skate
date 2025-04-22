@@ -72,12 +72,14 @@ export interface ShapePoint {
 }
 
 export type TimepointId = string
+type TimepointName = string | null
+
+export type TimepointNameById = Map<TimepointId, TimepointName>
 
 export interface Timepoint {
   id: TimepointId
-  name: string | null
+  name: TimepointName
 }
-
 export interface Swing {
   blockId: BlockId
   fromRouteId: RouteId

@@ -25,11 +25,17 @@ import { vehicleFactory } from "../../factories/vehicle"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
+import { TimepointFactory } from "../../factories/timepointFactory"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
   useMinischeduleRun: jest.fn(),
   useMinischeduleBlock: jest.fn(),
+}))
+
+jest.mock("../../../src/hooks/useTimepoints", () => ({
+  __esModule: true,
+  useTimepointsByIdForRoute: jest.fn(() => timepoints),
 }))
 
 jest.mock("../../../src/userTestGroups")
@@ -106,6 +112,10 @@ const multiTripPiece = {
   ...piece,
   trips: [revenueTrip, revenueTrip2],
 }
+
+const timepointList = TimepointFactory.buildList(21)
+const timepoints = new Map(timepointList.map((tp) => [tp.id, tp.name]))
+
 const paidBreakBefore: Break = {
   breakType: "Paid meal before",
   startTime: 10,
@@ -700,6 +710,7 @@ describe("Minischedule", () => {
         <Minischedule
           runOrBlock={block}
           vehicleOrGhost={vehicle}
+          timepoints={timepoints}
           view="block"
         />
       )
@@ -716,6 +727,7 @@ describe("Minischedule", () => {
         <Minischedule
           runOrBlock={block}
           vehicleOrGhost={vehicle}
+          timepoints={timepoints}
           view="block"
         />
       )
@@ -727,7 +739,12 @@ describe("Minischedule", () => {
   test("clicking the show/hide button toggles whether past trips are shown", async () => {
     const block = { id: "block", pieces: [] }
     const result = render(
-      <Minischedule runOrBlock={block} vehicleOrGhost={vehicle} view="block" />
+      <Minischedule
+        runOrBlock={block}
+        vehicleOrGhost={vehicle}
+        timepoints={timepoints}
+        view="block"
+      />
     )
 
     expect(result.queryByText(/Show past/)).toBeVisible()
@@ -759,6 +776,7 @@ describe("Minischedule", () => {
             tripId: revenueTrip.id,
             routeStatus: "pulling_out",
           }}
+          timepoints={timepoints}
           view="run"
         />
       )
@@ -789,6 +807,7 @@ describe("Minischedule", () => {
             tripId: "after",
             routeStatus: "laying_over",
           }}
+          timepoints={timepoints}
           view="run"
         />
       )

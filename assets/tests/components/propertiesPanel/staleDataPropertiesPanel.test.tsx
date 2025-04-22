@@ -14,6 +14,8 @@ import { closeButton } from "../../testHelpers/selectors/components/closeButton"
 
 jest.mock("../../../src/hooks/useMinischedule")
 
+jest.mock("../../../src/hooks/useTimepoints")
+
 describe("StaleDataPropertiesPanel", () => {
   test("renders a stale non-shuttle vehicle", () => {
     const vehicle = vehicleFactory.build()

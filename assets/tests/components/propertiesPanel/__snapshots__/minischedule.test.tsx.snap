@@ -160,7 +160,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -243,7 +243,7 @@ exports[`Minischedule highlights deadheads if they're active 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -471,7 +471,7 @@ exports[`Minischedule highlights pullouts if they're active 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -737,7 +737,7 @@ exports[`MinischeduleBlock renders a block 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -911,7 +911,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-15
+            Timepoint 15
           </div>
           <div
             className="c-minischedule__right-text"
@@ -1038,7 +1038,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-15
+            Timepoint 15
           </div>
           <div
             className="c-minischedule__right-text"
@@ -1090,7 +1090,7 @@ exports[`MinischeduleBlock renders a mid route swing 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-18
+            Timepoint 18
           </div>
           <div
             className="c-minischedule__right-text"
@@ -1264,7 +1264,7 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-15
+            Timepoint 15
           </div>
           <div
             className="c-minischedule__right-text"
@@ -1391,7 +1391,7 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-15
+            Timepoint 15
           </div>
           <div
             className="c-minischedule__right-text"
@@ -1443,7 +1443,7 @@ exports[`MinischeduleBlock renders a mid route swing with offset 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-18
+            Timepoint 18
           </div>
           <div
             className="c-minischedule__right-text"
@@ -1642,7 +1642,7 @@ exports[`MinischeduleBlock renders block with revenue trip, pulls, and deadhead 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -2071,7 +2071,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -2123,7 +2123,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-9
+            Timepoint 9
           </div>
           <div
             className="c-minischedule__right-text"
@@ -2175,7 +2175,7 @@ exports[`MinischeduleBlock renders trips in both directions, or missing directio
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-12
+            Timepoint 12
           </div>
           <div
             className="c-minischedule__right-text"
@@ -2380,7 +2380,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -2449,7 +2449,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-9
+            Timepoint 9
           </div>
           <div
             className="c-minischedule__right-text"
@@ -2518,7 +2518,7 @@ exports[`MinischeduleRun on a run with multiple layovers, marks the correct one 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-21
+            Timepoint 21
           </div>
           <div
             className="c-minischedule__right-text"
@@ -2723,7 +2723,7 @@ exports[`MinischeduleRun renders a mid route swing off 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-15
+            Timepoint 15
           </div>
           <div
             className="c-minischedule__right-text"
@@ -2900,7 +2900,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
         <div
           className="c-minischedule__left-text"
         >
-          timepoint-15
+          Timepoint 15
         </div>
         <div
           className="c-minischedule__right-text"
@@ -2986,7 +2986,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-15
+            Timepoint 15
           </div>
           <div
             className="c-minischedule__right-text"
@@ -3055,7 +3055,7 @@ exports[`MinischeduleRun renders a mid route swing on 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-18
+            Timepoint 18
           </div>
           <div
             className="c-minischedule__right-text"
@@ -3285,7 +3285,7 @@ exports[`MinischeduleRun renders a run 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -3354,7 +3354,7 @@ exports[`MinischeduleRun renders a run 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-9
+            Timepoint 9
           </div>
           <div
             className="c-minischedule__right-text"
@@ -3582,7 +3582,7 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -3651,7 +3651,7 @@ exports[`MinischeduleRun renders a run using origin trip label mode 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-9
+            Timepoint 9
           </div>
           <div
             className="c-minischedule__right-text"
@@ -3856,7 +3856,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -3925,7 +3925,7 @@ exports[`MinischeduleRun renders a run with a current layover between trips 1`] 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-9
+            Timepoint 9
           </div>
           <div
             className="c-minischedule__right-text"
@@ -4130,7 +4130,7 @@ exports[`MinischeduleRun renders a run with a layover before an as-directed 1`] 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -4369,7 +4369,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -4438,7 +4438,7 @@ exports[`MinischeduleRun renders a run with a non-current layover between trips 
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-9
+            Timepoint 9
           </div>
           <div
             className="c-minischedule__right-text"
@@ -4666,7 +4666,7 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -4735,7 +4735,7 @@ exports[`MinischeduleRun renders a run with a schedule offset 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-9
+            Timepoint 9
           </div>
           <div
             className="c-minischedule__right-text"
@@ -4940,7 +4940,7 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-6
+            Timepoint 6
           </div>
           <div
             className="c-minischedule__right-text"
@@ -4992,7 +4992,7 @@ exports[`MinischeduleRun renders a run with no layovers between trips 1`] = `
           <div
             className="c-minischedule__left-text"
           >
-            timepoint-9
+            Timepoint 9
           </div>
           <div
             className="c-minischedule__right-text"

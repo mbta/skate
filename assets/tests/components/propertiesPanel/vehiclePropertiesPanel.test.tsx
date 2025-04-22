@@ -63,6 +63,8 @@ jest.mock("../../../src/hooks/useShapes", () => ({
   useTripShape: jest.fn(),
 }))
 
+jest.mock("../../../src/hooks/useTimepoints")
+
 jest.mock("../../../src/helpers/fullStory")
 
 beforeEach(() => {

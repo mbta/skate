@@ -46,12 +46,20 @@ import {
   statusClasses,
 } from "../../models/vehicleStatus"
 import { RouteStatus, VehicleInScheduledService, Ghost } from "../../realtime"
-import { DirectionId, RouteId, StopId, TripId } from "../../schedule"
+import {
+  DirectionId,
+  RouteId,
+  StopId,
+  TimepointId,
+  TimepointNameById,
+  TripId,
+} from "../../schedule"
 import { formattedDuration, formattedScheduledTime } from "../../util/dateTime"
 import Loading from "../loading"
 import { currentRouteTab } from "../../models/routeTab"
 import { isVehicleInScheduledService } from "../../models/vehicle"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import { useTimepointsByIdForRoute } from "../../hooks/useTimepoints"
 
 export interface Props {
   vehicleOrGhost: VehicleInScheduledService | Ghost
@@ -64,8 +72,15 @@ export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleOrGhost.runId!
   )
+  const timepoints = useTimepointsByIdForRoute(vehicleOrGhost.routeId)
+
   return (
-    <Minischedule runOrBlock={run} vehicleOrGhost={vehicleOrGhost} view="run" />
+    <Minischedule
+      runOrBlock={run}
+      vehicleOrGhost={vehicleOrGhost}
+      timepoints={timepoints}
+      view="run"
+    />
   )
 }
 
@@ -74,10 +89,13 @@ export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleOrGhost.tripId!
   )
+  const timepoints = useTimepointsByIdForRoute(vehicleOrGhost.routeId)
+
   return (
     <Minischedule
       runOrBlock={block}
       vehicleOrGhost={vehicleOrGhost}
+      timepoints={timepoints}
       view="block"
     />
   )
@@ -86,15 +104,17 @@ export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
 export const Minischedule = ({
   runOrBlock,
   vehicleOrGhost,
+  timepoints,
   view,
 }: {
   runOrBlock: Run | Block | null | undefined
   vehicleOrGhost: VehicleInScheduledService | Ghost
+  timepoints: TimepointNameById | null
   view: "run" | "block"
 }) => {
   const [showPast, setShowPast] = useState<boolean>(false)
 
-  if (runOrBlock === undefined) {
+  if (runOrBlock === undefined || timepoints === null) {
     return <Loading />
   } else if (runOrBlock === null) {
     return view === "run" ? <>No run found</> : <>No block found</>
@@ -130,6 +150,7 @@ export const Minischedule = ({
                 pieceIndex={index}
                 activeIndex={activeIndex}
                 key={activity.startTime}
+                timepoints={timepoints}
               />
             ) : (
               <BreakRow
@@ -318,12 +339,14 @@ const PieceSchedule = ({
   vehicleOrGhost,
   pieceIndex,
   activeIndex,
+  timepoints,
 }: {
   piece: Piece
   view: "run" | "block"
   vehicleOrGhost: VehicleInScheduledService | Ghost
   pieceIndex: number
   activeIndex: [number, number] | null
+  timepoints: TimepointNameById
 }) => {
   const isSwingOn: boolean =
     piece.trips.length > 0 &&
@@ -356,6 +379,7 @@ const PieceSchedule = ({
         <MidRouteSwingOnFirstHalf
           trip={piece.startMidRoute.trip}
           overloadOffset={overloadOffset}
+          timepointNameById={timepoints}
         />
       ) : null}
       {isSwingOn ? null : (
@@ -383,6 +407,7 @@ const PieceSchedule = ({
             time={piece.startMidRoute.time}
             trip={piece.startMidRoute.trip}
             overloadOffset={overloadOffset}
+            timepointNameById={timepoints}
           />
         ) : null}
         {piece.trips.map((trip, tripIndex) => {
@@ -411,6 +436,7 @@ const PieceSchedule = ({
               tripTimeBasedStyle={tripTimeBasedStyle}
               vehicleOrGhost={vehicleOrGhost}
               view={view}
+              timepointNameById={timepoints}
               key={trip.startTime}
             />
           )
@@ -441,9 +467,11 @@ const PieceSchedule = ({
 const MidRouteSwingOnFirstHalf = ({
   trip,
   overloadOffset,
+  timepointNameById,
 }: {
   trip: Trip
   overloadOffset: number | undefined
+  timepointNameById: TimepointNameById
 }) => (
   <RevenueTrip
     trip={trip}
@@ -452,6 +480,7 @@ const MidRouteSwingOnFirstHalf = ({
     overloadOffset={overloadOffset}
     belowText={`Run ${trip.runId}`}
     extraClasses={["c-minischedule__row--mid-route-first-half"]}
+    timepointNameById={timepointNameById}
   />
 )
 
@@ -459,16 +488,19 @@ const MidRouteSwingOnSecondHalf = ({
   time,
   trip,
   overloadOffset,
+  timepointNameById,
 }: {
   time: Time
   trip: Trip
   overloadOffset: number | undefined
+  timepointNameById: TimepointNameById
 }) => (
   <RevenueTrip
     trip={{ ...trip, startTime: time }}
     timeBasedStyle={"unknown"}
     activeStatus={null}
     overloadOffset={overloadOffset}
+    timepointNameById={timepointNameById}
   />
 )
 
@@ -503,6 +535,7 @@ const TripSchedule = ({
   tripTimeBasedStyle,
   vehicleOrGhost,
   view,
+  timepointNameById,
 }: {
   trip: Trip | AsDirected
   previousEndTime: Time | null
@@ -510,6 +543,7 @@ const TripSchedule = ({
   tripTimeBasedStyle: TimeBasedStyle
   vehicleOrGhost: VehicleInScheduledService | Ghost
   view: "run" | "block"
+  timepointNameById: TimepointNameById
 }) => {
   const layoverTimeBasedStyle =
     tripTimeBasedStyle === "current"
@@ -566,6 +600,7 @@ const TripSchedule = ({
                 vehicleOrGhost.stopStatus.stopId) ||
               undefined
             }
+            timepointNameById={timepointNameById}
           />
         )
       ) : (
@@ -661,6 +696,7 @@ const RevenueTrip = ({
   belowText,
   extraClasses = [],
   nextStop,
+  timepointNameById,
 }: {
   trip: Trip
   timeBasedStyle: TimeBasedStyle
@@ -669,6 +705,7 @@ const RevenueTrip = ({
   belowText?: string
   extraClasses?: string[]
   nextStop?: StopId
+  timepointNameById: TimepointNameById
 }) => {
   const startTime: string = formattedScheduledTime(
     trip.startTime,
@@ -718,6 +755,7 @@ const RevenueTrip = ({
           overloadOffset={overloadOffset}
           timeBasedStyle={timeBasedStyle}
           nextStop={nextStop}
+          timepointNameById={timepointNameById}
         />
       )}
     </>
@@ -728,6 +766,7 @@ const TimePointRows = ({
   timeBasedStyle,
   trip,
   nextStop,
+  timepointNameById,
   directionIcon,
   activeStatus,
   extraClasses,
@@ -736,6 +775,7 @@ const TimePointRows = ({
   timeBasedStyle: TimeBasedStyle
   trip: Trip
   nextStop: StopId | undefined
+  timepointNameById: TimepointNameById
   directionIcon: ReactNode
   overloadOffset: number | undefined
   activeStatus: DrawnStatus | null
@@ -762,6 +802,9 @@ const TimePointRows = ({
     (stopTime) => stopTime.stopId === nextStop
   )
 
+  const getTimepointNameElseId = (timepointId: TimepointId) =>
+    timepointNameById.get(timepointId) || timepointId
+
   return (
     <>
       {trip.stopTimes.map((stopTime, index) => {
@@ -771,7 +814,7 @@ const TimePointRows = ({
           stopTime.timepointId && (
             <Row
               icon={directionIcon}
-              text={stopTime.timepointId}
+              text={getTimepointNameElseId(stopTime.timepointId)}
               rightText={formattedScheduledTime(stopTime.time, overloadOffset)}
               timeBasedStyle={
                 isCurrentTrip && isFutureStop ? "future" : timeBasedStyle

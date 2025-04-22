@@ -1,6 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { fetchTimepointsForRoute } from "../api"
-import { RouteId, Timepoint, TimepointsByRouteId } from "../schedule.d"
+import {
+  RouteId,
+  Timepoint,
+  TimepointsByRouteId,
+  TimepointNameById,
+} from "../schedule.d"
+import { useApiCall } from "./useApiCall"
 
 const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
   const [timepointsByRouteId, setTimepointsByRouteId] =
@@ -36,6 +42,29 @@ const useTimepoints = (selectedRouteIds: RouteId[]): TimepointsByRouteId => {
   }, [selectedRouteIds, timepointsByRouteId])
 
   return timepointsByRouteId
+}
+
+const useTimepointsForRoute = (routeId: RouteId | undefined) =>
+  useApiCall({
+    apiCall: useCallback(async () => {
+      if (!routeId) {
+        return null
+      }
+
+      return fetchTimepointsForRoute(routeId)
+    }, [routeId]),
+  })
+
+export const useTimepointsByIdForRoute = (
+  routeId: RouteId | null
+): TimepointNameById | null => {
+  const { result: timepoints } = useTimepointsForRoute(routeId ?? undefined)
+
+  if (timepoints === undefined || timepoints === null) {
+    return null
+  }
+
+  return new Map(timepoints.map((timepoint) => [timepoint.id, timepoint.name]))
 }
 
 export default useTimepoints
