@@ -606,3 +606,51 @@ export type DetourExpirationNotification = {
     `function <Struct Name>FromData(data: Data<Struct Name>): <Struct Name>`
     on the frontend.
 
+
+### Notifications Storage and Delivery Implementation
+We can use the existing notifications system, with a few refactors to make
+it a bit nicer to work with. These could be delayed, but while we are here
+it would be worth improving.
+
+If we build a entirely new system, it'd leave the desire for moving the
+existing system to the new system. Using the existing notifications system
+avoids needing to concern ourselves with a complicated double write and
+backfilling process and having to tear down the old system after.
+
+#### Path to adding Detour Expiration Notifications
+Following the example set by Detour notifications:
+
+Backend:
+- Create a schema and table for `DetourExpirationNotification`
+- Modify the existing notification schema and table to include fkeys to `DetourExpirationNotification`'s
+- Hook into NotificationServer's broadcast logic that Detour Notifications use
+  - May need to adjust how `broadcast_notification_to_other_instances`
+      and `handle_cast({:broadcast_new_detour_notification, _})`, and
+      `get_detour_notification` function, or create new functions
+- Adjust the query in `unexpired_notifications_for_user` to return `DetourExpirationNotification`s
+- Add `content_from_db_notification` implementation for `detour_expiration` notifications
+
+Frontend:
+- Add new type to `notificationData.ts`
+- Parse the new type to the expected shape in `notificationFromData`
+    (see [open questions](#open-questions) for some complications here)
+
+#### Refactoring Recommendations
+##### High Priority
+1. Move logic for bridge movements and block waivers into own modules
+1. Move notification creation logic from `Notifications.NotificationServer` to `Notifications`
+1. Move notification subscription logic from `Notifications.NotificationServer` to `Notifications`
+1. Move notification CRUD logic from `Notifications.Notification` to `Notifications`
+1. Make Notifications CRUD API simpler
+
+##### Medium Priority
+1. Replace `Registry` PubSub implementation with `Phoenix.PubSub`
+1. Move Notifications Database Object => Notifications Frontend Object
+    conversion into own module
+1. Fix namespace trespassing by migrating into the `Skate` namespace
+
+##### Nice To Have
+1. Add `expires_at` column to notifications and filter notifications by
+    `expires_at` rather than fixed cutoff
+1. Convert `created_at` to timestamp
+
