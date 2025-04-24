@@ -1021,11 +1021,13 @@ describe("<MapPage />", () => {
     const runId = "test-run"
     const vehicle = routeVehicleFactory.build({ runId })
 
-    jest
-      .mocked(useMinischeduleRun)
-      .mockReturnValue(
-        RunFactory.build({ id: runId, activities: [pieceFactory.build()] })
-      )
+    jest.mocked(useMinischeduleRun).mockReturnValue({
+      run: RunFactory.build({
+        id: runId,
+        activities: [pieceFactory.build()],
+      }),
+      timepoints: new Map(),
+    })
 
     mockVehicleSearchResultsCategory([vehicle])
 

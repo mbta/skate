@@ -5,6 +5,7 @@ import {
   RouteId,
   StopId,
   TimepointId,
+  TimepointNameById,
   TripId,
   ViaVariant,
 } from "./schedule"
@@ -19,6 +20,16 @@ export interface Run {
 export interface Block {
   id: BlockId
   pieces: Piece[]
+}
+
+export interface ScheduleRun {
+  run: Run
+  timepoints: TimepointNameById
+}
+
+export interface ScheduleBlock {
+  block: Block
+  timepoints: TimepointNameById
 }
 
 export interface Break {

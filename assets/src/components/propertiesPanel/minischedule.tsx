@@ -26,10 +26,11 @@ import {
 } from "../../hooks/useMinischedule"
 import {
   AsDirected,
-  Block,
   Break,
   Piece,
   Run,
+  ScheduleRun,
+  ScheduleBlock,
   Time,
   Trip,
 } from "../../minischedule"
@@ -59,68 +60,77 @@ import Loading from "../loading"
 import { currentRouteTab } from "../../models/routeTab"
 import { isVehicleInScheduledService } from "../../models/vehicle"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
-import { useTimepointsByIdForRoute } from "../../hooks/useTimepoints"
 
 export interface Props {
   vehicleOrGhost: VehicleInScheduledService | Ghost
 }
 
 export const MinischeduleRun = ({ vehicleOrGhost }: Props): ReactElement => {
-  const run: Run | null | undefined = useMinischeduleRun(
+  const run: ScheduleRun | null | undefined = useMinischeduleRun(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleOrGhost.tripId!,
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleOrGhost.runId!
   )
-  const timepoints = useTimepointsByIdForRoute(vehicleOrGhost.routeId)
 
   return (
-    <Minischedule
-      runOrBlock={run}
-      vehicleOrGhost={vehicleOrGhost}
-      timepoints={timepoints}
-      view="run"
-    />
+    <Minischedule runOrBlock={run} vehicleOrGhost={vehicleOrGhost} view="run" />
   )
 }
 
 export const MinischeduleBlock = ({ vehicleOrGhost }: Props): ReactElement => {
-  const block: Block | null | undefined = useMinischeduleBlock(
+  const block: ScheduleBlock | null | undefined = useMinischeduleBlock(
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleOrGhost.tripId!
   )
-  const timepoints = useTimepointsByIdForRoute(vehicleOrGhost.routeId)
 
   return (
     <Minischedule
       runOrBlock={block}
       vehicleOrGhost={vehicleOrGhost}
-      timepoints={timepoints}
       view="block"
     />
   )
 }
 
+const activitiesFromRunOrBlock = (runOrBlock: ScheduleBlock | ScheduleRun) => {
+  if ("run" in runOrBlock) {
+    return runOrBlock.run.activities
+  }
+  return runOrBlock.block.pieces
+}
+
+const idFromRunOrBlock = (runOrBlock: ScheduleBlock | ScheduleRun) => {
+  if ("run" in runOrBlock) {
+    return runOrBlock.run.id
+  }
+  return runOrBlock.block.id
+}
+
+const runFromRunOrBlock = (runOrBlock: ScheduleBlock | ScheduleRun) => {
+  if ("run" in runOrBlock) {
+    return runOrBlock.run
+  }
+  return undefined
+}
+
 export const Minischedule = ({
   runOrBlock,
   vehicleOrGhost,
-  timepoints,
   view,
 }: {
-  runOrBlock: Run | Block | null | undefined
+  runOrBlock: ScheduleRun | ScheduleBlock | null | undefined
   vehicleOrGhost: VehicleInScheduledService | Ghost
-  timepoints: TimepointNameById | null
   view: "run" | "block"
 }) => {
   const [showPast, setShowPast] = useState<boolean>(false)
 
-  if (runOrBlock === undefined || timepoints === null) {
+  if (runOrBlock === undefined) {
     return <Loading />
   } else if (runOrBlock === null) {
     return view === "run" ? <>No run found</> : <>No block found</>
   } else {
-    const activities: (Piece | Break)[] =
-      (runOrBlock as Run).activities || (runOrBlock as Block).pieces
+    const activities: (Piece | Break)[] = activitiesFromRunOrBlock(runOrBlock)
     const activeIndex = getActiveIndex(
       activities,
       vehicleOrGhost.tripId,
@@ -135,9 +145,13 @@ export const Minischedule = ({
       >
         <Header
           label={view === "run" ? "Run" : "Block"}
-          value={runOrBlock.id}
+          value={idFromRunOrBlock(runOrBlock)}
         />
-        {view === "run" ? <DutyDetails run={runOrBlock as Run} /> : null}
+        {view === "run" ? (
+          <DutyDetails
+            run={runFromRunOrBlock(runOrBlock) as ScheduleRun["run"]}
+          />
+        ) : null}
         <DeparturePointHeader />
         <PastToggle showPast={showPast} setShowPast={setShowPast} />
         <div>
@@ -150,7 +164,7 @@ export const Minischedule = ({
                 pieceIndex={index}
                 activeIndex={activeIndex}
                 key={activity.startTime}
-                timepoints={timepoints}
+                timepoints={runOrBlock.timepoints}
               />
             ) : (
               <BreakRow

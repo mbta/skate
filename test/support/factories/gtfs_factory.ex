@@ -117,6 +117,15 @@ defmodule Skate.GtfsFactory do
 
         merge_attributes(shape, attrs)
       end
+
+      def gtfs_timepoint_factory(attrs) do
+        id = Map.get(attrs, :id, sequence("Schedule.Gtfs.Timepoint.id:"))
+
+        %Schedule.Gtfs.Timepoint{
+          id: id,
+          name: "Timepoint #{id}"
+        }
+      end
     end
   end
 end

@@ -56,6 +56,16 @@ defmodule Schedule.Gtfs.Timepoint do
     @garage_names_by_id
   end
 
+  @spec timepoint_from_names_by_id(timepoint_names_by_id(), id()) :: t()
+  def timepoint_from_names_by_id(timepoint_names_by_id, id) do
+    name = Map.get(timepoint_names_by_id, id, %__MODULE__{id: id})
+
+    %__MODULE__{
+      id: id,
+      name: name
+    }
+  end
+
   def pretty_name_for_id(timepoint_names_by_id, place_id) do
     Map.get(timepoint_names_by_id, place_id, place_id)
   end
