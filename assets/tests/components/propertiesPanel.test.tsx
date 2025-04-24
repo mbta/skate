@@ -56,8 +56,6 @@ jest.mock("../../src/hooks/useShapes", () => ({
 
 jest.mock("../../src/hooks/useMinischedule")
 
-jest.mock("../../src/hooks/useTimepoints")
-
 beforeEach(() => {
   jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
 })
