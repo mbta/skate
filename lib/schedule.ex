@@ -216,10 +216,15 @@ defmodule Schedule do
   end
 
   def timepoint_names_for_run(run, persistent_term_key) do
-    timepoint_names_by_id = call_with_data(persistent_term_key, [], :timepoint_names_by_id, %{})
-
     run
     |> Run.pieces()
+    |> timepoint_names_for_pieces(persistent_term_key)
+  end
+
+  defp timepoint_names_for_pieces(pieces, persistent_term_key) do
+    timepoint_names_by_id = call_with_data(persistent_term_key, [], :timepoint_names_by_id, %{})
+
+    pieces
     |> Enum.map(&timepoint_names_for_piece(&1, timepoint_names_by_id))
     |> List.flatten()
     |> Enum.uniq()
@@ -246,13 +251,9 @@ defmodule Schedule do
   end
 
   def timepoint_names_for_block(block, persistent_term_key) do
-    timepoint_names_by_id = call_with_data(persistent_term_key, [], :timepoint_names_by_id, %{})
-
     block
     |> Block.pieces()
-    |> Enum.map(&timepoint_names_for_piece(&1, timepoint_names_by_id))
-    |> List.flatten()
-    |> Enum.uniq()
+    |> timepoint_names_for_pieces(persistent_term_key)
   end
 
   @spec swings_for_route(
