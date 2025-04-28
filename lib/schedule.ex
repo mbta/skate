@@ -208,10 +208,52 @@ defmodule Schedule do
     call_with_data(persistent_term_key, [run_id, trip_id], :run_for_trip, nil)
   end
 
+  @spec timepoint_names_for_run(Run.t() | nil, persistent_term_key()) :: [Timepoint.t()]
+  def timepoint_names_for_run(run, persistent_term_key \\ __MODULE__)
+
+  def timepoint_names_for_run(nil, _persistent_term_key) do
+    nil
+  end
+
+  def timepoint_names_for_run(run, persistent_term_key) do
+    run
+    |> Run.pieces()
+    |> timepoint_names_for_pieces(persistent_term_key)
+  end
+
+  defp timepoint_names_for_pieces(pieces, persistent_term_key) do
+    timepoint_names_by_id = call_with_data(persistent_term_key, [], :timepoint_names_by_id, %{})
+
+    pieces
+    |> Enum.map(&timepoint_names_for_piece(&1, timepoint_names_by_id))
+    |> List.flatten()
+    |> Enum.uniq()
+  end
+
+  defp timepoint_names_for_piece(piece, timepoint_names_by_id) do
+    piece.trips
+    |> Enum.reject(&is_nil/1)
+    |> Enum.flat_map(&Schedule.Trip.timepoints/1)
+    |> Enum.map(&Timepoint.timepoint_from_names_by_id(timepoint_names_by_id, &1.timepoint_id))
+  end
+
   @spec block_for_trip(Trip.id()) :: Block.t() | nil
   @spec block_for_trip(Trip.id(), persistent_term_key()) :: Block.t() | nil
   def block_for_trip(trip_id, persistent_term_key \\ __MODULE__) do
     call_with_data(persistent_term_key, [trip_id], :block_for_trip, nil)
+  end
+
+  @spec timepoint_names_for_block(Block.t() | nil, persistent_term_key()) :: [Timepoint.t()]
+  def timepoint_names_for_block(block, persistent_term_key \\ __MODULE__)
+
+  def timepoint_names_for_block(nil, _persistent_term_key) do
+    nil
+  end
+
+  def timepoint_names_for_block(block, persistent_term_key) do
+    block
+    |> Block.pieces()
+    |> timepoint_names_for_pieces(persistent_term_key)
   end
 
   @spec swings_for_route(

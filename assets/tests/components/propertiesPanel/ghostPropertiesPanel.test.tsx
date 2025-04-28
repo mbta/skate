@@ -24,6 +24,8 @@ jest
 
 jest.mock("../../../src/hooks/useMinischedule")
 
+jest.mock("../../../src/hooks/useTimepoints")
+
 const ghost: Ghost = ghostFactory.build({
   id: "ghost-trip",
   directionId: 0,

@@ -15,7 +15,7 @@ import {
   useMinischeduleBlock,
   useMinischeduleRun,
 } from "../../../src/hooks/useMinischedule"
-import { Break, Piece, Run, Trip } from "../../../src/minischedule"
+import { Break, Piece, Run, ScheduleRun, Trip } from "../../../src/minischedule"
 import { VehicleInScheduledService } from "../../../src/realtime"
 import { initialState } from "../../../src/state"
 import pieceFactory from "../../factories/piece"
@@ -25,6 +25,7 @@ import { vehicleFactory } from "../../factories/vehicle"
 import { mockUseStateOnce } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
+import { TimepointFactory } from "../../factories/timepointFactory"
 
 jest.mock("../../../src/hooks/useMinischedule", () => ({
   __esModule: true,
@@ -106,6 +107,10 @@ const multiTripPiece = {
   ...piece,
   trips: [revenueTrip, revenueTrip2],
 }
+
+const timepointList = TimepointFactory.buildList(21)
+const timepoints = new Map(timepointList.map((tp) => [tp.id, tp.name]))
+
 const paidBreakBefore: Break = {
   breakType: "Paid meal before",
   startTime: 10,
@@ -342,8 +347,11 @@ describe("MinischeduleRun", () => {
 
   test("renders a run", () => {
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [paidBreakBefore, multiTripPiece],
+      run: {
+        id: "run",
+        activities: [paidBreakBefore, multiTripPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
@@ -354,8 +362,11 @@ describe("MinischeduleRun", () => {
 
   test("renders a run with a schedule offset", () => {
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [paidBreakBefore, multiTripPiece],
+      run: {
+        id: "run",
+        activities: [paidBreakBefore, multiTripPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleWithOffset} />)
@@ -366,8 +377,11 @@ describe("MinischeduleRun", () => {
 
   test("renders a run using origin trip label mode", () => {
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [paidBreakBefore, multiTripPiece],
+      run: {
+        id: "run",
+        activities: [paidBreakBefore, multiTripPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(
@@ -392,8 +406,11 @@ describe("MinischeduleRun", () => {
     }
 
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [noLayoverPiece],
+      run: {
+        id: "run",
+        activities: [noLayoverPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
@@ -410,8 +427,11 @@ describe("MinischeduleRun", () => {
     }
 
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [multiTripPiece],
+      run: {
+        id: "run",
+        activities: [multiTripPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleOnLayover} />)
@@ -428,8 +448,11 @@ describe("MinischeduleRun", () => {
     }
 
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [multiTripPiece],
+      run: {
+        id: "run",
+        activities: [multiTripPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleNotOnLayover} />)
@@ -465,8 +488,11 @@ describe("MinischeduleRun", () => {
     }
 
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [threeTripPiece],
+      run: {
+        id: "run",
+        activities: [threeTripPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleOnAParticularLayover} />)
@@ -488,8 +514,11 @@ describe("MinischeduleRun", () => {
     }
 
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
-      id: "run",
-      activities: [asDirectedPieceWithLayover],
+      run: {
+        id: "run",
+        activities: [asDirectedPieceWithLayover],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleWithLayover} />)
@@ -499,9 +528,12 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders as directed pieces", () => {
-    const run: Run = {
-      id: "run",
-      activities: [asDirectedPiece],
+    const run: ScheduleRun = {
+      run: {
+        id: "run",
+        activities: [asDirectedPiece],
+      },
+      timepoints: timepoints,
     }
 
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
@@ -513,10 +545,14 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a mid route swing on", () => {
-    const run: Run = {
-      id: "run2",
-      activities: [midRouteSwingPiece2],
+    const run: ScheduleRun = {
+      run: {
+        id: "run2",
+        activities: [midRouteSwingPiece2],
+      },
+      timepoints: timepoints,
     }
+
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
@@ -526,16 +562,19 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a mid route swing on when the first full trip is a deadhead", () => {
-    const run: Run = RunFactory.build({
-      activities: [
-        pieceFactory.build({
-          startMidRoute: {
-            trip: TripFactory.build(),
-          },
-          trips: [DeadheadTripFactory.build(), TripFactory.build()],
-        }),
-      ],
-    })
+    const run: ScheduleRun = {
+      run: RunFactory.build({
+        activities: [
+          pieceFactory.build({
+            startMidRoute: {
+              trip: TripFactory.build(),
+            },
+            trips: [DeadheadTripFactory.build(), TripFactory.build()],
+          }),
+        ],
+      }),
+      timepoints: timepoints,
+    }
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
 
     render(<MinischeduleRun vehicleOrGhost={vehicle} />)
@@ -545,9 +584,12 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders a mid route swing off", () => {
-    const run: Run = {
-      id: "run1",
-      activities: [midRouteSwingPiece1],
+    const run: ScheduleRun = {
+      run: {
+        id: "run1",
+        activities: [midRouteSwingPiece1],
+      },
+      timepoints: timepoints,
     }
     jest.mocked(useMinischeduleRun).mockImplementationOnce(() => run)
     const tree = renderer
@@ -558,7 +600,10 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders duty details of run", () => {
-    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => multiPieceRun)
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+      run: multiPieceRun,
+      timepoints: timepoints,
+    }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicle} />)
       .toJSON()
@@ -567,7 +612,10 @@ describe("MinischeduleRun", () => {
   })
 
   test("renders duty details of run with overload offset", () => {
-    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => multiPieceRun)
+    jest.mocked(useMinischeduleRun).mockImplementationOnce(() => ({
+      run: multiPieceRun,
+      timepoints: timepoints,
+    }))
     const tree = renderer
       .create(<MinischeduleRun vehicleOrGhost={vehicleWithOffset} />)
       .toJSON()
@@ -597,8 +645,11 @@ describe("MinischeduleBlock", () => {
 
   test("renders a block", () => {
     jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
-      id: "block",
-      pieces: [piece],
+      block: {
+        id: "block",
+        pieces: [piece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleBlock vehicleOrGhost={vehicle} />)
@@ -617,8 +668,11 @@ describe("MinischeduleBlock", () => {
       ],
     }
     jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
-      id: "block",
-      pieces: [deadheadPiece],
+      block: {
+        id: "block",
+        pieces: [deadheadPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleBlock vehicleOrGhost={vehicle} />)
@@ -638,8 +692,11 @@ describe("MinischeduleBlock", () => {
       ],
     }
     jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
-      id: "block",
-      pieces: [deadheadPiece],
+      block: {
+        id: "block",
+        pieces: [deadheadPiece],
+      },
+      timepoints: timepoints,
     }))
     const tree = renderer
       .create(<MinischeduleBlock vehicleOrGhost={vehicleWithOffset} />)
@@ -654,8 +711,11 @@ describe("MinischeduleBlock", () => {
       trips: [revenueTrip, revenueTrip2, tripWithoutDirection],
     }
     jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
-      id: "block",
-      pieces: [multiDirectionPiece],
+      block: {
+        id: "block",
+        pieces: [multiDirectionPiece],
+      },
+      timepoints: timepoints,
     }))
 
     const tree = renderer
@@ -667,8 +727,11 @@ describe("MinischeduleBlock", () => {
 
   test("renders a mid route swing", () => {
     jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
-      id: "block",
-      pieces: [midRouteSwingPiece1, midRouteSwingPiece2],
+      block: {
+        id: "block",
+        pieces: [midRouteSwingPiece1, midRouteSwingPiece2],
+      },
+      timepoints: timepoints,
     }))
 
     const tree = renderer
@@ -680,8 +743,11 @@ describe("MinischeduleBlock", () => {
 
   test("renders a mid route swing with offset", () => {
     jest.mocked(useMinischeduleBlock).mockImplementationOnce(() => ({
-      id: "block",
-      pieces: [midRouteSwingPiece1, midRouteSwingPiece2],
+      block: {
+        id: "block",
+        pieces: [midRouteSwingPiece1, midRouteSwingPiece2],
+      },
+      timepoints: timepoints,
     }))
 
     const tree = renderer
@@ -694,7 +760,7 @@ describe("MinischeduleBlock", () => {
 
 describe("Minischedule", () => {
   test("renders a Show past trips button", () => {
-    const block = { id: "block", pieces: [] }
+    const block = { block: { id: "block", pieces: [] }, timepoints: timepoints }
     const tree = renderer
       .create(
         <Minischedule
@@ -710,7 +776,7 @@ describe("Minischedule", () => {
 
   test("renders a Hide past trips button", () => {
     mockUseStateOnce(true)
-    const block = { id: "block", pieces: [] }
+    const block = { block: { id: "block", pieces: [] }, timepoints: timepoints }
     const tree = renderer
       .create(
         <Minischedule
@@ -725,7 +791,7 @@ describe("Minischedule", () => {
   })
 
   test("clicking the show/hide button toggles whether past trips are shown", async () => {
-    const block = { id: "block", pieces: [] }
+    const block = { block: { id: "block", pieces: [] }, timepoints: timepoints }
     const result = render(
       <Minischedule runOrBlock={block} vehicleOrGhost={vehicle} view="block" />
     )
@@ -739,16 +805,19 @@ describe("Minischedule", () => {
 
   test("highlights pullouts if they're active", () => {
     const run = {
-      id: "run",
-      activities: [
-        {
-          ...piece,
-          trips: [
-            { ...nonrevenueTrip, startTime: 0 },
-            { ...revenueTrip, startTime: 1 },
-          ],
-        },
-      ],
+      run: {
+        id: "run",
+        activities: [
+          {
+            ...piece,
+            trips: [
+              { ...nonrevenueTrip, startTime: 0 },
+              { ...revenueTrip, startTime: 1 },
+            ],
+          },
+        ],
+      },
+      timepoints: timepoints,
     }
     const tree = renderer
       .create(
@@ -768,17 +837,20 @@ describe("Minischedule", () => {
 
   test("highlights deadheads if they're active", () => {
     const run = {
-      id: "run",
-      activities: [
-        {
-          ...piece,
-          trips: [
-            { ...revenueTrip, id: "before", startTime: 0 },
-            { ...nonrevenueTrip, id: "deadhead", startTime: 1 },
-            { ...revenueTrip, id: "after", startTime: 2 },
-          ],
-        },
-      ],
+      run: {
+        id: "run",
+        activities: [
+          {
+            ...piece,
+            trips: [
+              { ...revenueTrip, id: "before", startTime: 0 },
+              { ...nonrevenueTrip, id: "deadhead", startTime: 1 },
+              { ...revenueTrip, id: "after", startTime: 2 },
+            ],
+          },
+        ],
+      },
+      timepoints: timepoints,
     }
     const tree = renderer
       .create(

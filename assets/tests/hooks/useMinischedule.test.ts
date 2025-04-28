@@ -85,8 +85,12 @@ describe("useMinischeduleRuns", () => {
     const run2: Run = "run2" as any as Run
     const mockFetchScheduleRun: jest.Mock = Api.fetchScheduleRun as jest.Mock
     mockFetchScheduleRun
-      .mockImplementationOnce(() => instantPromise(run1))
-      .mockImplementationOnce(() => instantPromise(run2))
+      .mockImplementationOnce(() =>
+        instantPromise({ run: run1, timepoints: new Map() })
+      )
+      .mockImplementationOnce(() =>
+        instantPromise({ run: run2, timepoints: new Map() })
+      )
     const { result } = renderHook(() => {
       return useMinischeduleRuns(["trip1", "trip2"])
     })

@@ -98,6 +98,10 @@ defmodule Schedule.Block do
     by_id[{schedule_id, block_id}]
   end
 
+  def pieces(%__MODULE__{pieces: pieces}) do
+    pieces
+  end
+
   @doc """
   Whether the block is active at any time during the time_of_day range.
   """

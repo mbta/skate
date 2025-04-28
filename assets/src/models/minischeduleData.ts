@@ -4,6 +4,8 @@ import {
   Break,
   Piece,
   Run,
+  ScheduleBlock,
+  ScheduleRun,
   StopTime,
   Time,
   Trip,
@@ -14,12 +16,24 @@ import {
   DirectionId,
   RouteId,
   StopId,
+  Timepoint,
   TimepointId,
+  TimepointNameById,
   TripId,
   ViaVariant,
 } from "../schedule"
 
 type ActivityData = BreakData | PieceData
+
+interface ScheduleRunData {
+  run: RunData
+  timepoints: Timepoint[]
+}
+
+interface ScheduleBlockData {
+  block: BlockData
+  timepoints: Timepoint[]
+}
 
 interface RunData {
   id: RunId
@@ -82,18 +96,39 @@ const isBreakData = (
 ): activityData is BreakData =>
   Object.prototype.hasOwnProperty.call(activityData, "break_type")
 
-export const runFromData = (runData: RunData): Run => ({
-  id: runData.id,
-  activities: runData.activities.map((activityData) =>
+export const scheduleRunFromData = (
+  scheduleRunData: ScheduleRunData
+): ScheduleRun => ({
+  run: runFromData(scheduleRunData),
+  timepoints: timepointsFromData(scheduleRunData),
+})
+
+const runFromData = ({ run }: ScheduleRunData): Run => ({
+  id: run.id,
+  activities: run.activities.map((activityData) =>
     isBreakData(activityData)
       ? breakFromData(activityData)
       : pieceFromData(activityData)
   ),
 })
 
-export const blockFromData = (blockData: BlockData): Block => ({
-  id: blockData.id,
-  pieces: blockData.pieces.map(pieceFromData),
+const timepointsFromData = ({
+  timepoints,
+}: ScheduleRunData | ScheduleBlockData): TimepointNameById =>
+  new Map(
+    timepoints.map((timepoint: Timepoint) => [timepoint.id, timepoint.name])
+  )
+
+export const scheduleBlockFromData = (
+  scheduleBlockData: ScheduleBlockData
+): ScheduleBlock => ({
+  block: blockFromData(scheduleBlockData),
+  timepoints: timepointsFromData(scheduleBlockData),
+})
+
+export const blockFromData = ({ block }: ScheduleBlockData): Block => ({
+  id: block.id,
+  pieces: block.pieces.map(pieceFromData),
 })
 
 const breakFromData = (breakData: BreakData): Break => ({

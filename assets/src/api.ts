@@ -1,8 +1,11 @@
 import "whatwg-fetch"
 import appData from "./appData"
-import { Block, Run } from "./minischedule"
+import { ScheduleBlock, ScheduleRun } from "./minischedule"
 import { reload } from "./models/browser"
-import { blockFromData, runFromData } from "./models/minischeduleData"
+import {
+  scheduleBlockFromData,
+  scheduleRunFromData,
+} from "./models/minischeduleData"
 import { SwingData, swingsFromData } from "./models/swingsData"
 import { NotificationId, NotificationState, RunId } from "./realtime"
 import {
@@ -411,26 +414,28 @@ export const fetchTimepointsForRoute = (
 export const fetchScheduleRun = (
   tripId: TripId,
   runId: RunId | null
-): Promise<Run | null> => {
+): Promise<ScheduleRun | null> => {
   if (runId) {
     return apiCall({
       url: `/api/schedule/run?trip_id=${tripId}&run_id=${runId}`,
-      parser: nullableParser(runFromData),
+      parser: nullableParser(scheduleRunFromData),
       defaultResult: null,
     })
   } else {
     return apiCall({
       url: `/api/schedule/run?trip_id=${tripId}`,
-      parser: nullableParser(runFromData),
+      parser: nullableParser(scheduleRunFromData),
       defaultResult: null,
     })
   }
 }
 
-export const fetchScheduleBlock = (tripId: TripId): Promise<Block | null> =>
+export const fetchScheduleBlock = (
+  tripId: TripId
+): Promise<ScheduleBlock | null> =>
   apiCall({
     url: `/api/schedule/block?trip_id=${tripId}`,
-    parser: nullableParser(blockFromData),
+    parser: nullableParser(scheduleBlockFromData),
     defaultResult: null,
   })
 

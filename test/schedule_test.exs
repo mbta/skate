@@ -1138,6 +1138,121 @@ defmodule ScheduleTest do
     end
   end
 
+  describe "timepoints by run and block" do
+    setup do
+      pid =
+        Schedule.start_mocked(%{
+          hastus: %{
+            "activities.csv" => [
+              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+              "schedule;123;4567;00:00;00:00;start;end;Operator;block"
+            ],
+            "trips.csv" => [
+              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
+              "schedule;123;4567;block;00:00;00:00;start;end;route;trip"
+            ]
+          },
+          gtfs: %{
+            "checkpoints.txt" => [
+              "checkpoint_id,checkpoint_name",
+              "start,Starting Timepoint",
+              "end,Ending Timepoint"
+            ],
+            "routes.txt" => [
+              "route_id,route_long_name,route_type,route_desc,route_short_name",
+              "route,Some Place - Some Other Place,3,Key Bus,route"
+            ],
+            "trips.txt" => [
+              "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",
+              "route,service,trip,Headsign,0,block",
+              "route,service,trip,Headsign,1,block"
+            ],
+            "stop_times.txt" => [
+              "trip_id,arrival_time,departure_time,stop_id,stop_sequence,checkpoint_id",
+              "trip,,00:00:00,1,1,start",
+              "trip,,00:00:00,2,2,",
+              "trip,,00:00:00,3,3,end"
+            ],
+            "stops.txt" => [
+              "stop_id,stop_name,stop_lat,stop_lon,parent_station",
+              "stop1_id,One,1.0,1.5,",
+              "stop2_id,Two,2.0,2.5,",
+              "stop3_id,Three,3.0,3.5,"
+            ]
+          }
+        })
+
+      piece = %Piece{
+        schedule_id: "schedule",
+        run_id: "123-4567",
+        block_id: "block",
+        start_time: 0,
+        start_place: "Starting Timepoint",
+        trips: [
+          %Schedule.Trip{
+            id: "trip",
+            block_id: "block",
+            route_id: "route",
+            run_id: "123-4567",
+            start_time: 0,
+            end_time: 0,
+            start_place: "start",
+            end_place: "end",
+            schedule_id: "schedule",
+            service_id: "service",
+            pretty_start_place: "Starting Timepoint",
+            pretty_end_place: "Ending Timepoint",
+            direction_id: 1,
+            headsign: "Headsign",
+            stop_times: [
+              %Schedule.Gtfs.StopTime{stop_id: "stop1_id", time: 0, timepoint_id: "start"},
+              %Schedule.Gtfs.StopTime{stop_id: "stop2_id", time: 0, timepoint_id: nil},
+              %Schedule.Gtfs.StopTime{stop_id: "stop3_id", time: 0, timepoint_id: "end"}
+            ]
+          }
+        ],
+        end_time: 0,
+        end_place: "Ending Timepoint"
+      }
+
+      run = %Run{
+        schedule_id: "schedule",
+        service_id: "service",
+        id: "123-4567",
+        activities: [
+          piece
+        ]
+      }
+
+      block = %Block{
+        schedule_id: "schedule",
+        service_id: "service",
+        id: "block",
+        pieces: [piece],
+        start_time: 0,
+        end_time: 0
+      }
+
+      %{pid: pid, block: block, run: run}
+    end
+
+    test "can get timepoint names for run", %{pid: pid, run: run} do
+      assert Schedule.timepoint_names_for_run(run, pid) ==
+               [
+                 %Schedule.Gtfs.Timepoint{id: "start", name: "Starting Timepoint"},
+                 %Schedule.Gtfs.Timepoint{id: "end", name: "Ending Timepoint"}
+               ]
+    end
+
+    test "can get timepoint names for block", %{pid: pid, block: block} do
+      assert Schedule.timepoint_names_for_block(block, pid) ==
+               [
+                 %Schedule.Gtfs.Timepoint{id: "start", name: "Starting Timepoint"},
+                 %Schedule.Gtfs.Timepoint{id: "end", name: "Ending Timepoint"}
+               ]
+    end
+  end
+
   describe "swings_for_route/4" do
     setup do
       pid =
