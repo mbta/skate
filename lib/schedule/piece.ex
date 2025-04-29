@@ -74,6 +74,11 @@ defmodule Schedule.Piece do
     Enum.all?(piece.trips, &match?(%Schedule.Trip{service_id: nil}, &1))
   end
 
+  @spec scheduled_trips(t()) :: list(Schedule.Trip)
+  def scheduled_trips(piece) do
+    Enum.filter(piece.trips, &match?(%Schedule.Trip{}, &1))
+  end
+
   @spec current?(t(), Util.Time.time_of_day()) :: boolean()
   def current?(piece, now_time_of_day) do
     piece.start_time <= now_time_of_day and piece.end_time > now_time_of_day

@@ -225,13 +225,14 @@ defmodule Schedule do
     timepoint_names_by_id = call_with_data(persistent_term_key, [], :timepoint_names_by_id, %{})
 
     pieces
-    |> Enum.map(&timepoint_names_for_piece(&1, timepoint_names_by_id))
+    |> Enum.map(&Schedule.Piece.scheduled_trips/1)
+    |> Enum.map(&timepoint_names_for_trips(&1, timepoint_names_by_id))
     |> List.flatten()
     |> Enum.uniq()
   end
 
-  defp timepoint_names_for_piece(piece, timepoint_names_by_id) do
-    piece.trips
+  defp timepoint_names_for_trips(trips, timepoint_names_by_id) do
+    trips
     |> Enum.reject(&is_nil/1)
     |> Enum.flat_map(&Schedule.Trip.timepoints/1)
     |> Enum.map(&Timepoint.timepoint_from_names_by_id(timepoint_names_by_id, &1.timepoint_id))
