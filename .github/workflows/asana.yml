@@ -10,8 +10,8 @@ jobs:
   call-workflow:
     uses: mbta/workflows/.github/workflows/asana.yml@main
     with:
-      development-section: "In Development"
-      review-section: "Pending Review"
+      development-section: "✏️ In Progress"
+      review-section: "👀 PR Review"
       merged-section: "Merged / Not Deployed"
       trigger-phrase: "Asana Ticket.*:"
       attach-pr: true
