@@ -1142,27 +1142,11 @@ defmodule ScheduleTest do
     setup do
       pid =
         Schedule.start_mocked(%{
-          hastus: %{
-            "activities.csv" => [
-              "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
-              "schedule;123;4567;00:00;00:00;start;start;Sign-on;Sign-on",
-              "schedule;123;4567;00:00;00:00;start;start;wad;wad",
-              "schedule;123;4567;00:00;00:00;start;end;Operator;block"
-            ],
-            "trips.csv" => [
-              "schedule_id;area;run_id;block_id;start_time;end_time;start_place;end_place;route_id;trip_id",
-              "schedule;123;4567;block;00:00;00:00;start;end;route;trip"
-            ]
-          },
           gtfs: %{
             "checkpoints.txt" => [
               "checkpoint_id,checkpoint_name",
               "start,Starting Timepoint",
               "end,Ending Timepoint"
-            ],
-            "routes.txt" => [
-              "route_id,route_long_name,route_type,route_desc,route_short_name",
-              "route,Some Place - Some Other Place,3,Key Bus,route"
             ],
             "trips.txt" => [
               "route_id,service_id,trip_id,trip_headsign,direction_id,block_id",
@@ -1174,12 +1158,6 @@ defmodule ScheduleTest do
               "trip,,00:00:00,1,1,start",
               "trip,,00:00:00,2,2,",
               "trip,,00:00:00,3,3,end"
-            ],
-            "stops.txt" => [
-              "stop_id,stop_name,stop_lat,stop_lon,parent_station",
-              "stop1_id,One,1.0,1.5,",
-              "stop2_id,Two,2.0,2.5,",
-              "stop3_id,Three,3.0,3.5,"
             ]
           }
         })
