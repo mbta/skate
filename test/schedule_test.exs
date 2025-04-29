@@ -1145,6 +1145,8 @@ defmodule ScheduleTest do
           hastus: %{
             "activities.csv" => [
               "schedule_id;area;run_id;start_time;end_time;start_place;end_place;activity_type;activity_name",
+              "schedule;123;4567;00:00;00:00;start;start;Sign-on;Sign-on",
+              "schedule;123;4567;00:00;00:00;start;start;wad;wad",
               "schedule;123;4567;00:00;00:00;start;end;Operator;block"
             ],
             "trips.csv" => [
@@ -1209,6 +1211,13 @@ defmodule ScheduleTest do
               %Schedule.Gtfs.StopTime{stop_id: "stop2_id", time: 0, timepoint_id: nil},
               %Schedule.Gtfs.StopTime{stop_id: "stop3_id", time: 0, timepoint_id: "end"}
             ]
+          },
+          %Schedule.AsDirected{
+            kind: :wad,
+            start_time: 0,
+            end_time: 0,
+            start_place: "start",
+            end_place: "start"
           }
         ],
         end_time: 0,
