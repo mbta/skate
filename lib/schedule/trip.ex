@@ -162,7 +162,7 @@ defmodule Schedule.Trip do
     }
   end
 
-  @spec timepoints(__MODULE__.t()) :: [Timepoint.id()]
+  @spec timepoints(__MODULE__.t()) :: [StopTime.t()]
   def timepoints(%__MODULE__{stop_times: stop_times}) do
     Enum.filter(stop_times, &StopTime.timepoint?/1)
   end

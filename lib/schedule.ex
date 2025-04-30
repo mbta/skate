@@ -9,7 +9,8 @@ defmodule Schedule do
     Data,
     Hastus,
     Trip,
-    Swing
+    Swing,
+    Piece
   }
 
   alias Schedule.Gtfs.{
@@ -221,11 +222,12 @@ defmodule Schedule do
     |> timepoint_names_for_pieces(persistent_term_key)
   end
 
+  @spec timepoint_names_for_pieces([Piece.t()], persistent_term_key()) :: [Timepoint.t()]
   defp timepoint_names_for_pieces(pieces, persistent_term_key) do
     timepoint_names_by_id = call_with_data(persistent_term_key, [], :timepoint_names_by_id, %{})
 
     pieces
-    |> Enum.map(&Schedule.Piece.scheduled_trips/1)
+    |> Enum.map(&Piece.scheduled_trips/1)
     |> Enum.map(&timepoint_names_for_trips(&1, timepoint_names_by_id))
     |> List.flatten()
     |> Enum.uniq()
@@ -234,7 +236,7 @@ defmodule Schedule do
   defp timepoint_names_for_trips(trips, timepoint_names_by_id) do
     trips
     |> Enum.reject(&is_nil/1)
-    |> Enum.flat_map(&Schedule.Trip.timepoints/1)
+    |> Enum.flat_map(&Trip.timepoints/1)
     |> Enum.map(&Timepoint.timepoint_from_names_by_id(timepoint_names_by_id, &1.timepoint_id))
   end
 

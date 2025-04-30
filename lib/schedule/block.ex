@@ -98,6 +98,7 @@ defmodule Schedule.Block do
     by_id[{schedule_id, block_id}]
   end
 
+  @spec pieces(t()) :: [Piece.t()]
   def pieces(%__MODULE__{pieces: pieces}) do
     pieces
   end

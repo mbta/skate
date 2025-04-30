@@ -74,7 +74,7 @@ defmodule Schedule.Piece do
     Enum.all?(piece.trips, &match?(%Schedule.Trip{service_id: nil}, &1))
   end
 
-  @spec scheduled_trips(t()) :: list(Schedule.Trip)
+  @spec scheduled_trips(t()) :: [Schedule.Trip.t()]
   def scheduled_trips(piece) do
     Enum.filter(piece.trips, &match?(%Schedule.Trip{}, &1))
   end
