@@ -91,9 +91,7 @@ defmodule Skate.Settings.TestGroup do
     test_group = DbTestGroup |> Skate.Repo.get_by(name: name) |> Skate.Repo.preload(:users)
 
     if test_group do
-      t = convert_from_db_test_group(test_group)
-      Logger.error(inspect(t))
-      t
+      convert_from_db_test_group(test_group)
     else
       nil
     end
