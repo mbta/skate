@@ -27,10 +27,19 @@ have how these systems will interact defined ahead of time in this document.
 
 ### Feature Requirements
 #### User Requirements
-1. Notification appears:
+1. Notification appears:[^notification-appearance]
     1. 30 min in advance of the detour hitting estimated time end point
     1. when detour has hit estimated time point
 1. Clicking notification opens the associated detour modal
+
+[^notification-appearance]: implementation note: I think we should avoid
+  hardcoding these values, and would likely be best practice for us to treat
+  these as variables from elixir Config, so that it's easy to change or add 
+  more reminders in the future. For instance: if we later decide that we
+  actually wanted to warn 30s before the end of the detour, instead of at the
+  time the detour expires, changing this could be centralized in the `config`
+  section, or eventually sourced from a database table configured in an admin
+  interface using the same structure.
 
 #### Extended Requirements
 There are some extended user requirements that are not specified in the AC of
