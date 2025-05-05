@@ -394,3 +394,20 @@ export type DetourExpirationNotification = {
 }
 ```
 
+##### Open Questions
+1. We need to decide where the `isDispatcher` value should be sourced from:
+    it could be sourced either on the backend or the frontend with
+    our `inTestGroup` utility.
+    1. Backend: we'd need to do database lookups for every user receiving a
+        notification before sending it, and we'd likely need to do this in the
+        `SkateWeb.NotificationsChannel`.
+    2. Frontend: We already have the data on the frontend, which would be
+        consistent with how the rest of the frontend is figuring out if the user
+        is a dispatcher, but it does not _currently_ live update and continues
+        to depend on test groups for RBAC.
+2. We _could_ test/create a new convention where we encode as `camelCase` on the
+    backend, rather than create `type Data<Struct Name> {[...]}`
+    `type <Struct Name> {[...]}` and
+    `function <Struct Name>FromData(data: Data<Struct Name>): <Struct Name>`
+    on the frontend.
+
