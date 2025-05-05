@@ -132,8 +132,8 @@ erDiagram
 
 
     %% Notifications Schema
-    notifications 1 to 0+ notifications_users : "notification_id"
-    notifications_users 0+ to 1 users : "user_id"
+    notifications_users 0+ to 1 notifications: "notification_id"
+    users 1 to 0+ notifications_users: "user_id"
 
     notifications_users["notifications_users: Notifications.Db.NotificationUser"] {
         bigint notification_id PK,FK
