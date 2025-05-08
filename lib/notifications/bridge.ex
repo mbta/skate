@@ -119,7 +119,7 @@ defmodule Notifications.Bridge do
       |> do_get_datetime()
 
     Logger.info(
-      "bridge_response status=#{inspect(raw_status)}, lowering_time=#{inspect(lowering_time)}"
+      "bridge_response status=#{inspect(raw_status)} lowering_time=#{inspect(lowering_time)}"
     )
 
     status =
