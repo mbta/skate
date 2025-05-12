@@ -452,6 +452,12 @@ detour end time shall be provided as well as a `%DateTime{}`.
 > logic which interprets the data from the database is colocated, in the case
 > that the valid values of `%Detour{ estimated_duration: <enum> }` change.
 
+It is expected that the `Skate.Detours.Scheduler` will have it's own DB table
+for tracking the Detours it may need to create notifications for and will
+periodically poll this table for notifications to create. In theory, this
+_could_ be the same table that the Notifications System joins a notification
+to to provide the notification type.
+
 ##### Event: Detour Activated
 ```elixir
 iex> Skate.Detours.Scheduler.detour_activated(
