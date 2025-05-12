@@ -416,5 +416,31 @@ defmodule Realtime.TimepointStatusTest do
       now = time0
       assert TimepointStatus.scheduled_location(nil, now) == nil
     end
+
+    test "returns nil if stop-times if active trip is as_directed" do
+      # 2019-01-01 12:00:00 EST
+      time0 = 1_546_362_000
+      time_of_day0 = Util.Time.parse_hhmmss("12:00:00")
+
+      block =
+        build(
+          :block,
+          start_time: time_of_day0 + 1,
+          end_time: time_of_day0 + 13,
+          pieces: [
+            build(:piece,
+              trips: [
+                build(:as_directed,
+                  kind: :rad,
+                  start_time: time_of_day0 + 3,
+                  end_time: time_of_day0 + 5
+                )
+              ]
+            )
+          ]
+        )
+
+      assert TimepointStatus.scheduled_location(block, time0) == nil
+    end
   end
 end
