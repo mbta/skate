@@ -157,33 +157,26 @@ defmodule Realtime.TimepointStatus do
 
     trip = Block.trip_at_time(block, now_time_of_day)
 
-    case trip do
-      nil ->
-        nil
+    with(
+      %{stop_times: stop_times} <- trip,
+      timepoints when is_list(timepoints) and length(timepoints) > 0 <-
+        Enum.filter(stop_times, &StopTime.timepoint?/1)
+    ) do
+      timepoint_status = scheduled_timepoint_status(timepoints, now_time_of_day)
 
-      _ ->
-        timepoints = Enum.filter(trip.stop_times, &StopTime.timepoint?/1)
-
-        case timepoints do
-          [] ->
-            nil
-
-          _ ->
-            timepoint_status = scheduled_timepoint_status(timepoints, now_time_of_day)
-
-            %{
-              route_id: trip.route_id,
-              route_pattern_id: trip.route_pattern_id,
-              direction_id: trip.direction_id,
-              trip_id: trip.id,
-              run_id: trip.run_id,
-              time_since_trip_start_time: now_time_of_day - trip.start_time,
-              headsign: trip.headsign,
-              via_variant:
-                trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
-              timepoint_status: timepoint_status
-            }
-        end
+      %{
+        route_id: trip.route_id,
+        route_pattern_id: trip.route_pattern_id,
+        direction_id: trip.direction_id,
+        trip_id: trip.id,
+        run_id: trip.run_id,
+        time_since_trip_start_time: now_time_of_day - trip.start_time,
+        headsign: trip.headsign,
+        via_variant: trip.route_pattern_id && RoutePattern.via_variant(trip.route_pattern_id),
+        timepoint_status: timepoint_status
+      }
+    else
+      _ -> nil
     end
   end
 
