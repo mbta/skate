@@ -8,7 +8,7 @@ Date: 2025-04-22
 
 ## Status
 
-Proposed
+Accepted
 
 ## Context
 We're building the [Detour reminder toasts](https://app.asana.com/1/15492006741476/project/1203014709808707/task/1209497960717371) feature.
