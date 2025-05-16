@@ -4,6 +4,7 @@ $table-border: 1px solid tokens.$gray-400;
 $table-border-radius: 0.5rem;
 
 .c-detours-table {
+  border-collapse: separate;
   border-spacing: 0;
 
   thead {
