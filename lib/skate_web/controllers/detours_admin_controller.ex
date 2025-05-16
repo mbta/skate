@@ -48,12 +48,16 @@ defmodule SkateWeb.DetoursAdminController do
     detour = Detours.get_detour!(id)
     author = User.get_by_id(detour.author_id)
     {matches, detour_diff} = Skate.Detours.SnapshotSerde.compare_snapshots(detour)
+    adjustment = Detours.admin_get_swiftly_service_adjustment(detour)
 
     conn
     |> assign(:detour, Detours.db_detour_to_detour(detour))
+    |> assign(:detour_id, detour.id)
+    |> assign(:detour_status, detour.status)
     |> assign(:author, author)
     |> assign(:detour_diff, detour_diff)
     |> assign(:matches, matches)
+    |> assign(:adjustment, adjustment)
     |> render(:show,
       layout: {SkateWeb.Layouts, "barebones.html"},
       title: "Skate Detours"
@@ -64,5 +68,21 @@ defmodule SkateWeb.DetoursAdminController do
   def delete_all(conn, _params) do
     Detours.delete_all_detours()
     redirect(conn, to: ~p"/detours_admin")
+  end
+
+  def swiftly_create(conn, %{"id" => id}) do
+    id
+    |> Detours.get_detour!()
+    |> Detours.admin_update_swiftly(:create)
+
+    redirect(conn, to: ~p"/detours_admin/#{id}")
+  end
+
+  def swiftly_delete(conn, %{"id" => id}) do
+    id
+    |> Detours.get_detour!()
+    |> Detours.admin_update_swiftly(:delete)
+
+    redirect(conn, to: ~p"/detours_admin/#{id}")
   end
 end

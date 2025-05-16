@@ -318,14 +318,24 @@ defmodule Skate.Detours.Detours do
 
   defp send_notification(_, _), do: nil
 
-  defp update_swiftly(changeset, detour) do
-    enabled? =
-      case TestGroup.get_by_name("send-detours-to-swiftly-enabled") do
-        %TestGroup{override: :enabled} -> true
-        _ -> false
-      end
+  def admin_get_swiftly_service_adjustment(detour) do
+    service_adjustments_module = service_adjustments_module()
 
-    update_swiftly(changeset, detour, enabled?)
+    case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
+      {:ok, adjustments_response} ->
+        get_swiftly_adjustment_from_response(adjustments_response, detour)
+
+      _ ->
+        nil
+    end
+  end
+
+  def admin_update_swiftly(detour, action) do
+    update_swiftly(detour, action, detours_to_swiftly_enabled?())
+  end
+
+  defp update_swiftly(changeset, detour) do
+    update_swiftly(changeset, detour, detours_to_swiftly_enabled?())
   end
 
   defp update_swiftly(
@@ -336,12 +346,7 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour,
          true
        ) do
-    {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
-
-    service_adjustments_module().create_adjustment_v1(
-      adjustment_request,
-      build_swiftly_opts()
-    )
+    update_swiftly(detour, :create, true)
   end
 
   defp update_swiftly(
@@ -352,18 +357,27 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour,
          true
        ) do
+    update_swiftly(detour, :delete, true)
+  end
+
+  defp update_swiftly(%Detour{status: :active} = detour, :create, true) do
+    {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
+
+    service_adjustments_module().create_adjustment_v1(
+      adjustment_request,
+      build_swiftly_opts()
+    )
+  end
+
+  defp update_swiftly(%Detour{status: :past} = detour, :delete, true) do
     service_adjustments_module = service_adjustments_module()
 
     case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
       {:ok, adjustments_response} ->
         adjustment_id =
           adjustments_response
-          |> Map.get(:adjustments, [])
-          |> Enum.filter(fn adjustment ->
-            Map.get(adjustment, :notes) == Integer.to_string(detour.id)
-          end)
-          |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
-          |> Enum.at(0)
+          |> get_swiftly_adjustment_from_response(detour)
+          |> Map.get(:id)
 
         if adjustment_id do
           service_adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())
@@ -376,12 +390,30 @@ defmodule Skate.Detours.Detours do
 
   defp update_swiftly(_, _, _), do: nil
 
+  defp get_swiftly_adjustment_from_response(adjustments_response, detour) do
+    adjustments_response
+    |> Map.get(:adjustments, [])
+    |> Enum.filter(fn adjustment ->
+      Map.get(adjustment, :status) == "ACTIVE" &&
+        Map.get(adjustment, :adjustmentType) == "DETOUR_V0" &&
+        Map.get(adjustment, :notes) == Integer.to_string(detour.id)
+    end)
+    |> Enum.at(0)
+  end
+
   defp build_swiftly_opts() do
     Application.get_env(:skate, Swiftly.API.ServiceAdjustments)
   end
 
   defp service_adjustments_module() do
     Application.get_env(:skate, :swiftly)[:adjustments_module]
+  end
+
+  defp detours_to_swiftly_enabled? do
+    case TestGroup.get_by_name("send-detours-to-swiftly-enabled") do
+      %TestGroup{override: :enabled} -> true
+      _ -> false
+    end
   end
 
   @doc """
