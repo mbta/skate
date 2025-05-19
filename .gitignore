@@ -45,9 +45,6 @@ npm-debug.log
 build-storybook.log
 assets/build-storybook.log
 
-# Ignore Chromatic Logs
-chromatic.log
-
 # dev and test cache files for faster loading
 *.terms
 
