@@ -51,7 +51,7 @@ defmodule Schedule.Gtfs.FeedInfoTest do
         end)
 
       assert log =~
-               "Importing GTFS feed: start_date=2020-04-09 end_date=2020-05-14 version=Spring 2020, 2020-04-16T08:39:02+00:00, version D"
+               "Importing GTFS feed: start_date=2020-04-09 end_date=2020-05-14 version=\"Spring 2020, 2020-04-16T08:39:02+00:00, version D\""
     end
   end
 end

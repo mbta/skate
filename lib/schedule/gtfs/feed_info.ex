@@ -45,7 +45,7 @@ defmodule Schedule.Gtfs.FeedInfo do
 
   def log_gtfs_version(%__MODULE__{start_date: start_date, end_date: end_date, version: version}) do
     Logger.info(fn ->
-      "Importing GTFS feed: start_date=#{start_date} end_date=#{end_date} version=#{version}"
+      "Importing GTFS feed: start_date=#{start_date} end_date=#{end_date} version=#{inspect(version)}"
     end)
   end
 
