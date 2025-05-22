@@ -22,6 +22,7 @@ defmodule Notifications.Db.Notification do
     belongs_to(:block_waiver, DbBlockWaiver)
     belongs_to(:bridge_movement, DbBridgeMovement)
     belongs_to(:detour, Notifications.Db.Detour)
+    belongs_to(:detour_expiration, Notifications.Db.DetourExpiration)
   end
 
   @doc """
