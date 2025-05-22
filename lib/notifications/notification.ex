@@ -321,4 +321,10 @@ defmodule Notifications.Notification do
        }) do
     detour
   end
+
+  defp content_from_db_notification(%DbNotification{
+         detour_expiration: %Notifications.Db.DetourExpiration{} = detour_expiration
+       }) do
+    detour_expiration
+  end
 end
