@@ -42,6 +42,8 @@ defmodule Skate.Detours.Db.Detour do
     field :estimated_duration, :string, virtual: true
 
     # -------------------------------------------------------
+
+    has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
   end
 
   def changeset(detour, attrs) do
