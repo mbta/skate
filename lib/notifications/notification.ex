@@ -54,6 +54,58 @@ defmodule Notifications.Notification do
   ]
 
   @doc """
+  Creates a new detour expiration notification
+
+  ## Example
+  ### Creating a notification
+      iex> %Skate.Detours.Db.Detour{id: detour_id} = detour = Skate.Factory.insert(:detour)
+      iex>
+      iex> {:ok, result} = Notifications.Notification.create_detour_expiration_notification(%{
+      ...>   detour: detour,
+      ...>   expires_in: Duration.new!(minute: 30),
+      ...>   estimated_duration: "1 hour",
+      ...>   notification: %{}
+      ...> })
+      iex>
+      iex> %Notifications.Db.DetourExpiration{
+      ...>   detour_id: ^detour_id,
+      ...>   notification: %Notifications.Db.Notification{}
+      ...> } = result
+
+  ### Creating a notification and backdating the notification `created_at` time
+      iex> %Skate.Detours.Db.Detour{id: detour_id} = detour = Skate.Factory.insert(:detour)
+      iex>
+      iex> created_at =
+      ...> DateTime.utc_now()
+      ...> |> DateTime.shift(minute: 30)
+      ...> |> DateTime.to_unix()
+      iex>
+      iex> {:ok, result} = Notifications.Notification.create_detour_expiration_notification(%{
+      ...>   detour: detour,
+      ...>   expires_in: Duration.new!(minute: 30),
+      ...>   estimated_duration: "1 hour",
+      ...>   notification: %{
+      ...>     created_at: created_at
+      ...>   }
+      ...> })
+      iex>
+      iex> %Notifications.Db.DetourExpiration{
+      ...>   detour_id: ^detour_id,
+      ...>   notification: %Notifications.Db.Notification{created_at: ^created_at}
+      ...> } = result
+  """
+  def create_detour_expiration_notification(params) when is_map(params) do
+    create_detour_expiration_notification(Map.get(params, :detour), params)
+  end
+
+  def create_detour_expiration_notification(%Skate.Detours.Db.Detour{} = detour, params) do
+    detour
+    |> Ecto.build_assoc(:detour_expiration_notifications)
+    |> Notifications.Db.DetourExpiration.changeset(params)
+    |> Skate.Repo.insert()
+  end
+
+  @doc """
   Inserts a new notification for an deactivated detour into the database
   and returns the detour notification with notification info.
   """
