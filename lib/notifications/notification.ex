@@ -298,6 +298,7 @@ defmodule Notifications.Notification do
     |> select_bridge_movements()
     |> select_block_waivers()
     |> select_detour_info()
+    |> select_detour_expiration_notifications()
     |> where([notification: n], n.created_at > ^cutoff_time)
     |> order_by([notification: n], desc: n.created_at)
     |> Skate.Repo.all()
