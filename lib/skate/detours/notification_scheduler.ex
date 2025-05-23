@@ -30,12 +30,13 @@ defmodule Skate.Detours.NotificationScheduler do
         expires_at
       ) do
     DetourExpirationNotification
-    |> Skate.Repo.get_by!(detour_id: detour.id)
+    |> Skate.Repo.get_by(detour_id: detour.id)
     |> DetourExpirationNotification.update_changeset(%{
+      detour: detour,
       estimated_duration: estimated_duration,
       expires_at: expires_at
     })
-    |> Skate.Repo.update()
+    |> Skate.Repo.insert_or_update()
   end
 
   def detour_duration_changed(_, _), do: :error

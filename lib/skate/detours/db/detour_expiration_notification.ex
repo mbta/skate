@@ -21,6 +21,10 @@ defmodule Skate.Detours.Db.DetourExpirationNotification do
     |> put_assoc(:detour, detour)
   end
 
+  def update_changeset(nil, attrs) do
+    create_changeset(attrs)
+  end
+
   def update_changeset(detour_expiration_notification, attrs) do
     cast(detour_expiration_notification, attrs, [:expires_at])
   end

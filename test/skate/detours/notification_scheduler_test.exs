@@ -60,6 +60,16 @@ defmodule Skate.Detours.NotificationSchedulerTest do
       assert detour_expiration_notification.id == updated_detour_expiration_notification.id
     end
 
+    test "creates record if previous notification did not exist becuase of 'Until further notice' estimated duration" do
+      detour = :detour |> insert() |> activated()
+      expires_at = DateTime.utc_now()
+
+      assert {:ok, updated_detour_expiration_notification} =
+               NotificationScheduler.detour_duration_changed(detour, expires_at)
+
+      assert expires_at == updated_detour_expiration_notification.expires_at
+    end
+
     test "does not update a record if detour is not currently active" do
       detour = :detour |> insert() |> deactivated()
       expires_at = DateTime.utc_now()
