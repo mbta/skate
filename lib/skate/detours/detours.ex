@@ -319,6 +319,7 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        ) do
     Notifications.NotificationServer.detour_deactivated(detour)
+    Skate.Detours.NotificationScheduler.detour_deactivated(detour)
   end
 
   defp process_notifications(
