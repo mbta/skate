@@ -207,7 +207,7 @@ defmodule Skate.Detours.Detours do
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
         broadcast_detour(new_record, author_id)
-        send_notification(detour_changes, new_record)
+        process_notifications(detour_changes, new_record)
         update_swiftly(detour_changes, new_record)
 
       _ ->
@@ -296,7 +296,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp send_notification(
+  defp process_notifications(
          %Ecto.Changeset{
            data: %Detour{status: :draft},
            changes: %{status: :active}
@@ -306,7 +306,7 @@ defmodule Skate.Detours.Detours do
     Notifications.NotificationServer.detour_activated(detour)
   end
 
-  defp send_notification(
+  defp process_notifications(
          %Ecto.Changeset{
            data: %Detour{status: :active},
            changes: %{status: :past}
@@ -314,9 +314,10 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        ) do
     Notifications.NotificationServer.detour_deactivated(detour)
+    Skate.Detours.NotificationScheduler.detour_deactivated(detour)
   end
 
-  defp send_notification(_, _), do: nil
+  defp process_notifications(_, _), do: nil
 
   defp update_swiftly(changeset, detour) do
     enabled? =
