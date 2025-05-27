@@ -183,6 +183,25 @@ defmodule SkateWeb.DetoursControllerTest do
     end
   end
 
+  @tag :authenticated
+  test "updates the scheduler when detour is deactivated", %{conn: conn} do
+    # setup_notification_server()
+
+    %Skate.Detours.Db.Detour{id: id, state: snapshot} =
+      :detour |> build() |> activated |> insert()
+
+    Process.sleep(10)
+    # Would need DetourExpirationNotification created for detour activated
+    assert Skate.Repo.aggregate(Skate.Detours.Db.DetourExpirationNotification, :count) == 1
+
+    put(conn, ~p"/api/detours/update_snapshot", %{
+      "snapshot" => snapshot |> deactivated |> with_id(id)
+    })
+
+    Process.sleep(10)
+    assert Skate.Repo.aggregate(Skate.Detours.Db.DetourExpirationNotification, :count) == 0
+  end
+
   defp populate_db_and_get_user(conn) do
     # Active detour
     active_detour_snapshot =
