@@ -466,7 +466,10 @@ defmodule Skate.Detours.Detours do
          } = detour
        )
        when is_binary(n_hours) do
-    hours = String.at(n_hours, 0)
+    hours =
+      n_hours
+      |> String.at(0)
+      |> String.to_integer()
 
     detour
     |> Map.get(:activated_at)
