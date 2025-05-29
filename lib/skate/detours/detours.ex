@@ -470,8 +470,7 @@ defmodule Skate.Detours.Detours do
       |> String.at(0)
       |> String.to_integer()
 
-    activated_at
-    |> DateTime.add(hours, :hour)
+    DateTime.add(activated_at, hours, :hour)
   end
 
   defp do_calculate_expiration_timestamp(_), do: nil
