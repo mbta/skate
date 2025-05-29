@@ -15,7 +15,7 @@ defmodule Skate.Detours.Db.DetourExpirationNotification do
     timestamps()
   end
 
-  def create_changeset(%{detour: detour} = attrs) do
+  def create_changeset(%{detour: %Skate.Detours.Db.Detour{} = detour} = attrs) do
     %__MODULE__{}
     |> cast(attrs, [:expires_at])
     |> put_assoc(:detour, detour)
