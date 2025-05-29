@@ -207,7 +207,7 @@ defmodule Skate.Detours.Detours do
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
         broadcast_detour(new_record, author_id)
-        send_notification(detour_changes, new_record)
+        process_notifications(detour_changes, new_record)
         update_swiftly(detour_changes, new_record)
 
       _ ->
@@ -296,7 +296,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp send_notification(
+  defp process_notifications(
          %Ecto.Changeset{
            data: %Detour{status: :draft},
            changes: %{status: :active}
@@ -304,9 +304,11 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        ) do
     Notifications.NotificationServer.detour_activated(detour)
+    expires_at = calculate_expiration_timestamp(detour)
+    Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
   end
 
-  defp send_notification(
+  defp process_notifications(
          %Ecto.Changeset{
            data: %Detour{status: :active},
            changes: %{status: :past}
@@ -316,7 +318,7 @@ defmodule Skate.Detours.Detours do
     Notifications.NotificationServer.detour_deactivated(detour)
   end
 
-  defp send_notification(_, _), do: nil
+  defp process_notifications(_, _), do: nil
 
   defp update_swiftly(changeset, detour) do
     enabled? =
@@ -426,4 +428,37 @@ defmodule Skate.Detours.Detours do
     |> DateTime.from_naive!("Etc/UTC")
     |> DateTime.to_unix()
   end
+
+  defp calculate_expiration_timestamp(%Detour{status: :active} = detour),
+    do: do_calculate_expiration_timestamp(detour)
+
+  defp calculate_expiration_timestamp(_), do: nil
+
+  defp do_calculate_expiration_timestamp(
+         %Detour{
+           estimated_duration: "Until end of service"
+         } = detour
+       ) do
+    detour
+    |> Map.get(:activated_at)
+    |> DateTime.to_date()
+    |> Date.add(1)
+    |> DateTime.new(~T[03:00:00], "America/New_York")
+    |> elem(1)
+  end
+
+  defp do_calculate_expiration_timestamp(
+         %Detour{
+           estimated_duration: n_hours
+         } = detour
+       )
+       when is_binary(n_hours) do
+    hours = String.at(n_hours, 0)
+
+    detour
+    |> Map.get(:activated_at)
+    |> DateTime.add(hours, :hour)
+  end
+
+  defp do_calculate_expiration_timestamp(_), do: nil
 end

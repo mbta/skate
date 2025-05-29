@@ -6,6 +6,8 @@ defmodule Skate.Detours.NotificationScheduler do
   alias Skate.Detours.Db.{Detour, DetourExpirationNotification}
   require Logger
 
+  def detour_activated(_, nil), do: :error
+
   def detour_activated(
         %Detour{status: :active, estimated_duration: estimated_duration} = detour,
         expires_at
@@ -24,6 +26,8 @@ defmodule Skate.Detours.NotificationScheduler do
   end
 
   def detour_deactivated(_), do: :error
+
+  def detour_duration_changed(_, nil), do: :error
 
   def detour_duration_changed(
         %Detour{status: :active, estimated_duration: estimated_duration} = detour,
