@@ -439,10 +439,8 @@ defmodule Skate.Detours.Detours do
            estimated_duration: "Until end of service"
          } = detour
        ) do
-    activated_at = Map.get(detour, :activated_at)
-
     {:ok, eos_same_day} =
-      activated_at
+      detour.activated_at
       |> DateTime.shift_zone!("America/New_York")
       |> DateTime.to_date()
       |> DateTime.new(~T[03:00:00], "America/New_York")
