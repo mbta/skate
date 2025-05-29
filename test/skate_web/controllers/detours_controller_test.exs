@@ -189,7 +189,7 @@ defmodule SkateWeb.DetoursControllerTest do
   end
 
   @tag :authenticated
-  test "a detour expiration task is created when detour is deactivated", %{conn: conn} do
+  test "when a detour is deactivated, then the detour's expiration task is deleted", %{conn: conn} do
     %Skate.Detours.Db.Detour{id: id, state: snapshot} =
       :detour |> build() |> insert()
 
