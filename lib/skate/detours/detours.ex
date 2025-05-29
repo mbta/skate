@@ -316,6 +316,7 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        ) do
     Notifications.NotificationServer.detour_deactivated(detour)
+    Skate.Detours.NotificationScheduler.detour_deactivated(detour)
   end
 
   defp process_notifications(_, _), do: nil
@@ -429,49 +430,47 @@ defmodule Skate.Detours.Detours do
     |> DateTime.to_unix()
   end
 
-  defp calculate_expiration_timestamp(%Detour{status: :active} = detour),
-    do: do_calculate_expiration_timestamp(detour)
+  defp calculate_expiration_timestamp(%Detour{status: :active} = detour) do
+    activated_detour = db_detour_to_detour(detour)
+    do_calculate_expiration_timestamp(activated_detour)
+  end
 
   defp calculate_expiration_timestamp(_), do: nil
 
-  defp do_calculate_expiration_timestamp(
-         %Detour{
-           estimated_duration: "Until end of service"
-         } = detour
-       ) do
+  defp do_calculate_expiration_timestamp(%ActivatedDetourDetails{
+         estimated_duration: "Until end of service",
+         activated_at: activated_at
+       }) do
     {:ok, eos_same_day} =
-      detour.activated_at
+      activated_at
       |> DateTime.shift_zone!("America/New_York")
       |> DateTime.to_date()
       |> DateTime.new(~T[03:00:00], "America/New_York")
 
     # check to see if the activated_at timestamp is after the current date's end of service time for the previous date.
     days_to_add =
-      if DateTime.diff(detour.activated_at, eos_same_day) > 0 do
+      if DateTime.diff(activated_at, eos_same_day) > 0 do
         1
       else
         0
       end
 
-    detour.activated_at
+    activated_at
     |> Date.add(days_to_add)
     |> DateTime.new!(~T[03:00:00], "America/New_York")
   end
 
-  defp do_calculate_expiration_timestamp(
-         %Detour{
-           estimated_duration: n_hours
-         } = detour
-       )
+  defp do_calculate_expiration_timestamp(%ActivatedDetourDetails{
+         estimated_duration: n_hours,
+         activated_at: activated_at
+       })
        when is_binary(n_hours) do
     hours =
       n_hours
       |> String.at(0)
       |> String.to_integer()
 
-    detour
-    |> Map.get(:activated_at)
-    |> DateTime.add(hours, :hour)
+    DateTime.add(activated_at, hours, :hour)
   end
 
   defp do_calculate_expiration_timestamp(_), do: nil
