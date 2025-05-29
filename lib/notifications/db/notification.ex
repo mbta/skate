@@ -61,7 +61,20 @@ defmodule Notifications.Db.Notification do
   def changeset(notification, attrs) do
     notification
     |> cast(attrs, [:created_at])
+    |> put_default(:created_at, fn -> DateTime.to_unix(DateTime.utc_now()) end)
     |> validate_required([:created_at])
+  end
+
+  defp put_default(changeset, key, value_fn) when is_function(value_fn, 0) do
+    put_default(changeset, key, value_fn.())
+  end
+
+  defp put_default(changeset, key, value) do
+    if field_missing?(changeset, key) do
+      put_change(changeset, key, value)
+    else
+      changeset
+    end
   end
 
   def block_waiver_changeset(notification, attrs \\ %{}) do
