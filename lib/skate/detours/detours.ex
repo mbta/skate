@@ -447,7 +447,7 @@ defmodule Skate.Detours.Detours do
 
     # check to see if the activated_at timestamp is after the current date's end of service time for the previous date.
     days_to_add =
-      if DateTime.diff(activated_at, eos_same_day) > 0 do
+      if DateTime.diff(detour.activated_at, eos_same_day) > 0 do
         1
       else
         0
