@@ -453,7 +453,7 @@ defmodule Skate.Detours.Detours do
         0
       end
 
-    activated_at
+    detour.activated_at
     |> Date.add(days_to_add)
     |> DateTime.new!(~T[03:00:00], "America/New_York")
   end
