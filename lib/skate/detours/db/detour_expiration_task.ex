@@ -1,6 +1,6 @@
-defmodule Skate.Detours.Db.DetourExpirationNotification do
+defmodule Skate.Detours.Db.DetourExpirationTask do
   @moduledoc """
-  Ecto Model for `detour_expiration_notifications` Database table
+  Ecto Model for `detour_expiration_tasks` Database table
   """
 
   use Skate.Schema
@@ -8,7 +8,7 @@ defmodule Skate.Detours.Db.DetourExpirationNotification do
 
   alias Skate.Detours.Db.Detour
 
-  typed_schema "detour_expiration_notifications" do
+  typed_schema "detour_expiration_tasks" do
     belongs_to :detour, Detour
     field :expires_at, :utc_datetime_usec
 
@@ -25,7 +25,7 @@ defmodule Skate.Detours.Db.DetourExpirationNotification do
     create_changeset(attrs)
   end
 
-  def update_changeset(detour_expiration_notification, attrs) do
-    cast(detour_expiration_notification, attrs, [:expires_at])
+  def update_changeset(detour_expiration_task, attrs) do
+    cast(detour_expiration_task, attrs, [:expires_at])
   end
 end
