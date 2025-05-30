@@ -102,6 +102,7 @@ config :skate, SkateWeb.AuthManager,
   secret_key: nil
 
 config :skate, Skate.Repo,
+  types: Skate.PostgrexTypes,
   database: "skate_dev",
   username: System.get_env("POSTGRES_USERNAME", System.get_env("USER")),
   password: System.get_env("POSTGRES_PASSWORD", ""),

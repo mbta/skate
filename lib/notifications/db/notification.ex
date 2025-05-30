@@ -22,6 +22,60 @@ defmodule Notifications.Db.Notification do
     belongs_to(:block_waiver, DbBlockWaiver)
     belongs_to(:bridge_movement, DbBridgeMovement)
     belongs_to(:detour, Notifications.Db.Detour)
+    belongs_to(:detour_expiration, Notifications.Db.DetourExpiration)
+  end
+
+  @doc """
+  Creates a new `Notifications.Db.Notification`.
+
+  Using this function directly is not recommended, instead you should consider
+  using changesets functions from the intended "Notification Type" to construct
+  notifications.
+
+  This function exists mainly to be used by `cast_assoc` from
+  "Notification Type" changeset functions.
+
+  If `:created_at` is not provided, it will default to the current
+  time.
+
+  ## Examples
+  ### Create Notification with a backdated `created_at` timestamp
+      iex> current_time = DateTime.utc_now()
+      ...> |> DateTime.shift(minute: -30)
+      ...> |> DateTime.to_unix()
+      ...>
+      iex> %{created_at: ^current_time} = %Notifications.Db.Notification{}
+      ...> |> Notifications.Db.Notification.changeset(%{created_at: current_time})
+      ...> |> Ecto.Changeset.apply_action!(:insert)
+
+  ### Create Notification and default the current time to now
+      iex> current_time = DateTime.utc_now() |> DateTime.to_unix()
+      ...>
+      iex> %{created_at: created_at} = %Notifications.Db.Notification{}
+      ...> |> Notifications.Db.Notification.changeset(%{})
+      ...> |> Ecto.Changeset.apply_action!(:insert)
+      ...>
+      iex> current_time <= created_at
+      true
+
+  """
+  def changeset(notification, attrs) do
+    notification
+    |> cast(attrs, [:created_at])
+    |> put_default(:created_at, fn -> DateTime.to_unix(DateTime.utc_now()) end)
+    |> validate_required([:created_at])
+  end
+
+  defp put_default(changeset, key, value_fn) when is_function(value_fn, 0) do
+    put_default(changeset, key, value_fn.())
+  end
+
+  defp put_default(changeset, key, value) do
+    if field_missing?(changeset, key) do
+      put_change(changeset, key, value)
+    else
+      changeset
+    end
   end
 
   def block_waiver_changeset(notification, attrs \\ %{}) do

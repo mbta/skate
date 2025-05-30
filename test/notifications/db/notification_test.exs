@@ -3,5 +3,6 @@ defmodule Notifications.Db.NotificationTest do
 
   import Skate.Factory
 
+  doctest Notifications.Db.Notification
   doctest Notifications.Db.Notification.Queries
 end
