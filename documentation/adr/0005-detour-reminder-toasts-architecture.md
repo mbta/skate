@@ -498,14 +498,14 @@ iex> Skate.Notifications.create_detour_expiration_notification(%{
 ...>   # store the _current_ estimated duration at this point in time
 ...>   estimated_duration: detour.estimated_duration,
 ...>   # 
-...>   expires_at: %DateTime{}
+...>   expires_at: %Duration{}
 ...> })
 
 %Skate.Notifications.Notification{
   detour_expiration: %Skate.Notifications.DetourExpiration{
     detour_id: ^detour.id,
     estimated_duration: ^detour.estimated_duration
-    expires_at: %DateTime{},
+    expires_at: %Duration{},
     # [...]
   },
   # [...]
