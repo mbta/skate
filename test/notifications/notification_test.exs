@@ -1,5 +1,8 @@
 defmodule Notifications.NotificationTest do
   use Skate.DataCase
+
+  doctest Notifications.Notification
+
   import Skate.Factory
 
   alias Notifications.Notification
