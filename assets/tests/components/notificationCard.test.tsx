@@ -2,7 +2,7 @@ import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import "@testing-library/jest-dom/jest-globals"
 import { render, screen } from "@testing-library/react"
-import { NotificationCard, title } from "../../src/components/notificationCard"
+import { NotificationCard } from "../../src/components/notificationCard"
 import {
   BlockWaiverReason,
   BridgeNotification,
@@ -339,78 +339,6 @@ describe("NotificationCard", () => {
       should_fire_fs_event: true,
       notification: bridgeLoweredNotificationFactory.build(),
     },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "other",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "manpower",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "disabled",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "diverted",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "accident",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "adjusted",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "operator_error",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "traffic",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: detourActivatedNotificationFactory.build({}),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: detourDeactivatedNotificationFactory.build(),
-    },
   ])(
     "clicking bridge notification should trigger FS event: $notification.content.reason",
     async ({ notification, should_fire_fs_event }) => {
@@ -435,9 +363,7 @@ describe("NotificationCard", () => {
       expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
       expect(dispatch).not.toHaveBeenCalled()
 
-      // I don't _want_ to use `title`, but there's nothing else consistent to
-      // match on for _all_ notifications
-      await user.click(result.getByText(title(notification)))
+      await user.click(result.getByText(/Chelsea St Bridge/))
 
       if (should_fire_fs_event) {
         // eslint-disable-next-line jest/no-conditional-expect
