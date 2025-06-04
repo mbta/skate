@@ -157,7 +157,10 @@ defmodule SkateWeb.DetoursControllerTest do
       setup_notification_server()
 
       %Skate.Detours.Db.Detour{id: id, state: snapshot} =
-        :detour |> build() |> activated |> insert()
+        detour = :detour |> build |> activated |> insert()
+
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        build(:detour_expiration_task, detour: detour) |> insert()
 
       put(conn, ~p"/api/detours/update_snapshot", %{
         "snapshot" => snapshot |> deactivated |> with_id(id)
@@ -186,11 +189,12 @@ defmodule SkateWeb.DetoursControllerTest do
   @tag :authenticated
   test "when a detour is deactivated, then the detour's expiration task is deleted", %{conn: conn} do
     %Skate.Detours.Db.Detour{id: id, state: snapshot} =
-      :detour |> build() |> activated |> insert()
+      detour = :detour |> build |> activated |> insert()
 
-    Process.sleep(10)
-    # Would need DetourExpirationNotification created for detour activated
-    assert Skate.Repo.aggregate(Skate.Detours.Db.DetourExpirationNotification, :count) == 1
+    %Skate.Detours.Db.DetourExpirationTask{} =
+      build(:detour_expiration_task, detour: detour) |> insert()
+
+    assert Skate.Repo.aggregate(Skate.Detours.Db.DetourExpirationTask, :count) == 1
 
     put(conn, ~p"/api/detours/update_snapshot", %{
       "snapshot" => snapshot |> deactivated |> with_id(id)
