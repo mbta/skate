@@ -60,7 +60,7 @@ defmodule Realtime.Shape do
       ...> })
       %Realtime.Shape{
         shape_id: "the_shape_id",
-        encoded_polyline: "_j{`GfkjpL?fEgEvQ?vQfEnd@?vQ",
+        encoded_polyline: "_j{`GfkjpL?fEgEvQ?vQfEnd@?vQ"
       }
 
   The encoded polyline is somewhat opaque, but notice that it is constructed
@@ -80,7 +80,8 @@ defmodule Realtime.Shape do
       ...>   {-71.014, 42.252},
       ...>   {-71.017, 42.252}
       ...> ])
-      "_j{`GfkjpL?fEgEvQ?vQfEnd@?vQ" # Matches the polyline in the %Shape{...}
+      # Matches the polyline in the %Shape{...}
+      "_j{`GfkjpL?fEgEvQ?vQfEnd@?vQ"
 
 
       iex> Polyline.encode([
@@ -96,7 +97,8 @@ defmodule Realtime.Shape do
       ...>   {-71.014, 42.252},
       ...>   {-71.017, 42.252}
       ...> ])
-      "_j{`GfkjpL?fE???~iA???vQ" # Does not match the polyline in the %Shape{...}
+      # Does not match the polyline in the %Shape{...}
+      "_j{`GfkjpL?fE???~iA???vQ"
   """
   @spec new(Realtime.Shape.Input.t()) :: Realtime.Shape.t()
   def new(%Input{

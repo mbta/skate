@@ -6,16 +6,16 @@ defmodule Realtime.Helpers do
 
   Returns nil if no element matches or if there is no previous element (because the first element matched)
 
-      iex> Realtime.Helpers.find_and_previous([1,2,3,4], fn x -> x > 2 end)
-      {2,3}
+      iex> Realtime.Helpers.find_and_previous([1, 2, 3, 4], fn x -> x > 2 end)
+      {2, 3}
 
       iex> Realtime.Helpers.find_and_previous([], fn x -> x > 2 end)
       nil
 
-      iex> Realtime.Helpers.find_and_previous([3,4], fn x -> x > 2 end)
+      iex> Realtime.Helpers.find_and_previous([3, 4], fn x -> x > 2 end)
       nil
 
-      iex> Realtime.Helpers.find_and_previous([1,2], fn x -> x > 2 end)
+      iex> Realtime.Helpers.find_and_previous([1, 2], fn x -> x > 2 end)
       nil
   """
   @spec find_and_previous([element], (element -> boolean())) :: {element, element} | nil

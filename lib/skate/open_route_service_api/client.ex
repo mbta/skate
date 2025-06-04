@@ -56,12 +56,10 @@ defmodule Skate.OpenRouteServiceAPI.Client do
       ...> )
       {:error, "nope"}
 
-      iex> Skate.OpenRouteServiceAPI.Client.parse_response(
-      ...>   {
-      ...>     :error,
-      ...>     %HTTPoison.Error{}
-      ...>   }
-      ...> )
+      iex> Skate.OpenRouteServiceAPI.Client.parse_response({
+      ...>   :error,
+      ...>   %HTTPoison.Error{}
+      ...> })
       {:error, "unknown"}
   """
   @spec parse_response({:ok, HTTPoison.Response.t()} | {:error, HTTPoison.Error.t()}) ::

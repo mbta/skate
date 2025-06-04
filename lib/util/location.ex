@@ -43,9 +43,7 @@ defmodule Util.Location do
   Formats a `Util.Location` into a `{longitude, latitude}` tuple
 
   ## Examples
-      iex> Util.Location.into_long_lat_pair(
-      ...>   Util.Location.new(42, -71)
-      ...> )
+      iex> Util.Location.into_long_lat_pair(Util.Location.new(42, -71))
       {-71, 42}
   """
   @spec into_long_lat_pair(location :: __MODULE__.t()) :: {float(), float()}
@@ -56,16 +54,16 @@ defmodule Util.Location do
 
   ### Example
       iex> Util.Location.distance([
-      ...>    Util.Location.new(42, -71),
-      ...>    Util.Location.new(42, -71),
-      ...>    Util.Location.new(42, -71)
+      ...>   Util.Location.new(42, -71),
+      ...>   Util.Location.new(42, -71),
+      ...>   Util.Location.new(42, -71)
       ...> ])
       0.0
 
       iex> Util.Location.distance([
-      ...>    Util.Location.new(42, -71.0001),
-      ...>    Util.Location.new(42, -71.0002),
-      ...>    Util.Location.new(42.0001, -71)
+      ...>   Util.Location.new(42, -71.0001),
+      ...>   Util.Location.new(42, -71.0002),
+      ...>   Util.Location.new(42.0001, -71)
       ...> ])
       28.18270374034632
   """
@@ -79,14 +77,14 @@ defmodule Util.Location do
 
   ## Examples
       iex> Util.Location.distance(
-      ...>    Util.Location.new(42, -71.0001),
-      ...>    Util.Location.new(42, -71.0002)
+      ...>   Util.Location.new(42, -71.0001),
+      ...>   Util.Location.new(42, -71.0002)
       ...> )
       8.263404849683214
 
       iex> Util.Location.distance(
-      ...>    Util.Location.new(42, -71.0002),
-      ...>    Util.Location.new(42.0001, -71)
+      ...>   Util.Location.new(42, -71.0002),
+      ...>   Util.Location.new(42.0001, -71)
       ...> )
       19.919298890663107
   """
@@ -127,14 +125,14 @@ defmodule Util.Location do
 
   ## Examples
       iex> Util.Location.displacement_from(
-      ...>    Util.Location.new(42, -71.0001),
-      ...>    Util.Location.new(42, -71.0002)
+      ...>   Util.Location.new(42, -71.0001),
+      ...>   Util.Location.new(42, -71.0002)
       ...> )
       %Util.Vector2d{x: 8.263404849676181, y: 0.0}
 
       iex> Util.Location.displacement_from(
-      ...>    Util.Location.new(42.0001, -71.0002),
-      ...>    Util.Location.new(42, -71.0002)
+      ...>   Util.Location.new(42.0001, -71.0002),
+      ...>   Util.Location.new(42, -71.0002)
       ...> )
       %Util.Vector2d{x: 0.0, y: 11.119508023696506}
 
@@ -142,8 +140,8 @@ defmodule Util.Location do
 
   ## Example
       iex> Util.Location.displacement_from(
-      ...>    Util.Location.new(42.0001, -71.0002),
-      ...>    Util.Location.new(42.0002, -71.0001)
+      ...>   Util.Location.new(42.0001, -71.0002),
+      ...>   Util.Location.new(42.0002, -71.0001)
       ...> )
       %Util.Vector2d{x: -8.26337887771932, y: -11.119508022906418}
   """
@@ -170,14 +168,14 @@ defmodule Util.Location do
 
   ## Examples
       iex> Util.Location.displace_by(
-      ...>    Util.Location.new(42.0, -71.0),
-      ...>    %Util.Vector2d{x: 10.0, y: 0.0}
+      ...>   Util.Location.new(42.0, -71.0),
+      ...>   %Util.Vector2d{x: 10.0, y: 0.0}
       ...> )
       %Util.Location{latitude: 42.0, longitude: -70.99987898450841}
 
       iex> Util.Location.displace_by(
-      ...>    Util.Location.new(42.0, -71.0),
-      ...>    %Util.Vector2d{x: 0.0, y: 10.0}
+      ...>   Util.Location.new(42.0, -71.0),
+      ...>   %Util.Vector2d{x: 0.0, y: 10.0}
       ...> )
       %Util.Location{latitude: 42.000089932036374, longitude: -71.0}
 
@@ -185,8 +183,8 @@ defmodule Util.Location do
 
   ## Example
       iex> Util.Location.displace_by(
-      ...>    Util.Location.new(42.0, -71.0),
-      ...>    %Util.Vector2d{x: -10.0, y: -10.0}
+      ...>   Util.Location.new(42.0, -71.0),
+      ...>   %Util.Vector2d{x: -10.0, y: -10.0}
       ...> )
       %Util.Location{latitude: 41.999910067963626, longitude: -71.00012101549159}
   """
