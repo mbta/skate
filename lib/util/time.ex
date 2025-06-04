@@ -85,32 +85,40 @@ defmodule Util.Time do
 
     # When the day_start is slightly earlier than the timestamp, the result is close to it
     iex> Util.Time.next_time_of_day_for_timestamp_after(
-    ...>   1546362000, # 2019-01-01 12:00:00 EST
+    ...>   # 2019-01-01 12:00:00 EST
+    ...>   1_546_362_000,
     ...>   Util.Time.parse_hhmmss("11:00:00")
     ...> )
-    43200 # 12:00:00
+    # 12:00:00
+    43200
 
     # When the day_start is slightly after than the timestamp,
     # the previous day will be used as a reference and the result will be large
     iex> Util.Time.next_time_of_day_for_timestamp_after(
-    ...>   1546362000, # 2019-01-01 12:00:00 EST
+    ...>   # 2019-01-01 12:00:00 EST
+    ...>   1_546_362_000,
     ...>   Util.Time.parse_hhmmss("13:00:00")
     ...> )
-    129600 # 36:00
+    # 36:00
+    129_600
 
     # When the day_start belongs to the previous date.
     iex> Util.Time.next_time_of_day_for_timestamp_after(
-    ...>   1546408800, # 2019-01-02 01:00:00 EST
+    ...>   # 2019-01-02 01:00:00 EST
+    ...>   1_546_408_800,
     ...>   Util.Time.parse_hhmmss("18:00:00")
     ...> )
-    90000 # 25:00:00
+    # 25:00:00
+    90000
 
     # The day_start can be on the next date but same day of service
     iex> Util.Time.next_time_of_day_for_timestamp_after(
-    ...>   1546412400, # 2019-01-02 02:00:00 EST
+    ...>   # 2019-01-02 02:00:00 EST
+    ...>   1_546_412_400,
     ...>   Util.Time.parse_hhmmss("25:00:00")
     ...> )
-    93600 # 26:00:00
+    # 26:00:00
+    93600
 
   """
   @spec next_time_of_day_for_timestamp_after(timestamp(), time_of_day()) :: time_of_day()
@@ -131,16 +139,20 @@ defmodule Util.Time do
 
   @doc """
     iex> Util.Time.time_of_day_for_timestamp(
-    ...>   1546408800, # 2019-01-02 01:00:00 EST
+    ...>   # 2019-01-02 01:00:00 EST
+    ...>   1_546_408_800,
     ...>   ~D[2019-01-02]
     ...> )
-    3600 # 01:00:00
+    # 01:00:00
+    3600
 
     iex> Util.Time.time_of_day_for_timestamp(
-    ...>   1546408800, # 2019-01-02 01:00:00 EST
+    ...>   # 2019-01-02 01:00:00 EST
+    ...>   1_546_408_800,
     ...>   ~D[2019-01-01]
     ...> )
-    90000 # 25:00:00
+    # 25:00:00
+    90000
   """
   @spec time_of_day_for_timestamp(timestamp(), Date.t()) :: time_of_day()
   def time_of_day_for_timestamp(timestamp, date) do
@@ -151,16 +163,20 @@ defmodule Util.Time do
 
   @doc """
     iex> Util.Time.timestamp_for_time_of_day(
-    ...>   3600, # 01:00:00
+    ...>   # 01:00:00
+    ...>   3600,
     ...>   ~D[2019-01-02]
     ...> )
-    1546408800 # 2019-01-02 01:00:00 EST
+    # 2019-01-02 01:00:00 EST
+    1_546_408_800
 
     iex> Util.Time.timestamp_for_time_of_day(
-    ...>   90000, # 25:00:00
+    ...>   # 25:00:00
+    ...>   90000,
     ...>   ~D[2019-01-01]
     ...> )
-    1546408800 # 2019-01-02 01:00:00 EST
+    # 2019-01-02 01:00:00 EST
+    1_546_408_800
   """
   @spec timestamp_for_time_of_day(time_of_day(), Date.t()) :: timestamp()
   def timestamp_for_time_of_day(time_of_day, date) do
@@ -171,16 +187,20 @@ defmodule Util.Time do
 
   @doc """
     iex> Util.Time.time_of_day_add_minutes(
-    ...>   36000, # 10:00:00
+    ...>   # 10:00:00
+    ...>   36000,
     ...>   30
     ...> )
-    37800 # 10:30:00
+    # 10:30:00
+    37800
 
     iex> Util.Time.time_of_day_add_minutes(
-    ...>   36000, # 10:00:00
+    ...>   # 10:00:00
+    ...>   36000,
     ...>   -30
     ...> )
-    34200 # 09:30:00
+    # 09:30:00
+    34200
   """
   @spec time_of_day_add_minutes(time_of_day(), integer()) :: time_of_day()
   def time_of_day_add_minutes(time_of_day, minutes) do
@@ -190,7 +210,7 @@ defmodule Util.Time do
   @doc """
   Converts a timestamp into a Date.
 
-  iex> Util.Time.date_of_timestamp(1546362000)
+  iex> Util.Time.date_of_timestamp(1_546_362_000)
   ~D[2019-01-01]
 
   The date conversion is done in Eastern Time.

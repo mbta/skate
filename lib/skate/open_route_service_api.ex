@@ -13,7 +13,10 @@ defmodule Skate.OpenRouteServiceAPI do
   as maps with keys `lat` and `lon`.
 
   ## Example (with some fake API data)
-      iex> Skate.OpenRouteServiceAPI.directions([%{"lat" => 0, "lon" => 0}, %{"lat" => 0, "lon" => 1}])
+      iex> Skate.OpenRouteServiceAPI.directions([
+      ...>   %{"lat" => 0, "lon" => 0},
+      ...>   %{"lat" => 0, "lon" => 1}
+      ...> ])
       {
         :ok,
         %Skate.OpenRouteServiceAPI.DirectionsResponse{
@@ -46,7 +49,10 @@ defmodule Skate.OpenRouteServiceAPI do
   If anything goes wrong, then this returns an error instead.
 
   ## Examples
-      iex> Skate.OpenRouteServiceAPI.directions([%{"lat" => 0, "lon" => 10}, %{"lat" => 1, "lon" => 10}])
+      iex> Skate.OpenRouteServiceAPI.directions([
+      ...>   %{"lat" => 0, "lon" => 10},
+      ...>   %{"lat" => 1, "lon" => 10}
+      ...> ])
       {:error, %{type: :unknown}}
   """
   @spec directions(list()) :: {:ok, DirectionsResponse.t()} | {:error, any()}

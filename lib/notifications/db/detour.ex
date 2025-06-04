@@ -50,11 +50,11 @@ defmodule Notifications.Db.Detour do
         ...> |> insert()
         ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
-        iex> all_detour_notifications =
+        ...> all_detour_notifications =
         ...>   Notifications.Db.Detour.Queries.base()
         ...>   |> Skate.Repo.all()
         ...>
-        iex> match?(
+        ...> match?(
         ...>   [
         ...>     %Notifications.Db.Detour{}
         ...>   ],
@@ -82,19 +82,20 @@ defmodule Notifications.Db.Detour do
         ...> |> insert()
         ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
-        iex> all_detour_notifications =
+        ...> all_detour_notifications =
         ...>   Notifications.Db.Detour.Queries.select_detour_notification_info()
         ...>   |> Skate.Repo.all()
         ...>
-        iex> [
+        ...> [
         ...>   %Notifications.Db.Detour{
-        ...>    route: route,
-        ...>    origin: origin,
-        ...>    headsign: headsign,
-        ...>    direction: direction
+        ...>     route: route,
+        ...>     origin: origin,
+        ...>     headsign: headsign,
+        ...>     direction: direction
         ...>   }
         ...> ] = all_detour_notifications
-        iex> Enum.any?([route, origin, headsign, direction], &is_nil/1)
+        ...>
+        ...> Enum.any?([route, origin, headsign, direction], &is_nil/1)
         false
 
     """

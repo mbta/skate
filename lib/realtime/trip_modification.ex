@@ -106,22 +106,21 @@ defmodule Realtime.TripModification do
   struct.
 
   ## Example
-      iex> Realtime.TripModification.new(
-      ...>   %Realtime.TripModification.Input{
-      ...>     route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
-      ...>     missed_stops: [
-      ...>       build(:gtfs_stop, id: "ABC123"),
-      ...>       build(:gtfs_stop, id: "ABC124"),
-      ...>       build(:gtfs_stop, id: "ABC129")
-      ...>     ],
-      ...>     shape_with_stops: build(:shape_with_stops,
+      iex> Realtime.TripModification.new(%Realtime.TripModification.Input{
+      ...>   route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
+      ...>   missed_stops: [
+      ...>     build(:gtfs_stop, id: "ABC123"),
+      ...>     build(:gtfs_stop, id: "ABC124"),
+      ...>     build(:gtfs_stop, id: "ABC129")
+      ...>   ],
+      ...>   shape_with_stops:
+      ...>     build(:shape_with_stops,
       ...>       stops: build_list(5, :gtfs_stop)
       ...>     ),
-      ...>     service_date: ~D[2024-06-20],
-      ...>     last_modified_time: ~U[2024-06-18 12:00:00Z],
-      ...>     shape_id: "diverted-shape-id"
-      ...>   }
-      ...> )
+      ...>   service_date: ~D[2024-06-20],
+      ...>   last_modified_time: ~U[2024-06-18 12:00:00Z],
+      ...>   shape_id: "diverted-shape-id"
+      ...> })
       {:ok,
        %Realtime.TripModification{
          selected_trips: [
@@ -134,12 +133,12 @@ defmodule Realtime.TripModification do
          modifications: [
            %Realtime.TripModification.Modification{
              start_stop_selector: %TripModification.StopSelector{
-               stop_id: "ABC123",
+               stop_id: "ABC123"
              },
              end_stop_selector: %TripModification.StopSelector{
                stop_id: "ABC129"
              },
-             last_modified_time: 1718712000
+             last_modified_time: 1_718_712_000
            }
          ]
        }}
@@ -148,15 +147,15 @@ defmodule Realtime.TripModification do
   stop selectors isn't valid when the trip in question visits the same stop twice.
 
   ## Example
-      iex> Realtime.TripModification.new(
-      ...>   %Realtime.TripModification.Input{
-      ...>     route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
-      ...>     missed_stops: [
-      ...>       build(:gtfs_stop),
-      ...>       build(:gtfs_stop),
-      ...>       build(:gtfs_stop),
-      ...>     ],
-      ...>     shape_with_stops: build(:shape_with_stops,
+      iex> Realtime.TripModification.new(%Realtime.TripModification.Input{
+      ...>   route_pattern: build(:gtfs_route_pattern, representative_trip_id: "01-00"),
+      ...>   missed_stops: [
+      ...>     build(:gtfs_stop),
+      ...>     build(:gtfs_stop),
+      ...>     build(:gtfs_stop)
+      ...>   ],
+      ...>   shape_with_stops:
+      ...>     build(:shape_with_stops,
       ...>       id: "010128",
       ...>       stops: [
       ...>         build(:gtfs_stop),
@@ -164,14 +163,13 @@ defmodule Realtime.TripModification do
       ...>         build(:gtfs_stop),
       ...>         build(:gtfs_stop, id: "duplicate_stop_id"),
       ...>         build(:gtfs_stop),
-      ...>         build(:gtfs_stop),
+      ...>         build(:gtfs_stop)
       ...>       ]
       ...>     ),
-      ...>     service_date: ~D[2024-06-20],
-      ...>     last_modified_time: ~U[2024-06-18 12:00:00Z],
-      ...>     shape_id: "diverted-shape-id"
-      ...>   }
-      ...> )
+      ...>   service_date: ~D[2024-06-20],
+      ...>   last_modified_time: ~U[2024-06-18 12:00:00Z],
+      ...>   shape_id: "diverted-shape-id"
+      ...> })
       {:error, :duplicate_stops_in_shape}
   """
   def new(%Input{

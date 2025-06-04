@@ -40,22 +40,25 @@ defmodule Notifications.Db.Notification do
 
   ## Examples
   ### Create Notification with a backdated `created_at` timestamp
-      iex> current_time = DateTime.utc_now()
-      ...> |> DateTime.shift(minute: -30)
-      ...> |> DateTime.to_unix()
+      iex> current_time =
+      ...>   DateTime.utc_now()
+      ...>   |> DateTime.shift(minute: -30)
+      ...>   |> DateTime.to_unix()
       ...>
-      iex> %{created_at: ^current_time} = %Notifications.Db.Notification{}
-      ...> |> Notifications.Db.Notification.changeset(%{created_at: current_time})
-      ...> |> Ecto.Changeset.apply_action!(:insert)
+      ...> %{created_at: ^current_time} =
+      ...>   %Notifications.Db.Notification{}
+      ...>   |> Notifications.Db.Notification.changeset(%{created_at: current_time})
+      ...>   |> Ecto.Changeset.apply_action!(:insert)
 
   ### Create Notification and default the current time to now
       iex> current_time = DateTime.utc_now() |> DateTime.to_unix()
       ...>
-      iex> %{created_at: created_at} = %Notifications.Db.Notification{}
-      ...> |> Notifications.Db.Notification.changeset(%{})
-      ...> |> Ecto.Changeset.apply_action!(:insert)
+      ...> %{created_at: created_at} =
+      ...>   %Notifications.Db.Notification{}
+      ...>   |> Notifications.Db.Notification.changeset(%{})
+      ...>   |> Ecto.Changeset.apply_action!(:insert)
       ...>
-      iex> current_time <= created_at
+      ...> current_time <= created_at
       true
 
   """
@@ -164,18 +167,19 @@ defmodule Notifications.Db.Notification do
         ...> |> insert()
         ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
-        iex> all_detour_notifications =
+        ...> all_detour_notifications =
         ...>   Notifications.Db.Notification.Queries.base()
         ...>   |> Notifications.Db.Notification.Queries.select_detour_info()
         ...>   |> Skate.Repo.all()
         ...>   |> Skate.Repo.preload(:detour)
         ...>
-        iex> match?(
+        ...> match?(
         ...>   [
         ...>     %Notifications.Db.Notification{
         ...>       detour: %Notifications.Db.Detour{}
         ...>     }
-        ...>   ], all_detour_notifications
+        ...>   ],
+        ...>   all_detour_notifications
         ...> )
         true
 
@@ -185,12 +189,12 @@ defmodule Notifications.Db.Notification do
         ...> |> insert()
         ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
-        iex> all_detour_notifications =
+        ...> all_detour_notifications =
         ...>   Notifications.Db.Notification.Queries.select_detour_info()
         ...>   |> Skate.Repo.all()
         ...>   |> Skate.Repo.preload(:detour)
         ...>
-        iex> match?(
+        ...> match?(
         ...>   [
         ...>     %Notifications.Db.Notification{
         ...>       detour: %Notifications.Db.Detour{}

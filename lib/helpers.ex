@@ -4,7 +4,7 @@ defmodule Helpers do
   @doc """
   Apply a function to all of the values in a map
 
-  iex> Helpers.map_values(%{a: 1, b: 2}, fn x -> x+1 end)
+  iex> Helpers.map_values(%{a: 1, b: 2}, fn x -> x + 1 end)
   %{a: 2, b: 3}
   """
   @spec map_values(%{optional(key) => value1}, (value1 -> value2)) :: %{optional(key) => value2}

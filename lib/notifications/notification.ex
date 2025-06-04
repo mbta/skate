@@ -59,37 +59,39 @@ defmodule Notifications.Notification do
   ## Example
   ### Creating a notification
       iex> %Skate.Detours.Db.Detour{id: detour_id} = detour = Skate.Factory.insert(:detour)
-      iex>
-      iex> {:ok, result} = Notifications.Notification.create_detour_expiration_notification(%{
-      ...>   detour: detour,
-      ...>   expires_in: Duration.new!(minute: 30),
-      ...>   estimated_duration: "1 hour",
-      ...>   notification: %{}
-      ...> })
-      iex>
-      iex> %Notifications.Db.DetourExpiration{
+      ...>
+      ...> {:ok, result} =
+      ...>   Notifications.Notification.create_detour_expiration_notification(%{
+      ...>     detour: detour,
+      ...>     expires_in: Duration.new!(minute: 30),
+      ...>     estimated_duration: "1 hour",
+      ...>     notification: %{}
+      ...>   })
+      ...>
+      ...> %Notifications.Db.DetourExpiration{
       ...>   detour_id: ^detour_id,
       ...>   notification: %Notifications.Db.Notification{}
       ...> } = result
 
   ### Creating a notification and backdating the notification `created_at` time
       iex> %Skate.Detours.Db.Detour{id: detour_id} = detour = Skate.Factory.insert(:detour)
-      iex>
-      iex> created_at =
-      ...> DateTime.utc_now()
-      ...> |> DateTime.shift(minute: 30)
-      ...> |> DateTime.to_unix()
-      iex>
-      iex> {:ok, result} = Notifications.Notification.create_detour_expiration_notification(%{
-      ...>   detour: detour,
-      ...>   expires_in: Duration.new!(minute: 30),
-      ...>   estimated_duration: "1 hour",
-      ...>   notification: %{
-      ...>     created_at: created_at
-      ...>   }
-      ...> })
-      iex>
-      iex> %Notifications.Db.DetourExpiration{
+      ...>
+      ...> created_at =
+      ...>   DateTime.utc_now()
+      ...>   |> DateTime.shift(minute: 30)
+      ...>   |> DateTime.to_unix()
+      ...>
+      ...> {:ok, result} =
+      ...>   Notifications.Notification.create_detour_expiration_notification(%{
+      ...>     detour: detour,
+      ...>     expires_in: Duration.new!(minute: 30),
+      ...>     estimated_duration: "1 hour",
+      ...>     notification: %{
+      ...>       created_at: created_at
+      ...>     }
+      ...>   })
+      ...>
+      ...> %Notifications.Db.DetourExpiration{
       ...>   detour_id: ^detour_id,
       ...>   notification: %Notifications.Db.Notification{created_at: ^created_at}
       ...> } = result

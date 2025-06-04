@@ -25,43 +25,37 @@ defmodule Skate.OpenRouteServiceAPI.Client do
     parse_response(response)
   end
 
-  @doc """
+  @doc ~S"""
   Parses the HTTPoison response into something that's a little more HTTP-client agnostic.
 
   If the request was successful, it returns a tuple that includes the response parsed as JSON.
 
   ## Example
-      iex> Skate.OpenRouteServiceAPI.Client.parse_response(
-      ...>   {
-      ...>     :ok,
-      ...>     %HTTPoison.Response{
-      ...>       body: "{\\"data\\": \\"foobar\\"}",
-      ...>       status_code: 200
-      ...>     }
+      iex> Skate.OpenRouteServiceAPI.Client.parse_response({
+      ...>   :ok,
+      ...>   %HTTPoison.Response{
+      ...>     body: "{\"data\": \"foobar\"}",
+      ...>     status_code: 200
       ...>   }
-      ...> )
+      ...> })
       {:ok, %{"data" => "foobar"}}
 
   If the request was unsuccessful, then it returns an error indicating what went wrong.
 
   ## Examples
-      iex> Skate.OpenRouteServiceAPI.Client.parse_response(
-      ...>   {
-      ...>     :ok,
-      ...>     %HTTPoison.Response{
-      ...>       body: "{\\"error\\": \\"nope\\"}",
-      ...>       status_code: 400
-      ...>     }
+      iex> Skate.OpenRouteServiceAPI.Client.parse_response({
+      ...>   :ok,
+      ...>   %HTTPoison.Response{
+      ...>     body: "{\"error\": \"nope\"}",
+      ...>     status_code: 400
       ...>   }
-      ...> )
+      ...> })
       {:error, "nope"}
 
-      iex> Skate.OpenRouteServiceAPI.Client.parse_response(
-      ...>   {
-      ...>     :error,
-      ...>     %HTTPoison.Error{}
-      ...>   }
-      ...> )
+      iex> Skate.OpenRouteServiceAPI.Client.parse_response({
+      ...>   :error,
+      ...>   %HTTPoison.Error{}
+      ...> })
       {:error, "unknown"}
   """
   @spec parse_response({:ok, HTTPoison.Response.t()} | {:error, HTTPoison.Error.t()}) ::
