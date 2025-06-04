@@ -75,6 +75,12 @@ defmodule SkateWeb.DetoursControllerTest do
       activated_id = 2
       past_id = 3
 
+      # Can remove once activation event is handled
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        :detour_expiration_task
+        |> build(detour: :detour |> build() |> with_id(past_id))
+        |> insert()
+
       conn
       # Draft Detour
       |> put(~p"/api/detours/update_snapshot", %{
@@ -160,7 +166,7 @@ defmodule SkateWeb.DetoursControllerTest do
         detour = :detour |> build |> activated |> insert()
 
       %Skate.Detours.Db.DetourExpirationTask{} =
-        build(:detour_expiration_task, detour: detour) |> insert()
+        :detour_expiration_task |> build(detour: detour) |> insert()
 
       put(conn, ~p"/api/detours/update_snapshot", %{
         "snapshot" => snapshot |> deactivated |> with_id(id)
@@ -192,7 +198,7 @@ defmodule SkateWeb.DetoursControllerTest do
       detour = :detour |> build |> activated |> insert()
 
     %Skate.Detours.Db.DetourExpirationTask{} =
-      build(:detour_expiration_task, detour: detour) |> insert()
+      :detour_expiration_task |> build(detour: detour) |> insert()
 
     assert Skate.Repo.aggregate(Skate.Detours.Db.DetourExpirationTask, :count) == 1
 
@@ -224,7 +230,7 @@ defmodule SkateWeb.DetoursControllerTest do
       })
 
     # Past detour
-    deactived_detour_snapshot =
+    deactivated_detour_snapshot =
       :detour_snapshot
       |> build()
       |> with_id(2)
@@ -235,14 +241,19 @@ defmodule SkateWeb.DetoursControllerTest do
       |> with_headsign("Headsign")
       |> with_nearest_intersection("Street C & Avenue D")
 
+    conn = put(conn, "/api/detours/update_snapshot", %{"snapshot" => deactivated_detour_snapshot})
+
+    # Can remove once activation event is handled
+    %Skate.Detours.Db.DetourExpirationTask{} =
+      :detour_expiration_task |> build(detour: Detours.get_detour!(2)) |> insert()
+
     conn =
       conn
-      |> put("/api/detours/update_snapshot", %{"snapshot" => deactived_detour_snapshot})
       |> put("/api/detours/update_snapshot", %{
-        "snapshot" => activated(deactived_detour_snapshot)
+        "snapshot" => activated(deactivated_detour_snapshot)
       })
       |> put("/api/detours/update_snapshot", %{
-        "snapshot" => deactivated(deactived_detour_snapshot)
+        "snapshot" => deactivated(deactivated_detour_snapshot)
       })
 
     # Draft detour
