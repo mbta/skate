@@ -363,7 +363,9 @@ defmodule Schedule.Data do
   @spec parse_files(all_files()) :: t()
   def parse_files(%{gtfs: gtfs_files, hastus: hastus_files, version: version}) do
     gtfs_data = parse_gtfs_files(gtfs_files)
+    Logger.info("parse_gtfs_files parsed gtfs data from files")
     hastus_data = parse_hastus_files(hastus_files, gtfs_data.bus_only.trip_ids)
+    Logger.info("parse_hastus_files parsed hastus data from files")
 
     schedule_trips_by_id =
       merge_hastus_trips(
@@ -386,6 +388,8 @@ defmodule Schedule.Data do
         gtfs_data.all_modes.route_patterns,
         gtfs_data.all_modes.stop_times_by_trip_id
       )
+
+    Logger.info("parse_files parsed schedule data from gtfs and hastus files")
 
     %__MODULE__{
       routes: bus_routes,

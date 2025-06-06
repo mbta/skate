@@ -309,14 +309,35 @@ defmodule Schedule do
 
   @spec update_state(state(), term()) :: :ok
   def update_state(state, key \\ __MODULE__) do
-    {time, :ok} = :timer.tc(:persistent_term, :put, [key, state])
-    %{count: count, memory: memory} = :persistent_term.info()
+    log_persistent_term_info("persistent_term_info_before")
+    log_erlang_memory_info("erlang_memory_before")
 
-    Logger.info(
-      "wrote state to persistent term time_in_ms=#{System.convert_time_unit(time, :microsecond, :millisecond)} count=#{count} memory=#{memory}"
+    {time, :ok} = :timer.tc(:persistent_term, :put, [key, state])
+
+    log_persistent_term_info(
+      "persistent_term_info_after wrote state to persistent term time_in_ms=#{System.convert_time_unit(time, :microsecond, :millisecond)}"
     )
 
+    # More expensive call to get_system_memory_data
+    system_memory = :memsup.get_system_memory_data()
+    log_erlang_memory_info("erlang_memory_after system_free=#{system_memory[:free_memory]}}")
+
     :ok
+  end
+
+  defp log_persistent_term_info(prefix) do
+    %{count: count, memory: memory} = :persistent_term.info()
+    Logger.info("#{prefix} count=#{count} memory=#{memory}")
+  end
+
+  defp log_erlang_memory_info(prefix) do
+    # Possible that this data hasn't been updated since last call
+    {total, allocated, worst} = :memsup.get_memory_data()
+    process_name = :erlang.process_info(elem(worst, 0), :registered_name)
+
+    Logger.info(
+      "#{prefix} memory=#{total} allocated=#{allocated} worst=#{inspect(worst)} worst_name=#{inspect(process_name)}"
+    )
   end
 
   # Initialization (Testing)
