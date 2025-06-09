@@ -98,14 +98,14 @@ export const BlockWaiverNotificationCard = ({
   isUnread,
   hideLatestNotification,
   noFocusOrHover,
-  openVPPForCurrentVehicle,
+  setNotificationState,
 }: {
   notification: Notification<BlockWaiverNotification>
   currentTime: Date
   isUnread: boolean
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
-  openVPPForCurrentVehicle: (notification: Notification) => void
+  setNotificationState: (notification: Notification) => void
 }) => {
   const routes = useRoutes(notification.content.routeIds)
   const routeAtCreation = useRoute(notification.content.routeIdAtCreation)
@@ -117,7 +117,7 @@ export const BlockWaiverNotificationCard = ({
       style="kiwi"
       isActive={isUnread}
       openCallback={() => {
-        openVPPForCurrentVehicle(notification)
+        setNotificationState(notification)
 
         if (hideLatestNotification) {
           hideLatestNotification()

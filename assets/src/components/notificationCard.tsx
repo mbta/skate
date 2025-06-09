@@ -13,7 +13,8 @@ import { DetourNotificationCard } from "./notificationCards/detourNotificationCa
 interface NotificationCardProps {
   notification: Notification
   currentTime: Date
-  openVPPForCurrentVehicle: (notification: Notification) => void
+  setNotificationRead: (notification: Notification) => void
+  setNotificationSelected: (notification: Notification) => void
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
 }
@@ -22,7 +23,8 @@ export const NotificationCard = (props: NotificationCardProps) => {
   const {
     notification,
     currentTime,
-    openVPPForCurrentVehicle,
+    setNotificationRead,
+    setNotificationSelected,
     hideLatestNotification,
     noFocusOrHover,
   } = props
@@ -41,6 +43,10 @@ export const NotificationCard = (props: NotificationCardProps) => {
   }
 
   const isUnread = notification.state === "unread"
+  const setNotificationState = (notification: Notification) => {
+    setNotificationSelected(notification)
+    setNotificationRead(notification)
+  }
 
   if (isBlockWaiver) {
     return (
@@ -48,19 +54,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
         notification={notification}
         currentTime={currentTime}
         isUnread={isUnread}
-        openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-        hideLatestNotification={hideLatestNotification}
-        noFocusOrHover={noFocusOrHover}
-      />
-    )
-  }
-
-  if (isDetour) {
-    return (
-      <DetourNotificationCard
-        notification={notification}
-        currentTime={currentTime}
-        isUnread={isUnread}
+        setNotificationState={setNotificationState}
         hideLatestNotification={hideLatestNotification}
         noFocusOrHover={noFocusOrHover}
       />
@@ -73,7 +67,20 @@ export const NotificationCard = (props: NotificationCardProps) => {
         notification={notification}
         currentTime={currentTime}
         isUnread={isUnread}
-        openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+        setNotificationState={setNotificationState}
+        hideLatestNotification={hideLatestNotification}
+        noFocusOrHover={noFocusOrHover}
+      />
+    )
+  }
+
+  if (isDetour) {
+    return (
+      <DetourNotificationCard
+        notification={notification}
+        currentTime={currentTime}
+        isUnread={isUnread}
+        setNotificationRead={setNotificationRead}
         hideLatestNotification={hideLatestNotification}
         noFocusOrHover={noFocusOrHover}
       />

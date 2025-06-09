@@ -36,14 +36,14 @@ export const BridgeMovementNotificationCard = ({
   isUnread,
   hideLatestNotification,
   noFocusOrHover,
-  openVPPForCurrentVehicle,
+  setNotificationState,
 }: {
   notification: Notification<BridgeNotification>
   currentTime: Date
   isUnread: boolean
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
-  openVPPForCurrentVehicle: (notification: Notification) => void
+  setNotificationState: (notification: Notification) => void
 }) => {
   return (
     <CardReadable
@@ -52,7 +52,7 @@ export const BridgeMovementNotificationCard = ({
       style="kiwi"
       isActive={isUnread}
       openCallback={() => {
-        openVPPForCurrentVehicle(notification)
+        setNotificationState(notification)
 
         if (hideLatestNotification) {
           hideLatestNotification()

@@ -66,7 +66,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -84,7 +85,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -102,7 +104,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -123,7 +126,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -143,7 +147,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -163,7 +168,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -194,7 +200,8 @@ describe("NotificationCard", () => {
           <NotificationCard
             notification={n}
             currentTime={new Date()}
-            openVPPForCurrentVehicle={jest.fn()}
+            setNotificationRead={jest.fn()}
+            setNotificationSelected={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -223,7 +230,8 @@ describe("NotificationCard", () => {
           <NotificationCard
             notification={notification}
             currentTime={new Date()}
-            openVPPForCurrentVehicle={jest.fn()}
+            setNotificationRead={jest.fn()}
+            setNotificationSelected={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -240,7 +248,7 @@ describe("NotificationCard", () => {
     })
     const dispatch = jest.fn()
     const currentTime = new Date()
-    const openVPPForCurrentVehicle = jest.fn()
+    const setNotificationSelected = jest.fn()
 
     const user = userEvent.setup()
     const result = render(
@@ -248,18 +256,19 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={updatedNotification}
           currentTime={currentTime}
-          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={setNotificationSelected}
           hideLatestNotification={() => dispatch(hideLatestNotification())}
           noFocusOrHover={true}
         />
       </RoutesProvider>
     )
-    expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
+    expect(setNotificationSelected).not.toHaveBeenCalled()
     expect(dispatch).not.toHaveBeenCalled()
 
     await user.click(result.getByText(/run1/))
 
-    expect(openVPPForCurrentVehicle).toHaveBeenCalled()
+    expect(setNotificationSelected).toHaveBeenCalled()
     expect(dispatch).toHaveBeenCalledWith({ type: "HIDE_LATEST_NOTIFICATION" })
   })
 
@@ -270,7 +279,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -286,7 +296,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -300,7 +311,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -320,7 +332,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          setNotificationRead={jest.fn()}
+          setNotificationSelected={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -346,7 +359,7 @@ describe("NotificationCard", () => {
       const updatedNotification = notification
       const dispatch = jest.fn()
       const currentTime = new Date()
-      const openVPPForCurrentVehicle = jest.fn()
+      const setNotificationSelected = jest.fn()
 
       const user = userEvent.setup()
       const result = render(
@@ -354,13 +367,14 @@ describe("NotificationCard", () => {
           <NotificationCard
             notification={updatedNotification}
             currentTime={currentTime}
-            openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+            setNotificationRead={jest.fn()}
+            setNotificationSelected={jest.fn()}
             hideLatestNotification={() => dispatch(hideLatestNotification())}
             noFocusOrHover={true}
           />
         </RoutesProvider>
       )
-      expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
+      expect(setNotificationSelected).not.toHaveBeenCalled()
       expect(dispatch).not.toHaveBeenCalled()
 
       await user.click(result.getByText(/Chelsea St Bridge/))

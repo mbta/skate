@@ -120,12 +120,14 @@ export const DetourNotificationCard = ({
   notification,
   currentTime,
   isUnread,
+  setNotificationRead,
   hideLatestNotification,
   noFocusOrHover,
 }: {
   notification: Notification<DetourNotifications>
   currentTime: Date
   isUnread: boolean
+  setNotificationRead: (notification: Notification) => void
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
 }) => {
@@ -145,6 +147,8 @@ export const DetourNotificationCard = ({
       style="kiwi"
       isActive={isUnread}
       openCallback={() => {
+        setNotificationRead(notification)
+
         if (isDetourNotification(notification)) {
           setShowDetourModal(true)
         }
