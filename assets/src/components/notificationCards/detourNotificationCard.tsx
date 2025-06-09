@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import {
   Notification,
   DetourNotificationStatus,
-  isDetourNotification,
   isDetourExpirationNotification,
   DetourNotifications,
 } from "../../realtime"
@@ -135,9 +134,7 @@ export const DetourNotificationCard = ({
   const detourId = notification.content.detourId
 
   const onCloseDetour = () => {
-    if (isDetourNotification(notification)) {
-      setShowDetourModal(false)
-    }
+    setShowDetourModal(false)
   }
 
   return (
@@ -148,10 +145,7 @@ export const DetourNotificationCard = ({
       isActive={isUnread}
       openCallback={() => {
         setNotificationRead(notification)
-
-        if (isDetourNotification(notification)) {
-          setShowDetourModal(true)
-        }
+        setShowDetourModal(true)
 
         if (hideLatestNotification) {
           hideLatestNotification()
