@@ -14,6 +14,7 @@ import {
   bridgeRaisedNotificationFactory,
   detourActivatedNotificationFactory,
   detourDeactivatedNotificationFactory,
+  detourExpirationNotificationFactory,
 } from "../factories/notification"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
@@ -338,6 +339,42 @@ describe("NotificationCard", () => {
       </RoutesProvider>
     )
     expect(result.queryByText(/Detour - Closed/)).toBeNull()
+  })
+
+  test("renders detour expiration notification if user in DetourExpirationNotifications group", () => {
+    jest
+      .mocked(getTestGroups)
+      .mockReturnValue([TestGroups.DetourExpirationNotifications])
+
+    const n: Notification = detourExpirationNotificationFactory.build()
+    render(
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          currentTime={new Date()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
+        />
+      </RoutesProvider>
+    )
+    expect(screen.getByText(/Detour duration/)).toBeVisible()
+  })
+
+  test("does not render detour expiration notification if user not in DetourExpirationNotifications group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
+    const n: Notification = detourExpirationNotificationFactory.build()
+    render(
+      <RoutesProvider routes={routes}>
+        <NotificationCard
+          notification={n}
+          currentTime={new Date()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
+        />
+      </RoutesProvider>
+    )
+    expect(screen.queryByText(/Detour duration/)).not.toBeInTheDocument()
   })
 
   test.each<{

@@ -4,6 +4,7 @@ export enum TestGroups {
   DemoMode = "demo-mode",
   DetoursList = "detours-list",
   DetoursNotifications = "detours-notifications",
+  DetourExpirationNotifications = "detour-expiration-notifications",
   DetoursPilot = "detours-pilot",
   MinimalLadderPage = "minimal-ladder-page",
   LateView = "late-view",

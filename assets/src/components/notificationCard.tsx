@@ -4,6 +4,8 @@ import {
   isBlockWaiverNotification,
   isADetourNotification,
   isBridgeNotification,
+  isDetourNotification,
+  isDetourExpirationNotification,
 } from "../realtime"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { BlockWaiverNotificationCard } from "./notificationCards/blockWaiverNotificationCard"
@@ -33,11 +35,18 @@ export const NotificationCard = (props: NotificationCardProps) => {
   const isBridge = isBridgeNotification(notification)
 
   if (
-    isDetour &&
+    isDetourNotification(notification) &&
     !(
       inTestGroup(TestGroups.DetoursList) &&
       inTestGroup(TestGroups.DetoursNotifications)
     )
+  ) {
+    return null
+  }
+
+  if (
+    isDetourExpirationNotification(notification) &&
+    !inTestGroup(TestGroups.DetourExpirationNotifications)
   ) {
     return null
   }
