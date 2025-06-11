@@ -142,26 +142,28 @@ export const DetourNotificationCard = ({
   }
 
   return (
-    <CardReadable
-      currentTime={currentTime}
-      title={notificationTitle(notification)}
-      style="kiwi"
-      isActive={unread}
-      openCallback={() => {
-        onRead(notification)
-        onSelect()
+    <>
+      <CardReadable
+        currentTime={currentTime}
+        title={notificationTitle(notification)}
+        style="kiwi"
+        isActive={unread}
+        openCallback={() => {
+          onRead(notification)
+          onSelect()
 
-        if (onClose) {
-          onClose()
-        }
-      }}
-      closeCallback={onClose}
-      time={notification.createdAt}
-      noFocusOrHover={noFocusOrHover}
-    >
-      <CardBody>
-        <Description notification={notification} />
-      </CardBody>
+          if (onClose) {
+            onClose()
+          }
+        }}
+        closeCallback={onClose}
+        time={notification.createdAt}
+        noFocusOrHover={noFocusOrHover}
+      >
+        <CardBody>
+          <Description notification={notification} />
+        </CardBody>
+      </CardReadable>
       {showDetourModal && detourId && (
         <DetourNotificationModal
           show
@@ -169,6 +171,6 @@ export const DetourNotificationCard = ({
           onClose={onCloseDetour}
         />
       )}
-    </CardReadable>
+    </>
   )
 }
