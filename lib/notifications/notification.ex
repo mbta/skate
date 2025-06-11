@@ -379,6 +379,44 @@ defmodule Notifications.Notification do
   defp content_from_db_notification(%DbNotification{
          detour_expiration: %Notifications.Db.DetourExpiration{} = detour_expiration
        }) do
-    detour_expiration
+    # `Jason` doesn't know how to encode a `%Duration{}`, or tuples
+    # like the `:microsecond` field.
+    update_in(
+      detour_expiration.expires_in,
+      &(&1
+        |> balance_seconds_to_minutes()
+        |> make_duration_serializable())
+    )
   end
+
+  # Expects a limited set of results from the database and converts those into
+  # known durations for the frontend
+  defp balance_seconds_to_minutes(%Duration{
+         year: 0,
+         month: 0,
+         week: 0,
+         day: 0,
+         hour: 0,
+         minute: 0,
+         second: seconds,
+         microsecond: {0, _}
+       }) do
+    case seconds do
+      1800 ->
+        # encodes to `PT30M`
+        Duration.new!(minute: 30)
+
+      0 ->
+        # encodes to `PT0S`
+        Duration.new!(minute: 0)
+
+      seconds ->
+        Logger.error("unknown seconds value second=#{seconds}")
+        # The frontend expects either `PT0S` or `PT30M`,
+        # 0s seems like a safer default _for now_.
+        Duration.new!(minute: 0)
+    end
+  end
+
+  def make_duration_serializable(%Duration{} = duration), do: Duration.to_iso8601(duration)
 end
