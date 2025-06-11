@@ -18,6 +18,27 @@ import { DetourModal } from "./detours/detourModal"
 import { DetourId } from "../models/detoursList"
 import { useLoadDetour } from "../hooks/useLoadDetour"
 
+const shouldShowNotification = (notification: Notification) => {
+  if (
+    notification.content.$type === NotificationType.DetourExpiration &&
+    !inTestGroup(TestGroups.DetourExpirationNotifications)
+  ) {
+    return false
+  }
+
+  if (
+    notification.content.$type === NotificationType.Detour &&
+    !(
+      inTestGroup(TestGroups.DetoursList) &&
+      inTestGroup(TestGroups.DetoursNotifications)
+    )
+  ) {
+    return false
+  }
+
+  return true
+}
+
 export const NotificationCard = ({
   notification,
   currentTime,
@@ -47,13 +68,7 @@ export const NotificationCard = ({
       : null
   )
 
-  if (
-    notification.content.$type === NotificationType.Detour &&
-    !(
-      inTestGroup(TestGroups.DetoursList) &&
-      inTestGroup(TestGroups.DetoursNotifications)
-    )
-  ) {
+  if (shouldShowNotification(notification) === false) {
     return null
   }
 

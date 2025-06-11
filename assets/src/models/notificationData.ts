@@ -21,6 +21,7 @@ import {
   NotificationType,
 } from "../realtime"
 import { detourId } from "./detoursList"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 const dateFromSeconds = coerce(
   date(),
@@ -80,6 +81,39 @@ export const DetourNotificationData = type({
   origin: string(),
 })
 
+// If we ever get `Temporal` or a Temporal Polyfill, we could replace this
+// with a real ISO8601 parser. We could also implement that ourselves if needed
+// as the Regular Expression for ISO8601 Durations is _somewhat_ straightforward
+//
+// For now, we know we only have two valid values for `expiresIn` so this
+// matches the exact strings the ISO8601 Durations should take the form
+// of, and reduces the amount of total data that would otherwise be sent
+// if we encoded durations as objects, and makes this easier to switch
+// to Temporal in the future.
+const detourExpiresInFromISO8601Duration = coerce(
+  enums([0, 30]),
+  enums(["PT0S", "PT30M"]),
+  (value) => {
+    switch (value) {
+      case "PT0S":
+        return 0
+      case "PT30M":
+        return 30
+    }
+  }
+)
+
+export const DetourExpirationNotificationData = type({
+  __struct__: literal(NotificationType.DetourExpiration),
+  estimated_duration: string(),
+  expires_in: detourExpiresInFromISO8601Duration,
+  detour_id: detourId,
+  headsign: string(),
+  route: string(),
+  direction: string(),
+  origin: string(),
+})
+
 export type DetourNotificationData = Infer<typeof DetourNotificationData>
 
 export const NotificationData = type({
@@ -91,6 +125,7 @@ export const NotificationData = type({
     BridgeNotificationData,
     BlockWaiverNotificationData,
     DetourNotificationData,
+    DetourExpirationNotificationData,
   ]),
 })
 export type NotificationData = Infer<typeof NotificationData>
@@ -149,6 +184,23 @@ export const notificationFromData = (
         route: notificationData.content.route,
       }
       break
+    }
+
+    case NotificationType.DetourExpiration: {
+      content = {
+        $type: NotificationType.DetourExpiration,
+        detourId: notificationData.content.detour_id,
+
+        estimatedDuration: notificationData.content.estimated_duration,
+        expiresIn: notificationData.content.expires_in,
+
+        headsign: notificationData.content.headsign,
+        route: notificationData.content.route,
+        direction: notificationData.content.direction,
+        origin: notificationData.content.origin,
+
+        isDispatcher: inTestGroup(TestGroups.DetoursPilot),
+      }
     }
   }
 
