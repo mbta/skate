@@ -36,14 +36,16 @@ export const BridgeMovementNotificationCard = ({
   isUnread,
   hideLatestNotification,
   noFocusOrHover,
-  setNotificationState,
+  onSelect,
+  onRead,
 }: {
   notification: Notification<BridgeNotification>
   currentTime: Date
   isUnread: boolean
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
-  setNotificationState: (notification: Notification) => void
+  onSelect: (notification: Notification) => void
+  onRead: (notification: Notification) => void
 }) => {
   return (
     <CardReadable
@@ -52,7 +54,8 @@ export const BridgeMovementNotificationCard = ({
       style="kiwi"
       isActive={isUnread}
       openCallback={() => {
-        setNotificationState(notification)
+        onSelect(notification)
+        onRead(notification)
 
         if (hideLatestNotification) {
           hideLatestNotification()

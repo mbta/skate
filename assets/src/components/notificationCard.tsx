@@ -13,8 +13,8 @@ import { DetourNotificationCard } from "./notificationCards/detourNotificationCa
 interface NotificationCardProps {
   notification: Notification
   currentTime: Date
-  setNotificationRead: (notification: Notification) => void
-  setNotificationSelected: (notification: Notification) => void
+  onRead: (notification: Notification) => void
+  onSelect: (notification: Notification) => void
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
 }
@@ -23,8 +23,8 @@ export const NotificationCard = (props: NotificationCardProps) => {
   const {
     notification,
     currentTime,
-    setNotificationRead,
-    setNotificationSelected,
+    onRead,
+    onSelect,
     hideLatestNotification,
     noFocusOrHover,
   } = props
@@ -43,10 +43,6 @@ export const NotificationCard = (props: NotificationCardProps) => {
   }
 
   const isUnread = notification.state === "unread"
-  const setNotificationState = (notification: Notification) => {
-    setNotificationSelected(notification)
-    setNotificationRead(notification)
-  }
 
   if (isBlockWaiver) {
     return (
@@ -54,7 +50,8 @@ export const NotificationCard = (props: NotificationCardProps) => {
         notification={notification}
         currentTime={currentTime}
         isUnread={isUnread}
-        setNotificationState={setNotificationState}
+        onRead={onRead}
+        onSelect={onSelect}
         hideLatestNotification={hideLatestNotification}
         noFocusOrHover={noFocusOrHover}
       />
@@ -67,7 +64,8 @@ export const NotificationCard = (props: NotificationCardProps) => {
         notification={notification}
         currentTime={currentTime}
         isUnread={isUnread}
-        setNotificationState={setNotificationState}
+        onRead={onRead}
+        onSelect={onSelect}
         hideLatestNotification={hideLatestNotification}
         noFocusOrHover={noFocusOrHover}
       />
@@ -80,7 +78,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
         notification={notification}
         currentTime={currentTime}
         isUnread={isUnread}
-        setNotificationRead={setNotificationRead}
+        onRead={onRead}
         hideLatestNotification={hideLatestNotification}
         noFocusOrHover={noFocusOrHover}
       />

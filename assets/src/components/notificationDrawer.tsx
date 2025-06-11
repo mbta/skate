@@ -71,11 +71,11 @@ const Content = () => {
 
   const [, stateDispatch] = useContext(StateDispatchContext)
 
-  const setNotificationRead = (notification: Notification) => {
+  const onRead = (notification: Notification) => {
     setNotificationReadState(notification, notificationsDispatch)
   }
 
-  const setNotificationSelected = (notification: Notification) => {
+  const onSelect = (notification: Notification) => {
     setNotificationSelectedState(notification, stateDispatch)
   }
 
@@ -112,8 +112,8 @@ const Content = () => {
             <NotificationCard
               notification={notification}
               currentTime={currentTime}
-              setNotificationRead={setNotificationRead}
-              setNotificationSelected={setNotificationSelected}
+              onRead={onRead}
+              onSelect={onSelect}
             />
           </li>
         ))}

@@ -23,11 +23,11 @@ export const Notifications = () => {
       ? notifications[0]
       : null
 
-  const setNotificationRead = (notification: Notification) => {
+  const onRead = (notification: Notification) => {
     setNotificationReadState(notification, dispatch)
   }
 
-  const setNotificationSelected = (notification: Notification) => {
+  const onSelect = (notification: Notification) => {
     setNotificationSelectedState(notification, stateDispatch)
   }
 
@@ -37,8 +37,8 @@ export const Notifications = () => {
         <NotificationCard
           notification={notificationToShow}
           currentTime={currentTime}
-          setNotificationRead={setNotificationRead}
-          setNotificationSelected={setNotificationSelected}
+          onRead={onRead}
+          onSelect={onSelect}
           hideLatestNotification={() => dispatch(hideLatestNotification())}
           noFocusOrHover={true}
         />

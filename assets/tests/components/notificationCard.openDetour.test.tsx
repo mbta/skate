@@ -54,8 +54,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          setNotificationRead={jest.fn()}
-          setNotificationSelected={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )

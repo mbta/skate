@@ -98,14 +98,16 @@ export const BlockWaiverNotificationCard = ({
   isUnread,
   hideLatestNotification,
   noFocusOrHover,
-  setNotificationState,
+  onSelect,
+  onRead,
 }: {
   notification: Notification<BlockWaiverNotification>
   currentTime: Date
   isUnread: boolean
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
-  setNotificationState: (notification: Notification) => void
+  onSelect: (notification: Notification) => void
+  onRead: (notification: Notification) => void
 }) => {
   const routes = useRoutes(notification.content.routeIds)
   const routeAtCreation = useRoute(notification.content.routeIdAtCreation)
@@ -117,7 +119,8 @@ export const BlockWaiverNotificationCard = ({
       style="kiwi"
       isActive={isUnread}
       openCallback={() => {
-        setNotificationState(notification)
+        onSelect(notification)
+        onRead(notification)
 
         if (hideLatestNotification) {
           hideLatestNotification()
