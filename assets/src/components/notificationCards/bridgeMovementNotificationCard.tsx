@@ -33,7 +33,7 @@ const notificationDescription = (
 export const BridgeMovementNotificationCard = ({
   notification,
   currentTime,
-  isUnread,
+  unread,
   hideLatestNotification,
   noFocusOrHover,
   onSelect,
@@ -41,7 +41,7 @@ export const BridgeMovementNotificationCard = ({
 }: {
   notification: Notification<BridgeNotification>
   currentTime: Date
-  isUnread: boolean
+  unread: boolean
   hideLatestNotification?: () => void
   noFocusOrHover?: boolean
   onSelect: (notification: Notification) => void
@@ -52,7 +52,7 @@ export const BridgeMovementNotificationCard = ({
       currentTime={currentTime}
       title={notificationTitle(notification)}
       style="kiwi"
-      isActive={isUnread}
+      isActive={unread}
       openCallback={() => {
         onSelect(notification)
         onRead(notification)

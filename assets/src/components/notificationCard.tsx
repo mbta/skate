@@ -42,14 +42,14 @@ export const NotificationCard = (props: NotificationCardProps) => {
     return null
   }
 
-  const isUnread = notification.state === "unread"
+  const unread = notification.state === "unread"
 
   if (isBlockWaiver) {
     return (
       <BlockWaiverNotificationCard
         notification={notification}
         currentTime={currentTime}
-        isUnread={isUnread}
+        unread={unread}
         onRead={onRead}
         onSelect={onSelect}
         hideLatestNotification={hideLatestNotification}
@@ -63,7 +63,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
       <BridgeMovementNotificationCard
         notification={notification}
         currentTime={currentTime}
-        isUnread={isUnread}
+        unread={unread}
         onRead={onRead}
         onSelect={onSelect}
         hideLatestNotification={hideLatestNotification}
@@ -77,7 +77,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
       <DetourNotificationCard
         notification={notification}
         currentTime={currentTime}
-        isUnread={isUnread}
+        unread={unread}
         onRead={onRead}
         hideLatestNotification={hideLatestNotification}
         noFocusOrHover={noFocusOrHover}
