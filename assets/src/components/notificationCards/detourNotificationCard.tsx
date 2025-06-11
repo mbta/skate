@@ -151,10 +151,6 @@ export const DetourNotificationCard = ({
         openCallback={() => {
           onRead(notification)
           onSelect()
-
-          if (onClose) {
-            onClose()
-          }
         }}
         closeCallback={onClose}
         time={notification.createdAt}
