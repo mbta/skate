@@ -34,7 +34,7 @@ export const BridgeMovementNotificationCard = ({
   notification,
   currentTime,
   unread,
-  hideLatestNotification,
+  onClose,
   noFocusOrHover,
   onSelect,
   onRead,
@@ -42,7 +42,7 @@ export const BridgeMovementNotificationCard = ({
   notification: Notification<BridgeNotification>
   currentTime: Date
   unread: boolean
-  hideLatestNotification?: () => void
+  onClose?: () => void
   noFocusOrHover?: boolean
   onSelect: (notification: Notification) => void
   onRead: (notification: Notification) => void
@@ -57,13 +57,13 @@ export const BridgeMovementNotificationCard = ({
         onSelect(notification)
         onRead(notification)
 
-        if (hideLatestNotification) {
-          hideLatestNotification()
+        if (onClose) {
+          onClose()
         }
 
         fullStoryEvent("User clicked Chelsea Bridge Notification", {})
       }}
-      closeCallback={hideLatestNotification}
+      closeCallback={onClose}
       time={notification.createdAt}
       noFocusOrHover={noFocusOrHover}
     >

@@ -258,7 +258,7 @@ describe("NotificationCard", () => {
           currentTime={currentTime}
           onRead={jest.fn()}
           onSelect={onSelect}
-          hideLatestNotification={() => dispatch(hideLatestNotification())}
+          onClose={() => dispatch(hideLatestNotification())}
           noFocusOrHover={true}
         />
       </RoutesProvider>
@@ -369,7 +369,7 @@ describe("NotificationCard", () => {
             currentTime={currentTime}
             onRead={jest.fn()}
             onSelect={jest.fn()}
-            hideLatestNotification={() => dispatch(hideLatestNotification())}
+            onClose={() => dispatch(hideLatestNotification())}
             noFocusOrHover={true}
           />
         </RoutesProvider>

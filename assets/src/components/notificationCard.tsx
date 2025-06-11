@@ -15,7 +15,7 @@ interface NotificationCardProps {
   currentTime: Date
   onRead: (notification: Notification) => void
   onSelect: (notification: Notification) => void
-  hideLatestNotification?: () => void
+  onClose?: () => void
   noFocusOrHover?: boolean
 }
 
@@ -25,7 +25,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
     currentTime,
     onRead,
     onSelect,
-    hideLatestNotification,
+    onClose,
     noFocusOrHover,
   } = props
   const isBlockWaiver = isBlockWaiverNotification(notification)
@@ -52,7 +52,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
         unread={unread}
         onRead={onRead}
         onSelect={onSelect}
-        hideLatestNotification={hideLatestNotification}
+        onClose={onClose}
         noFocusOrHover={noFocusOrHover}
       />
     )
@@ -66,7 +66,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
         unread={unread}
         onRead={onRead}
         onSelect={onSelect}
-        hideLatestNotification={hideLatestNotification}
+        onClose={onClose}
         noFocusOrHover={noFocusOrHover}
       />
     )
@@ -79,7 +79,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
         currentTime={currentTime}
         unread={unread}
         onRead={onRead}
-        hideLatestNotification={hideLatestNotification}
+        onClose={onClose}
         noFocusOrHover={noFocusOrHover}
       />
     )

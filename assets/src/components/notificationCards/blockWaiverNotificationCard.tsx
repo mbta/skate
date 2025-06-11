@@ -96,7 +96,7 @@ export const BlockWaiverNotificationCard = ({
   notification,
   currentTime,
   unread,
-  hideLatestNotification,
+  onClose,
   noFocusOrHover,
   onSelect,
   onRead,
@@ -104,7 +104,7 @@ export const BlockWaiverNotificationCard = ({
   notification: Notification<BlockWaiverNotification>
   currentTime: Date
   unread: boolean
-  hideLatestNotification?: () => void
+  onClose?: () => void
   noFocusOrHover?: boolean
   onSelect: (notification: Notification) => void
   onRead: (notification: Notification) => void
@@ -122,11 +122,11 @@ export const BlockWaiverNotificationCard = ({
         onSelect(notification)
         onRead(notification)
 
-        if (hideLatestNotification) {
-          hideLatestNotification()
+        if (onClose) {
+          onClose()
         }
       }}
-      closeCallback={hideLatestNotification}
+      closeCallback={onClose}
       time={notification.createdAt}
       noFocusOrHover={noFocusOrHover}
     >

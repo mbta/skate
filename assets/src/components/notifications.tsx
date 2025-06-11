@@ -31,6 +31,8 @@ export const Notifications = () => {
     setNotificationSelectedState(notification, stateDispatch)
   }
 
+  const onClose = () => dispatch(hideLatestNotification())
+
   return (
     <div className="c-notifications">
       {notificationToShow && (
@@ -39,7 +41,7 @@ export const Notifications = () => {
           currentTime={currentTime}
           onRead={onRead}
           onSelect={onSelect}
-          hideLatestNotification={() => dispatch(hideLatestNotification())}
+          onClose={onClose}
           noFocusOrHover={true}
         />
       )}

@@ -120,14 +120,14 @@ export const DetourNotificationCard = ({
   currentTime,
   unread,
   onRead,
-  hideLatestNotification,
+  onClose,
   noFocusOrHover,
 }: {
   notification: Notification<DetourNotifications>
   currentTime: Date
   unread: boolean
   onRead: (notification: Notification) => void
-  hideLatestNotification?: () => void
+  onClose?: () => void
   noFocusOrHover?: boolean
 }) => {
   const [showDetourModal, setShowDetourModal] = useState(false)
@@ -151,11 +151,11 @@ export const DetourNotificationCard = ({
         onRead(notification)
         onSelect()
 
-        if (hideLatestNotification) {
-          hideLatestNotification()
+        if (onClose) {
+          onClose()
         }
       }}
-      closeCallback={hideLatestNotification}
+      closeCallback={onClose}
       time={notification.createdAt}
       noFocusOrHover={noFocusOrHover}
     >
