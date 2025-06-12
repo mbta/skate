@@ -469,7 +469,8 @@ defmodule Skate.Detours.Detours do
        when is_binary(n_hours) do
     hours =
       n_hours
-      |> String.at(0)
+      |> String.split()
+      |> Enum.at(0)
       |> String.to_integer()
 
     detour
