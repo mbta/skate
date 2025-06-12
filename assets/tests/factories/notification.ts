@@ -88,7 +88,7 @@ export const bridgeLoweredNotificationFactory = Factory.define<
   content: bridgeLoweredNotificationContentFactory.build(),
 }))
 
-const detourActivatedNotificationContentFactory =
+export const detourActivatedNotificationContentFactory =
   Factory.define<DetourNotification>(({ sequence }) => ({
     $type: NotificationType.Detour,
     status: DetourNotificationStatus.Activated,
