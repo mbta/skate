@@ -24,6 +24,7 @@
   svg {
     fill: $color-primary-dark-legacy;
     stroke: $color-primary-dark-legacy;
+    vertical-align: unset;
   }
 }
 
@@ -106,6 +107,14 @@
   padding: 0.25rem;
   width: 1rem;
   z-index: 2;
+  box-sizing: content-box;
+
+  span {
+    height: 100%;
+    svg {
+      display: block;
+    }
+  }
 
   .c-minischedule__timepoint-row & {
     // Make the icon smaller
