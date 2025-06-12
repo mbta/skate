@@ -304,7 +304,10 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        ) do
     Notifications.NotificationServer.detour_activated(detour)
+
+    detour = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour)
+
     Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
   end
 
