@@ -432,13 +432,13 @@ defmodule Skate.Detours.Detours do
     |> DateTime.to_unix()
   end
 
-  defp calculate_expiration_timestamp(%Detour{status: :active} = detour),
+  defp calculate_expiration_timestamp(%{status: :active} = detour),
     do: do_calculate_expiration_timestamp(detour)
 
   defp calculate_expiration_timestamp(_), do: nil
 
   defp do_calculate_expiration_timestamp(
-         %Detour{
+         %{
            estimated_duration: "Until end of service"
          } = detour
        ) do
@@ -462,7 +462,7 @@ defmodule Skate.Detours.Detours do
   end
 
   defp do_calculate_expiration_timestamp(
-         %Detour{
+         %{
            estimated_duration: n_hours
          } = detour
        )
