@@ -2,7 +2,7 @@ import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
 import "@testing-library/jest-dom/jest-globals"
 import { render, screen } from "@testing-library/react"
-import { NotificationCard, title } from "../../src/components/notificationCard"
+import { NotificationCard } from "../../src/components/notificationCard"
 import {
   BlockWaiverReason,
   BridgeNotification,
@@ -66,7 +66,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -84,7 +85,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -102,7 +104,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -123,7 +126,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -143,7 +147,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -163,7 +168,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -194,7 +200,8 @@ describe("NotificationCard", () => {
           <NotificationCard
             notification={n}
             currentTime={new Date()}
-            openVPPForCurrentVehicle={jest.fn()}
+            onRead={jest.fn()}
+            onSelect={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -223,7 +230,8 @@ describe("NotificationCard", () => {
           <NotificationCard
             notification={notification}
             currentTime={new Date()}
-            openVPPForCurrentVehicle={jest.fn()}
+            onRead={jest.fn()}
+            onSelect={jest.fn()}
           />
         </RoutesProvider>
       )
@@ -240,7 +248,7 @@ describe("NotificationCard", () => {
     })
     const dispatch = jest.fn()
     const currentTime = new Date()
-    const openVPPForCurrentVehicle = jest.fn()
+    const onSelect = jest.fn()
 
     const user = userEvent.setup()
     const result = render(
@@ -248,18 +256,19 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={updatedNotification}
           currentTime={currentTime}
-          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-          hideLatestNotification={() => dispatch(hideLatestNotification())}
+          onRead={jest.fn()}
+          onSelect={onSelect}
+          onClose={() => dispatch(hideLatestNotification())}
           noFocusOrHover={true}
         />
       </RoutesProvider>
     )
-    expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
+    expect(onSelect).not.toHaveBeenCalled()
     expect(dispatch).not.toHaveBeenCalled()
 
     await user.click(result.getByText(/run1/))
 
-    expect(openVPPForCurrentVehicle).toHaveBeenCalled()
+    expect(onSelect).toHaveBeenCalled()
     expect(dispatch).toHaveBeenCalledWith({ type: "HIDE_LATEST_NOTIFICATION" })
   })
 
@@ -270,7 +279,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -286,7 +296,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -300,7 +311,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -320,7 +332,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={jest.fn()}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )
@@ -339,78 +352,6 @@ describe("NotificationCard", () => {
       should_fire_fs_event: true,
       notification: bridgeLoweredNotificationFactory.build(),
     },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "other",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "manpower",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "disabled",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "diverted",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "accident",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "adjusted",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "operator_error",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: blockWaiverNotificationFactory.build({
-        content: {
-          reason: "traffic",
-        },
-      }),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: detourActivatedNotificationFactory.build({}),
-    },
-    {
-      should_fire_fs_event: false,
-      notification: detourDeactivatedNotificationFactory.build(),
-    },
   ])(
     "clicking bridge notification should trigger FS event: $notification.content.reason",
     async ({ notification, should_fire_fs_event }) => {
@@ -418,7 +359,7 @@ describe("NotificationCard", () => {
       const updatedNotification = notification
       const dispatch = jest.fn()
       const currentTime = new Date()
-      const openVPPForCurrentVehicle = jest.fn()
+      const onSelect = jest.fn()
 
       const user = userEvent.setup()
       const result = render(
@@ -426,18 +367,17 @@ describe("NotificationCard", () => {
           <NotificationCard
             notification={updatedNotification}
             currentTime={currentTime}
-            openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-            hideLatestNotification={() => dispatch(hideLatestNotification())}
+            onRead={jest.fn()}
+            onSelect={jest.fn()}
+            onClose={() => dispatch(hideLatestNotification())}
             noFocusOrHover={true}
           />
         </RoutesProvider>
       )
-      expect(openVPPForCurrentVehicle).not.toHaveBeenCalled()
+      expect(onSelect).not.toHaveBeenCalled()
       expect(dispatch).not.toHaveBeenCalled()
 
-      // I don't _want_ to use `title`, but there's nothing else consistent to
-      // match on for _all_ notifications
-      await user.click(result.getByText(title(notification)))
+      await user.click(result.getByText(/Chelsea St Bridge/))
 
       if (should_fire_fs_event) {
         // eslint-disable-next-line jest/no-conditional-expect

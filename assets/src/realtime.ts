@@ -63,6 +63,29 @@ export enum NotificationType {
   Detour = "Elixir.Notifications.Db.Detour",
   DetourExpiration = "Elixir.Notification.Db.DetourExpiration",
 }
+export function isDetourNotification(
+  notification: Notification
+): notification is Notification<DetourNotification> {
+  return notification.content.$type === NotificationType.Detour
+}
+
+export function isDetourExpirationNotification(
+  notification: Notification
+): notification is Notification<DetourExpirationNotification> {
+  return notification.content.$type === NotificationType.DetourExpiration
+}
+
+export type DetourNotifications =
+  | DetourNotification
+  | DetourExpirationNotification
+export function isADetourNotification(
+  notification: Notification
+): notification is Notification<DetourNotifications> {
+  return (
+    isDetourNotification(notification) ||
+    isDetourExpirationNotification(notification)
+  )
+}
 
 export interface BridgeLoweredNotification {
   $type: NotificationType.BridgeMovement
@@ -78,6 +101,12 @@ export interface BridgeRaisedNotification {
 export type BridgeNotification =
   | BridgeLoweredNotification
   | BridgeRaisedNotification
+
+export function isBridgeNotification(
+  notification: Notification
+): notification is Notification<BridgeNotification> {
+  return notification.content.$type === NotificationType.BridgeMovement
+}
 
 export type BlockWaiverNotification = {
   $type: NotificationType.BlockWaiver

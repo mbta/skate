@@ -23,9 +23,15 @@ export const Notifications = () => {
       ? notifications[0]
       : null
 
-  const openVPPForCurrentVehicle = (notification: Notification) => {
-    openVPPForNotification(notification, stateDispatch, dispatch)
+  const onRead = (notification: Notification) => {
+    setNotificationReadState(notification, dispatch)
   }
+
+  const onSelect = (notification: Notification) => {
+    setNotificationSelectedState(notification, stateDispatch)
+  }
+
+  const onClose = () => dispatch(hideLatestNotification())
 
   return (
     <div className="c-notifications">
@@ -33,8 +39,9 @@ export const Notifications = () => {
         <NotificationCard
           notification={notificationToShow}
           currentTime={currentTime}
-          openVPPForCurrentVehicle={openVPPForCurrentVehicle}
-          hideLatestNotification={() => dispatch(hideLatestNotification())}
+          onRead={onRead}
+          onSelect={onSelect}
+          onClose={onClose}
           noFocusOrHover={true}
         />
       )}
@@ -42,13 +49,18 @@ export const Notifications = () => {
   )
 }
 
-export const openVPPForNotification = (
+export const setNotificationReadState = (
   notification: Notification,
-  stateDispatch: StateDispatch,
   notificationsDispatch: NotificationsDispatch
 ): void => {
   if (notification.state === "unread") {
     notificationsDispatch(toggleReadState(notification))
   }
+}
+
+export const setNotificationSelectedState = (
+  notification: Notification,
+  stateDispatch: StateDispatch
+): void => {
   stateDispatch(setNotification(notification))
 }
