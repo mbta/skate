@@ -54,6 +54,35 @@ defmodule Notifications.Notification do
   ]
 
   @doc """
+  Retrieves `Notifications.Db.Notification` and associated Notification Type
+  data for the given Notification ID.
+  """
+  def get_notification(id) do
+    import Notifications.Db.Notification.Queries
+
+    base()
+    |> select_bridge_movements()
+    |> select_block_waivers()
+    |> select_detour_info()
+    |> select_detour_expiration_notifications()
+    |> where(id: ^id)
+    |> Skate.Repo.one()
+  end
+
+  @doc """
+  Fetches a notification using `Notifications.Notification.get_notification/1`
+  and converts it to a `Notifications.Notification` struct.
+
+  Prefer `Notifications.Notification.get_notification/1` if you do not need to
+  send the returned notification to the frontend.
+  """
+  def get_domain_notification(id) do
+    id
+    |> get_notification()
+    |> from_db_notification()
+  end
+
+  @doc """
   Creates a new detour expiration notification
 
   ## Example
