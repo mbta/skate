@@ -17,9 +17,9 @@ defmodule Schedule.CacheFile do
   The application should use the file to load data for GTFS
   if the the envs are :dev or :test.
 
-    iex> Mix.env
+    iex> Mix.env()
     :test
-    iex> CacheFile.should_use_file?
+    iex> CacheFile.should_use_file?()
     true
   """
   @spec should_use_file?() :: boolean
