@@ -19,11 +19,6 @@ defmodule Notifications.Notification do
 
   @notification_expiration_threshold 8 * 60 * 60
 
-  # This "blackout" period is so that multiple unsynchronised Skate instances
-  # don't duplicate their work when polling the bridge API
-  @bridge_lowering_blackout 120
-  @chelsea_st_bridge_route_ids ~w[112 743]
-
   @type id :: integer()
 
   @type t() ::
@@ -144,6 +139,13 @@ defmodule Notifications.Notification do
 
       repo_operation
     end
+  end
+
+  def create_bridge_movement_notification(attrs) do
+    %Notifications.Db.BridgeMovement{}
+    |> Notifications.Db.BridgeMovement.changeset(attrs)
+    |> Skate.Repo.insert()
+    |> broadcast_notification(:users_from_notification)
   end
 
   @doc """
@@ -345,50 +347,6 @@ defmodule Notifications.Notification do
             )
           )
       end
-
-    from_db_notification(db_record)
-  end
-
-  def get_or_create_from_bridge_movement(bridge_movement_values) do
-    created_at = DateTime.to_unix(DateTime.utc_now())
-
-    {:ok, db_record} =
-      Skate.Repo.transaction(fn ->
-        Skate.Repo.query!("LOCK TABLE bridge_movements")
-
-        # The bridge API doesn't have anything like an "updated at" timestamp
-        # so we assume that, if we see two bridge movements within a blackout
-        # period, they are actually the same movement and what's happening is
-        # that we have multiple servers trying to insert a movement at once.
-        cutoff_time = NaiveDateTime.add(NaiveDateTime.utc_now(), -@bridge_lowering_blackout)
-
-        existing_record =
-          Skate.Repo.one(
-            from(n in DbNotification,
-              join: bm in assoc(n, :bridge_movement),
-              preload: [bridge_movement: bm],
-              where:
-                bm.inserted_at > ^cutoff_time and bm.status == ^bridge_movement_values[:status],
-              order_by: [desc: bm.inserted_at],
-              limit: 1
-            )
-          )
-
-        if existing_record do
-          existing_record
-        else
-          changeset =
-            DbNotification.bridge_movement_changeset(
-              %DbNotification{created_at: created_at},
-              bridge_movement_values
-            )
-
-          {:ok, new_record} = Skate.Repo.insert(changeset, returning: true)
-          link_notification_to_users(new_record.id, @chelsea_st_bridge_route_ids)
-          log_creation(new_record)
-          new_record
-        end
-      end)
 
     from_db_notification(db_record)
   end

@@ -240,60 +240,38 @@ defmodule Notifications.NotificationTest do
           end_time: 19
         })
 
-      # Due to the blackout logic in get_or_create_from_bridge_movement, we
+      # Due to the blackout logic in maybe_record_bridge_status, we
       # have to rig the inserted_at timestamps of these bridge movements for
       # the test to work the way we would expect.
+      now = DateTime.utc_now()
 
-      bridge_lowered_unexpired =
-        Notification.get_or_create_from_bridge_movement(%{
+      {:ok, %{notification: %{id: bridge_lowered_unexpired_id}}} =
+        Skate.BridgeStatus.maybe_record_bridge_status(%{
           status: :lowered,
-          lowering_time: nil,
-          created_at: baseline_time - eight_hours + 1234
+          inserted_at: DateTime.shift(now, hour: -3)
         })
 
-      Skate.Repo.query!(
-        "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
-      )
-
-      filled_in_bridge_lowered_unexpired =
-        Kernel.update_in(
-          bridge_lowered_unexpired.content.inserted_at,
-          &NaiveDateTime.add(&1, -3, :hour)
-        )
-
-      _bridge_lowered_expired =
-        Notification.get_or_create_from_bridge_movement(%{
+      # Expired
+      {:ok, _} =
+        Skate.BridgeStatus.maybe_record_bridge_status(%{
           status: :lowered,
-          lowering_time: nil,
-          created_at: baseline_time - eight_hours
+          inserted_at: DateTime.shift(now, hour: -2),
+          notification: %{created_at: baseline_time - eight_hours}
         })
 
-      Skate.Repo.query!(
-        "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
-      )
-
-      bridge_raised_unexpired =
-        Notification.get_or_create_from_bridge_movement(%{
+      {:ok, %{notification: %{id: bridge_raised_unexpired_id}}} =
+        Skate.BridgeStatus.maybe_record_bridge_status(%{
           status: :raised,
           lowering_time: baseline_time - eight_hours + 999,
-          created_at: baseline_time - eight_hours + 2
+          inserted_at: DateTime.shift(now, hour: -1)
         })
 
-      Skate.Repo.query!(
-        "UPDATE bridge_movements SET inserted_at = inserted_at - interval '1 hour'"
-      )
-
-      filled_in_bridge_raised_unexpired =
-        Kernel.update_in(
-          bridge_raised_unexpired.content.inserted_at,
-          &NaiveDateTime.add(&1, -1, :hour)
-        )
-
-      _bridge_raised_expired =
-        Notification.get_or_create_from_bridge_movement(%{
+      # Expired
+      {:ok, _} =
+        Skate.BridgeStatus.maybe_record_bridge_status(%{
           status: :raised,
-          lowering_time: nil,
-          created_at: baseline_time - eight_hours
+          inserted_at: now,
+          notification: %{created_at: baseline_time - eight_hours}
         })
 
       assert Skate.Repo.aggregate(DbNotification, :count) == 14
@@ -303,6 +281,12 @@ defmodule Notifications.NotificationTest do
 
       user2_notifications =
         user2.id |> Notification.unexpired_notifications_for_user(now_fn) |> Enum.sort_by(& &1.id)
+
+      filled_in_bridge_lowered_unexpired =
+        Notifications.Notification.get_domain_notification(bridge_lowered_unexpired_id)
+
+      filled_in_bridge_raised_unexpired =
+        Notifications.Notification.get_domain_notification(bridge_raised_unexpired_id)
 
       assert user1_notifications ==
                [
@@ -503,6 +487,30 @@ defmodule Notifications.NotificationTest do
 
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
+    end
+  end
+
+  describe "create_bridge_movement_notification/2" do
+    test "creates new bridge movement record and associated notification" do
+      {:ok, %Notifications.Db.BridgeMovement{notification: %Notifications.Db.Notification{}}} =
+        Notifications.Notification.create_bridge_movement_notification(%{
+          status: :lowered
+        })
+
+      {:ok, %Notifications.Db.BridgeMovement{notification: %Notifications.Db.Notification{}}} =
+        Notifications.Notification.create_bridge_movement_notification(%{
+          status: :raised
+        })
+    end
+
+    test "creates unread notifications for specified users" do
+      users = insert_list(3, :user)
+
+      {:ok, %{notification: %{users: ^users}}} =
+        Notifications.Notification.create_bridge_movement_notification(%{
+          status: :lowered,
+          notification: %{users: users}
+        })
     end
   end
 

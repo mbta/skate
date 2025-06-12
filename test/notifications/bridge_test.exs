@@ -174,13 +174,13 @@ defmodule Notifications.BridgeTest do
       reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/raise")
       {:noreply, raised_state} = handle_info(:update, nil)
       {:noreply, ^raised_state} = handle_info(:update, raised_state)
-      refute_received({:raised, _})
+      refute_received(%{status: :raised})
 
       # But transitioning to the lowered state ought to send a message
 
       reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/lower")
       {:noreply, _lowered_state} = handle_info(:update, raised_state)
-      assert_received({:lowered, nil})
+      assert_received(%{status: :lowered, lowering_time: nil})
     end
 
     test "Logs warning on bad message" do
