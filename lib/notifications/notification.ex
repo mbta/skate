@@ -83,7 +83,8 @@ defmodule Notifications.Notification do
   end
 
   @doc """
-  Creates a new detour expiration notification
+  Creates a new detour expiration notification and broadcasts to subscribed
+  users.
 
   ## Example
   ### Creating a notification
@@ -134,6 +135,17 @@ defmodule Notifications.Notification do
     |> Ecto.build_assoc(:detour_expiration_notifications)
     |> Notifications.Db.DetourExpiration.changeset(params)
     |> Skate.Repo.insert()
+    |> case do
+      {:ok, %{notification: %{id: notification_id}}} = result ->
+        notification_id
+        |> get_domain_notification()
+        |> Notifications.NotificationServer.broadcast_notification(:all)
+
+        result
+
+      {:error, _} = error ->
+        error
+    end
   end
 
   @doc """
