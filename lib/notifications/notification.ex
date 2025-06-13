@@ -179,6 +179,13 @@ defmodule Notifications.Notification do
     |> broadcast_notification(:users_from_notification)
   end
 
+  def create_block_waiver_notification(attrs) do
+    %Notifications.Db.BlockWaiver{}
+    |> Notifications.Db.BlockWaiver.changeset(attrs)
+    |> Skate.Repo.insert()
+    |> broadcast_notification(:users_from_notification)
+  end
+
   @doc """
   Creates a new detour expiration notification and broadcasts to subscribed
   users.
