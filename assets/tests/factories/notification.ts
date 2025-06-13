@@ -4,6 +4,7 @@ import {
   BlockWaiverReason,
   BridgeLoweredNotification,
   BridgeRaisedNotification,
+  DetourExpirationNotification,
   DetourNotification,
   DetourNotificationStatus,
   Notification,
@@ -87,7 +88,7 @@ export const bridgeLoweredNotificationFactory = Factory.define<
   content: bridgeLoweredNotificationContentFactory.build(),
 }))
 
-const detourActivatedNotificationContentFactory =
+export const detourActivatedNotificationContentFactory =
   Factory.define<DetourNotification>(({ sequence }) => ({
     $type: NotificationType.Detour,
     status: DetourNotificationStatus.Activated,
@@ -115,4 +116,37 @@ const detourDeactivatedNotificationContentFactory =
 export const detourDeactivatedNotificationFactory =
   detourActivatedNotificationFactory.params({
     content: detourDeactivatedNotificationContentFactory.build(),
+  })
+
+const detourExpirationNotificationContentFactory =
+  Factory.define<DetourExpirationNotification>(({ sequence }) => ({
+    $type: NotificationType.DetourExpiration,
+    status: DetourNotificationStatus.Activated,
+    detourId: sequence,
+    headsign: `Headsign ${sequence}`,
+    route: `${sequence}`,
+    direction: "Outbound",
+    origin: `Origin station ${sequence}`,
+    isDispatcher: false,
+    expiresIn: 0,
+    estimatedDuration: "4 hours",
+  }))
+
+const detourExpirationWarningNotificationContentFactory =
+  detourExpirationNotificationContentFactory.params({
+    expiresIn: 30,
+  })
+
+export const detourExpirationNotificationFactory = Factory.define<
+  Notification<DetourExpirationNotification>
+>(({ sequence }) => ({
+  id: sequence.toString(),
+  createdAt: new Date(),
+  state: "unread",
+  content: detourExpirationNotificationContentFactory.build(),
+}))
+
+export const detourExpirationWarningNotificationFactory =
+  detourExpirationNotificationFactory.params({
+    content: detourExpirationWarningNotificationContentFactory.build(),
   })
