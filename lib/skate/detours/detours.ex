@@ -207,7 +207,7 @@ defmodule Skate.Detours.Detours do
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
         broadcast_detour(new_record, author_id)
-        send_notification(detour_changes, new_record)
+        process_notifications(detour_changes, new_record)
         update_swiftly(detour_changes, new_record)
 
       _ ->
@@ -296,7 +296,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp send_notification(
+  defp process_notifications(
          %Ecto.Changeset{
            data: %Detour{status: :draft},
            changes: %{status: :active}
@@ -304,9 +304,14 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        ) do
     Notifications.NotificationServer.detour_activated(detour)
+
+    detour = db_detour_to_detour(detour)
+    expires_at = calculate_expiration_timestamp(detour)
+
+    Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
   end
 
-  defp send_notification(
+  defp process_notifications(
          %Ecto.Changeset{
            data: %Detour{status: :active},
            changes: %{status: :past}
@@ -316,7 +321,7 @@ defmodule Skate.Detours.Detours do
     Notifications.NotificationServer.detour_deactivated(detour)
   end
 
-  defp send_notification(_, _), do: nil
+  defp process_notifications(_, _), do: nil
 
   defp update_swiftly(changeset, detour) do
     enabled? =
@@ -426,4 +431,52 @@ defmodule Skate.Detours.Detours do
     |> DateTime.from_naive!("Etc/UTC")
     |> DateTime.to_unix()
   end
+
+  defp calculate_expiration_timestamp(%{status: :active} = detour),
+    do: do_calculate_expiration_timestamp(detour)
+
+  defp calculate_expiration_timestamp(_), do: nil
+
+  defp do_calculate_expiration_timestamp(
+         %{
+           estimated_duration: "Until end of service"
+         } = detour
+       ) do
+    {:ok, eos_same_day} =
+      detour.activated_at
+      |> DateTime.shift_zone!("America/New_York")
+      |> DateTime.to_date()
+      |> DateTime.new(~T[03:00:00], "America/New_York")
+
+    # check to see if the activated_at timestamp is after the current date's end of service time for the previous date.
+    days_to_add =
+      if DateTime.diff(detour.activated_at, eos_same_day) > 0 do
+        1
+      else
+        0
+      end
+
+    detour.activated_at
+    |> Date.add(days_to_add)
+    |> DateTime.new!(~T[03:00:00], "America/New_York")
+  end
+
+  defp do_calculate_expiration_timestamp(
+         %{
+           estimated_duration: n_hours
+         } = detour
+       )
+       when is_binary(n_hours) do
+    hours =
+      n_hours
+      |> String.split()
+      |> Enum.at(0)
+      |> String.to_integer()
+
+    detour
+    |> Map.get(:activated_at)
+    |> DateTime.add(hours, :hour)
+  end
+
+  defp do_calculate_expiration_timestamp(_), do: nil
 end
