@@ -681,6 +681,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "saves to database", %{server: server} do
+      NotificationServer.subscribe(0, server)
+
       notification_count = 3
       # create new notification
       for _ <- 1..notification_count do
@@ -688,9 +690,9 @@ defmodule Notifications.NotificationServerTest do
           detour =
           insert(:detour)
 
-        NotificationServer.detour_activated(detour, notify_finished: self(), server: server)
+        NotificationServer.detour_activated(detour, server: server)
 
-        assert_receive {:new_notification, detour: ^id}
+        assert_receive {:notification, %{content: %{detour_id: ^id}}}
       end
 
       # assert database contains notification
@@ -698,6 +700,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "broadcasts to all connected users", %{server: server} do
+      NotificationServer.subscribe(0, server)
+
       notification_count = 3
       # connect users to channel
       for id <- 1..notification_count do
@@ -709,15 +713,13 @@ defmodule Notifications.NotificationServerTest do
         detour =
         insert(:detour)
 
-      NotificationServer.detour_activated(detour, notify_finished: self(), server: server)
-
-      assert_receive {:new_notification, detour: ^id}
+      NotificationServer.detour_activated(detour, server: server)
 
       # assert channel sends notifications to each user
       for _ <- 1..notification_count do
         assert_receive {:notification,
                         %Notification{
-                          content: %Notifications.Db.Detour{status: :activated}
+                          content: %Notifications.Db.Detour{status: :activated, detour_id: ^id}
                         }}
       end
     end
@@ -731,6 +733,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "saves to database", %{server: server} do
+      NotificationServer.subscribe(0, server)
+
       notification_count = 3
       # create new notification
       for _ <- 1..notification_count do
@@ -738,9 +742,9 @@ defmodule Notifications.NotificationServerTest do
           detour =
           insert(:detour)
 
-        NotificationServer.detour_deactivated(detour, notify_finished: self(), server: server)
+        NotificationServer.detour_deactivated(detour, server: server)
 
-        assert_receive {:new_notification, detour: ^id}
+        assert_receive {:notification, %{content: %{detour_id: ^id}}}
       end
 
       # assert database contains notification
@@ -748,6 +752,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "broadcasts to all connected users", %{server: server} do
+      NotificationServer.subscribe(0, server)
+
       notification_count = 3
       # connect users to channel
       for id <- 1..notification_count do
@@ -759,15 +765,13 @@ defmodule Notifications.NotificationServerTest do
         detour =
         insert(:detour)
 
-      NotificationServer.detour_deactivated(detour, notify_finished: self(), server: server)
-
-      assert_receive {:new_notification, detour: ^id}
+      NotificationServer.detour_deactivated(detour, server: server)
 
       # assert channel sends notifications to each user
       for _ <- 1..notification_count do
         assert_receive {:notification,
                         %Notification{
-                          content: %Notifications.Db.Detour{status: :deactivated}
+                          content: %Notifications.Db.Detour{status: :deactivated, detour_id: ^id}
                         }}
       end
     end
