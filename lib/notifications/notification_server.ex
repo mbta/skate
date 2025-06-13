@@ -36,35 +36,6 @@ defmodule Notifications.NotificationServer do
   `Notifications.NotificationServer` instance receives a message, it
   proceeds to `send/2` `{:notification, %Notifications.Notification{}}`
   messages to every process.
-
-
-  ## Contradictions
-  While the above describes how `broadcast_notification/3` works, and
-  broadly how the PubSub is implemented, `Notifications.NotificationServer`
-  has other functions such as
-
-    - `new_block_waivers/2`
-    - `bridge_movement/2`
-    - `detour_deactivated/2`
-    - `detour_activated/2`
-
-  These functions are being deprecated and moved into `Notifications.Notification`
-  because they blur the line of what `Notifications.NotificationServer`
-  is responsible for. These functions currently manage _creating_
-  notifications by calling corresponding functions in `Notifications.Notification`
-  **and** then broadcasting the created notification.
-
-  In context of the original implementation, this made sense at the
-  time because a Distributed Erlang cluster was not configured at the
-  time, and block waivers and bridge movement notifications needed
-  to be broadcasted to all users when the instance became aware of it,
-  so informing the `Notifications.NotificationServer` was the correct
-  choice.
-
-  This reasoning _**does not**_ apply to detour status notifications,
-  the `detour_deactivated/2` and `detour_activated/2` functions exist
-  here because they were following the precedent set by block waivers
-  and bridge movements.
   """
 
   use GenServer
@@ -111,8 +82,6 @@ defmodule Notifications.NotificationServer do
     :ok
   end
 
-  ## Deprecated Interface
-  # -----------------------------------------------------------------------------
   # Server
   @enforce_keys [:name]
   defstruct [:name]
@@ -128,11 +97,6 @@ defmodule Notifications.NotificationServer do
     {:reply, registry_key, state}
   end
 
-  ## Deprecated Functionality
-  # -----------------------------------------------------------------------------
-
-  ## New Implementation
-  # -----------------------------------------------------------------------------
   @impl GenServer
   def handle_cast(
         {:broadcast_to_cluster, %Notifications.Notification{} = notification, users},
