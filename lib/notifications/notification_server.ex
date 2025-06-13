@@ -214,27 +214,7 @@ defmodule Notifications.NotificationServer do
     notification =
       Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
-    broadcast(notification, self())
-
-    # Send to processes with same name on other nodes
-    broadcast_notification_to_other_instances(notification, state.name)
-
-    {:noreply, state}
-  end
-
-  @impl true
-  # "Private" method for fetching and sending notifications from distributed
-  # Elixir
-  def handle_cast(
-        {
-          :broadcast_new_detour_notification,
-          notification_id
-        },
-        state
-      ) do
-    notification_id
-    |> Notifications.Notification.get_detour_notification()
-    |> broadcast(self())
+    broadcast_notification(notification, :all, self())
 
     {:noreply, state}
   end
@@ -250,9 +230,7 @@ defmodule Notifications.NotificationServer do
     notification =
       Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
 
-    broadcast(notification, self())
-
-    broadcast_notification_to_other_instances(notification, state.name)
+    broadcast_notification(notification, :all, self())
 
     {:noreply, state}
   end
@@ -338,39 +316,6 @@ defmodule Notifications.NotificationServer do
 
   defp default_unread(%Notifications.Notification{} = notification),
     do: notification
-
-  defp broadcast_notification_to_other_instances(
-         %Notifications.Notification{
-           id: notification_id,
-           content: %Notifications.Db.Detour{}
-         },
-         server
-       )
-       when not is_nil(notification_id) do
-    # Currently, we've implemented our own "PubSub" for notifications and we
-    # are not using the provided `Phoenix.PubSub` that comes with Phoenix
-    # channels. This means we don't benefit from Phoenix PubSub's ability to
-    # send messages using distributed Elixir, and that we need to implement
-    # this ourselves at this current time.
-    # Ideally, Notifications would be delivered using
-    # `Phoenix.Channel.broadcast` instead of our custom `broadcast` function
-    #  in `NotificationServer`. To do this, we'd need to implement the same
-    # filtering mechanism that this module has implemented. For now, we'll
-    # send messages to other Skate instances letting them know about new
-    # Notifications.
-
-    # Skate instances currently do not "specialize", and therefore we need to
-    # send the notification to all instances
-    nodes = Node.list()
-
-    Logger.info(
-      "notifying other instances of detour notification_id=#{notification_id} nodes=#{inspect(nodes)}"
-    )
-
-    for node <- nodes do
-      GenServer.cast({server, node}, {:broadcast_new_detour_notification, notification_id})
-    end
-  end
 
   @spec convert_new_block_waivers_to_notifications([BlockWaiver.t()]) :: [
           Notification.t()
