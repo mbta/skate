@@ -87,6 +87,19 @@ defmodule Skate.Factory do
     }
   end
 
+  def db_route_tab_factory do
+    %Skate.Settings.Db.RouteTab{
+      uuid: Ecto.UUID.generate(),
+      preset_name: "preset",
+      selected_route_ids: [],
+      ladder_directions: %{},
+      ladder_crowding_toggles: %{},
+      ordering: sequence(:route_tab_ordering, & &1),
+      is_current_tab: false,
+      save_changes_to_tab_uuid: nil
+    }
+  end
+
   def amazon_location_place_factory(attrs) do
     address_number = Map.get(attrs, :address_number, sequence(:address_number, &to_string/1))
     street = Map.get(attrs, :street, "Test St")
