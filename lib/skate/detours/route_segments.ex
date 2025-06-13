@@ -50,7 +50,8 @@ defmodule Skate.Detours.RouteSegments do
 
   ## Examples
       iex> alias Util.Location
-      iex> Skate.Detours.RouteSegments.route_segments(
+      ...>
+      ...> Skate.Detours.RouteSegments.route_segments(
       ...>   [
       ...>     Location.new(0.0, 0.0),
       ...>     Location.new(0.0, 1.0),
@@ -61,22 +62,22 @@ defmodule Skate.Detours.RouteSegments do
       ...>   Location.new(0.0, 2.6)
       ...> )
       {:ok,
-        %Skate.Detours.RouteSegments.Result{
-          before_detour: [
-            %Util.Location{latitude: 0.0, longitude: 0.0},
-            %Util.Location{latitude: 0.0, longitude: 1.0},
-            %Util.Location{latitude: 0.0, longitude: 1.3}
-          ],
-          detour: [
-            %Util.Location{latitude: 0.0, longitude: 1.3},
-            %Util.Location{latitude: 0.0, longitude: 2.0},
-            %Util.Location{latitude: 0.0, longitude: 2.6}
-          ],
-          after_detour: [
-            %Util.Location{latitude: 0.0, longitude: 2.6},
-            %Util.Location{latitude: 0.0, longitude: 3.0}
-          ]
-        }}
+       %Skate.Detours.RouteSegments.Result{
+         before_detour: [
+           %Util.Location{latitude: 0.0, longitude: 0.0},
+           %Util.Location{latitude: 0.0, longitude: 1.0},
+           %Util.Location{latitude: 0.0, longitude: 1.3}
+         ],
+         detour: [
+           %Util.Location{latitude: 0.0, longitude: 1.3},
+           %Util.Location{latitude: 0.0, longitude: 2.0},
+           %Util.Location{latitude: 0.0, longitude: 2.6}
+         ],
+         after_detour: [
+           %Util.Location{latitude: 0.0, longitude: 2.6},
+           %Util.Location{latitude: 0.0, longitude: 3.0}
+         ]
+       }}
   """
   @spec route_segments(
           nonempty_list(Util.Location.From.t()),
