@@ -75,12 +75,6 @@ defmodule SkateWeb.DetoursControllerTest do
       activated_id = 2
       past_id = 3
 
-      # Can remove once activation event is handled
-      %Skate.Detours.Db.DetourExpirationTask{} =
-        :detour_expiration_task
-        |> build(detour: :detour |> build() |> with_id(past_id))
-        |> insert()
-
       conn
       # Draft Detour
       |> put(~p"/api/detours/update_snapshot", %{
@@ -241,14 +235,9 @@ defmodule SkateWeb.DetoursControllerTest do
       |> with_headsign("Headsign")
       |> with_nearest_intersection("Street C & Avenue D")
 
-    conn = put(conn, "/api/detours/update_snapshot", %{"snapshot" => deactivated_detour_snapshot})
-
-    # Can remove once activation event is handled
-    %Skate.Detours.Db.DetourExpirationTask{} =
-      :detour_expiration_task |> build(detour: Detours.get_detour!(2)) |> insert()
-
     conn =
       conn
+      |> put("/api/detours/update_snapshot", %{"snapshot" => deactivated_detour_snapshot})
       |> put("/api/detours/update_snapshot", %{
         "snapshot" => activated(deactivated_detour_snapshot)
       })

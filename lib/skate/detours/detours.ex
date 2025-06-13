@@ -305,8 +305,8 @@ defmodule Skate.Detours.Detours do
        ) do
     Notifications.NotificationServer.detour_activated(detour)
 
-    detour = db_detour_to_detour(detour)
-    expires_at = calculate_expiration_timestamp(detour)
+    %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+    expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
     Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
   end
@@ -329,8 +329,8 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    detour = db_detour_to_detour(detour)
-    expires_at = calculate_expiration_timestamp(detour)
+    %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+    expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
     Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)
   end
@@ -446,15 +446,14 @@ defmodule Skate.Detours.Detours do
     |> DateTime.to_unix()
   end
 
-  defp calculate_expiration_timestamp(%{status: :active} = detour),
-    do: do_calculate_expiration_timestamp(detour)
+  defp calculate_expiration_timestamp(%{status: :active} = detour, estimated_duration),
+    do: do_calculate_expiration_timestamp(detour, estimated_duration)
 
-  defp calculate_expiration_timestamp(_), do: nil
+  defp calculate_expiration_timestamp(_, _), do: nil
 
   defp do_calculate_expiration_timestamp(
-         %{
-           estimated_duration: "Until end of service"
-         } = detour
+         detour,
+         "Until end of service"
        ) do
     {:ok, eos_same_day} =
       detour.activated_at
@@ -476,9 +475,8 @@ defmodule Skate.Detours.Detours do
   end
 
   defp do_calculate_expiration_timestamp(
-         %{
-           estimated_duration: n_hours
-         } = detour
+         detour,
+         n_hours
        )
        when is_binary(n_hours) do
     hours =
@@ -492,5 +490,5 @@ defmodule Skate.Detours.Detours do
     |> DateTime.add(hours, :hour)
   end
 
-  defp do_calculate_expiration_timestamp(_), do: nil
+  defp do_calculate_expiration_timestamp(_, _), do: nil
 end
