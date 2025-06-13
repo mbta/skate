@@ -3,14 +3,11 @@ defmodule Notifications.Notification do
   Context for managing Notifications.
   """
 
-  import Skate.Repo
-
   import Ecto.Query
 
   alias Notifications.Db.BlockWaiver
   alias Notifications.Db.BridgeMovement
   alias Skate.Settings.Db.User, as: DbUser
-  alias Skate.Settings.User
   alias Notifications.NotificationState
   alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
@@ -273,51 +270,6 @@ defmodule Notifications.Notification do
     |> broadcast_notification(:all)
   end
 
-  @spec get_or_create_from_block_waiver(map()) :: t()
-  def get_or_create_from_block_waiver(block_waiver_values) do
-    changeset =
-      DbNotification.block_waiver_changeset(
-        %DbNotification{},
-        block_waiver_values
-      )
-
-    db_record =
-      case Skate.Repo.transaction(fn ->
-             with {:ok, db_record} <- insert(changeset, on_conflict: :nothing),
-                  false <- is_nil(db_record.id) do
-               log_creation(db_record)
-
-               link_notification_to_users(
-                 db_record.id,
-                 Map.fetch!(block_waiver_values, :route_ids)
-               )
-
-               db_record
-             else
-               _ -> Skate.Repo.rollback(nil)
-             end
-           end) do
-        {:ok, db_record} when not is_nil(db_record) ->
-          db_record
-
-        {:error, _} ->
-          Skate.Repo.one!(
-            from(n in DbNotification,
-              join: bw in assoc(n, :block_waiver),
-              preload: [block_waiver: bw],
-              where:
-                bw.start_time == ^block_waiver_values.start_time and
-                  bw.end_time == ^block_waiver_values.end_time and
-                  bw.block_id == ^block_waiver_values.block_id and
-                  bw.service_id == ^block_waiver_values.service_id and
-                  bw.reason == ^block_waiver_values.reason
-            )
-          )
-      end
-
-    from_db_notification(db_record)
-  end
-
   @spec unexpired_notifications_for_user(DbUser.id(), (-> Util.Time.timestamp())) :: [t()]
   def unexpired_notifications_for_user(user_id, now_fn \\ &Util.Time.now/0) do
     import Notifications.Db.Notification.Queries
@@ -348,33 +300,6 @@ defmodule Notifications.Notification do
       )
 
     Skate.Repo.update_all(query, set: [state: read_state])
-  end
-
-  defp log_creation(notification) do
-    Logger.info("Notification created new_notification=#{inspect(notification)}")
-  end
-
-  defp link_notification_to_users(notification_id, notification_route_ids) do
-    naive_now_fn = Application.get_env(:skate, :naive_now_fn, &Util.Time.naive_now/0)
-    now = naive_now_fn.()
-    user_ids = User.user_ids_for_route_ids(notification_route_ids)
-
-    notification_user_maps =
-      Enum.map(user_ids, fn user_id ->
-        %{
-          notification_id: notification_id,
-          user_id: user_id,
-          state: :unread,
-          inserted_at: now,
-          updated_at: now
-        }
-      end)
-
-    Skate.Repo.insert_all(
-      DbNotificationUser,
-      notification_user_maps,
-      on_conflict: :nothing
-    )
   end
 
   @spec from_db_notification(DbNotification.t()) :: __MODULE__.t()
