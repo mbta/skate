@@ -219,6 +219,116 @@ defmodule Notifications.Db.Notification do
     end
 
     @doc """
+    Joins associated `Notifications.Db.DetourExpiration`'s on
+    `Notifications.Db.Notification`'s and retrieves the Detour's
+    associated info.
+
+    ## Examples
+
+    Using this query returns the associated information from the linked detour
+        iex> :detour
+        ...> |> build()
+        ...> |> with_route_name("17")
+        ...> |> with_direction(:outbound)
+        ...> |> with_headsign("17 Outbound")
+        ...> |> insert()
+        ...> |> Notifications.Notification.create_detour_expiration_notification(%{
+        ...>   estimated_duration: "1 hour",
+        ...>   expires_in: Duration.new!(minute: 30)
+        ...> })
+        ...>
+        ...> all_detour_notifications =
+        ...>   Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
+        ...>   |> Skate.Repo.all()
+        ...>
+        ...> [
+        ...>   %Notifications.Db.Notification{
+        ...>     detour_expiration: %Notifications.Db.DetourExpiration{
+        ...>       estimated_duration: "1 hour",
+        ...>       expires_in: %Duration{second: 1800},
+        ...>       headsign: "17 Outbound",
+        ...>       direction: "Outbound",
+        ...>       route: "17"
+        ...>     }
+        ...>   }
+        ...> ] = all_detour_notifications
+
+    ### The `query` parameter and `base`
+    There is a `base` query struct that can be provided at the
+    beginning of a query:
+
+        iex> :detour
+        ...> |> insert()
+        ...> |> Notifications.Notification.create_detour_expiration_notification(%{
+        ...>   estimated_duration: "1 hour",
+        ...>   expires_in: Duration.new!(minute: 30)
+        ...> })
+        ...>
+        ...> all_detour_notifications =
+        ...>   Notifications.Db.Notification.Queries.base()
+        ...>   |> Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
+        ...>   |> Skate.Repo.all()
+        ...>
+        ...> [
+        ...>   %Notifications.Db.Notification{
+        ...>     detour_expiration: %Notifications.Db.DetourExpiration{
+        ...>       estimated_duration: "1 hour",
+        ...>       expires_in: %Duration{second: 1800}
+        ...>     }
+        ...>   }
+        ...> ] = all_detour_notifications
+
+    If `base` is omitted, then it's inferred:
+
+        iex> :detour
+        ...> |> insert()
+        ...> |> Notifications.Notification.create_detour_expiration_notification(%{
+        ...>   estimated_duration: "1 hour",
+        ...>   expires_in: Duration.new!(minute: 30)
+        ...> })
+        ...>
+        ...> all_detour_notifications =
+        ...>   Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
+        ...>   |> Skate.Repo.all()
+        ...>
+        ...> [
+        ...>   %Notifications.Db.Notification{
+        ...>     detour_expiration: %Notifications.Db.DetourExpiration{
+        ...>       estimated_duration: "1 hour",
+        ...>       expires_in: %Duration{second: 1800}
+        ...>     }
+        ...>   }
+        ...> ] = all_detour_notifications
+    """
+    def select_detour_expiration_notifications(query \\ base()) do
+      query
+      |> with_named_binding(:detour_expiration, fn query, binding ->
+        from(
+          [notification: n] in query,
+          left_join:
+            de in subquery(
+              from(
+                de in Notifications.Db.DetourExpiration,
+                as: ^binding,
+                left_join: assoc(de, :detour),
+                as: :detour
+              )
+              |> Skate.Detours.Db.Detour.Queries.select_route_name(:route)
+              |> Skate.Detours.Db.Detour.Queries.select_route_pattern_name(:origin)
+              |> Skate.Detours.Db.Detour.Queries.select_route_pattern_headsign(:headsign)
+              |> Skate.Detours.Db.Detour.Queries.select_direction(:direction)
+            ),
+          on: n.detour_expiration_id == de.id,
+          as: ^binding
+        )
+      end)
+      |> select_merge(
+        [detour_expiration: d],
+        %{detour_expiration: d}
+      )
+    end
+
+    @doc """
     Joins associated `Notifications.Db.BridgeMovement`'s on
     `Notifications.Db.Notification`'s
     """

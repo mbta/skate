@@ -11,7 +11,11 @@ defmodule Notifications.Db.DetourExpiration do
              :__struct__,
              :detour_id,
              :estimated_duration,
-             :expires_in
+             :expires_in,
+             :headsign,
+             :route,
+             :direction,
+             :origin
            ]}
 
   typed_schema "detour_expiration_notification" do
@@ -21,6 +25,12 @@ defmodule Notifications.Db.DetourExpiration do
     belongs_to :detour, Skate.Detours.Db.Detour
 
     has_one :notification, Notifications.Db.Notification
+
+    # Derived from the associated detour
+    field :headsign, :any, virtual: true
+    field :route, :any, virtual: true
+    field :direction, :any, virtual: true
+    field :origin, :any, virtual: true
   end
 
   @doc """
