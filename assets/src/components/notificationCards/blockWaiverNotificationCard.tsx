@@ -97,17 +97,17 @@ export const BlockWaiverNotificationCard = ({
   currentTime,
   unread,
   onClose,
-  noFocusOrHover,
   onSelect,
   onRead,
+  noFocusOrHover,
 }: {
   notification: Notification<BlockWaiverNotification>
   currentTime: Date
   unread: boolean
   onClose?: () => void
-  noFocusOrHover?: boolean
   onSelect: (notification: Notification) => void
   onRead: (notification: Notification) => void
+  noFocusOrHover?: boolean
 }) => {
   const routes = useRoutes(notification.content.routeIds)
   const routeAtCreation = useRoute(notification.content.routeIdAtCreation)

@@ -35,17 +35,17 @@ export const BridgeMovementNotificationCard = ({
   currentTime,
   unread,
   onClose,
-  noFocusOrHover,
   onSelect,
   onRead,
+  noFocusOrHover,
 }: {
   notification: Notification<BridgeNotification>
   currentTime: Date
   unread: boolean
   onClose?: () => void
-  noFocusOrHover?: boolean
   onSelect: (notification: Notification) => void
   onRead: (notification: Notification) => void
+  noFocusOrHover?: boolean
 }) => {
   return (
     <CardReadable
