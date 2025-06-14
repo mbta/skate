@@ -270,6 +270,65 @@ defmodule Notifications.NotificationServerTest do
     end
   end
 
+  describe "broadcast_notification/3" do
+    setup do
+      {:ok, server} = setup_server()
+
+      %{server: server}
+    end
+
+    test "broadcasts to all subscribers if the provided user specification is :all", %{
+      server: server
+    } do
+      Notifications.NotificationServer.subscribe(0, server)
+      Notifications.NotificationServer.subscribe(1, server)
+      Notifications.NotificationServer.subscribe(2, server)
+
+      id = 1
+
+      Notifications.NotificationServer.broadcast_notification(
+        %Notifications.Notification{
+          id: id,
+          created_at: nil,
+          state: nil,
+          content: nil
+        },
+        :all,
+        server
+      )
+
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+
+      refute_receive {:notification, %Notifications.Notification{id: ^id}}
+    end
+
+    test "broadcasts to all subscribers in the provided users list", %{server: server} do
+      Notifications.NotificationServer.subscribe(0, server)
+      Notifications.NotificationServer.subscribe(1, server)
+      Notifications.NotificationServer.subscribe(2, server)
+
+      id = 1
+
+      Notifications.NotificationServer.broadcast_notification(
+        %Notifications.Notification{
+          id: id,
+          created_at: nil,
+          state: nil,
+          content: nil
+        },
+        [0, 1],
+        server
+      )
+
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+
+      refute_receive {:notification, %Notifications.Notification{id: ^id}}
+    end
+  end
+
   describe "new_block_waivers/2" do
     setup do
       reassign_env(:realtime, :block_fn, fn _, _ -> @block end)
