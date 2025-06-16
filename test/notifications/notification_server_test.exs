@@ -327,6 +327,97 @@ defmodule Notifications.NotificationServerTest do
 
       refute_receive {:notification, %Notifications.Notification{id: ^id}}
     end
+
+    test "logs broadcast_to_cluster call", %{server: server} do
+      Notifications.NotificationServer.subscribe(0, server)
+
+      id = 1
+
+      set_log_level(:info)
+
+      log =
+        capture_log([level: :info], fn ->
+          Notifications.NotificationServer.broadcast_notification(
+            %Notifications.Notification{
+              id: id,
+              created_at: nil,
+              state: nil,
+              content: nil
+            },
+            [0, 1],
+            server
+          )
+
+          assert_receive {:notification, %Notifications.Notification{id: ^id}}
+        end)
+
+      assert log =~ "mfa=Notifications.NotificationServer.broadcast_to_cluster/3"
+      assert log =~ "notification_id=#{id}"
+      assert log =~ "nodes=[:nonode@nohost]"
+    end
+
+    test "logs broadcast_to_subscribers call", %{server: server} do
+      Notifications.NotificationServer.subscribe(0, server)
+      Notifications.NotificationServer.subscribe(0, server)
+      Notifications.NotificationServer.subscribe(1, server)
+      Notifications.NotificationServer.subscribe(2, server)
+
+      log_specific_users_id = 1
+
+      set_log_level(:info)
+
+      log_specific_users =
+        capture_log([level: :info], fn ->
+          Notifications.NotificationServer.broadcast_notification(
+            %Notifications.Notification{
+              id: log_specific_users_id,
+              created_at: nil,
+              state: nil,
+              content: nil
+            },
+            [0, 1],
+            server
+          )
+
+          # Absorb messages for the 3 matching subscriptions
+          for _ <- 1..3 do
+            assert_receive {:notification,
+                            %Notifications.Notification{id: ^log_specific_users_id}}
+          end
+        end)
+
+      log_all_users_id = 2
+
+      log_all_users =
+        capture_log([level: :info], fn ->
+          Notifications.NotificationServer.broadcast_notification(
+            %Notifications.Notification{
+              id: log_all_users_id,
+              created_at: nil,
+              state: nil,
+              content: nil
+            },
+            :all,
+            server
+          )
+
+          # Absorb messages for all 4 subscriptions
+          for _ <- 1..4 do
+            assert_receive {:notification, %Notifications.Notification{id: ^log_all_users_id}}
+          end
+        end)
+
+      assert log_specific_users =~
+               "mfa=Notifications.NotificationServer.broadcast_to_subscribers/3"
+
+      assert log_specific_users =~
+               "notification_id=#{log_specific_users_id} messages_sent=3 total_subscribers=4 user_id_count=2"
+
+      assert log_all_users =~ "mfa=Notifications.NotificationServer.broadcast_to_subscribers/3"
+
+      assert log_all_users =~
+               "notification_id=#{log_all_users_id} messages_sent=4 total_subscribers=4 user_match_pattern=all"
+    end
   end
 
   describe "new_block_waivers/2" do

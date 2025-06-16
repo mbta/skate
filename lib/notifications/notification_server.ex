@@ -293,9 +293,27 @@ defmodule Notifications.NotificationServer do
     Registry.dispatch(
       Notifications.Supervisor.registry_name(),
       registry_key,
-      &(&1
-        |> filter_entities(user_ids)
-        |> Enum.each(fn {pid, _user_id} -> send(pid, payload) end))
+      fn entities ->
+        messages_sent =
+          entities
+          |> filter_entities(user_ids)
+          |> Enum.map(fn {pid, _user_id} ->
+            send(pid, payload)
+            :ok
+          end)
+          |> Enum.count()
+
+        Logger.info(fn ->
+          "sent notification to subscribers" <>
+            " notification_id=#{notification.id}" <>
+            " messages_sent=#{messages_sent}" <>
+            " total_subscribers=#{Enum.count(entities)}" <>
+            case user_ids do
+              :all -> " user_match_pattern=#{user_ids}"
+              user_ids when is_list(user_ids) -> " user_id_count=#{length(user_ids)}"
+            end
+        end)
+      end
     )
   end
 
