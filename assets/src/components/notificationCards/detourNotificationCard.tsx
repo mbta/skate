@@ -4,6 +4,7 @@ import {
   DetourNotificationStatus,
   isDetourExpirationNotification,
   DetourNotifications,
+  isDetourNotification,
 } from "../../realtime"
 import { CardBody, CardReadable } from "../card"
 import { RoutePill } from "../routePill"
@@ -80,7 +81,8 @@ const notificationTitle = (notification: Notification<DetourNotifications>) => {
     } else {
       return "Detour duration reached"
     }
-  } else {
+  }
+  if (isDetourNotification(notification)) {
     switch (notification.content.status) {
       case DetourNotificationStatus.Activated: {
         return "Detour - Active"
@@ -90,6 +92,8 @@ const notificationTitle = (notification: Notification<DetourNotifications>) => {
       }
     }
   }
+
+  return null
 }
 
 const DetourNotificationModal = ({
