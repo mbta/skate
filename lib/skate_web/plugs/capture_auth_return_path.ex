@@ -25,10 +25,11 @@ defmodule SkateWeb.Plugs.CaptureAuthReturnPath do
 
   ## Example
 
-      iex> conn = conn_for_path(~p"/detours")
-      ...>        |> SkateWeb.Plugs.CaptureAuthReturnPath.call(nil)
+      iex> conn =
+      ...>   conn_for_path(~p"/detours")
+      ...>   |> SkateWeb.Plugs.CaptureAuthReturnPath.call(nil)
       ...>
-      iex> SkateWeb.Plugs.CaptureAuthReturnPath.get_post_auth_return_to_path(conn)
+      ...> SkateWeb.Plugs.CaptureAuthReturnPath.get_post_auth_return_to_path(conn)
       ~p"/detours"
 
   Defaults to ~p"/" if the plug hasn't been invoked.
@@ -37,7 +38,7 @@ defmodule SkateWeb.Plugs.CaptureAuthReturnPath do
 
       iex> conn = conn_for_path(~p"/detours")
       ...>
-      iex> SkateWeb.Plugs.CaptureAuthReturnPath.get_post_auth_return_to_path(conn)
+      ...> SkateWeb.Plugs.CaptureAuthReturnPath.get_post_auth_return_to_path(conn)
       ~p"/"
   """
   @spec get_post_auth_return_to_path(Plug.Conn.t()) :: String.t()

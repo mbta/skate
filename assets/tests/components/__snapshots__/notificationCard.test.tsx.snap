@@ -43,19 +43,19 @@ exports[`NotificationCard renders activated detour notification if user is in De
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  4
+                  2
                 </div>
                 <div>
                   <div
                     class="fw-semibold"
                   >
-                    Headsign 4
+                    Headsign 2
                   </div>
                   <div
                     class="fw-normal text-body-secondary"
                   >
                     From 
-                    Origin station 4
+                    Origin station 2
                   </div>
                   <div
                     class="fw-normal"

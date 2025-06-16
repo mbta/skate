@@ -54,7 +54,8 @@ describe("NotificationCard", () => {
         <NotificationCard
           notification={n}
           currentTime={new Date()}
-          openVPPForCurrentVehicle={() => {}}
+          onRead={jest.fn()}
+          onSelect={jest.fn()}
         />
       </RoutesProvider>
     )

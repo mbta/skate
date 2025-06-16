@@ -5,7 +5,10 @@ import useCurrentTime from "../hooks/useCurrentTime"
 import { markAllAsRead } from "../hooks/useNotificationsReducer"
 import { Notification } from "../realtime"
 import { rememberNotificationDrawerScrollPosition } from "../state"
-import { openVPPForNotification } from "./notifications"
+import {
+  setNotificationReadState,
+  setNotificationSelectedState,
+} from "./notifications"
 import { NotificationCard } from "./notificationCard"
 import ViewHeader from "./viewHeader"
 import Loading from "./loading"
@@ -68,8 +71,12 @@ const Content = () => {
 
   const [, stateDispatch] = useContext(StateDispatchContext)
 
-  const openVPPForCurrentVehicle = (notification: Notification) => {
-    openVPPForNotification(notification, stateDispatch, notificationsDispatch)
+  const onRead = (notification: Notification) => {
+    setNotificationReadState(notification, notificationsDispatch)
+  }
+
+  const onSelect = (notification: Notification) => {
+    setNotificationSelectedState(notification, stateDispatch)
   }
 
   if (notifications === null) {
@@ -105,7 +112,8 @@ const Content = () => {
             <NotificationCard
               notification={notification}
               currentTime={currentTime}
-              openVPPForCurrentVehicle={openVPPForCurrentVehicle}
+              onRead={onRead}
+              onSelect={onSelect}
             />
           </li>
         ))}

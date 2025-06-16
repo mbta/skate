@@ -4,7 +4,7 @@ import { useMinischeduleRuns } from "../../hooks/useMinischedule"
 import { Activity, Run, Piece, Trip } from "../../minischedule"
 import { BlockWaiverNotification, Notification, RunId } from "../../realtime"
 import { now, serviceDaySeconds } from "../../util/dateTime"
-import { title } from "../notificationCard"
+import { notificationTitle } from "../notificationCards/blockWaiverNotificationCard"
 import BasicNotificationModal from "./basicNotificationModal"
 
 type RunScheduleRelationship = "current" | "break" | "past"
@@ -31,7 +31,7 @@ const InactiveNotificationModal = ({
 
     return (
       <BasicNotificationModal
-        title={title(notification) + " NOTIFICATION"}
+        title={notificationTitle(notification) + " NOTIFICATION"}
         body={bodyCopy(notification.content, uniqueRuns)}
       />
     )
