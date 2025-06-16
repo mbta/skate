@@ -15,6 +15,8 @@ defmodule Skate.Detours.Db.DetourExpirationNotification do
     timestamps()
   end
 
+  def create_changeset(args) when is_list(args), do: Enum.map(args, &create_changeset/1)
+
   def create_changeset(%{detour: detour} = attrs) do
     %__MODULE__{}
     |> cast(attrs, [:expires_at])
@@ -24,6 +26,9 @@ defmodule Skate.Detours.Db.DetourExpirationNotification do
   def update_changeset(nil, attrs) do
     create_changeset(attrs)
   end
+
+  def update_changeset(args, attrs) when is_list(args),
+    do: Enum.map(args, fn arg -> update_changeset(arg, attrs) end)
 
   def update_changeset(detour_expiration_notification, attrs) do
     cast(detour_expiration_notification, attrs, [:expires_at])
