@@ -14,6 +14,14 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    currentTime: new Date(),
+    unread: true,
+    onClose: () => {},
+    onRead: () => {},
+    onSelect: () => {},
+    noFocusOrHover: true,
+  },
 } satisfies Meta<typeof BridgeMovementNotificationCard>
 
 export default meta
@@ -46,25 +54,14 @@ const BridgeLowered = {
   content: BridgeLoweredNotificationContent,
 } as Notification<BridgeLoweredNotification>
 
-const args = {
-  currentTime: new Date(),
-  unread: true,
-  onClose: () => {},
-  onRead: () => {},
-  onSelect: () => {},
-  noFocusOrHover: true,
-}
-
 export const Raised: Story = {
   args: {
-    ...args,
     notification: BridgeRaised,
   },
 }
 
 export const Lowered: Story = {
   args: {
-    ...args,
     notification: BridgeLowered,
   },
 }

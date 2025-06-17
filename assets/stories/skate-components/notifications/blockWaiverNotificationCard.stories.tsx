@@ -18,6 +18,14 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    currentTime: new Date(),
+    unread: true,
+    onClose: () => {},
+    onRead: () => {},
+    onSelect: () => {},
+    noFocusOrHover: true,
+  },
   decorators: [
     (StoryFn) => (
       <RoutesProvider routes={[route]}>
@@ -112,67 +120,50 @@ const blockWaiverOther = {
   },
 } as Notification<BlockWaiverNotification>
 
-const args = {
-  currentTime: new Date(),
-  unread: true,
-  onClose: () => {},
-  onRead: () => {},
-  onSelect: () => {},
-  noFocusOrHover: true,
-}
-
 export const Diverted: Story = {
   args: {
-    ...args,
     notification: blockWaiverDiverted,
   },
 }
 
 export const Manpower: Story = {
   args: {
-    ...args,
     notification: blockWaiverManpower,
   },
 }
 
 export const Disabled: Story = {
   args: {
-    ...args,
     notification: blockWaiverDisabled,
   },
 }
 
 export const Accident: Story = {
   args: {
-    ...args,
     notification: blockWaiverAccident,
   },
 }
 
 export const Adjusted: Story = {
   args: {
-    ...args,
     notification: blockWaiverAdjusted,
   },
 }
 
 export const OperatorError: Story = {
   args: {
-    ...args,
     notification: blockWaiverOperatorError,
   },
 }
 
 export const Traffic: Story = {
   args: {
-    ...args,
     notification: blockWaiverTraffic,
   },
 }
 
 export const Note: Story = {
   args: {
-    ...args,
     notification: blockWaiverOther,
   },
 }

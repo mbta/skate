@@ -15,6 +15,13 @@ const meta = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    currentTime: new Date(),
+    unread: true,
+    onClose: () => {},
+    onRead: () => {},
+    noFocusOrHover: true,
+  },
 } satisfies Meta<typeof DetourNotificationCard>
 
 export default meta
@@ -75,38 +82,26 @@ const detourExpirationWarningNotification = {
   },
 } as Notification<DetourExpirationNotification>
 
-const args = {
-  currentTime: new Date(),
-  unread: true,
-  onClose: () => {},
-  onRead: () => {},
-  noFocusOrHover: true,
-}
-
 export const Activated: Story = {
   args: {
-    ...args,
     notification: detourActivatedNotification,
   },
 }
 
 export const Deactivated: Story = {
   args: {
-    ...args,
     notification: detourDeactivatedNotification,
   },
 }
 
 export const DetourExpiration: Story = {
   args: {
-    ...args,
     notification: detourExpirationNotification,
   },
 }
 
 export const DetourExpirationWarning: Story = {
   args: {
-    ...args,
     notification: detourExpirationWarningNotification,
   },
 }
