@@ -8,24 +8,10 @@ defmodule Skate.Detours.NotificationScheduler do
   import Ecto.Query
 
   def detour_activated(
-        %Detour{status: :active, estimated_duration: estimated_duration} = detour,
+        %Detour{status: :active} = detour,
         expires_at
       ) do
-    expired_task =
-      DetourExpirationTask.create_changeset(%{
-        detour: detour,
-        estimated_duration: estimated_duration,
-        expires_at: expires_at,
-        notification_offset_minutes: 0
-      })
-
-    warning_task =
-      DetourExpirationTask.create_changeset(%{
-        detour: detour,
-        estimated_duration: estimated_duration,
-        expires_at: expires_at,
-        notification_offset_minutes: 30
-      })
+    [expired_task, warning_task] = generate_changesets(detour, expires_at)
 
     Skate.Repo.transaction(fn ->
       [Skate.Repo.insert!(expired_task), Skate.Repo.insert!(warning_task)]
