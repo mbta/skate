@@ -134,6 +134,15 @@ export const detourExpirationNotificationContentFactory =
     origin: "origin",
   }))
 
+export const detourExpirationWarningNotificationFactory = Factory.define<
+  Notification<DetourExpirationNotification>
+>(({ sequence }) => ({
+  id: sequence.toString(),
+  createdAt: new Date(),
+  state: "unread",
+  content: detourExpirationNotificationContentFactory.build({ expiresIn: 0 }),
+}))
+
 export const detourExpirationNotificationFactory = Factory.define<
   Notification<DetourExpirationNotification>
 >(({ sequence }) => ({

@@ -16,6 +16,7 @@ import {
   detourActivatedNotificationFactory,
   detourDeactivatedNotificationFactory,
   detourExpirationNotificationFactory,
+  detourExpirationWarningNotificationFactory,
 } from "../factories/notification"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
@@ -443,6 +444,7 @@ describe("NotificationCard", () => {
   test.each<{
     notification: Notification
     text: RegExp
+    mocks?: () => void
   }>([
     {
       notification: blockWaiverNotificationFactory.build({
@@ -462,11 +464,19 @@ describe("NotificationCard", () => {
     },
     {
       notification: detourExpirationNotificationFactory.build(),
-      text: /Detour/,
+      text: /Detour duration/,
+      mocks: () =>
+        jest
+          .mocked(getTestGroups)
+          .mockReturnValue([TestGroups.DetourExpirationNotifications]),
     },
     {
       notification: detourExpirationWarningNotificationFactory.build(),
-      text: /Detour/,
+      text: /Detour duration/,
+      mocks: () =>
+        jest
+          .mocked(getTestGroups)
+          .mockReturnValue([TestGroups.DetourExpirationNotifications]),
     },
     {
       notification: bridgeRaisedNotificationFactory.build(),
@@ -478,7 +488,11 @@ describe("NotificationCard", () => {
     },
   ])(
     "clicking $text notification should call onRead",
-    async ({ notification, text }) => {
+    async ({ notification, text, mocks }) => {
+      if (mocks) {
+        mocks()
+      }
+
       const currentTime = new Date()
       const onRead = jest.fn()
 
