@@ -40,7 +40,7 @@ defmodule Notifications.NotificationServer do
 
   ## Contradictions
   While the above describes how `broadcast_notification/3` works, and
-  broadly how the PubSub is implemented `Notifications.NotificationServer`
+  broadly how the PubSub is implemented, `Notifications.NotificationServer`
   has other functions such as
 
     - `new_block_waivers/2`
