@@ -1,4 +1,4 @@
-import React, { ReactElement, useId } from "react"
+import React, { ReactNode, useId } from "react"
 import { UnreadIcon } from "../helpers/icon"
 import { formattedTimeDiffUnderThreshold } from "../util/dateTime"
 import CloseButton from "./closeButton"
@@ -15,7 +15,7 @@ interface CardProps {
   closeCallback?: () => void
   isActive?: boolean
   additionalClass?: string
-  title: string | ReactElement
+  title: ReactNode
   time?: Date
   noFocusOrHover?: boolean
   selected?: boolean

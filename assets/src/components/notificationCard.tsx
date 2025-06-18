@@ -4,6 +4,8 @@ import {
   isBlockWaiverNotification,
   isADetourNotification,
   isBridgeNotification,
+  isDetourNotification,
+  isDetourExpirationNotification,
 } from "../realtime"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { BlockWaiverNotificationCard } from "./notificationCards/blockWaiverNotificationCard"
@@ -19,6 +21,27 @@ interface NotificationCardProps {
   noFocusOrHover?: boolean
 }
 
+const shouldShowNotification = (notification: Notification) => {
+  if (
+    isDetourNotification(notification) &&
+    !(
+      inTestGroup(TestGroups.DetoursList) &&
+      inTestGroup(TestGroups.DetoursNotifications)
+    )
+  ) {
+    return false
+  }
+
+  if (
+    isDetourExpirationNotification(notification) &&
+    !inTestGroup(TestGroups.DetourExpirationNotifications)
+  ) {
+    return false
+  }
+
+  return true
+}
+
 export const NotificationCard = (props: NotificationCardProps) => {
   const {
     notification,
@@ -32,13 +55,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
   const isDetour = isADetourNotification(notification)
   const isBridge = isBridgeNotification(notification)
 
-  if (
-    isDetour &&
-    !(
-      inTestGroup(TestGroups.DetoursList) &&
-      inTestGroup(TestGroups.DetoursNotifications)
-    )
-  ) {
+  if (shouldShowNotification(notification) === false) {
     return null
   }
 

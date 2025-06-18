@@ -21,6 +21,7 @@ import {
   NotificationType,
 } from "../realtime"
 import { detourId } from "./detoursList"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 const dateFromSeconds = coerce(
   date(),
@@ -80,6 +81,17 @@ export const DetourNotificationData = type({
   origin: string(),
 })
 
+export const DetourExpirationNotificationData = type({
+  __struct__: literal(NotificationType.DetourExpiration),
+  estimated_duration: string(),
+  expires_in: enums([0, 30]),
+  detour_id: detourId,
+  headsign: string(),
+  route: string(),
+  direction: string(),
+  origin: string(),
+})
+
 export type DetourNotificationData = Infer<typeof DetourNotificationData>
 
 export const NotificationData = type({
@@ -91,6 +103,7 @@ export const NotificationData = type({
     BridgeNotificationData,
     BlockWaiverNotificationData,
     DetourNotificationData,
+    DetourExpirationNotificationData,
   ]),
 })
 export type NotificationData = Infer<typeof NotificationData>
@@ -149,6 +162,23 @@ export const notificationFromData = (
         route: notificationData.content.route,
       }
       break
+    }
+
+    case NotificationType.DetourExpiration: {
+      content = {
+        $type: NotificationType.DetourExpiration,
+        detourId: notificationData.content.detour_id,
+
+        estimatedDuration: notificationData.content.estimated_duration,
+        expiresIn: notificationData.content.expires_in,
+
+        headsign: notificationData.content.headsign,
+        route: notificationData.content.route,
+        direction: notificationData.content.direction,
+        origin: notificationData.content.origin,
+
+        isDispatcher: inTestGroup(TestGroups.DetoursPilot),
+      }
     }
   }
 

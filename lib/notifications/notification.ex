@@ -379,6 +379,40 @@ defmodule Notifications.Notification do
   defp content_from_db_notification(%DbNotification{
          detour_expiration: %Notifications.Db.DetourExpiration{} = detour_expiration
        }) do
-    detour_expiration
+    # `Jason` doesn't know how to encode a `%Duration{}`, or tuples
+    # like the `:microsecond` field.
+    update_in(
+      detour_expiration.expires_in,
+      &convert_duration_to_valid_minutes/1
+    )
+  end
+
+  # Expects a limited set of results from the database and converts those into
+  # known durations for the frontend
+  defp convert_duration_to_valid_minutes(%Duration{
+         year: 0,
+         month: 0,
+         week: 0,
+         day: 0,
+         hour: 0,
+         minute: 0,
+         second: seconds,
+         microsecond: {0, _}
+       }) do
+    case seconds do
+      1800 ->
+        # minutes
+        30
+
+      0 ->
+        # minutes
+        0
+
+      seconds ->
+        Logger.error("unknown seconds value second=#{seconds}")
+        # The frontend expects either `0` or `30`,
+        # `0` seems like a safer default _for now_.
+        0
+    end
   end
 end

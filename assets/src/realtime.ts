@@ -141,7 +141,6 @@ export type ExpirationNotificationTime = 0 | 30
 
 export type DetourExpirationNotification = {
   $type: NotificationType.DetourExpiration
-  status: DetourNotificationStatus.Activated
   detourId: DetourId
   headsign: string
   route: string
