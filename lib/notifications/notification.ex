@@ -383,15 +383,13 @@ defmodule Notifications.Notification do
     # like the `:microsecond` field.
     update_in(
       detour_expiration.expires_in,
-      &(&1
-        |> balance_seconds_to_minutes()
-        |> make_duration_serializable())
+      &convert_duration_to_valid_minutes/1
     )
   end
 
   # Expects a limited set of results from the database and converts those into
   # known durations for the frontend
-  defp balance_seconds_to_minutes(%Duration{
+  defp convert_duration_to_valid_minutes(%Duration{
          year: 0,
          month: 0,
          week: 0,
@@ -403,20 +401,18 @@ defmodule Notifications.Notification do
        }) do
     case seconds do
       1800 ->
-        # encodes to `PT30M`
-        Duration.new!(minute: 30)
+        # minutes
+        30
 
       0 ->
-        # encodes to `PT0S`
-        Duration.new!(minute: 0)
+        # minutes
+        0
 
       seconds ->
         Logger.error("unknown seconds value second=#{seconds}")
-        # The frontend expects either `PT0S` or `PT30M`,
-        # 0s seems like a safer default _for now_.
-        Duration.new!(minute: 0)
+        # The frontend expects either `0` or `30`,
+        # `0` seems like a safer default _for now_.
+        0
     end
   end
-
-  def make_duration_serializable(%Duration{} = duration), do: Duration.to_iso8601(duration)
 end
