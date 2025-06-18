@@ -39,9 +39,9 @@ export const Notifications = () => {
         <NotificationCard
           notification={notificationToShow}
           currentTime={currentTime}
+          onClose={onClose}
           onRead={onRead}
           onSelect={onSelect}
-          onClose={onClose}
           noFocusOrHover={true}
         />
       )}
