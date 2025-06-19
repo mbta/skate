@@ -82,6 +82,12 @@ defmodule Notifications.Notification do
     |> from_db_notification()
   end
 
+  defp broadcast_notification_by_id(id, users) do
+    id
+    |> get_domain_notification()
+    |> Notifications.NotificationServer.broadcast_notification(users)
+  end
+
   @doc """
   Creates a new detour expiration notification and broadcasts to subscribed
   users.
