@@ -88,7 +88,7 @@ export const bridgeLoweredNotificationFactory = Factory.define<
   content: bridgeLoweredNotificationContentFactory.build(),
 }))
 
-const detourActivatedNotificationContentFactory =
+export const detourActivatedNotificationContentFactory =
   Factory.define<DetourNotification>(({ sequence }) => ({
     $type: NotificationType.Detour,
     status: DetourNotificationStatus.Activated,
@@ -133,6 +133,15 @@ export const detourExpirationNotificationContentFactory =
     headsign: "Headsign",
     origin: "origin",
   }))
+
+export const detourExpirationWarningNotificationFactory = Factory.define<
+  Notification<DetourExpirationNotification>
+>(({ sequence }) => ({
+  id: sequence.toString(),
+  createdAt: new Date(),
+  state: "unread",
+  content: detourExpirationNotificationContentFactory.build({ expiresIn: 0 }),
+}))
 
 export const detourExpirationNotificationFactory = Factory.define<
   Notification<DetourExpirationNotification>

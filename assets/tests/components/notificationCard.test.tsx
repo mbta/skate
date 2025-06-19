@@ -12,9 +12,11 @@ import {
   blockWaiverNotificationFactory,
   bridgeLoweredNotificationFactory,
   bridgeRaisedNotificationFactory,
+  detourActivatedNotificationContentFactory,
   detourActivatedNotificationFactory,
   detourDeactivatedNotificationFactory,
   detourExpirationNotificationFactory,
+  detourExpirationWarningNotificationFactory,
 } from "../factories/notification"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
@@ -274,7 +276,14 @@ describe("NotificationCard", () => {
   })
 
   test("renders activated detour notification if user is in DetoursList group", () => {
-    const n: Notification = detourActivatedNotificationFactory.build()
+    const n: Notification = detourActivatedNotificationFactory.build({
+      // Hard code values due to sequence changes for snapshot
+      content: detourActivatedNotificationContentFactory.build({
+        route: "2",
+        headsign: "Headsign 2",
+        origin: "Origin station 2",
+      }),
+    })
     const { baseElement } = render(
       <RoutesProvider routes={routes}>
         <NotificationCard
@@ -405,7 +414,7 @@ describe("NotificationCard", () => {
             notification={updatedNotification}
             currentTime={currentTime}
             onRead={jest.fn()}
-            onSelect={jest.fn()}
+            onSelect={onSelect}
             onClose={() => dispatch(hideLatestNotification())}
             noFocusOrHover={true}
           />
@@ -429,6 +438,82 @@ describe("NotificationCard", () => {
           {}
         )
       }
+    }
+  )
+
+  test.each<{
+    notification: Notification
+    text: RegExp
+    mocks?: () => void
+  }>([
+    {
+      notification: blockWaiverNotificationFactory.build({
+        content: {
+          reason: "manpower",
+        },
+      }),
+      text: /No Operator/,
+    },
+    {
+      notification: detourActivatedNotificationFactory.build({}),
+      text: /Detour - Active/,
+    },
+    {
+      notification: detourDeactivatedNotificationFactory.build(),
+      text: /Detour - Closed/,
+    },
+    {
+      notification: detourExpirationNotificationFactory.build(),
+      text: /Detour duration/,
+      mocks: () =>
+        jest
+          .mocked(getTestGroups)
+          .mockReturnValue([TestGroups.DetourExpirationNotifications]),
+    },
+    {
+      notification: detourExpirationWarningNotificationFactory.build(),
+      text: /Detour duration/,
+      mocks: () =>
+        jest
+          .mocked(getTestGroups)
+          .mockReturnValue([TestGroups.DetourExpirationNotifications]),
+    },
+    {
+      notification: bridgeRaisedNotificationFactory.build(),
+      text: /Chelsea St Bridge Raised/,
+    },
+    {
+      notification: bridgeLoweredNotificationFactory.build(),
+      text: /Chelsea St Bridge Lowered/,
+    },
+  ])(
+    "clicking $text notification should call onRead",
+    async ({ notification, text, mocks }) => {
+      if (mocks) {
+        mocks()
+      }
+
+      const currentTime = new Date()
+      const onRead = jest.fn()
+
+      const user = userEvent.setup()
+      const result = render(
+        <RoutesProvider routes={routes}>
+          <NotificationCard
+            notification={notification}
+            currentTime={currentTime}
+            onRead={onRead}
+            onSelect={jest.fn()}
+            onClose={jest.fn()}
+            noFocusOrHover={true}
+          />
+        </RoutesProvider>
+      )
+      expect(onRead).not.toHaveBeenCalled()
+
+      await user.click(result.getByText(text))
+
+      expect(onRead).toHaveBeenCalled()
     }
   )
 })

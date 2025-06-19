@@ -58,7 +58,6 @@ const detourDeactivatedNotification = {
 
 const detourExpirationNotificationContent = {
   $type: NotificationType.DetourExpiration,
-  status: DetourNotificationStatus.Activated,
   detourId: 3,
   headsign: "Headsign",
   route: "66",
