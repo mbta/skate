@@ -1,9 +1,70 @@
 defmodule Notifications.NotificationServer do
   @moduledoc """
-  GenServer which manages a realtime Notifications "PubSub".
+  `GenServer` which implements a "PubSub" to deliver `Notifications.Notification`'s.
 
-  It receives new messages via functions like `new_block_waivers/2` and manages
+  It receives new messages via `broadcast_notification/3` and manages
   new subscribers via `subscribe/2`.
+
+  ## How it works
+  `Notifications.NotificationServer` implements a "PubSub" server across a
+  Distributed Erlang cluster using `GenServer` and `Registry`.
+
+  All entries in the `Registry` are stored under the "key" composed of
+  `Notifications.NotificationServer`'s GenServer `pid`.
+
+  The `Registry` is configured in `Notifications.Supervisor`.
+
+  ## Subscribing
+  When a process calls `subscribe/2`, that process is associated with
+  a `Skate.Settings.Db.User`'s ID for filtering when using `Registry`
+  as a PubSub via `Registry.dispatch/3`.
+
+
+  ## Publishing
+  When `broadcast_notification/3` is called with a notification, a
+  `:broadcast_to_cluster` message is sent to the `Notifications.NotificationServer`
+  on that local instance.
+
+  > #### `:broadcast_to_cluster` note
+  > {: .info}
+  > This first message provides an opportunity for the `Notifications.NotificationServer`
+  > to do any necessary pre-processing work, in it's own process from the
+  > caller, before proceeding with distributed work across the cluster.
+
+  The `Notifications.NotificationServer` then informs the entire cluster
+  to broadcast the provided notification to subscribers. When each
+  `Notifications.NotificationServer` instance receives a message, it
+  proceeds to `send/2` `{:notification, %Notifications.Notification{}}`
+  messages to every process.
+
+
+  ## Contradictions
+  While the above describes how `broadcast_notification/3` works, and
+  broadly how the PubSub is implemented, `Notifications.NotificationServer`
+  has other functions such as
+
+    - `new_block_waivers/2`
+    - `bridge_movement/2`
+    - `detour_deactivated/2`
+    - `detour_activated/2`
+
+  These functions are being deprecated and moved into `Notifications.Notification`
+  because they blur the line of what `Notifications.NotificationServer`
+  is responsible for. These functions currently manage _creating_
+  notifications by calling corresponding functions in `Notifications.Notification`
+  **and** then broadcasting the created notification.
+
+  In context of the original implementation, this made sense at the
+  time because a Distributed Erlang cluster was not configured at the
+  time, and block waivers and bridge movement notifications needed
+  to be broadcasted to all users when the instance became aware of it,
+  so informing the `Notifications.NotificationServer` was the correct
+  choice.
+
+  This reasoning _**does not**_ apply to detour status notifications,
+  the `detour_deactivated/2` and `detour_activated/2` functions exist
+  here because they were following the precedent set by block waivers
+  and bridge movements.
   """
 
   use GenServer
@@ -18,7 +79,6 @@ defmodule Notifications.NotificationServer do
   alias Skate.Settings.User
 
   # Client
-
   @spec default_name() :: GenServer.name()
   def default_name(), do: Notifications.NotificationServer
 
@@ -28,6 +88,38 @@ defmodule Notifications.NotificationServer do
     GenServer.start_link(__MODULE__, opts, name: opts[:name])
   end
 
+  @doc """
+  Broadcasts the argument `notification` to all processes that have subscribed
+  via `subscribe/2`.
+
+  If argument `users` is `:all`, broadcasts to all subscribers.
+
+  If argument `users` is a list of `Skate.Settings.Db.User` ID's, subscribers
+  with `user_id`'s contained in `users` are notified.
+  """
+  def broadcast_notification(
+        %Notifications.Notification{} = notification,
+        users,
+        server \\ default_name()
+      ) do
+    GenServer.cast(server, {:broadcast_to_cluster, notification, users})
+
+    :ok
+  end
+
+  @doc """
+  Records the calling process as associated with the `user_id` argument to
+  subscribe to future notifications.
+  """
+  def subscribe(user_id, server \\ default_name()) do
+    registry_key = GenServer.call(server, :subscribe)
+
+    Registry.register(Notifications.Supervisor.registry_name(), registry_key, user_id)
+    :ok
+  end
+
+  ## Deprecated Interface
+  # -----------------------------------------------------------------------------
   @spec new_block_waivers(BlockWaiver.block_waivers_by_block_key(), GenServer.server()) :: :ok
   def new_block_waivers(new_waivers_by_block_key, server \\ default_name()) do
     GenServer.cast(server, {:new_block_waivers, new_waivers_by_block_key})
@@ -45,10 +137,6 @@ defmodule Notifications.NotificationServer do
 
   If the `:server` option is present, the notification is sent to the process
   referred to by the `:server` value.
-
-  If the `:notify_finished` option is present, a `{:new_notification, detour: detour.id}` message
-  is sent to the process referred to by the `:notify_finished` value.
-  This option has mainly been useful for testing code to avoid `Process.sleep()` calls.
   """
   @spec detour_activated(detour :: Skate.Detours.Db.Detour.t(), keyword()) :: :ok
   def detour_activated(
@@ -56,9 +144,8 @@ defmodule Notifications.NotificationServer do
         options \\ []
       ) do
     server = Keyword.get(options, :server, default_name())
-    notify_finished = Keyword.get(options, :notify_finished, nil)
 
-    GenServer.cast(server, {:detour_activated, detour, notify_finished})
+    GenServer.cast(server, {:detour_activated, detour})
   end
 
   @doc """
@@ -68,10 +155,6 @@ defmodule Notifications.NotificationServer do
 
   If the `:server` option is present, the notification is sent to the process
   referred to by the `:server` value.
-
-  If the `:notify_finished` option is present, a `{:new_notification, detour: detour.id}` message
-  is sent to the process referred to by the `:notify_finished` value.
-  This option has mainly been useful for testing code to avoid `Process.sleep()` calls.
   """
   @spec detour_deactivated(detour :: Skate.Detours.Db.Detour.t(), keyword()) :: :ok
   def detour_deactivated(
@@ -79,27 +162,27 @@ defmodule Notifications.NotificationServer do
         options \\ []
       ) do
     server = Keyword.get(options, :server, default_name())
-    notify_finished = Keyword.get(options, :notify_finished, nil)
 
-    GenServer.cast(server, {:detour_deactivated, detour, notify_finished})
-  end
-
-  def subscribe(user_id, server \\ default_name()) do
-    registry_key = GenServer.call(server, :subscribe)
-
-    Registry.register(Notifications.Supervisor.registry_name(), registry_key, user_id)
-    :ok
+    GenServer.cast(server, {:detour_deactivated, detour})
   end
 
   # Server
-
   @enforce_keys [:name]
   defstruct [:name]
+
   @impl GenServer
   def init(opts \\ []) do
     {:ok, struct(__MODULE__, opts)}
   end
 
+  @impl GenServer
+  def handle_call(:subscribe, _from, state) do
+    registry_key = self()
+    {:reply, registry_key, state}
+  end
+
+  ## Deprecated Functionality
+  # -----------------------------------------------------------------------------
   @impl true
   def handle_cast({:new_block_waivers, new_block_waivers_by_block_key}, state) do
     new_block_waivers_by_block_key
@@ -124,36 +207,14 @@ defmodule Notifications.NotificationServer do
   def handle_cast(
         {
           :detour_activated,
-          %Skate.Detours.Db.Detour{id: id} = detour,
-          notify_finished_caller_id
+          %Skate.Detours.Db.Detour{} = detour
         },
         state
       ) do
     notification =
       Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
-    broadcast(notification, self())
-
-    notify_caller_new_notification(notify_finished_caller_id, detour: id)
-    # Send to processes with same name on other nodes
-    broadcast_notification_to_other_instances(notification, state.name)
-
-    {:noreply, state}
-  end
-
-  @impl true
-  # "Private" method for fetching and sending notifications from distributed
-  # Elixir
-  def handle_cast(
-        {
-          :broadcast_new_detour_notification,
-          notification_id
-        },
-        state
-      ) do
-    notification_id
-    |> Notifications.Notification.get_detour_notification()
-    |> broadcast(self())
+    broadcast_notification(notification, :all, self())
 
     {:noreply, state}
   end
@@ -162,39 +223,41 @@ defmodule Notifications.NotificationServer do
   def handle_cast(
         {
           :detour_deactivated,
-          %Skate.Detours.Db.Detour{id: id} = detour,
-          notify_finished_caller_id
+          %Skate.Detours.Db.Detour{} = detour
         },
         state
       ) do
     notification =
       Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
 
-    broadcast(notification, self())
-
-    notify_caller_new_notification(notify_finished_caller_id, detour: id)
-    broadcast_notification_to_other_instances(notification, state.name)
+    broadcast_notification(notification, :all, self())
 
     {:noreply, state}
   end
 
-  # Tell the caller when a notification is created
-  # Mainly useful for writing tests so that they don't require
-  # `Process.sleep(<N>)`
-  defp notify_caller_new_notification(nil = _caller_id, _value), do: nil
+  ## New Implementation
+  # -----------------------------------------------------------------------------
+  @impl GenServer
+  def handle_cast(
+        {:broadcast_to_cluster, %Notifications.Notification{} = notification, users},
+        state
+      ) do
+    broadcast_to_cluster(notification, users, state.name)
 
-  defp notify_caller_new_notification(caller_id, value) do
-    send(caller_id, {:new_notification, value})
+    {:noreply, state}
   end
 
-  defp broadcast_notification_to_other_instances(
-         %Notifications.Notification{
-           id: notification_id,
-           content: %Notifications.Db.Detour{}
-         },
-         server
-       )
-       when not is_nil(notification_id) do
+  @impl GenServer
+  def handle_cast(
+        {:broadcast_to_subscribers, %Notifications.Notification{} = notification, users},
+        state
+      ) do
+    broadcast_to_subscribers(notification, users, self())
+
+    {:noreply, state}
+  end
+
+  defp broadcast_to_cluster(%Notifications.Notification{} = notification, users, server_name) do
     # Currently, we've implemented our own "PubSub" for notifications and we
     # are not using the provided `Phoenix.PubSub` that comes with Phoenix
     # channels. This means we don't benefit from Phoenix PubSub's ability to
@@ -209,16 +272,68 @@ defmodule Notifications.NotificationServer do
 
     # Skate instances currently do not "specialize", and therefore we need to
     # send the notification to all instances
-    nodes = Node.list()
+    nodes = [Node.self()] ++ Node.list()
 
     Logger.info(
-      "notifying other instances of detour notification_id=#{notification_id} nodes=#{inspect(nodes)}"
+      "broadcasting notification to distributed instances notification_id=#{notification.id} nodes=#{inspect(nodes)}"
     )
 
-    for node <- nodes do
-      GenServer.cast({server, node}, {:broadcast_new_detour_notification, notification_id})
-    end
+    GenServer.abcast(nodes, server_name, {:broadcast_to_subscribers, notification, users})
   end
+
+  defp broadcast_to_subscribers(
+         %Notifications.Notification{} = notification,
+         user_ids,
+         registry_key
+       ) do
+    # Frontend expects the :status not to be `nil`, and when broadcasting, the
+    # broadcasted notification is new and therefore unread.
+    payload = {:notification, default_unread(notification)}
+
+    Registry.dispatch(
+      Notifications.Supervisor.registry_name(),
+      registry_key,
+      fn entities ->
+        messages_sent =
+          entities
+          |> filter_entities(user_ids)
+          |> Enum.map(fn {pid, _user_id} ->
+            send(pid, payload)
+            :ok
+          end)
+          |> Enum.count()
+
+        Logger.info(fn ->
+          "sent notification to subscribers" <>
+            " notification_id=#{notification.id}" <>
+            " messages_sent=#{messages_sent}" <>
+            " total_subscribers=#{Enum.count(entities)}" <>
+            case user_ids do
+              :all -> " user_match_pattern=#{user_ids}"
+              user_ids when is_list(user_ids) -> " user_id_count=#{length(user_ids)}"
+            end
+        end)
+      end
+    )
+  end
+
+  defp filter_entities(enumerable, :all) do
+    enumerable
+  end
+
+  defp filter_entities(_enumerable, [] = _user_ids) do
+    []
+  end
+
+  defp filter_entities(enumerable, user_ids) when is_list(user_ids) do
+    Enum.filter(enumerable, fn {_pid, user_id} -> Enum.member?(user_ids, user_id) end)
+  end
+
+  defp default_unread(%Notifications.Notification{state: nil} = notification),
+    do: %{notification | state: :unread}
+
+  defp default_unread(%Notifications.Notification{} = notification),
+    do: notification
 
   @spec convert_new_block_waivers_to_notifications([BlockWaiver.t()]) :: [
           Notification.t()
@@ -394,17 +509,5 @@ defmodule Notifications.NotificationServer do
         )
       end
     )
-  end
-
-  defp default_unread(%Notifications.Notification{state: nil} = notification),
-    do: %{notification | state: :unread}
-
-  defp default_unread(%Notifications.Notification{} = notification),
-    do: notification
-
-  @impl true
-  def handle_call(:subscribe, _from, state) do
-    registry_key = self()
-    {:reply, registry_key, state}
   end
 end

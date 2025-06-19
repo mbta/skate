@@ -270,6 +270,156 @@ defmodule Notifications.NotificationServerTest do
     end
   end
 
+  describe "broadcast_notification/3" do
+    setup do
+      {:ok, server} = setup_server()
+
+      %{server: server}
+    end
+
+    test "broadcasts to all subscribers if the provided user specification is :all", %{
+      server: server
+    } do
+      Notifications.NotificationServer.subscribe(0, server)
+      Notifications.NotificationServer.subscribe(1, server)
+      Notifications.NotificationServer.subscribe(2, server)
+
+      id = 1
+
+      Notifications.NotificationServer.broadcast_notification(
+        %Notifications.Notification{
+          id: id,
+          created_at: nil,
+          state: nil,
+          content: nil
+        },
+        :all,
+        server
+      )
+
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+
+      refute_receive {:notification, %Notifications.Notification{id: ^id}}
+    end
+
+    test "broadcasts to all subscribers in the provided users list", %{server: server} do
+      Notifications.NotificationServer.subscribe(0, server)
+      Notifications.NotificationServer.subscribe(1, server)
+      Notifications.NotificationServer.subscribe(2, server)
+
+      id = 1
+
+      Notifications.NotificationServer.broadcast_notification(
+        %Notifications.Notification{
+          id: id,
+          created_at: nil,
+          state: nil,
+          content: nil
+        },
+        [0, 1],
+        server
+      )
+
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+      assert_receive {:notification, %Notifications.Notification{id: ^id}}
+
+      refute_receive {:notification, %Notifications.Notification{id: ^id}}
+    end
+
+    test "logs broadcast_to_cluster call", %{server: server} do
+      Notifications.NotificationServer.subscribe(0, server)
+
+      id = 1
+
+      set_log_level(:info)
+
+      log =
+        capture_log([level: :info], fn ->
+          Notifications.NotificationServer.broadcast_notification(
+            %Notifications.Notification{
+              id: id,
+              created_at: nil,
+              state: nil,
+              content: nil
+            },
+            [0, 1],
+            server
+          )
+
+          assert_receive {:notification, %Notifications.Notification{id: ^id}}
+        end)
+
+      assert log =~ "mfa=Notifications.NotificationServer.broadcast_to_cluster/3"
+      assert log =~ "notification_id=#{id}"
+      assert log =~ "nodes=[:nonode@nohost]"
+    end
+
+    test "logs broadcast_to_subscribers call", %{server: server} do
+      Notifications.NotificationServer.subscribe(0, server)
+      Notifications.NotificationServer.subscribe(0, server)
+      Notifications.NotificationServer.subscribe(1, server)
+      Notifications.NotificationServer.subscribe(2, server)
+
+      log_specific_users_id = 1
+
+      set_log_level(:info)
+
+      log_specific_users =
+        capture_log([level: :info], fn ->
+          Notifications.NotificationServer.broadcast_notification(
+            %Notifications.Notification{
+              id: log_specific_users_id,
+              created_at: nil,
+              state: nil,
+              content: nil
+            },
+            [0, 1],
+            server
+          )
+
+          # Absorb messages for the 3 matching subscriptions
+          for _ <- 1..3 do
+            assert_receive {:notification,
+                            %Notifications.Notification{id: ^log_specific_users_id}}
+          end
+        end)
+
+      log_all_users_id = 2
+
+      log_all_users =
+        capture_log([level: :info], fn ->
+          Notifications.NotificationServer.broadcast_notification(
+            %Notifications.Notification{
+              id: log_all_users_id,
+              created_at: nil,
+              state: nil,
+              content: nil
+            },
+            :all,
+            server
+          )
+
+          # Absorb messages for all 4 subscriptions
+          for _ <- 1..4 do
+            assert_receive {:notification, %Notifications.Notification{id: ^log_all_users_id}}
+          end
+        end)
+
+      assert log_specific_users =~
+               "mfa=Notifications.NotificationServer.broadcast_to_subscribers/3"
+
+      assert log_specific_users =~
+               "notification_id=#{log_specific_users_id} messages_sent=3 total_subscribers=4 user_id_count=2"
+
+      assert log_all_users =~ "mfa=Notifications.NotificationServer.broadcast_to_subscribers/3"
+
+      assert log_all_users =~
+               "notification_id=#{log_all_users_id} messages_sent=4 total_subscribers=4 user_match_pattern=all"
+    end
+  end
+
   describe "new_block_waivers/2" do
     setup do
       reassign_env(:realtime, :block_fn, fn _, _ -> @block end)
@@ -622,6 +772,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "saves to database", %{server: server} do
+      NotificationServer.subscribe(0, server)
+
       notification_count = 3
       # create new notification
       for _ <- 1..notification_count do
@@ -629,9 +781,9 @@ defmodule Notifications.NotificationServerTest do
           detour =
           insert(:detour)
 
-        NotificationServer.detour_activated(detour, notify_finished: self(), server: server)
+        NotificationServer.detour_activated(detour, server: server)
 
-        assert_receive {:new_notification, detour: ^id}
+        assert_receive {:notification, %{content: %{detour_id: ^id}}}
       end
 
       # assert database contains notification
@@ -639,6 +791,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "broadcasts to all connected users", %{server: server} do
+      NotificationServer.subscribe(0, server)
+
       notification_count = 3
       # connect users to channel
       for id <- 1..notification_count do
@@ -650,15 +804,13 @@ defmodule Notifications.NotificationServerTest do
         detour =
         insert(:detour)
 
-      NotificationServer.detour_activated(detour, notify_finished: self(), server: server)
-
-      assert_receive {:new_notification, detour: ^id}
+      NotificationServer.detour_activated(detour, server: server)
 
       # assert channel sends notifications to each user
       for _ <- 1..notification_count do
         assert_receive {:notification,
                         %Notification{
-                          content: %Notifications.Db.Detour{status: :activated}
+                          content: %Notifications.Db.Detour{status: :activated, detour_id: ^id}
                         }}
       end
     end
@@ -672,6 +824,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "saves to database", %{server: server} do
+      NotificationServer.subscribe(0, server)
+
       notification_count = 3
       # create new notification
       for _ <- 1..notification_count do
@@ -679,9 +833,9 @@ defmodule Notifications.NotificationServerTest do
           detour =
           insert(:detour)
 
-        NotificationServer.detour_deactivated(detour, notify_finished: self(), server: server)
+        NotificationServer.detour_deactivated(detour, server: server)
 
-        assert_receive {:new_notification, detour: ^id}
+        assert_receive {:notification, %{content: %{detour_id: ^id}}}
       end
 
       # assert database contains notification
@@ -689,6 +843,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "broadcasts to all connected users", %{server: server} do
+      NotificationServer.subscribe(0, server)
+
       notification_count = 3
       # connect users to channel
       for id <- 1..notification_count do
@@ -700,15 +856,13 @@ defmodule Notifications.NotificationServerTest do
         detour =
         insert(:detour)
 
-      NotificationServer.detour_deactivated(detour, notify_finished: self(), server: server)
-
-      assert_receive {:new_notification, detour: ^id}
+      NotificationServer.detour_deactivated(detour, server: server)
 
       # assert channel sends notifications to each user
       for _ <- 1..notification_count do
         assert_receive {:notification,
                         %Notification{
-                          content: %Notifications.Db.Detour{status: :deactivated}
+                          content: %Notifications.Db.Detour{status: :deactivated, detour_id: ^id}
                         }}
       end
     end
