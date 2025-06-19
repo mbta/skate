@@ -321,6 +321,19 @@ defmodule Skate.Detours.Detours do
     Notifications.NotificationServer.detour_deactivated(detour)
   end
 
+  defp process_notifications(
+         %Ecto.Changeset{
+           data: %Detour{status: :active},
+           changes: %{estimated_duration: _estimated_duration}
+         },
+         %Detour{} = detour
+       ) do
+    detour = db_detour_to_detour(detour)
+    expires_at = calculate_expiration_timestamp(detour)
+
+    Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)
+  end
+
   defp process_notifications(_, _), do: nil
 
   defp update_swiftly(changeset, detour) do
