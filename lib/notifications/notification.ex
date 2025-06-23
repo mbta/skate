@@ -237,10 +237,12 @@ defmodule Notifications.Notification do
   Creates a new Detour Status notification for an activated detour and broadcasts to subscribed users.
   """
   def create_activated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
-    import Notifications.Db.Notification.Queries
-
-    activated_detour_notification(detour)
-    |> unread_notifications_for_users(Skate.Settings.User.get_all())
+    detour
+    |> Ecto.build_assoc(:detour_status_notifications)
+    |> Notifications.Db.Detour.changeset(%{
+      status: :activated,
+      notification: %{users: Skate.Settings.User.get_all()}
+    })
     |> Skate.Repo.insert()
     |> broadcast_notification(:all)
   end
@@ -249,14 +251,6 @@ defmodule Notifications.Notification do
   defp new_notification_now() do
     %Notifications.Db.Notification{
       created_at: DateTime.to_unix(DateTime.utc_now())
-    }
-  end
-
-  # Adds a activated detour notification relation to a `Notifications.Db.Notification`
-  defp activated_detour_notification(%Skate.Detours.Db.Detour{} = detour) do
-    %Notifications.Db.Notification{
-      new_notification_now()
-      | detour: Notifications.Detour.activated_detour(detour)
     }
   end
 
