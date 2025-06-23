@@ -130,42 +130,6 @@ defmodule Notifications.NotificationServer do
     GenServer.cast(server, {:bridge_movement, bridge_movement})
   end
 
-  @doc """
-  Creates a new Detour Activated Notification for a `Skate.Detours.Db.Detour`.
-
-  ## Options
-
-  If the `:server` option is present, the notification is sent to the process
-  referred to by the `:server` value.
-  """
-  @spec detour_activated(detour :: Skate.Detours.Db.Detour.t(), keyword()) :: :ok
-  def detour_activated(
-        %Skate.Detours.Db.Detour{} = detour,
-        options \\ []
-      ) do
-    server = Keyword.get(options, :server, default_name())
-
-    GenServer.cast(server, {:detour_activated, detour})
-  end
-
-  @doc """
-  Creates a new Detour Deactivated Notification for a `Skate.Detours.Db.Detour`.
-
-  ## Options
-
-  If the `:server` option is present, the notification is sent to the process
-  referred to by the `:server` value.
-  """
-  @spec detour_deactivated(detour :: Skate.Detours.Db.Detour.t(), keyword()) :: :ok
-  def detour_deactivated(
-        %Skate.Detours.Db.Detour{} = detour,
-        options \\ []
-      ) do
-    server = Keyword.get(options, :server, default_name())
-
-    GenServer.cast(server, {:detour_deactivated, detour})
-  end
-
   # Server
   @enforce_keys [:name]
   defstruct [:name]
@@ -199,38 +163,6 @@ defmodule Notifications.NotificationServer do
     bridge_movement
     |> convert_bridge_movement_to_notification
     |> broadcast(self())
-
-    {:noreply, state}
-  end
-
-  @impl true
-  def handle_cast(
-        {
-          :detour_activated,
-          %Skate.Detours.Db.Detour{} = detour
-        },
-        state
-      ) do
-    notification =
-      Notifications.Notification.create_activated_detour_notification_from_detour(detour)
-
-    broadcast_notification(notification, :all, self())
-
-    {:noreply, state}
-  end
-
-  @impl true
-  def handle_cast(
-        {
-          :detour_deactivated,
-          %Skate.Detours.Db.Detour{} = detour
-        },
-        state
-      ) do
-    notification =
-      Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
-
-    broadcast_notification(notification, :all, self())
 
     {:noreply, state}
   end

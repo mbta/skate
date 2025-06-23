@@ -99,6 +99,23 @@ defmodule Notifications.Notification do
     |> Notifications.NotificationServer.broadcast_notification(users)
   end
 
+  defp notification_log_message({:error, error}),
+    do: "result=error error=#{inspect(error)}"
+
+  defp notification_log_level({:ok, _}), do: :info
+  defp notification_log_level({:error, _}), do: :warning
+
+  # Macro that logs notification repo operation information in
+  # context, so that `:mfa` matches the caller
+  defmacrop log_notification(repo_operation) do
+    quote do
+      repo_operation = unquote(repo_operation)
+      Logger.log(notification_log_level(repo_operation), notification_log_message(repo_operation))
+
+      repo_operation
+    end
+  end
+
   @doc """
   Creates a new detour expiration notification and broadcasts to subscribed
   users.
@@ -166,46 +183,27 @@ defmodule Notifications.Notification do
   end
 
   @doc """
-  Inserts a new notification for an deactivated detour into the database
-  and returns the detour notification with notification info.
+  Creates a new Detour Status notification for an deactivated detour and broadcasts to subscribed users.
   """
   def create_deactivated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
     import Notifications.Db.Notification.Queries
 
-    notification =
-      deactivated_detour_notification(detour)
-      |> unread_notifications_for_users(Skate.Settings.User.get_all())
-      |> Skate.Repo.insert!()
-
-    # We need the associated values in the Detour JSON, so query the DB with the
-    # id to load the extra data.
-    get_detour_notification(notification.id)
+    deactivated_detour_notification(detour)
+    |> unread_notifications_for_users(Skate.Settings.User.get_all())
+    |> Skate.Repo.insert()
+    |> broadcast_notification(:all)
   end
 
   @doc """
-  Inserts a new notification for an activated detour into the database
-  and returns the detour notification with notification info.
+  Creates a new Detour Status notification for an activated detour and broadcasts to subscribed users.
   """
   def create_activated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
     import Notifications.Db.Notification.Queries
 
-    notification =
-      activated_detour_notification(detour)
-      |> unread_notifications_for_users(Skate.Settings.User.get_all())
-      |> Skate.Repo.insert!()
-
-    # We need the associated values in the Detour JSON, so query the DB with the
-    # id to load the extra data.
-    get_detour_notification(notification.id)
-  end
-
-  def get_detour_notification(notification_id) do
-    import Notifications.Db.Notification.Queries
-
-    select_detour_info()
-    |> where([notification: n], n.id == ^notification_id)
-    |> Skate.Repo.one!()
-    |> from_db_notification()
+    activated_detour_notification(detour)
+    |> unread_notifications_for_users(Skate.Settings.User.get_all())
+    |> Skate.Repo.insert()
+    |> broadcast_notification(:all)
   end
 
   # Creates a new notification set to the current time
