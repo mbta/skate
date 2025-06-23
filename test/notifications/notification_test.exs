@@ -421,7 +421,7 @@ defmodule Notifications.NotificationTest do
       [user | _] = insert_list(number_of_users, :user)
 
       # create new notification
-      {:ok, detour_notification} =
+      {:ok, %{notification: %{id: notification_id}}} =
         :detour
         |> insert(
           # don't create a new user and affect the user count
@@ -431,7 +431,7 @@ defmodule Notifications.NotificationTest do
 
       detour_notification =
         Notifications.Db.Notification
-        |> Skate.Repo.get!(detour_notification.id)
+        |> Skate.Repo.get!(notification_id)
         |> Skate.Repo.preload(:users)
 
       # assert all users have a notification that is unread
