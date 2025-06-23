@@ -4,6 +4,7 @@ defmodule Notifications.Db.Detour do
   """
 
   use Skate.Schema
+  import Ecto.Changeset
 
   @derive {Jason.Encoder,
            only: [
@@ -27,6 +28,14 @@ defmodule Notifications.Db.Detour do
     field :route, :any, virtual: true
     field :direction, :any, virtual: true
     field :origin, :any, virtual: true
+  end
+
+  def changeset(detour_notification, params) do
+    detour_notification
+    |> cast(params, [:status])
+    |> cast_assoc(:notification)
+    |> validate_required([:status])
+    |> assoc_constraint(:detour)
   end
 
   # Notifications are not created from external input, so there is no changeset function
