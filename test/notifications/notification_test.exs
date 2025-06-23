@@ -348,7 +348,7 @@ defmodule Notifications.NotificationTest do
       [user | _] = insert_list(number_of_users, :user)
 
       # create new notification
-      {:ok, detour_notification} =
+      {:ok, %{notification: %{id: notification_id}}} =
         :detour
         |> insert(
           # don't create a new user and affect the user count
@@ -358,7 +358,7 @@ defmodule Notifications.NotificationTest do
 
       detour_notification =
         Notifications.Db.Notification
-        |> Skate.Repo.get!(detour_notification.id)
+        |> Skate.Repo.get!(notification_id)
         |> Skate.Repo.preload(:users)
 
       # assert all users have a notification that is unread
@@ -386,7 +386,7 @@ defmodule Notifications.NotificationTest do
         |> with_direction(:inbound)
         |> insert()
 
-      {:ok, detour_notification} =
+      {:ok, %{notification: %{id: notification_id}}} =
         Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
       # assert fields are set
@@ -398,7 +398,7 @@ defmodule Notifications.NotificationTest do
                  headsign: ^headsign,
                  direction: "Inbound"
                }
-             } = Notifications.Notification.get_domain_notification(detour_notification.id)
+             } = Notifications.Notification.get_domain_notification(notification_id)
     end
 
     test "deletes associated detour notifications when detour is deleted" do
