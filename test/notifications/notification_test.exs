@@ -505,4 +505,75 @@ defmodule Notifications.NotificationTest do
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
     end
   end
+
+  describe "create_detour_expiration_notification/2" do
+    # note: main tests in doctest
+
+    test "logs info of notification creation" do
+      Test.Support.Helpers.set_log_level(:info)
+
+      detour = insert(:detour)
+
+      {{:ok, _}, log_30m} =
+        with_log([level: :info], fn ->
+          Notifications.Notification.create_detour_expiration_notification(%{
+            detour: detour,
+            expires_in: Duration.new!(minute: 30),
+            estimated_duration: "1 hour",
+            notification: %{created_at: 123_456_000}
+          })
+        end)
+
+      # Log location/MFA
+      assert log_30m =~ "mfa=Notifications.Notification.create_detour_expiration_notification"
+      # Result of operation
+      assert log_30m =~ " result=notification_created"
+      # Notification information
+      assert log_30m =~ " created_at=123456000"
+      # Type of notification created
+      assert log_30m =~ " type=DetourExpiration"
+      # Detour Expiration specific information
+      assert log_30m =~ ~s(detour_id=#{detour.id} expires_in=PT30M estimated_duration="1 hour")
+
+      {{:ok, _}, log_0m} =
+        with_log([level: :info], fn ->
+          Notifications.Notification.create_detour_expiration_notification(%{
+            detour: detour,
+            expires_in: Duration.new!(minute: 0),
+            estimated_duration: "1 hour",
+            notification: %{created_at: 123_456_000}
+          })
+        end)
+
+      # Log location/MFA
+      assert log_0m =~ "mfa=Notifications.Notification.create_detour_expiration_notification"
+      # Result of operation
+      assert log_0m =~ " result=notification_created"
+      # Notification information
+      assert log_0m =~ " created_at=123456000"
+      # Type of notification created
+      assert log_0m =~ " type=DetourExpiration"
+      # Detour Expiration specific information
+      assert log_0m =~ ~s'detour_id=#{detour.id} expires_in=PT0S estimated_duration="1 hour"'
+    end
+
+    test "logs warning of notification creation error" do
+      Test.Support.Helpers.set_log_level(:warning)
+
+      detour = insert(:detour)
+
+      {{:error, %Ecto.Changeset{}}, log} =
+        with_log([level: :warning], fn ->
+          Notifications.Notification.create_detour_expiration_notification(%{
+            detour: detour
+          })
+        end)
+
+      # Log location/MFA
+      assert log =~ "mfa=Notifications.Notification.create_detour_expiration_notification"
+      # Error information
+      assert log =~ "result=error"
+      assert log =~ ~r/error=#Ecto.Changeset<.*>\n/
+    end
+  end
 end
