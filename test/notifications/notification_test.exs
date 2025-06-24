@@ -1,5 +1,7 @@
 defmodule Notifications.NotificationTest do
+  require Test.Support.Helpers
   use Skate.DataCase
+  import ExUnit.CaptureLog
 
   doctest Notifications.Notification
 
