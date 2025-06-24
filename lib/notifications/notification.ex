@@ -82,6 +82,23 @@ defmodule Notifications.Notification do
     |> from_db_notification()
   end
 
+  defp notification_log_message({:error, error}),
+    do: "result=error error=#{inspect(error)}"
+
+  defp notification_log_level({:ok, _}), do: :info
+  defp notification_log_level({:error, _}), do: :warning
+
+  # Macro that logs notification repo operation information in
+  # context, so that `:mfa` matches the caller
+  defmacrop log_notification(repo_operation) do
+    quote do
+      repo_operation = unquote(repo_operation)
+      Logger.log(notification_log_level(repo_operation), notification_log_message(repo_operation))
+
+      repo_operation
+    end
+  end
+
   @doc """
   Creates a new detour expiration notification and broadcasts to subscribed
   users.
