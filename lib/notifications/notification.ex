@@ -82,6 +82,16 @@ defmodule Notifications.Notification do
     |> from_db_notification()
   end
 
+  def get_notification_user_ids(id) do
+    Skate.Repo.all(
+      from(n in Notifications.Db.Notification,
+        where: [id: ^id],
+        join: user in assoc(n, :users),
+        select: user.id
+      )
+    )
+  end
+
   defp broadcast_notification(
          {:ok, %{notification: %Notifications.Db.Notification{id: id}}} = input,
          users
@@ -92,6 +102,9 @@ defmodule Notifications.Notification do
   end
 
   defp broadcast_notification(input, _), do: input
+
+  defp broadcast_notification_by_id(id, :users_from_notification),
+    do: broadcast_notification_by_id(id, get_notification_user_ids(id))
 
   defp broadcast_notification_by_id(id, users) do
     id
