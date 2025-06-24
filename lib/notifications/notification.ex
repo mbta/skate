@@ -152,17 +152,7 @@ defmodule Notifications.Notification do
     |> Ecto.build_assoc(:detour_expiration_notifications)
     |> Notifications.Db.DetourExpiration.changeset(params)
     |> Skate.Repo.insert()
-    |> case do
-      {:ok, %{notification: %{id: notification_id}}} = result ->
-        notification_id
-        |> get_domain_notification()
-        |> Notifications.NotificationServer.broadcast_notification(:all)
-
-        result
-
-      {:error, _} = error ->
-        error
-    end
+    |> broadcast_notification(:all)
   end
 
   @doc """
