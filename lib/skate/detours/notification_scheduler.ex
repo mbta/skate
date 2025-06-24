@@ -40,7 +40,8 @@ defmodule Skate.Detours.NotificationScheduler do
             DetourExpirationTask.update_changeset(det, %{
               detour: detour,
               estimated_duration: estimated_duration,
-              expires_at: expires_at
+              expires_at: expires_at,
+              status: :scheduled
             })
           end)
       end
@@ -61,7 +62,8 @@ defmodule Skate.Detours.NotificationScheduler do
         detour: detour,
         estimated_duration: estimated_duration,
         expires_at: expires_at,
-        notification_offset_minutes: 0
+        notification_offset_minutes: 0,
+        status: :scheduled
       })
 
     warning_task =
@@ -69,7 +71,8 @@ defmodule Skate.Detours.NotificationScheduler do
         detour: detour,
         estimated_duration: estimated_duration,
         expires_at: expires_at,
-        notification_offset_minutes: 30
+        notification_offset_minutes: 30,
+        status: :scheduled
       })
 
     [expired_task, warning_task]
