@@ -167,6 +167,11 @@ config :skate, Skate.MqttConnection,
 
 config :skate, :swiftly, adjustments_module: Swiftly.API.ServiceAdjustments
 
+config :skate, Skate.BridgeStatus,
+  # 743 is SL3
+  bridge_route_ids: ~w[112 743],
+  blackout_period: Duration.new!(second: -120)
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
