@@ -82,6 +82,17 @@ defmodule Notifications.Notification do
     |> from_db_notification()
   end
 
+  defp broadcast_notification(
+         {:ok, %{notification: %Notifications.Db.Notification{id: id}}} = input,
+         users
+       ) do
+    broadcast_notification_by_id(id, users)
+
+    input
+  end
+
+  defp broadcast_notification(input, _), do: input
+
   defp broadcast_notification_by_id(id, users) do
     id
     |> get_domain_notification()
