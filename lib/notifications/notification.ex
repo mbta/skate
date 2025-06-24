@@ -124,6 +124,21 @@ defmodule Notifications.Notification do
            " expires_in=#{Duration.to_iso8601(expires_in)}" <>
            " estimated_duration=#{inspect(estimated_duration)}"
 
+  defp notification_log_message(
+         {:ok,
+          %Notifications.Db.BridgeMovement{
+            status: status,
+            lowering_time: lowering_time,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=BridgeMovement" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " status=#{status}" <>
+           " lowering_time=#{if is_integer(lowering_time), do: lowering_time |> DateTime.from_unix!() |> DateTime.to_iso8601(), else: "nil"}"
+
   defp notification_log_message({:error, error}),
     do: "result=error error=#{inspect(error)}"
 
@@ -145,6 +160,7 @@ defmodule Notifications.Notification do
     %Notifications.Db.BridgeMovement{}
     |> Notifications.Db.BridgeMovement.changeset(attrs)
     |> Skate.Repo.insert()
+    |> log_notification()
     |> broadcast_notification(:users_from_notification)
   end
 

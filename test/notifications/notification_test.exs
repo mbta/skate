@@ -512,6 +512,66 @@ defmodule Notifications.NotificationTest do
           notification: %{users: users}
         })
     end
+
+    test "logs info of notification creation" do
+      Test.Support.Helpers.set_log_level(:info)
+
+      {{:ok, _}, log_lowered} =
+        with_log([level: :info], fn ->
+          Notifications.Notification.create_bridge_movement_notification(%{
+            status: :lowered,
+            notification: %{created_at: DateTime.to_unix(~U[2025-01-01 12:34:56Z])}
+          })
+        end)
+
+      # Log location/MFA
+      assert log_lowered =~ "mfa=Notifications.Notification.create_bridge_movement_notification"
+      # Result of operation
+      assert log_lowered =~ "result=notification_created"
+      # Notification information
+      assert log_lowered =~ "created_at=2025-01-01T12:34:56Z"
+      # Type of notification created
+      assert log_lowered =~ "type=BridgeMovement"
+      # Bridge Movement specific information
+      assert log_lowered =~ "status=lowered lowering_time=nil"
+
+      {{:ok, _}, log_raised} =
+        with_log([level: :info], fn ->
+          Notifications.Notification.create_bridge_movement_notification(%{
+            status: :raised,
+            lowering_time: DateTime.to_unix(~U[2025-01-01 12:34:56Z]),
+            notification: %{created_at: DateTime.to_unix(~U[2025-01-01 12:34:56Z])}
+          })
+        end)
+
+      # Log location/MFA
+      assert log_raised =~ "mfa=Notifications.Notification.create_bridge_movement_notification"
+      # Result of operation
+      assert log_raised =~ "result=notification_created "
+      # Notification information
+      assert log_raised =~ "created_at=2025-01-01T12:34:56Z "
+      # Type of notification created
+      assert log_raised =~ "type=BridgeMovement "
+      # Bridge Movement specific information
+      assert log_raised =~ "status=raised lowering_time=2025-01-01T12:34:56Z"
+    end
+
+    test "logs warning of notification creation error" do
+      Test.Support.Helpers.set_log_level(:warning)
+
+      {{:error, %Ecto.Changeset{}}, changeset_error} =
+        with_log([level: :warning], fn ->
+          Notifications.Notification.create_bridge_movement_notification(%{})
+        end)
+
+      # Log location/MFA
+      assert changeset_error =~
+               "mfa=Notifications.Notification.create_bridge_movement_notification"
+
+      # Error information
+      assert changeset_error =~ "result=error"
+      assert changeset_error =~ ~r/error=#Ecto.Changeset<.*can't be blank.*>\n/
+    end
   end
 
   describe "create_detour_expiration_notification/2" do
