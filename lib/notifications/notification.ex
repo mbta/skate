@@ -94,7 +94,7 @@ defmodule Notifications.Notification do
        do:
          "result=notification_created" <>
            " type=DetourExpiration" <>
-           " created_at=#{created_at}" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
            " detour_id=#{detour_id}" <>
            " expires_in=#{Duration.to_iso8601(expires_in)}" <>
            " estimated_duration=#{inspect(estimated_duration)}"

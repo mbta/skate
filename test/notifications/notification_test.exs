@@ -529,7 +529,7 @@ defmodule Notifications.NotificationTest do
       # Result of operation
       assert log_30m =~ " result=notification_created"
       # Notification information
-      assert log_30m =~ " created_at=123456000"
+      assert log_30m =~ " created_at=1973-11-29T21:20:00Z"
       # Type of notification created
       assert log_30m =~ " type=DetourExpiration"
       # Detour Expiration specific information
@@ -550,7 +550,7 @@ defmodule Notifications.NotificationTest do
       # Result of operation
       assert log_0m =~ " result=notification_created"
       # Notification information
-      assert log_0m =~ " created_at=123456000"
+      assert log_0m =~ " created_at=1973-11-29T21:20:00Z"
       # Type of notification created
       assert log_0m =~ " type=DetourExpiration"
       # Detour Expiration specific information
