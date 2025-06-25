@@ -520,7 +520,8 @@ defmodule Notifications.NotificationTest do
                  estimated_duration: "1 hour"
                })
 
-      assert ^users = notification |> Ecto.assoc(:users) |> Skate.Repo.all()
+      assert ^users =
+               notification |> Ecto.assoc(:users) |> Skate.Repo.all() |> Enum.sort_by(& &1.id)
     end
 
     test "logs info of notification creation" do
