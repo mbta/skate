@@ -489,6 +489,4 @@ defmodule Skate.Detours.Detours do
     |> Map.get(:activated_at)
     |> DateTime.add(hours, :hour)
   end
-
-  defp do_calculate_expiration_timestamp(_, _), do: nil
 end
