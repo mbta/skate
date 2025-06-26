@@ -14,7 +14,7 @@ defmodule Notifications.Db.NotificationUser do
   typed_schema "notifications_users" do
     belongs_to(:notification, DbNotification)
     belongs_to(:user, DbUser)
-    field(:state, NotificationState)
+    field(:state, NotificationState, default: :unread)
     timestamps()
   end
 end

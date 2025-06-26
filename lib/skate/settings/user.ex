@@ -70,6 +70,10 @@ defmodule Skate.Settings.User do
     end
   end
 
+  def list_users_with_route_ids(route_ids) do
+    Skate.Repo.all(from(u in users_for_route_ids_query(route_ids), select: [:id]))
+  end
+
   @spec user_ids_for_route_ids([String.t()]) :: [DbUser.id()]
   def user_ids_for_route_ids(route_ids) do
     Skate.Repo.all(from(u in users_for_route_ids_query(route_ids), select: u.id))
