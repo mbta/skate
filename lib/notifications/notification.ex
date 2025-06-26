@@ -99,6 +99,21 @@ defmodule Notifications.Notification do
     |> Notifications.NotificationServer.broadcast_notification(users)
   end
 
+  defp notification_log_message(
+         {:ok,
+          %Notifications.Db.Detour{
+            status: status,
+            detour_id: detour_id,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=DetourStatus" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " detour_id=#{detour_id}" <>
+           " status=#{status}"
+
   defp notification_log_message({:error, error}),
     do: "result=error error=#{inspect(error)}"
 
@@ -193,6 +208,7 @@ defmodule Notifications.Notification do
       notification: %{users: Skate.Settings.User.get_all()}
     })
     |> Skate.Repo.insert()
+    |> log_notification()
     |> broadcast_notification(:all)
   end
 
@@ -207,6 +223,7 @@ defmodule Notifications.Notification do
       notification: %{users: Skate.Settings.User.get_all()}
     })
     |> Skate.Repo.insert()
+    |> log_notification()
     |> broadcast_notification(:all)
   end
 
