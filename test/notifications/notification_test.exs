@@ -399,6 +399,30 @@ defmodule Notifications.NotificationTest do
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
     end
+
+    test "logs notification creation" do
+      Test.Support.Helpers.set_log_level(:info)
+
+      {{:ok, %{detour_id: detour_id, notification: %{created_at: created_at}}}, log} =
+        with_log([level: :info], fn ->
+          :detour
+          |> insert()
+          |> Notifications.Notification.create_activated_detour_notification_from_detour()
+        end)
+
+      # Log location/MFA
+      assert log =~
+               "mfa=Notifications.Notification.create_activated_detour_notification_from_detour"
+
+      # Result of operation
+      assert log =~ " result=notification_created"
+      # Notification information
+      assert log =~ " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
+      # Type of notification created
+      assert log =~ " type=DetourStatus"
+      # Detour Activated Status information
+      assert log =~ "detour_id=#{detour_id} status=activated"
+    end
   end
 
   describe "create_deactivated_detour_notification_from_detour/1" do
@@ -451,6 +475,30 @@ defmodule Notifications.NotificationTest do
 
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
+    end
+
+    test "logs notification creation" do
+      Test.Support.Helpers.set_log_level(:info)
+
+      {{:ok, %{detour_id: detour_id, notification: %{created_at: created_at}}}, log} =
+        with_log([level: :info], fn ->
+          :detour
+          |> insert()
+          |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
+        end)
+
+      # Log location/MFA
+      assert log =~
+               "mfa=Notifications.Notification.create_deactivated_detour_notification_from_detour"
+
+      # Result of operation
+      assert log =~ " result=notification_created"
+      # Notification information
+      assert log =~ " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
+      # Type of notification created
+      assert log =~ " type=DetourStatus"
+      # Detour Expiration specific information
+      assert log =~ "detour_id=#{detour_id} status=deactivated"
     end
   end
 
