@@ -28,7 +28,7 @@ defmodule Concentrate.Pipeline do
   def source(source, url, parser, opts \\ []) do
     Supervisor.child_spec(
       {
-        Concentrate.Producer.HTTP,
+        HttpStage,
         {url, [name: source, parser: parser] ++ opts}
       },
       id: source

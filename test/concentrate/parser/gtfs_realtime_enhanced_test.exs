@@ -10,8 +10,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
 
   describe "parse/1" do
     test "parsing an enhanced VehiclePositions JSON file returns only VehiclePosition or TripUpdate structs" do
-      binary = File.read!(fixture_path("VehiclePositions_enhanced.json"))
-      parsed = GTFSRealtimeEnhanced.parse(binary)
+      json = json_from_fixture("VehiclePositions_enhanced.json")
+      parsed = GTFSRealtimeEnhanced.parse(json)
       assert is_list(parsed)
 
       for update <- parsed do
@@ -20,15 +20,15 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
     end
 
     test "parsing an enhanced TripUpdates JSON file returns TripUpdate and StopTimeUpdate structs" do
-      binary = File.read!(fixture_path("TripUpdates_enhanced.json"))
-      parsed = GTFSRealtimeEnhanced.parse(binary)
+      json = json_from_fixture("TripUpdates_enhanced.json")
+      parsed = GTFSRealtimeEnhanced.parse(json)
       assert is_list(parsed)
       assert Enum.all?(parsed, &(&1.__struct__ in [TripUpdate, StopTimeUpdate]))
     end
 
     test "parsing a TripUpdates file preserves the remark field on StopTimeUpdate structs" do
-      binary = File.read!(fixture_path("TripUpdates_enhanced.json"))
-      parsed = GTFSRealtimeEnhanced.parse(binary)
+      json = json_from_fixture("TripUpdates_enhanced.json")
+      parsed = GTFSRealtimeEnhanced.parse(json)
 
       stop_time_updates =
         Enum.filter(parsed, fn

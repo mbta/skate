@@ -11,11 +11,7 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehicles do
   alias Schedule.Gtfs.Direction
 
   @impl Concentrate.Parser
-  def parse(binary) when is_binary(binary) do
-    binary
-    |> Jason.decode!(strings: :copy)
-    |> decode_response()
-  end
+  def parse(json), do: decode_response(json)
 
   @spec decode_response(map()) :: [VehiclePosition.t()]
   defp decode_response(%{"data" => %{"vehicles" => vehicles}}), do: decode_vehicles(vehicles)
