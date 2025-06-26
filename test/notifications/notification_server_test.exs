@@ -357,6 +357,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "logs broadcast_to_subscribers call", %{server: server} do
+      # Subscribe with the same user id twice to test duplicate subscriptions in
+      # the log output, where `user_id_count` != `messages_sent`.
       Notifications.NotificationServer.subscribe(0, server)
       Notifications.NotificationServer.subscribe(0, server)
       Notifications.NotificationServer.subscribe(1, server)
@@ -384,6 +386,8 @@ defmodule Notifications.NotificationServerTest do
             assert_receive {:notification,
                             %Notifications.Notification{id: ^log_specific_users_id}}
           end
+
+          :sys.get_state(server)
         end)
 
       log_all_users_id = 2
@@ -405,6 +409,8 @@ defmodule Notifications.NotificationServerTest do
           for _ <- 1..4 do
             assert_receive {:notification, %Notifications.Notification{id: ^log_all_users_id}}
           end
+
+          :sys.get_state(server)
         end)
 
       assert log_specific_users =~
