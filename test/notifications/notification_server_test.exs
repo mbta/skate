@@ -384,6 +384,8 @@ defmodule Notifications.NotificationServerTest do
             assert_receive {:notification,
                             %Notifications.Notification{id: ^log_specific_users_id}}
           end
+
+          :sys.get_state(server)
         end)
 
       log_all_users_id = 2
@@ -405,6 +407,8 @@ defmodule Notifications.NotificationServerTest do
           for _ <- 1..4 do
             assert_receive {:notification, %Notifications.Notification{id: ^log_all_users_id}}
           end
+
+          :sys.get_state(server)
         end)
 
       assert log_specific_users =~
