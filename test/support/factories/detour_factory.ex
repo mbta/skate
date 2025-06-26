@@ -15,6 +15,13 @@ defmodule Skate.DetourFactory do
         }
       end
 
+      def detour_expiration_task_factory do
+        %Skate.Detours.Db.DetourExpirationTask{
+          detour: build(:detour),
+          expires_at: DateTime.utc_now()
+        }
+      end
+
       def detour_factory do
         %Skate.Detours.Db.Detour{
           author: build(:user),
