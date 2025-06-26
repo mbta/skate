@@ -357,6 +357,8 @@ defmodule Notifications.NotificationServerTest do
     end
 
     test "logs broadcast_to_subscribers call", %{server: server} do
+      # Subscribe with the same user id twice to test duplicate subscriptions in
+      # the log output, where `user_id_count` != `messages_sent`.
       Notifications.NotificationServer.subscribe(0, server)
       Notifications.NotificationServer.subscribe(0, server)
       Notifications.NotificationServer.subscribe(1, server)
