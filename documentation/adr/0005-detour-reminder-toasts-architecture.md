@@ -512,6 +512,21 @@ iex> Skate.Notifications.create_detour_expiration_notification(%{
 }
 ```
 
+#### `Skate.Detours.NotificationScheduler.Server`
+```mermaid
+flowchart TD
+    %% Server and Worker are supervised together
+    A["Detour.NotificationScheduler.Supervisor
+        (one_for_one)"]
+    %% Checks the database for tasks ready to be run
+    %% Sends a message to the Worker for each task
+    A --- C["Detour.NotificationScheduler.Server"]
+    %% A Worker to process tasks (DetourExpirationTasks)
+    %% Sequentially processes tasks, receiving a message per task
+    %% Calls Notification create notification fn
+    A --- D["Detour.NotificationScheduler.Worker"]
+```
+
 ##### Challenges
 Because a notification is a _point in time_, we'll need to save the
 `estimatedDuration` and `expiresIn` information that the
