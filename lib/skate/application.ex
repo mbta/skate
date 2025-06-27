@@ -33,6 +33,7 @@ defmodule Skate.Application do
           [
             TrainVehicles.Supervisor,
             Notifications.Supervisor,
+            Skate.Detours.NotificationScheduler.Supervisor,
             Realtime.Supervisor
           ]
         else
