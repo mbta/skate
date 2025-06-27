@@ -1,7 +1,9 @@
-defmodule Skate.Detors.NotificationScheduler.Supervisor do
+defmodule Skate.Detours.NotificationScheduler.Supervisor do
   @moduledoc false
 
   use Supervisor
+
+  alias Skate.Detours.NotificationScheduler.{Server, Worker}
 
   def start_link([]) do
     Supervisor.start_link(__MODULE__, :ok)
@@ -10,10 +12,8 @@ defmodule Skate.Detors.NotificationScheduler.Supervisor do
   @impl true
   def init(:ok) do
     children = [
-      {Skate.Detours.NotificationScheduler.Server,
-       name: Skate.Detours.NotificationScheduler.Server.default_name()},
-      {Skate.Detours.NotificationScheduler.Worker,
-       name: Skate.Detours.NotificationScheduler.Worker.default_name()}
+      {Server, name: Server.default_name(), poll_ms: Server.poll_ms()},
+      {Worker, name: Worker.default_name()}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
