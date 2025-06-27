@@ -82,6 +82,40 @@ defmodule Notifications.Notification do
     |> from_db_notification()
   end
 
+  defp notification_log_message(
+         {:ok,
+          %Notifications.Db.DetourExpiration{
+            detour_id: detour_id,
+            expires_in: expires_in,
+            estimated_duration: estimated_duration,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=DetourExpiration" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " detour_id=#{detour_id}" <>
+           " expires_in=#{Duration.to_iso8601(expires_in)}" <>
+           " estimated_duration=#{inspect(estimated_duration)}"
+
+  defp notification_log_message({:error, error}),
+    do: "result=error error=#{inspect(error)}"
+
+  defp notification_log_level({:ok, _}), do: :info
+  defp notification_log_level({:error, _}), do: :warning
+
+  # Macro that logs notification repo operation information in
+  # context, so that `:mfa` matches the caller
+  defmacrop log_notification(repo_operation) do
+    quote do
+      repo_operation = unquote(repo_operation)
+      Logger.log(notification_log_level(repo_operation), notification_log_message(repo_operation))
+
+      repo_operation
+    end
+  end
+
   @doc """
   Creates a new detour expiration notification and broadcasts to subscribed
   users.
@@ -135,6 +169,7 @@ defmodule Notifications.Notification do
     |> Ecto.build_assoc(:detour_expiration_notifications)
     |> Notifications.Db.DetourExpiration.changeset(params)
     |> Skate.Repo.insert()
+    |> log_notification()
     |> case do
       {:ok, %{notification: %{id: notification_id}}} = result ->
         notification_id
