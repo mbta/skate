@@ -44,13 +44,9 @@ const Description = ({
                 </>
               )}
             </div>
-            {notification.content.isDispatcher ? (
+            {notification.content.isDispatcher && (
               <div className="fw-normal">
                 Please extend or close the detour.
-              </div>
-            ) : (
-              <div className="fw-normal">
-                Please work with the dispatcher to extend or close the detour.
               </div>
             )}
           </div>
