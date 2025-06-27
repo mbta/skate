@@ -18,8 +18,18 @@ defmodule Skate.DetourFactory do
       def detour_expiration_task_factory do
         %Skate.Detours.Db.DetourExpirationTask{
           detour: build(:detour),
-          expires_at: DateTime.utc_now()
+          notification_offset_minutes: 0,
+          expires_at: DateTime.utc_now(),
+          status: :scheduled
         }
+      end
+
+      def expires(%Skate.Detours.Db.DetourExpirationTask{} = task, expires_at) do
+        %{task | expires_at: expires_at}
+      end
+
+      def completed(%Skate.Detours.Db.DetourExpirationTask{} = task) do
+        %{task | status: :completed}
       end
 
       def detour_factory do
@@ -89,7 +99,8 @@ defmodule Skate.DetourFactory do
           detour
           | state: activated(detour.state, activated_at, estimated_duration),
             activated_at: activated_at,
-            status: :active
+            status: :active,
+            estimated_duration: estimated_duration
         }
       end
 

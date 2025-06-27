@@ -83,4 +83,118 @@ defmodule Skate.Detours.NotificationSchedulerTest do
       assert :error = NotificationScheduler.detour_duration_changed(detour, expires_at)
     end
   end
+
+  describe "tasks_ready_to_run/0" do
+    test "queries for tasks ready to be run" do
+      %Skate.Detours.Db.Detour{} =
+        detour = :detour |> build |> activated |> insert()
+
+      detour_id = detour.id
+
+      now = DateTime.utc_now()
+
+      # task expiring now
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        :detour_expiration_task |> build(detour: detour, expires_at: now) |> insert()
+
+      in_30 = DateTime.add(now, 30, :minute)
+
+      # task expiring in 30
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        :detour_expiration_task
+        |> build(detour: detour, expires_at: in_30, notification_offset_minutes: 30)
+        |> insert()
+
+      in_one_hour = DateTime.add(now, 60, :minute)
+
+      # task expiring in one hour
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        :detour_expiration_task
+        |> build(detour: detour, expires_at: in_one_hour, notification_offset_minutes: 0)
+        |> insert()
+
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        :detour_expiration_task
+        |> build(detour: detour, expires_at: in_one_hour, notification_offset_minutes: 30)
+        |> insert()
+
+      tasks = NotificationScheduler.tasks_ready_to_run()
+
+      [task1 | rest] = tasks
+
+      # 0 minute notification
+      assert %DetourExpirationTask{
+               detour: %{id: ^detour_id},
+               expires_at: expires_at,
+               notification_offset_minutes: 0
+             } = task1
+
+      assert expires_at <= now
+
+      # Only task expiring in 30 minutes, tasks expiring later aren't returned
+      [task2 | []] = rest
+
+      # 30 minute notification
+      assert %DetourExpirationTask{
+               detour: %{id: ^detour_id},
+               expires_at: expires_at,
+               notification_offset_minutes: 30
+             } = task2
+
+      assert expires_at <= in_30
+    end
+
+    test "handles tasks that should have been run but have not been yet" do
+      %Skate.Detours.Db.Detour{} =
+        detour = :detour |> build |> activated |> insert()
+
+      detour_id = detour.id
+
+      now = DateTime.utc_now()
+      past = DateTime.add(now, -60, :minute)
+
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        :detour_expiration_task |> build(detour: detour) |> expires(past) |> insert()
+
+      even_older = DateTime.add(now, -120, :minute)
+
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        :detour_expiration_task
+        |> build(detour: detour)
+        |> expires(even_older)
+        |> completed()
+        |> insert()
+
+      tasks = NotificationScheduler.tasks_ready_to_run()
+
+      [task1 | []] = tasks
+
+      # only the scheduled notification
+      assert %DetourExpirationTask{
+               detour: %{id: ^detour_id},
+               expires_at: expires_at,
+               notification_offset_minutes: 0
+             } = task1
+
+      assert expires_at == past
+    end
+
+    test "returns an empty list if no tasks need to be run" do
+      %Skate.Detours.Db.Detour{} =
+        detour = :detour |> build |> activated |> insert()
+
+      now = DateTime.utc_now()
+
+      old = DateTime.add(now, -120, :minute)
+
+      %Skate.Detours.Db.DetourExpirationTask{} =
+        :detour_expiration_task
+        |> build(detour: detour)
+        |> expires(old)
+        |> completed()
+        |> insert()
+
+      [] = NotificationScheduler.tasks_ready_to_run()
+    end
+  end
 end

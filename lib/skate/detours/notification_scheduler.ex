@@ -1,6 +1,6 @@
 defmodule Skate.Detours.NotificationScheduler do
   @moduledoc """
-  Interface for managing detour expiration notifiactions.
+  Interface for managing scheduled detour notifications.
   """
 
   alias Skate.Detours.Db.{Detour, DetourExpirationTask}
@@ -27,7 +27,7 @@ defmodule Skate.Detours.NotificationScheduler do
   def detour_deactivated(_), do: :error
 
   def detour_duration_changed(
-        %Detour{status: :active, estimated_duration: estimated_duration} = detour,
+        %Detour{status: :active} = detour,
         expires_at
       ) do
     changesets =
@@ -39,7 +39,6 @@ defmodule Skate.Detours.NotificationScheduler do
           Enum.map(detour_expiration_tasks, fn det ->
             DetourExpirationTask.update_changeset(det, %{
               detour: detour,
-              estimated_duration: estimated_duration,
               expires_at: expires_at,
               status: :scheduled
             })
@@ -54,13 +53,12 @@ defmodule Skate.Detours.NotificationScheduler do
   def detour_duration_changed(_, _), do: :error
 
   defp generate_changesets(
-         %Detour{status: :active, estimated_duration: estimated_duration} = detour,
+         %Detour{status: :active} = detour,
          expires_at
        ) do
     expired_task =
       DetourExpirationTask.create_changeset(%{
         detour: detour,
-        estimated_duration: estimated_duration,
         expires_at: expires_at,
         notification_offset_minutes: 0,
         status: :scheduled
@@ -69,12 +67,26 @@ defmodule Skate.Detours.NotificationScheduler do
     warning_task =
       DetourExpirationTask.create_changeset(%{
         detour: detour,
-        estimated_duration: estimated_duration,
         expires_at: expires_at,
         notification_offset_minutes: 30,
         status: :scheduled
       })
 
     [expired_task, warning_task]
+  end
+
+  def tasks_ready_to_run do
+    Skate.Repo.all(
+      from(t in DetourExpirationTask,
+        where:
+          (t.status in [:scheduled] and
+             (t.expires_at <= from_now(30, "minute") and
+                t.notification_offset_minutes == 30)) or
+            (t.status in [:scheduled] and
+               (t.expires_at <= from_now(0, "minute") and
+                  t.notification_offset_minutes == 0)),
+        preload: [:detour]
+      )
+    )
   end
 end
