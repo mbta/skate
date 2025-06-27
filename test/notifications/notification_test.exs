@@ -1,5 +1,7 @@
 defmodule Notifications.NotificationTest do
+  require Test.Support.Helpers
   use Skate.DataCase
+  import ExUnit.CaptureLog
 
   doctest Notifications.Notification
 
@@ -346,7 +348,7 @@ defmodule Notifications.NotificationTest do
       [user | _] = insert_list(number_of_users, :user)
 
       # create new notification
-      detour =
+      {:ok, %{notification: %{id: notification_id}}} =
         :detour
         |> insert(
           # don't create a new user and affect the user count
@@ -356,7 +358,7 @@ defmodule Notifications.NotificationTest do
 
       detour_notification =
         Notifications.Db.Notification
-        |> Skate.Repo.get!(detour.id)
+        |> Skate.Repo.get!(notification_id)
         |> Skate.Repo.preload(:users)
 
       # assert all users have a notification that is unread
@@ -384,7 +386,7 @@ defmodule Notifications.NotificationTest do
         |> with_direction(:inbound)
         |> insert()
 
-      detour_notification =
+      {:ok, %{notification: %{id: notification_id}}} =
         Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
       # assert fields are set
@@ -396,7 +398,7 @@ defmodule Notifications.NotificationTest do
                  headsign: ^headsign,
                  direction: "Inbound"
                }
-             } = detour_notification
+             } = Notifications.Notification.get_domain_notification(notification_id)
     end
 
     test "deletes associated detour notifications when detour is deleted" do
@@ -412,6 +414,30 @@ defmodule Notifications.NotificationTest do
 
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
+    end
+
+    test "logs notification creation" do
+      Test.Support.Helpers.set_log_level(:info)
+
+      {{:ok, %{detour_id: detour_id, notification: %{created_at: created_at}}}, log} =
+        with_log([level: :info], fn ->
+          :detour
+          |> insert()
+          |> Notifications.Notification.create_activated_detour_notification_from_detour()
+        end)
+
+      # Log location/MFA
+      assert log =~
+               "mfa=Notifications.Notification.create_activated_detour_notification_from_detour"
+
+      # Result of operation
+      assert log =~ " result=notification_created"
+      # Notification information
+      assert log =~ " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
+      # Type of notification created
+      assert log =~ " type=DetourStatus"
+      # Detour Activated Status information
+      assert log =~ "detour_id=#{detour_id} status=activated"
     end
   end
 
@@ -435,7 +461,7 @@ defmodule Notifications.NotificationTest do
       [user | _] = insert_list(number_of_users, :user)
 
       # create new notification
-      detour =
+      {:ok, %{notification: %{id: notification_id}}} =
         :detour
         |> insert(
           # don't create a new user and affect the user count
@@ -445,47 +471,11 @@ defmodule Notifications.NotificationTest do
 
       detour_notification =
         Notifications.Db.Notification
-        |> Skate.Repo.get!(detour.id)
+        |> Skate.Repo.get!(notification_id)
         |> Skate.Repo.preload(:users)
 
       # assert all users have a notification that is unread
       assert Kernel.length(detour_notification.users) == number_of_users
-    end
-
-    test "returns detour information" do
-      # create new notification
-      %{
-        state: %{
-          "context" => %{
-            "route" => %{
-              "name" => route_name
-            },
-            "routePattern" => %{
-              "name" => route_pattern_name,
-              "headsign" => headsign
-            }
-          }
-        }
-      } =
-        detour =
-        :detour
-        |> build()
-        |> with_direction(:inbound)
-        |> insert()
-
-      detour_notification =
-        Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
-
-      # assert fields are set
-      assert %Notifications.Notification{
-               content: %Notifications.Db.Detour{
-                 status: :deactivated,
-                 route: ^route_name,
-                 origin: ^route_pattern_name,
-                 headsign: ^headsign,
-                 direction: "Inbound"
-               }
-             } = detour_notification
     end
 
     test "deletes associated detour notifications when detour is deleted" do
@@ -501,6 +491,30 @@ defmodule Notifications.NotificationTest do
 
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
       assert 0 == Skate.Repo.aggregate(Notifications.Db.Notification, :count)
+    end
+
+    test "logs notification creation" do
+      Test.Support.Helpers.set_log_level(:info)
+
+      {{:ok, %{detour_id: detour_id, notification: %{created_at: created_at}}}, log} =
+        with_log([level: :info], fn ->
+          :detour
+          |> insert()
+          |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
+        end)
+
+      # Log location/MFA
+      assert log =~
+               "mfa=Notifications.Notification.create_deactivated_detour_notification_from_detour"
+
+      # Result of operation
+      assert log =~ " result=notification_created"
+      # Notification information
+      assert log =~ " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
+      # Type of notification created
+      assert log =~ " type=DetourStatus"
+      # Detour Expiration specific information
+      assert log =~ "detour_id=#{detour_id} status=deactivated"
     end
   end
 end
