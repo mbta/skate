@@ -32,3 +32,21 @@
     <%= extract_pre(@detour_diff, :value) %>
   </pre>
 </details>
+
+<section>
+  <h2>Notifications Debug</h2>
+
+  <.form
+    for={@conn}
+    action={~p"/detours_admin/#{@detour_id}/debug-create-notification"}
+    method="POST"
+  >
+    <button type="submit" name="type" value="30m">
+      Create 30m Notification
+    </button>
+
+    <button type="submit" name="type" value="0m">
+      Create 0m Notification
+    </button>
+  </.form>
+</section>

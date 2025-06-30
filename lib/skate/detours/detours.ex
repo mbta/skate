@@ -125,6 +125,12 @@ defmodule Skate.Detours.Detours do
   """
   def get_detour!(id), do: Repo.get!(Detour, id)
 
+  def get_detour!(id, fields) do
+    Skate.Detours.Db.Detour.Queries.select_fields(fields)
+    |> where(id: ^id)
+    |> Skate.Repo.one!()
+  end
+
   @doc """
   Gets a single detour.
 
