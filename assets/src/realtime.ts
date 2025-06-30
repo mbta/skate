@@ -61,7 +61,7 @@ export enum NotificationType {
   BridgeMovement = "Elixir.Notifications.Db.BridgeMovement",
   BlockWaiver = "Elixir.Notifications.Db.BlockWaiver",
   Detour = "Elixir.Notifications.Db.Detour",
-  DetourExpiration = "Elixir.Notification.Db.DetourExpiration",
+  DetourExpiration = "Elixir.Notifications.Db.DetourExpiration",
 }
 export function isDetourNotification(
   notification: Notification
