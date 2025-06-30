@@ -138,6 +138,25 @@ defmodule Notifications.Notification do
 
   defp notification_log_message(
          {:ok,
+          %Notifications.Db.BlockWaiver{
+            reason: reason,
+            route_ids: route_ids,
+            run_ids: run_ids,
+            trip_ids: trip_ids,
+            start_time: start_time,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=BlockWaiver" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " reason=#{reason}" <>
+           " route_ids=#{inspect(route_ids)} run_ids=#{inspect(run_ids)} trip_ids=#{inspect(trip_ids)}" <>
+           " start_time=#{start_time}"
+
+  defp notification_log_message(
+         {:ok,
           %Notifications.Db.BridgeMovement{
             status: status,
             lowering_time: lowering_time,
@@ -180,6 +199,7 @@ defmodule Notifications.Notification do
     %Notifications.Db.BlockWaiver{}
     |> Notifications.Db.BlockWaiver.changeset(attrs)
     |> Skate.Repo.insert()
+    |> log_notification()
     |> broadcast_notification(:users_from_notification)
   end
 
