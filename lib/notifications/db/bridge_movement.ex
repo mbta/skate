@@ -25,20 +25,14 @@ defmodule Notifications.Db.BridgeMovement do
     has_one :notification, Notifications.Db.Notification
   end
 
+  @valid_test_options []
+  if Mix.env() == :test, do: @valid_test_options([:inserted_at, :updated_at])
+
   def changeset(bridge_movement, attrs \\ %{}) do
     bridge_movement
     |> cast(%{notification: %{}}, [])
-    |> cast(attrs, [:status, :lowering_time])
+    |> cast(attrs, [:status, :lowering_time | @valid_test_options])
     |> cast_assoc(:notification)
-    |> cast_timestamps_in_test(attrs)
     |> validate_required([:status])
-  end
-
-  if Mix.env() == :test do
-    def cast_timestamps_in_test(changeset, attrs) do
-      cast(changeset, attrs, [:inserted_at, :updated_at])
-    end
-  else
-    def cast_timestamps_in_test(changeset, _attrs), do: changeset
   end
 end

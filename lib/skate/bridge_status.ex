@@ -32,7 +32,7 @@ defmodule Skate.BridgeStatus do
   See the [Options](#module-options) documentation for more info.
   """
   def maybe_record_bridge_status(attrs, opts \\ []) do
-    opts = add_config_opts(opts)
+    opts = get_config(opts)
 
     attrs = add_users_to_notification_params(attrs, opts)
 
@@ -49,11 +49,20 @@ defmodule Skate.BridgeStatus do
     end
   end
 
+  @valid_test_options []
+  # Valid Test Options
+  if Mix.env() == :test, do: @valid_test_options([:test_time])
+
+  defp valid_options, do: [:blackout_period, :bridge_route_ids | @valid_test_options]
+
   # Sources configuration for options from config in addition to
   # parameters to allow callers to leave options up to configuration
   # values
-  defp add_config_opts(opts) do
-    opts ++ Application.get_env(:skate, __MODULE__, [])
+  defp get_config(opts) do
+    Keyword.take(
+      opts ++ Application.get_env(:skate, __MODULE__, []),
+      valid_options()
+    )
   end
 
   defp lock_bridge_movements_table(multi) do
@@ -85,16 +94,9 @@ defmodule Skate.BridgeStatus do
     # period, they are actually the same movement and what's happening is
     # that we have multiple servers trying to insert a movement at once.
     blackout_period = Keyword.fetch!(opts, :blackout_period)
-    now = current_time(opts)
+    now = Keyword.get_lazy(opts, :test_time, &DateTime.utc_now/0)
 
     DateTime.shift(now, blackout_period)
-  end
-
-  if Mix.env() != :test do
-    defp current_time(_opts), do: DateTime.utc_now()
-  else
-    # if we're testing, allow setting the time via `opts`
-    defp current_time(opts), do: Keyword.get_lazy(opts, :test_time, &DateTime.utc_now/0)
   end
 
   defp add_users_to_notification_params(attrs, opts) do
