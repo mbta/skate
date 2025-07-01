@@ -2,8 +2,7 @@ defmodule Skate.BlockWaiversTest do
   use Skate.DataCase
 
   describe "create_block_waiver_notifications/1" do
-    test "creates new notifications for waivers with recognized reason for vehicles on selected routes",
-         %{user: user} do
+    test "creates new notifications for waivers with recognized reason for vehicles on selected routes" do
       vehicle = @vehicle
 
       reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
@@ -23,8 +22,7 @@ defmodule Skate.BlockWaiversTest do
       assert_n_notifications_in_db(map_size(@reasons_map))
     end
 
-    test "creates new notifications for waivers with recognized reason for ghosts on selected routes",
-         %{user: user} do
+    test "creates new notifications for waivers with recognized reason for ghosts on selected routes" do
       reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         [@ghost]
       end)
@@ -40,8 +38,7 @@ defmodule Skate.BlockWaiversTest do
       assert_n_notifications_in_db(map_size(@reasons_map))
     end
 
-    test "creates new notifications for waivers with recognized reason when no vehicle or ghost is associated on selected routes",
-         %{user: user} do
+    test "creates new notifications for waivers with recognized reason when no vehicle or ghost is associated on selected routes" do
       reassign_env(:realtime, :peek_at_vehicles_by_run_ids_fn, fn _ ->
         []
       end)
