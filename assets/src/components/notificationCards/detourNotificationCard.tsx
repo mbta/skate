@@ -28,29 +28,29 @@ const Description = ({
               From {notification.content.origin.split(" - ")[0]}
             </div>
             <div className="fw-normal">{notification.content.direction}</div>
-            <div className="fw-normal">
-              {notification.content.expiresIn > 0 ? (
-                <>
-                  This detour will reach its estimated{" "}
-                  <strong>{notification.content.estimatedDuration}</strong>{" "}
-                  duration in{" "}
-                  <strong>{notification.content.expiresIn} minutes</strong>.
-                </>
-              ) : (
-                <>
-                  This detour has reached its estimated{" "}
-                  <strong>{notification.content.estimatedDuration}</strong>{" "}
-                  duration.
-                </>
-              )}
-            </div>
-            {notification.content.isDispatcher && (
-              <div className="fw-normal">
-                Please extend or close the detour.
-              </div>
-            )}
           </div>
         </div>
+
+        <div className="mt-3 fw-normal">
+          {notification.content.expiresIn > 0 ? (
+            <>
+              This detour will reach its estimated{" "}
+              <strong>{notification.content.estimatedDuration}</strong> duration
+              in <strong>{notification.content.expiresIn} minutes</strong>.
+            </>
+          ) : (
+            <>
+              This detour has reached its estimated{" "}
+              <strong>{notification.content.estimatedDuration}</strong>{" "}
+              duration.
+            </>
+          )}
+        </div>
+        {notification.content.isDispatcher && (
+          <div className="mt-3 fw-normal">
+            Please extend or close the detour.
+          </div>
+        )}
       </>
     )
   }
