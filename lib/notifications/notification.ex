@@ -367,6 +367,7 @@ defmodule Notifications.Notification do
             run_ids: run_ids,
             trip_ids: trip_ids,
             start_time: start_time,
+            end_time: end_time,
             notification: %{created_at: created_at}
           }}
        ),
@@ -376,7 +377,7 @@ defmodule Notifications.Notification do
            " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
            " reason=#{reason}" <>
            " route_ids=#{inspect(route_ids)} run_ids=#{inspect(run_ids)} trip_ids=#{inspect(trip_ids)}" <>
-           " start_time=#{start_time |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
+           " start_time=#{start_time |> DateTime.from_unix!() |> DateTime.to_iso8601()} end_time=#{end_time |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
 
   defp notification_log_message(
          {:ok,

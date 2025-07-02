@@ -131,11 +131,13 @@ defmodule Skate.BlockWaiversTest do
   def assert_block_waiver_notification_logged(log, %{
         cause_atom: cause_atom,
         start_time: start_time,
+        end_time: end_time,
         created_at_string: created_at_string
       }) do
     assert log =~ "reason=#{cause_atom}"
     assert log =~ "created_at=#{created_at_string}"
     assert log =~ "start_time=#{start_time}"
+    assert log =~ "end_time=#{end_time}"
     assert log =~ ~s(route_ids=["39", "2"])
     assert log =~ ~s(run_ids=["run1", "run2"])
     assert log =~ ~s(trip_ids=["trip1", "trip2"])
@@ -211,6 +213,7 @@ defmodule Skate.BlockWaiversTest do
         assert_block_waiver_notification_logged(log, %{
           cause_atom: cause_atom,
           start_time: "2020-08-17T04:01:40Z",
+          end_time: "2020-08-17T04:08:20Z",
           created_at_string: ""
         })
   end
