@@ -104,78 +104,6 @@ defmodule Notifications.Notification do
     |> Notifications.NotificationServer.broadcast_notification(users)
   end
 
-  defp notification_log_level({:ok, _}), do: :info
-  defp notification_log_level({:error, _}), do: :warning
-
-  defp notification_log_message({:error, error}),
-    do: "result=error error=#{inspect(error)}"
-
-  defp notification_log_message(
-         {:ok,
-          %Notifications.Db.Detour{
-            status: status,
-            detour_id: detour_id,
-            notification: %{created_at: created_at}
-          }}
-       ),
-       do:
-         "result=notification_created" <>
-           " type=DetourStatus" <>
-           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
-           " detour_id=#{detour_id}" <>
-           " status=#{status}"
-
-  defp notification_log_message(
-         {:ok,
-          %Notifications.Db.DetourExpiration{
-            detour_id: detour_id,
-            expires_in: expires_in,
-            estimated_duration: estimated_duration,
-            notification: %{created_at: created_at}
-          }}
-       ),
-       do:
-         "result=notification_created" <>
-           " type=DetourExpiration" <>
-           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
-           " detour_id=#{detour_id}" <>
-           " expires_in=#{Duration.to_iso8601(expires_in)}" <>
-           " estimated_duration=#{inspect(estimated_duration)}"
-
-  defp notification_log_message(
-         {:ok,
-          %Notifications.Db.BlockWaiver{
-            reason: reason,
-            route_ids: route_ids,
-            run_ids: run_ids,
-            trip_ids: trip_ids,
-            start_time: start_time,
-            notification: %{created_at: created_at}
-          }}
-       ),
-       do:
-         "result=notification_created" <>
-           " type=BlockWaiver" <>
-           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
-           " reason=#{reason}" <>
-           " route_ids=#{inspect(route_ids)} run_ids=#{inspect(run_ids)} trip_ids=#{inspect(trip_ids)}" <>
-           " start_time=#{start_time |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
-
-  defp notification_log_message(
-         {:ok,
-          %Notifications.Db.BridgeMovement{
-            status: status,
-            lowering_time: lowering_time,
-            notification: %{created_at: created_at}
-          }}
-       ),
-       do:
-         "result=notification_created" <>
-           " type=BridgeMovement" <>
-           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
-           " status=#{status}" <>
-           " lowering_time=#{if is_integer(lowering_time), do: lowering_time |> DateTime.from_unix!() |> DateTime.to_iso8601(), else: "nil"}"
-
   # Macro that logs notification repo operation information in
   # context, so that `:mfa` matches the caller
   defmacrop log_notification(repo_operation) do
@@ -392,4 +320,76 @@ defmodule Notifications.Notification do
         0
     end
   end
+
+  defp notification_log_level({:ok, _}), do: :info
+  defp notification_log_level({:error, _}), do: :warning
+
+  defp notification_log_message({:error, error}),
+    do: "result=error error=#{inspect(error)}"
+
+  defp notification_log_message(
+         {:ok,
+          %Notifications.Db.Detour{
+            status: status,
+            detour_id: detour_id,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=DetourStatus" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " detour_id=#{detour_id}" <>
+           " status=#{status}"
+
+  defp notification_log_message(
+         {:ok,
+          %Notifications.Db.DetourExpiration{
+            detour_id: detour_id,
+            expires_in: expires_in,
+            estimated_duration: estimated_duration,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=DetourExpiration" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " detour_id=#{detour_id}" <>
+           " expires_in=#{Duration.to_iso8601(expires_in)}" <>
+           " estimated_duration=#{inspect(estimated_duration)}"
+
+  defp notification_log_message(
+         {:ok,
+          %Notifications.Db.BlockWaiver{
+            reason: reason,
+            route_ids: route_ids,
+            run_ids: run_ids,
+            trip_ids: trip_ids,
+            start_time: start_time,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=BlockWaiver" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " reason=#{reason}" <>
+           " route_ids=#{inspect(route_ids)} run_ids=#{inspect(run_ids)} trip_ids=#{inspect(trip_ids)}" <>
+           " start_time=#{start_time |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
+
+  defp notification_log_message(
+         {:ok,
+          %Notifications.Db.BridgeMovement{
+            status: status,
+            lowering_time: lowering_time,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=BridgeMovement" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " status=#{status}" <>
+           " lowering_time=#{if is_integer(lowering_time), do: lowering_time |> DateTime.from_unix!() |> DateTime.to_iso8601(), else: "nil"}"
 end
