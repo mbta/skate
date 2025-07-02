@@ -214,7 +214,7 @@ defmodule Skate.BlockWaiversTest do
           cause_atom: cause_atom,
           start_time: "2020-08-17T04:01:40Z",
           end_time: "2020-08-17T04:08:20Z",
-          created_at_string: ""
+          created_at_string: "2025-07-02T18:59:37"
         })
   end
 
