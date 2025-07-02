@@ -104,6 +104,12 @@ defmodule Notifications.Notification do
     |> Notifications.NotificationServer.broadcast_notification(users)
   end
 
+  defp notification_log_level({:ok, _}), do: :info
+  defp notification_log_level({:error, _}), do: :warning
+
+  defp notification_log_message({:error, error}),
+    do: "result=error error=#{inspect(error)}"
+
   defp notification_log_message(
          {:ok,
           %Notifications.Db.Detour{
@@ -169,12 +175,6 @@ defmodule Notifications.Notification do
            " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
            " status=#{status}" <>
            " lowering_time=#{if is_integer(lowering_time), do: lowering_time |> DateTime.from_unix!() |> DateTime.to_iso8601(), else: "nil"}"
-
-  defp notification_log_message({:error, error}),
-    do: "result=error error=#{inspect(error)}"
-
-  defp notification_log_level({:ok, _}), do: :info
-  defp notification_log_level({:error, _}), do: :warning
 
   # Macro that logs notification repo operation information in
   # context, so that `:mfa` matches the caller
