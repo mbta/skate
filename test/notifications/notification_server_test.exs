@@ -7,7 +7,6 @@ defmodule Notifications.NotificationServerTest do
   alias Realtime.BlockWaiver
 
   import ExUnit.CaptureLog, only: [capture_log: 2]
-  import Skate.Factory
   import Test.Support.Helpers, only: [reassign_env: 3, set_log_level: 1]
 
   require Logger
