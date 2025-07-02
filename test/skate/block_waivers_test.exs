@@ -210,7 +210,7 @@ defmodule Skate.BlockWaiversTest do
       do:
         assert_block_waiver_notification_logged(log, %{
           cause_atom: cause_atom,
-          start_time: start_time,
+          start_time: "2020-08-17T04:01:40Z",
           created_at_string: ""
         })
   end
