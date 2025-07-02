@@ -34,7 +34,7 @@ defmodule Skate.BridgeStatus do
   def maybe_record_bridge_status(attrs, opts \\ []) do
     opts = get_config(opts)
 
-    attrs = add_users_to_notification_params(attrs, opts)
+    attrs = add_affected_route_ids(attrs, opts)
 
     Ecto.Multi.new()
     |> lock_bridge_movements_table()
@@ -99,14 +99,9 @@ defmodule Skate.BridgeStatus do
     DateTime.shift(now, blackout_period)
   end
 
-  defp add_users_to_notification_params(attrs, opts) do
-    bridge_route_ids = Keyword.fetch!(opts, :bridge_route_ids)
-
-    users = Skate.Settings.User.list_users_with_route_ids(bridge_route_ids)
-
-    Map.merge(attrs, %{notification: %{users: users}}, fn
-      :notification, attr_val, merge_val -> Map.merge(attr_val, merge_val)
-      _, attr_val, _ -> attr_val
+  defp add_affected_route_ids(attrs, opts) do
+    Map.put_new_lazy(attrs, :bridge_route_ids, fn ->
+      Keyword.fetch!(opts, :bridge_route_ids)
     end)
   end
 end

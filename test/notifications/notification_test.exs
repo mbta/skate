@@ -503,14 +503,20 @@ defmodule Notifications.NotificationTest do
         })
     end
 
-    test "creates unread notifications for specified users" do
-      users = insert_list(3, :user)
+    test "creates unread notifications for users with affected route ids" do
+      test_users =
+        insert_list(3, :user,
+          route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
+        )
 
-      {:ok, %{notification: %{users: ^users}}} =
-        Notifications.Notification.create_bridge_movement_notification(%{
-          status: :lowered,
-          notification: %{users: users}
-        })
+      assert {:ok, %{notification: %{users: users}}} =
+               Notifications.Notification.create_bridge_movement_notification(%{
+                 status: :lowered,
+                 bridge_route_ids: ["1"]
+               })
+
+      assert Enum.map(test_users, & &1.id) ==
+               users |> Enum.map(& &1.id) |> Enum.sort(:asc)
     end
 
     test "logs info of notification creation" do
