@@ -52,10 +52,15 @@ defmodule Notifications.Bridge do
           Application.get_env(
             :notifications,
             :notifications_server_bridge_movement_fn,
-            &Notifications.NotificationServer.bridge_movement/1
+            &Skate.BridgeStatus.maybe_record_bridge_status/1
           )
 
-        bridge_movement_fn.(new_state)
+        {status, lowering_time} = new_state
+
+        bridge_movement_fn.(%{
+          status: status,
+          lowering_time: lowering_time
+        })
       end
 
       {:noreply, new_state}

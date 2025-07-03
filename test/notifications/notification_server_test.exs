@@ -3,14 +3,12 @@ defmodule Notifications.NotificationServerTest do
   import Skate.Factory
 
   alias Notifications.Db.Notification, as: DbNotification
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Notifications.Notification
   alias Notifications.NotificationServer
   alias Realtime.BlockWaiver
   alias Realtime.Ghost
   alias Realtime.Vehicle
   alias Skate.Settings.RouteTab
-  alias Skate.Settings.Db.User, as: DbUser
   alias Skate.Settings.User
 
   import Ecto.Query
@@ -134,12 +132,6 @@ defmodule Notifications.NotificationServerTest do
     31 => {"K - Adjusted", :adjusted}
   }
 
-  @chelsea_bridge_route_ids [
-    # 743 is the SL3
-    "112",
-    "743"
-  ]
-
   def assert_block_waiver_notification(
         cause_atom,
         cause_description,
@@ -225,14 +217,6 @@ defmodule Notifications.NotificationServerTest do
     end
 
     {:ok, server}
-  end
-
-  @spec create_n_users(non_neg_integer()) :: [DbUser.t()]
-  defp create_n_users(n) do
-    Enum.map(Range.new(0, n - 1), fn i ->
-      username = "fake_uid#{i}"
-      User.upsert(username, "#{username}@test.com")
-    end)
   end
 
   def waiver_map(cause_id, cause_description) do
@@ -598,175 +582,6 @@ defmodule Notifications.NotificationServerTest do
 
       assert_n_notifications_in_db(1)
       refute log =~ "new_notification"
-    end
-  end
-
-  describe "bridge_movement/2" do
-    test "broadcasts, saves to the DB, and logs new notifications for users looking at routes affected by the Chelsea drawbridge when bridge is lowered" do
-      {:ok, server} = setup_server()
-
-      set_log_level(:info)
-
-      for i <- Range.new(0, length(@chelsea_bridge_route_ids) - 1) do
-        uid = "fake_uid#{i}"
-        route_id = Enum.at(@chelsea_bridge_route_ids, i)
-
-        route_tab1 =
-          build(:route_tab, %{
-            preset_name: "some routes",
-            selected_route_ids: ["#{route_id}"]
-          })
-
-        %{id: user_id} = User.upsert(uid, "#{uid}@test.com")
-        RouteTab.update_all_for_user!(user_id, [route_tab1])
-      end
-
-      start_time = DateTime.to_unix(DateTime.utc_now())
-
-      log =
-        capture_log([level: :info], fn ->
-          NotificationServer.bridge_movement({:lowered, nil}, server)
-          Process.sleep(1000)
-        end)
-
-      db_notification_users = Skate.Repo.all(DbNotificationUser)
-
-      assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
-
-      assert String.contains?(log, "status: :lowered")
-      assert String.contains?(log, "created_at: #{start_time}")
-    end
-
-    test "broadcasts, saves to the DB, and logs new notifications for users looking at routes affected by the Chelsea drawbridge when bridge is raised" do
-      {:ok, server} = setup_server()
-
-      set_log_level(:info)
-
-      [user_0 | _others] = users = create_n_users(length(@chelsea_bridge_route_ids))
-
-      for {user, i} <- Enum.with_index(users) do
-        route_id = Enum.at(@chelsea_bridge_route_ids, i)
-
-        route_tab1 =
-          build(:route_tab, %{
-            preset_name: "some routes",
-            selected_route_ids: ["#{route_id}"]
-          })
-
-        RouteTab.update_all_for_user!(user.id, [route_tab1])
-      end
-
-      NotificationServer.subscribe(user_0.id, server)
-
-      start_time = DateTime.to_unix(DateTime.utc_now())
-
-      log =
-        capture_log([level: :info], fn ->
-          NotificationServer.bridge_movement({:raised, start_time}, server)
-          Process.sleep(1000)
-        end)
-
-      assert_receive(
-        {:notification,
-         %Notification{
-           content: %Notifications.Db.BridgeMovement{
-             status: :raised
-           },
-           created_at: start_time
-         }}
-      )
-
-      db_notification_users = Skate.Repo.all(DbNotificationUser)
-
-      assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
-
-      assert String.contains?(log, "status: :raised")
-      assert String.contains?(log, "lowering_time: #{start_time}")
-    end
-
-    test "doesn't send notifications to a user not looking at the Chelsea bridge routes" do
-      {:ok, server} = setup_server()
-
-      route_tab1 =
-        build(:route_tab, %{
-          preset_name: "some routes",
-          selected_route_ids: ["1", "83", "77"]
-        })
-
-      %{id: user_id} = User.upsert("fake_uid", "fake_uid@test.com")
-      RouteTab.update_all_for_user!(user_id, [route_tab1])
-
-      set_log_level(:info)
-
-      start_time = DateTime.to_unix(DateTime.utc_now())
-
-      log =
-        capture_log([level: :info], fn ->
-          NotificationServer.bridge_movement({:raised, start_time}, server)
-          Process.sleep(1000)
-        end)
-
-      refute_receive(_)
-
-      db_notification_users = Skate.Repo.all(DbNotificationUser)
-
-      assert Enum.empty?(db_notification_users)
-
-      assert String.contains?(log, "status: :raised")
-      assert String.contains?(log, "lowering_time: #{start_time}")
-    end
-
-    test "doesn't log or save a notification within a blackout period after one was created, but does broadcast" do
-      {:ok, server} = setup_server()
-
-      set_log_level(:info)
-
-      [user_0 | _others] = users = create_n_users(length(@chelsea_bridge_route_ids))
-
-      for {user, i} <- Enum.with_index(users) do
-        route_id = Enum.at(@chelsea_bridge_route_ids, i)
-
-        route_tab1 =
-          build(:route_tab, %{
-            preset_name: "some routes",
-            selected_route_ids: ["#{route_id}"]
-          })
-
-        RouteTab.update_all_for_user!(user.id, [route_tab1])
-      end
-
-      NotificationServer.subscribe(user_0.id, server)
-      NotificationServer.bridge_movement({:lowered, nil}, server)
-
-      assert_receive(
-        {:notification,
-         %Notification{
-           content: %Notifications.Db.BridgeMovement{
-             status: :lowered
-           }
-         }}
-      )
-
-      log =
-        capture_log([level: :info], fn ->
-          nil
-          NotificationServer.bridge_movement({:lowered, nil}, server)
-        end)
-
-      assert_receive(
-        {:notification,
-         %Notification{
-           content: %Notifications.Db.BridgeMovement{
-             status: :lowered
-           }
-         }}
-      )
-
-      db_notification_users = Skate.Repo.all(DbNotificationUser)
-
-      assert(length(db_notification_users) == length(@chelsea_bridge_route_ids))
-
-      refute String.contains?(log, "new_notification")
     end
   end
 
