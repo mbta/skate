@@ -218,17 +218,7 @@ defmodule Notifications.Notification do
     |> Notifications.Db.DetourExpiration.changeset(params)
     |> Skate.Repo.insert()
     |> log_notification()
-    |> case do
-      {:ok, %{notification: %{id: notification_id}}} = result ->
-        notification_id
-        |> get_domain_notification()
-        |> Notifications.NotificationServer.broadcast_notification(:all)
-
-        result
-
-      {:error, _} = error ->
-        error
-    end
+    |> broadcast_notification(:all)
   end
 
   @doc """
