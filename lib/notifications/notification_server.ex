@@ -102,6 +102,7 @@ defmodule Notifications.NotificationServer do
         users,
         server \\ default_name()
       ) do
+    dbg()
     GenServer.cast(server, {:broadcast_to_cluster, notification, users})
 
     :ok

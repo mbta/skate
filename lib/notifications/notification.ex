@@ -165,6 +165,8 @@ defmodule Notifications.Notification do
   end
 
   def create_detour_expiration_notification(%Skate.Detours.Db.Detour{} = detour, params) do
+    dbg()
+
     detour
     |> Ecto.build_assoc(:detour_expiration_notifications)
     |> Notifications.Db.DetourExpiration.changeset(params)
