@@ -147,7 +147,6 @@ defmodule Skate.BlockWaiversTest do
         cause_atom,
         cause_description,
         cause_id,
-        _server,
         opts \\ []
       ) do
     start_time = @midnight + 100
@@ -271,7 +270,7 @@ defmodule Skate.BlockWaiversTest do
       server = nil
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
-        assert_block_waiver_notification(cause_atom, cause_description, cause_id, server,
+        assert_block_waiver_notification(cause_atom, cause_description, cause_id,
           operator_name: vehicle.operator_last_name,
           operator_id: vehicle.operator_id,
           route_id_at_creation: "SL9001"
@@ -290,7 +289,7 @@ defmodule Skate.BlockWaiversTest do
       server = nil
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
-        assert_block_waiver_notification(cause_atom, cause_description, cause_id, server,
+        assert_block_waiver_notification(cause_atom, cause_description, cause_id,
           route_id_at_creation: "SL9001"
         )
       end
@@ -307,7 +306,7 @@ defmodule Skate.BlockWaiversTest do
       server = nil
 
       for {cause_id, {cause_description, cause_atom}} <- @reasons_map do
-        assert_block_waiver_notification(cause_atom, cause_description, cause_id, server)
+        assert_block_waiver_notification(cause_atom, cause_description, cause_id)
       end
 
       assert_n_notifications_in_db(map_size(@reasons_map))
