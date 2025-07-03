@@ -35,13 +35,21 @@ const Description = ({
           {notification.content.expiresIn > 0 ? (
             <>
               This detour will reach its estimated{" "}
-              <strong>{notification.content.estimatedDuration}</strong> duration
-              in <strong>{notification.content.expiresIn} minutes</strong>.
+              <strong className="d-inline-block">
+                {notification.content.estimatedDuration}
+              </strong>{" "}
+              duration in{" "}
+              <strong className="d-inline-block">
+                {notification.content.expiresIn} minutes
+              </strong>
+              .
             </>
           ) : (
             <>
               This detour has reached its estimated{" "}
-              <strong>{notification.content.estimatedDuration}</strong>{" "}
+              <strong className="d-inline-block">
+                {notification.content.estimatedDuration}
+              </strong>{" "}
               duration.
             </>
           )}
