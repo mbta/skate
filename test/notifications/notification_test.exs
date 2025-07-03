@@ -509,6 +509,21 @@ defmodule Notifications.NotificationTest do
   describe "create_detour_expiration_notification/2" do
     # note: main tests in doctest
 
+    test "creates notifications for all users" do
+      users = insert_list(5, :user)
+
+      detour = insert(:detour, author: hd(users))
+
+      assert {:ok, %{notification: notification}} =
+               Notification.create_detour_expiration_notification(detour, %{
+                 expires_in: Duration.new!(minute: 30),
+                 estimated_duration: "1 hour"
+               })
+
+      assert ^users =
+               notification |> Ecto.assoc(:users) |> Skate.Repo.all() |> Enum.sort_by(& &1.id)
+    end
+
     test "logs info of notification creation" do
       Test.Support.Helpers.set_log_level(:info)
 

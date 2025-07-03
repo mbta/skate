@@ -66,6 +66,7 @@ defmodule Notifications.Db.Notification do
     notification
     |> cast(attrs, [:created_at])
     |> put_default(:created_at, fn -> DateTime.to_unix(DateTime.utc_now()) end)
+    |> add_users_assoc(attrs)
     |> validate_required([:created_at])
   end
 
@@ -78,6 +79,18 @@ defmodule Notifications.Db.Notification do
       put_change(changeset, key, value)
     else
       changeset
+    end
+  end
+
+  defp add_users_assoc(changeset, attrs) do
+    # get `:users` from attrs directly so that we don't allow the string key
+    # "users" to be casted to an association
+    case attrs[:users] do
+      nil ->
+        changeset
+
+      users when is_list(users) ->
+        put_assoc(changeset, :users, users)
     end
   end
 
