@@ -51,6 +51,7 @@ defmodule SkateWeb.DetoursAdminController do
 
     conn
     |> assign(:detour, Detours.db_detour_to_detour(detour))
+    |> assign(:detour_id, id)
     |> assign(:author, author)
     |> assign(:detour_diff, detour_diff)
     |> assign(:matches, matches)
@@ -58,6 +59,34 @@ defmodule SkateWeb.DetoursAdminController do
       layout: {SkateWeb.Layouts, "barebones.html"},
       title: "Skate Detours"
     )
+  end
+
+  def create_notification(conn, %{"id" => id, "type" => notification_type}) do
+    expires_in =
+      case notification_type do
+        "30m" -> [minute: 30]
+        "0m" -> [minute: 0]
+        _ -> [minute: 0]
+      end
+
+    detour = Detours.get_detour!(id, [:id, :status, :estimated_duration])
+
+    Notifications.Notification.create_detour_expiration_notification(
+      detour,
+      %{
+        estimated_duration:
+          detour.estimated_duration ||
+            "(Detour status is #{detour.status}, Estimated Duration missing, this would not happen in Production)",
+        expires_in: Duration.new!(expires_in),
+        notification: %{
+          users: Skate.Settings.User.get_all()
+        }
+      }
+    )
+    |> dbg()
+
+    conn
+    |> redirect(to: ~p"/detours_admin/#{id}")
   end
 
   @spec delete_all(Plug.Conn.t(), map()) :: Plug.Conn.t()
