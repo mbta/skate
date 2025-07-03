@@ -109,6 +109,21 @@ defmodule Notifications.Notification do
 
   defp notification_log_message(
          {:ok,
+          %Notifications.Db.Detour{
+            status: status,
+            detour_id: detour_id,
+            notification: %{created_at: created_at}
+          }}
+       ),
+       do:
+         "result=notification_created" <>
+           " type=DetourStatus" <>
+           " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}" <>
+           " detour_id=#{detour_id}" <>
+           " status=#{status}"
+
+  defp notification_log_message(
+         {:ok,
           %Notifications.Db.DetourExpiration{
             detour_id: detour_id,
             expires_in: expires_in,
@@ -222,94 +237,33 @@ defmodule Notifications.Notification do
   end
 
   @doc """
-  Inserts a new notification for an deactivated detour into the database
-  and returns the detour notification with notification info.
+  Creates a new Detour Status notification for an deactivated detour and broadcasts to subscribed users.
   """
   def create_deactivated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
-    import Notifications.Db.Notification.Queries
-
-    notification =
-      deactivated_detour_notification(detour)
-      |> unread_notifications_for_users(Skate.Settings.User.get_all())
-      |> Skate.Repo.insert!()
-
-    # We need the associated values in the Detour JSON, so query the DB with the
-    # id to load the extra data.
-    get_detour_notification(notification.id)
+    detour
+    |> Ecto.build_assoc(:detour_status_notifications)
+    |> Notifications.Db.Detour.changeset(%{
+      status: :deactivated,
+      notification: %{users: Skate.Settings.User.get_all()}
+    })
+    |> Skate.Repo.insert()
+    |> log_notification()
+    |> broadcast_notification(:all)
   end
 
   @doc """
-  Inserts a new notification for an activated detour into the database
-  and returns the detour notification with notification info.
+  Creates a new Detour Status notification for an activated detour and broadcasts to subscribed users.
   """
   def create_activated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
-    import Notifications.Db.Notification.Queries
-
-    notification =
-      activated_detour_notification(detour)
-      |> unread_notifications_for_users(Skate.Settings.User.get_all())
-      |> Skate.Repo.insert!()
-
-    # We need the associated values in the Detour JSON, so query the DB with the
-    # id to load the extra data.
-    get_detour_notification(notification.id)
-  end
-
-  def get_detour_notification(notification_id) do
-    import Notifications.Db.Notification.Queries
-
-    select_detour_info()
-    |> where([notification: n], n.id == ^notification_id)
-    |> Skate.Repo.one!()
-    |> from_db_notification()
-  end
-
-  # Creates a new notification set to the current time
-  defp new_notification_now() do
-    %Notifications.Db.Notification{
-      created_at: DateTime.to_unix(DateTime.utc_now())
-    }
-  end
-
-  # Adds a activated detour notification relation to a `Notifications.Db.Notification`
-  defp activated_detour_notification(%Skate.Detours.Db.Detour{} = detour) do
-    %Notifications.Db.Notification{
-      new_notification_now()
-      | detour: Notifications.Detour.activated_detour(detour)
-    }
-  end
-
-  # Adds a deactivated detour notification relation to a `Notifications.Db.Notification`
-  defp deactivated_detour_notification(%Skate.Detours.Db.Detour{} = detour) do
-    %Notifications.Db.Notification{
-      new_notification_now()
-      | detour: Notifications.Detour.deactivated_detour(detour)
-    }
-  end
-
-  defp notification_for_user(%Skate.Settings.Db.User{} = user) do
-    %Notifications.Db.NotificationUser{
-      user: user
-    }
-  end
-
-  defp unread_notification(%Notifications.Db.NotificationUser{} = user_notification) do
-    %{
-      user_notification
-      | state: :unread
-    }
-  end
-
-  defp unread_notifications_for_users(%Notifications.Db.Notification{} = notification, users) do
-    %{
-      notification
-      | notification_users:
-          for user <- users do
-            user
-            |> notification_for_user()
-            |> unread_notification()
-          end
-    }
+    detour
+    |> Ecto.build_assoc(:detour_status_notifications)
+    |> Notifications.Db.Detour.changeset(%{
+      status: :activated,
+      notification: %{users: Skate.Settings.User.get_all()}
+    })
+    |> Skate.Repo.insert()
+    |> log_notification()
+    |> broadcast_notification(:all)
   end
 
   @spec get_or_create_from_block_waiver(map()) :: t()

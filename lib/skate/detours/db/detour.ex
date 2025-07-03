@@ -43,6 +43,7 @@ defmodule Skate.Detours.Db.Detour do
 
     # -------------------------------------------------------
 
+    has_many :detour_status_notifications, Notifications.Db.Detour
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
   end
 
