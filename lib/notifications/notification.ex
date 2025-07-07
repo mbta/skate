@@ -471,7 +471,7 @@ defmodule Notifications.Notification do
          microsecond: {0, _}
        }) do
     case seconds do
-      -1800 ->
+      1800 ->
         # minutes
         30
 
