@@ -6,7 +6,8 @@ defmodule Skate.Repo.Migrations.AddStateToExpirationTask do
       add(
         :status,
         :string,
-        null: false
+        null: false,
+        default: "scheduled"
       )
     end
   end
