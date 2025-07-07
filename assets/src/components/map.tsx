@@ -128,7 +128,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
       >
         <TileLayer
           maxZoom={21}
-          maxNativeZoom={18}
+          maxNativeZoom={20}
           url={`${tilesetUrlForType(tileType)}`}
           attribution={
             tileType === "base"
