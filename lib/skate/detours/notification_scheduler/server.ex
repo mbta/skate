@@ -44,22 +44,13 @@ defmodule Skate.Detours.NotificationScheduler.Server do
     Process.send_after(self(), :poll, poll_ms)
   end
 
-  def handle_task(
-        {:run,
-         %DetourExpirationTask{
-           detour: detour,
-           notification_offset_minutes: offset_minutes
-         } = task}
-      ) do
+  def handle_task({:run, %DetourExpirationTask{} = task}) do
     task
     |> DetourExpirationTask.update_changeset(%{status: :executing})
     |> Skate.Repo.update!()
 
-    detour
-    |> Notifications.Notification.create_detour_expiration_notification(%{
-      expires_in: Duration.new!(minute: offset_minutes),
-      estimated_duration: detour.state["context"]["selectedDuration"]
-    })
+    task
+    |> Skate.Detours.NotificationScheduler.create_detour_expiration_notification_from_task()
     |> handle_result(task)
   end
 

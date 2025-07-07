@@ -197,4 +197,39 @@ defmodule Skate.Detours.NotificationSchedulerTest do
       [] = NotificationScheduler.tasks_ready_to_run()
     end
   end
+
+  describe "create_detour_expiration_notification_from_task" do
+    test "handles back-dating notification to expected event time" do
+      %Skate.Detours.Db.Detour{} =
+        detour = :detour |> build |> activated |> insert()
+
+      now = DateTime.utc_now()
+
+      %DetourExpirationTask{} =
+        task =
+        :detour_expiration_task
+        |> build(
+          detour: detour,
+          expires_at: DateTime.add(now, -60, :minute),
+          notification_offset_minutes: 30
+        )
+        |> insert()
+
+      created_at_offset_backdated =
+        task.expires_at
+        |> DateTime.shift(minute: -task.notification_offset_minutes)
+        |> DateTime.truncate(:second)
+
+      assert :eq =
+               DateTime.compare(
+                 created_at_offset_backdated,
+                 now |> DateTime.truncate(:second) |> DateTime.shift(minute: -90)
+               )
+
+      created_at_unix = DateTime.to_unix(created_at_offset_backdated)
+
+      assert {:ok, %{notification: %{created_at: ^created_at_unix}}} =
+               NotificationScheduler.create_detour_expiration_notification_from_task(task)
+    end
+  end
 end

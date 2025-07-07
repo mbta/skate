@@ -89,4 +89,21 @@ defmodule Skate.Detours.NotificationScheduler do
       )
     )
   end
+
+  def create_detour_expiration_notification_from_task(
+        %DetourExpirationTask{
+          detour: %Detour{} = detour,
+          notification_offset_minutes: offset_minutes
+        } = task
+      ) do
+    expires_in = Duration.new!(minute: -offset_minutes)
+    created_at_event_time = task.expires_at |> DateTime.shift(expires_in) |> DateTime.to_unix()
+
+    detour
+    |> Notifications.Notification.create_detour_expiration_notification(%{
+      expires_in: expires_in,
+      estimated_duration: detour.state["context"]["selectedDuration"],
+      notification: %{created_at: created_at_event_time}
+    })
+  end
 end

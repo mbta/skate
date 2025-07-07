@@ -2,7 +2,6 @@ defmodule Skate.Detours.NotificationScheduler.ServerTest do
   @moduledoc """
   Interface for managing scheduled detour notifications.
   """
-  alias Skate.Detours.NotificationScheduler.Worker
   use Skate.DataCase
   import Skate.Factory
 
@@ -41,7 +40,7 @@ defmodule Skate.Detours.NotificationScheduler.ServerTest do
           Process.sleep(200)
         end)
 
-      assert log =~ "Notification.create_detour_expiration_notification/2"
+      assert log =~ "result=notification_created type=DetourExpiration"
     end
   end
 end
