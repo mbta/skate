@@ -2,7 +2,6 @@ defmodule Skate.Detours.NotificationScheduler.ServerTest do
   @moduledoc """
   Interface for managing scheduled detour notifications.
   """
-  alias Skate.Detours.NotificationScheduler.Worker
   use Skate.DataCase
   import Skate.Factory
 
