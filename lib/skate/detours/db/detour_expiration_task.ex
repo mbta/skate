@@ -14,7 +14,7 @@ defmodule Skate.Detours.Db.DetourExpirationTask do
     field :notification_offset_minutes, :integer
 
     field :status, Ecto.Enum,
-      values: [:scheduled, :available, :executing, :completed, :retryable],
+      values: [:scheduled, :executing, :completed, :retryable],
       default: :scheduled
 
     timestamps()

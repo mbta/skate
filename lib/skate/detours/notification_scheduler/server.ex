@@ -33,10 +33,6 @@ defmodule Skate.Detours.NotificationScheduler.Server do
     tasks = NotificationScheduler.tasks_ready_to_run()
 
     for task <- tasks do
-      task
-      |> DetourExpirationTask.update_changeset(%{status: :available})
-      |> Skate.Repo.update!()
-
       handle_task({:run, task})
     end
 
