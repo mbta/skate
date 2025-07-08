@@ -6,6 +6,8 @@ defmodule Skate.Detours.NotificationScheduler.Server do
   alias Skate.Detours.Db.DetourExpirationTask
   use GenServer
 
+  require Logger
+
   @poll_ms 60 * 1000
   def poll_ms do
     @poll_ms
@@ -60,7 +62,9 @@ defmodule Skate.Detours.NotificationScheduler.Server do
     |> Skate.Repo.update!()
   end
 
-  def handle_result({:error, _error}, task) do
+  def handle_result({:error, error}, task) do
+    Logger.error("unknown error=#{inspect(error)} detour=#{inspect(task.detour.id)}")
+
     task
     |> DetourExpirationTask.update_changeset(%{status: :retryable})
     |> Skate.Repo.update!()
