@@ -584,4 +584,39 @@ defmodule Notifications.NotificationServerTest do
       refute log =~ "new_notification"
     end
   end
+
+  describe "Notifications.Notification broadcasts notifications when notification is created" do
+    setup do
+      registry_name = :new_notifications_registry
+      start_supervised({Registry, keys: :duplicate, name: registry_name})
+      reassign_env(:notifications, :registry, registry_name)
+
+      {:ok, _server} = NotificationServer.start_link()
+
+      :ok
+    end
+
+    test "create_detour_expiration_notification/3" do
+      users = insert_list(3, :user)
+
+      for %{id: user_id} <- users do
+        Notifications.NotificationServer.subscribe(user_id)
+      end
+
+      detour = insert(:detour)
+
+      {:ok, %{notification: %{id: id}}} =
+        Notification.create_detour_expiration_notification(
+          detour,
+          %{
+            expires_in: Duration.new!(minute: 30),
+            estimated_duration: "1 hour"
+          }
+        )
+
+      for _ <- users do
+        assert_receive {:notification, %Notifications.Notification{id: ^id}}
+      end
+    end
+  end
 end
