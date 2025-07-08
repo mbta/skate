@@ -205,7 +205,7 @@ defmodule Notifications.Notification do
       ...>
       ...> created_at =
       ...>   DateTime.utc_now()
-      ...>   |> DateTime.shift(minute: 30)
+      ...>   |> DateTime.shift(minute: -30)
       ...>   |> DateTime.to_unix()
       ...>
       ...> {:ok, result} =

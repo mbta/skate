@@ -13,12 +13,16 @@ defmodule Skate.Detours.Db.DetourExpirationTask do
     field :expires_at, :utc_datetime_usec
     field :notification_offset_minutes, :integer
 
+    field :status, Ecto.Enum,
+      values: [:scheduled, :executing, :completed, :retryable],
+      default: :scheduled
+
     timestamps()
   end
 
   def create_changeset(%{detour: %Skate.Detours.Db.Detour{} = detour} = attrs) do
     %__MODULE__{}
-    |> cast(attrs, [:expires_at, :notification_offset_minutes])
+    |> cast(attrs, [:expires_at, :notification_offset_minutes, :status])
     |> put_assoc(:detour, detour)
   end
 
@@ -27,6 +31,6 @@ defmodule Skate.Detours.Db.DetourExpirationTask do
   end
 
   def update_changeset(detour_expiration_task, attrs) do
-    cast(detour_expiration_task, attrs, [:expires_at])
+    cast(detour_expiration_task, attrs, [:expires_at, :status])
   end
 end
