@@ -440,4 +440,6 @@ defmodule Notifications.Notification do
         0
     end
   end
+
+  defdelegate subscribe(user_id), to: Notifications.NotificationServer
 end
