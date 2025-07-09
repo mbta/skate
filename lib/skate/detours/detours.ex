@@ -194,11 +194,11 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    detour_changes = Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
+    detour_changeset = Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
     detour_db_result =
       Skate.Repo.insert(
-        detour_changes,
+        detour_changeset,
         returning: true,
         conflict_target: [:id],
         on_conflict: {:replace_all_except, [:inserted_at]}
@@ -206,15 +206,19 @@ defmodule Skate.Detours.Detours do
 
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
-        broadcast_detour(new_record, author_id)
-        process_notifications(detour_changes, new_record)
-        update_swiftly(detour_changes, new_record)
+        handle_detour_updated(detour_changeset, new_record, author_id)
 
       _ ->
         nil
     end
 
     detour_db_result
+  end
+
+  defp handle_detour_updated(changeset, new_record, author_id) do
+    broadcast_detour(new_record, author_id)
+    process_notifications(changeset, new_record)
+    update_swiftly(changeset, new_record)
   end
 
   @spec delete_draft_detour(Detour.t(), DbUser.id()) :: :ok
@@ -348,7 +352,13 @@ defmodule Skate.Detours.Detours do
         _ -> false
       end
 
-    update_swiftly(changeset, detour, enabled?)
+    update_swiftly_fn = fn -> update_swiftly(changeset, detour, enabled?) end
+
+    case update_swiftly_fn.() do
+      # retry once on error
+      {:error, _} -> update_swiftly_fn.()
+      response -> response
+    end
   end
 
   defp update_swiftly(
@@ -390,14 +400,16 @@ defmodule Skate.Detours.Detours do
 
         if adjustment_id do
           service_adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())
+        else
+          {:error, :not_found}
         end
 
-      _ ->
-        nil
+      {:error, _} = error ->
+        error
     end
   end
 
-  defp update_swiftly(_, _, _), do: nil
+  defp update_swiftly(_, _, _), do: :ok
 
   defp build_swiftly_opts() do
     Application.get_env(:skate, Swiftly.API.ServiceAdjustments)
