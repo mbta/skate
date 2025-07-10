@@ -248,6 +248,15 @@ defmodule Skate.DetourFactory do
       def with_coordinates(state, coordinates) do
         put_in(state["context"]["detourShape"], %{"ok" => %{"coordinates" => coordinates}})
       end
+
+      def with_missed_stops(%Skate.Detours.Db.Detour{} = detour, stops) do
+        %{detour | state: with_missed_stops(detour.state, stops)}
+      end
+
+      def with_missed_stops(state, stops) do
+        missed_stops = Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
+        put_in(state["context"]["finishedDetour"], %{"missedStops" => missed_stops})
+      end
     end
   end
 

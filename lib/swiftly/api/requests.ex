@@ -25,7 +25,8 @@ defmodule Swiftly.API.Requests do
            %DetourRouteDirectionCreationDetails{
              routeShortName: detour.state["context"]["route"]["name"],
              direction: Integer.to_string(detour.state["context"]["routePattern"]["directionId"]),
-             shape: parse_shape(detour)
+             shape: parse_shape(detour),
+             skippedStops: map_skipped_stops(detour)
            }
          ]
        }
@@ -56,4 +57,10 @@ defmodule Swiftly.API.Requests do
   defp map_coordinates(coordinates) do
     Enum.map(coordinates, fn %{"lat" => lat, "lon" => lon} -> [lat, lon] end)
   end
+
+  defp map_skipped_stops(%Detour{state: %{"context" => %{"finishedDetour" => %{"missedStops" => [_ | _] = missed_stops}}}}) do
+    Enum.map(missed_stops, fn missed_stop -> Map.get(missed_stop, "id") end)
+  end
+
+  defp map_skipped_stops(_), do: []
 end
