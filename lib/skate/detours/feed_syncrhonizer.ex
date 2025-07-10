@@ -1,5 +1,12 @@
 defmodule Skate.Detours.FeedSyncrhonizer do
+  @moduledoc """
+  GenServer that runs based on the @run_time value {hour, minute, second} once a day
+  to sync detours between skate and swiftly considering skate to be the source of truth.
+  """
+
   use GenServer
+  require Logger
+  alias Skate.Detours.Detours
 
   @run_time {4, 0, 0}
 
@@ -15,10 +22,11 @@ defmodule Skate.Detours.FeedSyncrhonizer do
 
   @impl true
   def handle_info(:sync_with_swiftly, state) do
-    # get skate info
-    # get swiftly info
-    # diff
-    # update as needed
+    Logger.info("Begin sync swiftly detours.")
+
+    Detours.sync_swiftly_with_skate()
+
+    Logger.info("Completed syncing swiftly detours.")
 
     schedule_next_run()
     {:noreply, state}
@@ -26,7 +34,7 @@ defmodule Skate.Detours.FeedSyncrhonizer do
 
   defp schedule_next_run do
     now = Timex.now()
-    rune_at = calculate_next_run(now)
+    run_at = calculate_next_run(now)
     delay = Timex.diff(run_at, now, :milliseconds)
 
     Process.send_after(self(), :sync_with_swiftly, delay)
