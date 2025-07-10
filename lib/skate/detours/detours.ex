@@ -337,14 +337,15 @@ defmodule Skate.Detours.Detours do
 
   defp process_notifications(_, _), do: nil
 
-  defp update_swiftly(changeset, detour) do
-    enabled? =
-      case TestGroup.get_by_name("send-detours-to-swiftly-enabled") do
-        %TestGroup{override: :enabled} -> true
-        _ -> false
-      end
+  defp test_group_enabled?() do
+    case TestGroup.get_by_name("send-detours-to-swiftly-enabled") do
+      %TestGroup{override: :enabled} -> true
+      _ -> false
+    end
+  end
 
-    update_swiftly(changeset, detour, enabled?)
+  defp update_swiftly(changeset, detour) do
+    update_swiftly(changeset, detour, test_group_enabled?())
   end
 
   defp update_swiftly(
@@ -394,6 +395,79 @@ defmodule Skate.Detours.Detours do
   end
 
   defp update_swiftly(_, _, _), do: nil
+
+  def sync_swiftly_with_skate(
+        adjustments_module \\ service_adjustments_module(),
+        enabled? \\ test_group_enabled?()
+      )
+
+  def sync_swiftly_with_skate(adjustments_module, enabled?) do
+    do_sync_swiftly_with_skate(adjustments_module, enabled?)
+  end
+
+  defp do_sync_swiftly_with_skate(_adjustments_module, false), do: :ok
+
+  defp do_sync_swiftly_with_skate(adjustments_module, true) do
+    skate_detour_ids =
+      Skate.Detours.Db.Detour.Queries.select_detour_list_info()
+      |> where([detour: d], d.status == :active)
+      |> Repo.all()
+      |> Enum.map(fn detour -> detour.id end)
+      |> MapSet.new()
+
+    swiftly_adjustments =
+      case adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
+        {:ok, adjustments_response} ->
+          Map.get(adjustments_response, :adjustments, [])
+
+        _ ->
+          []
+      end
+
+    swiftly_adjustments_map =
+      Map.new(swiftly_adjustments, fn adjustment ->
+        {String.to_integer(adjustment.notes), adjustment}
+      end)
+
+    swiftly_detour_ids =
+      swiftly_adjustments_map
+      |> Map.keys()
+      |> MapSet.new()
+
+    extra_in_swiftly =
+      swiftly_detour_ids |> MapSet.difference(skate_detour_ids) |> MapSet.to_list()
+
+    if length(extra_in_swiftly) > 0 do
+      Enum.each(extra_in_swiftly, fn extra_detour_id ->
+        adjustment_id =
+          swiftly_adjustments_map
+          |> Map.get(extra_detour_id)
+          |> Map.get(:id)
+
+        if adjustment_id do
+          adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())
+        end
+      end)
+    end
+
+    missing_in_swiftly =
+      skate_detour_ids |> MapSet.difference(swiftly_detour_ids) |> MapSet.to_list()
+
+    Logger.error(inspect(missing_in_swiftly))
+
+    if length(missing_in_swiftly) > 0 do
+      Enum.map(missing_in_swiftly, fn missing_detour_id ->
+        detour = get_detour!(missing_detour_id)
+
+        {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
+
+        adjustments_module.create_adjustment_v1(
+          adjustment_request,
+          build_swiftly_opts()
+        )
+      end)
+    end
+  end
 
   defp build_swiftly_opts() do
     Application.get_env(:skate, Swiftly.API.ServiceAdjustments)
