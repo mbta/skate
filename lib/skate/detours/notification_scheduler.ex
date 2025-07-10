@@ -11,6 +11,14 @@ defmodule Skate.Detours.NotificationScheduler do
         %Detour{status: :active} = detour,
         expires_at
       ) do
+    do_detour_activated(detour, expires_at)
+  end
+
+  def detour_activated(_, _), do: :error
+
+  def do_detour_activated(_detour, nil), do: nil
+
+  def do_detour_activated(detour, expires_at) do
     [expired_task, warning_task] = generate_changesets(detour, expires_at)
 
     Skate.Repo.transaction(fn ->
@@ -18,16 +26,32 @@ defmodule Skate.Detours.NotificationScheduler do
     end)
   end
 
-  def detour_activated(_, _), do: :error
-
   def detour_deactivated(%Detour{status: :past} = detour) do
-    Skate.Repo.delete_all(from d in DetourExpirationTask, where: d.detour_id == ^detour.id)
+    delete_expiration_tasks(detour)
   end
 
   def detour_deactivated(_), do: :error
 
+  defp delete_expiration_tasks(detour) do
+    Skate.Repo.delete_all(from d in DetourExpirationTask, where: d.detour_id == ^detour.id)
+  end
+
   def detour_duration_changed(
         %Detour{status: :active} = detour,
+        expires_at
+      ) do
+    do_detour_duration_changed(detour, expires_at)
+  end
+
+  def detour_duration_changed(_, _), do: :error
+
+  # Handle detours that no longer have an expiration
+  def do_detour_duration_changed(detour, nil) do
+    delete_expiration_tasks(detour)
+  end
+
+  def do_detour_duration_changed(
+        detour,
         expires_at
       ) do
     changesets =
@@ -49,8 +73,6 @@ defmodule Skate.Detours.NotificationScheduler do
       Enum.map(changesets, &Skate.Repo.insert_or_update!/1)
     end)
   end
-
-  def detour_duration_changed(_, _), do: :error
 
   defp generate_changesets(
          %Detour{status: :active} = detour,
