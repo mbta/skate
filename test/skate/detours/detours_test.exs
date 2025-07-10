@@ -1,0 +1,58 @@
+defmodule Skate.Detours.DetoursTest do
+  use Skate.DataCase
+  import Skate.Factory
+  import ExUnit.CaptureLog
+  alias Skate.Detours.Detours
+
+  defmodule MockedSwiftlyAdjustmentsModule do
+    require Logger
+
+    def get_adjustments_v1(_) do
+      {:ok,
+       %{
+         adjustments: [
+           %{id: 1, notes: "111"},
+           %{id: 2, notes: "222"}
+         ]
+       }}
+    end
+
+    def create_adjustment_v1(%{notes: detour_id}, _) do
+      Logger.error("created_adjustment detour_id_#{detour_id}")
+    end
+
+    def delete_adjustment_v1(adjustment_id, _) do
+      Logger.error("deleted_adjustment_id_#{adjustment_id}")
+    end
+  end
+
+  describe "sync_swiftly_with_skate" do
+    @tag :capture_log
+    test "it creates adjustments in swiftly that are active in skate, but not present in swiftly" do
+      :detour |> build() |> with_id(111) |> with_direction(:inbound) |> activated() |> insert()
+      :detour |> build() |> with_id(222) |> with_direction(:inbound) |> activated() |> insert()
+      :detour |> build() |> with_id(333) |> with_direction(:inbound) |> activated() |> insert()
+      :detour |> build() |> with_id(444) |> deactivated() |> with_direction(:inbound) |> insert()
+
+      log =
+        capture_log(fn ->
+          Detours.sync_swiftly_with_skate(MockedSwiftlyAdjustmentsModule, true)
+        end)
+
+      assert log =~ "created_adjustment detour_id_333"
+    end
+
+    @tag :capture_log
+    test "it deletes adjustments in swiftly that are no longer active in skate, but are still present in swiftly" do
+      :detour |> build() |> with_id(111) |> activated() |> with_direction(:inbound) |> insert()
+      :detour |> build() |> with_id(444) |> deactivated() |> with_direction(:inbound) |> insert()
+
+      log =
+        capture_log(fn ->
+          Detours.sync_swiftly_with_skate(MockedSwiftlyAdjustmentsModule, true)
+        end)
+
+      assert log =~ "deleted_adjustment_id_2"
+    end
+  end
+end
