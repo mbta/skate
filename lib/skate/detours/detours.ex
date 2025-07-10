@@ -308,7 +308,9 @@ defmodule Skate.Detours.Detours do
     %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
-    Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
+    if expires_at do
+      Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
+    end
   end
 
   defp process_notifications(
@@ -332,7 +334,9 @@ defmodule Skate.Detours.Detours do
     %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
-    Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)
+    if expires_at do
+      Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)
+    end
   end
 
   defp process_notifications(_, _), do: nil
@@ -450,6 +454,13 @@ defmodule Skate.Detours.Detours do
     do: do_calculate_expiration_timestamp(detour, estimated_duration)
 
   defp calculate_expiration_timestamp(_, _), do: nil
+
+  defp do_calculate_expiration_timestamp(
+         _detour,
+         "Until further notice"
+       ) do
+    nil
+  end
 
   defp do_calculate_expiration_timestamp(
          detour,
