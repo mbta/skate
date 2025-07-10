@@ -58,7 +58,9 @@ defmodule Swiftly.API.Requests do
     Enum.map(coordinates, fn %{"lat" => lat, "lon" => lon} -> [lat, lon] end)
   end
 
-  defp map_skipped_stops(%Detour{state: %{"context" => %{"finishedDetour" => %{"missedStops" => [_ | _] = missed_stops}}}}) do
+  defp map_skipped_stops(%Detour{
+         state: %{"context" => %{"finishedDetour" => %{"missedStops" => [_ | _] = missed_stops}}}
+       }) do
     Enum.map(missed_stops, fn missed_stop -> Map.get(missed_stop, "id") end)
   end
 
