@@ -14,6 +14,7 @@
     width: 1.25rem;
     flex-shrink: 0;
     padding-right: 0.75rem;
+    box-sizing: content-box;
   }
 
   @media not (prefers-reduced-motion: reduce) {
