@@ -453,8 +453,6 @@ defmodule Skate.Detours.Detours do
     missing_in_swiftly =
       skate_detour_ids |> MapSet.difference(swiftly_detour_ids) |> MapSet.to_list()
 
-    Logger.error(inspect(missing_in_swiftly))
-
     if length(missing_in_swiftly) > 0 do
       Enum.map(missing_in_swiftly, fn missing_detour_id ->
         detour = get_detour!(missing_detour_id)

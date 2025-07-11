@@ -1,4 +1,4 @@
-defmodule Skate.Detours.FeedSyncrhonizer do
+defmodule Skate.Detours.FeedSynchronizer do
   @moduledoc """
   GenServer that runs based on the @run_time value {hour, minute, second} once a day
   to sync detours between skate and swiftly considering skate to be the source of truth.
