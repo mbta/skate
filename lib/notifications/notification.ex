@@ -155,6 +155,8 @@ defmodule Notifications.Notification do
          {:ok,
           %Notifications.Db.BlockWaiver{
             reason: reason,
+            block_id: block_id,
+            service_id: service_id,
             route_ids: route_ids,
             run_ids: run_ids,
             trip_ids: trip_ids,
@@ -168,6 +170,7 @@ defmodule Notifications.Notification do
            " type=BlockWaiver" <>
            " created_at=#{format_unix_timestamp(created_at)}" <>
            " reason=#{reason}" <>
+           " block_id=#{block_id} service_id=#{service_id}" <>
            " route_ids=#{inspect(route_ids)} run_ids=#{inspect(run_ids)} trip_ids=#{inspect(trip_ids)}" <>
            " start_time=#{format_unix_timestamp(start_time)} end_time=#{format_unix_timestamp(end_time)}"
 

@@ -712,5 +712,38 @@ defmodule Notifications.NotificationTest do
       assert {:error, _} =
                Notification.create_block_waiver_notification(notification_attrs)
     end
+
+    test "logs info of notification creation" do
+      Test.Support.Helpers.set_log_level(:info)
+      created_at = Util.Time.now()
+
+      {{:ok, _}, log} =
+        with_log([level: :info], fn ->
+          Notifications.Notification.create_block_waiver_notification(%{
+            created_at: created_at,
+            notification: %{created_at: created_at},
+            reason: :other,
+            route_ids: ["1", "2"],
+            run_ids: [],
+            trip_ids: [],
+            block_id: "block-id-1",
+            service_id: "service-id-1",
+            start_time: 0,
+            end_time: 1
+          })
+        end)
+
+      # Log location/MFA
+      assert log =~ "mfa=Notifications.Notification.create_block_waiver_notification"
+      # Result of operation
+      assert log =~ " result=notification_created"
+      # Notification information
+      assert log =~ " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
+      # Type of notification created
+      assert log =~ " type=BlockWaiver"
+      # Block waiver specific information
+      assert log =~
+               ~s( reason=other block_id=block-id-1 service_id=service-id-1 route_ids=["1", "2"] run_ids=[] trip_ids=[] start_time=1970-01-01T00:00:00Z end_time=1970-01-01T00:00:01Z)
+    end
   end
 end
