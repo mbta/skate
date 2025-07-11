@@ -324,11 +324,15 @@ defmodule Skate.Detours.Detours do
 
   defp process_notifications(
          %Ecto.Changeset{
-           data: %Detour{status: :active},
-           changes: %{estimated_duration: _estimated_duration}
+           data: %Detour{
+             status: :active,
+             state: %{"context" => %{"selectedDuration" => previous_duration}}
+           },
+           changes: %{state: %{"context" => %{"selectedDuration" => selected_duration}}}
          },
          %Detour{} = detour
-       ) do
+       )
+       when previous_duration != selected_duration do
     %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
@@ -450,6 +454,13 @@ defmodule Skate.Detours.Detours do
     do: do_calculate_expiration_timestamp(detour, estimated_duration)
 
   defp calculate_expiration_timestamp(_, _), do: nil
+
+  defp do_calculate_expiration_timestamp(
+         _detour,
+         "Until further notice"
+       ) do
+    nil
+  end
 
   defp do_calculate_expiration_timestamp(
          detour,
