@@ -33,6 +33,9 @@ defmodule Skate.Application do
           [
             TrainVehicles.Supervisor,
             Notifications.Supervisor,
+            {Skate.Detours.NotificationScheduler.Server,
+             name: Skate.Detours.NotificationScheduler.Server.default_name(),
+             poll_ms: Skate.Detours.NotificationScheduler.Server.poll_ms()},
             Realtime.Supervisor
           ]
         else

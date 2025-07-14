@@ -21,7 +21,7 @@ defmodule SkateWeb.NotificationsChannel do
         &Notifications.Notification.unexpired_notifications_for_user/1
       )
 
-    Notifications.NotificationServer.subscribe(user_id)
+    Notifications.Notification.subscribe(user_id)
 
     initial_notifications = notification_fetch.(user_id)
 

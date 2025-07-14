@@ -38,11 +38,15 @@ defmodule Notifications.Db.BlockWaiver do
     field(:start_time, :integer)
     field(:end_time, :integer)
     timestamps()
+
+    has_one(:notification, Notifications.Db.Notification)
   end
 
   def changeset(block_waiver, attrs \\ %{}) do
+    params = add_notification_params(attrs)
+
     block_waiver
-    |> cast(attrs, [
+    |> cast(params, [
       :id,
       :created_at,
       :reason,
@@ -68,6 +72,7 @@ defmodule Notifications.Db.BlockWaiver do
       :start_time,
       :end_time
     ])
+    |> cast_assoc(:notification)
     |> unique_constraint(
       [
         :start_time,
@@ -78,5 +83,16 @@ defmodule Notifications.Db.BlockWaiver do
       ],
       name: "block_waivers_unique_index"
     )
+  end
+
+  defp add_notification_params(params) do
+    params
+    # Insert a notification to be created via `cast_assoc/2`
+    |> Map.put_new(:notification, %{})
+    |> Map.update!(:notification, fn notification ->
+      Map.put_new_lazy(notification, :users, fn ->
+        Skate.Settings.User.list_users_with_route_ids(params[:route_ids])
+      end)
+    end)
   end
 end

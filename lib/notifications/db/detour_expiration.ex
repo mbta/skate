@@ -48,7 +48,7 @@ defmodule Notifications.Db.DetourExpiration do
 
     detour_expiration
     |> cast(params, [:estimated_duration, :expires_in])
-    |> cast_assoc(:notification)
+    |> cast_assoc(:notification, with: &Notifications.Db.Notification.changeset/2)
     |> validate_required([:estimated_duration, :expires_in, :detour_id])
     |> assoc_constraint(:detour)
   end

@@ -303,7 +303,7 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
+    Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
     %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
@@ -318,7 +318,7 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    Notifications.Notification.create_activated_detour_notification_from_detour(detour)
+    Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
     Skate.Detours.NotificationScheduler.detour_deactivated(detour)
   end
 
