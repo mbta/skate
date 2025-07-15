@@ -154,34 +154,8 @@ defmodule Notifications.Notification do
            " status=#{status}" <>
            " lowering_time=#{if is_integer(lowering_time), do: lowering_time |> DateTime.from_unix!() |> DateTime.to_iso8601(), else: "nil"}"
 
-  defp notification_log_message(
-         {:ok,
-          %Notifications.Db.BlockWaiver{
-            reason: reason,
-            block_id: block_id,
-            service_id: service_id,
-            route_ids: route_ids,
-            run_ids: run_ids,
-            trip_ids: trip_ids,
-            start_time: start_time,
-            end_time: end_time,
-            notification: %{created_at: created_at}
-          }}
-       ),
-       do:
-         "result=notification_created" <>
-           " type=BlockWaiver" <>
-           " created_at=#{format_unix_timestamp(created_at)}" <>
-           " reason=#{reason}" <>
-           " block_id=#{block_id} service_id=#{service_id}" <>
-           " route_ids=#{inspect(route_ids)} run_ids=#{inspect(run_ids)} trip_ids=#{inspect(trip_ids)}" <>
-           " start_time=#{format_unix_timestamp(start_time)} end_time=#{format_unix_timestamp(end_time)}"
-
   defp notification_log_message({:error, error}),
     do: "result=error error=#{inspect(error)}"
-
-  defp format_unix_timestamp(timestamp),
-    do: timestamp |> DateTime.from_unix!() |> DateTime.to_iso8601()
 
   defp notification_log_level({:ok, _}), do: :info
   defp notification_log_level({:error, _}), do: :warning
