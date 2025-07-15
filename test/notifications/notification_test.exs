@@ -9,8 +9,74 @@ defmodule Notifications.NotificationTest do
 
   alias Notifications.Notification
   alias Notifications.Db.Notification, as: DbNotification
+  alias Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.RouteTab
   alias Skate.Settings.User
+
+  import Ecto.Query
+
+  describe "get_or_create_from_block_waiver/1" do
+    setup do
+      user1 = User.upsert("user1", "user1@test.com")
+      user2 = User.upsert("user2", "user2@test.com")
+      user3 = User.upsert("user3", "user3@test.com")
+      {:ok, %{user1: user1, user2: user2, user3: user3}}
+    end
+
+    test "associates a new notification with users subscribed to an affected route", %{
+      user1: user1,
+      user2: user2,
+      user3: user3
+    } do
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["4", "1"]
+        })
+
+      RouteTab.update_all_for_user!(user1.id, [route_tab1])
+
+      route_tab2 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["2"]
+        })
+
+      RouteTab.update_all_for_user!(user2.id, [route_tab2])
+
+      route_tab3 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["4", "5", "6", "7"]
+        })
+
+      RouteTab.update_all_for_user!(user3.id, [route_tab3])
+
+      notification_values = %{
+        created_at: 12_345,
+        block_id: "Z1-1",
+        service_id: "FallWeekday",
+        reason: :other,
+        route_ids: ["1", "2", "3"],
+        run_ids: ["56785678", "101010"],
+        trip_ids: ["250624", "250625"],
+        start_time: 1_000_000_000,
+        end_time: 1_000_086_400
+      }
+
+      notification_with_id = Notification.get_or_create_from_block_waiver(notification_values)
+
+      notification_users = Skate.Repo.all(from(DbNotificationUser))
+      assert(length(notification_users) == 2)
+      assert(Enum.all?(notification_users, &(&1.notification_id == notification_with_id.id)))
+      assert(Enum.all?(notification_users, &(&1.state == :unread)))
+
+      assert(
+        notification_users |> Enum.map(& &1.user_id) |> Enum.sort() ==
+          Enum.sort([user1.id, user2.id])
+      )
+    end
+  end
 
   describe "unexpired_notifications_for_user/2" do
     setup do
@@ -22,9 +88,11 @@ defmodule Notifications.NotificationTest do
 
     test "returns all unexpired notifications for the given user, in chronological order by creation timestamp",
          %{user1: user1, user2: user2} do
-      eight_hours = 8 * 60 * 60
-      baseline_time = 1_000_000_000 + eight_hours
+      baseline_time = 1_000_000_000
       now_fn = fn -> baseline_time end
+      naive_now_fn = fn -> baseline_time |> DateTime.from_unix!() |> DateTime.to_naive() end
+      Application.put_env(:skate, :naive_now_fn, naive_now_fn)
+      eight_hours = 8 * 60 * 60
 
       route_tab1 =
         build(:route_tab, %{
@@ -42,8 +110,8 @@ defmodule Notifications.NotificationTest do
 
       RouteTab.update_all_for_user!(user2.id, [route_tab2])
 
-      {:ok, route_1_unexpired} =
-        Notification.create_block_waiver_notification(%{
+      route_1_unexpired =
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -51,16 +119,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 0,
           created_at: baseline_time - eight_hours + 10,
-          notification: %{created_at: baseline_time - eight_hours + 10},
           route_ids: ["1"],
           end_time: 10_000
         })
 
-      route_1_unexpired =
-        Notifications.Notification.get_domain_notification(route_1_unexpired.notification.id)
-
       _route_1_expired =
-        Notification.create_block_waiver_notification(%{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -68,13 +132,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 1,
           created_at: baseline_time - eight_hours,
-          notification: %{created_at: baseline_time - eight_hours},
           route_ids: ["1"],
           end_time: 2
         })
 
-      {:ok, route_2_unexpired} =
-        Notification.create_block_waiver_notification(%{
+      route_2_unexpired =
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -82,16 +145,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 4,
           created_at: baseline_time - eight_hours + 1,
-          notification: %{created_at: baseline_time - eight_hours + 1},
           route_ids: ["2"],
           end_time: 5000
         })
 
-      route_2_unexpired =
-        Notifications.Notification.get_domain_notification(route_2_unexpired.notification.id)
-
       _route_2_expired =
-        Notification.create_block_waiver_notification(%{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -99,13 +158,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 6,
           created_at: baseline_time - eight_hours,
-          notification: %{created_at: baseline_time - eight_hours},
           route_ids: ["2"],
           end_time: 7
         })
 
-      {:ok, route_3_unexpired} =
-        Notification.create_block_waiver_notification(%{
+      route_3_unexpired =
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -113,16 +171,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 8,
           created_at: baseline_time - eight_hours + 5,
-          notification: %{created_at: baseline_time - eight_hours + 5},
           route_ids: ["3"],
           end_time: 9000
         })
 
-      route_3_unexpired =
-        Notifications.Notification.get_domain_notification(route_3_unexpired.notification.id)
-
       _route_3_expired =
-        Notification.create_block_waiver_notification(%{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -130,13 +184,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 10,
           created_at: baseline_time - eight_hours,
-          notification: %{created_at: baseline_time - eight_hours},
           route_ids: ["3"],
           end_time: 11
         })
 
-      {:ok, multiroute_unexpired} =
-        Notification.create_block_waiver_notification(%{
+      multiroute_unexpired =
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -144,16 +197,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 12,
           created_at: baseline_time - eight_hours + 3,
-          notification: %{created_at: baseline_time - eight_hours + 3},
           route_ids: ["2", "3"],
           end_time: 8000
         })
 
-      multiroute_unexpired =
-        Notifications.Notification.get_domain_notification(multiroute_unexpired.notification.id)
-
       _multiroute_expired =
-        Notification.create_block_waiver_notification(%{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -161,13 +210,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 14,
           created_at: baseline_time - eight_hours,
-          notification: %{created_at: baseline_time - eight_hours},
           route_ids: ["2", "3"],
           end_time: 15
         })
 
       _route_4_unexpired =
-        Notification.create_block_waiver_notification(%{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -175,13 +223,12 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 16,
           created_at: baseline_time - eight_hours + 3,
-          notification: %{created_at: baseline_time - eight_hours + 3},
           route_ids: ["4"],
           end_time: 17
         })
 
       _route_4_expired =
-        Notification.create_block_waiver_notification(%{
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "block",
           service_id: "service",
           reason: :other,
@@ -189,7 +236,6 @@ defmodule Notifications.NotificationTest do
           trip_ids: [],
           start_time: 18,
           created_at: baseline_time - eight_hours,
-          notification: %{created_at: baseline_time - eight_hours},
           route_ids: ["4"],
           end_time: 19
         })
@@ -629,121 +675,6 @@ defmodule Notifications.NotificationTest do
       # Error information
       assert log =~ "result=error"
       assert log =~ ~r/error=#Ecto.Changeset<.*>\n/
-    end
-  end
-
-  describe "create_block_waiver_notification/1" do
-    test "creates notification for users subscribed to an affected route" do
-      users =
-        insert_list(3, :user,
-          route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
-        ) ++
-          insert_list(3, :user,
-            route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["2"]) end
-          )
-
-      assert {:ok, %{notification: %{users: notification_users}}} =
-               Notification.create_block_waiver_notification(%{
-                 created_at: Util.Time.now(),
-                 reason: :other,
-                 route_ids: ["1", "2"],
-                 run_ids: [],
-                 trip_ids: [],
-                 block_id: "block_id",
-                 service_id: "service_id",
-                 start_time: 0,
-                 end_time: 1
-               })
-
-      assert users |> Enum.map(& &1.id) |> Enum.sort(:asc) ==
-               notification_users |> Enum.map(& &1.id) |> Enum.sort(:asc)
-    end
-
-    test "does not creates notification for users not viewing an affected route" do
-      insert_list(3, :user,
-        route_tabs: fn ->
-          build_list(1, :db_route_tab, selected_route_ids: ["1"], ordering: nil)
-        end
-      )
-
-      insert_list(3, :user,
-        route_tabs: fn ->
-          build_list(1, :db_route_tab, selected_route_ids: ["2"], ordering: nil)
-        end
-      )
-
-      insert_list(3, :user,
-        route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["3"], ordering: 0) end
-      )
-
-      assert {:ok, %{notification: %{users: notification_users}}} =
-               Notification.create_block_waiver_notification(%{
-                 created_at: Util.Time.now(),
-                 reason: :other,
-                 route_ids: ["1", "2"],
-                 run_ids: [],
-                 trip_ids: [],
-                 block_id: "block_id",
-                 service_id: "service_id",
-                 start_time: 0,
-                 end_time: 1
-               })
-
-      assert [] ==
-               notification_users
-    end
-
-    test "does not create duplicate notifications" do
-      notification_attrs = %{
-        created_at: Util.Time.now(),
-        reason: :other,
-        route_ids: ["1", "2"],
-        run_ids: [],
-        trip_ids: [],
-        block_id: "block_id",
-        service_id: "service_id",
-        start_time: 0,
-        end_time: 1
-      }
-
-      assert {:ok, _} =
-               Notification.create_block_waiver_notification(notification_attrs)
-
-      assert {:error, _} =
-               Notification.create_block_waiver_notification(notification_attrs)
-    end
-
-    test "logs info of notification creation" do
-      Test.Support.Helpers.set_log_level(:info)
-      created_at = Util.Time.now()
-
-      {{:ok, _}, log} =
-        with_log([level: :info], fn ->
-          Notifications.Notification.create_block_waiver_notification(%{
-            created_at: created_at,
-            notification: %{created_at: created_at},
-            reason: :other,
-            route_ids: ["1", "2"],
-            run_ids: [],
-            trip_ids: [],
-            block_id: "block-id-1",
-            service_id: "service-id-1",
-            start_time: 0,
-            end_time: 1
-          })
-        end)
-
-      # Log location/MFA
-      assert log =~ "mfa=Notifications.Notification.create_block_waiver_notification"
-      # Result of operation
-      assert log =~ " result=notification_created"
-      # Notification information
-      assert log =~ " created_at=#{created_at |> DateTime.from_unix!() |> DateTime.to_iso8601()}"
-      # Type of notification created
-      assert log =~ " type=BlockWaiver"
-      # Block waiver specific information
-      assert log =~
-               ~s( reason=other block_id=block-id-1 service_id=service-id-1 route_ids=["1", "2"] run_ids=[] trip_ids=[] start_time=1970-01-01T00:00:00Z end_time=1970-01-01T00:00:01Z)
     end
   end
 end
