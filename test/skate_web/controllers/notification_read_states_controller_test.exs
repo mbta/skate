@@ -28,8 +28,8 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
       route_tab2 = build_test_tab()
       RouteTab.update_all_for_user!(other_user_id, [route_tab2])
 
-      {:ok, %{notification: user_notification1}} =
-        Notification.create_block_waiver_notification(%{
+      user_notification1 =
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "bl1",
           service_id: "ser1",
           created_at: 0,
@@ -41,8 +41,8 @@ defmodule SkateWeb.NotificationReadStatesControllerTest do
           end_time: 0
         })
 
-      {:ok, %{notification: user_notification2}} =
-        Notification.create_block_waiver_notification(%{
+      user_notification2 =
+        Notification.get_or_create_from_block_waiver(%{
           block_id: "bl1",
           service_id: "ser1",
           created_at: 0,
