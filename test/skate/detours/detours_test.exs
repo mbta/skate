@@ -12,7 +12,8 @@ defmodule Skate.Detours.DetoursTest do
        %{
          adjustments: [
            %{id: 1, notes: "111"},
-           %{id: 2, notes: "222"}
+           %{id: 2, notes: "222"},
+           %{id: 3, notes: nil}
          ]
        }}
     end
