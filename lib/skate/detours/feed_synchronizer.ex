@@ -11,7 +11,12 @@ defmodule Skate.Detours.FeedSynchronizer do
   @run_time {4, 0, 0}
 
   def start_link(_) do
-    GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
+    name = {:global, __MODULE__}
+
+    case GenServer.whereis(name) do
+      nil -> GenServer.start_link(__MODULE__, %{}, name: name)
+      _ -> :ignore
+    end
   end
 
   @impl true
