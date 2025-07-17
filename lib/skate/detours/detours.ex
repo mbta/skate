@@ -426,7 +426,7 @@ defmodule Skate.Detours.Detours do
 
     swiftly_adjustments_map =
       swiftly_adjustments
-      |> Enum.filter(fn adjustment ->  not is_nil(Map.get(adjustment, :notes)) end)
+      |> Enum.filter(fn adjustment -> not is_nil(Map.get(adjustment, :notes)) end)
       |> Map.new(fn adjustment ->
         {String.to_integer(adjustment.notes), adjustment}
       end)
