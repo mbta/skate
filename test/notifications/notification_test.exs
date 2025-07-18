@@ -713,6 +713,40 @@ defmodule Notifications.NotificationTest do
                Notification.create_block_waiver_notification(notification_attrs)
     end
 
+    test "does not throw an error if a user is subscribed to related routes in separate tabs" do
+      user = insert(:user)
+
+      route_tab1 =
+        build(:route_tab, %{
+          preset_name: "some other routes",
+          selected_route_ids: ["1"]
+        })
+
+      route_tab2 =
+        build(:route_tab, %{
+          preset_name: "some routes",
+          selected_route_ids: ["2"]
+        })
+
+      RouteTab.update_all_for_user!(user.id, [route_tab1, route_tab2])
+
+      notification_attrs = %{
+        created_at: Util.Time.now(),
+        reason: :other,
+        route_ids: ["1", "2"],
+        run_ids: [],
+        trip_ids: [],
+        block_id: "block_id",
+        service_id: "service_id",
+        start_time: 0,
+        end_time: 1
+      }
+
+      # assert_raise Ecto.ConstraintError, fn ->
+      Notification.create_block_waiver_notification(notification_attrs)
+      # end
+    end
+
     test "logs info of notification creation" do
       Test.Support.Helpers.set_log_level(:info)
       created_at = Util.Time.now()

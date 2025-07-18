@@ -4,7 +4,6 @@ defmodule Notifications.NotificationServerTest do
 
   alias Notifications.Notification
   alias Notifications.NotificationServer
-  alias Realtime.BlockWaiver
 
   import ExUnit.CaptureLog, only: [capture_log: 2]
   import Skate.Factory
