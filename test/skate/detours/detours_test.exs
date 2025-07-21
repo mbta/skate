@@ -40,6 +40,7 @@ defmodule Skate.Detours.DetoursTest do
           Detours.sync_swiftly_with_skate(MockedSwiftlyAdjustmentsModule, true)
         end)
 
+      assert log =~ "invalid_adjustment_note %{id: 3, notes: nil}"
       assert log =~ "created_adjustment detour_id_333"
     end
 
@@ -53,6 +54,7 @@ defmodule Skate.Detours.DetoursTest do
           Detours.sync_swiftly_with_skate(MockedSwiftlyAdjustmentsModule, true)
         end)
 
+      assert log =~ "invalid_adjustment_note %{id: 3, notes: nil}"
       assert log =~ "deleted_adjustment_id_2"
     end
   end

@@ -12,6 +12,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Settings.{TestGroup, User}
   alias Skate.Settings.Db.User, as: DbUser
+  require Logger
 
   @doc """
   Returns the list of detours with author, sorted by updated_at
@@ -416,7 +417,9 @@ defmodule Skate.Detours.Detours do
       |> MapSet.new()
 
     swiftly_adjustments =
-      case adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
+      case adjustments_module.get_adjustments_v1(
+             Keyword.put(build_swiftly_opts(), :adjustmentTypes, ["DETOUR_V0"])
+           ) do
         {:ok, adjustments_response} ->
           Map.get(adjustments_response, :adjustments, [])
 
@@ -426,7 +429,18 @@ defmodule Skate.Detours.Detours do
 
     swiftly_adjustments_map =
       swiftly_adjustments
-      |> Enum.filter(fn adjustment -> not is_nil(Map.get(adjustment, :notes)) end)
+      |> Enum.filter(fn adjustment ->
+        notes = Map.get(adjustment, :notes)
+
+        if is_nil(notes) do
+          Logger.warning("invalid_adjustment_note #{inspect(adjustment)}")
+          false
+        else
+          true
+        end
+
+        not is_nil(Map.get(adjustment, :notes))
+      end)
       |> Map.new(fn adjustment ->
         {String.to_integer(adjustment.notes), adjustment}
       end)
