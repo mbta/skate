@@ -41,7 +41,9 @@ defmodule Skate.Detours.DetoursTest do
           Detours.sync_swiftly_with_skate(MockedSwiftlyAdjustmentsModule, true)
         end)
 
-      assert log =~ "invalid_adjustment_note %{id: 3, notes: nil, feedId: \"skate.missing-env.service-adjustments\"}"
+      assert log =~
+               "invalid_adjustment_note %{id: 3, notes: nil, feedId: \"skate.missing-env.service-adjustments\"}"
+
       refute log =~ "invalid_adjustment_note %{id: 4, notes: \"444\""
       assert log =~ "created_adjustment detour_id_333"
     end
@@ -56,7 +58,9 @@ defmodule Skate.Detours.DetoursTest do
           Detours.sync_swiftly_with_skate(MockedSwiftlyAdjustmentsModule, true)
         end)
 
-      assert log =~ "invalid_adjustment_note %{id: 3, notes: nil, feedId: \"skate.missing-env.service-adjustments\"}"
+      assert log =~
+               "invalid_adjustment_note %{id: 3, notes: nil, feedId: \"skate.missing-env.service-adjustments\"}"
+
       refute log =~ "invalid_adjustment_note %{id: 4, notes: \"444\""
       assert log =~ "deleted_adjustment_id_2"
     end
