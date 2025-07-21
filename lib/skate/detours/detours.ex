@@ -195,11 +195,11 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    detour_changes = Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
+    detour_changeset = Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
     detour_db_result =
       Skate.Repo.insert(
-        detour_changes,
+        detour_changeset,
         returning: true,
         conflict_target: [:id],
         on_conflict: {:replace_all_except, [:inserted_at]}
@@ -207,15 +207,19 @@ defmodule Skate.Detours.Detours do
 
     case detour_db_result do
       {:ok, %Detour{} = new_record} ->
-        broadcast_detour(new_record, author_id)
-        process_notifications(detour_changes, new_record)
-        update_swiftly(detour_changes, new_record)
+        handle_detour_updated(detour_changeset, new_record, author_id)
 
       _ ->
         nil
     end
 
     detour_db_result
+  end
+
+  defp handle_detour_updated(changeset, new_record, author_id) do
+    broadcast_detour(new_record, author_id)
+    process_notifications(changeset, new_record)
+    update_swiftly(changeset, new_record)
   end
 
   @spec delete_draft_detour(Detour.t(), DbUser.id()) :: :ok
@@ -325,11 +329,15 @@ defmodule Skate.Detours.Detours do
 
   defp process_notifications(
          %Ecto.Changeset{
-           data: %Detour{status: :active},
-           changes: %{estimated_duration: _estimated_duration}
+           data: %Detour{
+             status: :active,
+             state: %{"context" => %{"selectedDuration" => previous_duration}}
+           },
+           changes: %{state: %{"context" => %{"selectedDuration" => selected_duration}}}
          },
          %Detour{} = detour
-       ) do
+       )
+       when previous_duration != selected_duration do
     %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
@@ -346,7 +354,13 @@ defmodule Skate.Detours.Detours do
   end
 
   defp update_swiftly(changeset, detour) do
-    update_swiftly(changeset, detour, test_group_enabled?())
+    update_swiftly_fn = fn -> update_swiftly(changeset, detour, test_group_enabled?()) end
+
+    case update_swiftly_fn.() do
+      # retry once on error
+      {:error, _} -> update_swiftly_fn.()
+      response -> response
+    end
   end
 
   defp update_swiftly(
@@ -388,14 +402,16 @@ defmodule Skate.Detours.Detours do
 
         if adjustment_id do
           service_adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())
+        else
+          {:error, :not_found}
         end
 
-      _ ->
-        nil
+      {:error, _} = error ->
+        error
     end
   end
 
-  defp update_swiftly(_, _, _), do: nil
+  defp update_swiftly(_, _, _), do: :ok
 
   def sync_swiftly_with_skate(
         adjustments_module \\ service_adjustments_module(),
@@ -538,6 +554,13 @@ defmodule Skate.Detours.Detours do
     do: do_calculate_expiration_timestamp(detour, estimated_duration)
 
   defp calculate_expiration_timestamp(_, _), do: nil
+
+  defp do_calculate_expiration_timestamp(
+         _detour,
+         "Until further notice"
+       ) do
+    nil
+  end
 
   defp do_calculate_expiration_timestamp(
          detour,

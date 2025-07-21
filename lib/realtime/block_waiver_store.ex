@@ -92,7 +92,7 @@ defmodule Realtime.BlockWaiverStore do
         Application.get_env(
           :notifications,
           :notifications_server_new_block_waivers_fn,
-          &Skate.BlockWaivers.create_block_waiver_notifications/1
+          &Notifications.NotificationServer.new_block_waivers/1
         )
 
       notification_server_new_block_waivers_fn.(new_block_waivers)
