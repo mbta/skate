@@ -446,16 +446,16 @@ defmodule Skate.Detours.Detours do
     swiftly_adjustments_map =
       swiftly_adjustments
       |> Enum.filter(fn adjustment ->
-        notes = Map.get(adjustment, :notes)
+        notes = Map.get(adjustment, :notes) || ""
 
-        if is_nil(notes) do
-          Logger.warning("invalid_adjustment_note #{inspect(adjustment)}")
-          false
-        else
-          true
+        case Integer.parse(notes, 10) do
+          :error ->
+            Logger.warning("invalid_adjustment_note #{inspect(adjustment)}")
+            false
+
+          _ ->
+            true
         end
-
-        not is_nil(Map.get(adjustment, :notes))
       end)
       |> Map.new(fn adjustment ->
         {String.to_integer(adjustment.notes), adjustment}
