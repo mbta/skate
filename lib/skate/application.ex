@@ -48,7 +48,8 @@ defmodule Skate.Application do
           Skate.Migrate,
           {Oban, Application.fetch_env!(:skate, Oban)},
           {Skate.Detours.TripModificationPublisher,
-           Application.get_env(:skate, Skate.Detours.TripModificationPublisher)}
+           Application.get_env(:skate, Skate.Detours.TripModificationPublisher)},
+          Skate.Detours.FeedSynchronizer
         ]
 
     Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)
