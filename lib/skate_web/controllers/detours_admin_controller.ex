@@ -49,12 +49,14 @@ defmodule SkateWeb.DetoursAdminController do
     detour = Detours.get_detour!(id)
     author = User.get_by_id(detour.author_id)
     {matches, detour_diff} = Skate.Detours.SnapshotSerde.compare_snapshots(detour)
+    swiftly_adjustment = Detours.get_swiftly_adjustment_for_detour(id)
 
     conn
     |> assign(:detour, Detours.db_detour_to_detour(detour))
     |> assign(:author, author)
     |> assign(:detour_diff, detour_diff)
     |> assign(:matches, matches)
+    |> assign(:swiftly_adjustment, swiftly_adjustment)
     |> render(:show,
       layout: {SkateWeb.Layouts, "barebones.html"},
       title: "Skate Detours"
@@ -67,11 +69,25 @@ defmodule SkateWeb.DetoursAdminController do
     redirect(conn, to: ~p"/detours_admin")
   end
 
-  @spec delete_all(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  @spec sync_swiftly(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def sync_swiftly(conn, _params) do
     Logger.info("begin manual sync detours with swiftly")
     Detours.sync_swiftly_with_skate()
     Logger.info("end manual sync detours with swiftly")
     redirect(conn, to: ~p"/detours_admin")
+  end
+
+  def manual_add_swiftly(conn, %{"id" => id}) do
+    Logger.info("begin manual sync detours with swiftly")
+    Detours.create_in_swiftly(id)
+    Logger.info("end manual sync detours with swiftly")
+    redirect(conn, to: ~p"/detours_admin/#{id}")
+  end
+
+  def manual_remove_swiftly(conn, %{"id" => id}) do
+    Logger.info("begin manual sync detours with swiftly")
+    Detours.delete_in_swiftly(id)
+    Logger.info("end manual sync detours with swiftly")
+    redirect(conn, to: ~p"/detours_admin/#{id}")
   end
 end

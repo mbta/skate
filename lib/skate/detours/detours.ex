@@ -488,16 +488,57 @@ defmodule Skate.Detours.Detours do
 
     if length(missing_in_swiftly) > 0 do
       Enum.map(missing_in_swiftly, fn missing_detour_id ->
-        detour = get_detour!(missing_detour_id)
-
-        {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
-
-        adjustments_module.create_adjustment_v1(
-          adjustment_request,
-          build_swiftly_opts()
-        )
+        create_in_swiftly(missing_detour_id)
       end)
     end
+  end
+
+  def get_swiftly_adjustment_for_detour(detour_id, adjustments_module \\ service_adjustments_module()) do
+    swiftly_adjustments =
+      case adjustments_module.get_adjustments_v1(
+             Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
+           ) do
+        {:ok, adjustments_response} ->
+          Map.get(adjustments_response, :adjustments, [])
+
+        _ ->
+          []
+      end
+
+    Enum.find(swiftly_adjustments, fn adjustment ->
+      notes = Map.get(adjustment, :notes) || ""
+
+      adjustment.feedId == service_adjustments_feed_id() and
+        case Integer.parse(notes, 10) do
+          :error ->
+            Logger.warning("invalid_adjustment_note #{inspect(adjustment)}")
+            false
+
+          parsed_note ->
+            parsed_note == detour_id
+        end
+    end)
+  end
+
+  def delete_in_swiftly(detour_id, adjustments_module \\ service_adjustments_module()) do
+    swiftly_adjustment = get_swiftly_adjustment_for_detour(detour_id, adjustments_module)
+
+    if swiftly_adjustment do
+      adjustments_module.delete_adjustment_v1(Map.get(swiftly_adjustment, :id), build_swiftly_opts())
+    else
+      Logger.warning("swiftly adjustment not found")
+    end
+  end
+
+  def create_in_swiftly(detour_id, adjustments_module \\ service_adjustments_module()) do
+    detour = get_detour!(detour_id)
+
+    {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
+
+    adjustments_module.create_adjustment_v1(
+      adjustment_request,
+      build_swiftly_opts()
+    )
   end
 
   defp build_swiftly_opts() do
