@@ -77,6 +77,7 @@ defmodule SkateWeb.DetoursAdminController do
     redirect(conn, to: ~p"/detours_admin")
   end
 
+  @spec manual_add_swiftly(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def manual_add_swiftly(conn, %{"id" => id}) do
     Logger.info("begin manual sync detours with swiftly")
     Detours.create_in_swiftly(id)
@@ -84,6 +85,7 @@ defmodule SkateWeb.DetoursAdminController do
     redirect(conn, to: ~p"/detours_admin/#{id}")
   end
 
+  @spec manual_remove_swiftly(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def manual_remove_swiftly(conn, %{"id" => id}) do
     Logger.info("begin manual sync detours with swiftly")
     Detours.delete_in_swiftly(id)
