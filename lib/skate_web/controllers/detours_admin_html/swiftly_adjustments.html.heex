@@ -1,3 +1,26 @@
-<%= for swiftly_adjustment <- @swiftly_adjustments do %>
-  <%= extract_pre(swiftly_adjustment) %>
-<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>Swiftly Service Adjustment ID</th>
+      <th>Notes</th>
+      <th>Status</th>
+      <th>Associated Detour Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%= for swiftly_adjustment <- @swiftly_adjustments do %>
+      <tr>
+        <td><%= swiftly_adjustment.id %></td>
+        <td><%= swiftly_adjustment.notes %></td>
+        <td><%= swiftly_adjustment.status %></td>
+        <% relevant_detour = Map.get(@detours_map, swiftly_adjustment.notes) %>
+        <%= if relevant_detour do %>
+          <td><.link href={~p"/detours_admin/#{relevant_detour.id}"}><%= relevant_detour.status %></.link></td>
+        <% else %>
+          <td>Not found</td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

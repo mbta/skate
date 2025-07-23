@@ -503,7 +503,7 @@ defmodule Skate.Detours.Detours do
       {:ok, adjustments_response} ->
         adjustments_response
         |> Map.get(:adjustments, [])
-        |> Enum.filter(fn adjustment -> adjustment.feedId != service_adjustments_feed_id() end)
+        |> Enum.filter(fn adjustment -> adjustment.feedId == service_adjustments_feed_id() end)
 
       _ ->
         []
