@@ -65,4 +65,42 @@ defmodule Skate.Detours.DetoursTest do
       assert log =~ "deleted_adjustment_id_2"
     end
   end
+
+  describe "get_swiftly_adjustment_for_detour" do
+    @tag :capture_log
+    test "fetches adjustment that corresponds to the given detour" do
+      :detour |> build() |> with_id(111) |> with_direction(:inbound) |> activated() |> insert()
+
+      %{id: 1, notes: "111", feedId: "skate.missing-env.service-adjustments"} =
+        Detours.get_swiftly_adjustment_for_detour(111, MockedSwiftlyAdjustmentsModule)
+    end
+  end
+
+  describe "delete_in_swiftly" do
+    @tag :capture_log
+    test "manually delete adjustment in swiftly for a given detour" do
+      :detour |> build() |> with_id(111) |> with_direction(:inbound) |> activated() |> insert()
+
+      log =
+        capture_log(fn ->
+          Detours.delete_in_swiftly(111, MockedSwiftlyAdjustmentsModule)
+        end)
+
+      assert log =~ "deleted_adjustment_id_1"
+    end
+  end
+
+  describe "create_in_swiftly" do
+    @tag :capture_log
+    test "manually create adjustment in swiftly for active detour" do
+      :detour |> build() |> with_id(000) |> with_direction(:inbound) |> activated() |> insert()
+
+      log =
+        capture_log(fn ->
+          Detours.create_in_swiftly(000, MockedSwiftlyAdjustmentsModule)
+        end)
+
+      assert log =~ "created_adjustment detour_id_0"
+    end
+  end
 end

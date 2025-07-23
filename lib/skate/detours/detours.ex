@@ -488,12 +488,15 @@ defmodule Skate.Detours.Detours do
 
     if length(missing_in_swiftly) > 0 do
       Enum.map(missing_in_swiftly, fn missing_detour_id ->
-        create_in_swiftly(missing_detour_id)
+        create_in_swiftly(missing_detour_id, adjustments_module)
       end)
     end
   end
 
-  def get_swiftly_adjustment_for_detour(detour_id, adjustments_module \\ service_adjustments_module()) do
+  def get_swiftly_adjustment_for_detour(
+        detour_id,
+        adjustments_module \\ service_adjustments_module()
+      ) do
     swiftly_adjustments =
       case adjustments_module.get_adjustments_v1(
              Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
@@ -514,7 +517,8 @@ defmodule Skate.Detours.Detours do
             Logger.warning("invalid_adjustment_note #{inspect(adjustment)}")
             false
 
-          parsed_note ->
+          {parsed_note, _} ->
+            Logger.error(inspect([parsed_note, detour_id]))
             parsed_note == detour_id
         end
     end)
@@ -524,7 +528,10 @@ defmodule Skate.Detours.Detours do
     swiftly_adjustment = get_swiftly_adjustment_for_detour(detour_id, adjustments_module)
 
     if swiftly_adjustment do
-      adjustments_module.delete_adjustment_v1(Map.get(swiftly_adjustment, :id), build_swiftly_opts())
+      adjustments_module.delete_adjustment_v1(
+        Map.get(swiftly_adjustment, :id),
+        build_swiftly_opts()
+      )
     else
       Logger.warning("swiftly adjustment not found")
     end
