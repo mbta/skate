@@ -67,7 +67,7 @@ defmodule SkateWeb.DetoursAdminController do
     redirect(conn, to: ~p"/detours_admin")
   end
 
-  @spec delete_all(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  @spec sync_swiftly(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def sync_swiftly(conn, _params) do
     Logger.info("begin manual sync detours with swiftly")
     Detours.sync_swiftly_with_skate()
