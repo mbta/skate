@@ -451,7 +451,10 @@ defmodule Skate.Detours.Detours do
         adjustment.feedId == service_adjustments_feed_id() and
           case Integer.parse(notes, 10) do
             :error ->
-              Logger.warning("invalid_adjustment_note id=#{adjustment.id} notes=#{inspect(adjustment.notes)}")
+              Logger.warning(
+                "invalid_adjustment_note id=#{adjustment.id} notes=#{inspect(adjustment.notes)}"
+              )
+
               false
 
             _ ->
@@ -514,7 +517,10 @@ defmodule Skate.Detours.Detours do
       adjustment.feedId == service_adjustments_feed_id() and
         case Integer.parse(notes, 10) do
           :error ->
-            Logger.warning("invalid_adjustment_note id=#{adjustment.id} notes=#{inspect(adjustment.notes)}")
+            Logger.warning(
+              "invalid_adjustment_note id=#{adjustment.id} notes=#{inspect(adjustment.notes)}"
+            )
+
             false
 
           {parsed_note, _} ->
