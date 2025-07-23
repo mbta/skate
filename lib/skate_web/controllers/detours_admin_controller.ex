@@ -6,6 +6,7 @@ defmodule SkateWeb.DetoursAdminController do
   alias Skate.Detours.Detours
   alias Skate.Settings.User
   use SkateWeb, :controller
+  require Logger
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
@@ -63,6 +64,14 @@ defmodule SkateWeb.DetoursAdminController do
   @spec delete_all(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete_all(conn, _params) do
     Detours.delete_all_detours()
+    redirect(conn, to: ~p"/detours_admin")
+  end
+
+  @spec delete_all(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def sync_swiftly(conn, _params) do
+    Logger.info("begin manual sync detours with swiftly")
+    Detours.sync_swiftly_with_skate()
+    Logger.info("end manual sync detours with swiftly")
     redirect(conn, to: ~p"/detours_admin")
   end
 end

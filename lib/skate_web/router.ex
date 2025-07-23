@@ -127,6 +127,7 @@ defmodule SkateWeb.Router do
     get "/detours_admin", DetoursAdminController, :index
     get "/detours_admin/:id", DetoursAdminController, :show
     delete "/detours_admin", DetoursAdminController, :delete_all
+    delete "/detours_admin/sync_swiftly", DetoursAdminController, :sync_swiftly
     get "/reports", ReportController, :index
     get "/reports/:short_name", ReportController, :run
     get "/test_groups", TestGroupController, :index

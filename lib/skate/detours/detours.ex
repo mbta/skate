@@ -434,7 +434,7 @@ defmodule Skate.Detours.Detours do
 
     swiftly_adjustments =
       case adjustments_module.get_adjustments_v1(
-             Keyword.put(build_swiftly_opts(), :adjustmentTypes, ["DETOUR_V0"])
+             Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
            ) do
         {:ok, adjustments_response} ->
           Map.get(adjustments_response, :adjustments, [])
