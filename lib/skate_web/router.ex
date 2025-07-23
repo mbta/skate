@@ -133,7 +133,7 @@ defmodule SkateWeb.Router do
     delete "/detours_admin/:id/manual_remove_swiftly",
            DetoursAdminController,
            :manual_remove_swiftly
-
+           
     get "/reports", ReportController, :index
     get "/reports/:short_name", ReportController, :run
     get "/test_groups", TestGroupController, :index
