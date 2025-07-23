@@ -92,4 +92,16 @@ defmodule SkateWeb.DetoursAdminController do
     Logger.info("end manual sync detours with swiftly")
     redirect(conn, to: ~p"/detours_admin/#{id}")
   end
+
+  @spec swiftly_service_adjustments(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def swiftly_service_adjustments(conn, _) do
+    swiftly_adjustments = Detours.get_swiftly_adjustments()
+
+    conn
+    |> assign(:swiftly_adjustments, swiftly_adjustments)
+    |> render(:swiftly_adjustments,
+      layout: {SkateWeb.Layouts, "barebones.html"},
+      title: "Swiftly Service Adjustments"
+    )
+  end
 end
