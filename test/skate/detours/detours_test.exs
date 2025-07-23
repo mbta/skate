@@ -42,9 +42,9 @@ defmodule Skate.Detours.DetoursTest do
         end)
 
       assert log =~
-               "invalid_adjustment_note %{id: 3, notes: nil, feedId: \"skate.missing-env.service-adjustments\"}"
+               "invalid_adjustment_note id=3 notes=nil"
 
-      refute log =~ "invalid_adjustment_note %{id: 4, notes: \"444\""
+      refute log =~ "invalid_adjustment_note id=4 notes=444"
       assert log =~ "created_adjustment detour_id_333"
     end
 
@@ -59,9 +59,9 @@ defmodule Skate.Detours.DetoursTest do
         end)
 
       assert log =~
-               "invalid_adjustment_note %{id: 3, notes: nil, feedId: \"skate.missing-env.service-adjustments\"}"
+               "invalid_adjustment_note id=3 notes=nil"
 
-      refute log =~ "invalid_adjustment_note %{id: 4, notes: \"444\""
+      refute log =~ "invalid_adjustment_note id=4 notes=444"
       assert log =~ "deleted_adjustment_id_2"
     end
   end
