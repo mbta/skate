@@ -5,7 +5,7 @@
   <%= extract_pre(@detour) %>
 </pre>
 
-<% detour_id = get_in(@detour[:details][:id]) || @detour.id %>
+<% detour_id = get_in(@detour, [Access.key(:details), Access.key(:id)]) || @detour.id %>
 
 <p>Swiftly Adjustment Info</p>
 <%= if @swiftly_adjustment do %>
@@ -20,7 +20,7 @@
   </.form>
   <%= extract_pre(@swiftly_adjustment) %>
 <% else %>
-  <%= if get_in(@detour[:details][:status]) == :active do %>
+  <%= if get_in(@detour, [Access.key(:details), Access.key(:status)]) == :active do %>
     <.form for={@conn} action={~p"/detours_admin/#{detour_id}/manual_add_swiftly"} method="POST">
       <%= submit("Add to Swiftly",
         onclick: "return confirm('Are you sure?')"
