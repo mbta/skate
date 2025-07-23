@@ -4,6 +4,12 @@
   ) %>
 </.form>
 
+<.form for={@conn} action={~p"/detours_admin/sync_swiftly"} method="DELETE">
+  <%= submit("Sync detours with Swiftly",
+    onclick: "return confirm('Are you sure?')"
+  ) %>
+</.form>
+
 <table>
   <thead>
     <tr>
