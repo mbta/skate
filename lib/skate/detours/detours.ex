@@ -523,9 +523,8 @@ defmodule Skate.Detours.Detours do
 
             false
 
-          {parsed_note, _} ->
-            Logger.error(inspect([parsed_note, detour_id]))
-            parsed_note == detour_id
+          {_parsed_note, _} ->
+            notes == detour_id
         end
     end)
   end

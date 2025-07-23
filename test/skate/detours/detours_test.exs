@@ -72,7 +72,7 @@ defmodule Skate.Detours.DetoursTest do
       :detour |> build() |> with_id(111) |> with_direction(:inbound) |> activated() |> insert()
 
       %{id: 1, notes: "111", feedId: "skate.missing-env.service-adjustments"} =
-        Detours.get_swiftly_adjustment_for_detour(111, MockedSwiftlyAdjustmentsModule)
+        Detours.get_swiftly_adjustment_for_detour("111", MockedSwiftlyAdjustmentsModule)
     end
   end
 
@@ -83,7 +83,7 @@ defmodule Skate.Detours.DetoursTest do
 
       log =
         capture_log(fn ->
-          Detours.delete_in_swiftly(111, MockedSwiftlyAdjustmentsModule)
+          Detours.delete_in_swiftly("111", MockedSwiftlyAdjustmentsModule)
         end)
 
       assert log =~ "deleted_adjustment_id_1"
@@ -97,7 +97,7 @@ defmodule Skate.Detours.DetoursTest do
 
       log =
         capture_log(fn ->
-          Detours.create_in_swiftly(000, MockedSwiftlyAdjustmentsModule)
+          Detours.create_in_swiftly("000", MockedSwiftlyAdjustmentsModule)
         end)
 
       assert log =~ "created_adjustment detour_id_0"
