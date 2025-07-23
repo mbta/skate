@@ -5,11 +5,13 @@
   <%= extract_pre(@detour) %>
 </pre>
 
+<% detour_id = get_in(@detour.details.id) || @detour.id %>
+
 <p>Swiftly Adjustment Info</p>
 <%= if @swiftly_adjustment do %>
   <.form
     for={@conn}
-    action={~p"/detours_admin/#{@detour.id}/manual_remove_swiftly"}
+    action={~p"/detours_admin/#{detour_id}/manual_remove_swiftly"}
     method="DELETE"
   >
     <%= submit("Remove from Swiftly",
@@ -19,11 +21,7 @@
   <%= extract_pre(@swiftly_adjustment) %>
 <% else %>
   <%= if get_in(@detour.details.status) == :active do %>
-    <.form
-      for={@conn}
-      action={~p"/detours_admin/#{@detour.details.id}/manual_add_swiftly"}
-      method="POST"
-    >
+    <.form for={@conn} action={~p"/detours_admin/#{detour_id}/manual_add_swiftly"} method="POST">
       <%= submit("Add to Swiftly",
         onclick: "return confirm('Are you sure?')"
       ) %>
