@@ -4,6 +4,7 @@
       <th>Swiftly Service Adjustment ID</th>
       <th>Notes</th>
       <th>Status</th>
+      <th>Validity</th>
       <th>Associated Detour Status</th>
     </tr>
   </thead>
@@ -14,6 +15,7 @@
         <td><%= swiftly_adjustment.id %></td>
         <td><%= swiftly_adjustment.notes %></td>
         <td><%= swiftly_adjustment.status %></td>
+        <td><%= swiftly_adjustment.validity %></td>
         <% relevant_detour = Map.get(@detours_map, swiftly_adjustment.notes) %>
         <%= if relevant_detour do %>
           <td>
