@@ -519,18 +519,17 @@ defmodule Skate.Detours.Detours do
     Enum.find(swiftly_adjustments, fn adjustment ->
       notes = Map.get(adjustment, :notes) || ""
 
-      adjustment.feedId == service_adjustments_feed_id() and
-        case Integer.parse(notes, 10) do
-          :error ->
-            Logger.warning(
-              "invalid_adjustment_note id=#{adjustment.id} notes=#{inspect(adjustment.notes)}"
-            )
+      case Integer.parse(notes, 10) do
+        :error ->
+          Logger.warning(
+            "invalid_adjustment_note id=#{adjustment.id} notes=#{inspect(adjustment.notes)}"
+          )
 
-            false
+          false
 
-          {_parsed_note, _} ->
-            notes == detour_id
-        end
+        {_parsed_note, _} ->
+          notes == detour_id
+      end
     end)
   end
 
