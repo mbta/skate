@@ -15,7 +15,7 @@ RUN mix local.hex --force && \
   mix local.rebar --force && \
   mix do deps.get --only prod
 
-FROM node:20.11.0-alpine3.19 as assets-builder
+FROM node:20.11.0-alpine3.19 AS assets-builder
 
 WORKDIR /root
 ADD . .
@@ -29,7 +29,7 @@ RUN apk add --no-cache --update python3 build-base
 RUN npm --prefix assets ci
 RUN npm --prefix assets run deploy
 
-FROM elixir-builder as app-builder
+FROM elixir-builder AS app-builder
 
 ENV LANG="C.UTF-8" MIX_ENV=prod
 
