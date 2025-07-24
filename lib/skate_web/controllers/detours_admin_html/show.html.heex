@@ -18,7 +18,9 @@
       onclick: "return confirm('Are you sure?')"
     ) %>
   </.form>
-  <%= extract_pre(@swiftly_adjustment) %>
+  <pre>
+    <%= extract_pre(@swiftly_adjustment) %>
+  </pre>
 <% else %>
   <%= if get_in(@detour, [Access.key(:details), Access.key(:status)]) == :active do %>
     <.form for={@conn} action={~p"/detours_admin/#{detour_id}/manual_add_swiftly"} method="POST">
