@@ -16,7 +16,11 @@
         <td><%= swiftly_adjustment.status %></td>
         <% relevant_detour = Map.get(@detours_map, swiftly_adjustment.notes) %>
         <%= if relevant_detour do %>
-          <td><.link href={~p"/detours_admin/#{relevant_detour.id}"}><%= relevant_detour.status %></.link></td>
+          <td>
+            <.link href={~p"/detours_admin/#{relevant_detour.id}"}>
+              <%= relevant_detour.status %>
+            </.link>
+          </td>
         <% else %>
           <td>Not found</td>
         <% end %>
