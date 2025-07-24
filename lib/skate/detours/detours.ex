@@ -496,36 +496,40 @@ defmodule Skate.Detours.Detours do
     end
   end
 
+  def get_swiftly_adjustments(adjustments_module \\ service_adjustments_module()) do
+    case adjustments_module.get_adjustments_v1(
+           Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
+         ) do
+      {:ok, adjustments_response} ->
+        adjustments_response
+        |> Map.get(:adjustments, [])
+        |> Enum.filter(fn adjustment -> adjustment.feedId == service_adjustments_feed_id() end)
+
+      _ ->
+        []
+    end
+  end
+
   def get_swiftly_adjustment_for_detour(
         detour_id,
         adjustments_module \\ service_adjustments_module()
       ) do
-    swiftly_adjustments =
-      case adjustments_module.get_adjustments_v1(
-             Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
-           ) do
-        {:ok, adjustments_response} ->
-          Map.get(adjustments_response, :adjustments, [])
-
-        _ ->
-          []
-      end
+    swiftly_adjustments = get_swiftly_adjustments(adjustments_module)
 
     Enum.find(swiftly_adjustments, fn adjustment ->
       notes = Map.get(adjustment, :notes) || ""
 
-      adjustment.feedId == service_adjustments_feed_id() and
-        case Integer.parse(notes, 10) do
-          :error ->
-            Logger.warning(
-              "invalid_adjustment_note id=#{adjustment.id} notes=#{inspect(adjustment.notes)}"
-            )
+      case Integer.parse(notes, 10) do
+        :error ->
+          Logger.warning(
+            "invalid_adjustment_note id=#{adjustment.id} notes=#{inspect(adjustment.notes)}"
+          )
 
-            false
+          false
 
-          {_parsed_note, _} ->
-            notes == detour_id
-        end
+        {_parsed_note, _} ->
+          notes == detour_id
+      end
     end)
   end
 

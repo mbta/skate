@@ -10,32 +10,7 @@ defmodule SkateWeb.DetoursAdminController do
 
   @spec index(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def index(conn, _params) do
-    detours =
-      Detours.list_detours([
-        :id,
-
-        # Route column
-        :route_name,
-        :direction,
-        :headsign,
-
-        # Intersection column
-        :nearest_intersection,
-
-        # Updated At column
-        :updated_at,
-
-        # Detour Status Column
-        :status,
-
-        # For some reason, without the primary keys explicitly present in the
-        # query, we're not able to preload the association. So we need the
-        # `User.id` and `Detour.id` explicitly in the query.
-        author: [
-          :email,
-          :id
-        ]
-      ])
+    detours = get_detours()
 
     conn
     |> assign(:detours, detours)
@@ -79,17 +54,63 @@ defmodule SkateWeb.DetoursAdminController do
 
   @spec manual_add_swiftly(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def manual_add_swiftly(conn, %{"id" => id}) do
-    Logger.info("begin manual sync detours with swiftly")
+    Logger.info("begin sync detour with swiftly for detour detour_id=#{inspect(id)}")
     Detours.create_in_swiftly(id)
-    Logger.info("end manual sync detours with swiftly")
+    Logger.info("end manual add detour with swiftly for detour detour_id=#{inspect(id)}")
     redirect(conn, to: ~p"/detours_admin/#{id}")
   end
 
   @spec manual_remove_swiftly(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def manual_remove_swiftly(conn, %{"id" => id}) do
-    Logger.info("begin manual sync detours with swiftly")
+    Logger.info("begin sync detour with swiftly for detour detour_id=#{inspect(id)}")
     Detours.delete_in_swiftly(id)
-    Logger.info("end manual sync detours with swiftly")
+    Logger.info("end sync detour with swiftly for detour detour_id=#{inspect(id)}")
     redirect(conn, to: ~p"/detours_admin/#{id}")
+  end
+
+  @spec swiftly_service_adjustments(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def swiftly_service_adjustments(conn, _) do
+    swiftly_adjustments = Detours.get_swiftly_adjustments()
+
+    detours_map =
+      Map.new(get_detours(), fn detour ->
+        {Integer.to_string(detour.id), detour}
+      end)
+
+    conn
+    |> assign(:detours_map, detours_map)
+    |> assign(:swiftly_adjustments, swiftly_adjustments)
+    |> render(:swiftly_adjustments,
+      layout: {SkateWeb.Layouts, "barebones.html"},
+      title: "Swiftly Service Adjustments"
+    )
+  end
+
+  defp get_detours() do
+    Detours.list_detours([
+      :id,
+
+      # Route column
+      :route_name,
+      :direction,
+      :headsign,
+
+      # Intersection column
+      :nearest_intersection,
+
+      # Updated At column
+      :updated_at,
+
+      # Detour Status Column
+      :status,
+
+      # For some reason, without the primary keys explicitly present in the
+      # query, we're not able to preload the association. So we need the
+      # `User.id` and `Detour.id` explicitly in the query.
+      author: [
+        :email,
+        :id
+      ]
+    ])
   end
 end
