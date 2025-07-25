@@ -38,7 +38,7 @@ RUN apk add --no-cache --update curl
 WORKDIR /root
 
 ADD \
-  --checksum=sha256:f6314d49b9750aa2a3b95b34c836d7af242628056db8aa6a2c8c70d12d6525aa \
+  --checksum=sha256:e5bb2084ccf45087bda1c9bffdea0eb15ee67f0b91646106e466714f9de3c7e3 \
   https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem \
   aws-cert-bundle.pem
 
