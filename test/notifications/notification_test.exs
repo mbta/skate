@@ -742,9 +742,7 @@ defmodule Notifications.NotificationTest do
         end_time: 1
       }
 
-      # assert_raise Ecto.ConstraintError, fn ->
       Notification.create_block_waiver_notification(notification_attrs)
-      # end
     end
 
     test "logs info of notification creation" do
