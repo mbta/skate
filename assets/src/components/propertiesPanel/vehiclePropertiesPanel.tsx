@@ -25,6 +25,7 @@ import TabPanels from "./tabPanels"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { IndividualPropertiesPanelProps } from "../propertiesPanel"
 import { DirectionsButton } from "../directionsButton"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 type Props = {
   selectedVehicle: Vehicle
@@ -191,6 +192,8 @@ const StatusContent = ({
     </div>
 
     <PropertiesList properties={vehicleProperties(selectedVehicle)} />
+
+    {inTestGroup(TestGroups.BatteryInfo) && null /* Placeholder for battery info */}
 
     <CrowdingDiagram crowding={selectedVehicle.crowding} />
 
