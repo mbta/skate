@@ -13,8 +13,14 @@ describe("vehicleFromData", () => {
         occupancy_percentage: 50,
         occupancy_status: "MANY_SEATS_AVAILABLE",
       },
+      battery_info: {
+        charge_percentage: 75,
+      }
     })
     expect(vehicleFromData(vehicleData)).toEqual({
+      batteryInfo: {
+        chargePercentage: 75
+      },
       bearing: vehicleData.bearing,
       blockId: vehicleData.block_id,
       blockWaivers: vehicleData.block_waivers,
