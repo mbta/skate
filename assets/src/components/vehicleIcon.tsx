@@ -22,6 +22,8 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../models/ladderDirection"
+import { BatteryInfo } from "../models/batteryInfo"
+import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 export enum Orientation {
   Up,
@@ -137,6 +139,8 @@ export const VehicleTooltip = ({
     ? "N/A"
     : `${vehicleOrGhost.operatorFirstName} ${vehicleOrGhost.operatorLastName} #${vehicleOrGhost.operatorId}`
 
+  const batteryInfo = isGhost(vehicleOrGhost) ? null : vehicleOrGhost.batteryInfo
+
   return (
     <Tippy
       delay={[250, 0]}
@@ -149,6 +153,7 @@ export const VehicleTooltip = ({
           viaVariant={vehicleOrGhost.viaVariant}
           scheduleAdherenceLabel={scheduleAdherenceLabel}
           operatorDetails={operatorDetails}
+          batteryInfo={batteryInfo}
         />
       }
     >
@@ -165,6 +170,7 @@ const TooltipContent = React.memo(
     viaVariant,
     scheduleAdherenceLabel,
     operatorDetails,
+    batteryInfo,
   }: {
     blockId: BlockId
     runId: RunId
@@ -172,6 +178,7 @@ const TooltipContent = React.memo(
     viaVariant: ViaVariant | null
     scheduleAdherenceLabel: string
     operatorDetails: string
+    batteryInfo: BatteryInfo
   }): ReactElement<HTMLElement> => (
     <>
       <b>Block:</b> {blockId}
@@ -185,6 +192,7 @@ const TooltipContent = React.memo(
       <b>Adherence:</b> {scheduleAdherenceLabel}
       <br />
       <b>Operator:</b> <span className="fs-mask">{operatorDetails}</span>
+      {inTestGroup(TestGroups.BatteryInfo) && batteryInfo?.chargePercentage }
     </>
   )
 )
