@@ -193,7 +193,10 @@ const StatusContent = ({
 
     <PropertiesList properties={vehicleProperties(selectedVehicle)} />
 
-    {inTestGroup(TestGroups.BatteryInfo) && null /* Placeholder for battery info */}
+    {
+      inTestGroup(TestGroups.BatteryInfo) &&
+        null /* Placeholder for battery info */
+    }
 
     <CrowdingDiagram crowding={selectedVehicle.crowding} />
 

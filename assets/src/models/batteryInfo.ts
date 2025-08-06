@@ -1,3 +1,3 @@
 export interface BatteryInfo {
-  chargePercentage: number;
+  chargePercentage: number
 }

@@ -134,7 +134,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                    occupancy_percentage: 0.67,
                    occupancy_status: "FEW_SEATS_AVAILABLE"
                  },
-                 revenue: false
+                 revenue: false,
+                 battery_info: nil
                )
     end
 

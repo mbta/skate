@@ -87,7 +87,7 @@ const CrowdingData = type({
 })
 
 const BatteryInfoData = type({
-  charge_percentage: number()
+  charge_percentage: number(),
 })
 
 const baseVehicleData = {
@@ -128,7 +128,7 @@ const baseVehicleData = {
   end_of_trip_type: EndOfTripTypeData,
   block_waivers: array(BlockWaiverData),
   crowding: nullable(CrowdingData),
-  battery_info: nullable(BatteryInfoData)
+  battery_info: nullable(BatteryInfoData),
 }
 
 export const VehicleData = type(baseVehicleData)
@@ -223,8 +223,8 @@ export function vehicleFromData(
       occupancyPercentage: vehicleData.crowding.occupancy_percentage,
     },
     batteryInfo: vehicleData.battery_info && {
-      chargePercentage: vehicleData.battery_info?.charge_percentage
-    }
+      chargePercentage: vehicleData.battery_info?.charge_percentage,
+    },
   }
 }
 

@@ -90,8 +90,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             sources: MapSet.new(["busloc"]),
             data_discrepancies: [],
             crowding: decode_crowding(vp),
-            revenue: Map.get(vp, "revenue", true),
-            charge_percentage: nil
+            revenue: Map.get(vp, "revenue", true)
           )
         ]
 

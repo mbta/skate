@@ -139,7 +139,9 @@ export const VehicleTooltip = ({
     ? "N/A"
     : `${vehicleOrGhost.operatorFirstName} ${vehicleOrGhost.operatorLastName} #${vehicleOrGhost.operatorId}`
 
-  const batteryInfo = isGhost(vehicleOrGhost) ? null : vehicleOrGhost.batteryInfo
+  const batteryInfo = isGhost(vehicleOrGhost)
+    ? null
+    : vehicleOrGhost.batteryInfo
 
   return (
     <Tippy
@@ -178,7 +180,7 @@ const TooltipContent = React.memo(
     viaVariant: ViaVariant | null
     scheduleAdherenceLabel: string
     operatorDetails: string
-    batteryInfo: BatteryInfo
+    batteryInfo: BatteryInfo | null
   }): ReactElement<HTMLElement> => (
     <>
       <b>Block:</b> {blockId}
@@ -192,7 +194,7 @@ const TooltipContent = React.memo(
       <b>Adherence:</b> {scheduleAdherenceLabel}
       <br />
       <b>Operator:</b> <span className="fs-mask">{operatorDetails}</span>
-      {inTestGroup(TestGroups.BatteryInfo) && batteryInfo?.chargePercentage }
+      {inTestGroup(TestGroups.BatteryInfo) && batteryInfo?.chargePercentage}
     </>
   )
 )
