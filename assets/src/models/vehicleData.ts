@@ -86,6 +86,10 @@ const CrowdingData = type({
   occupancy_percentage: nullable(number()),
 })
 
+const BatteryInfoData = type({
+  charge_percentage: number()
+})
+
 const baseVehicleData = {
   id: string(),
   label: nullable(string()),
@@ -124,6 +128,7 @@ const baseVehicleData = {
   end_of_trip_type: EndOfTripTypeData,
   block_waivers: array(BlockWaiverData),
   crowding: nullable(CrowdingData),
+  battery_info: nullable(BatteryInfoData)
 }
 
 export const VehicleData = type(baseVehicleData)
@@ -217,6 +222,9 @@ export function vehicleFromData(
       occupancyStatus: vehicleData.crowding.occupancy_status || "NO_DATA",
       occupancyPercentage: vehicleData.crowding.occupancy_percentage,
     },
+    batteryInfo: vehicleData.battery_info && {
+      chargePercentage: vehicleData.battery_info?.charge_percentage
+    }
   }
 }
 
