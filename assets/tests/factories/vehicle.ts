@@ -85,6 +85,7 @@ export const randomLocationVehicle = Factory.define<VehicleInScheduledService>(
     endOfTripType: "another_trip",
     blockWaivers: [],
     crowding: null,
+    batteryInfo: null,
   })
 )
 

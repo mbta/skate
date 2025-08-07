@@ -47,7 +47,8 @@ defmodule Concentrate.VehiclePositionTest do
                 %{id: "second", value: nil}
               ]
             }
-          ]
+          ],
+          battery_info: %{charge_percentage: 80}
         )
 
       assert Mergeable.merge(first, second) == expected
@@ -114,7 +115,8 @@ defmodule Concentrate.VehiclePositionTest do
                 %{id: "busloc", value: "busloc_trip"}
               ]
             }
-          ]
+          ],
+          battery_info: %{charge_percentage: 80}
         )
 
       expected_later =
@@ -134,7 +136,8 @@ defmodule Concentrate.VehiclePositionTest do
                 %{id: "swiftly", value: "swiftly_trip"}
               ]
             }
-          ]
+          ],
+          battery_info: %{charge_percentage: 80}
         )
 
       assert Mergeable.merge(swiftly, non_swiftly) == expected
@@ -181,7 +184,8 @@ defmodule Concentrate.VehiclePositionTest do
                 %{id: "busloc", value: "busloc_trip"}
               ]
             }
-          ]
+          ],
+          battery_info: %{charge_percentage: 80}
         )
 
       assert Mergeable.merge(swiftly, non_swiftly) == expected
@@ -232,7 +236,8 @@ defmodule Concentrate.VehiclePositionTest do
                        %{id: "second", value: "G89-5-OL1"}
                      ]
                    }
-                 ]
+                 ],
+                 battery_info: %{charge_percentage: 80}
                )
 
       assert Mergeable.merge(overloaded, non_overloaded) ==
@@ -251,7 +256,8 @@ defmodule Concentrate.VehiclePositionTest do
                        %{id: "first", value: "G89-5"}
                      ]
                    }
-                 ]
+                 ],
+                 battery_info: %{charge_percentage: 80}
                )
 
       assert Mergeable.merge(nil_block_id, overloaded) ==
@@ -270,7 +276,8 @@ defmodule Concentrate.VehiclePositionTest do
                        %{id: "second", value: "G89-5-OL1"}
                      ]
                    }
-                 ]
+                 ],
+                 battery_info: %{charge_percentage: 80}
                )
 
       assert Mergeable.merge(overloaded, nil_block_id) ==
@@ -289,7 +296,8 @@ defmodule Concentrate.VehiclePositionTest do
                        %{id: "third", value: nil}
                      ]
                    }
-                 ]
+                 ],
+                 battery_info: %{charge_percentage: 80}
                )
     end
 
@@ -368,7 +376,8 @@ defmodule Concentrate.VehiclePositionTest do
           trip_id: "trip",
           route_id: "route",
           sources: MapSet.new(["first", "second"]),
-          data_discrepancies: []
+          data_discrepancies: [],
+          battery_info: %{charge_percentage: 80}
         )
 
       assert Mergeable.merge(first, second) == expected
@@ -484,7 +493,8 @@ defmodule Concentrate.VehiclePositionTest do
           trip_id: "trip",
           route_id: "route",
           sources: MapSet.new(["first", "second"]),
-          data_discrepancies: []
+          data_discrepancies: [],
+          battery_info: %{charge_percentage: 80}
         )
 
       assert Mergeable.merge(first, second) == expected
