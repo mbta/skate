@@ -13,13 +13,15 @@ describe("vehicleFromData", () => {
         occupancy_percentage: 50,
         occupancy_status: "MANY_SEATS_AVAILABLE",
       },
-      battery_info: {
-        charge_percentage: 75,
-      }
+      state_of_charge: {
+        value: 75000,
+        time: new Date(2025, 8, 11, 12, 0, 0),
+      },
     })
     expect(vehicleFromData(vehicleData)).toEqual({
-      batteryInfo: {
-        chargePercentage: 75
+      stateOfCharge: {
+        value: 75000,
+        time: new Date(2025, 8, 11, 12, 0, 0),
       },
       bearing: vehicleData.bearing,
       blockId: vehicleData.block_id,

@@ -13,7 +13,10 @@ defmodule Concentrate.VehiclePositionTest do
           trip_id: "trip",
           route_id: "route",
           block_id: "block1",
-          sources: MapSet.new(["first"])
+          sources: MapSet.new(["first"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       second =
@@ -22,7 +25,10 @@ defmodule Concentrate.VehiclePositionTest do
           latitude: 2,
           longitude: 2,
           block_id: "block2",
-          sources: MapSet.new(["second"])
+          sources: MapSet.new(["second"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       expected =
@@ -48,7 +54,7 @@ defmodule Concentrate.VehiclePositionTest do
               ]
             }
           ],
-          battery_info: %{charge_percentage: 80}
+          state_of_charge: %{value: 80_000}
         )
 
       assert Mergeable.merge(first, second) == expected
@@ -85,7 +91,10 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "busloc_trip",
           route_id: "busloc_route",
-          sources: MapSet.new(["busloc"])
+          sources: MapSet.new(["busloc"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       swiftly_later =
@@ -95,7 +104,10 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 3,
           trip_id: "swiftly_trip",
           route_id: "swiftly_route",
-          sources: MapSet.new(["swiftly"])
+          sources: MapSet.new(["swiftly"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       expected =
@@ -116,7 +128,7 @@ defmodule Concentrate.VehiclePositionTest do
               ]
             }
           ],
-          battery_info: %{charge_percentage: 80}
+          state_of_charge: %{value: 80_000}
         )
 
       expected_later =
@@ -137,7 +149,7 @@ defmodule Concentrate.VehiclePositionTest do
               ]
             }
           ],
-          battery_info: %{charge_percentage: 80}
+          state_of_charge: %{value: 80_000}
         )
 
       assert Mergeable.merge(swiftly, non_swiftly) == expected
@@ -164,7 +176,10 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "busloc_trip",
           route_id: "busloc_route",
-          sources: MapSet.new(["busloc"])
+          sources: MapSet.new(["busloc"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       expected =
@@ -185,7 +200,7 @@ defmodule Concentrate.VehiclePositionTest do
               ]
             }
           ],
-          battery_info: %{charge_percentage: 80}
+          state_of_charge: %{value: 80_000}
         )
 
       assert Mergeable.merge(swiftly, non_swiftly) == expected
@@ -208,7 +223,10 @@ defmodule Concentrate.VehiclePositionTest do
           block_id: "G89-5-OL1",
           latitude: 1,
           longitude: 1,
-          sources: MapSet.new(["second"])
+          sources: MapSet.new(["second"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       nil_block_id =
@@ -217,7 +235,10 @@ defmodule Concentrate.VehiclePositionTest do
           block_id: nil,
           latitude: 1,
           longitude: 1,
-          sources: MapSet.new(["third"])
+          sources: MapSet.new(["third"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       assert Mergeable.merge(non_overloaded, overloaded) ==
@@ -237,7 +258,7 @@ defmodule Concentrate.VehiclePositionTest do
                      ]
                    }
                  ],
-                 battery_info: %{charge_percentage: 80}
+                 state_of_charge: %{value: 80_000}
                )
 
       assert Mergeable.merge(overloaded, non_overloaded) ==
@@ -257,7 +278,7 @@ defmodule Concentrate.VehiclePositionTest do
                      ]
                    }
                  ],
-                 battery_info: %{charge_percentage: 80}
+                 state_of_charge: %{value: 80_000}
                )
 
       assert Mergeable.merge(nil_block_id, overloaded) ==
@@ -277,7 +298,7 @@ defmodule Concentrate.VehiclePositionTest do
                      ]
                    }
                  ],
-                 battery_info: %{charge_percentage: 80}
+                 state_of_charge: %{value: 80_000}
                )
 
       assert Mergeable.merge(overloaded, nil_block_id) ==
@@ -297,7 +318,7 @@ defmodule Concentrate.VehiclePositionTest do
                      ]
                    }
                  ],
-                 battery_info: %{charge_percentage: 80}
+                 state_of_charge: %{value: 80_000}
                )
     end
 
@@ -354,7 +375,10 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: "trip",
           route_id: "route",
-          sources: MapSet.new(["first"])
+          sources: MapSet.new(["first"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       second =
@@ -364,7 +388,10 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 2,
           trip_id: "trip",
           route_id: "route",
-          sources: MapSet.new(["second"])
+          sources: MapSet.new(["second"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       expected =
@@ -377,7 +404,7 @@ defmodule Concentrate.VehiclePositionTest do
           route_id: "route",
           sources: MapSet.new(["first", "second"]),
           data_discrepancies: [],
-          battery_info: %{charge_percentage: 80}
+          state_of_charge: %{value: 80_000}
         )
 
       assert Mergeable.merge(first, second) == expected
@@ -470,7 +497,10 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: "trip",
           route_id: "route",
-          sources: MapSet.new(["first"])
+          sources: MapSet.new(["first"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       second =
@@ -481,7 +511,10 @@ defmodule Concentrate.VehiclePositionTest do
           longitude: 1,
           trip_id: "trip",
           route_id: "route",
-          sources: MapSet.new(["second"])
+          sources: MapSet.new(["second"]),
+          state_of_charge: %{
+            value: 80_000
+          }
         )
 
       expected =
@@ -494,7 +527,7 @@ defmodule Concentrate.VehiclePositionTest do
           route_id: "route",
           sources: MapSet.new(["first", "second"]),
           data_discrepancies: [],
-          battery_info: %{charge_percentage: 80}
+          state_of_charge: %{value: 80_000}
         )
 
       assert Mergeable.merge(first, second) == expected

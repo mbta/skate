@@ -1,6 +1,7 @@
 import {
   array,
   boolean,
+  date,
   enums,
   Infer,
   nullable,
@@ -86,8 +87,9 @@ const CrowdingData = type({
   occupancy_percentage: nullable(number()),
 })
 
-const BatteryInfoData = type({
-  charge_percentage: number(),
+const StateOfCharge = type({
+  value: number(),
+  time: date(),
 })
 
 const baseVehicleData = {
@@ -128,7 +130,7 @@ const baseVehicleData = {
   end_of_trip_type: EndOfTripTypeData,
   block_waivers: array(BlockWaiverData),
   crowding: nullable(CrowdingData),
-  battery_info: nullable(BatteryInfoData),
+  state_of_charge: nullable(StateOfCharge),
 }
 
 export const VehicleData = type(baseVehicleData)
@@ -222,8 +224,9 @@ export function vehicleFromData(
       occupancyStatus: vehicleData.crowding.occupancy_status || "NO_DATA",
       occupancyPercentage: vehicleData.crowding.occupancy_percentage,
     },
-    batteryInfo: vehicleData.battery_info && {
-      chargePercentage: vehicleData.battery_info?.charge_percentage,
+    stateOfCharge: vehicleData.state_of_charge && {
+      value: vehicleData.state_of_charge?.value,
+      time: vehicleData.state_of_charge?.time,
     },
   }
 }

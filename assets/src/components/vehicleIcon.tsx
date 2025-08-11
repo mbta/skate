@@ -22,7 +22,7 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { BatteryInfo } from "../models/batteryInfo"
+import { StateOfCharge } from "../models/stateOfCharge"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 export enum Orientation {
@@ -139,9 +139,9 @@ export const VehicleTooltip = ({
     ? "N/A"
     : `${vehicleOrGhost.operatorFirstName} ${vehicleOrGhost.operatorLastName} #${vehicleOrGhost.operatorId}`
 
-  const batteryInfo = isGhost(vehicleOrGhost)
+  const stateOfCharge = isGhost(vehicleOrGhost)
     ? null
-    : vehicleOrGhost.batteryInfo
+    : vehicleOrGhost.stateOfCharge
 
   return (
     <Tippy
@@ -155,7 +155,7 @@ export const VehicleTooltip = ({
           viaVariant={vehicleOrGhost.viaVariant}
           scheduleAdherenceLabel={scheduleAdherenceLabel}
           operatorDetails={operatorDetails}
-          batteryInfo={batteryInfo}
+          stateOfCharge={stateOfCharge}
         />
       }
     >
@@ -172,7 +172,7 @@ const TooltipContent = React.memo(
     viaVariant,
     scheduleAdherenceLabel,
     operatorDetails,
-    batteryInfo,
+    stateOfCharge,
   }: {
     blockId: BlockId
     runId: RunId
@@ -180,7 +180,7 @@ const TooltipContent = React.memo(
     viaVariant: ViaVariant | null
     scheduleAdherenceLabel: string
     operatorDetails: string
-    batteryInfo: BatteryInfo | null
+    stateOfCharge: StateOfCharge | null
   }): ReactElement<HTMLElement> => (
     <>
       <b>Block:</b> {blockId}
@@ -194,7 +194,7 @@ const TooltipContent = React.memo(
       <b>Adherence:</b> {scheduleAdherenceLabel}
       <br />
       <b>Operator:</b> <span className="fs-mask">{operatorDetails}</span>
-      {inTestGroup(TestGroups.BatteryInfo) && batteryInfo?.chargePercentage}
+      {inTestGroup(TestGroups.StateOfCharge) && stateOfCharge?.value}
     </>
   )
 )

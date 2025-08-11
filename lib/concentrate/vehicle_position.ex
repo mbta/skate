@@ -43,7 +43,7 @@ defmodule Concentrate.VehiclePosition do
     :data_discrepancies,
     :crowding,
     :revenue,
-    :battery_info,
+    :state_of_charge,
     current_status: :IN_TRANSIT_TO
   ])
 
@@ -157,7 +157,7 @@ defmodule Concentrate.VehiclePosition do
           crowding: first_value(second.crowding, first.crowding),
           revenue: first_value(second.revenue, first.revenue),
           last_updated_by_source: merge_last_updated_by_source(first, second),
-          battery_info: %{charge_percentage: 80}
+          state_of_charge: first_value(second.state_of_charge, first.state_of_charge)
       }
     end
 

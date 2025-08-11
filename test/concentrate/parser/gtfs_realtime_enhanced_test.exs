@@ -135,7 +135,10 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                    occupancy_status: "FEW_SEATS_AVAILABLE"
                  },
                  revenue: false,
-                 battery_info: nil
+                 state_of_charge: %{
+                   "value" => input["vehicle"]["evStateOfChargeMilliPercent"]["value"],
+                   "time" => input["vehicle"]["evStateOfChargeMilliPercent"]["time"]
+                 }
                )
     end
 
