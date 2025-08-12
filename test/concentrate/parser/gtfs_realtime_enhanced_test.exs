@@ -136,8 +136,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  },
                  revenue: false,
                  state_of_charge: %{
-                   "value" => input["vehicle"]["evStateOfChargeMilliPercent"]["value"],
-                   "time" => input["vehicle"]["evStateOfChargeMilliPercent"]["time"]
+                   "value" => input["vehicle"]["state_of_charge_percentage"],
+                   "time" => input["vehicle"]["state_of_charge_timestamp"]
                  }
                )
     end
