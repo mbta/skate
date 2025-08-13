@@ -6,4 +6,3 @@ export interface StateOfCharge {
 
 export const calculateMilesRemaining = ({ value }: { value: number }): number =>
   value * 2
-}
