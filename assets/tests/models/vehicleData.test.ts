@@ -22,7 +22,7 @@ describe("vehicleFromData", () => {
       stateOfCharge: {
         value: 75,
         time: new Date(2025, 8, 11, 12, 0, 0),
-        milesRemaining: 150
+        milesRemaining: 150,
       },
       bearing: vehicleData.bearing,
       blockId: vehicleData.block_id,
