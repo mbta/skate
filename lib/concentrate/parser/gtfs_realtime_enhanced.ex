@@ -91,7 +91,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             data_discrepancies: [],
             crowding: decode_crowding(vp),
             revenue: Map.get(vp, "revenue", true),
-            state_of_charge: Map.get(vehicle, "evStateOfChargeMilliPercent")
+            state_of_charge: decode_state_of_charge(vehicle)
           )
         ]
 
@@ -150,6 +150,13 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
 
   defp decode_occupancy_status(vp) do
     Map.get(vp, "occupancy_status")
+  end
+
+  defp decode_state_of_charge(vehicle) do
+    %{
+      "value" => Map.get(vehicle, "state_of_charge_percentage"),
+      "time" => Map.get(vehicle, "state_of_charge_timestamp")
+    }
   end
 
   @spec date(String.t() | nil) :: :calendar.date() | nil

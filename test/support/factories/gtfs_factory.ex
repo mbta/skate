@@ -49,10 +49,8 @@ defmodule Skate.GtfsFactory do
             "id" => "G-10098",
             "label" => "3823-3605",
             "license_plate" => nil,
-            "evStateOfChargeMilliPercent" => %{
-              "value" => 85_800,
-              "time" => "2025-08-11T12:00:00"
-            }
+            "state_of_charge_percentage" => 86,
+            "state_of_charge_timestamp" => "2025-08-11T12:00:00"
           },
           "revenue" => false
         }
