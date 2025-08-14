@@ -1,7 +1,6 @@
 import {
   array,
   boolean,
-  date,
   enums,
   Infer,
   nullable,
@@ -22,7 +21,6 @@ import {
 } from "../realtime"
 import { dateFromEpochSeconds } from "../util/dateTime"
 import { DirectionIdData } from "./miscData"
-import { calculateMilesRemaining } from "./stateOfCharge"
 
 const DataDiscrepancySourceData = type({
   id: string(),
@@ -88,11 +86,6 @@ const CrowdingData = type({
   occupancy_percentage: nullable(number()),
 })
 
-const StateOfCharge = type({
-  value: number(),
-  time: date(),
-})
-
 const baseVehicleData = {
   id: string(),
   label: nullable(string()),
@@ -131,7 +124,6 @@ const baseVehicleData = {
   end_of_trip_type: EndOfTripTypeData,
   block_waivers: array(BlockWaiverData),
   crowding: nullable(CrowdingData),
-  state_of_charge: nullable(StateOfCharge),
 }
 
 export const VehicleData = type(baseVehicleData)
@@ -224,11 +216,6 @@ export function vehicleFromData(
       capacity: vehicleData.crowding.capacity,
       occupancyStatus: vehicleData.crowding.occupancy_status || "NO_DATA",
       occupancyPercentage: vehicleData.crowding.occupancy_percentage,
-    },
-    stateOfCharge: vehicleData.state_of_charge && {
-      value: vehicleData.state_of_charge.value,
-      time: vehicleData.state_of_charge.time,
-      milesRemaining: calculateMilesRemaining(vehicleData.state_of_charge),
     },
   }
 }

@@ -88,6 +88,5 @@ export const vehicleDataFactory = Factory.define<VehicleData>(
     end_of_trip_type: "another_trip",
     block_waivers: [],
     crowding: null,
-    state_of_charge: null,
   })
 )
