@@ -11,7 +11,6 @@ import {
 
 import { Crowding } from "./models/crowding"
 import { DetourId } from "./models/detoursList"
-import { StateOfCharge } from "./models/stateOfCharge"
 
 export interface BlockWaiver {
   startTime: Date
@@ -240,7 +239,6 @@ export interface Vehicle {
   endOfTripType: EndOfTripType
   blockWaivers: BlockWaiver[]
   crowding: Crowding | null
-  stateOfCharge: StateOfCharge | null
 }
 
 export interface VehicleInScheduledService extends Vehicle {
