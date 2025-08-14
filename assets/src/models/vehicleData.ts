@@ -22,6 +22,7 @@ import {
 } from "../realtime"
 import { dateFromEpochSeconds } from "../util/dateTime"
 import { DirectionIdData } from "./miscData"
+import { calculateMilesRemaining } from "./stateOfCharge"
 
 const DataDiscrepancySourceData = type({
   id: string(),
@@ -225,8 +226,9 @@ export function vehicleFromData(
       occupancyPercentage: vehicleData.crowding.occupancy_percentage,
     },
     stateOfCharge: vehicleData.state_of_charge && {
-      value: vehicleData.state_of_charge?.value,
-      time: vehicleData.state_of_charge?.time,
+      value: vehicleData.state_of_charge.value,
+      time: vehicleData.state_of_charge.time,
+      milesRemaining: calculateMilesRemaining(vehicleData.state_of_charge),
     },
   }
 }
