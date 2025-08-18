@@ -30,7 +30,7 @@ defmodule Skate.GtfsFactory do
           "occupancy_status" => "FEW_SEATS_AVAILABLE",
           "operator" => %{
             "id" => build(:operator_id),
-            "logon_time" => 1_534_340_301,
+            "logon_time" => 1_754_913_545,
             "first_name" => build(:first_name),
             "last_name" => "EVANS"
           },
@@ -43,14 +43,14 @@ defmodule Skate.GtfsFactory do
           },
           "run_id" => "128-1007",
           "stop_id" => "70257",
-          "timestamp" => 1_534_340_406,
+          "timestamp" => 1_754_913_600,
           "trip" => build(:gtfs_realtime_enhanced_trip_descriptor),
           "vehicle" => %{
             "id" => "G-10098",
             "label" => "3823-3605",
             "license_plate" => nil,
             "state_of_charge_percentage" => 86,
-            "state_of_charge_timestamp" => "2025-08-11T12:00:00"
+            "state_of_charge_timestamp" => 1_754_913_540
           },
           "revenue" => false
         }

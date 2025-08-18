@@ -1,7 +1,6 @@
 import {
   array,
   boolean,
-  date,
   enums,
   Infer,
   nullable,
@@ -90,7 +89,7 @@ const CrowdingData = type({
 
 const StateOfCharge = type({
   value: number(),
-  time: date(),
+  time: number(),
 })
 
 const baseVehicleData = {
@@ -227,7 +226,7 @@ export function vehicleFromData(
     },
     stateOfCharge: vehicleData.state_of_charge && {
       value: vehicleData.state_of_charge.value,
-      time: vehicleData.state_of_charge.time,
+      time: dateFromEpochSeconds(vehicleData.state_of_charge.time),
       milesRemaining: calculateMilesRemaining(vehicleData.state_of_charge),
     },
   }
