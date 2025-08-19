@@ -88,8 +88,8 @@ const CrowdingData = type({
 })
 
 const StateOfCharge = type({
-  value: number(),
-  time: number(),
+  value: nullable(number()),
+  time: nullable(number()),
 })
 
 const baseVehicleData = {
@@ -130,7 +130,7 @@ const baseVehicleData = {
   end_of_trip_type: EndOfTripTypeData,
   block_waivers: array(BlockWaiverData),
   crowding: nullable(CrowdingData),
-  state_of_charge: nullable(StateOfCharge),
+  state_of_charge: optional(StateOfCharge),
 }
 
 export const VehicleData = type(baseVehicleData)
@@ -224,11 +224,13 @@ export function vehicleFromData(
       occupancyStatus: vehicleData.crowding.occupancy_status || "NO_DATA",
       occupancyPercentage: vehicleData.crowding.occupancy_percentage,
     },
-    stateOfCharge: vehicleData.state_of_charge && {
-      value: vehicleData.state_of_charge.value,
-      time: dateFromEpochSeconds(vehicleData.state_of_charge.time),
-      milesRemaining: calculateMilesRemaining(vehicleData.state_of_charge),
-    },
+    stateOfCharge: vehicleData.state_of_charge
+      ? {
+          value: vehicleData.state_of_charge.value,
+          time: dateFromEpochSeconds(vehicleData.state_of_charge.time),
+          milesRemaining: calculateMilesRemaining(vehicleData.state_of_charge),
+        }
+      : null,
   }
 }
 
