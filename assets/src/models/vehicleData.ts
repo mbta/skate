@@ -1,7 +1,6 @@
 import {
   array,
   boolean,
-  date,
   enums,
   Infer,
   nullable,
@@ -90,7 +89,7 @@ const CrowdingData = type({
 
 const StateOfCharge = type({
   value: nullable(number()),
-  time: nullable(date()),
+  time: nullable(number()),
 })
 
 const baseVehicleData = {
@@ -228,7 +227,10 @@ export function vehicleFromData(
     stateOfCharge: vehicleData.state_of_charge
       ? {
           value: vehicleData.state_of_charge.value,
-          time: vehicleData.state_of_charge.time,
+          time:
+            vehicleData.state_of_charge.time != null
+              ? dateFromEpochSeconds(vehicleData.state_of_charge.time)
+              : vehicleData.state_of_charge.time,
           milesRemaining: calculateMilesRemaining(vehicleData.state_of_charge),
         }
       : null,

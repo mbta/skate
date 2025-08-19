@@ -15,13 +15,13 @@ describe("vehicleFromData", () => {
       },
       state_of_charge: {
         value: 75,
-        time: new Date(2025, 8, 11, 12, 0, 0),
+        time: 1754913600,
       },
     })
     expect(vehicleFromData(vehicleData)).toEqual({
       stateOfCharge: {
         value: 75,
-        time: new Date(2025, 8, 11, 12, 0, 0),
+        time: new Date("2025-08-11T12:00:00Z"),
         milesRemaining: 150,
       },
       bearing: vehicleData.bearing,
@@ -89,6 +89,30 @@ describe("vehicleFromData", () => {
       timestamp: vehicleData.timestamp,
       tripId: vehicleData.trip_id,
       viaVariant: vehicleData.via_variant,
+    })
+  })
+
+  test("returns vehicle data in expected format without state of charge", () => {
+    const vehicleData = vehicleDataFactory.build({
+      crowding: {
+        capacity: 50,
+        load: 25,
+        occupancy_percentage: 50,
+        occupancy_status: "MANY_SEATS_AVAILABLE",
+      },
+    })
+
+    expect(vehicleFromData(vehicleData)).toMatchObject({
+      stateOfCharge: null,
+      bearing: vehicleData.bearing,
+      blockId: vehicleData.block_id,
+      blockWaivers: vehicleData.block_waivers,
+      crowding: {
+        capacity: vehicleData.crowding?.capacity,
+        load: vehicleData.crowding?.load,
+        occupancyPercentage: vehicleData.crowding?.occupancy_percentage,
+        occupancyStatus: vehicleData.crowding?.occupancy_status,
+      },
     })
   })
 })
