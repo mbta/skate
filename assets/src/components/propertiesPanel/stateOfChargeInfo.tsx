@@ -1,10 +1,16 @@
 import React from "react"
 import { Vehicle } from "../../realtime"
-import { Battery0to20Icon, Battery21to40Icon, Battery41to60Icon, Battery61to80Icon, Battery81to100Icon, BatteryUnknownIcon } from "../../helpers/icon"
+import {
+  Battery0to20Icon,
+  Battery21to40Icon,
+  Battery41to60Icon,
+  Battery61to80Icon,
+  Battery81to100Icon,
+  BatteryUnknownIcon,
+} from "../../helpers/icon"
 import { StateOfCharge } from "../../models/stateOfCharge"
 import useCurrentTime from "../../hooks/useCurrentTime"
 import { timeAgoLabelFromDate } from "../../util/dateTime"
-
 
 const getIcon = (stateOfCharge: StateOfCharge | null) => {
   if (stateOfCharge === null || stateOfCharge.value === null) {
@@ -24,7 +30,10 @@ const getIcon = (stateOfCharge: StateOfCharge | null) => {
   }
 }
 
-const getLastUpdated = (stateOfCharge: StateOfCharge | null, epochNow: Date) => {
+const getLastUpdated = (
+  stateOfCharge: StateOfCharge | null,
+  epochNow: Date
+) => {
   if (stateOfCharge?.time) {
     return timeAgoLabelFromDate(stateOfCharge?.time, epochNow)
   } else {
@@ -32,7 +41,7 @@ const getLastUpdated = (stateOfCharge: StateOfCharge | null, epochNow: Date) => 
   }
 }
 
-const StateOfChargeInfo = ({ vehicle }: { vehicle: Vehicle}) => {
+const StateOfChargeInfo = ({ vehicle }: { vehicle: Vehicle }) => {
   const epochNow = useCurrentTime()
   const lastUpdated = getLastUpdated(vehicle.stateOfCharge, epochNow)
   const BatteryIcon = getIcon(vehicle.stateOfCharge)
@@ -40,23 +49,18 @@ const StateOfChargeInfo = ({ vehicle }: { vehicle: Vehicle}) => {
   return (
     <div className="c-state-of-charge-info">
       <div className="c-state-of-charge-info__properties">
-        <label
-          className="c-properties-list__property-label"
-        >
-          Battery 
-          
-        </label>
-        <label
-          className="c-properties-list__property-label c-state-of-charge-info__time-ago"
-        >{lastUpdated}</label>
+        <span className="c-properties-list__property-label">Battery</span>
+        <span className="c-properties-list__property-label c-state-of-charge-info__time-ago">
+          {lastUpdated}
+        </span>
         <br />
         {vehicle.stateOfCharge !== null ? (
           <>
-            <span>
-              {vehicle.stateOfCharge.value}% left
-            </span>
+            <span>{vehicle.stateOfCharge.value}% left</span>
             <br />
-            <span>{vehicle.stateOfCharge.milesRemaining} miles remaining estimate</span>
+            <span>
+              {vehicle.stateOfCharge.milesRemaining} miles remaining estimate
+            </span>
           </>
         ) : (
           <>
@@ -67,13 +71,10 @@ const StateOfChargeInfo = ({ vehicle }: { vehicle: Vehicle}) => {
         )}
       </div>
       <div className="c-state-of-charge-info__battery-icon-wrapper">
-        <BatteryIcon
-          className={`c-state-of-charge-info__battery-icon`}
-        />
+        <BatteryIcon className={`c-state-of-charge-info__battery-icon`} />
       </div>
     </div>
   )
 }
-
 
 export default StateOfChargeInfo
