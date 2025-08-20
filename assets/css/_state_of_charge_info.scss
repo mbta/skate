@@ -1,0 +1,28 @@
+.c-state-of-charge-info {
+  border-top: 1px solid $color-rule;
+  font-size: 0.875rem;
+  line-height: 1.3rem;
+  padding: 1rem;
+  position: relative;
+}
+
+.c-state-of-charge-info__time-ago {
+  float: right;
+  text-align: right;
+}
+
+.c-state-of-charge-info__status-description {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.c-state-of-charge-info__battery-icon {
+  bottom: 1rem;
+  position: absolute;
+  right: 1rem;
+
+  svg {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+}

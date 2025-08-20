@@ -18,6 +18,7 @@ import { isOk } from "../../util/fetchResult"
 import { Card, CardBody } from "../card"
 import PropertiesList, { vehicleProperties } from "../propertiesList"
 import BlockWaiverList from "./blockWaiverList"
+import StateOfChargeInfo from "./stateOfChargeInfo"
 import CrowdingDiagram from "./crowdingDiagram"
 import Header from "./header"
 import MiniMap from "./miniMap"
@@ -195,7 +196,7 @@ const StatusContent = ({
 
     {
       inTestGroup(TestGroups.StateOfCharge) &&
-        null /* Placeholder for state of charge info */
+        <StateOfChargeInfo vehicle={selectedVehicle} />
     }
 
     <CrowdingDiagram crowding={selectedVehicle.crowding} />
