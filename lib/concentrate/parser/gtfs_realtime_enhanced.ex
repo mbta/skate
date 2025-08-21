@@ -152,8 +152,12 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     Map.get(vp, "occupancy_status")
   end
 
+  defp decode_state_of_charge(%{
+         "state_of_charge_percentage" => nil,
+         "state_of_charge_timestamp" => nil
+       }),
+       do: nil
 
-  defp decode_state_of_charge(%{ "state_of_charge_percentage" => nil, "state_of_charge_timestamp" => nil}), do: nil
   defp decode_state_of_charge(vp) do
     %{
       value: Map.get(vp, "state_of_charge_percentage"),
