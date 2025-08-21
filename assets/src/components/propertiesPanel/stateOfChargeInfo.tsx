@@ -13,7 +13,7 @@ import useCurrentTime from "../../hooks/useCurrentTime"
 import { timeAgoLabelFromDate } from "../../util/dateTime"
 
 const getIcon = (stateOfCharge: StateOfCharge | null) => {
-  if (stateOfCharge === null || stateOfCharge.value === null) {
+  if (stateOfCharge === null) {
     return BatteryUnknownIcon
   } else if (stateOfCharge.value > 80) {
     return Battery81to100Icon
@@ -34,8 +34,8 @@ const getLastUpdated = (
   stateOfCharge: StateOfCharge | null,
   epochNow: Date
 ) => {
-  if (stateOfCharge?.time) {
-    return timeAgoLabelFromDate(stateOfCharge?.time, epochNow)
+  if (stateOfCharge) {
+    return timeAgoLabelFromDate(stateOfCharge.time, epochNow)
   } else {
     return ""
   }
@@ -45,7 +45,7 @@ const StateOfChargeInfo = ({ vehicle }: { vehicle: Vehicle }) => {
   const epochNow = useCurrentTime()
   const lastUpdated = getLastUpdated(vehicle.stateOfCharge, epochNow)
   const BatteryIcon = getIcon(vehicle.stateOfCharge)
-  console.log(vehicle.stateOfCharge)
+
   return (
     <div className="c-state-of-charge-info">
       <div className="c-state-of-charge-info__properties">
