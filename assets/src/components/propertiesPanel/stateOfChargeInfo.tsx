@@ -45,7 +45,7 @@ const StateOfChargeInfo = ({ vehicle }: { vehicle: Vehicle }) => {
   const epochNow = useCurrentTime()
   const lastUpdated = getLastUpdated(vehicle.stateOfCharge, epochNow)
   const BatteryIcon = getIcon(vehicle.stateOfCharge)
-
+  console.log(vehicle.stateOfCharge)
   return (
     <div className="c-state-of-charge-info">
       <div className="c-state-of-charge-info__properties">
