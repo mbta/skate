@@ -91,7 +91,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             data_discrepancies: [],
             crowding: decode_crowding(vp),
             revenue: Map.get(vp, "revenue", true),
-            state_of_charge: decode_state_of_charge(vehicle)
+            state_of_charge: decode_state_of_charge(vp)
           )
         ]
 
@@ -152,10 +152,10 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     Map.get(vp, "occupancy_status")
   end
 
-  defp decode_state_of_charge(vehicle) do
+  defp decode_state_of_charge(vp) do
     %{
-      "value" => Map.get(vehicle, "state_of_charge_percentage"),
-      "time" => Map.get(vehicle, "state_of_charge_timestamp")
+      "value" => Map.get(vp, "state_of_charge_percentage"),
+      "time" => Map.get(vp, "state_of_charge_timestamp")
     }
   end
 
