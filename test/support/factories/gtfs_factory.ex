@@ -48,7 +48,7 @@ defmodule Skate.GtfsFactory do
           "vehicle" => %{
             "id" => "G-10098",
             "label" => "3823-3605",
-            "license_plate" => nil,
+            "license_plate" => nil
           },
           "revenue" => false,
           "state_of_charge_percentage" => 86,
