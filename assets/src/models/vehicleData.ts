@@ -174,6 +174,7 @@ export function vehicleFromData(vehicleData: VehicleData): Vehicle
 export function vehicleFromData(
   vehicleData: VehicleData | VehicleInScheduledServiceData
 ): Vehicle | VehicleInScheduledService {
+  console.log(vehicleData.state_of_charge)
   return {
     id: vehicleData.id,
     label: vehicleData.label,
