@@ -130,7 +130,8 @@ const subscribe = (
       dispatch(setVehiclesForRoute(routeId, vehiclesAndGhosts))
     } catch (error) {
       if (error instanceof StructError) {
-        Sentry.captureException({ error: error, route_id: routeId })
+        console.log(error)
+        Sentry.captureException({ error: error, route_id: routeId, path: error.path })
       }
     }
   }
