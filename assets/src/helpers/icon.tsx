@@ -129,6 +129,18 @@ import upDownIconSvg from "../../static/images/icon-up-down-arrow.svg"
 import upRightIconSvg from "../../static/images/icon-up-right-arrow.svg"
 // @ts-ignore
 import walkingIconSvg from "../../static/images/icon-walking.svg"
+// @ts-ignore
+import battery0to20IconSvg from "../../static/images/icon-battery-0-20.svg"
+// @ts-ignore
+import battery21to40IconSvg from "../../static/images/icon-battery-21-40.svg"
+// @ts-ignore
+import battery41to60IconSvg from "../../static/images/icon-battery-41-60.svg"
+// @ts-ignore
+import battery61to80IconSvg from "../../static/images/icon-battery-61-80.svg"
+// @ts-ignore
+import battery81to100IconSvg from "../../static/images/icon-battery-81-100.svg"
+// @ts-ignore
+import batteryUnknownIconSvg from "../../static/images/icon-battery-unknown.svg"
 
 /* eslint-enable @typescript-eslint/ban-ts-comment */
 import { svgIcon } from "./svgIcon"
@@ -264,3 +276,15 @@ export const UpDownIcon = svgIcon(upDownIconSvg)
 export const UpRightIcon = svgIcon(upRightIconSvg)
 
 export const WalkingIcon = svgIcon(walkingIconSvg)
+
+export const Battery0to20Icon = svgIcon(battery0to20IconSvg)
+
+export const Battery21to40Icon = svgIcon(battery21to40IconSvg)
+
+export const Battery41to60Icon = svgIcon(battery41to60IconSvg)
+
+export const Battery61to80Icon = svgIcon(battery61to80IconSvg)
+
+export const Battery81to100Icon = svgIcon(battery81to100IconSvg)
+
+export const BatteryUnknownIcon = svgIcon(batteryUnknownIconSvg)

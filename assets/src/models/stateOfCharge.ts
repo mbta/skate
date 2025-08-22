@@ -1,17 +1,13 @@
 export interface StateOfCharge {
-  time: Date | null
-  value: number | null
-  milesRemaining: number | null
+  time: Date
+  value: number
+  milesRemaining: number
 }
 
 export const calculateMilesRemaining = ({
   value,
 }: {
-  value: number | null
-}): number | null => {
-  if (value) {
-    return value * 2
-  } else {
-    return null
-  }
+  value: number
+}): number => {
+  return value * 2
 }

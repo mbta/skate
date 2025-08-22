@@ -50,7 +50,11 @@ defmodule Realtime.VehicleTest do
         ]
       }
     ],
-    revenue: true
+    revenue: true,
+    state_of_charge: %{
+      value: 80,
+      time: 1_234_567_890
+    }
   }
 
   @trip build(
@@ -194,7 +198,8 @@ defmodule Realtime.VehicleTest do
                  %BlockWaiver{
                    remark: "E:1106"
                  }
-               ]
+               ],
+               state_of_charge: %{value: 80, time: 1_234_567_890}
              } = result
     end
 
