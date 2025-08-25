@@ -196,10 +196,10 @@ const TooltipContent = React.memo(
       <b>Operator:</b> <span className="fs-mask">{operatorDetails}</span>
       {inTestGroup(TestGroups.StateOfCharge) && stateOfCharge && (
         <>
-        <br />
-        <b>Battery:</b> {stateOfCharge.value}%
-        <br />
-        <b>Miles Remaining Estimate:</b> {stateOfCharge.milesRemaining} miles
+          <br />
+          <b>Battery:</b> {stateOfCharge.value}%
+          <br />
+          <b>Miles Remaining Estimate:</b> {stateOfCharge.milesRemaining} miles
         </>
       )}
     </>
