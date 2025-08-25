@@ -135,10 +135,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                    occupancy_status: "FEW_SEATS_AVAILABLE"
                  },
                  revenue: false,
-                 state_of_charge: %{
-                   value: input["state_of_charge_percentage"],
-                   time: input["state_of_charge_timestamp"]
-                 }
+                 state_of_charge: nil
                )
     end
 
@@ -193,6 +190,66 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
                  },
                  revenue: false,
                  state_of_charge: nil
+               )
+    end
+
+    test "decodes a VehiclePosition JSON map with state_of_charge info set only if vehicle id present in allow list" do
+      input =
+        build(:gtfs_realtime_enhanced_vehicle_position, %{
+          "vehicle" => %{
+            "id" => "G-10098",
+            "label" => "4200",
+            "license_plate" => nil
+          }
+        })
+
+      assert [tu, vp] = GTFSRealtimeEnhanced.decode_vehicle(input)
+
+      assert tu ==
+               TripUpdate.new(
+                 trip_id: "37165437-X",
+                 route_id: "Green-E",
+                 direction_id: 0,
+                 overload_offset: -6,
+                 start_date: {2018, 8, 15},
+                 schedule_relationship: :SCHEDULED
+               )
+
+      assert vp ==
+               VehiclePosition.new(
+                 id: "G-10098",
+                 label: "4200",
+                 latitude: 42.32951,
+                 longitude: -71.11109,
+                 bearing: 135,
+                 speed: 2.9796,
+                 odometer: 5.1,
+                 stop_id: "70257",
+                 trip_id: "37165437-X",
+                 stop_sequence: 670,
+                 block_id: "Q238-135",
+                 operator_id: input["operator"]["id"],
+                 operator_first_name: input["operator"]["first_name"],
+                 operator_last_name: input["operator"]["last_name"],
+                 operator_logon_time: 1_754_913_545,
+                 overload_offset: -6,
+                 run_id: "128-1007",
+                 current_status: :STOPPED_AT,
+                 last_updated: 1_754_913_600,
+                 last_updated_by_source: %{"busloc" => 1_754_913_600},
+                 sources: MapSet.new(["busloc"]),
+                 data_discrepancies: [],
+                 crowding: %Crowding{
+                   load: 12,
+                   capacity: 18,
+                   occupancy_percentage: 0.67,
+                   occupancy_status: "FEW_SEATS_AVAILABLE"
+                 },
+                 revenue: false,
+                 state_of_charge: %{
+                   value: input["state_of_charge_percentage"],
+                   time: input["state_of_charge_timestamp"]
+                 }
                )
     end
 
