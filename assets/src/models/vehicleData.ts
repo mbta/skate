@@ -88,8 +88,8 @@ const CrowdingData = type({
 })
 
 const StateOfCharge = type({
-  value: nullable(number()),
-  time: nullable(number()),
+  value: number(),
+  time: number(),
 })
 
 const baseVehicleData = {
@@ -130,7 +130,7 @@ const baseVehicleData = {
   end_of_trip_type: EndOfTripTypeData,
   block_waivers: array(BlockWaiverData),
   crowding: nullable(CrowdingData),
-  state_of_charge: optional(StateOfCharge),
+  state_of_charge: nullable(StateOfCharge),
 }
 
 export const VehicleData = type(baseVehicleData)

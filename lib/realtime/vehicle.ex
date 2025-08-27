@@ -127,6 +127,7 @@ defmodule Realtime.Vehicle do
     :route_status,
     :end_of_trip_type,
     :crowding,
+    :state_of_charge,
     block_waivers: [],
     data_discrepancies: []
   ]
@@ -234,7 +235,8 @@ defmodule Realtime.Vehicle do
       route_status: route_status(stop_id, trip, block),
       end_of_trip_type: end_of_trip_type(block, trip, run_id, stop_id),
       block_waivers: block_waivers,
-      crowding: vehicle_position.crowding
+      crowding: vehicle_position.crowding,
+      state_of_charge: vehicle_position.state_of_charge
     }
   end
 
