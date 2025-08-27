@@ -4,6 +4,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   """
   @behaviour Concentrate.Parser
   require Logger
+  alias Realtime.StateOfChargeStore
   alias Concentrate.{StopTimeUpdate, TripUpdate, VehiclePosition}
   alias Realtime.Crowding
 
@@ -91,7 +92,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
             data_discrepancies: [],
             crowding: decode_crowding(vp),
             revenue: Map.get(vp, "revenue", true),
-            state_of_charge: decode_state_of_charge(vp)
+            state_of_charge: decode_state_of_charge(vp, Map.get(vehicle, "label"))
           )
         ]
 
@@ -152,20 +153,21 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     Map.get(vp, "occupancy_status")
   end
 
-  defp decode_state_of_charge(%{
-         "state_of_charge_percentage" => pct,
-         "state_of_charge_timestamp" => unix
-       })
+  defp decode_state_of_charge(
+         %{
+           "state_of_charge_percentage" => pct,
+           "state_of_charge_timestamp" => unix
+         },
+         vehicle_id
+       )
        when is_integer(pct) and is_integer(unix) do
-    %{
+    StateOfChargeStore.update(vehicle_id, %{
       value: pct,
       time: unix
-    }
+    })
   end
 
-  defp decode_state_of_charge(_vp) do
-    nil
-  end
+  defp decode_state_of_charge(_, _), do: nil
 
   @spec date(String.t() | nil) :: :calendar.date() | nil
   def date(nil) do

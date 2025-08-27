@@ -6,7 +6,19 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
 
   alias Concentrate.{TripUpdate, StopTimeUpdate, VehiclePosition}
   alias Concentrate.Parser.GTFSRealtimeEnhanced
-  alias Realtime.Crowding
+  alias Realtime.{Crowding, StateOfChargeStore}
+
+  @tracked_vehicle_ids ["3823-3605"]
+
+  setup do
+    {:ok, _server} =
+      StateOfChargeStore.start_link(
+        tracked_vehicle_ids: @tracked_vehicle_ids,
+        name: StateOfChargeStore
+      )
+
+    :ok
+  end
 
   describe "parse/1" do
     test "parsing an enhanced VehiclePositions JSON file returns only VehiclePosition or TripUpdate structs" do
