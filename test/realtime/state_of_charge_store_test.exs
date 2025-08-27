@@ -20,7 +20,7 @@ defmodule Realtime.StateOfChargeStoreTest do
 
   test "updates state of charge for a valid vehicle ID", %{server: server} do
     vehicle_id = "4200"
-    state_of_charge = %{value: 80, time: ~U[2023-01-01T12:00:00Z]}
+    state_of_charge = %{value: 80, time: 1_672_574_400}
 
     updated_state = StateOfChargeStore.update(vehicle_id, state_of_charge, server)
     assert updated_state == state_of_charge
@@ -29,7 +29,7 @@ defmodule Realtime.StateOfChargeStoreTest do
 
   test "does not update state of charge for an invalid vehicle ID", %{server: server} do
     invalid_vehicle_id = "9999"
-    state_of_charge = %{value: 50, time: ~U[2023-01-01T12:00:00Z]}
+    state_of_charge = %{value: 50, time: 1_672_574_400}
 
     updated_state = StateOfChargeStore.update(invalid_vehicle_id, state_of_charge, server)
     assert updated_state == nil
@@ -40,7 +40,7 @@ defmodule Realtime.StateOfChargeStoreTest do
     vehicle_id = "4201"
 
     updated_state =
-      StateOfChargeStore.update(vehicle_id, %{value: nil, time: ~U[2023-01-01T12:00:00Z]}, server)
+      StateOfChargeStore.update(vehicle_id, %{value: nil, time: 1_672_574_400}, server)
 
     assert updated_state == nil
     assert StateOfChargeStore.get(vehicle_id, server) == nil
