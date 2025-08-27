@@ -167,7 +167,9 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     })
   end
 
-  defp decode_state_of_charge(_, _), do: nil
+  defp decode_state_of_charge(_, vehicle_id) do
+    StateOfChargeStore.get(vehicle_id)
+  end
 
   @spec date(String.t() | nil) :: :calendar.date() | nil
   def date(nil) do
