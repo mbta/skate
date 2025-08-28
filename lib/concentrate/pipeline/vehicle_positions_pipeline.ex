@@ -34,7 +34,7 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
       end
 
     swiftly_child =
-      if opts[:swiftly_realtime_vehicles_url] && opts[:swiftly_authorization_key] do
+      if opts[:swiftly_realtime_vehicles_url] && opts[:swiftly_authorization_key] && false do
         Pipeline.source(
           :swiftly_realtime_vehicles,
           opts[:swiftly_realtime_vehicles_url],

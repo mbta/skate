@@ -24,6 +24,7 @@ import {
 } from "../models/ladderDirection"
 import { StateOfCharge } from "../models/stateOfCharge"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
+import IconBatteryStatus from "./iconBatteryStatus"
 
 export enum Orientation {
   Up,
@@ -47,6 +48,7 @@ export interface ViewBoxProps {
 }
 
 export interface Props extends ViewBoxProps {
+  vehicle?: VehicleInScheduledService | Ghost
   variant?: string | null
   userSettings: UserSettings
 }
@@ -270,6 +272,7 @@ export const VehicleIconSvgNode = React.memo(
     status,
     alertIconStyle,
     userSettings,
+    vehicle,
   }: Props): ReactElement<SVGElement> => {
     status = status || "plain"
     variant = variant && variant !== "_" ? variant : undefined
@@ -288,35 +291,34 @@ export const VehicleIconSvgNode = React.memo(
         : "",
     ].concat(statusClasses(status, userSettings.vehicleAdherenceColors))
     return (
-      <g className={joinClasses(classes)}>
-        {label ? (
-          <Label size={size} orientation={orientation} label={label} />
-        ) : null}
-        {status === "ghost" ? (
-          <GhostIcon size={size} variant={variant} />
-        ) : isBat(status) ? (
-          <Bat size={size} />
-        ) : (
-          <Triangle size={size} orientation={orientation} />
-        )}
-        {variant ? (
-          <Variant
-            size={size}
-            orientation={orientation}
-            variant={variant}
-            status={status}
-          />
-        ) : null}
-
-        {alertIconStyle ? (
-          <AlertCircleIcon
-            size={size}
-            orientation={orientation}
-            status={status}
-            alertIconStyle={alertIconStyle}
-          />
-        ) : null}
-      </g>
+      <>
+        <g className={joinClasses(classes)}>
+          {label ? (
+            <Label size={size} orientation={orientation} label={label} />
+          ) : null}
+          {status === "ghost" ? (
+            <GhostIcon size={size} variant={variant} />
+          ) : isBat(status) ? (
+            <Bat size={size} />
+          ) : (
+            <Triangle size={size} orientation={orientation} />
+          )}
+          {variant ? (
+            <Variant
+              size={size}
+              orientation={orientation}
+              variant={variant}
+              status={status}
+            />
+          ) : null}
+        </g>
+        <AdditionalIcons
+          size={size}
+          orientation={orientation}
+          alertIconStyle={alertIconStyle}
+          vehicle={vehicle}
+        />
+      </>
     )
   }
 )
@@ -544,6 +546,54 @@ const Variant = React.memo(
   }
 )
 
+const AdditionalIcons = ({
+  size,
+  orientation,
+  alertIconStyle,
+  vehicle,
+}: {
+  size: Size
+  orientation: Orientation
+  alertIconStyle: AlertIconStyle | undefined
+  vehicle: VehicleInScheduledService | Ghost | undefined
+}) => {
+  alertIconStyle = 1
+  const showAlertIcon = !!alertIconStyle
+  const showBatteryIcon =
+    !!vehicle && !isGhost(vehicle) && !!vehicle.stateOfCharge?.time
+  const [x1, y1, x2, y2] = calcXY(orientation, showBatteryIcon)
+
+  return (
+    <g transform={`translate(${x1}, ${y1})`}>
+      {showBatteryIcon && <BatteryStatusIcon vehicle={vehicle} />}
+      {showAlertIcon && (
+        <g transform={`translate(${x2}, ${y2})`}>
+          <AlertCircleIcon alertIconStyle={alertIconStyle} size={size} />
+        </g>
+      )}
+    </g>
+  )
+}
+
+const calcXY = (orientation: Orientation, showBatteryIcon: boolean) => {
+  let coords = [0, 0, 0, 0]
+  switch (orientation) {
+    case Orientation.Up:
+      coords = showBatteryIcon ? [4, -2, 2, -7] : [6, -1, 0, 0]
+      break
+    case Orientation.Down:
+      coords = showBatteryIcon ? [-20, -14, 2, 13] : [-15, -10, 0, 0]
+      break
+    case Orientation.Left:
+      coords = showBatteryIcon ? [-14, -16, 2, 14] : [-12, -12, 0, 0]
+      break
+    case Orientation.Right:
+      coords = showBatteryIcon ? [0, -16, 2, 14] : [0, -12, 0, 0]
+      break
+  }
+  return coords
+}
+
 const alertIconXY = (
   size: Size,
   orientation: Orientation,
@@ -580,27 +630,28 @@ const rotate = (
 
 const AlertCircleIcon = React.memo(
   ({
-    size,
-    orientation,
-    status,
     alertIconStyle,
+    size,
   }: {
-    size: Size
-    orientation: Orientation
-    status: DrawnStatus
     alertIconStyle: AlertIconStyle
+    size: Size
   }) => {
-    const [x, y] = alertIconXY(size, orientation, status)
     const scale = alertCircleIconScale(size)
     return (
-      <g
-        transform={`translate(${x}, ${y}) scale(${scale}) translate(-24, -24)`}
-      >
+      <g transform={`scale(${scale})`}>
         <IconAlertCircleSvgNode style={alertIconStyle} />
       </g>
     )
   }
 )
+
+const BatteryStatusIcon = ({
+  vehicle,
+}: {
+  vehicle: VehicleInScheduledService
+}) => {
+  return <IconBatteryStatus myVal={vehicle.stateOfCharge?.value} />
+}
 
 const alertCircleIconScale = (size: Size): number => {
   switch (size) {
