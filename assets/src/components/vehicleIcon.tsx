@@ -197,9 +197,13 @@ const TooltipContent = React.memo(
       {inTestGroup(TestGroups.StateOfCharge) && stateOfCharge && (
         <>
           <br />
-          <b>Battery:</b> {stateOfCharge.value}%
+          <b>Battery:</b>{" "}
+          {stateOfCharge.value ? `${stateOfCharge.value}%` : "Unknown"}
           <br />
-          <b>Miles Remaining Estimate:</b> {stateOfCharge.milesRemaining} miles
+          <b>Miles Remaining Estimate:</b>{" "}
+          {stateOfCharge.milesRemaining
+            ? `${stateOfCharge.milesRemaining} miles`
+            : "Unknown"}
         </>
       )}
     </>
