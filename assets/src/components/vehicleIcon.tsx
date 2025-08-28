@@ -557,7 +557,6 @@ const AdditionalIcons = ({
   alertIconStyle: AlertIconStyle | undefined
   vehicle: VehicleInScheduledService | Ghost | undefined
 }) => {
-  alertIconStyle = 1
   const showAlertIcon = !!alertIconStyle
   const showBatteryIcon =
     !!vehicle && !isGhost(vehicle) && !!vehicle.stateOfCharge?.time
