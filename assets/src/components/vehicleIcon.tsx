@@ -164,7 +164,7 @@ export const VehicleTooltip = ({
   )
 }
 
-const TooltipContent = React.memo(
+export const TooltipContent = React.memo(
   ({
     blockId,
     runId,
