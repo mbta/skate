@@ -15,15 +15,15 @@ import { timeAgoLabelFromDate } from "../../util/dateTime"
 const getIcon = (stateOfCharge: StateOfCharge | null) => {
   if (stateOfCharge === null) {
     return BatteryUnknownIcon
-  } else if (stateOfCharge.value > 80) {
+  } else if (stateOfCharge.value && stateOfCharge.value > 80) {
     return Battery81to100Icon
-  } else if (stateOfCharge.value > 60) {
+  } else if (stateOfCharge.value && stateOfCharge.value > 60) {
     return Battery61to80Icon
-  } else if (stateOfCharge.value > 40) {
+  } else if (stateOfCharge.value && stateOfCharge.value > 40) {
     return Battery41to60Icon
-  } else if (stateOfCharge.value > 20) {
+  } else if (stateOfCharge.value && stateOfCharge.value > 20) {
     return Battery21to40Icon
-  } else if (stateOfCharge.value > 0) {
+  } else if (stateOfCharge.value && stateOfCharge.value > 0) {
     return Battery0to20Icon
   } else {
     return BatteryUnknownIcon
@@ -34,7 +34,7 @@ const getLastUpdated = (
   stateOfCharge: StateOfCharge | null,
   epochNow: Date
 ) => {
-  if (stateOfCharge) {
+  if (stateOfCharge && stateOfCharge.time) {
     return timeAgoLabelFromDate(stateOfCharge.time, epochNow)
   } else {
     return ""

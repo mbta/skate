@@ -165,28 +165,22 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     Map.get(vp, "occupancy_status")
   end
 
-  defp decode_state_of_charge(
-         %{
-           "state_of_charge_percentage" => pct,
-           "state_of_charge_timestamp" => unix
-         },
-         vehicle_id
-       )
-       when is_integer(pct) and is_integer(unix) do
-    if allow_state_of_charge?(vehicle_id) do
+  defp decode_state_of_charge(vp, vehicle_id) when vehicle_id in @soc_vehicle_allow_list do
+    case vp do
       %{
-        value: pct,
-        time: unix
+        "state_of_charge_percentage" => pct,
+        "state_of_charge_timestamp" => unix
       }
+      when is_integer(pct) and is_integer(unix) ->
+        %{value: pct, time: unix}
+
+      _ ->
+        %{value: nil, time: nil}
     end
   end
 
   defp decode_state_of_charge(_vp, _) do
     nil
-  end
-
-  defp allow_state_of_charge?(vehicle_id) do
-    vehicle_id in @soc_vehicle_allow_list
   end
 
   @spec date(String.t() | nil) :: :calendar.date() | nil
