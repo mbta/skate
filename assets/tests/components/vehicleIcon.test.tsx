@@ -467,3 +467,29 @@ test("renders correct content for empty stateOfCharge data", () => {
   expect(hasMilesRemainingText).toBe(false)
   expect(jsonTree).not.toContain("160 miles")
 })
+
+test("renders correct content for missing stateOfCharge data", () => {
+  const props = {
+    blockId: "testBlockId",
+    runId: "testRunId",
+    label: "testLabel",
+    viaVariant: "testViaVariant",
+    scheduleAdherenceLabel: "testScheduleAdherenceLabel",
+    operatorDetails: "testOperatorDetails",
+    stateOfCharge: { value: null, milesRemaining: null, time: null },
+  }
+  const instance = renderer.create(<TooltipContent {...props} />)
+  const jsonTree = instance.toJSON()
+  const tree = instance.root
+  const boldElements = tree.findAllByType("b")
+  const hasBatteryText = boldElements.some((element) =>
+    element.children.includes("Battery:")
+  )
+  expect(hasBatteryText).toBe(true)
+  expect(jsonTree).toContain("Unknown")
+  const hasMilesRemainingText = boldElements.some((element) =>
+    element.children.includes("Miles Remaining Estimate:")
+  )
+  expect(hasMilesRemainingText).toBe(true)
+  expect(jsonTree).toContain("Unknown")
+})
