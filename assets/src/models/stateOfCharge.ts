@@ -1,13 +1,21 @@
-export interface StateOfCharge {
-  time: Date | null
-  value: number | null
-  milesRemaining: number | null
+export type StateOfCharge = {
+  time: Date
+  value: number
+  milesRemaining: number
 }
+
+export type StateOfChargeMissing = {
+  time: null
+  value: null
+  milesRemaining: null
+}
+
+export type StateOfChargeUnknown = null
 
 export const calculateMilesRemaining = ({
   value,
 }: {
-  value: number | null
-}): number | null => {
-  return value && value * 2
+  value: number
+}): number => {
+  return value * 2
 }
