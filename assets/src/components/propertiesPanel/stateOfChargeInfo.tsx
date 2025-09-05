@@ -8,12 +8,20 @@ import {
   Battery81to100Icon,
   BatteryUnknownIcon,
 } from "../../helpers/icon"
-import { StateOfCharge } from "../../models/stateOfCharge"
+import {
+  StateOfCharge,
+  StateOfChargeMissing,
+  StateOfChargeUnknown,
+} from "../../models/stateOfCharge"
 import useCurrentTime from "../../hooks/useCurrentTime"
 import { timeAgoLabelFromDate } from "../../util/dateTime"
 
-const getIcon = (stateOfCharge: StateOfCharge | null) => {
+const getIcon = (
+  stateOfCharge: StateOfCharge | StateOfChargeMissing | StateOfChargeUnknown
+) => {
   if (stateOfCharge === null) {
+    return BatteryUnknownIcon
+  } else if (stateOfCharge.value === null) {
     return BatteryUnknownIcon
   } else if (stateOfCharge.value > 80) {
     return Battery81to100Icon
@@ -31,10 +39,10 @@ const getIcon = (stateOfCharge: StateOfCharge | null) => {
 }
 
 const getLastUpdated = (
-  stateOfCharge: StateOfCharge | null,
+  stateOfCharge: StateOfCharge | StateOfChargeMissing | StateOfChargeUnknown,
   epochNow: Date
 ) => {
-  if (stateOfCharge) {
+  if (stateOfCharge && stateOfCharge.time) {
     return timeAgoLabelFromDate(stateOfCharge.time, epochNow)
   } else {
     return ""
