@@ -22,7 +22,11 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { StateOfCharge } from "../models/stateOfCharge"
+import {
+  StateOfCharge,
+  StateOfChargeMissing,
+  StateOfChargeUnknown,
+} from "../models/stateOfCharge"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 export enum Orientation {
@@ -180,7 +184,7 @@ export const TooltipContent = React.memo(
     viaVariant: ViaVariant | null
     scheduleAdherenceLabel: string
     operatorDetails: string
-    stateOfCharge: StateOfCharge | null
+    stateOfCharge: StateOfCharge | StateOfChargeMissing | StateOfChargeUnknown
   }): ReactElement<HTMLElement> => (
     <>
       <b>Block:</b> {blockId}
