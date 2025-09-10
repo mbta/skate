@@ -31,80 +31,60 @@ defmodule Notifications.BridgeTest do
   end
 
   describe "handle_info/1" do
-    test "parses valid response with bridge lowered" do
+    setup do
       bypass = Bypass.open()
-      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/")
+
       reassign_env(:skate, :bridge_api_username, "user")
       reassign_env(:skate, :bridge_api_password, "123")
+      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}")
 
+      token_json = %{
+        "access_token" => "token",
+        "token_type" => "bearer",
+        "expires_in" => 2_591_999
+      }
+
+      Bypass.stub(bypass, "POST", "token", fn conn ->
+        Plug.Conn.resp(conn, 200, Jason.encode!(token_json))
+      end)
+
+      init_state = %{token: %{value: nil, expiration: nil}, status: nil}
+      {:ok, %{init_state: init_state, bypass: bypass}}
+    end
+
+    test "parses valid response with bridge lowered", %{bypass: bypass} do
       {:ok, state} = Notifications.Bridge.init([])
 
       json = %{
-        "id" => "4321",
-        "bridge" => %{
-          "id" => "1",
-          "name" => "Main St Bridge",
-          "bridgeStatusId" => %{
-            "id" => "2",
-            "status" => "Lowered"
-          }
-        }
+        "liftInProgress" => false,
+        "estimatedDurationInMinutes" => 0
       }
 
       Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
 
-      assert handle_info(:update, state) == {:noreply, {:lowered, nil}}
+      {:noreply, %{status: {:lowered, nil}, token: _token}} = handle_info(:update, state)
     end
 
-    test "parses valid response with bridge raised" do
-      bypass = Bypass.open()
-      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/")
-      reassign_env(:skate, :bridge_api_username, "user")
-      reassign_env(:skate, :bridge_api_password, "123")
-
+    test "parses valid response with bridge raised", %{bypass: bypass} do
       {:ok, state} = Notifications.Bridge.init([])
 
       json = %{
-        "id" => "4321",
-        "bridge" => %{
-          "id" => "1",
-          "name" => "Main St Bridge",
-          "bridgeStatusId" => %{
-            "id" => "2",
-            "status" => "Raised"
-          }
-        },
-        "start_time" => "2020-01-01 01:01:01.0",
-        "last_update_time" => "2020-01-01 01:01:01.0",
-        "is_test_lift" => "false",
-        "lift_estimate" => %{
-          "id" => "4296",
-          "estimate_time" => "2020-01-01 01:06:01.0",
-          "duration" => "300",
-          "lift_estimate_vessel_array" => [
-            %{
-              "vessel_type" => "Motorship",
-              "vessel_direction" => "Upstream",
-              "vessel_count" => 1
-            },
-            %{
-              "vessel_type" => "Tugboat",
-              "vessel_direction" => "Upstream",
-              "vessel_count" => 1
-            }
-          ]
-        }
+        "liftInProgress" => true,
+        "estimatedDurationInMinutes" => 10
       }
 
       Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
 
-      naive_date = ~N[2020-01-01 01:06:01.0]
-      expected_time = naive_date |> Timex.to_datetime("America/New_York") |> DateTime.to_unix()
+      now = Timex.now("America/New_York")
+      {:noreply, %{status: {:raised, time}, token: _token}} = handle_info(:update, state)
 
-      assert handle_info(:update, state) == {:noreply, {:raised, expected_time}}
+      assert time >= now |> Timex.shift(minutes: 10) |> DateTime.to_unix()
     end
 
-    test "notifies notification server when state changes" do
+    test "notifies notification server when state changes", %{
+      bypass: bypass,
+      init_state: init_state
+    } do
       test_pid = self()
 
       reassign_env(
@@ -113,72 +93,35 @@ defmodule Notifications.BridgeTest do
         fn message -> send(test_pid, message) end
       )
 
-      bypass = Bypass.open()
-      reassign_env(:skate, :bridge_api_username, "user")
-      reassign_env(:skate, :bridge_api_password, "123")
-
       raise_json = %{
-        "id" => "4321",
-        "bridge" => %{
-          "id" => "1",
-          "name" => "Main St Bridge",
-          "bridgeStatusId" => %{
-            "id" => "2",
-            "status" => "Raised"
-          }
-        },
-        "start_time" => "2020-01-01 01:01:01.0",
-        "last_update_time" => "2020-01-01 01:01:01.0",
-        "is_test_lift" => "false",
-        "lift_estimate" => %{
-          "id" => "4296",
-          "estimate_time" => "2020-01-01 01:06:01.0",
-          "duration" => "300",
-          "lift_estimate_vessel_array" => [
-            %{
-              "vessel_type" => "Motorship",
-              "vessel_direction" => "Upstream",
-              "vessel_count" => 1
-            },
-            %{
-              "vessel_type" => "Tugboat",
-              "vessel_direction" => "Upstream",
-              "vessel_count" => 1
-            }
-          ]
-        }
+        "liftInProgress" => true,
+        "estimatedDurationInMinutes" => 10
       }
 
       lower_json = %{
-        "id" => "4321",
-        "bridge" => %{
-          "id" => "1",
-          "name" => "Main St Bridge",
-          "bridgeStatusId" => %{
-            "id" => "2",
-            "status" => "Lowered"
-          }
-        }
+        "liftInProgress" => false,
+        "estimatedDurationInMinutes" => 0
       }
 
-      Bypass.stub(bypass, "GET", "/raise", fn conn ->
+      Bypass.stub(bypass, "GET", "BridgeRealTime", fn conn ->
         Plug.Conn.resp(conn, 200, Jason.encode!(raise_json))
       end)
 
-      Bypass.stub(bypass, "GET", "/lower", fn conn ->
-        Plug.Conn.resp(conn, 200, Jason.encode!(lower_json))
-      end)
+      # No messages to the notification server if the original status is nil,
+      # or the new status is identical to the original status
+      {:noreply, raised_state} = handle_info(:update, init_state)
 
-      # No messages to the notification server if the original state is nil,
-      # or the new state is identical to the original state.
-      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/raise")
-      {:noreply, raised_state} = handle_info(:update, nil)
-      {:noreply, ^raised_state} = handle_info(:update, raised_state)
+      {:noreply, ^raised_state} =
+        handle_info(:update, %{token: raised_state.token, status: raised_state.status})
+
       refute_received(%{status: :raised})
 
       # But transitioning to the lowered state ought to send a message
+      Bypass.stub(bypass, "GET", "BridgeRealTime", fn conn ->
+        Plug.Conn.resp(conn, 200, Jason.encode!(lower_json))
+      end)
 
-      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}/lower")
+      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}")
       {:noreply, _lowered_state} = handle_info(:update, raised_state)
       assert_received(%{status: :lowered, lowering_time: nil})
     end
