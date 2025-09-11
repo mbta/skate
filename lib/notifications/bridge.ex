@@ -54,7 +54,9 @@ defmodule Notifications.Bridge do
     new_status = new_state.status
 
     if new_status do
-      if previous_status && previous_status != new_status do
+      # To retain existing behavior, only compare the lift status and
+      # exclude the estimated duration-derived time since it changes
+      if previous_status && elem(previous_status, 0) != elem(new_status, 0) do
         bridge_movement_fn =
           Application.get_env(
             :notifications,
@@ -83,7 +85,7 @@ defmodule Notifications.Bridge do
     Process.send_after(pid, :update, @fetch_ms)
   end
 
-  @spec fetch_state(state) :: state() | nil
+  @spec fetch_state(state) :: state()
   defp fetch_state(state) do
     token = fetch_token(state)
     headers = [{"Authorization", "Bearer #{token.value}"}]
@@ -127,7 +129,7 @@ defmodule Notifications.Bridge do
              [{"Content-Type", "application/x-www-form-urlencoded"}]
            ),
          {:ok, data} <- Jason.decode(body) do
-      # data = { "access_token": "token", "token_type": "bearer", "expires_in": 2591999}
+      # { "access_token": "token", "token_type": "bearer", "expires_in": 2591999}
       expires_in = Map.get(data, "expires_in")
       expiration = Timex.shift(now, seconds: expires_in - 60)
       %{value: Map.get(data, "access_token"), expiration: expiration}

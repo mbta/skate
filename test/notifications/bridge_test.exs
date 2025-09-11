@@ -121,7 +121,6 @@ defmodule Notifications.BridgeTest do
         Plug.Conn.resp(conn, 200, Jason.encode!(lower_json))
       end)
 
-      reassign_env(:skate, :bridge_url, "http://localhost:#{bypass.port}")
       {:noreply, _lowered_state} = handle_info(:update, raised_state)
       assert_received(%{status: :lowered, lowering_time: nil})
     end
