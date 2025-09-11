@@ -65,6 +65,12 @@ jest.mock("../../../src/hooks/useShapes", () => ({
 
 jest.mock("../../../src/helpers/fullStory")
 
+jest.mock("../../../src/userTestGroups", () => ({
+  __esModule: true,
+  default: jest.fn(() => ["state-of-charge"]),
+  getTestGroups: jest.fn(() => ["state-of-charge"]),
+}))
+
 beforeEach(() => {
   jest.mocked(useNearestIntersectionFetchResult).mockReturnValue(loading())
 })
@@ -446,6 +452,56 @@ describe("VehiclePropertiesPanel", () => {
     await userEvent.click(closeButton.get())
 
     expect(mockClosePanel).toHaveBeenCalled()
+  })
+
+  test("renders a vehicle properties panel with stateOfCharge info", async () => {
+    const { container } = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={{
+          ...vehicle,
+          stateOfCharge: { value: 50, milesRemaining: 100, time: new Date() },
+        }}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
+    )
+    expect(container.innerHTML).toContain("50% left")
+    expect(container.innerHTML).toContain("100 miles remaining estimate")
+  })
+
+  test("renders a vehicle properties panel with stateOfCharge info missing", async () => {
+    const { container } = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={{
+          ...vehicle,
+          stateOfCharge: { value: null, milesRemaining: null, time: null },
+        }}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
+    )
+    expect(container.innerHTML).toContain("Unknown")
+    expect(container.innerHTML).toContain("Unknown miles remaining")
+  })
+
+  test("renders a vehicle properties panel without stateOfCharge info when null", async () => {
+    const { container } = render(
+      <VehiclePropertiesPanel
+        selectedVehicle={{ ...vehicle, stateOfCharge: null }}
+        tabMode="status"
+        onChangeTabMode={jest.fn()}
+        onClosePanel={jest.fn()}
+        openMapEnabled={true}
+      />,
+      { wrapper: MemoryRouterWrapper }
+    )
+    expect(container.innerHTML).not.toContain("miles remaining")
   })
 
   test.each<{ tab: TabMode; clickTarget: string; initialTab?: TabMode }>([
