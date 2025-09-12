@@ -1,5 +1,4 @@
 import React from "react"
-import { Vehicle } from "../../realtime"
 import {
   Battery0to20Icon,
   Battery21to40Icon,
@@ -8,17 +7,11 @@ import {
   Battery81to100Icon,
   BatteryUnknownIcon,
 } from "../../helpers/icon"
-import {
-  StateOfCharge,
-  StateOfChargeMissing,
-  StateOfChargeUnknown,
-} from "../../models/stateOfCharge"
+import { StateOfCharge, StateOfChargeMissing } from "../../models/stateOfCharge"
 import useCurrentTime from "../../hooks/useCurrentTime"
 import { timeAgoLabelFromDate } from "../../util/dateTime"
 
-const getIcon = (
-  stateOfCharge: StateOfCharge | StateOfChargeMissing | StateOfChargeUnknown
-) => {
+const getIcon = (stateOfCharge: StateOfCharge | StateOfChargeMissing) => {
   if (stateOfCharge === null) {
     return BatteryUnknownIcon
   } else if (stateOfCharge.value === null) {
@@ -39,20 +32,24 @@ const getIcon = (
 }
 
 const getLastUpdated = (
-  stateOfCharge: StateOfCharge | StateOfChargeMissing | StateOfChargeUnknown,
+  stateOfCharge: StateOfCharge | StateOfChargeMissing,
   epochNow: Date
 ) => {
-  if (stateOfCharge && stateOfCharge.time) {
+  if (stateOfCharge.time) {
     return timeAgoLabelFromDate(stateOfCharge.time, epochNow)
   } else {
     return ""
   }
 }
 
-const StateOfChargeInfo = ({ vehicle }: { vehicle: Vehicle }) => {
+const StateOfChargeInfo = ({
+  stateOfCharge,
+}: {
+  stateOfCharge: StateOfCharge | StateOfChargeMissing
+}) => {
   const epochNow = useCurrentTime()
-  const lastUpdated = getLastUpdated(vehicle.stateOfCharge, epochNow)
-  const BatteryIcon = getIcon(vehicle.stateOfCharge)
+  const lastUpdated = getLastUpdated(stateOfCharge, epochNow)
+  const BatteryIcon = getIcon(stateOfCharge)
 
   return (
     <div className="c-state-of-charge-info">
@@ -62,13 +59,11 @@ const StateOfChargeInfo = ({ vehicle }: { vehicle: Vehicle }) => {
           {lastUpdated}
         </span>
         <br />
-        {vehicle.stateOfCharge !== null ? (
+        {stateOfCharge.value !== null ? (
           <>
-            <span>{vehicle.stateOfCharge.value}% left</span>
+            <span>{stateOfCharge.value}% left</span>
             <br />
-            <span>
-              {vehicle.stateOfCharge.milesRemaining} miles remaining estimate
-            </span>
+            <span>{stateOfCharge.milesRemaining} miles remaining estimate</span>
           </>
         ) : (
           <>
