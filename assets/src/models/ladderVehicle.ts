@@ -1,3 +1,4 @@
+import { vehicleFactory } from "../../tests/factories/vehicle"
 import { TimepointStatusYFunc } from "../components/ladder"
 import { Ghost, VehicleInScheduledService } from "../realtime"
 import {
@@ -55,8 +56,24 @@ export const ladderVehiclesFromVehicles = (
   ladderVehicles: LadderVehicle[]
   widthOfLanes: number
 } => {
-  const vehiclesOnLadder: VehicleOnLadder[] = vehiclesAndGhosts.map(
-    (vehicleOrGhost) =>
+  const myvehicle = vehicleFactory.build({
+    routeId: "1",
+    stateOfCharge: { value: 80, time: new Date(), milesRemaining: 160 },
+    blockWaivers: [
+      {
+        startTime: new Date(),
+        endTime: new Date(Date.now() + 15 * 60 * 1000),
+        causeId: 0,
+        causeDescription: "Block Waiver",
+        remark: null,
+      },
+    ]
+})
+
+const vehiclesOnLadder: VehicleOnLadder[] = [
+    ...vehiclesAndGhosts,
+    myvehicle,
+  ].map((vehicleOrGhost) =>
       isVehicleInScheduledService(vehicleOrGhost)
         ? vehicleOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
         : ghostOnLadder(vehicleOrGhost, ladderDirection, timepointStatusYFunc)
