@@ -194,8 +194,8 @@ const StatusContent = ({
 
     <PropertiesList properties={vehicleProperties(selectedVehicle)} />
 
-    {inTestGroup(TestGroups.StateOfCharge) && (
-      <StateOfChargeInfo vehicle={selectedVehicle} />
+    {inTestGroup(TestGroups.StateOfCharge) && selectedVehicle.stateOfCharge && (
+      <StateOfChargeInfo stateOfCharge={selectedVehicle.stateOfCharge} />
     )}
 
     <CrowdingDiagram crowding={selectedVehicle.crowding} />

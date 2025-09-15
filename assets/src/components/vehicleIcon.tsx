@@ -22,7 +22,11 @@ import {
   LadderDirections,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { StateOfCharge } from "../models/stateOfCharge"
+import {
+  StateOfCharge,
+  StateOfChargeMissing,
+  StateOfChargeUnknown,
+} from "../models/stateOfCharge"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import IconBatteryStatus from "./iconBatteryStatus"
 
@@ -166,7 +170,7 @@ export const VehicleTooltip = ({
   )
 }
 
-const TooltipContent = React.memo(
+export const TooltipContent = React.memo(
   ({
     blockId,
     runId,
@@ -182,7 +186,7 @@ const TooltipContent = React.memo(
     viaVariant: ViaVariant | null
     scheduleAdherenceLabel: string
     operatorDetails: string
-    stateOfCharge: StateOfCharge | null
+    stateOfCharge: StateOfCharge | StateOfChargeMissing | StateOfChargeUnknown
   }): ReactElement<HTMLElement> => (
     <>
       <b>Block:</b> {blockId}
@@ -196,7 +200,18 @@ const TooltipContent = React.memo(
       <b>Adherence:</b> {scheduleAdherenceLabel}
       <br />
       <b>Operator:</b> <span className="fs-mask">{operatorDetails}</span>
-      {inTestGroup(TestGroups.StateOfCharge) && stateOfCharge?.value}
+      {inTestGroup(TestGroups.StateOfCharge) && stateOfCharge && (
+        <>
+          <br />
+          <b>Battery:</b>{" "}
+          {stateOfCharge.value ? `${stateOfCharge.value}%` : "Unknown"}
+          <br />
+          <b>Miles Remaining Estimate:</b>{" "}
+          {stateOfCharge.milesRemaining
+            ? `${stateOfCharge.milesRemaining} miles`
+            : "Unknown"}
+        </>
+      )}
     </>
   )
 )

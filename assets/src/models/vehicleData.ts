@@ -231,7 +231,9 @@ export function vehicleFromData(
             vehicleData.state_of_charge.time != null
               ? dateFromEpochSeconds(vehicleData.state_of_charge.time)
               : vehicleData.state_of_charge.time,
-          milesRemaining: calculateMilesRemaining(vehicleData.state_of_charge),
+          milesRemaining:
+            vehicleData.state_of_charge.value &&
+            calculateMilesRemaining(vehicleData.state_of_charge),
         }
       : null,
   }
