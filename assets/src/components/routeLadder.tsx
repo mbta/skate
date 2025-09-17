@@ -1,4 +1,5 @@
 import React, { useId } from "react"
+import { vehicleFactory } from "../../tests/factories/vehicle"
 import { CrowdingIcon, ReverseIcon, ReverseIconReversed } from "../helpers/icon"
 import {
   getLadderCrowdingToggleForRoute,
@@ -289,6 +290,83 @@ const RouteLadder = ({
     ladderDirection
   )
 
+  const myvehicleOnLadder = vehicleFactory.build({
+    routeId: "1",
+    stateOfCharge: { value: 80, time: new Date(), milesRemaining: 160 },
+    blockWaivers: [
+      {
+        startTime: new Date(),
+        endTime: new Date(Date.now() + 15 * 60 * 1000),
+        causeId: 0,
+        causeDescription: "Block Waiver",
+        remark: null,
+      },
+    ],
+    routeStatus: "laying_over",
+  })
+  const myvehicleOnLadderLeft = vehicleFactory.build({
+    routeId: "1",
+    latitude: 100,
+    longitude: 100,
+    stateOfCharge: { value: 10, time: new Date(), milesRemaining: 160 },
+    blockWaivers: [
+      {
+        startTime: new Date(),
+        endTime: new Date(Date.now() + 15 * 60 * 1000),
+        causeId: 0,
+        causeDescription: "Block Waiver",
+        remark: null,
+      },
+    ],
+    routeStatus: "on_route",
+  })
+  const myvehicleLayingOverTop = vehicleFactory.build({
+    routeId: "1",
+    stateOfCharge: { value: 60, time: new Date(), milesRemaining: 100 },
+    blockWaivers: [
+      {
+        startTime: new Date(),
+        endTime: new Date(Date.now() + 15 * 60 * 1000),
+        causeId: 0,
+        causeDescription: "Block Waiver",
+        remark: null,
+      },
+    ],
+    routeStatus: "laying_over",
+  })
+  const myvehicleLayingOverBottom = vehicleFactory.build({
+    routeId: "1",
+    stateOfCharge: { value: 20, time: new Date(), milesRemaining: 60 },
+    blockWaivers: [
+      {
+        startTime: new Date(),
+        endTime: new Date(Date.now() + 15 * 60 * 1000),
+        causeId: 0,
+        causeDescription: "Block Waiver",
+        remark: null,
+      },
+    ],
+
+    routeStatus: "laying_over",
+  })
+  const myvehicleToPullOut = vehicleFactory.build({
+    routeId: "1",
+    stateOfCharge: { value: 40, time: new Date(), milesRemaining: 160 },
+    blockWaivers: [],
+    routeStatus: "pulling_out",
+  })
+
+  const byPositionWithTestData = {
+    ...byPosition,
+    layingOverTop: [...byPosition.layingOverTop, myvehicleLayingOverTop],
+    layingOverBottom: [
+      ...byPosition.layingOverBottom,
+      myvehicleLayingOverBottom,
+    ],
+    onRoute: [...byPosition.onRoute, myvehicleOnLadder, myvehicleOnLadderLeft],
+    incoming: [...byPosition.incoming, myvehicleToPullOut],
+  }
+
   const displayCrowding = someVehicleHasCrowding(vehiclesAndGhosts, route.id)
 
   return (
@@ -323,13 +401,13 @@ const RouteLadder = ({
           <Ladder
             displayCrowding={displayCrowding && ladderCrowdingToggle}
             timepoints={timepoints}
-            vehiclesByPosition={byPosition}
+            vehiclesByPosition={byPositionWithTestData}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
           <IncomingBox
             displayCrowding={displayCrowding && ladderCrowdingToggle}
-            vehiclesAndGhosts={byPosition.incoming}
+            vehiclesAndGhosts={byPositionWithTestData.incoming}
             ladderDirection={ladderDirection}
             selectedVehicleId={selectedVehicleId}
           />
