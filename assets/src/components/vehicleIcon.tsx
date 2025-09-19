@@ -331,6 +331,7 @@ export const VehicleIconSvgNode = React.memo(
           size={size}
           orientation={orientation}
           alertIconStyle={alertIconStyle}
+          status={status}
           vehicle={vehicle}
         />
       </>
@@ -565,17 +566,19 @@ const AdditionalIcons = ({
   size,
   orientation,
   alertIconStyle,
+  status,
   vehicle,
 }: {
   size: Size
   orientation: Orientation
   alertIconStyle: AlertIconStyle | undefined
+  status: DrawnStatus | undefined
   vehicle: VehicleInScheduledService | Ghost | undefined
 }) => {
   const showAlertIcon = !!alertIconStyle
   const showBatteryIcon =
     !!vehicle && !isGhost(vehicle) && !!vehicle.stateOfCharge?.time
-  const [x1, y1, x2, y2] = calcXY(orientation, showBatteryIcon)
+  const [x1, y1, x2, y2] = calcXY(orientation, showBatteryIcon, status)
 
   return (
     <g transform={`translate(${x1}, ${y1})`}>
@@ -589,9 +592,18 @@ const AdditionalIcons = ({
   )
 }
 
-const calcXY = (orientation: Orientation, showBatteryIcon: boolean) => {
+const calcXY = (
+  orientation: Orientation,
+  showBatteryIcon: boolean,
+  status?: DrawnStatus
+) => {
   let coords = [0, 0, 0, 0]
-  switch (orientation) {
+  let orientationCheck = orientation
+  if (status === "ghost") {
+    orientationCheck = Orientation.Down
+  }
+
+  switch (orientationCheck) {
     case Orientation.Up:
       coords = showBatteryIcon ? [4, -2, 2, -7] : [6, -1, 0, 0]
       break

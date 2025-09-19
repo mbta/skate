@@ -85,6 +85,9 @@ exports[`Header renders a header 1`] = `
             X
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </svg>
     </div>
     <div
@@ -340,6 +343,9 @@ exports[`Header renders for a ghost 1`] = `
             X
           </text>
         </g>
+        <g
+          transform="translate(-15, -10)"
+        />
       </svg>
     </div>
     <div
@@ -553,6 +559,9 @@ exports[`Header renders for a late vehicle 1`] = `
             X
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </svg>
     </div>
     <div
@@ -800,6 +809,9 @@ exports[`Header renders for a shuttle 1`] = `
             X
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </svg>
     </div>
     <div
@@ -913,6 +925,9 @@ exports[`Header renders for an early vehicle 1`] = `
             X
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </svg>
     </div>
     <div
@@ -1160,6 +1175,9 @@ exports[`Header renders for an off-course vehicle 1`] = `
             X
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </svg>
     </div>
     <div
@@ -1405,6 +1423,9 @@ exports[`Header renders with route data 1`] = `
             X
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </svg>
     </div>
     <div

@@ -333,6 +333,9 @@ exports[`IncomingBox renders a ghost 1`] = `
               5
             </text>
           </g>
+          <g
+            transform="translate(-15, -10)"
+          />
         </svg>
       </div>
       <svg
@@ -465,6 +468,9 @@ exports[`IncomingBox renders a vehicle 1`] = `
               5
             </text>
           </g>
+          <g
+            transform="translate(6, -1)"
+          />
         </svg>
       </div>
       <div
@@ -566,6 +572,9 @@ exports[`IncomingBox renders a vehicle with the opposite incoming direction ID 1
               X
             </text>
           </g>
+          <g
+            transform="translate(-15, -10)"
+          />
         </svg>
       </div>
       <div

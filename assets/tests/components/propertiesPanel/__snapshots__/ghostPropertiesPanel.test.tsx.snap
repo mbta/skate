@@ -96,6 +96,9 @@ exports[`GhostPropertiesPanel renders 1`] = `
               X
             </text>
           </g>
+          <g
+            transform="translate(-15, -10)"
+          />
         </svg>
       </div>
       <div
@@ -403,6 +406,9 @@ exports[`GhostPropertiesPanel renders ghost with block waivers 1`] = `
               X
             </text>
           </g>
+          <g
+            transform="translate(-15, -10)"
+          />
         </svg>
       </div>
       <div
@@ -756,6 +762,9 @@ exports[`GhostPropertiesPanel renders ghost with missing run 1`] = `
               X
             </text>
           </g>
+          <g
+            transform="translate(-15, -10)"
+          />
         </svg>
       </div>
       <div

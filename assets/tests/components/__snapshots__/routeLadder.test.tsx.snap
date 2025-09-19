@@ -408,6 +408,9 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
             4
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </g>
       <line
         class="c-ladder__line"
@@ -515,6 +518,9 @@ exports[`routeLadder doesn't display crowding data for a vehicle coming off a ro
               transform="scale(0.38) rotate(180) translate(-24,-22)"
             />
           </g>
+          <g
+            transform="translate(-15, -10)"
+          />
         </svg>
       </div>
       <div
@@ -620,6 +626,9 @@ exports[`routeLadder doesn't render a bus that's off-course but nonrevenue 1`] =
             4
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </g>
       <line
         class="c-ladder__line"
@@ -1200,6 +1209,9 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
             transform="scale(0.38) rotate(270) translate(-24,-22)"
           />
         </g>
+        <g
+          transform="translate(-12, -12)"
+        />
       </g>
       <g
         class="c-ladder__vehicle"
@@ -1242,6 +1254,9 @@ exports[`routeLadder renders a route ladder with laying over vehicles 1`] = `
             4
           </text>
         </g>
+        <g
+          transform="translate(0, -12)"
+        />
       </g>
       <line
         class="c-ladder__line"
@@ -1734,6 +1749,9 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
             4
           </text>
         </g>
+        <g
+          transform="translate(6, -1)"
+        />
       </g>
       <g
         class="c-ladder__vehicle"
@@ -1788,33 +1806,41 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
               ry="3.03"
             />
           </g>
+        </g>
+        <g
+          transform="translate(-15, -10)"
+        >
           <g
-            transform="translate(9.375, -6.25) scale(0.2) translate(-24, -24)"
+            transform="translate(0, 0)"
           >
             <g
-              class="c-icon-alert-circle--highlighted"
+              transform="scale(0.2)"
             >
-              <circle
-                class="c-icon-alert-circle__outline"
-                cx="24"
-                cy="24"
-                r="27"
-              />
-              <circle
-                class="c-icon-alert-circle__fill"
-                cx="24"
-                cy="24"
-                r="22.59"
-              />
               <g
-                class="c-icon-alert-circle__exclamation-point"
+                class="c-icon-alert-circle--highlighted"
               >
-                <path
-                  d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+                <circle
+                  class="c-icon-alert-circle__outline"
+                  cx="24"
+                  cy="24"
+                  r="27"
                 />
-                <path
-                  d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+                <circle
+                  class="c-icon-alert-circle__fill"
+                  cx="24"
+                  cy="24"
+                  r="22.59"
                 />
+                <g
+                  class="c-icon-alert-circle__exclamation-point"
+                >
+                  <path
+                    d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+                  />
+                  <path
+                    d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+                  />
+                </g>
               </g>
             </g>
           </g>
@@ -1852,6 +1878,9 @@ exports[`routeLadder renders a route ladder with vehicles 1`] = `
             transform="scale(0.625) rotate(180) translate(-24,-22)"
           />
         </g>
+        <g
+          transform="translate(-15, -10)"
+        />
       </g>
       <line
         class="c-ladder__line"
@@ -2105,6 +2134,9 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
               4
             </text>
           </g>
+          <g
+            transform="translate(6, -1)"
+          />
         </svg>
       </div>
       <div
@@ -2137,6 +2169,9 @@ exports[`routeLadder renders a route ladder with vehicles in the incoming box 1`
               transform="scale(0.38) rotate(180) translate(-24,-22)"
             />
           </g>
+          <g
+            transform="translate(-15, -10)"
+          />
         </svg>
       </div>
       <div
