@@ -198,7 +198,7 @@ describe("ladderVehiclesForLayovers", () => {
     ).toEqual([
       {
         vehicle: later,
-        x: -30,
+        x: -33,
         y: 99,
         vehicleDirection: VehicleDirection.Up,
         scheduledY: undefined,
