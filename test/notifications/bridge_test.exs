@@ -62,7 +62,7 @@ defmodule Notifications.BridgeTest do
 
       Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
 
-      {:noreply, %{status: {:lowered, nil}, token: _token}} = handle_info(:update, state)
+      assert {:noreply, %{status: {:lowered, nil}, token: _token}} = handle_info(:update, state)
     end
 
     test "parses valid response with bridge raised", %{bypass: bypass} do
