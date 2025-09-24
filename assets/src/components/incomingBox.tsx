@@ -55,7 +55,9 @@ const IncomingBoxVehicle = ({
     : "NO_DATA"
 
   const showBatteryIcon =
-        !!vehicleOrGhost && !isGhost(vehicleOrGhost) && !!vehicleOrGhost.stateOfCharge?.time
+    !!vehicleOrGhost &&
+    !isGhost(vehicleOrGhost) &&
+    !!vehicleOrGhost.stateOfCharge?.time
 
   return (
     <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
@@ -88,8 +90,17 @@ const IncomingBoxVehicle = ({
             ? crowdingLabel(vehicleOrGhost as VehicleInScheduledService)
             : vehicleLabel(vehicleOrGhost, userSettings)}
         </div>
-        {showBatteryIcon && <div className="c-incoming-box__vehicle-icon"><svg role="img"
-        style={{ width: 16.72, height: 15.2 }} className="c-icon-state-of-charge"><IconBatteryStatus myVal={vehicleOrGhost.stateOfCharge} /></svg></div>}
+        {showBatteryIcon && (
+          <div className="c-incoming-box__vehicle-icon">
+            <svg
+              role="img"
+              style={{ width: 16.72, height: 15.2 }}
+              className="c-icon-state-of-charge"
+            >
+              <IconBatteryStatus myVal={vehicleOrGhost.stateOfCharge} />
+            </svg>
+          </div>
+        )}
       </button>
     </VehicleTooltip>
   )
