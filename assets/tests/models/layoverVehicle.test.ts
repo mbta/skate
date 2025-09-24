@@ -151,7 +151,7 @@ describe("ladderVehiclesForLayovers", () => {
         () => 55,
         99
       ).map((ladderVehicle) => ladderVehicle.x)
-    ).toEqual([-15, 15])
+    ).toEqual([-16.5, 16.5])
   })
 
   test("on the top, puts soonest departure on the left", () => {
@@ -161,7 +161,7 @@ describe("ladderVehiclesForLayovers", () => {
     ).toEqual([
       {
         vehicle: soonest,
-        x: -30,
+        x: -33,
         y: -5,
         vehicleDirection: VehicleDirection.Down,
         scheduledY: undefined,
@@ -177,7 +177,7 @@ describe("ladderVehiclesForLayovers", () => {
       },
       {
         vehicle: later,
-        x: 30,
+        x: 33,
         y: -5,
         vehicleDirection: VehicleDirection.Down,
         scheduledY: undefined,
@@ -214,7 +214,7 @@ describe("ladderVehiclesForLayovers", () => {
       },
       {
         vehicle: soonest,
-        x: 30,
+        x: 33,
         y: 99,
         vehicleDirection: VehicleDirection.Up,
         scheduledY: undefined,
