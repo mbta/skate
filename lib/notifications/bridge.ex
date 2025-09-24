@@ -6,6 +6,10 @@ defmodule Notifications.Bridge do
   @type bridge_movement :: {:raised, integer()} | {:lowered, nil}
   @type token :: %{expiration: DateTime.t() | nil, value: String.t() | nil}
   @type state :: %{token: token(), status: bridge_movement() | nil}
+  @type bridge_response :: %{
+          liftInProgress: boolean(),
+          estimatedDurationInMinutes: integer()
+        }
 
   use GenServer
   require Logger
@@ -143,7 +147,7 @@ defmodule Notifications.Bridge do
   @spec parse_response({:ok | :error, HTTPoison.Response.t()}) :: bridge_movement() | nil
   def parse_response({:ok, %HTTPoison.Response{status_code: status, body: body}})
       when status >= 200 and status < 300 do
-    case Jason.decode(body) do
+    case Jason.decode(body, keys: :atoms!) do
       {:ok, response} ->
         do_parse_response(response)
 
@@ -163,15 +167,14 @@ defmodule Notifications.Bridge do
     nil
   end
 
-  def do_parse_response(response) do
-    # {"liftInProgress": true, "estimatedDurationInMinutes": 10}
-    # or
-    # {"liftInProgress": false, "estimatedDurationInMinutes": 0}
-    lift_in_progress = response["liftInProgress"]
-
+  @spec do_parse_response(bridge_response()) :: bridge_movement() | nil
+  def do_parse_response(%{
+        liftInProgress: lift_in_progress,
+        estimatedDurationInMinutes: estimated_duration_in_minutes
+      }) do
     estimated_duration_in_minutes =
       if lift_in_progress do
-        response["estimatedDurationInMinutes"]
+        estimated_duration_in_minutes
       end
 
     lowering_time =
@@ -193,5 +196,13 @@ defmodule Notifications.Bridge do
       end
 
     {status, lowering_time && DateTime.to_unix(lowering_time)}
+  end
+
+  def do_parse_response(response) do
+    Logger.warning(
+      "bridge_api_failure: could not parse json response in unexpected format, response=#{inspect(response)}"
+    )
+
+    nil
   end
 end

@@ -62,7 +62,7 @@ defmodule Notifications.BridgeTest do
 
       Bypass.expect(bypass, fn conn -> Plug.Conn.resp(conn, 200, Jason.encode!(json)) end)
 
-      {:noreply, %{status: {:lowered, nil}, token: _token}} = handle_info(:update, state)
+      assert {:noreply, %{status: {:lowered, nil}, token: _token}} = handle_info(:update, state)
     end
 
     test "parses valid response with bridge raised", %{bypass: bypass} do
@@ -163,6 +163,52 @@ defmodule Notifications.BridgeTest do
         end)
 
       assert log =~ "bridge_api_failure: could not parse json response"
+    end
+
+    test "Logs warning when parsing fails due to a missing value in the json" do
+      json = %{
+        "estimatedDurationInMinutes" => 0
+      }
+
+      log =
+        capture_log([level: :warning], fn ->
+          refute parse_response(
+                   {:ok,
+                    %HTTPoison.Response{
+                      status_code: 201,
+                      body: Jason.encode!(json)
+                    }}
+                 )
+        end)
+
+      assert log =~ "bridge_api_failure: could not parse json response in unexpected format"
+    end
+
+    test "Raises an ArgumentError when parsing fails due to unknown atom" do
+      assert_raise ArgumentError, fn ->
+        String.to_existing_atom("hopefullyNeverAnExistingAtomString")
+      end
+
+      raise_json_extra_key = %{
+        "liftInProgress" => true,
+        "estimatedDurationInMinutes" => 10,
+        "hopefullyNeverAnExistingAtomString" => 1
+      }
+
+      log =
+        capture_log([level: :warning], fn ->
+          assert_raise ArgumentError, fn ->
+            parse_response(
+              {:ok,
+               %HTTPoison.Response{
+                 status_code: 201,
+                 body: Jason.encode!(raise_json_extra_key)
+               }}
+            )
+          end
+        end)
+
+      refute log =~ "bridge_api_failure: could not parse json response"
     end
   end
 end
