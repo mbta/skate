@@ -8,12 +8,13 @@ import {
   LadderDirection,
   VehicleDirection,
 } from "../models/ladderDirection"
-import { isVehicleInScheduledService } from "../models/vehicle"
+import { isGhost, isVehicleInScheduledService } from "../models/vehicle"
 import { drawnStatus } from "../models/vehicleStatus"
 import { VehicleInScheduledService, VehicleId, Ghost } from "../realtime"
 import CrowdingIcon from "./crowdingIcon"
 import IconAlertCircle, { AlertIconStyle } from "./iconAlertCircle"
 import VehicleIcon, { Orientation, Size, VehicleTooltip } from "./vehicleIcon"
+import IconBatteryStatus from "./iconBatteryStatus"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
 
 const IncomingBoxVehicle = ({
@@ -53,6 +54,9 @@ const IncomingBoxVehicle = ({
     ? crowding.occupancyStatus
     : "NO_DATA"
 
+  const showBatteryIcon =
+        !!vehicleOrGhost && !isGhost(vehicleOrGhost) && !!vehicleOrGhost.stateOfCharge?.time
+
   return (
     <VehicleTooltip vehicleOrGhost={vehicleOrGhost}>
       <button
@@ -84,6 +88,8 @@ const IncomingBoxVehicle = ({
             ? crowdingLabel(vehicleOrGhost as VehicleInScheduledService)
             : vehicleLabel(vehicleOrGhost, userSettings)}
         </div>
+        {showBatteryIcon && <div className="c-incoming-box__vehicle-icon"><svg role="img"
+        style={{ width: 16.72, height: 15.2 }} className="c-icon-state-of-charge"><IconBatteryStatus myVal={vehicleOrGhost.stateOfCharge} /></svg></div>}
       </button>
     </VehicleTooltip>
   )
