@@ -5,12 +5,10 @@ defmodule Notifications.Notification do
 
   import Ecto.Query
 
-  alias Notifications.Db.BlockWaiver
-  alias Notifications.Db.BridgeMovement
   alias Skate.Settings.Db.User, as: DbUser
   alias Notifications.NotificationState
-  alias Notifications.Db.Notification, as: DbNotification
   alias Notifications.Db.NotificationUser, as: DbNotificationUser
+  alias Notifications.NotificationEncoder
 
   require Logger
 
@@ -71,7 +69,7 @@ defmodule Notifications.Notification do
   def get_domain_notification(id) do
     id
     |> get_notification()
-    |> from_db_notification()
+    |> NotificationEncoder.from_db_notification()
   end
 
   def get_notification_user_ids(id) do
@@ -312,7 +310,7 @@ defmodule Notifications.Notification do
     |> where([notification: n], n.created_at > ^cutoff_time)
     |> order_by([notification: n], desc: n.created_at)
     |> Skate.Repo.all()
-    |> Enum.map(&from_db_notification/1)
+    |> Enum.map(&NotificationEncoder.from_db_notification/1)
   end
 
   @spec update_read_states(DbUser.id(), [id()], NotificationState.t()) ::
@@ -327,77 +325,6 @@ defmodule Notifications.Notification do
       )
 
     Skate.Repo.update_all(query, set: [state: read_state])
-  end
-
-  @spec from_db_notification(DbNotification.t()) :: __MODULE__.t()
-  defp from_db_notification(
-         %DbNotification{} =
-           db_notification
-       ) do
-    %__MODULE__{
-      id: db_notification.id,
-      created_at: db_notification.created_at,
-      state: db_notification.state,
-      content: content_from_db_notification(db_notification)
-    }
-  end
-
-  defp content_from_db_notification(%DbNotification{
-         block_waiver: %BlockWaiver{} = bw
-       }) do
-    bw
-  end
-
-  defp content_from_db_notification(%DbNotification{
-         bridge_movement: %BridgeMovement{} = bm
-       }) do
-    bm
-  end
-
-  defp content_from_db_notification(%DbNotification{
-         detour: %Notifications.Db.Detour{} = detour
-       }) do
-    detour
-  end
-
-  defp content_from_db_notification(%DbNotification{
-         detour_expiration: %Notifications.Db.DetourExpiration{} = detour_expiration
-       }) do
-    # `Jason` doesn't know how to encode a `%Duration{}`, or tuples
-    # like the `:microsecond` field.
-    update_in(
-      detour_expiration.expires_in,
-      &convert_duration_to_valid_minutes/1
-    )
-  end
-
-  # Expects a limited set of results from the database and converts those into
-  # known durations for the frontend
-  defp convert_duration_to_valid_minutes(%Duration{
-         year: 0,
-         month: 0,
-         week: 0,
-         day: 0,
-         hour: 0,
-         minute: 0,
-         second: seconds,
-         microsecond: {0, _}
-       }) do
-    case seconds do
-      1800 ->
-        # minutes
-        30
-
-      0 ->
-        # minutes
-        0
-
-      seconds ->
-        Logger.error("unknown seconds value second=#{seconds}")
-        # The frontend expects either `0` or `30`,
-        # `0` seems like a safer default _for now_.
-        0
-    end
   end
 
   defdelegate subscribe(user_id), to: Notifications.NotificationServer
