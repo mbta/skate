@@ -676,7 +676,7 @@ const BatteryStatusIcon = ({
 }: {
   vehicle: VehicleInScheduledService
 }) => {
-  return <IconBatteryStatus myVal={vehicle.stateOfCharge?.value} />
+  return <IconBatteryStatus stateOfChargeValue={vehicle.stateOfCharge?.value} />
 }
 
 const alertCircleIconScale = (size: Size): number => {

@@ -1,7 +1,11 @@
 import React from "react"
 
-const SelectBatteryIcon = ({ myVal }: { myVal: number | null }) => {
-  if (myVal && myVal > 80) {
+const SelectBatteryIcon = ({
+  stateOfChargeValue,
+}: {
+  stateOfChargeValue: number | null
+}) => {
+  if (stateOfChargeValue && stateOfChargeValue > 80) {
     return (
       <g className="c-icon-battery-status">
         <path
@@ -17,7 +21,7 @@ const SelectBatteryIcon = ({ myVal }: { myVal: number | null }) => {
         />
       </g>
     )
-  } else if (myVal && myVal > 60) {
+  } else if (stateOfChargeValue && stateOfChargeValue > 60) {
     return (
       <g className="c-icon-battery-status">
         <path
@@ -33,7 +37,7 @@ const SelectBatteryIcon = ({ myVal }: { myVal: number | null }) => {
         />
       </g>
     )
-  } else if (myVal && myVal > 40) {
+  } else if (stateOfChargeValue && stateOfChargeValue > 40) {
     return (
       <g className="c-icon-battery-status">
         <path
@@ -49,7 +53,7 @@ const SelectBatteryIcon = ({ myVal }: { myVal: number | null }) => {
         />
       </g>
     )
-  } else if (myVal && myVal > 20) {
+  } else if (stateOfChargeValue && stateOfChargeValue > 20) {
     return (
       <g className="c-icon-battery-status">
         <path
@@ -65,7 +69,7 @@ const SelectBatteryIcon = ({ myVal }: { myVal: number | null }) => {
         />
       </g>
     )
-  } else if (myVal && myVal > 0) {
+  } else if (stateOfChargeValue && stateOfChargeValue > 0) {
     return (
       <g className="c-icon-battery-status">
         <path
@@ -141,8 +145,8 @@ const SelectBatteryIcon = ({ myVal }: { myVal: number | null }) => {
   }
 }
 
-const IconBatteryStatus = React.memo(({ myVal }: any) => (
-  <SelectBatteryIcon myVal={myVal} />
+const IconBatteryStatus = React.memo(({ stateOfChargeValue }: any) => (
+  <SelectBatteryIcon stateOfChargeValue={stateOfChargeValue} />
 ))
 
 export default IconBatteryStatus

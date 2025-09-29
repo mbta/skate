@@ -94,10 +94,11 @@ const IncomingBoxVehicle = ({
           <div className="c-incoming-box__vehicle-icon">
             <svg
               role="img"
-              style={{ width: 16.72, height: 15.2 }}
               className="c-icon-state-of-charge"
             >
-              <IconBatteryStatus myVal={vehicleOrGhost.stateOfCharge} />
+              <IconBatteryStatus
+                stateOfChargeValue={vehicleOrGhost.stateOfCharge?.value}
+              />
             </svg>
           </div>
         )}
