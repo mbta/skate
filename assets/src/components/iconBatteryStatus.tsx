@@ -69,7 +69,7 @@ const SelectBatteryIcon = ({
         />
       </g>
     )
-  } else if (stateOfChargeValue && stateOfChargeValue > 0) {
+  } else if (stateOfChargeValue && stateOfChargeValue >= 0) {
     return (
       <g className="c-icon-battery-status">
         <path
