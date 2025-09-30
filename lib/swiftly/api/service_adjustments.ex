@@ -63,6 +63,13 @@ defmodule Swiftly.API.ServiceAdjustments do
         Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
         {:error, :bad_request}
 
+      {:ok, %HTTPoison.Response{status_code: code, body: body, request_url: request_url}} ->
+        Logger.error(
+          "status_code=#{inspect(code)} request_url=#{inspect(request_url)} body=#{inspect(body)}"
+        )
+
+        {:error, :unknown}
+
       response ->
         Logger.error("unknown response=#{inspect(response)}")
         {:error, :unknown}
