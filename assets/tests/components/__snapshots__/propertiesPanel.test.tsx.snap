@@ -101,6 +101,9 @@ exports[`PropertiesPanel renders a ghost 1`] = `
                   X
                 </text>
               </g>
+              <g
+                transform="translate(-15, -10)"
+              />
             </svg>
           </div>
           <div
@@ -412,6 +415,9 @@ exports[`PropertiesPanel renders a vehicle 1`] = `
                   X
                 </text>
               </g>
+              <g
+                transform="translate(6, -1)"
+              />
             </svg>
           </div>
           <div

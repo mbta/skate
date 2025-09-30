@@ -62,7 +62,7 @@ export const ladderVehiclesForLayovers = (
 }
 
 const x = (index: number, numVehicles: number): number => {
-  const widthPerVehicle = 30
+  const widthPerVehicle = 33
   return (index - (numVehicles - 1) / 2) * widthPerVehicle
 }
 

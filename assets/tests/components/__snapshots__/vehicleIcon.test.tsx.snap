@@ -64,6 +64,9 @@ exports[`ghost going down puts label above it 1`] = `
       />
     </g>
   </g>
+  <g
+    transform="translate(-15, -10)"
+  />
 </svg>
 `;
 
@@ -108,6 +111,9 @@ exports[`ghost with variant doesn't have eyes 1`] = `
       X
     </text>
   </g>
+  <g
+    transform="translate(-15, -10)"
+  />
 </svg>
 `;
 
@@ -141,6 +147,9 @@ exports[`renders an unwrapped svg node 1`] = `
       transform="scale(0.625) rotate(180) translate(-24,-22)"
     />
   </g>
+  <g
+    transform="translate(-15, -10)"
+  />
 </svg>
 `;
 
@@ -187,6 +196,9 @@ exports[`renders extended labels 1`] = `
         transform="scale(1) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -229,6 +241,9 @@ exports[`renders extended labels 1`] = `
         transform="scale(1) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
 ]
 `;
@@ -279,33 +294,41 @@ exports[`renders ghost with alert icon 1`] = `
           ry="3.03"
         />
       </g>
+    </g>
+    <g
+      transform="translate(-15, -10)"
+    >
       <g
-        transform="translate(5.7, -3.8) scale(0.16) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.16)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -355,33 +378,41 @@ exports[`renders ghost with alert icon 1`] = `
           ry="3.03"
         />
       </g>
+    </g>
+    <g
+      transform="translate(-15, -10)"
+    >
       <g
-        transform="translate(-9.375, -6.25) scale(0.2) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--highlighted"
+          transform="scale(0.2)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--highlighted"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -415,6 +446,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(0.38) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -439,6 +473,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(0.38) rotate(90) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(0, -12)"
+    />
   </svg>,
   <svg
     role="img"
@@ -463,6 +500,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(0.38) rotate(180) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(-15, -10)"
+    />
   </svg>,
   <svg
     role="img"
@@ -487,6 +527,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(0.38) rotate(270) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(-12, -12)"
+    />
   </svg>,
   <svg
     role="img"
@@ -511,6 +554,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(0.625) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -535,6 +581,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(0.625) rotate(90) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(0, -12)"
+    />
   </svg>,
   <svg
     role="img"
@@ -559,6 +608,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(0.625) rotate(180) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(-15, -10)"
+    />
   </svg>,
   <svg
     role="img"
@@ -583,6 +635,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(0.625) rotate(270) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(-12, -12)"
+    />
   </svg>,
   <svg
     role="img"
@@ -607,6 +662,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(1) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -631,6 +689,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(1) rotate(90) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(0, -12)"
+    />
   </svg>,
   <svg
     role="img"
@@ -655,6 +716,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(1) rotate(180) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(-15, -10)"
+    />
   </svg>,
   <svg
     role="img"
@@ -679,6 +743,9 @@ exports[`renders in all directions and sizes 1`] = `
         transform="scale(1) rotate(270) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(-12, -12)"
+    />
   </svg>,
 ]
 `;
@@ -708,6 +775,9 @@ exports[`renders with all statuses 1`] = `
         transform="scale(0.625) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -732,6 +802,9 @@ exports[`renders with all statuses 1`] = `
         transform="scale(0.625) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -756,6 +829,9 @@ exports[`renders with all statuses 1`] = `
         transform="scale(0.625) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -780,6 +856,9 @@ exports[`renders with all statuses 1`] = `
         transform="scale(0.625) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -826,6 +905,9 @@ exports[`renders with all statuses 1`] = `
         />
       </g>
     </g>
+    <g
+      transform="translate(-15, -10)"
+    />
   </svg>,
   <svg
     role="img"
@@ -850,6 +932,9 @@ exports[`renders with all statuses 1`] = `
         transform="scale(0.625) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
   <svg
     role="img"
@@ -874,6 +959,9 @@ exports[`renders with all statuses 1`] = `
         transform="scale(0.625) rotate(0) translate(-24,-22)"
       />
     </g>
+    <g
+      transform="translate(6, -1)"
+    />
   </svg>,
 ]
 `;
@@ -929,33 +1017,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(6, -1)"
+    >
       <g
-        transform="translate(4.94, -1.9) scale(0.16) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.16)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1010,33 +1106,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(0, -12)"
+    >
       <g
-        transform="translate(1.9, 4.94) scale(0.16) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.16)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1091,33 +1195,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(-15, -10)"
+    >
       <g
-        transform="translate(-4.94, 1.9) scale(0.16) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.16)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1172,33 +1284,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(-12, -12)"
+    >
       <g
-        transform="translate(-1.9, -4.94) scale(0.16) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.16)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1253,33 +1373,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(6, -1)"
+    >
       <g
-        transform="translate(8.75, 1.875) scale(0.2) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.2)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1334,33 +1462,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(0, -12)"
+    >
       <g
-        transform="translate(-1.875, 8.75) scale(0.2) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.2)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1415,33 +1551,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(-15, -10)"
+    >
       <g
-        transform="translate(-8.75, -1.875) scale(0.2) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.2)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1496,33 +1640,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(-12, -12)"
+    >
       <g
-        transform="translate(1.875, -8.75) scale(0.2) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.2)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1577,33 +1729,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(6, -1)"
+    >
       <g
-        transform="translate(14, 3) scale(0.3) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.3)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1658,33 +1818,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(0, -12)"
+    >
       <g
-        transform="translate(-3, 14) scale(0.3) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.3)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1739,33 +1907,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(-15, -10)"
+    >
       <g
-        transform="translate(-14, -3) scale(0.3) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.3)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>
@@ -1820,33 +1996,41 @@ exports[`renders with variants, labels, and alert icons 1`] = `
       >
         X
       </text>
+    </g>
+    <g
+      transform="translate(-12, -12)"
+    >
       <g
-        transform="translate(3, -14) scale(0.3) translate(-24, -24)"
+        transform="translate(0, 0)"
       >
         <g
-          className="c-icon-alert-circle--black"
+          transform="scale(0.3)"
         >
-          <circle
-            className="c-icon-alert-circle__outline"
-            cx="24"
-            cy="24"
-            r="27"
-          />
-          <circle
-            className="c-icon-alert-circle__fill"
-            cx="24"
-            cy="24"
-            r="22.59"
-          />
           <g
-            className="c-icon-alert-circle__exclamation-point"
+            className="c-icon-alert-circle--black"
           >
-            <path
-              d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+            <circle
+              className="c-icon-alert-circle__outline"
+              cx="24"
+              cy="24"
+              r="27"
             />
-            <path
-              d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+            <circle
+              className="c-icon-alert-circle__fill"
+              cx="24"
+              cy="24"
+              r="22.59"
             />
+            <g
+              className="c-icon-alert-circle__exclamation-point"
+            >
+              <path
+                d="m20.39 4.42h7.22a1.81 1.81 0 0 1 1.49 2.11l-1.49 23.22a1.73 1.73 0 0 1 -1.49 1.78h-4.24a1.73 1.73 0 0 1 -1.49-1.78l-1.49-23.22c-.07-1.13.61-2.11 1.49-2.11"
+              />
+              <path
+                d="m21.57 34.54h4.87a1.88 1.88 0 0 1 1.82 1.93v5.17a1.89 1.89 0 0 1 -1.82 1.94h-4.87a1.89 1.89 0 0 1 -1.83-1.94v-5.17a1.88 1.88 0 0 1 1.83-1.93"
+              />
+            </g>
           </g>
         </g>
       </g>

@@ -79,6 +79,9 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                     X
                   </text>
                 </g>
+                <g
+                  transform="translate(-15, -10)"
+                />
               </svg>
             </div>
           </div>
@@ -210,6 +213,9 @@ exports[`SearchResults renders a list of results including vehicles and ghosts 1
                     X
                   </text>
                 </g>
+                <g
+                  transform="translate(6, -1)"
+                />
               </svg>
             </div>
           </div>
@@ -407,6 +413,9 @@ exports[`SearchResults renders a selected result card 1`] = `
                     />
                   </g>
                 </g>
+                <g
+                  transform="translate(-15, -10)"
+                />
               </svg>
             </div>
           </div>
@@ -538,6 +547,9 @@ exports[`SearchResults renders a selected result card 1`] = `
                     X
                   </text>
                 </g>
+                <g
+                  transform="translate(6, -1)"
+                />
               </svg>
             </div>
           </div>

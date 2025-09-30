@@ -237,6 +237,7 @@ const VehicleSvg = ({
             status={drawnStatus(vehicle)}
             alertIconStyle={alertIconStyle}
             userSettings={userSettings}
+            vehicle={vehicle}
           />
         )}
       </g>

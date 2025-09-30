@@ -452,6 +452,65 @@ describe("routeLadder", () => {
     expect(tree).toMatchSnapshot()
   })
 
+  test("renders a route ladder with vehicles with stateOfCharge data", () => {
+    const route: Route = routeFactory.build({
+      id: "28",
+      name: "28",
+    })
+    const timepoints = [
+      { id: "MATPN", name: "MATPN Name" },
+      { id: "WELLH", name: "WELLH Name" },
+      { id: "MORTN", name: "MORTN Name" },
+    ]
+
+    const ghost: Ghost = ghostFactory.build({
+      id: "ghost-trip",
+      directionId: 0,
+      routeId: route.id,
+      tripId: "ghost trip",
+      headsign: "headsign",
+      blockId: "ghost block",
+      runId: "123-0123",
+      viaVariant: null,
+      layoverDepartureTime: null,
+      scheduledTimepointStatus: {
+        timepointId: "MORTN",
+        fractionUntilTimepoint: 0.0,
+      },
+      scheduledLogonTime: null,
+      routeStatus: "on_route",
+      blockWaivers: [],
+    })
+
+    const vehiclesWithSoc = vehicles.map((vehicle) => ({
+      ...vehicle,
+      stateOfCharge: {
+        percentage: 85,
+        milesRemaining: 30,
+        time: new Date(),
+      },
+    }))
+
+    const tree = render(
+      <RouteLadder
+        route={route}
+        timepoints={timepoints}
+        vehiclesAndGhosts={(
+          vehiclesWithSoc as unknown as (VehicleInScheduledService | Ghost)[]
+        ).concat([ghost])}
+        selectedVehicleId={undefined}
+        deselectRoute={() => {}}
+        reverseLadder={() => {}}
+        toggleCrowding={() => {}}
+        ladderDirections={{}}
+        ladderCrowdingToggles={{}}
+        hasAlert={false}
+      />
+    ).asFragment()
+
+    expect(tree).toMatchSnapshot()
+  })
+
   test("renders a route ladder with vehicles in the incoming box", () => {
     const route: Route = routeFactory.build({
       id: "28",

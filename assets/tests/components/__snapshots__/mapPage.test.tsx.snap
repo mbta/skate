@@ -1335,6 +1335,9 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
                       X
                     </text>
                   </g>
+                  <g
+                    transform="translate(6, -1)"
+                  />
                 </svg>
               </div>
               <img
