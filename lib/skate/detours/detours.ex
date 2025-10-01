@@ -79,7 +79,7 @@ defmodule Skate.Detours.Detours do
 
     details &&
       %ActivatedDetourDetails{
-        activated_at: activated_at,
+        activated_at: activated_at || DateTime.utc_now(),
         estimated_duration: estimated_duration,
         details: details
       }
@@ -96,7 +96,7 @@ defmodule Skate.Detours.Detours do
 
     details &&
       %ActivatedDetourDetails{
-        activated_at: activated_at,
+        activated_at: activated_at|| DateTime.utc_now(),
         estimated_duration: estimated_duration,
         details: details
       }
