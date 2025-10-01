@@ -311,9 +311,14 @@ defmodule Skate.Detours.SnapshotSerde do
              "selectedDuration" => selected_duration
            }
          }
-       }) do
+  } = detour) do
     log_fallback("selectedDuration")
-    selected_duration
+    if detour.status == :active and selected_duration == nil do
+      Logger.warning("selectedDuration is nil in active detour #{detour.id}, defaulting to 'Until further notice'")
+      "Until further notice"
+    else
+      selected_duration
+    end
   end
 
   defp selectedduration_from_detour(_), do: nil
