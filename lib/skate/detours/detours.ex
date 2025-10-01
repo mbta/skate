@@ -96,8 +96,8 @@ defmodule Skate.Detours.Detours do
 
     details &&
       %ActivatedDetourDetails{
-        activated_at: activated_at|| DateTime.utc_now(),
-        estimated_duration: estimated_duration,
+        activated_at: activated_at || DateTime.utc_now(),
+        estimated_duration: estimated_duration || "Until further notice",
         details: details
       }
   end
