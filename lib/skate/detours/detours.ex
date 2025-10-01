@@ -114,6 +114,30 @@ defmodule Skate.Detours.Detours do
       }
   end
 
+  def db_detour_to_detour(
+        %{
+          status: :active,
+          activated_at: activated_at,
+          state: state
+        } = db_detour
+      ) do
+    estimated_duration = state["context"]["selectedDuration"]
+    details = DetailedDetour.from(:active, db_detour)
+
+    if activated_at == nil || estimated_duration == nil do
+      Logger.warning(
+        "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)} estimated_duration=#{inspect(estimated_duration)}"
+      )
+    end
+
+    details &&
+      %ActivatedDetourDetails{
+        activated_at: activated_at || DateTime.utc_now(),
+        estimated_duration: estimated_duration || "Until further notice",
+        details: details
+      }
+  end
+
   def db_detour_to_detour(%{status: status} = db_detour) do
     DetailedDetour.from(status, db_detour)
   end
