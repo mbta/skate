@@ -77,6 +77,12 @@ defmodule Skate.Detours.Detours do
       when estimated_duration != nil do
     details = DetailedDetour.from(:active, db_detour)
 
+    if activated_at == nil do
+      Logger.warning(
+        "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)}"
+      )
+    end
+
     details &&
       %ActivatedDetourDetails{
         activated_at: activated_at || DateTime.utc_now(),
@@ -93,6 +99,12 @@ defmodule Skate.Detours.Detours do
         } = db_detour
       ) do
     details = DetailedDetour.from(:active, db_detour)
+
+    if activated_at == nil || estimated_duration == nil do
+      Logger.warning(
+        "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)} estimated_duration=#{inspect(estimated_duration)}"
+      )
+    end
 
     details &&
       %ActivatedDetourDetails{
