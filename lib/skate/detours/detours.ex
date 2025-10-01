@@ -70,6 +70,21 @@ defmodule Skate.Detours.Detours do
   def db_detour_to_detour(
         %{
           status: :active,
+          activated_at: nil
+        } = db_detour
+      ) do
+    details = DetailedDetour.from(:active, db_detour)
+
+    Logger.warning(
+      "active_detour_missing_info exluding detour id=#{db_detour.id} activated_at=nil details=#{inspect(details)}"
+    )
+
+    nil
+  end
+
+  def db_detour_to_detour(
+        %{
+          status: :active,
           activated_at: activated_at,
           estimated_duration: estimated_duration
         } = db_detour
