@@ -165,7 +165,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     Map.get(vp, "occupancy_status")
   end
 
-  defp decode_state_of_charge(vp, vehicle_id) when vehicle_id in @soc_vehicle_allow_list do
+  defp decode_state_of_charge(vp, vehicle_id) when vehicle_id not in @soc_vehicle_allow_list do
     case vp do
       %{
         "state_of_charge_percentage" => pct,
