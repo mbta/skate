@@ -7,16 +7,12 @@ defmodule Notifications.Supervisor do
     Supervisor.start_link(__MODULE__, :ok)
   end
 
-  @spec registry_name() :: Registry.registry()
-  def registry_name() do
-    Application.get_env(:notifications, :registry, Notifications.Registry)
-  end
-
   @impl true
   def init(:ok) do
     children = [
-      {Registry, keys: :duplicate, name: registry_name()},
-      {Notifications.NotificationServer, name: Notifications.NotificationServer.default_name()},
+      {Phoenix.PubSub, name: Notifications.PubSu},
+      {Notifications.NotificationServer,
+       name: Notifications.NotificationServer.default_name(), pubsub_name: Notifications.PubSu},
       {Notifications.Bridge, name: Notifications.Bridge.default_name()}
     ]
 
