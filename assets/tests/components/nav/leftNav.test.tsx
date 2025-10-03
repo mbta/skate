@@ -6,7 +6,6 @@ import React from "react"
 import { BrowserRouter } from "react-router-dom"
 import LeftNav from "../../../src/components/nav/leftNav"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
-import { openDrift } from "../../../src/helpers/drift"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 import { initialState, togglePickerContainer } from "../../../src/state"
 import { TestGroups } from "../../../src/userInTestGroup"
@@ -58,7 +57,6 @@ describe("LeftNav", () => {
     expect(result.queryByText("Swings View")).not.toBeNull()
     expect(result.queryByText("Shuttle Map")).not.toBeNull()
     expect(result.queryByText("Search Map")).not.toBeNull()
-    expect(result.queryByText("Support")).not.toBeNull()
     expect(result.queryByText("About Skate")).not.toBeNull()
     expect(result.queryByText("Settings")).not.toBeNull()
     expect(result.queryByText("Collapse")).not.toBeNull()
@@ -81,8 +79,6 @@ describe("LeftNav", () => {
     expect(result.queryByTitle("Shuttle Map")).not.toBeNull()
     expect(result.queryByText("Search Map")).not.toBeNull()
     expect(result.queryByTitle("Search Map")).not.toBeNull()
-    expect(result.queryByText("Support")).not.toBeNull()
-    expect(result.queryByTitle("Support")).not.toBeNull()
     expect(result.queryByText("About Skate")).not.toBeNull()
     expect(result.queryByTitle("About Skate")).not.toBeNull()
     expect(result.queryByText("Settings")).not.toBeNull()
@@ -293,19 +289,6 @@ describe("LeftNav", () => {
     expect(result.getByTitle("Late View")).toHaveClass(
       "c-left-nav__view--active"
     )
-  })
-
-  test("clicking Support button opens Drift", async () => {
-    const user = userEvent.setup()
-    const result = render(
-      <BrowserRouter>
-        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
-      </BrowserRouter>
-    )
-
-    await user.click(result.getByTitle("Support"))
-
-    expect(openDrift).toHaveBeenCalled()
   })
 
   test("clicking notifications icon toggles notifications drawer and logs a tag manager event", async () => {

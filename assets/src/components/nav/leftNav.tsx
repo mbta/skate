@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react"
 import { NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
-import { openDrift } from "../../helpers/drift"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import NotificationBellIcon from "../notificationBellIcon"
 import { LateIcon, SwingIcon, HamburgerIcon } from "../../helpers/icon"
@@ -14,7 +13,6 @@ import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
 import { LinkData, getNavLinkData } from "../../navLinkData"
 import {
-  ChatFill,
   ChevronDoubleLeft,
   ChevronDoubleRight,
   GearFill,
@@ -165,16 +163,6 @@ const LeftNav = ({
         </ul>
         {toggleMobileMenu ? null : (
           <ul className="c-left-nav__links">
-            <li>
-              <button
-                className="c-left-nav__link"
-                onClick={openDrift}
-                title="Support"
-              >
-                <ChatFill className="c-left-nav__icon" />
-                Support
-              </button>
-            </li>
             <li>
               <a
                 className="c-left-nav__link"
