@@ -7,22 +7,22 @@ defmodule Notifications.NotificationServerTest do
 
   import ExUnit.CaptureLog, only: [capture_log: 2]
   import Skate.Factory
-  import Test.Support.Helpers, only: [reassign_env: 3, set_log_level: 1]
+  import Test.Support.Helpers, only: [set_log_level: 1]
 
   require Logger
 
   def setup_server(user_id \\ nil) do
-    registry_name = :new_notifications_registry
-    start_supervised({Registry, keys: :duplicate, name: registry_name})
-    reassign_env(:notifications, :registry, registry_name)
+    pubsub_name = :notication_server_test_pubsub
+    start_supervised({Phoenix.PubSub, name: pubsub_name})
 
-    {:ok, server} = NotificationServer.start_link(name: __MODULE__)
+    {:ok, server} =
+      NotificationServer.start_link(name: __MODULE__, pubsub_name: pubsub_name)
 
     if user_id do
       NotificationServer.subscribe(user_id, server)
     end
 
-    {:ok, server}
+    %{server: server, pubsub_name: pubsub_name}
   end
 
   def assert_n_notifications_in_db(expected_n) do
@@ -31,7 +31,11 @@ defmodule Notifications.NotificationServerTest do
 
   describe "start_link/1" do
     test "starts up and lives" do
-      {:ok, server} = NotificationServer.start_link(name: :start_link)
+      pubsub_name = :test_pubsub
+      start_supervised({Phoenix.PubSub, name: pubsub_name})
+
+      {:ok, server} =
+        NotificationServer.start_link(name: :start_link, pubsub_name: pubsub_name)
 
       Process.sleep(10)
 
@@ -41,17 +45,16 @@ defmodule Notifications.NotificationServerTest do
 
   describe "broadcast_notification/3" do
     setup do
-      {:ok, server} = setup_server()
-
-      %{server: server}
+      setup_server()
     end
 
     test "broadcasts to all subscribers if the provided user specification is :all", %{
-      server: server
+      server: server,
+      pubsub_name: pubsub_name
     } do
-      Notifications.NotificationServer.subscribe(0, server)
-      Notifications.NotificationServer.subscribe(1, server)
-      Notifications.NotificationServer.subscribe(2, server)
+      Notifications.NotificationServer.subscribe(0, pubsub_name)
+      Notifications.NotificationServer.subscribe(1, pubsub_name)
+      Notifications.NotificationServer.subscribe(2, pubsub_name)
 
       id = 1
 
@@ -73,10 +76,13 @@ defmodule Notifications.NotificationServerTest do
       refute_receive {:notification, %Notifications.Notification{id: ^id}}
     end
 
-    test "broadcasts to all subscribers in the provided users list", %{server: server} do
-      Notifications.NotificationServer.subscribe(0, server)
-      Notifications.NotificationServer.subscribe(1, server)
-      Notifications.NotificationServer.subscribe(2, server)
+    test "broadcasts to all subscribers in the provided users list", %{
+      server: server,
+      pubsub_name: pubsub_name
+    } do
+      Notifications.NotificationServer.subscribe(0, pubsub_name)
+      Notifications.NotificationServer.subscribe(1, pubsub_name)
+      Notifications.NotificationServer.subscribe(2, pubsub_name)
 
       id = 1
 
@@ -97,8 +103,8 @@ defmodule Notifications.NotificationServerTest do
       refute_receive {:notification, %Notifications.Notification{id: ^id}}
     end
 
-    test "logs broadcast_to_cluster call", %{server: server} do
-      Notifications.NotificationServer.subscribe(0, server)
+    test "logs broadcast_to_cluster call", %{server: server, pubsub_name: pubsub_name} do
+      Notifications.NotificationServer.subscribe(0, pubsub_name)
 
       id = 1
 
@@ -120,18 +126,15 @@ defmodule Notifications.NotificationServerTest do
           assert_receive {:notification, %Notifications.Notification{id: ^id}}
         end)
 
-      assert log =~ "mfa=Notifications.NotificationServer.broadcast_to_cluster/3"
-      assert log =~ "notification_id=#{id}"
-      assert log =~ "nodes=[:nonode@nohost]"
+      assert log =~
+               "mfa=Notifications.NotificationDispatcher.dispatch/3 sent notification to subscribers notification_id=#{id} messages_sent=1 total_subscribers=1 user_id_count=2"
     end
 
-    test "logs broadcast_to_subscribers call", %{server: server} do
-      # Subscribe with the same user id twice to test duplicate subscriptions in
-      # the log output, where `user_id_count` != `messages_sent`.
-      Notifications.NotificationServer.subscribe(0, server)
-      Notifications.NotificationServer.subscribe(0, server)
-      Notifications.NotificationServer.subscribe(1, server)
-      Notifications.NotificationServer.subscribe(2, server)
+    test "logs broadcast_to_subscribers call", %{server: server, pubsub_name: pubsub_name} do
+      Notifications.NotificationServer.subscribe(0, pubsub_name)
+      Notifications.NotificationServer.subscribe(0, pubsub_name)
+      Notifications.NotificationServer.subscribe(1, pubsub_name)
+      Notifications.NotificationServer.subscribe(2, pubsub_name)
 
       log_specific_users_id = 1
 
@@ -150,11 +153,8 @@ defmodule Notifications.NotificationServerTest do
             server
           )
 
-          # Absorb messages for the 3 matching subscriptions
-          for _ <- 1..3 do
-            assert_receive {:notification,
-                            %Notifications.Notification{id: ^log_specific_users_id}}
-          end
+          assert_receive {:notification, %Notifications.Notification{id: ^log_specific_users_id}}
+          assert_receive {:notification, %Notifications.Notification{id: ^log_specific_users_id}}
 
           :sys.get_state(server)
         end)
@@ -174,43 +174,41 @@ defmodule Notifications.NotificationServerTest do
             server
           )
 
-          # Absorb messages for all 4 subscriptions
-          for _ <- 1..4 do
-            assert_receive {:notification, %Notifications.Notification{id: ^log_all_users_id}}
-          end
+          assert_receive {:notification, %Notifications.Notification{id: ^log_all_users_id}}
+          assert_receive {:notification, %Notifications.Notification{id: ^log_all_users_id}}
+          assert_receive {:notification, %Notifications.Notification{id: ^log_all_users_id}}
 
           :sys.get_state(server)
         end)
 
       assert log_specific_users =~
-               "mfa=Notifications.NotificationServer.broadcast_to_subscribers/3"
+               "mfa=Notifications.NotificationDispatcher.dispatch/3"
 
       assert log_specific_users =~
-               "notification_id=#{log_specific_users_id} messages_sent=3 total_subscribers=4 user_id_count=2"
+               "notification_id=#{log_specific_users_id} messages_sent=2 total_subscribers=4 user_id_count=2"
 
-      assert log_all_users =~ "mfa=Notifications.NotificationServer.broadcast_to_subscribers/3"
+      assert log_all_users =~ "mfa=Notifications.NotificationDispatcher.dispatch/3"
 
       assert log_all_users =~
-               "notification_id=#{log_all_users_id} messages_sent=4 total_subscribers=4 user_match_pattern=all"
+               "notification_id=#{log_all_users_id} messages_sent=3 total_subscribers=4 user_match_pattern=all"
     end
   end
 
   describe "Notifications.Notification broadcasts notifications when notification is created" do
     setup do
-      registry_name = :new_notifications_registry
-      start_supervised({Registry, keys: :duplicate, name: registry_name})
-      reassign_env(:notifications, :registry, registry_name)
+      pubsub_name = :test_pubsub
+      start_supervised({Phoenix.PubSub, name: pubsub_name})
 
-      {:ok, _server} = NotificationServer.start_link()
+      {:ok, server} = NotificationServer.start_link(pubsub_name: pubsub_name)
 
-      :ok
+      %{server: server, pubsub_name: pubsub_name}
     end
 
-    test "create_detour_expiration_notification/3" do
+    test "create_detour_expiration_notification/3", %{pubsub_name: pubsub_name} do
       users = insert_list(3, :user)
 
       for %{id: user_id} <- users do
-        Notifications.NotificationServer.subscribe(user_id)
+        Notifications.NotificationServer.subscribe(user_id, pubsub_name)
       end
 
       detour = insert(:detour)

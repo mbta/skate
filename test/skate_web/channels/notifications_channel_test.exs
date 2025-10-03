@@ -13,10 +13,11 @@ defmodule SkateWeb.NotificationsChannelTest do
       |> socket("", %{})
       |> Guardian.Phoenix.Socket.put_current_resource(%{id: 1})
 
-    start_supervised({Registry, keys: :duplicate, name: Notifications.Supervisor.registry_name()})
+    start_supervised({Phoenix.PubSub, name: Notifications.PubSub})
 
     start_supervised(
-      {Notifications.NotificationServer, name: Notifications.NotificationServer.default_name()}
+      {Notifications.NotificationServer,
+       name: Notifications.NotificationServer.default_name(), pubsub_name: Notifications.PubSub}
     )
 
     {:ok, socket: socket}
