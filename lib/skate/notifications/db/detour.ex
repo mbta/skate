@@ -1,10 +1,11 @@
-defmodule Notifications.Db.Detour do
+defmodule Skate.Notifications.Db.Detour do
   @moduledoc """
   Ecto Model for Detour Notifications struct and Database table
   """
 
   use Skate.Schema
   import Ecto.Changeset
+  alias Skate.Notifications
 
   @derive {Jason.Encoder,
            only: [

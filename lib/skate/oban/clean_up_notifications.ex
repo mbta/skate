@@ -14,6 +14,8 @@ defmodule Skate.Oban.CleanUpNotifications do
 
   import Ecto.Query
 
+  alias Skate.Notifications
+
   @seconds_per_day 24 * 60 * 60
 
   @impl Oban.Worker

@@ -1,7 +1,9 @@
-defmodule Notifications.Supervisor do
+defmodule Skate.Notifications.Supervisor do
   @moduledoc false
 
   use Supervisor
+
+  alias Skate.Notifications
 
   def start_link([]) do
     Supervisor.start_link(__MODULE__, :ok)

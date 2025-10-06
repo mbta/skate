@@ -1,11 +1,18 @@
-defmodule Notifications.NotificationEncoder do
+defmodule Skate.Notifications.NotificationEncoder do
   @moduledoc """
   Module for encoding database notifications into domain notifications.
   """
 
-  alias Notifications.Db.{BlockWaiver, BridgeMovement, Detour, DetourExpiration, Notification}
-  alias Notifications.Db.Notification, as: DbNotification
-  alias Notifications.Notification
+  alias Skate.Notifications.Db.{
+    BlockWaiver,
+    BridgeMovement,
+    Detour,
+    DetourExpiration,
+    Notification
+  }
+
+  alias Skate.Notifications.Db.Notification, as: DbNotification
+  alias Skate.Notifications.Notification
 
   require Logger
 

@@ -1,14 +1,14 @@
-defmodule Notifications.NotificationTest do
+defmodule Skate.Notifications.NotificationTest do
   require Test.Support.Helpers
   use Skate.DataCase
   import ExUnit.CaptureLog
 
-  doctest Notifications.Notification
+  doctest Skate.Notifications.Notification
 
   import Skate.Factory
 
-  alias Notifications.Notification
-  alias Notifications.Db.Notification, as: DbNotification
+  alias Skate.Notifications.Notification
+  alias Skate.Notifications.Db.Notification, as: DbNotification
   alias Skate.Settings.RouteTab
   alias Skate.Settings.User
 

@@ -6,6 +6,7 @@ defmodule Skate.Detours.Db.Detour do
   use Skate.Schema
   import Ecto.Changeset
 
+  alias Skate.Notifications
   alias Skate.Settings.Db.User
 
   @type status :: :active | :draft | :past

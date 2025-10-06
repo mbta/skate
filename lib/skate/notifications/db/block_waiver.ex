@@ -1,11 +1,12 @@
-defmodule Notifications.Db.BlockWaiver do
+defmodule Skate.Notifications.Db.BlockWaiver do
   @moduledoc """
   Ecto Model for `block_waivers` Database table
   """
 
   use Skate.Schema
   import Ecto.Changeset
-  alias Notifications.NotificationReason
+  alias Skate.Notifications
+  alias Skate.Notifications.NotificationReason
 
   @derive {Jason.Encoder,
            only: [

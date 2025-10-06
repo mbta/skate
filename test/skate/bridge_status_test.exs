@@ -2,6 +2,7 @@ defmodule Skate.BridgeStatusTest do
   use Skate.DataCase
 
   alias Skate.BridgeStatus
+  alias Skate.Notifications
 
   doctest Skate.BridgeStatus
 

@@ -1,4 +1,4 @@
-defmodule Notifications.Db.Notification do
+defmodule Skate.Notifications.Db.Notification do
   @moduledoc """
   Ecto Model for `notifications` Database table
   """
@@ -6,9 +6,10 @@ defmodule Notifications.Db.Notification do
   use Skate.Schema
   import Ecto.Changeset
 
-  alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
-  alias Notifications.Db.BridgeMovement, as: DbBridgeMovement
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
+  alias Skate.Notifications
+  alias Skate.Notifications.Db.BlockWaiver, as: DbBlockWaiver
+  alias Skate.Notifications.Db.BridgeMovement, as: DbBridgeMovement
+  alias Skate.Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.Db.User, as: DbUser
 
   typed_schema "notifications" do

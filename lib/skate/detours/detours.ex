@@ -10,6 +10,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Detours.SnapshotSerde
   alias Skate.Detours.Detour.Detailed, as: DetailedDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
+  alias Skate.Notifications
   alias Skate.Settings.{TestGroup, User}
   alias Skate.Settings.Db.User, as: DbUser
   require Logger

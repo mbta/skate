@@ -1,7 +1,7 @@
-defmodule Notifications.BridgeTest do
+defmodule Skate.Notifications.BridgeTest do
   use ExUnit.Case
   import Test.Support.Helpers
-  import Notifications.Bridge
+  import Skate.Notifications.Bridge
   import ExUnit.CaptureLog
 
   describe "init/1" do

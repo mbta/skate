@@ -1,10 +1,12 @@
-defmodule Notifications.Db.DetourExpiration do
+defmodule Skate.Notifications.Db.DetourExpiration do
   @moduledoc """
   Ecto Schema for Detour Expiration Notifications
   """
 
   use Skate.Schema
   import Ecto.Changeset
+
+  alias Skate.Notifications
 
   @derive {Jason.Encoder,
            only: [

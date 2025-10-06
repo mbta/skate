@@ -1,9 +1,9 @@
-defmodule Notifications.NotificationServerTest do
+defmodule Skate.Notifications.NotificationServerTest do
   use Skate.DataCase
   import Skate.Factory
 
-  alias Notifications.Notification
-  alias Notifications.NotificationServer
+  alias Skate.Notifications.Notification
+  alias Skate.Notifications.NotificationServer
 
   import ExUnit.CaptureLog, only: [capture_log: 2]
   import Skate.Factory

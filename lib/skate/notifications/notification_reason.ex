@@ -1,4 +1,4 @@
-defmodule Notifications.NotificationReason do
+defmodule Skate.Notifications.NotificationReason do
   @moduledoc false
 
   use Ecto.Type

@@ -1,4 +1,4 @@
-defmodule Notifications.NotificationServer do
+defmodule Skate.Notifications.NotificationServer do
   @moduledoc """
   `GenServer` which implements a "PubSub" to deliver `Notifications.Notification`'s.
 
@@ -40,11 +40,13 @@ defmodule Notifications.NotificationServer do
 
   use GenServer
 
+  alias Skate.Notifications
+
   require Logger
 
   # Client
   @spec default_name() :: GenServer.name()
-  def default_name(), do: Notifications.NotificationServer
+  def default_name(), do: Skate.Notifications.NotificationServer
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do

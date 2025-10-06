@@ -1,4 +1,4 @@
-defmodule Notifications.Notification do
+defmodule Skate.Notifications.Notification do
   @moduledoc """
   Context for managing Notifications.
   """
@@ -6,9 +6,10 @@ defmodule Notifications.Notification do
   import Ecto.Query
 
   alias Skate.Settings.Db.User, as: DbUser
-  alias Notifications.NotificationState
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
-  alias Notifications.NotificationEncoder
+  alias Skate.Notifications
+  alias Skate.Notifications.NotificationState
+  alias Skate.Notifications.Db.NotificationUser, as: DbNotificationUser
+  alias Skate.Notifications.NotificationEncoder
 
   require Logger
 

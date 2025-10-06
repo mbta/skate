@@ -1,8 +1,8 @@
 defmodule SkateWeb.NotificationReadStatesControllerTest do
   use SkateWeb.ConnCase
   import Skate.Factory
-  alias Notifications.Notification
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
+  alias Skate.Notifications.Notification
+  alias Skate.Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.RouteTab
   alias Skate.Settings.User
 

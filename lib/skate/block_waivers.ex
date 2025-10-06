@@ -4,7 +4,7 @@ defmodule Skate.BlockWaivers do
   to `Notifications.Db.BlockWaiver` notifications.
   """
 
-  alias Notifications.NotificationReason
+  alias Skate.Notifications
   alias Realtime.{BlockWaiver, Ghost, Vehicle}
   alias Schedule.Block
 
@@ -100,7 +100,7 @@ defmodule Skate.BlockWaivers do
 
   # See Realtime.BlockWaiver for the full mapping between numeric
   # `cause_id`s and textual `cause_description`s.
-  @spec get_notification_reason(BlockWaiver.t()) :: NotificationReason.t() | nil
+  @spec get_notification_reason(BlockWaiver.t()) :: Notifications.NotificationReason.t() | nil
   defp get_notification_reason(block_waiver) do
     case block_waiver.cause_id do
       1 -> :other
