@@ -218,16 +218,16 @@ defmodule Skate.Notifications.Notification do
       iex> %Skate.Detours.Db.Detour{id: detour_id} = detour = Skate.Factory.insert(:detour)
       ...>
       ...> {:ok, result} =
-      ...>   Notifications.Notification.create_detour_expiration_notification(%{
+      ...>   Skate.Notifications.Notification.create_detour_expiration_notification(%{
       ...>     detour: detour,
       ...>     expires_in: Duration.new!(minute: 30),
       ...>     estimated_duration: "1 hour",
       ...>     notification: %{}
       ...>   })
       ...>
-      ...> %Notifications.Db.DetourExpiration{
+      ...> %Skate.Notifications.Db.DetourExpiration{
       ...>   detour_id: ^detour_id,
-      ...>   notification: %Notifications.Db.Notification{}
+      ...>   notification: %Skate.Notifications.Db.Notification{}
       ...> } = result
 
   ### Creating a notification and backdating the notification `created_at` time
@@ -239,7 +239,7 @@ defmodule Skate.Notifications.Notification do
       ...>   |> DateTime.to_unix()
       ...>
       ...> {:ok, result} =
-      ...>   Notifications.Notification.create_detour_expiration_notification(%{
+      ...>   Skate.Notifications.Notification.create_detour_expiration_notification(%{
       ...>     detour: detour,
       ...>     expires_in: Duration.new!(minute: 30),
       ...>     estimated_duration: "1 hour",
@@ -248,9 +248,9 @@ defmodule Skate.Notifications.Notification do
       ...>     }
       ...>   })
       ...>
-      ...> %Notifications.Db.DetourExpiration{
+      ...> %Skate.Notifications.Db.DetourExpiration{
       ...>   detour_id: ^detour_id,
-      ...>   notification: %Notifications.Db.Notification{created_at: ^created_at}
+      ...>   notification: %Skate.Notifications.Db.Notification{created_at: ^created_at}
       ...> } = result
   """
   def create_detour_expiration_notification(params) when is_map(params) do

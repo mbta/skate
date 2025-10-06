@@ -58,15 +58,15 @@ defmodule Skate.Notifications.Db.Detour do
 
         iex> :detour
         ...> |> insert()
-        ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
+        ...> |> Skate.Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
         ...> all_detour_notifications =
-        ...>   Notifications.Db.Detour.Queries.base()
+        ...>   Skate.Notifications.Db.Detour.Queries.base()
         ...>   |> Skate.Repo.all()
         ...>
         ...> match?(
         ...>   [
-        ...>     %Notifications.Db.Detour{}
+        ...>     %Skate.Notifications.Db.Detour{}
         ...>   ],
         ...>   all_detour_notifications
         ...> )
@@ -90,14 +90,14 @@ defmodule Skate.Notifications.Db.Detour do
 
         iex> :detour
         ...> |> insert()
-        ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
+        ...> |> Skate.Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
         ...> all_detour_notifications =
-        ...>   Notifications.Db.Detour.Queries.select_detour_notification_info()
+        ...>   Skate.Notifications.Db.Detour.Queries.select_detour_notification_info()
         ...>   |> Skate.Repo.all()
         ...>
         ...> [
-        ...>   %Notifications.Db.Detour{
+        ...>   %Skate.Notifications.Db.Detour{
         ...>     route: route,
         ...>     origin: origin,
         ...>     headsign: headsign,

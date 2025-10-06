@@ -7,6 +7,7 @@ defmodule Skate.Notifications.NotificationTest do
 
   import Skate.Factory
 
+  alias Skate.Notifications
   alias Skate.Notifications.Notification
   alias Skate.Notifications.Db.Notification, as: DbNotification
   alias Skate.Settings.RouteTab
@@ -366,7 +367,7 @@ defmodule Skate.Notifications.NotificationTest do
 
       # Log location/MFA
       assert log =~
-               "mfa=Notifications.Notification.create_activated_detour_notification_from_detour"
+               "mfa=Skate.Notifications.Notification.create_activated_detour_notification_from_detour"
 
       # Result of operation
       assert log =~ " result=notification_created"
@@ -443,7 +444,7 @@ defmodule Skate.Notifications.NotificationTest do
 
       # Log location/MFA
       assert log =~
-               "mfa=Notifications.Notification.create_deactivated_detour_notification_from_detour"
+               "mfa=Skate.Notifications.Notification.create_deactivated_detour_notification_from_detour"
 
       # Result of operation
       assert log =~ " result=notification_created"
@@ -497,7 +498,9 @@ defmodule Skate.Notifications.NotificationTest do
         end)
 
       # Log location/MFA
-      assert log_lowered =~ "mfa=Notifications.Notification.create_bridge_movement_notification"
+      assert log_lowered =~
+               "mfa=Skate.Notifications.Notification.create_bridge_movement_notification"
+
       # Result of operation
       assert log_lowered =~ "result=notification_created"
       # Notification information
@@ -517,7 +520,9 @@ defmodule Skate.Notifications.NotificationTest do
         end)
 
       # Log location/MFA
-      assert log_raised =~ "mfa=Notifications.Notification.create_bridge_movement_notification"
+      assert log_raised =~
+               "mfa=Skate.Notifications.Notification.create_bridge_movement_notification"
+
       # Result of operation
       assert log_raised =~ "result=notification_created "
       # Notification information
@@ -538,7 +543,7 @@ defmodule Skate.Notifications.NotificationTest do
 
       # Log location/MFA
       assert changeset_error =~
-               "mfa=Notifications.Notification.create_bridge_movement_notification"
+               "mfa=Skate.Notifications.Notification.create_bridge_movement_notification"
 
       # Error information
       assert changeset_error =~ "result=error"
@@ -580,7 +585,9 @@ defmodule Skate.Notifications.NotificationTest do
         end)
 
       # Log location/MFA
-      assert log_30m =~ "mfa=Notifications.Notification.create_detour_expiration_notification"
+      assert log_30m =~
+               "mfa=Skate.Notifications.Notification.create_detour_expiration_notification"
+
       # Result of operation
       assert log_30m =~ " result=notification_created"
       # Notification information
@@ -601,7 +608,9 @@ defmodule Skate.Notifications.NotificationTest do
         end)
 
       # Log location/MFA
-      assert log_0m =~ "mfa=Notifications.Notification.create_detour_expiration_notification"
+      assert log_0m =~
+               "mfa=Skate.Notifications.Notification.create_detour_expiration_notification"
+
       # Result of operation
       assert log_0m =~ " result=notification_created"
       # Notification information
@@ -625,7 +634,7 @@ defmodule Skate.Notifications.NotificationTest do
         end)
 
       # Log location/MFA
-      assert log =~ "mfa=Notifications.Notification.create_detour_expiration_notification"
+      assert log =~ "mfa=Skate.Notifications.Notification.create_detour_expiration_notification"
       # Error information
       assert log =~ "result=error"
       assert log =~ ~r/error=#Ecto.Changeset<.*>\n/
@@ -766,7 +775,7 @@ defmodule Skate.Notifications.NotificationTest do
         end)
 
       # Log location/MFA
-      assert log =~ "mfa=Notifications.Notification.create_block_waiver_notification"
+      assert log =~ "mfa=Skate.Notifications.Notification.create_block_waiver_notification"
       # Result of operation
       assert log =~ " result=notification_created"
       # Notification information
