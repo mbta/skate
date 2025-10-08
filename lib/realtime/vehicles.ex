@@ -6,6 +6,8 @@ defmodule Realtime.Vehicles do
   alias Schedule.Gtfs.{Direction, Timepoint}
   alias Schedule.Run
 
+  require Logger
+
   @doc """
   Return a map of vehicles & ghosts by route_id, omitting those without a route_id.
 
@@ -112,7 +114,38 @@ defmodule Realtime.Vehicles do
               trip.block_id == vehicle_or_ghost.block_id && trip.route_id == route_id
             end)
 
-          block_date = Map.fetch!(date_by_block_id, incoming_trip.block_id)
+          block_date =
+            case Map.fetch(date_by_block_id, incoming_trip.block_id) do
+              {:ok, block_date} ->
+                block_date
+
+              :error ->
+                vehicle =
+                  vehicle_or_ghost
+                  |> Map.from_struct()
+                  |> Map.take([
+                    :id,
+                    :trip_id,
+                    :block_id,
+                    :run_id,
+                    :route_id,
+                    :route_status,
+                    :sources
+                  ])
+
+                trip =
+                  incoming_trip
+                  |> Map.from_struct()
+                  |> Map.take([:id, :block_id, :run_id, :schedule_id])
+
+                # This is logged as an error because this isn't expected (formerly a call to Map.fetch!)
+                Logger.error(
+                  "block_not_found block not found for vehicle=#{inspect(vehicle)} trip=#{inspect(trip)} block_id=#{trip.block_id} route_id=#{route_id} "
+                )
+
+                # Fallback to today instead of crashing while we attempt to debug this error state
+                Date.utc_today()
+            end
 
           incoming_trip_start_timestamp =
             Util.Time.timestamp_for_time_of_day(incoming_trip.start_time, block_date)
