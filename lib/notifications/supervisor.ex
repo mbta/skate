@@ -12,7 +12,7 @@ defmodule Notifications.Supervisor do
     children = [
       {Phoenix.PubSub, name: Notifications.PubSub},
       {Notifications.NotificationServer,
-       name: Notifications.NotificationServer.default_name(), pubsub_name: Notifications.PubSu},
+       name: Notifications.NotificationServer.default_name(), pubsub_name: Notifications.PubSub},
       {Notifications.Bridge, name: Notifications.Bridge.default_name()}
     ]
 
