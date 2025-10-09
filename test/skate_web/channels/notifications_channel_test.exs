@@ -3,6 +3,7 @@ defmodule SkateWeb.NotificationsChannelTest do
   import Test.Support.Helpers
 
   alias Phoenix.Socket
+  alias Skate.Notifications
   alias SkateWeb.{NotificationsChannel, UserSocket}
 
   setup do

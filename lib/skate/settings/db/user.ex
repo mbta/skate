@@ -6,8 +6,8 @@ defmodule Skate.Settings.Db.User do
   use Skate.Schema
   import Ecto.Changeset
 
-  alias Notifications.Db.Notification, as: DbNotification
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
+  alias Skate.Notifications.Db.Notification, as: DbNotification
+  alias Skate.Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.Db.RouteTab, as: DbRouteTab
   alias Skate.Settings.Db.TestGroupUser, as: DbTestGroupUser
   alias Skate.Settings.Db.UserSettings, as: DbUserSettings

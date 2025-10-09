@@ -1,4 +1,4 @@
-defmodule Notifications.Db.BridgeMovement do
+defmodule Skate.Notifications.Db.BridgeMovement do
   @moduledoc """
   Ecto Model for `bridge_movements` Database table
   """
@@ -6,7 +6,8 @@ defmodule Notifications.Db.BridgeMovement do
   use Skate.Schema
   import Ecto.Changeset
 
-  alias Notifications.BridgeStatus
+  alias Skate.Notifications
+  alias Skate.Notifications.BridgeStatus
 
   @derive {Jason.Encoder,
            only: [

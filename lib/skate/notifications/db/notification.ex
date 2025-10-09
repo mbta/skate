@@ -1,4 +1,4 @@
-defmodule Notifications.Db.Notification do
+defmodule Skate.Notifications.Db.Notification do
   @moduledoc """
   Ecto Model for `notifications` Database table
   """
@@ -6,9 +6,10 @@ defmodule Notifications.Db.Notification do
   use Skate.Schema
   import Ecto.Changeset
 
-  alias Notifications.Db.BlockWaiver, as: DbBlockWaiver
-  alias Notifications.Db.BridgeMovement, as: DbBridgeMovement
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
+  alias Skate.Notifications
+  alias Skate.Notifications.Db.BlockWaiver, as: DbBlockWaiver
+  alias Skate.Notifications.Db.BridgeMovement, as: DbBridgeMovement
+  alias Skate.Notifications.Db.NotificationUser, as: DbNotificationUser
   alias Skate.Settings.Db.User, as: DbUser
 
   typed_schema "notifications" do
@@ -46,16 +47,16 @@ defmodule Notifications.Db.Notification do
       ...>   |> DateTime.to_unix()
       ...>
       ...> %{created_at: ^current_time} =
-      ...>   %Notifications.Db.Notification{}
-      ...>   |> Notifications.Db.Notification.changeset(%{created_at: current_time})
+      ...>   %Skate.Notifications.Db.Notification{}
+      ...>   |> Skate.Notifications.Db.Notification.changeset(%{created_at: current_time})
       ...>   |> Ecto.Changeset.apply_action!(:insert)
 
   ### Create Notification and default the current time to now
       iex> current_time = DateTime.utc_now() |> DateTime.to_unix()
       ...>
       ...> %{created_at: created_at} =
-      ...>   %Notifications.Db.Notification{}
-      ...>   |> Notifications.Db.Notification.changeset(%{})
+      ...>   %Skate.Notifications.Db.Notification{}
+      ...>   |> Skate.Notifications.Db.Notification.changeset(%{})
       ...>   |> Ecto.Changeset.apply_action!(:insert)
       ...>
       ...> current_time <= created_at
@@ -178,18 +179,18 @@ defmodule Notifications.Db.Notification do
 
         iex> :detour
         ...> |> insert()
-        ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
+        ...> |> Skate.Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
         ...> all_detour_notifications =
-        ...>   Notifications.Db.Notification.Queries.base()
-        ...>   |> Notifications.Db.Notification.Queries.select_detour_info()
+        ...>   Skate.Notifications.Db.Notification.Queries.base()
+        ...>   |> Skate.Notifications.Db.Notification.Queries.select_detour_info()
         ...>   |> Skate.Repo.all()
         ...>   |> Skate.Repo.preload(:detour)
         ...>
         ...> match?(
         ...>   [
-        ...>     %Notifications.Db.Notification{
-        ...>       detour: %Notifications.Db.Detour{}
+        ...>     %Skate.Notifications.Db.Notification{
+        ...>       detour: %Skate.Notifications.Db.Detour{}
         ...>     }
         ...>   ],
         ...>   all_detour_notifications
@@ -200,17 +201,17 @@ defmodule Notifications.Db.Notification do
 
         iex> :detour
         ...> |> insert()
-        ...> |> Notifications.Notification.create_activated_detour_notification_from_detour()
+        ...> |> Skate.Notifications.Notification.create_activated_detour_notification_from_detour()
         ...>
         ...> all_detour_notifications =
-        ...>   Notifications.Db.Notification.Queries.select_detour_info()
+        ...>   Skate.Notifications.Db.Notification.Queries.select_detour_info()
         ...>   |> Skate.Repo.all()
         ...>   |> Skate.Repo.preload(:detour)
         ...>
         ...> match?(
         ...>   [
-        ...>     %Notifications.Db.Notification{
-        ...>       detour: %Notifications.Db.Detour{}
+        ...>     %Skate.Notifications.Db.Notification{
+        ...>       detour: %Skate.Notifications.Db.Detour{}
         ...>     }
         ...>   ],
         ...>   all_detour_notifications
@@ -245,18 +246,18 @@ defmodule Notifications.Db.Notification do
         ...> |> with_direction(:outbound)
         ...> |> with_headsign("17 Outbound")
         ...> |> insert()
-        ...> |> Notifications.Notification.create_detour_expiration_notification(%{
+        ...> |> Skate.Notifications.Notification.create_detour_expiration_notification(%{
         ...>   estimated_duration: "1 hour",
         ...>   expires_in: Duration.new!(minute: 30)
         ...> })
         ...>
         ...> all_detour_notifications =
-        ...>   Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
+        ...>   Skate.Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
         ...>   |> Skate.Repo.all()
         ...>
         ...> [
-        ...>   %Notifications.Db.Notification{
-        ...>     detour_expiration: %Notifications.Db.DetourExpiration{
+        ...>   %Skate.Notifications.Db.Notification{
+        ...>     detour_expiration: %Skate.Notifications.Db.DetourExpiration{
         ...>       estimated_duration: "1 hour",
         ...>       expires_in: %Duration{second: 1800},
         ...>       headsign: "17 Outbound",
@@ -272,19 +273,19 @@ defmodule Notifications.Db.Notification do
 
         iex> :detour
         ...> |> insert()
-        ...> |> Notifications.Notification.create_detour_expiration_notification(%{
+        ...> |> Skate.Notifications.Notification.create_detour_expiration_notification(%{
         ...>   estimated_duration: "1 hour",
         ...>   expires_in: Duration.new!(minute: 30)
         ...> })
         ...>
         ...> all_detour_notifications =
-        ...>   Notifications.Db.Notification.Queries.base()
-        ...>   |> Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
+        ...>   Skate.Notifications.Db.Notification.Queries.base()
+        ...>   |> Skate.Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
         ...>   |> Skate.Repo.all()
         ...>
         ...> [
-        ...>   %Notifications.Db.Notification{
-        ...>     detour_expiration: %Notifications.Db.DetourExpiration{
+        ...>   %Skate.Notifications.Db.Notification{
+        ...>     detour_expiration: %Skate.Notifications.Db.DetourExpiration{
         ...>       estimated_duration: "1 hour",
         ...>       expires_in: %Duration{second: 1800}
         ...>     }
@@ -295,18 +296,18 @@ defmodule Notifications.Db.Notification do
 
         iex> :detour
         ...> |> insert()
-        ...> |> Notifications.Notification.create_detour_expiration_notification(%{
+        ...> |> Skate.Notifications.Notification.create_detour_expiration_notification(%{
         ...>   estimated_duration: "1 hour",
         ...>   expires_in: Duration.new!(minute: 30)
         ...> })
         ...>
         ...> all_detour_notifications =
-        ...>   Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
+        ...>   Skate.Notifications.Db.Notification.Queries.select_detour_expiration_notifications()
         ...>   |> Skate.Repo.all()
         ...>
         ...> [
-        ...>   %Notifications.Db.Notification{
-        ...>     detour_expiration: %Notifications.Db.DetourExpiration{
+        ...>   %Skate.Notifications.Db.Notification{
+        ...>     detour_expiration: %Skate.Notifications.Db.DetourExpiration{
         ...>       estimated_duration: "1 hour",
         ...>       expires_in: %Duration{second: 1800}
         ...>     }

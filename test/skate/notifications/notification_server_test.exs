@@ -1,9 +1,9 @@
-defmodule Notifications.NotificationServerTest do
+defmodule Skate.Notifications.NotificationServerTest do
   use Skate.DataCase
   import Skate.Factory
 
-  alias Notifications.Notification
-  alias Notifications.NotificationServer
+  alias Skate.Notifications
+  alias Skate.Notifications.NotificationServer
 
   import ExUnit.CaptureLog, only: [capture_log: 2]
   import Skate.Factory
@@ -120,7 +120,7 @@ defmodule Notifications.NotificationServerTest do
           assert_receive {:notification, %Notifications.Notification{id: ^id}}
         end)
 
-      assert log =~ "mfa=Notifications.NotificationServer.broadcast_to_cluster/3"
+      assert log =~ "mfa=Skate.Notifications.NotificationServer.broadcast_to_cluster/3"
       assert log =~ "notification_id=#{id}"
       assert log =~ "nodes=[:nonode@nohost]"
     end
@@ -183,12 +183,13 @@ defmodule Notifications.NotificationServerTest do
         end)
 
       assert log_specific_users =~
-               "mfa=Notifications.NotificationServer.broadcast_to_subscribers/3"
+               "mfa=Skate.Notifications.NotificationServer.broadcast_to_subscribers/3"
 
       assert log_specific_users =~
                "notification_id=#{log_specific_users_id} messages_sent=3 total_subscribers=4 user_id_count=2"
 
-      assert log_all_users =~ "mfa=Notifications.NotificationServer.broadcast_to_subscribers/3"
+      assert log_all_users =~
+               "mfa=Skate.Notifications.NotificationServer.broadcast_to_subscribers/3"
 
       assert log_all_users =~
                "notification_id=#{log_all_users_id} messages_sent=4 total_subscribers=4 user_match_pattern=all"
@@ -216,7 +217,7 @@ defmodule Notifications.NotificationServerTest do
       detour = insert(:detour)
 
       {:ok, %{notification: %{id: id}}} =
-        Notification.create_detour_expiration_notification(
+        Notifications.Notification.create_detour_expiration_notification(
           detour,
           %{
             expires_in: Duration.new!(minute: 30),

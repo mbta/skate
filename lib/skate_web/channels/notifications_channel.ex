@@ -4,6 +4,8 @@ defmodule SkateWeb.NotificationsChannel do
   use SkateWeb, :channel
   use SkateWeb.AuthenticatedChannel
 
+  alias Skate.Notifications
+
   @impl SkateWeb.AuthenticatedChannel
   def handle_info_authenticated({:notification, notification}, socket) do
     :ok = push(socket, "notification", %{data: notification})

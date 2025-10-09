@@ -1,4 +1,4 @@
-defmodule Notifications.BridgeStatus do
+defmodule Skate.Notifications.BridgeStatus do
   @moduledoc false
 
   use Ecto.Type

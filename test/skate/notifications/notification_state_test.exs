@@ -1,7 +1,7 @@
 defmodule Skate.Notifications.NotificationStateTest do
   use ExUnit.Case
 
-  alias Notifications.NotificationState
+  alias Skate.Notifications.NotificationState
 
   describe "cast/1" do
     test "works with a valid state" do

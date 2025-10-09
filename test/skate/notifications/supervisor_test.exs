@@ -1,7 +1,7 @@
-defmodule Notifications.SupervisorTest do
+defmodule Skate.Notifications.SupervisorTest do
   use ExUnit.Case, async: true
 
-  alias Notifications.Supervisor
+  alias Skate.Notifications.Supervisor
 
   describe "start_link/1" do
     test "can start the application" do

@@ -63,10 +63,10 @@ export type NotificationId = string
 // `__struct__` field is serialized so that the type can be discerned on the
 // frontend.
 export enum NotificationType {
-  BridgeMovement = "Elixir.Notifications.Db.BridgeMovement",
-  BlockWaiver = "Elixir.Notifications.Db.BlockWaiver",
-  Detour = "Elixir.Notifications.Db.Detour",
-  DetourExpiration = "Elixir.Notifications.Db.DetourExpiration",
+  BridgeMovement = "Elixir.Skate.Notifications.Db.BridgeMovement",
+  BlockWaiver = "Elixir.Skate.Notifications.Db.BlockWaiver",
+  Detour = "Elixir.Skate.Notifications.Db.Detour",
+  DetourExpiration = "Elixir.Skate.Notifications.Db.DetourExpiration",
 }
 export function isDetourNotification(
   notification: Notification

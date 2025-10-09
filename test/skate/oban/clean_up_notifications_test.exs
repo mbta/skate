@@ -6,7 +6,7 @@ defmodule Skate.Oban.CleanUpNotificationsTest do
 
   alias ExUnit.CaptureLog
 
-  alias Notifications.Db.Notification
+  alias Skate.Notifications.Db.Notification
   alias Skate.Oban.CleanUpNotifications
   alias Skate.Factory
 

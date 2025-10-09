@@ -1,7 +1,8 @@
-defmodule Notifications.Detour do
+defmodule Skate.Notifications.Detour do
   @moduledoc """
   Context for working with Detour notifications
   """
+  alias Skate.Notifications
 
   @doc """
   Creates a detour notification struct from a detour to insert into the database
