@@ -10,7 +10,7 @@ defmodule Notifications.Supervisor do
   @impl true
   def init(:ok) do
     children = [
-      {Phoenix.PubSub, name: Notifications.PubSu},
+      {Phoenix.PubSub, name: Notifications.PubSub},
       {Notifications.NotificationServer,
        name: Notifications.NotificationServer.default_name(), pubsub_name: Notifications.PubSu},
       {Notifications.Bridge, name: Notifications.Bridge.default_name()}
