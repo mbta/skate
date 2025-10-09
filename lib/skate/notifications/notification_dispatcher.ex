@@ -1,4 +1,4 @@
-defmodule Notifications.NotificationDispatcher do
+defmodule Skate.Notifications.NotificationDispatcher do
   @moduledoc """
   Module responsible for dispatching notifications to subscribers via Phoenix.PubSub.
   """
