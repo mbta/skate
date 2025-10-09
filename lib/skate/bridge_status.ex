@@ -1,7 +1,7 @@
 defmodule Skate.BridgeStatus do
   @moduledoc """
   Context for recording and deduplicating Bridge status changes reported from
-  `Notifications.Bridge` and creating notifications from those reports.
+  `Skate.Notifications.Bridge` and creating notifications from those reports.
 
   ## Options
   This module sources additional configuration from the `:skate` application
@@ -9,6 +9,8 @@ defmodule Skate.BridgeStatus do
   """
 
   import Ecto.Query
+
+  alias Skate.Notifications
 
   @doc """
   Accepts a bridge status change event and creates a

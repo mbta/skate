@@ -1,8 +1,9 @@
-defmodule Notifications.BridgeTest do
+defmodule Skate.Notifications.BridgeTest do
   use ExUnit.Case
   import Test.Support.Helpers
-  import Notifications.Bridge
+  import Skate.Notifications.Bridge
   import ExUnit.CaptureLog
+  alias Skate.Notifications
 
   describe "init/1" do
     test "issues warning and doesn't start without a host" do

@@ -1,7 +1,7 @@
 defmodule SkateWeb.NotificationReadStatesController do
   use SkateWeb, :controller
 
-  alias Notifications.Notification
+  alias Skate.Notifications.Notification
   alias SkateWeb.AuthManager
 
   def update(conn, %{"new_state" => new_read_state, "notification_ids" => notification_ids}) do

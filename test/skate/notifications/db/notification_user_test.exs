@@ -1,10 +1,10 @@
-defmodule Notifications.Db.NotificationUserTest do
+defmodule Skate.Notifications.Db.NotificationUserTest do
   use Skate.DataCase
 
   import Skate.Factory
 
-  alias Notifications.Db.Notification, as: DbNotification
-  alias Notifications.Db.NotificationUser, as: DbNotificationUser
+  alias Skate.Notifications.Db.Notification, as: DbNotification
+  alias Skate.Notifications.Db.NotificationUser, as: DbNotificationUser
 
   describe "NotificationUser" do
     test "can be saved to the database" do

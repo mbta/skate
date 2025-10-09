@@ -3,6 +3,7 @@ defmodule Skate.Detours.NotificationScheduler do
   Interface for managing scheduled detour notifications.
   """
 
+  alias Skate.Notifications
   alias Skate.Detours.Db.{Detour, DetourExpirationTask}
   require Logger
   import Ecto.Query

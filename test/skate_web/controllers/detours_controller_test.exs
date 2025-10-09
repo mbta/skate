@@ -10,6 +10,7 @@ defmodule SkateWeb.DetoursControllerTest do
 
   alias ExUnit.CaptureLog
 
+  alias Skate.Notifications
   alias Skate.Detours.Detours
   alias Skate.Detours.MissedStops
 

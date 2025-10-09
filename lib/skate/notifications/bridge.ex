@@ -1,4 +1,4 @@
-defmodule Notifications.Bridge do
+defmodule Skate.Notifications.Bridge do
   @moduledoc """
   Queries and maintains the status of a bridge
   """
@@ -15,7 +15,7 @@ defmodule Notifications.Bridge do
   @token_endpoint "token"
 
   @spec default_name() :: GenServer.name()
-  def default_name(), do: Notifications.Bridge
+  def default_name(), do: Skate.Notifications.Bridge
 
   @spec start_link(Keyword.t()) :: GenServer.on_start()
   def start_link(opts \\ []) do
