@@ -46,11 +46,14 @@ defmodule SkateWeb.DetoursControllerTest do
     end
 
     defp setup_notification_server do
-      registry_name = :new_notifications_registry
-      start_supervised({Registry, keys: :duplicate, name: registry_name})
-      reassign_env(:notifications, :registry, registry_name)
+      pubsub_name = :test_notifications_pubsub
 
-      start_link_supervised!(Notifications.NotificationServer)
+      start_supervised({Phoenix.PubSub, name: pubsub_name})
+
+      start_supervised(
+        {Notifications.NotificationServer,
+         name: Notifications.NotificationServer.default_name(), pubsub_name: pubsub_name}
+      )
     end
 
     @tag :authenticated
