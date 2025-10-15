@@ -40,6 +40,8 @@ export const createDetourMachine = setup({
       activatedAt?: Date
 
       editedSelectedDuration?: string
+
+      isCopiedDetour?: boolean
     },
 
     input: {} as
@@ -242,6 +244,7 @@ export const createDetourMachine = setup({
     nearestIntersection: null,
     finishedDetour: undefined,
     detourShape: undefined,
+    isCopiedDetour: false,
   }),
   type: "parallel",
   initial: "Detour Drawing",
