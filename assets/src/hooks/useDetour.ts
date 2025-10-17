@@ -70,8 +70,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     selectedDuration,
     selectedReason,
     editedSelectedDuration,
-    // TODO: remove, temporary for testing
-    isCopiedDetour = true,
   } = snapshot.context
 
   const { result: unfinishedDetour } = useApiCall({
@@ -222,8 +220,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     /** When present, puts this detour in "edit mode" */
     editDetour,
 
-    /** Temporary value if a detour was created by copying another detour */
-    isCopiedDetour,
     /**
      * Detour duration as selected in the activate-detour flow
      */

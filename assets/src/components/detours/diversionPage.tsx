@@ -115,7 +115,6 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
-    isCopiedDetour,
 
     selectedDuration,
     selectedReason,
@@ -619,7 +618,6 @@ export const DiversionPage = ({
             </RoutingErrorAlert>
           )}
           {routingError?.type === "unknown" && <RoutingErrorAlert />}
-          {isCopiedDetour && <CopiedDetourAlert />}
           <DetourMap
             originalShape={shape?.points ?? []}
             center={
