@@ -4,13 +4,11 @@ import React, {
   PropsWithChildren,
   useCallback,
   useContext,
-  useState,
 } from "react"
 import { DrawDetourPanel } from "./detourPanels/drawDetourPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
 import { Alert, CloseButton } from "react-bootstrap"
-import * as BsIcons from "../../helpers/bsIcons"
 import { InfoCircleIcon } from "../../helpers/icon"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
@@ -30,6 +28,7 @@ import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
 import { DeleteDetourModal } from "./deleteDetourModal"
+import RoutingErrorAlert from "./alerts/routingErrorAlert"
 import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
@@ -723,27 +722,6 @@ const DiversionPagePanelFooter = ({
     {children}
   </div>
 )
-
-// If we just use the `dismissible` prop, the close button is
-// positioned absolutely in a way that looks weird, so we need to wrap
-// the Alert in our own show state logic.
-const RoutingErrorAlert = ({
-  children,
-}: PropsWithChildren): React.ReactElement => {
-  const [show, setShow] = useState<boolean>(true)
-
-  return (
-    <Alert
-      variant="ui-alert"
-      className="position-absolute top-0 left-0 mt-3 start-50 translate-middle-x icon-link z-1"
-      show={show}
-    >
-      <BsIcons.ExclamationTriangleFill />
-      {children ?? "Something went wrong. Please try again."}
-      <CloseButton onClick={() => setShow(false)} />
-    </Alert>
-  )
-}
 
 DiversionPagePanel.Header = DiversionPagePanelHeader
 
