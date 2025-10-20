@@ -21,7 +21,7 @@ export const DetourModal = ({
   ...useDetourProps
 }: {
   onClose: () => void
-  onOpenDetour: (detourId: number) => void
+  onOpenDetour?: (detourId: number) => void
   show: boolean
 } & DiversionPageStateProps) => {
   return (

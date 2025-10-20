@@ -35,6 +35,7 @@ import { isMobile } from "../../util/screenSize"
 import { AffectedRoute } from "./detourPanelComponents"
 import { ChangeDuration } from "./changeDurationModal"
 import { deleteDetour, copyToDraftDetour } from "../../api"
+import { isOk } from "../../util/result"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -137,10 +138,11 @@ export const DiversionPage = ({
   const copyToDraftDetourCallback = useCallback(() => {
     if (snapshot.context.uuid) {
       copyToDraftDetour(snapshot.context.uuid).then(async (response) => {
-        onClose()
-        await new Promise((resolve) => setTimeout(resolve, 200))
-        onOpenDetour && onOpenDetour(response?.ok)
-        // show banner
+        if (response && isOk(response)) {
+          onClose()
+          await new Promise((resolve) => setTimeout(resolve, 200))
+          onOpenDetour && onOpenDetour(response?.ok)
+        }
       })
     }
   }, [onClose, onOpenDetour, snapshot.context.uuid])
