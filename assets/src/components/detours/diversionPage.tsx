@@ -122,9 +122,6 @@ export const DiversionPage = ({
     editedSelectedDuration,
   } = useDetour(useDetourProps)
 
-  console.log(useDetourProps)
-  console.log("snapshot", snapshot)
-
   const deleteDetourCallback = useCallback(() => {
     if (snapshot.context.uuid) {
       deleteDetour(snapshot.context.uuid).then(() => {
