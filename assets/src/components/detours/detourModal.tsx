@@ -16,15 +16,21 @@ const Fade = ({ children, ...props }: ModalTransitionProps) => (
 
 export const DetourModal = ({
   onClose,
+  onOpenDetour,
   show,
   ...useDetourProps
 }: {
   onClose: () => void
+  onOpenDetour: (detourId: number) => void
   show: boolean
 } & DiversionPageStateProps) => {
   return (
     <Modal className="c-detour-modal" show={show} transition={Fade}>
-      <DiversionPage {...useDetourProps} onClose={onClose} />
+      <DiversionPage
+        {...useDetourProps}
+        onClose={onClose}
+        onOpenDetour={onOpenDetour}
+      />
     </Modal>
   )
 }

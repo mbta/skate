@@ -2,7 +2,7 @@ import React from "react"
 import { Panel } from "../diversionPage"
 import { DetourDirection } from "../../../models/detour"
 import { Stop } from "../../../schedule"
-import { ArrowLeft } from "../../../helpers/bsIcons"
+import { ArrowLeft, Copy } from "../../../helpers/bsIcons"
 import { Button, ListGroup } from "react-bootstrap"
 import {
   AffectedRoute,
@@ -20,6 +20,7 @@ export interface PastDetourPanelProps {
   routeDescription: string
   routeOrigin: string
   routeDirection: string
+  onCopyToDraftDetour: () => void
   onNavigateBack: () => void
 }
 
@@ -32,6 +33,7 @@ export const PastDetourPanel = ({
   routeDescription,
   routeOrigin,
   routeDirection,
+  onCopyToDraftDetour,
   onNavigateBack,
 }: PastDetourPanelProps) => (
   <Panel as="article">
@@ -86,6 +88,18 @@ export const PastDetourPanel = ({
 
         {missedStops && <MissedStops missedStops={missedStops} />}
       </Panel.Body.ScrollArea>
+      <Panel.Body.Footer className="d-flex flex-column">
+        <Button
+          className="m-3 mb-0 flex-grow-1 icon-link"
+          variant="outline-primary"
+          onClick={onCopyToDraftDetour}
+          data-fs-element="Copy to new draft"
+          title="Copy to new draft"
+        >
+          <Copy />
+          Copy to new draft
+        </Button>
+      </Panel.Body.Footer>
     </Panel.Body>
   </Panel>
 )
