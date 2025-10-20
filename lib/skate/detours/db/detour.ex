@@ -57,6 +57,28 @@ defmodule Skate.Detours.Db.Detour do
     |> foreign_key_constraint(:author_id)
   end
 
+  require Logger
+
+  def update_copied_detour_state_changeset(detour) do
+    new_state =
+      detour.state
+      |> Map.put("context",
+        detour.state["context"]
+        |> Map.merge(%{"uuid" => detour.id})
+        |> Map.drop(["selectedReason", "selectedDuration", "activatedAt"])
+      )
+      |> Map.put("status", "draft")
+      |> Map.put("value", %{
+        "SaveState": "Saved",
+        "Detour Drawing": "Share Detour"
+      })
+
+    Logger.error(inspect(Map.keys(new_state["context"])))
+    detour
+    |> change(%{activated_at: nil})
+    |> change(%{state: new_state})
+  end
+
   defp validate_activated_at(changeset) do
     case fetch_change(changeset, :activated_at) do
       {:ok, nil} -> delete_change(changeset, :activated_at)

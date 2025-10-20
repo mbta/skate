@@ -35,7 +35,7 @@ import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
 import { AffectedRoute } from "./detourPanelComponents"
 import { ChangeDuration } from "./changeDurationModal"
-import { deleteDetour } from "../../api"
+import { deleteDetour, copyToDraftDetour } from "../../api"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -61,6 +61,7 @@ const parseIntoDirectionsList = (directions: string) => {
 
 interface DiversionPageFunctions {
   onClose: () => void
+  onOpenDetour?: (detourId: number) => void
 }
 
 interface DiversionPageFromInput {
@@ -83,6 +84,7 @@ export type DiversionPageProps = DiversionPageStateProps &
 
 export const DiversionPage = ({
   onClose,
+  onOpenDetour,
   ...useDetourProps
 }: DiversionPageProps) => {
   const {
@@ -132,6 +134,17 @@ export const DiversionPage = ({
       })
     }
   }, [onClose, send, snapshot.context.uuid])
+
+  const copyToDraftDetourCallback = useCallback(() => {
+    if (snapshot.context.uuid) {
+      copyToDraftDetour(snapshot.context.uuid).then(async (response) => {
+        onClose()
+        await new Promise((resolve) => setTimeout(resolve, 200))
+        onOpenDetour && onOpenDetour(response?.ok)
+        // show banner
+      })
+    }
+  }, [onClose, onOpenDetour, snapshot.context.uuid])
 
   const nearestIntersectionDirection = [
     { instruction: "From " + nearestIntersection },
@@ -188,8 +201,10 @@ export const DiversionPage = ({
 
   const detourPanel: ({
     deleteDetourCallback,
+    copyToDraftDetourCallback,
   }: {
     deleteDetourCallback: () => void
+    copyToDraftDetourCallback: () => void
   }) => React.JSX.Element = () => {
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
       return (
@@ -522,6 +537,7 @@ export const DiversionPage = ({
           routeOrigin={routeOrigin ?? "??"}
           routeDirection={routeDirection ?? "??"}
           onNavigateBack={onClose}
+          onCopyToDraftDetour={copyToDraftDetourCallback}
         />
       )
     } else {
@@ -581,10 +597,10 @@ export const DiversionPage = ({
         >
           {isMobile(displayType) ? (
             <Drawer.WithState startOpen>
-              {detourPanel({ deleteDetourCallback })}
+              {detourPanel({ deleteDetourCallback, copyToDraftDetourCallback })}
             </Drawer.WithState>
           ) : (
-            detourPanel({ deleteDetourCallback })
+            detourPanel({ deleteDetourCallback, copyToDraftDetourCallback })
           )}
         </div>
         <div className="l-diversion-page__map position-relative">

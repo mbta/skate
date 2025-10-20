@@ -123,6 +123,7 @@ export const DetourListPage = () => {
       {showDetourModal && (!detourId || detour) && (
         <DetourModal
           onClose={onCloseDetour}
+          onOpenDetour={onOpenDetour}
           show
           key={detourId ?? ""}
           {...(detour
