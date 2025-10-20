@@ -150,7 +150,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
   const [showDetourModal, setShowDetourModal] = useState(false)
   const [routeForDetour, setRouteForDetour] = useState<Route | null>(null)
   const [detourId, setDetourId] = useState<DetourId | undefined>()
-  const detour = useLoadDetour(detourId)
+  const { detour } = useLoadDetour(detourId)
 
   return (
     <div
