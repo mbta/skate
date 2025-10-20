@@ -43,7 +43,7 @@ export const DetourListPage = () => {
     Object.values(pastDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
   // --- End of detour channel initialization
 
-  const detour = useLoadDetour(detourId)
+  const { detour, isLoading: isLoadingDetour } = useLoadDetour(detourId)
 
   const onOpenDetour = (detourId: number) => {
     setDetourId(detourId)
@@ -120,7 +120,7 @@ export const DetourListPage = () => {
        * to ensure that either there's no `detourId` selected (i.e. make a new detour)
        * or the state has been successfully fetched from the api
        */}
-      {showDetourModal && (!detourId || detour) && (
+      {showDetourModal && (!detourId || detour) && !isLoadingDetour && (
         <DetourModal
           onClose={onCloseDetour}
           onOpenDetour={onOpenDetour}

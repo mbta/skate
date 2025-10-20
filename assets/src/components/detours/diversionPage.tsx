@@ -120,11 +120,10 @@ export const DiversionPage = ({
     selectedReason,
 
     editedSelectedDuration,
-  } = useDetour(
-    "snapshot" in useDetourProps
-      ? { snapshot: useDetourProps.snapshot }
-      : { input: useDetourProps.originalRoute }
-  )
+  } = useDetour(useDetourProps)
+
+  console.log(useDetourProps)
+  console.log("snapshot", snapshot)
 
   const deleteDetourCallback = useCallback(() => {
     if (snapshot.context.uuid) {
@@ -139,13 +138,11 @@ export const DiversionPage = ({
     if (snapshot.context.uuid) {
       copyToDraftDetour(snapshot.context.uuid).then(async (response) => {
         if (response && isOk(response)) {
-          onClose()
-          await new Promise((resolve) => setTimeout(resolve, 200))
           onOpenDetour && onOpenDetour(response?.ok)
         }
       })
     }
-  }, [onClose, onOpenDetour, snapshot.context.uuid])
+  }, [onOpenDetour, snapshot.context.uuid])
 
   const nearestIntersectionDirection = [
     { instruction: "From " + nearestIntersection },

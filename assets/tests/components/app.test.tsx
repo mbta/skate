@@ -55,7 +55,9 @@ beforeEach(() => {
   mockUsePanelState()
   // we _should_ mock the promise, but this file already are mocking hooks here,
   // and there are a lot of tests, so mocking the hook here too for now
-  jest.mocked(useLoadDetour).mockReturnValue(undefined)
+  jest
+    .mocked(useLoadDetour)
+    .mockReturnValue({ detour: undefined, isLoading: false })
 
   // Also, `useVehicles` should be mocked in beforeEach. To be done in future PR
 })
