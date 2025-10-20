@@ -292,7 +292,7 @@ defmodule Skate.Detours.Detours do
         new_draft_detour
         |> Detour.update_copied_detour_state_changeset()
         |> Repo.update()
-      Logger.error(inspect(updated_state_detour.state["context"]))
+
       broadcast_detour(updated_state_detour, author_id)
       {:ok, updated_state_detour}
     else
