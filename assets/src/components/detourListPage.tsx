@@ -20,11 +20,13 @@ import {
 import { SocketContext } from "../contexts/socketContext"
 
 export const DetourListPage = () => {
-  const [
-    { show: showDetourModal, fromCopy: showFromCopy },
-    setShowDetourModalProps,
-  ] = useState({ show: false, fromCopy: false })
+  const [showDetourModalProps, setShowDetourModalProps] = useState<{
+    show: boolean
+    fromCopy: boolean
+  }>({ show: false, fromCopy: false })
   const [detourId, setDetourId] = useState<number | undefined>()
+
+  const { show: showDetourModal, fromCopy: showFromCopy } = showDetourModalProps
 
   // Wait for the detour channels to initialize
   const { socket } = useContext(SocketContext)
