@@ -120,12 +120,13 @@ export const DetourListPage = () => {
        * to ensure that either there's no `detourId` selected (i.e. make a new detour)
        * or the state has been successfully fetched from the api
        */}
-      {showDetourModal && (!detourId || detour) && !isLoadingDetour && (
+      {showDetourModal && (!detourId || detour) && (
         <DetourModal
           onClose={onCloseDetour}
           onOpenDetour={onOpenDetour}
           show
           key={detourId ?? ""}
+          isLoadingDetour={isLoadingDetour}
           {...(detour
             ? {
                 snapshot: detour.state,
