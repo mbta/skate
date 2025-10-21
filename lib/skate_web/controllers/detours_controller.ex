@@ -163,7 +163,7 @@ defmodule SkateWeb.DetoursController do
 
   def copy_to_draft_detour(conn, %{"detour_id" => detour_id}) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
-    detour = Detours.get_detour_for_user!(detour_id, user_id)
+    detour = Detours.get_detour!(detour_id)
 
     case Detours.copy_to_draft_detour(detour, user_id) do
       {:ok, %Skate.Detours.Db.Detour{id: new_uuid}} ->
