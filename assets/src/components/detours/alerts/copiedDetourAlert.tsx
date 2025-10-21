@@ -20,17 +20,18 @@ const CopiedDetourAlert = ({
   return (
     <Alert
       variant="info"
-      className="position-absolute top-0 left-0 mt-2 start-50 w-25 translate-middle-x icon-link z-1"
+      className="c-copied-detour__alert position-absolute top-0 left-0 mt-2 start-50 translate-middle-x icon-link z-1"
       show={show}
     >
-      <div className="d-flex w-100 align-items-center">
-        <SuccessCircleIcon
-          aria-hidden={true}
-          className="c-copied-detour__success-icon me-2"
-        />
-        Detour copied successfully
-        <CloseButton className="ms-auto" onClick={() => setShow(false)} />
-      </div>
+      <SuccessCircleIcon
+        aria-hidden={true}
+        className="c-copied-detour__success-icon"
+      />
+      Detour copied successfully
+      <CloseButton
+        className="c-copied-detour__close-button p-1"
+        onClick={() => setShow(false)}
+      />
     </Alert>
   )
 }
