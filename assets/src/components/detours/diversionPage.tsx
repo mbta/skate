@@ -36,6 +36,7 @@ import { AffectedRoute } from "./detourPanelComponents"
 import { ChangeDuration } from "./changeDurationModal"
 import { deleteDetour, copyToDraftDetour } from "../../api"
 import { isOk } from "../../util/result"
+import CopiedDetourAlert from "./alerts/copiedDetourAlert"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -613,9 +614,7 @@ export const DiversionPage = ({
               Detour shape is not editable from this screen.
             </Alert>
           )}
-          {showFromCopy && (
-            <RoutingErrorAlert>This is from a copy</RoutingErrorAlert>
-          )}
+          {showFromCopy && <CopiedDetourAlert />}
           {routingError?.type === "no_route" && (
             <RoutingErrorAlert>
               You can&apos;t route to this location. Please try a different
