@@ -61,7 +61,8 @@ const parseIntoDirectionsList = (directions: string) => {
 
 interface DiversionPageFunctions {
   onClose: () => void
-  onOpenDetour?: (detourId: number) => void
+  onOpenDetour?: (detourId: number, props?: { fromCopy: boolean }) => void
+  showFromCopy?: boolean
 }
 
 interface DiversionPageFromInput {
@@ -85,6 +86,7 @@ export type DiversionPageProps = DiversionPageStateProps &
 export const DiversionPage = ({
   onClose,
   onOpenDetour,
+  showFromCopy,
   ...useDetourProps
 }: DiversionPageProps) => {
   const {
@@ -135,7 +137,7 @@ export const DiversionPage = ({
     if (snapshot.context.uuid) {
       copyToDraftDetour(snapshot.context.uuid).then(async (response) => {
         if (response && isOk(response)) {
-          onOpenDetour && onOpenDetour(response?.ok)
+          onOpenDetour && onOpenDetour(response?.ok, { fromCopy: true })
         }
       })
     }
@@ -610,6 +612,9 @@ export const DiversionPage = ({
               />
               Detour shape is not editable from this screen.
             </Alert>
+          )}
+          {showFromCopy && (
+            <RoutingErrorAlert>This is from a copy</RoutingErrorAlert>
           )}
           {routingError?.type === "no_route" && (
             <RoutingErrorAlert>
