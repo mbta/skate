@@ -8,5 +8,5 @@ defmodule Concentrate.Parser do
   """
   alias Concentrate.{StopTimeUpdate, TripUpdate, VehiclePosition}
   @type parsed :: VehiclePosition.t() | TripUpdate.t() | StopTimeUpdate.t()
-  @callback parse(binary) :: [term]
+  @callback parse(term) :: [term]
 end
