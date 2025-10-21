@@ -20,7 +20,10 @@ import {
 import { SocketContext } from "../contexts/socketContext"
 
 export const DetourListPage = () => {
-  const [showDetourModal, setShowDetourModal] = useState(false)
+  const [
+    { show: showDetourModal, fromCopy: showFromCopy },
+    setShowDetourModalProps,
+  ] = useState({ show: false, fromCopy: false })
   const [detourId, setDetourId] = useState<number | undefined>()
 
   // Wait for the detour channels to initialize
@@ -45,9 +48,13 @@ export const DetourListPage = () => {
 
   const { detour, isLoading: isLoadingDetour } = useLoadDetour(detourId)
 
-  const onOpenDetour = (detourId: number) => {
+  const setShowDetourModal = (show: boolean) => {
+    setShowDetourModalProps({ show: show, fromCopy: false })
+  }
+
+  const onOpenDetour = (detourId: number, props = { fromCopy: false }) => {
     setDetourId(detourId)
-    setShowDetourModal(true)
+    setShowDetourModalProps({ show: true, ...props })
   }
 
   const onCloseDetour = () => {
@@ -127,6 +134,7 @@ export const DetourListPage = () => {
           show
           key={detourId ?? ""}
           isLoadingDetour={isLoadingDetour}
+          showFromCopy={showFromCopy}
           {...(detour
             ? {
                 snapshot: detour.state,
