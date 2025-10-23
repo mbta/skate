@@ -614,7 +614,7 @@ export const DiversionPage = ({
               Detour shape is not editable from this screen.
             </Alert>
           )}
-          {showFromCopy && <CopiedDetourAlert />}
+          {true && <CopiedDetourAlert timeout={10000000} />}
           {routingError?.type === "no_route" && (
             <RoutingErrorAlert>
               You can&apos;t route to this location. Please try a different
