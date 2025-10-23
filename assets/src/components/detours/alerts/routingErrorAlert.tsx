@@ -13,7 +13,7 @@ const RoutingErrorAlert = ({
   return (
     <Alert
       variant="ui-alert"
-      className="position-absolute top-0 left-0 mt-3 start-50 translate-middle-x icon-link z-1"
+      className="rounded-1 position-absolute top-0 left-0 mt-3 start-50 translate-middle-x icon-link z-1"
       show={show}
     >
       <BsIcons.ExclamationTriangleFill />
