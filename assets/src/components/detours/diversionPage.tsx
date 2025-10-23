@@ -605,7 +605,7 @@ export const DiversionPage = ({
           {snapshot.matches({ "Detour Drawing": "Share Detour" }) && (
             <Alert
               variant="secondary"
-              className="position-absolute top-0 left-0 m-2 icon-link z-1 text-bg-light"
+              className="rounded-1 position-absolute top-0 left-0 m-2 icon-link z-1 text-bg-light"
             >
               <InfoCircleIcon
                 aria-hidden={true}

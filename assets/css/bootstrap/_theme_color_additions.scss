@@ -2,6 +2,8 @@
 
 $custom-theme-text: (
   "ui-alert": new_tokens.$strawberry-800,
+  "info": new_tokens.$kiwi-800,
+  "secondary": new_tokens.$gray-800,
 );
 
 $theme-colors-text: map-merge($theme-colors-text, $custom-theme-text);
@@ -9,7 +11,7 @@ $theme-colors-text: map-merge($theme-colors-text, $custom-theme-text);
 $custom-theme-bg-subtle: (
   "ui-alert": new_tokens.$strawberry-50,
   "info": new_tokens.$kiwi-100,
-  "secondary": new_tokens.$gray-50
+  "secondary": new_tokens.$gray-50,
 );
 
 $theme-colors-bg-subtle: map-merge(
@@ -20,7 +22,7 @@ $theme-colors-bg-subtle: map-merge(
 $custom-theme-border-subtle: (
   "ui-alert": new_tokens.$strawberry-100,
   "info": new_tokens.$kiwi-500,
-  "secondary": new_tokens.$gray-500
+  "secondary": new_tokens.$gray-500,
 );
 
 $theme-colors-border-subtle: map-merge(

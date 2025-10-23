@@ -20,7 +20,7 @@ const CopiedDetourAlert = ({
   return (
     <Alert
       variant="info"
-      className="c-copied-detour__alert position-absolute top-0 left-0 mt-2 start-50 translate-middle-x icon-link z-1"
+      className="c-copied-detour__alert rounded-1 position-absolute top-0 left-0 mt-2 start-50 translate-middle-x icon-link z-1"
       show={show}
     >
       <SuccessCircleIcon
