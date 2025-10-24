@@ -11,11 +11,7 @@ const BaseAlert = ({
   show: boolean
 }>): React.ReactElement => {
   return (
-    <Alert
-      className="c-alert rounded-1 icon-link"
-      variant={variant}
-      show={show}
-    >
+    <Alert className="c-alert icon-link" variant={variant} show={show}>
       {children}
     </Alert>
   )
