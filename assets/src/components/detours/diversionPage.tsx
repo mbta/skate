@@ -8,8 +8,7 @@ import React, {
 import { DrawDetourPanel } from "./detourPanels/drawDetourPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
-import { Alert, CloseButton } from "react-bootstrap"
-import { InfoCircleIcon } from "../../helpers/icon"
+import { CloseButton } from "react-bootstrap"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
@@ -28,6 +27,7 @@ import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
 import { DeleteDetourModal } from "./deleteDetourModal"
+import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
 import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
@@ -604,16 +604,9 @@ export const DiversionPage = ({
         </div>
         <div className="l-diversion-page__map position-relative">
           {snapshot.matches({ "Detour Drawing": "Share Detour" }) && (
-            <Alert
-              variant="secondary"
-              className="rounded-1 position-absolute top-0 left-0 m-2 icon-link z-1 text-bg-light"
-            >
-              <InfoCircleIcon
-                aria-hidden={true}
-                className="c-draft-detour__info-icon"
-              />
+            <DetourDrawingAlert>
               Detour shape is not editable from this screen.
-            </Alert>
+            </DetourDrawingAlert>
           )}
           {showFromCopy && <CopiedDetourAlert />}
           {routingError?.type === "no_route" && (

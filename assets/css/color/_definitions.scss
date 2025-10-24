@@ -15,11 +15,11 @@
  * Bootstrap’s `scss/_variables.scss` file.
  */
 
-$primary: tokens.$eggplant-500;
+$primary: new_tokens.$eggplant-500;
 $secondary: new_tokens.$gray-500;
-$info: new_tokens.$kiwi-500;
-$ui-alert: new_tokens.$strawberry-500;
-$service-alert: tokens.$lemon-500;
+$success: new_tokens.$kiwi-500;
+$danger: new_tokens.$strawberry-500;
+$warning: new_tokens.$lemon-500;
 $light: tokens.$gray-100;
 $dark: tokens.$gray-900;
 $missed-stop: new_tokens.$missed-stop;
@@ -28,13 +28,34 @@ $active-detour: new_tokens.$lemon-100;
 @mixin theme-colors {
   --color-primary: #{$primary};
   --color-secondary: #{$secondary};
-  --color-info: #{$info};
-  --color-ui-alert: #{$ui-alert};
-  --color-service-alert: #{$service-alert};
+  --color-danger: #{$danger};
+  --color-success: #{$success};
+  --color-warning: #{$warning};
   --color-light: #{$light};
   --color-dark: #{$dark};
   --color-active-detour: #{$active-detour};
 }
+
+$primary-text: new_tokens.$eggplant-800;
+$primary-bg-subtle: new_tokens.$eggplant-50;
+$primary-border-subtle: $primary;
+
+$secondary-text: new_tokens.$gray-800;
+$secondary-bg-subtle: new_tokens.$gray-50;
+$secondary-border-subtle: $secondary;
+
+$success-text: new_tokens.$kiwi-800;
+$success-bg-subtle: new_tokens.$kiwi-100;
+$success-border-subtle: $success;
+
+$danger-text: new_tokens.$strawberry-800;
+$danger-bg-subtle: new_tokens.$strawberry-100;
+$danger-border-subtle: $danger;
+
+$warning-text: new_tokens.$lemon-800;
+$warning-bg-subtle: new_tokens.$lemon-100;
+$warning-border-subtle: $warning;
+
 // #endregion Theme Colors
 
 // #region Service Colors
