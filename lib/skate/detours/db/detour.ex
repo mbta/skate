@@ -18,6 +18,8 @@ defmodule Skate.Detours.Db.Detour do
 
     belongs_to :author, User
 
+    belongs_to :copied_from, __MODULE__, foreign_key: :copied_from_id
+
     # When this detour was activated
     field :activated_at, :utc_datetime_usec
 

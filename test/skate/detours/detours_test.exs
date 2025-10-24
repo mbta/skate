@@ -121,6 +121,7 @@ defmodule Skate.Detours.DetoursTest do
       assert draft_detour.state["context"]["uuid"] == draft_detour.id
       assert draft_detour.state["context"]["activatedAt"] == nil
       refute draft_detour.id == detour.id
+      assert draft_detour.copied_from_id == detour.id
     end
 
     test "fails to copy a detour that is not past" do
@@ -153,6 +154,7 @@ defmodule Skate.Detours.DetoursTest do
       assert draft_detour.state["context"]["uuid"] == draft_detour.id
       assert draft_detour.state["context"]["activatedAt"] == nil
       refute draft_detour.id == detour.id
+      assert draft_detour.copied_from_id == detour.id
     end
   end
 end

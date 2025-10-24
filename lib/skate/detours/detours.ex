@@ -284,7 +284,7 @@ defmodule Skate.Detours.Detours do
         |> Map.put(:status, :draft)
 
       {:ok, new_draft_detour} =
-        %Detour{author_id: author_id}
+        %Detour{author_id: author_id, copied_from: detour}
         |> Detour.changeset(new_detour_attrs)
         |> Repo.insert()
 
