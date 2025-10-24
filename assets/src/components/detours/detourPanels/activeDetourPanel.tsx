@@ -160,7 +160,7 @@ export const ActiveDetourPanel = ({
           )}
           {onOpenDeactivateModal && (
             <Button
-              variant="ui-alert"
+              variant="danger"
               className="flex-grow-1 m-3 icon-link text-light"
               onClick={onOpenDeactivateModal}
               data-fs-element="Return to Regular Route"

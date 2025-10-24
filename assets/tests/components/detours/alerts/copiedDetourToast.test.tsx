@@ -4,11 +4,11 @@ import "@testing-library/jest-dom/jest-globals"
 import { render, waitForElementToBeRemoved } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { closeButton } from "../../../testHelpers/selectors/components/closeButton"
-import CopiedDetourAlert from "../../../../src/components/detours/alerts/copiedDetourAlert"
+import CopiedDetourToast from "../../../../src/components/detours/alerts/copiedDetourToast"
 
-describe("copiedDetourAlert", () => {
+describe("copiedDetourToast", () => {
   test("clicking close button closes the alert", async () => {
-    render(<CopiedDetourAlert />)
+    render(<CopiedDetourToast />)
 
     expect(closeButton.get()).toBeVisible()
 
@@ -19,7 +19,7 @@ describe("copiedDetourAlert", () => {
   })
 
   test("the alert auto-closes after timeout milliseconds if the alert is not dismissed", async () => {
-    render(<CopiedDetourAlert timeout={10} />)
+    render(<CopiedDetourToast timeout={10} />)
 
     expect(closeButton.get()).toBeVisible()
 
