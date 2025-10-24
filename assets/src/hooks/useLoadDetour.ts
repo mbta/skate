@@ -7,7 +7,7 @@ import { isErr } from "../util/result"
 import { useApiCall } from "./useApiCall"
 
 export const useLoadDetour = (detourId: DetourId | undefined) => {
-  const { result: detour } = useApiCall({
+  const { result: detour, isLoading } = useApiCall({
     apiCall: useCallback(async () => {
       if (detourId === undefined) {
         return undefined
@@ -27,5 +27,5 @@ export const useLoadDetour = (detourId: DetourId | undefined) => {
     }, [detourId]),
   })
 
-  return detour
+  return { detour, isLoading }
 }
