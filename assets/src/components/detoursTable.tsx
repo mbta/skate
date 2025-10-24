@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Table } from "react-bootstrap"
 import { RoutePill } from "./routePill"
 import { useCurrentTime } from "../hooks/useCurrentTime"
@@ -38,37 +38,90 @@ export const DetoursTable = ({
   onOpenDetour,
   status,
   classNames = [],
-}: DetoursTableProps) => (
-  <Table
-    hover={!!data.length}
-    className={joinClasses([...classNames, "c-detours-table"])}
-    variant={status === DetourStatus.Active ? "active-detour" : ""}
-  >
-    <thead className="u-hide-for-mobile">
-      <tr>
-        <th className="px-3 py-4">Route and direction</th>
-        <th className="px-3 py-4 u-hide-for-mobile">Starting Intersection</th>
-        <th className="px-3 py-4 u-hide-for-mobile">
-          {timestampLabelFromStatus(status)}
-        </th>
-        {status === DetourStatus.Active && (
-          <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
+}: DetoursTableProps) => {
+  const [filter, setFilter] = useState("")
+  const [debouncedFilter, setDebouncedFilter] = useState(filter)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedFilter(filter)
+    }, 300)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [filter])
+
+  const filteredData = data.filter((detour) =>
+    detour.intersection.toLowerCase().includes(debouncedFilter.toLowerCase())
+  )
+
+  return (
+    <Table
+      hover={!!filteredData.length}
+      className={joinClasses([...classNames, "c-detours-table"])}
+      variant={status === DetourStatus.Active ? "active-detour" : ""}
+    >
+      <>
+        {status === DetourStatus.Closed && (
+          <>
+            <thead className="u-hide-for-mobile">
+              <tr>
+                <th className="px-3 py-3"></th>
+                <th className="px-3 py-3">
+                  <input
+                    type="text"
+                    placeholder="Search intersections"
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    className="form-control"
+                  />
+                </th>
+                <th className="px-3 py-3"></th>
+              </tr>
+            </thead>
+            <tr>
+              <td className="px-3 py-4">Route and direction</td>
+              <td className="px-3 py-4 u-hide-for-mobile">
+                Starting Intersection
+              </td>
+              <td className="px-3 py-4 u-hide-for-mobile">
+                {timestampLabelFromStatus(status)}
+              </td>
+            </tr>
+          </>
         )}
-      </tr>
-    </thead>
-    <tbody>
-      {data.length ? (
-        <PopulatedDetourRows
-          status={status}
-          data={data}
-          onOpenDetour={onOpenDetour}
-        />
-      ) : (
-        <EmptyDetourRows message={`No ${status} detours.`} />
-      )}
-    </tbody>
-  </Table>
-)
+        {status !== DetourStatus.Closed && (
+          <thead className="u-hide-for-mobile">
+            <tr>
+              <th className="px-3 py-4">Route and direction</th>
+              <th className="px-3 py-4 u-hide-for-mobile">
+                Starting Intersection
+              </th>
+              <th className="px-3 py-4 u-hide-for-mobile">
+                {timestampLabelFromStatus(status)}
+              </th>
+              {status === DetourStatus.Active && (
+                <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
+              )}
+            </tr>
+          </thead>
+        )}
+        <tbody>
+          {filteredData.length ? (
+            <PopulatedDetourRows
+              status={status}
+              data={filteredData}
+              onOpenDetour={onOpenDetour}
+            />
+          ) : (
+            <EmptyDetourRows message={`No ${status} detours.`} />
+          )}
+        </tbody>
+      </>
+    </Table>
+  )
+}
 
 const PopulatedDetourRows = ({
   data,
