@@ -566,10 +566,10 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
         class="l-diversion-page__map position-relative"
       >
         <div
-          class="rounded-1 position-absolute top-0 left-0 m-2 icon-link z-1"
+          class="position-absolute top-0 left-0 m-2 z-1"
         >
           <div
-            class="fade c-alert rounded-1 icon-link alert alert-secondary show"
+            class="fade c-alert icon-link alert alert-secondary show"
             role="alert"
           >
             <span
@@ -1429,10 +1429,10 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
         class="l-diversion-page__map position-relative"
       >
         <div
-          class="rounded-1 position-absolute top-0 left-0 m-2 icon-link z-1"
+          class="position-absolute top-0 left-0 m-2 z-1"
         >
           <div
-            class="fade c-alert rounded-1 icon-link alert alert-secondary show"
+            class="fade c-alert icon-link alert alert-secondary show"
             role="alert"
           >
             <span
