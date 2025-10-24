@@ -46,7 +46,7 @@ export const DeactivateDetourModal = ({
           Cancel
         </Button>
         <Button
-          variant="ui-alert"
+          variant="danger"
           onClick={onDeactivate}
           className="text-white"
           data-fs-element="Confirm Return to Regular Route"

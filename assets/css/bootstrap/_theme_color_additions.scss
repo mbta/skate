@@ -1,13 +1,21 @@
-@use "../color/tokens_2024" as new_tokens;
+@use "../color/definitions" as semantic;
 
 $custom-theme-text: (
-  "ui-alert": new_tokens.$strawberry-800,
+  "primary": semantic.$primary-text,
+  "secondary": semantic.$secondary-text,
+  "success": semantic.$success-text,
+  "danger": semantic.$danger-text,
+  "warning": semantic.$warning-text,
 );
 
 $theme-colors-text: map-merge($theme-colors-text, $custom-theme-text);
 
 $custom-theme-bg-subtle: (
-  "ui-alert": new_tokens.$strawberry-50,
+  "primary": semantic.$primary-bg-subtle,
+  "secondary": semantic.$secondary-bg-subtle,
+  "success": semantic.$success-bg-subtle,
+  "danger": semantic.$danger-bg-subtle,
+  "warning": semantic.$warning-bg-subtle,
 );
 
 $theme-colors-bg-subtle: map-merge(
@@ -16,7 +24,11 @@ $theme-colors-bg-subtle: map-merge(
 );
 
 $custom-theme-border-subtle: (
-  "ui-alert": new_tokens.$strawberry-100,
+  "primary": semantic.$primary-border-subtle,
+  "secondary": semantic.$secondary-border-subtle,
+  "success": semantic.$success-border-subtle,
+  "danger": semantic.$danger-border-subtle,
+  "warning": semantic.$warning-border-subtle,
 );
 
 $theme-colors-border-subtle: map-merge(

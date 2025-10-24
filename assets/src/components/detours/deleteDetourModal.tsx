@@ -24,7 +24,7 @@ export const DeleteDetourModal = ({
           Cancel
         </Button>
         <Button
-          variant="ui-alert"
+          variant="danger"
           onClick={onDelete}
           className="text-white"
           data-fs-element="Confirm Delete Draft"
