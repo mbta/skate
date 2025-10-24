@@ -268,6 +268,10 @@ defmodule Skate.DetourFactory do
         missed_stops = Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
         put_in(state["context"]["finishedDetour"], %{"missedStops" => missed_stops})
       end
+
+      def with_author(%Skate.Detours.Db.Detour{} = detour, user) do
+        %{detour | author: user}
+      end
     end
   end
 

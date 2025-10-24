@@ -577,6 +577,23 @@ export const deleteDetour = (id: number): Promise<Result<boolean, never>> => {
   })
 }
 
+export const copyToDraftDetour = (
+  id: number
+): Promise<Result<number, never>> => {
+  return apiCallResult({
+    url: `/api/detours/${id}/copy`,
+    OkStruct: number(),
+    ErrStruct: never(),
+    requestInit: {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": getCsrfToken(),
+      },
+    },
+  })
+}
+
 // #endregion Detour API functions
 
 const getCsrfToken = (): string => appData()?.csrfToken || ""

@@ -18,6 +18,8 @@ defmodule Skate.Detours.Db.Detour do
 
     belongs_to :author, User
 
+    belongs_to :copied_from, __MODULE__, foreign_key: :copied_from_id
+
     # When this detour was activated
     field :activated_at, :utc_datetime_usec
 
@@ -55,6 +57,25 @@ defmodule Skate.Detours.Db.Detour do
     |> add_status()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
+  end
+
+  def update_copied_detour_state_changeset(detour) do
+    new_state =
+      detour.state
+      |> Map.put(
+        "context",
+        detour.state["context"]
+        |> Map.merge(%{"uuid" => detour.id, "status" => "draft"})
+        |> Map.drop(["selectedReason", "selectedDuration", "activatedAt"])
+      )
+      |> Map.put("value", %{
+        SaveState: "Saved",
+        "Detour Drawing": "Share Detour"
+      })
+
+    detour
+    |> change(%{activated_at: nil})
+    |> change(%{state: new_state})
   end
 
   defp validate_activated_at(changeset) do
