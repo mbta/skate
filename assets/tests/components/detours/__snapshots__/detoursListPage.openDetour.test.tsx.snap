@@ -566,22 +566,15 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
         class="l-diversion-page__map position-relative"
       >
         <div
-          class="fade position-absolute top-0 left-0 m-2 icon-link z-1 alert alert-info show"
+          class="fade position-absolute top-0 left-0 m-2 icon-link z-1 text-bg-light alert alert-secondary show"
           role="alert"
         >
-          <svg
+          <span
             aria-hidden="true"
-            class="bi bi-exclamation-circle-fill"
-            fill="currentColor"
-            height="16"
-            viewBox="0 0 16 16"
-            width="16"
-            xmlns="http://www.w3.org/2000/svg"
+            class="c-draft-detour__info-icon"
           >
-            <path
-              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"
-            />
-          </svg>
+            <svg />
+          </span>
           Detour shape is not editable from this screen.
         </div>
         <div
@@ -1432,22 +1425,15 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
         class="l-diversion-page__map position-relative"
       >
         <div
-          class="fade position-absolute top-0 left-0 m-2 icon-link z-1 alert alert-info show"
+          class="fade position-absolute top-0 left-0 m-2 icon-link z-1 text-bg-light alert alert-secondary show"
           role="alert"
         >
-          <svg
+          <span
             aria-hidden="true"
-            class="bi bi-exclamation-circle-fill"
-            fill="currentColor"
-            height="16"
-            viewBox="0 0 16 16"
-            width="16"
-            xmlns="http://www.w3.org/2000/svg"
+            class="c-draft-detour__info-icon"
           >
-            <path
-              d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"
-            />
-          </svg>
+            <svg />
+          </span>
           Detour shape is not editable from this screen.
         </div>
         <div

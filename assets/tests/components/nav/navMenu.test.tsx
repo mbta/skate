@@ -4,7 +4,6 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import * as browser from "../../../src/models/browser"
-import { openDrift } from "../../../src/helpers/drift"
 import NavMenu from "../../../src/components/nav/navMenu"
 import { BrowserRouter } from "react-router-dom"
 import getEmailAddress from "../../../src/userEmailAddress"
@@ -119,36 +118,6 @@ describe("NavMenu", () => {
     await user.click(result.getByRole("button", { name: "Refresh" }))
 
     expect(reloadSpy).toHaveBeenCalled()
-  })
-
-  test("clicking Support button opens Drift", async () => {
-    const toggleMobileMenu = jest.fn()
-
-    const user = userEvent.setup()
-    const result = render(
-      <BrowserRouter>
-        <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={false} />
-      </BrowserRouter>
-    )
-
-    await user.click(result.getByRole("button", { name: "Support" }))
-
-    expect(openDrift).toHaveBeenCalled()
-  })
-
-  test("clicking the Support button closes the mobile menu", async () => {
-    const toggleMobileMenu = jest.fn()
-
-    const user = userEvent.setup()
-    const result = render(
-      <BrowserRouter>
-        <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={false} />
-      </BrowserRouter>
-    )
-
-    await user.click(result.getByRole("button", { name: "Support" }))
-
-    expect(toggleMobileMenu).toHaveBeenCalled()
   })
 
   test("clicking the settings button closes the mobile menu", async () => {

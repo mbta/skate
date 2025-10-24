@@ -90,6 +90,10 @@ import plusThinIconSvg from "../../static/images/icon-plus-thin.svg"
 // @ts-ignore
 import questionMarkIconSvg from "../../static/images/icon-question-mark.svg"
 // @ts-ignore
+import infoCircleIconSvg from "../../static/images/icon-info-circle.svg"
+// @ts-ignore
+import successCircleIconSvg from "../../static/images/icon-success-circle.svg"
+// @ts-ignore
 import redLineIconSvg from "../../static/images/icon-red-line.svg"
 // @ts-ignore
 import refreshIconSvg from "../../static/images/icon-refresh.svg"
@@ -236,6 +240,10 @@ export const PlusIcon = svgIcon(plusIconSvg)
 export const PlusThinIcon = svgIcon(plusThinIconSvg)
 
 export const QuestionMarkIcon = svgIcon(questionMarkIconSvg)
+
+export const InfoCircleIcon = svgIcon(infoCircleIconSvg)
+
+export const SuccessCircleIcon = svgIcon(successCircleIconSvg)
 
 export const RedLineIcon = svgIcon(redLineIconSvg)
 
