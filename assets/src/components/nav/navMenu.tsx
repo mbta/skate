@@ -1,7 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { Nav } from "react-bootstrap"
-import { openDrift } from "../../helpers/drift"
 import { OldCloseIcon, LogoIcon } from "../../helpers/icon"
 import * as BsIcon from "../../helpers/bsIcons"
 import { joinClasses } from "../../helpers/dom"
@@ -57,18 +56,6 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             <Nav.Item>
               <Nav.Link as="button" onClick={reload} className="icon-link">
                 <BsIcon.ArrowClockwise /> Refresh
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                className="icon-link"
-                as="button"
-                onClick={() => {
-                  openDrift()
-                  toggleMobileMenu()
-                }}
-              >
-                <BsIcon.ChatFill /> Support
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
