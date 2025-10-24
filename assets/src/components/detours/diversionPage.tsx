@@ -133,8 +133,9 @@ export const DiversionPage = ({
 
   const copyToDraftDetourCallback = useCallback(() => {
     if (snapshot.context.uuid) {
-      copyToDraftDetour(snapshot.context.uuid).then(async (response) => {
+      copyToDraftDetour(snapshot.context.uuid).then((response) => {
         if (response && isOk(response)) {
+          onClose()
           onOpenDetour && onOpenDetour(response?.ok)
         }
       })

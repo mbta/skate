@@ -63,10 +63,9 @@ defmodule Skate.Detours.Db.Detour do
       |> Map.put(
         "context",
         detour.state["context"]
-        |> Map.merge(%{"uuid" => detour.id})
+        |> Map.merge(%{"uuid" => detour.id, "status" => "draft"})
         |> Map.drop(["selectedReason", "selectedDuration", "activatedAt"])
       )
-      |> Map.put("status", "draft")
       |> Map.put("value", %{
         SaveState: "Saved",
         "Detour Drawing": "Share Detour"

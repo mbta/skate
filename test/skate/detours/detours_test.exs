@@ -103,4 +103,56 @@ defmodule Skate.Detours.DetoursTest do
       assert log =~ "created_adjustment detour_id_0"
     end
   end
+
+  describe "copy_to_draft_detour/2" do
+    test "successfully copies a past detour to draft" do
+      detour =
+        :detour
+        |> build()
+        |> deactivated()
+        |> insert()
+
+      author_id = detour.author_id
+
+      {:ok, draft_detour} = Detours.copy_to_draft_detour(detour, author_id)
+
+      assert draft_detour.status == :draft
+      assert draft_detour.author_id == author_id
+      assert draft_detour.state["context"]["uuid"] == draft_detour.id
+      assert draft_detour.state["context"]["activatedAt"] == nil
+      refute draft_detour.id == detour.id
+    end
+
+    test "fails to copy a detour that is not past" do
+      detour =
+        :detour
+        |> build()
+        |> activated()
+        |> insert()
+
+      author_id = detour.author_id
+
+      assert {:error, :not_a_past_detour} = Detours.copy_to_draft_detour(detour, author_id)
+    end
+
+    test "successfully copies a past detour to draft with a different author" do
+      original_author = insert(:user)
+      new_author = insert(:user)
+
+      detour =
+        :detour
+        |> build()
+        |> with_author(original_author)
+        |> deactivated()
+        |> insert()
+
+      {:ok, draft_detour} = Detours.copy_to_draft_detour(detour, new_author.id)
+
+      assert draft_detour.status == :draft
+      assert draft_detour.author_id == new_author.id
+      assert draft_detour.state["context"]["uuid"] == draft_detour.id
+      assert draft_detour.state["context"]["activatedAt"] == nil
+      refute draft_detour.id == detour.id
+    end
+  end
 end

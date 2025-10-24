@@ -90,7 +90,7 @@ export const PastDetourPanel = ({
       </Panel.Body.ScrollArea>
       <Panel.Body.Footer className="d-flex flex-column">
         <Button
-          className="m-3 mb-0 flex-grow-1 icon-link"
+          className="m-3 flex-grow-1 icon-link"
           variant="outline-primary"
           onClick={onCopyToDraftDetour}
           data-fs-element="Copy to new draft"
