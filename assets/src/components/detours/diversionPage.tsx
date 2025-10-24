@@ -141,7 +141,7 @@ export const DiversionPage = ({
         }
       })
     }
-  }, [onOpenDetour, snapshot.context.uuid])
+  }, [onClose, onOpenDetour, snapshot.context.uuid])
 
   const nearestIntersectionDirection = [
     { instruction: "From " + nearestIntersection },
