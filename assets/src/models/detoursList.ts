@@ -1,4 +1,13 @@
-import { array, coerce, date, Infer, number, string, type } from "superstruct"
+import {
+  array,
+  coerce,
+  date,
+  enums,
+  Infer,
+  number,
+  string,
+  type,
+} from "superstruct"
 
 export type DetourId = number
 export interface SimpleDetour {
@@ -11,8 +20,10 @@ export interface SimpleDetour {
   updatedAt: number
   activatedAt?: Date
   estimatedDuration?: string
+  status: "active" | "draft" | "past"
 }
 
+export const detourStatus = enums(["active", "draft", "past"])
 export const detourId = number()
 export const SimpleDetourData = type({
   id: detourId,
@@ -22,6 +33,7 @@ export const SimpleDetourData = type({
   name: string(),
   intersection: string(),
   updated_at: number(),
+  status: detourStatus,
 })
 
 export type SimpleDetourData = Infer<typeof SimpleDetourData>
@@ -44,6 +56,7 @@ export const simpleDetourFromData = (
   name: detourData.name,
   intersection: detourData.intersection,
   updatedAt: detourData.updated_at,
+  status: detourData.status,
 })
 
 export const simpleDetourFromActivatedData = (

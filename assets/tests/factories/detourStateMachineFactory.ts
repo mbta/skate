@@ -112,3 +112,50 @@ export const draftDetourFactory = Factory.define<DetourWithState>(() => {
     state: snapshot,
   }
 })
+
+export const pastDetourFactory = Factory.define<DetourWithState>(() => {
+  // Start with an activated detour
+  const machine = createActor(createDetourMachine, {
+    input: originalRouteFactory.build(),
+  }).start()
+  machine.send({
+    type: "detour.edit.place-waypoint-on-route",
+    location: shapePointFactory.build(),
+  })
+  machine.send({ type: "detour.save.begin-save" })
+  machine.send({ type: "detour.save.set-uuid", uuid: 123 })
+  machine.send({
+    type: "detour.edit.place-waypoint",
+    location: shapePointFactory.build(),
+  })
+  machine.send({
+    type: "detour.edit.place-waypoint-on-route",
+    location: shapePointFactory.build(),
+  })
+  machine.send({ type: "detour.edit.done" })
+  machine.send({ type: "detour.share.open-activate-modal" })
+  machine.send({
+    type: "detour.share.activate-modal.select-duration",
+    duration: "2 hours",
+  })
+  machine.send({ type: "detour.share.activate-modal.next" })
+  machine.send({
+    type: "detour.share.activate-modal.select-reason",
+    reason: "Emergency",
+  })
+  machine.send({ type: "detour.share.activate-modal.next" })
+  machine.send({ type: "detour.share.activate-modal.activate" })
+
+  // Deactivate the detour
+  machine.send({ type: "detour.active.open-deactivate-modal" })
+  machine.send({ type: "detour.active.deactivate-modal.deactivate" })
+
+  const snapshot = machine.getPersistedSnapshot()
+  machine.stop()
+
+  return {
+    updatedAt: 1724866392,
+    author: "fake@email.com",
+    state: snapshot,
+  }
+})
