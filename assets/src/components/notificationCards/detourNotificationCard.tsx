@@ -109,7 +109,7 @@ const DetourNotificationModal = ({
   show: boolean
   onClose: () => void
 }) => {
-  const detour = useLoadDetour(detourId)
+  const { detour } = useLoadDetour(detourId)
 
   return detour ? (
     <DetourModal
