@@ -3,7 +3,7 @@ name: Build and Publish Storybook to GitHub Pages
 on:
   push:
     branches:
-      - 'meag/test-deploy-github-pages' # Replace with the branch you want to deploy from
+      - 'meag/test-deploy-github-pages' # TODO: change to main once #3078 is merged
  
 permissions:
   contents: read
@@ -77,7 +77,6 @@ jobs:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
-      #👇 Add Storybook build and deploy to GitHub Pages as a step in the workflow
       - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
         with:
           install_command: npm --prefix assets ci # default: npm ci
