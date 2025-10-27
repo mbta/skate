@@ -1,5 +1,7 @@
 .c-alert {
-  min-width: 400px;
+  @include media-breakpoint-up(md) {
+    min-width: 400px;
+  }
 }
 
 .c-alert__close-button {
