@@ -14,14 +14,18 @@ import { useEffect } from "react"
 export type UseDetourInput =
   | {
       /** Initial arguments for {@linkcode createDetourMachine} */
-      input: CreateDetourMachineInput
+      originalRoute: CreateDetourMachineInput
     }
   | {
       /** A _validated_ snapshot from which to initialize {@linkcode createDetourMachine} with */
       snapshot: Snapshot<unknown>
     }
 
-export const useDetour = (input: UseDetourInput) => {
+export const useDetour = (useDetourProps: UseDetourInput) => {
+  const input =
+    "snapshot" in useDetourProps
+      ? { snapshot: useDetourProps.snapshot }
+      : { input: useDetourProps.originalRoute }
   const [snapshot, send, actorRef] = useMachine(createDetourMachine, input)
 
   // Record snapshots when changed
