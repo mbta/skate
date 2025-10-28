@@ -524,6 +524,17 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                     type="text"
                     value=""
                   />
+                  <button
+                    class="c-detour-list-filter__submit"
+                    disabled=""
+                    title="Submit"
+                    type="submit"
+                  >
+                    <span>
+                      <svg />
+                    </span>
+                    Search
+                  </button>
                 </div>
               </div>
             </th>

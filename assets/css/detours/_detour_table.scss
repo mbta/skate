@@ -89,7 +89,7 @@ $table-border-radius: 0.5rem;
 .c-detour-list-filter__text {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 80%;
   margin-top: 0.5rem;
 }
@@ -104,10 +104,12 @@ $table-border-radius: 0.5rem;
   @include font-small;
   line-height: 1;
   border: 1px solid $color-gray-400;
-  border-radius: 6px;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
   padding: 0.625rem 1rem;
   color: $color-gray-700;
   font-weight: 400;
+  width: 70%;
 
   &::placeholder {
     opacity: 1;
@@ -116,10 +118,12 @@ $table-border-radius: 0.5rem;
 
   &:hover {
     border: 1px solid $color-eggplant-400;
+    border-right: none;
   }
 
   &:focus {
     border: 1px solid $color-eggplant-500;
+    border-right: none;
     box-shadow: 0px 0px 0px 2px rgba(170, 78, 242, 0.17);
     color: $color-gray-800;
 
@@ -134,8 +138,8 @@ $table-border-radius: 0.5rem;
   @include button-icon(0.875rem);
   position: absolute;
   display: flex;
-  right: 1rem;
-  top: 0.6875rem;
+  right: 7.5rem;
+  top: 0.875rem;
   width: 0.875rem;
   height: 0.875rem;
   color: $color-gray-600;
@@ -146,5 +150,25 @@ $table-border-radius: 0.5rem;
 
   &:focus-within {
     color: $color-gray-700;
+  }
+}
+
+.c-detour-list-filter__submit {
+  @include button-icon(1.25rem);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 2.5rem;
+  padding: 1rem;
+  border-radius: 0 6px 6px 0;
+  font-weight: 400;
+  color: tokens.$eggplant-500;
+  text-decoration: none;
+  border: 1px solid tokens.$eggplant-500;
+  white-space: nowrap;
+  overflow: hidden;
+
+  span {
+    margin-right: 0.5rem;
   }
 }

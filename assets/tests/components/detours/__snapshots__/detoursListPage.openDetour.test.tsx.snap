@@ -340,6 +340,17 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                     type="text"
                     value=""
                   />
+                  <button
+                    class="c-detour-list-filter__submit"
+                    disabled=""
+                    title="Submit"
+                    type="submit"
+                  >
+                    <span>
+                      <svg />
+                    </span>
+                    Search
+                  </button>
                 </div>
               </div>
             </th>
@@ -1234,6 +1245,17 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                     type="text"
                     value=""
                   />
+                  <button
+                    class="c-detour-list-filter__submit"
+                    disabled=""
+                    title="Submit"
+                    type="submit"
+                  >
+                    <span>
+                      <svg />
+                    </span>
+                    Search
+                  </button>
                 </div>
               </div>
             </th>

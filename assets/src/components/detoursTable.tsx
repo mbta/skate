@@ -7,6 +7,7 @@ import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
 import { CircleXIcon } from "./circleXIcon"
+import { SearchIcon } from "../helpers/icon"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
@@ -89,13 +90,23 @@ export const DetoursTable = ({
 
                       {filter.length > 0 ? (
                         <button
-                          className="c-route-filter__clear"
+                          className="c-detour-list-filter__clear"
                           onClick={() => setFilter("")}
                           title="Clear"
                         >
                           <CircleXIcon />
                         </button>
                       ) : null}
+                      <button
+                        type="submit"
+                        title="Submit"
+                        className="c-detour-list-filter__submit"
+                        onClick={setDebouncedFilter.bind(null, filter)}
+                        disabled={filter.length === 0}
+                      >
+                        <SearchIcon />
+                        Search
+                      </button>
                     </div>
                   </div>
                 </th>
