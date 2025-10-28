@@ -19,12 +19,14 @@ export const DetourModal = ({
   onClose,
   onOpenDetour,
   show,
+  showFromCopy = false,
   isLoadingDetour = false,
   ...useDetourProps
 }: {
   onClose: () => void
   onOpenDetour?: (detourId: number) => void
   show: boolean
+  showFromCopy?: boolean
   isLoadingDetour?: boolean
 } & DiversionPageStateProps) => {
   return (
@@ -38,6 +40,7 @@ export const DetourModal = ({
           {...useDetourProps}
           onClose={onClose}
           onOpenDetour={onOpenDetour}
+          showFromCopy={showFromCopy}
         />
       )}
     </Modal>

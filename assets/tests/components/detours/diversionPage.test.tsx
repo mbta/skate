@@ -2004,4 +2004,22 @@ describe("DiversionPage", () => {
 
     expect(viewDraftDetourHeading.get()).toBeVisible()
   })
+
+  test("shows the successful copy toast if the page was opened by copying a detour", async () => {
+    render(<DiversionPage showFromCopy={true} />)
+
+    await waitFor(() => {
+      expect(screen.getByText("Detour copied successfully")).toBeVisible()
+    })
+  })
+
+  test("doesn't show the copy toast if the page was opened from an existing detour", async () => {
+    render(<DiversionPage />)
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText("Detour copied successfully")
+      ).not.toBeInTheDocument()
+    })
+  })
 })

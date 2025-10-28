@@ -36,6 +36,7 @@ import { AffectedRoute } from "./detourPanelComponents"
 import { ChangeDuration } from "./changeDurationModal"
 import { deleteDetour, copyToDraftDetour } from "../../api"
 import { isOk } from "../../util/result"
+import CopiedDetourAlert from "./alerts/copiedDetourAlert"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -61,7 +62,8 @@ const parseIntoDirectionsList = (directions: string) => {
 
 interface DiversionPageFunctions {
   onClose: () => void
-  onOpenDetour?: (detourId: number) => void
+  onOpenDetour?: (detourId: number, props?: { fromCopy: boolean }) => void
+  showFromCopy?: boolean
 }
 
 interface DiversionPageFromInput {
@@ -85,6 +87,7 @@ export type DiversionPageProps = DiversionPageStateProps &
 export const DiversionPage = ({
   onClose,
   onOpenDetour,
+  showFromCopy,
   ...useDetourProps
 }: DiversionPageProps) => {
   const {
@@ -136,7 +139,7 @@ export const DiversionPage = ({
       copyToDraftDetour(snapshot.context.uuid).then((response) => {
         if (response && isOk(response)) {
           onClose()
-          onOpenDetour && onOpenDetour(response?.ok)
+          onOpenDetour && onOpenDetour(response?.ok, { fromCopy: true })
         }
       })
     }
@@ -612,6 +615,7 @@ export const DiversionPage = ({
               Detour shape is not editable from this screen.
             </Alert>
           )}
+          {showFromCopy && <CopiedDetourAlert />}
           {routingError?.type === "no_route" && (
             <RoutingErrorAlert>
               You can&apos;t route to this location. Please try a different
