@@ -45,7 +45,9 @@ const closedTableHeading = byRole("heading", { name: "Closed detours" })
 
 const addDetourButton = byRole("button", { name: "Add detour" })
 
-const filterIntersectionInput = byRole("textbox", { name: "Starting intersection" })
+const filterIntersectionInput = byRole("textbox", {
+  name: "Starting intersection",
+})
 
 describe("DetourListPage", () => {
   test("renders detour list page for dispatchers", async () => {
