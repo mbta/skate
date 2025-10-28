@@ -177,6 +177,7 @@ defmodule SkateWeb.Router do
     get "/location_search/suggest", LocationSearchController, :suggest
     get "/detours", DetoursController, :detours
     get "/detours/:detour_id", DetoursController, :detour
+    put "/detours/:detour_id/copy", DetoursController, :copy_to_draft_detour
     delete "/detours/:detour_id", DetoursController, :delete_detour
     post "/detours/directions/", DetourRouteController, :directions
     put "/detours/update_snapshot", DetoursController, :update_snapshot

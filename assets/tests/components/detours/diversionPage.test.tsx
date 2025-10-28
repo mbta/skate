@@ -59,6 +59,7 @@ const DiversionPage = (props: Partial<DiversionPageProps>) => {
     <DiversionPageDefault
       originalRoute={originalRouteFactory.build()}
       onClose={() => null}
+      onOpenDetour={() => null}
       {...props}
     />
   )
