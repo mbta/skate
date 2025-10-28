@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react"
 import { DetoursTable, DetourStatus } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
-import { Button, Spinner } from "react-bootstrap"
+import { Button, Form, Spinner } from "react-bootstrap"
 import {
   GlobeAmericas,
   LockFill,
@@ -9,6 +9,7 @@ import {
   PlusSquare,
   SvgProps,
 } from "../helpers/bsIcons"
+import RoutesContext from "../contexts/routesContext"
 import { DetourModal } from "./detours/detourModal"
 import { joinClasses } from "../helpers/dom"
 import { useLoadDetour } from "../hooks/useLoadDetour"
@@ -18,8 +19,10 @@ import {
   usePastDetours,
 } from "../hooks/useDetours"
 import { SocketContext } from "../contexts/socketContext"
+import { Route } from "../schedule"
 
 export const DetourListPage = () => {
+  const routes = useContext(RoutesContext)
   const [showDetourModalProps, setShowDetourModalProps] = useState<{
     show: boolean
     fromCopy: boolean
@@ -27,13 +30,14 @@ export const DetourListPage = () => {
   const [detourId, setDetourId] = useState<number | undefined>()
 
   const { show: showDetourModal, fromCopy: showFromCopy } = showDetourModalProps
+  const [routeId, setRouteId] = useState<string>("all")
 
   // Wait for the detour channels to initialize
   const { socket } = useContext(SocketContext)
 
   const activeDetoursMap = useActiveDetours(socket)
   const draftDetoursMap = useDraftDetours(socket)
-  const pastDetoursMap = usePastDetours(socket)
+  const pastDetoursMap = usePastDetours({ socket: socket, routeId: routeId })
 
   const activeDetours =
     activeDetoursMap &&
@@ -110,6 +114,26 @@ export const DetourListPage = () => {
                 visibility="Dispatchers and supervisors"
                 classNames={["u-hide-for-mobile", "d-md-flex"]}
               />
+              <div className="d-md-flex w-100">
+                <div className="d-flex flex-column my-auto p-3">
+                  <Form.Label htmlFor="route-name">Route</Form.Label>
+                  <Form.Select
+                    id="route-name"
+                    onChange={(changeEvent) => {
+                      setRouteId(changeEvent.target.value)
+                    }}
+                  >
+                    <option key="" value="all">
+                      Please select route
+                    </option>
+                    {routes?.map((route: Route) => (
+                      <option key={route.id} value={route.id}>
+                        {route.name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </div>
+              </div>
               <DetoursTable
                 data={pastDetours}
                 status={DetourStatus.Closed}
