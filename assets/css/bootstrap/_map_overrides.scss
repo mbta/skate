@@ -2,11 +2,12 @@
 @use "../color/tokens_2024" as new_tokens;
 
 $theme-colors: (
-  "primary": new_tokens.$eggplant-500,
+  "primary": semantic.$primary,
   "secondary": new_tokens.$gray-500,
-  "info": semantic.$info,
-  "ui-alert": semantic.$ui-alert,
-  "service-alert": semantic.$service-alert,
+  "success": semantic.$success,
+  "danger": semantic.$danger,
+  "warning": semantic.$warning,
+  "service-alert": semantic.$warning,
   "light": new_tokens.$gray-50,
   "dark": new_tokens.$gray-900,
   "missed-stop": semantic.$missed-stop,

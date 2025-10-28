@@ -566,16 +566,20 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
         class="l-diversion-page__map position-relative"
       >
         <div
-          class="fade position-absolute top-0 left-0 m-2 icon-link z-1 text-bg-light alert alert-secondary show"
-          role="alert"
+          class="position-absolute top-0 left-0 m-2 z-1"
         >
-          <span
-            aria-hidden="true"
-            class="c-draft-detour__info-icon"
+          <div
+            class="fade c-alert icon-link alert alert-secondary show"
+            role="alert"
           >
-            <svg />
-          </span>
-          Detour shape is not editable from this screen.
+            <span
+              aria-hidden="true"
+              class="c-alert__icon"
+            >
+              <svg />
+            </span>
+            Detour shape is not editable from this screen.
+          </div>
         </div>
         <div
           class="h-100"
@@ -1425,16 +1429,20 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
         class="l-diversion-page__map position-relative"
       >
         <div
-          class="fade position-absolute top-0 left-0 m-2 icon-link z-1 text-bg-light alert alert-secondary show"
-          role="alert"
+          class="position-absolute top-0 left-0 m-2 z-1"
         >
-          <span
-            aria-hidden="true"
-            class="c-draft-detour__info-icon"
+          <div
+            class="fade c-alert icon-link alert alert-secondary show"
+            role="alert"
           >
-            <svg />
-          </span>
-          Detour shape is not editable from this screen.
+            <span
+              aria-hidden="true"
+              class="c-alert__icon"
+            >
+              <svg />
+            </span>
+            Detour shape is not editable from this screen.
+          </div>
         </div>
         <div
           class="h-100"
