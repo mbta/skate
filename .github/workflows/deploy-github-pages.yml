@@ -3,7 +3,7 @@ name: Build and Publish Storybook to GitHub Pages
 on:
   push:
     branches:
-      - 'meag/test-deploy-github-pages' # TODO: change to main once #3078 is merged
+      - 'main'
  
 permissions:
   contents: read
