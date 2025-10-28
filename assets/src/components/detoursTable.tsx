@@ -6,6 +6,7 @@ import { timeAgoLabel, timeAgoLabelFromDate } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
+import { CircleXIcon } from "./circleXIcon"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
@@ -66,29 +67,50 @@ export const DetoursTable = ({
         {status === DetourStatus.Closed && (
           <>
             <thead className="u-hide-for-mobile">
-              <tr>
+              <tr className="search-header">
                 <th className="px-3 py-3"></th>
                 <th className="px-3 py-3">
-                  <input
-                    type="text"
-                    placeholder="Search intersections"
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                    className="form-control"
-                  />
+                  <div className="c-detour-list-filter">
+                    <label
+                      className="c-detour-list-filter__label"
+                      htmlFor="intersection-filter"
+                    >
+                      Starting intersection
+                    </label>
+                    <div className="c-detour-list-filter__text">
+                      <input
+                        id="intersection-filter"
+                        type="text"
+                        placeholder="Search..."
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="c-detour-list-filter__input"
+                      />
+
+                      {filter.length > 0 ? (
+                        <button
+                          className="c-route-filter__clear"
+                          onClick={() => setFilter("")}
+                          title="Clear"
+                        >
+                          <CircleXIcon />
+                        </button>
+                      ) : null}
+                    </div>
+                  </div>
                 </th>
                 <th className="px-3 py-3"></th>
               </tr>
+              <tr>
+                <th className="px-3 py-4">Route and direction</th>
+                <th className="px-3 py-4 u-hide-for-mobile">
+                  Starting Intersection
+                </th>
+                <th className="px-3 py-4 u-hide-for-mobile">
+                  {timestampLabelFromStatus(status)}
+                </th>
+              </tr>
             </thead>
-            <tr>
-              <td className="px-3 py-4">Route and direction</td>
-              <td className="px-3 py-4 u-hide-for-mobile">
-                Starting Intersection
-              </td>
-              <td className="px-3 py-4 u-hide-for-mobile">
-                {timestampLabelFromStatus(status)}
-              </td>
-            </tr>
           </>
         )}
         {status !== DetourStatus.Closed && (

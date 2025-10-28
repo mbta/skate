@@ -496,6 +496,41 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
         <thead
           class="u-hide-for-mobile"
         >
+          <tr
+            class="search-header"
+          >
+            <th
+              class="px-3 py-3"
+            />
+            <th
+              class="px-3 py-3"
+            >
+              <div
+                class="c-detour-list-filter"
+              >
+                <label
+                  class="c-detour-list-filter__label"
+                  for="intersection-filter"
+                >
+                  Starting intersection
+                </label>
+                <div
+                  class="c-detour-list-filter__text"
+                >
+                  <input
+                    class="c-detour-list-filter__input"
+                    id="intersection-filter"
+                    placeholder="Search..."
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </th>
+            <th
+              class="px-3 py-3"
+            />
+          </tr>
           <tr>
             <th
               class="px-3 py-4"
