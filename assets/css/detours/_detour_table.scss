@@ -18,6 +18,12 @@ $table-border-radius: 0.5rem;
     white-space: nowrap;
   }
 
+  .search-header {
+    th {
+      background: tokens.$eggplant-50;
+    }
+  }
+
   td {
     color: tokens.$gray-900;
   }
@@ -49,6 +55,7 @@ $table-border-radius: 0.5rem;
     th:first-child {
       border-top-left-radius: $table-border-radius;
     }
+
     th:last-child {
       border-top-right-radius: $table-border-radius;
     }
@@ -58,6 +65,7 @@ $table-border-radius: 0.5rem;
     td:first-child {
       border-bottom-left-radius: $table-border-radius;
     }
+
     td:last-child {
       border-bottom-right-radius: $table-border-radius;
     }

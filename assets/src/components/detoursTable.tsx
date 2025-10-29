@@ -1,16 +1,19 @@
 import React from "react"
-import { Table } from "react-bootstrap"
+import { Table, Form } from "react-bootstrap"
 import { RoutePill } from "./routePill"
 import { useCurrentTime } from "../hooks/useCurrentTime"
 import { timeAgoLabel, timeAgoLabelFromDate } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
+import { Route } from "../schedule"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
   onOpenDetour: (detourId: number) => void
   status: DetourStatus
+  routes?: Route[] | null
+  setRouteId?: (routeId: string) => void
   classNames?: string[]
 }
 
@@ -37,6 +40,8 @@ export const DetoursTable = ({
   data,
   onOpenDetour,
   status,
+  routes,
+  setRouteId = () => {},
   classNames = [],
 }: DetoursTableProps) => (
   <Table
@@ -45,6 +50,34 @@ export const DetoursTable = ({
     variant={status === DetourStatus.Active ? "active-detour" : ""}
   >
     <thead className="u-hide-for-mobile">
+      {routes && (
+        <tr className="search-header">
+          <th className="px-3 py-3">
+            <div className="d-md-flex w-100">
+              <div className="d-flex flex-column my-auto p-3">
+                <Form.Label htmlFor="route-name">Route</Form.Label>
+                <Form.Select
+                  id="route-name"
+                  onChange={(changeEvent) => {
+                    setRouteId(changeEvent.target.value)
+                  }}
+                >
+                  <option key="" value="all">
+                    Please select route
+                  </option>
+                  {routes?.map((route: Route) => (
+                    <option key={route.id} value={route.id}>
+                      {route.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </div>
+            </div>
+          </th>
+          <th className="px-3 py-3"></th>
+          <th className="px-3 py-3"></th>
+        </tr>
+      )}
       <tr>
         <th className="px-3 py-4">Route and direction</th>
         <th className="px-3 py-4 u-hide-for-mobile">Starting Intersection</th>

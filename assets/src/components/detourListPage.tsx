@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react"
 import { DetoursTable, DetourStatus } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
-import { Button, Form, Spinner } from "react-bootstrap"
+import { Button, Spinner } from "react-bootstrap"
 import {
   GlobeAmericas,
   LockFill,
@@ -19,7 +19,6 @@ import {
   usePastDetours,
 } from "../hooks/useDetours"
 import { SocketContext } from "../contexts/socketContext"
-import { Route } from "../schedule"
 
 export const DetourListPage = () => {
   const routes = useContext(RoutesContext)
@@ -114,30 +113,12 @@ export const DetourListPage = () => {
                 visibility="Dispatchers and supervisors"
                 classNames={["u-hide-for-mobile", "d-md-flex"]}
               />
-              <div className="d-md-flex w-100">
-                <div className="d-flex flex-column my-auto p-3">
-                  <Form.Label htmlFor="route-name">Route</Form.Label>
-                  <Form.Select
-                    id="route-name"
-                    onChange={(changeEvent) => {
-                      setRouteId(changeEvent.target.value)
-                    }}
-                  >
-                    <option key="" value="all">
-                      Please select route
-                    </option>
-                    {routes?.map((route: Route) => (
-                      <option key={route.id} value={route.id}>
-                        {route.name}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </div>
-              </div>
               <DetoursTable
                 data={pastDetours}
                 status={DetourStatus.Closed}
                 onOpenDetour={onOpenDetour}
+                setRouteId={setRouteId}
+                routes={routes}
                 classNames={["u-hide-for-mobile"]}
               />
             </>
