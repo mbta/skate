@@ -333,13 +333,17 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <div
                   class="c-detour-list-filter__text"
                 >
-                  <input
-                    class="c-detour-list-filter__input"
-                    id="intersection-filter"
-                    placeholder="Search..."
-                    type="text"
-                    value=""
-                  />
+                  <div
+                    class="c-detour-list-filter__input-container"
+                  >
+                    <input
+                      class="c-detour-list-filter__input"
+                      id="intersection-filter"
+                      placeholder="Search..."
+                      type="text"
+                      value=""
+                    />
+                  </div>
                   <button
                     class="c-detour-list-filter__submit"
                     disabled=""
@@ -1238,13 +1242,17 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 <div
                   class="c-detour-list-filter__text"
                 >
-                  <input
-                    class="c-detour-list-filter__input"
-                    id="intersection-filter"
-                    placeholder="Search..."
-                    type="text"
-                    value=""
-                  />
+                  <div
+                    class="c-detour-list-filter__input-container"
+                  >
+                    <input
+                      class="c-detour-list-filter__input"
+                      id="intersection-filter"
+                      placeholder="Search..."
+                      type="text"
+                      value=""
+                    />
+                  </div>
                   <button
                     class="c-detour-list-filter__submit"
                     disabled=""

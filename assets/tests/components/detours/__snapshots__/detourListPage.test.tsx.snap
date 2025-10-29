@@ -517,13 +517,17 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                 <div
                   class="c-detour-list-filter__text"
                 >
-                  <input
-                    class="c-detour-list-filter__input"
-                    id="intersection-filter"
-                    placeholder="Search..."
-                    type="text"
-                    value=""
-                  />
+                  <div
+                    class="c-detour-list-filter__input-container"
+                  >
+                    <input
+                      class="c-detour-list-filter__input"
+                      id="intersection-filter"
+                      placeholder="Search..."
+                      type="text"
+                      value=""
+                    />
+                  </div>
                   <button
                     class="c-detour-list-filter__submit"
                     disabled=""
