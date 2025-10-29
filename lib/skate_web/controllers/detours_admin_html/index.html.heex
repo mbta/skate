@@ -15,6 +15,8 @@
     <tr>
       <th>Route and direction</th>
       <th>Starting intersection</th>
+      <th>Estimated Duration</th>
+      <th>Reason</th>
       <th>Status</th>
       <th>Author</th>
       <th>Last Modified</th>
@@ -27,6 +29,8 @@
       <tr>
         <td><%= detour.route_name %>: <%= detour.direction %> to <%= detour.headsign %></td>
         <td><%= detour.nearest_intersection %></td>
+        <td><%= detour.estimated_duration %></td>
+        <td><%= detour.reason %></td>
         <td><%= detour.status %></td>
         <td><%= detour.author.email %></td>
         <td>

@@ -43,6 +43,7 @@ defmodule Skate.Detours.Db.Detour do
 
     # Activated properties
     field :estimated_duration, :string, virtual: true
+    field :reason, :string, virtual: true
 
     # -------------------------------------------------------
 
@@ -158,6 +159,7 @@ defmodule Skate.Detours.Db.Detour do
           :direction -> select_direction(query)
           :nearest_intersection -> select_starting_intersection(query)
           :estimated_duration -> select_estimated_duration(query)
+          :reason -> select_reason(query)
           :direction_id -> select_direction_id(query)
           :coordinates -> select_coordinates(query)
           _unknown -> query
@@ -285,6 +287,12 @@ defmodule Skate.Detours.Db.Detour do
     def select_estimated_duration(query \\ base(), key \\ :estimated_duration) do
       select_merge(query, [detour: d], %{
         ^key => d.state["context"]["selectedDuration"]
+      })
+    end
+
+    def select_reason(query \\ base(), key \\ :reason) do
+      select_merge(query, [detour: d], %{
+        ^key => d.state["context"]["selectedReason"]
       })
     end
 
