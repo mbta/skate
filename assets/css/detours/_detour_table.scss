@@ -100,11 +100,20 @@ $table-border-radius: 0.5rem;
   font-weight: 400;
 }
 
+.c-detour-list-filter__input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 65%;
+}
+
 .c-detour-list-filter__input {
   @include filter-input;
+  height: 2.5rem;
+  box-sizing: border-box;
   border-right: none;
   border-radius: 6px 0 0 6px;
-  width: 70%;
+  width: 100%;
 
   &::placeholder {
     opacity: 1;
@@ -122,8 +131,9 @@ $table-border-radius: 0.5rem;
 
 .c-detour-list-filter__clear {
   @include filter-clear;
-  right: 7.5rem;
-  top: 0.875rem;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .c-detour-list-filter__submit {

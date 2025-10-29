@@ -79,24 +79,25 @@ export const DetoursTable = ({
                       Starting intersection
                     </label>
                     <div className="c-detour-list-filter__text">
-                      <input
-                        id="intersection-filter"
-                        type="text"
-                        placeholder="Search..."
-                        value={filter}
-                        onChange={(e) => setFilter(e.target.value)}
-                        className="c-detour-list-filter__input"
-                      />
-
-                      {filter.length > 0 ? (
-                        <button
-                          className="c-detour-list-filter__clear"
-                          onClick={() => setFilter("")}
-                          title="Clear"
-                        >
-                          <CircleXIcon />
-                        </button>
-                      ) : null}
+                      <div className="c-detour-list-filter__input-container">
+                        <input
+                          id="intersection-filter"
+                          type="text"
+                          placeholder="Search..."
+                          value={filter}
+                          onChange={(e) => setFilter(e.target.value)}
+                          className="c-detour-list-filter__input"
+                        />
+                        {filter.length > 0 && (
+                          <button
+                            className="c-detour-list-filter__clear"
+                            onClick={() => setFilter("")}
+                            title="Clear"
+                          >
+                            <CircleXIcon />
+                          </button>
+                        )}
+                      </div>
                       <button
                         type="submit"
                         title="Submit"
