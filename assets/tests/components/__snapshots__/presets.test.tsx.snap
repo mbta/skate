@@ -61,9 +61,10 @@ exports[`Presets renders current presets 1`] = `
     </li>
   </ul>
   <button
-    className="c-presets-panel__save-as-preset-button"
+    className="c-presets-panel__save-as-preset-button btn btn-primary"
     disabled={true}
     onClick={[Function]}
+    type="button"
   >
     <span
       className="c-presets-panel__save-as-preset-button-icon"
