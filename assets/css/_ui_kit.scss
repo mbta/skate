@@ -403,7 +403,7 @@ $color-tooltip-background: #333333;
 }
 
 @mixin filter-clear {
-@include button-transparent;
+  @include button-transparent;
   @include button-icon(0.875rem);
   position: absolute;
   display: flex;
