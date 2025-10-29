@@ -20,6 +20,7 @@ import {
   usePastDetours,
 } from "../../../src/hooks/useDetours"
 import { pastDetourFactory } from "../../factories/detourStateMachineFactory"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest
   .useFakeTimers({ doNotFake: ["setTimeout"] })
@@ -28,6 +29,7 @@ jest
 jest.mock("../../../src/userTestGroups")
 jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/api")
+jest.mock("../../../src/helpers/fullStory")
 
 beforeEach(() => {
   const detourList = detourListFactory.build()
@@ -44,6 +46,7 @@ beforeEach(() => {
 
 describe("Detours Page: Copy To Draft", () => {
   test("calls API with correct detour ID", async () => {
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     const pastDetour = pastDetourFactory.build()
     jest.mocked(fetchDetour).mockResolvedValue(Ok(pastDetour))
     render(<DetourListPage />)
@@ -52,5 +55,6 @@ describe("Detours Page: Copy To Draft", () => {
     await screen.findByText("View Past Detour")
     await userEvent.click(await screen.findByText("Copy to new draft"))
     expect(copyToDraftDetour).toHaveBeenCalledWith(123)
+    expect(mockedFSEvent).toHaveBeenCalledWith("Copy Past Detour to Draft", {})
   })
 })
