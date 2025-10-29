@@ -16,11 +16,13 @@ import {
   usePastDetours,
 } from "../../../src/hooks/useDetours"
 import { simpleDetourFromActivatedData } from "../../../src/models/detoursList"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
 
 jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/userTestGroups")
+jest.mock("../../../src/helpers/fullStory")
 
 beforeEach(() => {
   jest.mocked(useActiveDetours).mockReturnValue([
@@ -135,6 +137,7 @@ describe("DetourListPage", () => {
   })
 
   test("filters detours by intersection input", async () => {
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
     jest.mocked(useDraftDetours).mockReturnValue({})
     jest.mocked(useActiveDetours).mockReturnValue({})
     jest.mocked(usePastDetours).mockReturnValue([
@@ -167,12 +170,19 @@ describe("DetourListPage", () => {
       target: { value: "Main St" },
     })
 
+    // Mimic user clicking somewhere else after typing
+    fireEvent.blur(filterIntersectionInput.get())
+
     // Wait for debounce delay
     await waitFor(() => {
       // Verify only matching detours are visible
       expect(screen.queryByText("Detour 1")).toBeVisible()
       expect(screen.queryByText("Detour 3")).toBeVisible()
       expect(screen.queryByText("Detour 2")).not.toBeInTheDocument()
+      expect(mockedFSEvent).toHaveBeenCalledWith(
+        "Detour Intersection Filter Used",
+        {}
+      )
     })
   })
 })
