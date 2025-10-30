@@ -125,7 +125,7 @@ export const DetoursTable = ({
               colSpan={status === DetourStatus.Active ? 4 : 3}
               className="p-3 p-md-4"
             >
-              <EmptyDetourRows message={`No ${status} detours.`} />
+              <EmptyDetourContent message={`No ${status} detours.`} />
             </td>
           </tr>
         )}
@@ -180,7 +180,7 @@ const PopulatedDetourRows = ({
   )
 }
 
-const EmptyDetourRows = ({ message }: { message: string }) => (
+const EmptyDetourContent = ({ message }: { message: string }) => (
   <>
     <div className="d-flex justify-content-center mb-3">
       <EmptyDetourTableIcon height="100px" width="100px" />
