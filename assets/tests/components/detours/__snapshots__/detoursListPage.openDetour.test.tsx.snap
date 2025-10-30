@@ -240,7 +240,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
           >
             <td
               class="p-3 p-md-4"
-              colspan="4"
+              colspan="3"
             >
               <div
                 class="d-flex justify-content-center mb-3"
@@ -1103,7 +1103,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
           >
             <td
               class="p-3 p-md-4"
-              colspan="4"
+              colspan="3"
             >
               <div
                 class="d-flex justify-content-center mb-3"

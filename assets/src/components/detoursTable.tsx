@@ -42,7 +42,7 @@ export const DetoursTable = ({
   onOpenDetour,
   status,
   routes,
-  setRouteId = () => { },
+  setRouteId = () => {},
   classNames = [],
 }: DetoursTableProps) => {
   const [selectedRoute, setSelectedRoute] = useState<string>("all")
