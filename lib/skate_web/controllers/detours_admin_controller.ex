@@ -103,7 +103,6 @@ defmodule SkateWeb.DetoursAdminController do
 
       # Detour Status Column
       :status,
-
       :estimated_duration,
       :reason,
       # For some reason, without the primary keys explicitly present in the
