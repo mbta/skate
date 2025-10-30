@@ -37,6 +37,7 @@ import { ChangeDuration } from "./changeDurationModal"
 import { deleteDetour, copyToDraftDetour } from "../../api"
 import { isOk } from "../../util/result"
 import CopiedDetourToast from "./alerts/copiedDetourToast"
+import { fullStoryEvent } from "../../helpers/fullStory"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -135,6 +136,7 @@ export const DiversionPage = ({
   }, [onClose, send, snapshot.context.uuid])
 
   const copyToDraftDetourCallback = useCallback(() => {
+    fullStoryEvent("Copy Past Detour to Draft", {})
     if (snapshot.context.uuid) {
       copyToDraftDetour(snapshot.context.uuid).then((response) => {
         if (response && isOk(response)) {
