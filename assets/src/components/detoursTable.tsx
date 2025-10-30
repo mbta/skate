@@ -1,5 +1,6 @@
-import React from "react"
-import { Table, Form } from "react-bootstrap"
+import React, { useState } from "react"
+import { Table, Form, Button } from "react-bootstrap"
+import { XSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { useCurrentTime } from "../hooks/useCurrentTime"
 import { timeAgoLabel, timeAgoLabelFromDate } from "../util/dateTime"
@@ -41,67 +42,97 @@ export const DetoursTable = ({
   onOpenDetour,
   status,
   routes,
-  setRouteId = () => {},
+  setRouteId = () => { },
   classNames = [],
-}: DetoursTableProps) => (
-  <Table
-    hover={!!data.length}
-    className={joinClasses([...classNames, "c-detours-table"])}
-    variant={status === DetourStatus.Active ? "active-detour" : ""}
-  >
-    <thead className="u-hide-for-mobile">
-      {routes && (
-        <tr className="search-header">
-          <th className="px-3 py-3">
-            <div className="d-md-flex w-100">
-              <div className="d-flex flex-column my-auto p-3">
-                <Form.Label htmlFor="route-name">Route</Form.Label>
-                <Form.Select
-                  id="route-name"
-                  onChange={(changeEvent) => {
-                    setRouteId(changeEvent.target.value)
-                  }}
-                >
-                  <option key="" value="all">
-                    Please select route
+}: DetoursTableProps) => {
+  const [selectedRoute, setSelectedRoute] = useState<string>("all")
+
+  const setRouteFilter = (routeId: string) => {
+    setSelectedRoute(routeId)
+    setRouteId(routeId)
+  }
+
+  const resetInputs = () => {
+    setRouteFilter("all")
+  }
+
+  return (
+    <Table
+      hover={!!data.length}
+      className={joinClasses([...classNames, "c-detours-table"])}
+      variant={status === DetourStatus.Active ? "active-detour" : ""}
+    >
+      <thead className="u-hide-for-mobile">
+        {routes && (
+          <tr className="search-header">
+            <th className="search-header__select px-3 py-3">
+              <Form.Label htmlFor="route-name">Route</Form.Label>
+              <Form.Select
+                id="route-name"
+                className="mt-2"
+                value={selectedRoute}
+                onChange={(changeEvent) => {
+                  setRouteFilter(changeEvent.target.value)
+                }}
+              >
+                <option key="" value="all">
+                  Please select route
+                </option>
+                {routes?.map((route: Route) => (
+                  <option key={route.id} value={route.id}>
+                    {route.name}
                   </option>
-                  {routes?.map((route: Route) => (
-                    <option key={route.id} value={route.id}>
-                      {route.name}
-                    </option>
-                  ))}
-                </Form.Select>
-              </div>
-            </div>
-          </th>
-          <th className="px-3 py-3"></th>
-          <th className="px-3 py-3"></th>
-        </tr>
-      )}
-      <tr>
-        <th className="px-3 py-4">Route and direction</th>
-        <th className="px-3 py-4 u-hide-for-mobile">Starting Intersection</th>
-        <th className="px-3 py-4 u-hide-for-mobile">
-          {timestampLabelFromStatus(status)}
-        </th>
-        {status === DetourStatus.Active && (
-          <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
+                ))}
+              </Form.Select>
+            </th>
+            <th className="px-3 py-3"></th>
+            <th className="px-3 py-3 text-end">
+              <Button
+                className="icon-link"
+                variant="outline-primary"
+                data-fs-element="Reset detour search"
+                type="button"
+                title="Clear Search"
+                onClick={resetInputs}
+              >
+                <XSquare />
+                Clear
+              </Button>
+            </th>
+          </tr>
         )}
-      </tr>
-    </thead>
-    <tbody>
-      {data.length ? (
-        <PopulatedDetourRows
-          status={status}
-          data={data}
-          onOpenDetour={onOpenDetour}
-        />
-      ) : (
-        <EmptyDetourRows message={`No ${status} detours.`} />
-      )}
-    </tbody>
-  </Table>
-)
+        <tr>
+          <th className="px-3 py-4">Route and direction</th>
+          <th className="px-3 py-4 u-hide-for-mobile">Starting Intersection</th>
+          <th className="px-3 py-4 u-hide-for-mobile">
+            {timestampLabelFromStatus(status)}
+          </th>
+          {status === DetourStatus.Active && (
+            <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
+          )}
+        </tr>
+      </thead>
+      <tbody>
+        {data.length ? (
+          <PopulatedDetourRows
+            status={status}
+            data={data}
+            onOpenDetour={onOpenDetour}
+          />
+        ) : (
+          <tr aria-hidden>
+            <td
+              colSpan={status === DetourStatus.Active ? 4 : 3}
+              className="p-3 p-md-4"
+            >
+              <EmptyDetourRows message={`No ${status} detours.`} />
+            </td>
+          </tr>
+        )}
+      </tbody>
+    </Table>
+  )
+}
 
 const PopulatedDetourRows = ({
   data,
@@ -150,14 +181,12 @@ const PopulatedDetourRows = ({
 }
 
 const EmptyDetourRows = ({ message }: { message: string }) => (
-  <tr aria-hidden>
-    <td colSpan={4} className="p-3 p-md-4">
-      <div className="d-flex justify-content-center mb-3">
-        <EmptyDetourTableIcon height="100px" width="100px" />
-      </div>
-      <div className="d-flex justify-content-center">
-        <p className="fs-3 fw-light m-0">{message}</p>
-      </div>
-    </td>
-  </tr>
+  <>
+    <div className="d-flex justify-content-center mb-3">
+      <EmptyDetourTableIcon height="100px" width="100px" />
+    </div>
+    <div className="d-flex justify-content-center">
+      <p className="fs-3 fw-light m-0">{message}</p>
+    </div>
+  </>
 )

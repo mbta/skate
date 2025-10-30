@@ -22,6 +22,10 @@ $table-border-radius: 0.5rem;
     th {
       background: tokens.$eggplant-50;
     }
+
+    &__select {
+      width: 33%;
+    }
   }
 
   td {
