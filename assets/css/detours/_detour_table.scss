@@ -25,6 +25,13 @@ $table-border-radius: 0.5rem;
 
     &__select {
       width: 33%;
+
+      // TODO: This can be consolidated with the other input label
+      label {
+        @include font-body;
+        color: $black;
+        font-weight: 400;
+      }
     }
   }
 
