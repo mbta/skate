@@ -65,82 +65,67 @@ export const DetoursTable = ({
       variant={status === DetourStatus.Active ? "active-detour" : ""}
     >
       <>
-        {status === DetourStatus.Closed && (
-          <>
-            <thead className="u-hide-for-mobile">
-              <tr className="search-header">
-                <th className="px-3 py-3"></th>
-                <th className="px-3 py-3">
-                  <div className="c-detour-list-filter">
-                    <label
-                      className="c-detour-list-filter__label"
-                      htmlFor="intersection-filter"
-                    >
-                      Starting intersection
-                    </label>
-                    <div className="c-detour-list-filter__text">
-                      <div className="c-detour-list-filter__input-container">
-                        <input
-                          id="intersection-filter"
-                          type="text"
-                          placeholder="Search..."
-                          value={filter}
-                          onChange={(e) => setFilter(e.target.value)}
-                          className="c-detour-list-filter__input"
-                        />
-                        {filter.length > 0 && (
-                          <button
-                            className="c-detour-list-filter__clear"
-                            onClick={() => setFilter("")}
-                            title="Clear"
-                          >
-                            <CircleXIcon />
-                          </button>
-                        )}
-                      </div>
-                      <button
-                        type="submit"
-                        title="Submit"
-                        className="c-detour-list-filter__submit"
-                        onClick={setDebouncedFilter.bind(null, filter)}
-                        disabled={filter.length === 0}
-                      >
-                        <SearchIcon />
-                        Search
-                      </button>
+        <thead className="u-hide-for-mobile">
+          {status === DetourStatus.Closed && (
+            <tr className="search-header">
+              <th className="px-3 py-3"></th>
+              <th className="px-3 py-3">
+                <div className="c-detour-list-filter">
+                  <label
+                    className="c-detour-list-filter__label"
+                    htmlFor="intersection-filter"
+                  >
+                    Starting intersection
+                  </label>
+                  <div className="c-detour-list-filter__text">
+                    <div className="c-detour-list-filter__input-container">
+                      <input
+                        id="intersection-filter"
+                        type="text"
+                        placeholder="Search..."
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="c-detour-list-filter__input"
+                      />
+                      {filter.length > 0 && (
+                        <button
+                          className="c-detour-list-filter__clear"
+                          onClick={() => setFilter("")}
+                          title="Clear"
+                        >
+                          <CircleXIcon />
+                        </button>
+                      )}
                     </div>
+                    <button
+                      type="submit"
+                      title="Submit"
+                      className="c-detour-list-filter__submit"
+                      onClick={setDebouncedFilter.bind(null, filter)}
+                      disabled={filter.length === 0}
+                    >
+                      <SearchIcon />
+                      Search
+                    </button>
                   </div>
-                </th>
-                <th className="px-3 py-3"></th>
-              </tr>
-              <tr>
-                <th className="px-3 py-4">Route and direction</th>
-                <th className="px-3 py-4 u-hide-for-mobile">
-                  Starting Intersection
-                </th>
-                <th className="px-3 py-4 u-hide-for-mobile">
-                  {timestampLabelFromStatus(status)}
-                </th>
-              </tr>
-            </thead>
-          </>
-        )}
-        {status !== DetourStatus.Closed && (
-          <thead className="u-hide-for-mobile">
-            <tr>
-              <th className="px-3 py-4">Route and direction</th>
-              <th className="px-3 py-4 u-hide-for-mobile">
-                Starting Intersection
+                </div>
               </th>
-              <th className="px-3 py-4 u-hide-for-mobile">
-                {timestampLabelFromStatus(status)}
-              </th>
-              {status === DetourStatus.Active && (
-                <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
-              )}
+              <th className="px-3 py-3"></th>
             </tr>
-          </thead>
-        )}
+          )}
+          <tr>
+            <th className="px-3 py-4">Route and direction</th>
+            <th className="px-3 py-4 u-hide-for-mobile">
+              Starting Intersection
+            </th>
+            <th className="px-3 py-4 u-hide-for-mobile">
+              {timestampLabelFromStatus(status)}
+            </th>
+            {status === DetourStatus.Active && (
+              <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
+            )}
+          </tr>
+        </thead>
         <tbody>
           {filteredData.length ? (
             <PopulatedDetourRows
