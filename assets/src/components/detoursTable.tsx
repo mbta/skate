@@ -8,6 +8,7 @@ import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
 import { CircleXIcon } from "./circleXIcon"
 import { SearchIcon } from "../helpers/icon"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
@@ -84,6 +85,9 @@ export const DetoursTable = ({
                         type="text"
                         placeholder="Search..."
                         value={filter}
+                        onBlur={() =>
+                          fullStoryEvent("Detour Intersection Filter Used", {})
+                        }
                         onChange={(e) => setFilter(e.target.value)}
                         className="c-detour-list-filter__input"
                       />
