@@ -14,8 +14,13 @@ defmodule Skate.Detours.FeedSynchronizer do
     name = {:global, __MODULE__}
 
     case GenServer.whereis(name) do
-      nil -> Singleton.start_child(Skate.Singleton, __MODULE__, [1], {__MODULE__, 1})
-      _ -> :ignore
+      nil ->
+        {:ok, pid} = Singleton.start_child(Skate.Singleton, __MODULE__, [1], {__MODULE__, 1})
+        Logger.info("#{__MODULE__} started with pid=#{inspect(pid)}")
+        {:ok, pid}
+
+      _ ->
+        :ignore
     end
   end
 
