@@ -18,6 +18,12 @@ $table-border-radius: 0.5rem;
     white-space: nowrap;
   }
 
+  .search-header {
+    th {
+      background: tokens.$eggplant-50;
+    }
+  }
+
   td {
     color: tokens.$gray-900;
   }
@@ -78,4 +84,74 @@ $table-border-radius: 0.5rem;
 
 .c-detours-table__route-info-direction {
   color: tokens.$gray-600;
+}
+
+.c-detour-list-filter__text {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  margin-top: 0.5rem;
+}
+
+.c-detour-list-filter__label {
+  @include font-body;
+  color: $black;
+  font-weight: 400;
+}
+
+.c-detour-list-filter__input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 65%;
+}
+
+.c-detour-list-filter__input {
+  @include filter-input;
+  height: 2.5rem;
+  box-sizing: border-box;
+  border-right: none;
+  border-radius: 6px 0 0 6px;
+  width: 100%;
+
+  &::placeholder {
+    opacity: 1;
+    color: $color-gray-600;
+  }
+
+  &:hover {
+    border-right: none;
+  }
+
+  &:focus {
+    border-right: none;
+  }
+}
+
+.c-detour-list-filter__clear {
+  @include filter-clear;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.c-detour-list-filter__submit {
+  @include button-icon(1.25rem);
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 2.5rem;
+  padding: 1rem;
+  border-radius: 0 6px 6px 0;
+  font-weight: 400;
+  color: tokens.$eggplant-500;
+  text-decoration: none;
+  border: 1px solid tokens.$eggplant-500;
+  white-space: nowrap;
+  overflow: hidden;
+
+  span {
+    margin-right: 0.5rem;
+  }
 }
