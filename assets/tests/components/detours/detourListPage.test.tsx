@@ -2,7 +2,7 @@ import { describe, test, expect, jest, beforeEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { DetourListPage } from "../../../src/components/detourListPage"
-import { render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
 import { byRole } from "testing-library-selector"
@@ -16,11 +16,13 @@ import {
   usePastDetours,
 } from "../../../src/hooks/useDetours"
 import { simpleDetourFromActivatedData } from "../../../src/models/detoursList"
+import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
 
 jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/userTestGroups")
+jest.mock("../../../src/helpers/fullStory")
 
 beforeEach(() => {
   jest.mocked(useActiveDetours).mockReturnValue([
@@ -45,6 +47,10 @@ const closedTableHeading = byRole("heading", { name: "Closed detours" })
 
 const addDetourButton = byRole("button", { name: "Add detour" })
 
+const filterIntersectionInput = byRole("textbox", {
+  name: "Starting intersection",
+})
+
 describe("DetourListPage", () => {
   test("renders detour list page for dispatchers", async () => {
     const { baseElement } = render(<DetourListPage />)
@@ -56,6 +62,8 @@ describe("DetourListPage", () => {
     expect(closedTableHeading.get()).toBeVisible()
 
     expect(addDetourButton.get()).toBeVisible()
+
+    expect(filterIntersectionInput.get()).toBeVisible()
 
     expect(baseElement).toMatchSnapshot()
   })
@@ -74,6 +82,7 @@ describe("DetourListPage", () => {
     expect(closedTableHeading.query()).not.toBeInTheDocument()
 
     expect(addDetourButton.query()).not.toBeInTheDocument()
+    expect(filterIntersectionInput.query()).not.toBeInTheDocument()
 
     expect(baseElement).toMatchSnapshot()
   })
@@ -125,5 +134,55 @@ describe("DetourListPage", () => {
     await screen.findAllByText(/Headsign/)
 
     expect(baseElement).toMatchSnapshot()
+  })
+
+  test("filters detours by intersection input", async () => {
+    const mockedFSEvent = jest.mocked(fullStoryEvent)
+    jest.mocked(useDraftDetours).mockReturnValue({})
+    jest.mocked(useActiveDetours).mockReturnValue({})
+    jest.mocked(usePastDetours).mockReturnValue([
+      simpleDetourFactory.build({
+        id: 1,
+        intersection: "Main St & 1st Ave",
+        name: "Detour 1",
+      }),
+      simpleDetourFactory.build({
+        id: 2,
+        intersection: "Broadway & 2nd Ave",
+        name: "Detour 2",
+      }),
+      simpleDetourFactory.build({
+        id: 3,
+        intersection: "Main St & 3rd Ave",
+        name: "Detour 3",
+      }),
+    ])
+
+    render(<DetourListPage />)
+
+    // Ensure all detours are initially visible
+    await screen.findByText("Detour 1")
+    await screen.findByText("Detour 2")
+    await screen.findByText("Detour 3")
+
+    // Filter by "Main St"
+    fireEvent.change(filterIntersectionInput.get(), {
+      target: { value: "Main St" },
+    })
+
+    // Mimic user clicking somewhere else after typing
+    fireEvent.blur(filterIntersectionInput.get())
+
+    // Wait for debounce delay
+    await waitFor(() => {
+      // Verify only matching detours are visible
+      expect(screen.queryByText("Detour 1")).toBeVisible()
+      expect(screen.queryByText("Detour 3")).toBeVisible()
+      expect(screen.queryByText("Detour 2")).not.toBeInTheDocument()
+      expect(mockedFSEvent).toHaveBeenCalledWith(
+        "Detour Intersection Filter Used",
+        {}
+      )
+    })
   })
 })

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Table, Form, Button } from "react-bootstrap"
 import { XSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
@@ -8,6 +8,9 @@ import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
 import { Route } from "../schedule"
+import { CircleXIcon } from "./circleXIcon"
+import { SearchIcon } from "../helpers/icon"
+import { fullStoryEvent } from "../helpers/fullStory"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
@@ -46,6 +49,18 @@ export const DetoursTable = ({
   classNames = [],
 }: DetoursTableProps) => {
   const [selectedRoute, setSelectedRoute] = useState<string>("all")
+  const [filter, setFilter] = useState("")
+  const [debouncedFilter, setDebouncedFilter] = useState(filter)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedFilter(filter)
+    }, 300)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [filter])
 
   const setRouteFilter = (routeId: string) => {
     setSelectedRoute(routeId)
@@ -56,9 +71,13 @@ export const DetoursTable = ({
     setRouteFilter("all")
   }
 
+  const filteredData = data.filter((detour) =>
+    detour.intersection.toLowerCase().includes(debouncedFilter.toLowerCase())
+  )
+
   return (
     <Table
-      hover={!!data.length}
+      hover={!!filteredData.length}
       className={joinClasses([...classNames, "c-detours-table"])}
       variant={status === DetourStatus.Active ? "active-detour" : ""}
     >
@@ -85,7 +104,50 @@ export const DetoursTable = ({
                 ))}
               </Form.Select>
             </th>
-            <th className="px-3 py-3"></th>
+            <th className="px-3 py-3">
+              <div className="c-detour-list-filter">
+                <label
+                  className="c-detour-list-filter__label"
+                  htmlFor="intersection-filter"
+                >
+                  Starting intersection
+                </label>
+                <div className="c-detour-list-filter__text">
+                  <div className="c-detour-list-filter__input-container">
+                    <input
+                      id="intersection-filter"
+                      type="text"
+                      placeholder="Search..."
+                      value={filter}
+                      onBlur={() =>
+                        fullStoryEvent("Detour Intersection Filter Used", {})
+                      }
+                      onChange={(e) => setFilter(e.target.value)}
+                      className="c-detour-list-filter__input"
+                    />
+                    {filter.length > 0 && (
+                      <button
+                        className="c-detour-list-filter__clear"
+                        onClick={() => setFilter("")}
+                        title="Clear"
+                      >
+                        <CircleXIcon />
+                      </button>
+                    )}
+                  </div>
+                  <button
+                    type="submit"
+                    title="Submit"
+                    className="c-detour-list-filter__submit"
+                    onClick={setDebouncedFilter.bind(null, filter)}
+                    disabled={filter.length === 0}
+                  >
+                    <SearchIcon />
+                    Search
+                  </button>
+                </div>
+              </div>
+            </th>
             <th className="px-3 py-3 text-end">
               <Button
                 className="icon-link"
@@ -116,7 +178,7 @@ export const DetoursTable = ({
         {data.length ? (
           <PopulatedDetourRows
             status={status}
-            data={data}
+            data={filteredData}
             onOpenDetour={onOpenDetour}
           />
         ) : (
