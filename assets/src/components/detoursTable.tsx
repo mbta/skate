@@ -69,6 +69,7 @@ export const DetoursTable = ({
 
   const resetInputs = () => {
     setRouteFilter("all")
+    setFilter("")
   }
 
   const filteredData = data.filter((detour) =>
