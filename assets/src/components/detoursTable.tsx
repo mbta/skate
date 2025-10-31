@@ -83,7 +83,7 @@ export const DetoursTable = ({
       variant={status === DetourStatus.Active ? "active-detour" : ""}
     >
       <thead className="u-hide-for-mobile">
-        {routes && (
+        {routes && status === DetourStatus.Closed && (
           <tr className="search-header">
             <th className="search-header__select px-3 py-3">
               <Form.Label htmlFor="route-name">Route</Form.Label>
