@@ -32,6 +32,14 @@ $table-border-radius: 0.5rem;
         color: $black;
         font-weight: 400;
       }
+
+      select {
+        width: 80%;
+
+        @include media-breakpoint-down(lg) {
+          width: 100%;
+        }
+      }
     }
   }
 
