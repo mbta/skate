@@ -209,6 +209,13 @@ defmodule SkateWeb.DetoursChannelTest do
 
       :detour |> build() |> deactivated |> with_id(4) |> insert()
 
+      :detour
+      |> build()
+      |> deactivated
+      |> with_id(5)
+      |> with_route(%{name: "57", id: "57"})
+      |> insert()
+
       assert {:ok,
               %{
                 data: [
@@ -221,11 +228,72 @@ defmodule SkateWeb.DetoursChannelTest do
                     route: "detour_route_name:" <> _,
                     status: :past,
                     updated_at: _
+                  },
+                  %Skate.Detours.Detour.Detailed{
+                    author_id: _,
+                    direction: _,
+                    id: 5,
+                    intersection: "detour_nearest_intersection:" <> _,
+                    name: "detour_route_pattern_headsign:" <> _,
+                    route: "57",
+                    status: :past,
+                    updated_at: _
                   }
                 ]
               },
               %Socket{}} =
                subscribe_and_join(socket, DetoursChannel, "detours:past")
+    end
+
+    @tag :authenticated
+    test "subscribes to past detours by route with initial detours", %{socket: socket} do
+      :detour |> build() |> with_id(1) |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(2)
+      |> with_route(%{name: "57", id: "57"})
+      |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(3)
+      |> with_route(%{name: "66", id: "66"})
+      |> insert()
+
+      :detour
+      |> build()
+      |> deactivated
+      |> with_id(4)
+      |> with_route(%{name: "66", id: "66"})
+      |> insert()
+
+      :detour
+      |> build()
+      |> deactivated
+      |> with_id(5)
+      |> with_route(%{name: "57", id: "57"})
+      |> insert()
+
+      assert {:ok,
+              %{
+                data: [
+                  %Skate.Detours.Detour.Detailed{
+                    author_id: _,
+                    direction: _,
+                    id: 4,
+                    intersection: "detour_nearest_intersection:" <> _,
+                    name: "detour_route_pattern_headsign:" <> _,
+                    route: "66",
+                    status: :past,
+                    updated_at: _
+                  }
+                ]
+              },
+              %Socket{}} =
+               subscribe_and_join(socket, DetoursChannel, "detours:past:66")
     end
 
     @tag :authenticated

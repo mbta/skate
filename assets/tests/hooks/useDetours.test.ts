@@ -122,7 +122,7 @@ describe("usePastDetours", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: detours })
     mockSocket.channel.mockImplementation(() => mockChannel)
-    const { result } = renderHook(() => usePastDetours(mockSocket))
+    const { result } = renderHook(() => usePastDetours({ socket: mockSocket }))
 
     expect(result.current).toStrictEqual({
       [detourA.id]: parsedDetourA,
@@ -148,7 +148,7 @@ describe("usePastDetours", () => {
 
     mockSocket.channel.mockImplementation(() => mockChannel)
 
-    const { result } = renderHook(() => usePastDetours(mockSocket))
+    const { result } = renderHook(() => usePastDetours({ socket: mockSocket }))
 
     act(() => mockEvents["deactivated"]?.({ data: detourD }))
 
@@ -157,6 +157,65 @@ describe("usePastDetours", () => {
       [detourB.id]: parsedDetourB,
       [detourC.id]: parsedDetourC,
       [detourD.id]: parsedDetourD,
+    })
+  })
+
+  test("parses initial detours message given a route", () => {
+    const selectedRoute = parsedDetourA.route
+    const mockSocket = makeMockSocket()
+    // Filtering to a route occurs on the backend
+    const mockChannel = makeMockChannel("ok", { data: [detourA] })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+    const { result } = renderHook(() =>
+      usePastDetours({ socket: mockSocket, routeId: selectedRoute })
+    )
+
+    // Still sets a result when provided a route
+    expect(result.current).toStrictEqual({
+      [detourA.id]: parsedDetourA,
+    })
+  })
+
+  test("subscribes to a new channel by route when provided with a route", () => {
+    const selectedRoute = parsedDetourA.route
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: detours })
+    const mockChannelByRoute = makeMockChannel("ok", { data: [detourA] })
+
+    const mockEvents: Record<
+      string,
+      undefined | ((data: { data: SimpleDetourData }) => void)
+    > = {
+      deactivated: undefined,
+    }
+    mockChannel.on.mockImplementation((event, fn) => {
+      mockEvents[event] = fn
+      return 1
+    })
+
+    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+    mockSocket.channel.mockImplementation(() => mockChannelByRoute)
+    const { result, rerender } = renderHook((props) => usePastDetours(props), {
+      initialProps: { socket: mockSocket, routeId: "all" },
+    })
+
+    act(() => mockEvents["deactivated"]?.({ data: detourD }))
+
+    expect(result.current).toStrictEqual({
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
+      [detourD.id]: parsedDetourD,
+    })
+
+    rerender({ socket: mockSocket, routeId: selectedRoute })
+
+    const detourOnRoute = { ...detourD, route: detourA.route }
+    act(() => mockEvents["deactivated"]?.({ data: detourOnRoute }))
+
+    expect(result.current).toStrictEqual({
+      [detourA.id]: parsedDetourA,
+      [detourD.id]: { ...parsedDetourD, route: selectedRoute },
     })
   })
 })
