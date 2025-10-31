@@ -19,6 +19,8 @@ $dark: new_tokens.$gray-900;
 
 $alert-border-radius: var(--bs-border-radius-sm);
 
+$input-focus-border-color: new_tokens.$eggplant-400;
+
 // These breakpoints are overridden in order to match with our old set
 // of breakpoints, defined in _skate_ui.scss. Our long-term goal is to
 // replace our "custom" breakpoint system with these bootstrap
