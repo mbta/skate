@@ -26,14 +26,19 @@ defmodule SkateWeb.DetoursChannelTest do
 
   describe "join/3" do
     @tag :authenticated
-    test "subscribes to all active detours with initial detours", %{socket: socket} do
+    test "subscribes to all active detours with initial detours by last updated", %{
+      socket: socket
+    } do
       :detour |> build() |> with_id(1) |> insert()
+
+      now = DateTime.utc_now()
 
       :detour
       |> build()
       |> activated
       |> with_id(2)
       |> with_route(%{name: "57", id: "57"})
+      |> with_updated_at(now)
       |> insert()
 
       :detour
@@ -41,6 +46,7 @@ defmodule SkateWeb.DetoursChannelTest do
       |> activated
       |> with_id(3)
       |> with_route(%{name: "66", id: "66"})
+      |> with_updated_at(DateTime.add(now, 1, :minute))
       |> insert()
 
       :detour |> build() |> deactivated |> with_id(4) |> insert()
@@ -52,30 +58,32 @@ defmodule SkateWeb.DetoursChannelTest do
                     details: %Skate.Detours.Detour.Detailed{
                       author_id: _,
                       direction: _,
-                      id: 2,
+                      id: 3,
                       intersection: "detour_nearest_intersection:" <> _,
                       name: "detour_route_pattern_headsign:" <> _,
-                      route: "57",
+                      route: "66",
                       status: :active,
-                      updated_at: _
+                      updated_at: updated_at_2
                     }
                   },
                   %Skate.Detours.Detour.ActivatedDetourDetails{
                     details: %Skate.Detours.Detour.Detailed{
                       author_id: _,
                       direction: _,
-                      id: 3,
+                      id: 2,
                       intersection: "detour_nearest_intersection:" <> _,
                       name: "detour_route_pattern_headsign:" <> _,
-                      route: "66",
+                      route: "57",
                       status: :active,
-                      updated_at: _
+                      updated_at: updated_at_1
                     }
                   }
                 ]
               },
               %Socket{}} =
                subscribe_and_join(socket, DetoursChannel, "detours:active")
+
+      assert updated_at_2 > updated_at_1
     end
 
     @tag :authenticated

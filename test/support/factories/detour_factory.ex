@@ -130,6 +130,10 @@ defmodule Skate.DetourFactory do
         put_in(state["value"], %{"Detour Drawing" => "Past"})
       end
 
+      def with_updated_at(detour, updated_at) do
+        %{detour | updated_at: updated_at}
+      end
+
       def with_route(%Skate.Detours.Db.Detour{} = detour, %{name: _, id: _} = route) do
         %{detour | state: with_route(detour.state, route)}
       end
