@@ -541,8 +541,7 @@ defmodule SkateWeb.DetoursControllerTest do
         |> Guardian.Plug.sign_in(SkateWeb.AuthManager, %{id: other_user.id}, %{})
 
       # Manually insert a draft detour by another user
-      other_user_conn
-      |> put(~p"/api/detours/update_snapshot", %{
+      put(other_user_conn, ~p"/api/detours/update_snapshot", %{
         "snapshot" => :detour_snapshot |> build() |> with_id(100)
       })
 
