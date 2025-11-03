@@ -215,13 +215,16 @@ defmodule SkateWeb.DetoursChannelTest do
       |> with_route(%{name: "66", id: "66"})
       |> insert()
 
-      :detour |> build() |> deactivated |> with_id(4) |> insert()
+      now = DateTime.utc_now()
+
+      :detour |> build() |> deactivated |> with_id(4) |> with_updated_at(now) |> insert()
 
       :detour
       |> build()
       |> deactivated
       |> with_id(5)
       |> with_route(%{name: "57", id: "57"})
+      |> with_updated_at(DateTime.add(now, -1, :minute))
       |> insert()
 
       assert {:ok,
