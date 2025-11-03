@@ -172,7 +172,7 @@ export const DetoursTable = ({
         </tr>
       </thead>
       <tbody>
-        {data.length ? (
+        {filteredData.length ? (
           <PopulatedDetourRows
             status={status}
             data={filteredData}
