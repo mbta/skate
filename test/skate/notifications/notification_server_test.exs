@@ -124,6 +124,7 @@ defmodule Skate.Notifications.NotificationServerTest do
           )
 
           assert_receive {:notification, %Notifications.Notification{id: ^id}}
+          refute_receive {:notification, %Notifications.Notification{id: ^id}}
         end)
 
       assert log =~
