@@ -1,5 +1,5 @@
 defmodule Realtime.ServerTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   import ExUnit.CaptureLog
   import Test.Support.Helpers
   import Skate.Factory
@@ -793,7 +793,7 @@ defmodule Realtime.ServerTest do
          ]}
       )
 
-      log = capture_log(fn -> Server.handle_info(:ghost_stats, state) end)
+      log = capture_log([level: :info], fn -> Server.handle_info(:ghost_stats, state) end)
       assert log =~ "ghost_stats: explained_count=1 unexplained_count=3"
     end
   end
