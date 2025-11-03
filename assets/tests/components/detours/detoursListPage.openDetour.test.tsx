@@ -21,6 +21,8 @@ import {
   useDraftDetours,
   usePastDetours,
 } from "../../../src/hooks/useDetours"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
+import routeFactory from "../../factories/route"
 
 jest
   .useFakeTimers({ doNotFake: ["setTimeout"] })
@@ -49,13 +51,18 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("renders detour details modal to match mocked fetchDetour", async () => {
+    const routes = routeFactory.buildList(2)
     // Return the state of the machine as the fetchDetour mocked value,
     // even if it doesn't match the detour clicked
     jest
       .mocked(fetchDetour)
       .mockResolvedValue(Ok(detourInProgressFactory.build()))
 
-    const { baseElement } = render(<DetourListPage />)
+    const { baseElement } = render(
+      <RoutesProvider routes={routes}>
+        <DetourListPage />
+      </RoutesProvider>
+    )
 
     // Click an arbitrary detour from the list
     await userEvent.click(await screen.findByText("Headsign Z"))
@@ -68,13 +75,18 @@ describe("Detours Page: Open a Detour", () => {
   })
 
   test("renders detour details in an open drawer on mobile", async () => {
+    const routes = routeFactory.buildList(2)
     mockScreenSize("mobile")
 
     jest
       .mocked(fetchDetour)
       .mockResolvedValue(Ok(detourInProgressFactory.build()))
 
-    const { baseElement } = render(<DetourListPage />)
+    const { baseElement } = render(
+      <RoutesProvider routes={routes}>
+        <DetourListPage />
+      </RoutesProvider>
+    )
 
     await userEvent.click(await screen.findByText("Headsign Z"))
 
