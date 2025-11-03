@@ -535,10 +535,10 @@ defmodule SkateWeb.DetoursControllerTest do
 
       other_user = insert(:user)
 
-      # Manually insert a detour by another user
+      # Manually insert an active detour by another user
       Detours.upsert_from_snapshot(
         other_user.id,
-        build(:detour_snapshot)
+        :detour_snapshot |> build() |> with_id(4)
       )
 
       conn = get(conn, ~p"/api/detours")
@@ -546,7 +546,7 @@ defmodule SkateWeb.DetoursControllerTest do
       assert %{
                "data" => %{
                  "active" => [
-                   _
+                   %{"details" => %{"author_id" => ^current_user_id}}
                  ],
                  "draft" => [
                    %{
