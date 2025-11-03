@@ -373,6 +373,12 @@ $color-tooltip-background: #333333;
   }
 }
 
+@mixin filter-label {
+  @include font-body;
+  color: $black;
+  font-weight: 400;
+}
+
 @mixin filter-input {
   @include font-small;
   line-height: 1;

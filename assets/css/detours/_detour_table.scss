@@ -26,11 +26,8 @@ $table-border-radius: 0.5rem;
     &__select {
       width: 33%;
 
-      // TODO: This can be consolidated with the other input label
       label {
-        @include font-body;
-        color: $black;
-        font-weight: 400;
+        @include filter-label;
       }
 
       select {
@@ -74,7 +71,6 @@ $table-border-radius: 0.5rem;
     th:first-child {
       border-top-left-radius: $table-border-radius;
     }
-
     th:last-child {
       border-top-right-radius: $table-border-radius;
     }
@@ -84,7 +80,6 @@ $table-border-radius: 0.5rem;
     td:first-child {
       border-bottom-left-radius: $table-border-radius;
     }
-
     td:last-child {
       border-bottom-right-radius: $table-border-radius;
     }
@@ -116,9 +111,7 @@ $table-border-radius: 0.5rem;
 }
 
 .c-detour-list-filter__label {
-  @include font-body;
-  color: $black;
-  font-weight: 400;
+  @include filter-label;
 }
 
 .c-detour-list-filter__input-container {
