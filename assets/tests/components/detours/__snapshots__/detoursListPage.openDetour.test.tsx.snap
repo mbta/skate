@@ -240,7 +240,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
           >
             <td
               class="p-3 p-md-4"
-              colspan="4"
+              colspan="3"
             >
               <div
                 class="d-flex justify-content-center mb-3"
@@ -316,8 +316,35 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             class="search-header"
           >
             <th
-              class="px-3 py-3"
-            />
+              class="search-header__select px-3 py-3"
+            >
+              <label
+                class="form-label"
+                for="route-name"
+              >
+                Route
+              </label>
+              <select
+                class="mt-2 form-select"
+                id="route-name"
+              >
+                <option
+                  value="all"
+                >
+                  Please select route
+                </option>
+                <option
+                  value="route4"
+                >
+                  4
+                </option>
+                <option
+                  value="route5"
+                >
+                  5
+                </option>
+              </select>
+            </th>
             <th
               class="px-3 py-3"
             >
@@ -359,8 +386,33 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
               </div>
             </th>
             <th
-              class="px-3 py-3"
-            />
+              class="px-3 py-3 text-end"
+            >
+              <button
+                class="icon-link btn btn-outline-primary"
+                data-fs-element="Reset detour search"
+                title="Clear Search"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="bi bi-x-square"
+                  fill="currentColor"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+                  />
+                  <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
+                  />
+                </svg>
+                Clear
+              </button>
+            </th>
           </tr>
           <tr>
             <th
@@ -535,7 +587,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                     <div
                       class="c-route-pill c-route-pill--bus me-2 align-top"
                     >
-                      2
+                      6
                     </div>
                     <div
                       class="d-inline-block"
@@ -1153,7 +1205,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
           >
             <td
               class="p-3 p-md-4"
-              colspan="4"
+              colspan="3"
             >
               <div
                 class="d-flex justify-content-center mb-3"
@@ -1229,8 +1281,35 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             class="search-header"
           >
             <th
-              class="px-3 py-3"
-            />
+              class="search-header__select px-3 py-3"
+            >
+              <label
+                class="form-label"
+                for="route-name"
+              >
+                Route
+              </label>
+              <select
+                class="mt-2 form-select"
+                id="route-name"
+              >
+                <option
+                  value="all"
+                >
+                  Please select route
+                </option>
+                <option
+                  value="route1"
+                >
+                  1
+                </option>
+                <option
+                  value="route2"
+                >
+                  2
+                </option>
+              </select>
+            </th>
             <th
               class="px-3 py-3"
             >
@@ -1272,8 +1351,33 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
               </div>
             </th>
             <th
-              class="px-3 py-3"
-            />
+              class="px-3 py-3 text-end"
+            >
+              <button
+                class="icon-link btn btn-outline-primary"
+                data-fs-element="Reset detour search"
+                title="Clear Search"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="bi bi-x-square"
+                  fill="currentColor"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+                  />
+                  <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
+                  />
+                </svg>
+                Clear
+              </button>
+            </th>
           </tr>
           <tr>
             <th
@@ -1452,7 +1556,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="c-route-pill c-route-pill--bus me-2 align-top"
                   >
-                    1
+                    3
                   </div>
                   <div
                     class="d-inline-block"

@@ -9,6 +9,7 @@ import {
   PlusSquare,
   SvgProps,
 } from "../helpers/bsIcons"
+import RoutesContext from "../contexts/routesContext"
 import { DetourModal } from "./detours/detourModal"
 import { joinClasses } from "../helpers/dom"
 import { useLoadDetour } from "../hooks/useLoadDetour"
@@ -20,6 +21,7 @@ import {
 import { SocketContext } from "../contexts/socketContext"
 
 export const DetourListPage = () => {
+  const routes = useContext(RoutesContext)
   const [showDetourModalProps, setShowDetourModalProps] = useState<{
     show: boolean
     fromCopy: boolean
@@ -27,13 +29,14 @@ export const DetourListPage = () => {
   const [detourId, setDetourId] = useState<number | undefined>()
 
   const { show: showDetourModal, fromCopy: showFromCopy } = showDetourModalProps
+  const [routeId, setRouteId] = useState<string>("all")
 
   // Wait for the detour channels to initialize
   const { socket } = useContext(SocketContext)
 
   const activeDetoursMap = useActiveDetours(socket)
   const draftDetoursMap = useDraftDetours(socket)
-  const pastDetoursMap = usePastDetours(socket)
+  const pastDetoursMap = usePastDetours({ socket: socket, routeId: routeId })
 
   const activeDetours =
     activeDetoursMap &&
@@ -114,6 +117,9 @@ export const DetourListPage = () => {
                 data={pastDetours}
                 status={DetourStatus.Closed}
                 onOpenDetour={onOpenDetour}
+                routeId={routeId}
+                setRouteId={setRouteId}
+                routes={routes}
                 classNames={["u-hide-for-mobile"]}
               />
             </>

@@ -17,6 +17,8 @@ import {
 } from "../../../src/hooks/useDetours"
 import { simpleDetourFromActivatedData } from "../../../src/models/detoursList"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
+import { RoutesProvider } from "../../../src/contexts/routesContext"
+import routeFactory from "../../factories/route"
 
 jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
 
@@ -53,7 +55,12 @@ const filterIntersectionInput = byRole("textbox", {
 
 describe("DetourListPage", () => {
   test("renders detour list page for dispatchers", async () => {
-    const { baseElement } = render(<DetourListPage />)
+    const routes = routeFactory.buildList(2)
+    const { baseElement } = render(
+      <RoutesProvider routes={routes}>
+        <DetourListPage />
+      </RoutesProvider>
+    )
 
     await screen.findByText("Headsign Z")
 
@@ -137,6 +144,7 @@ describe("DetourListPage", () => {
   })
 
   test("filters detours by intersection input", async () => {
+    const routes = routeFactory.buildList(2)
     const mockedFSEvent = jest.mocked(fullStoryEvent)
     jest.mocked(useDraftDetours).mockReturnValue({})
     jest.mocked(useActiveDetours).mockReturnValue({})
@@ -158,7 +166,11 @@ describe("DetourListPage", () => {
       }),
     ])
 
-    render(<DetourListPage />)
+    render(
+      <RoutesProvider routes={routes}>
+        <DetourListPage />
+      </RoutesProvider>
+    )
 
     // Ensure all detours are initially visible
     await screen.findByText("Detour 1")

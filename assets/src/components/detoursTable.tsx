@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react"
-import { Table } from "react-bootstrap"
+import { Table, Form, Button } from "react-bootstrap"
+import { XSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { useCurrentTime } from "../hooks/useCurrentTime"
 import { timeAgoLabel, timeAgoLabelFromDate } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
+import { Route } from "../schedule"
 import { CircleXIcon } from "./circleXIcon"
 import { SearchIcon } from "../helpers/icon"
 import { fullStoryEvent } from "../helpers/fullStory"
@@ -14,6 +16,9 @@ interface DetoursTableProps {
   data: SimpleDetour[]
   onOpenDetour: (detourId: number) => void
   status: DetourStatus
+  routes?: Route[] | null
+  routeId?: string
+  setRouteId?: (routeId: string) => void
   classNames?: string[]
 }
 
@@ -40,6 +45,9 @@ export const DetoursTable = ({
   data,
   onOpenDetour,
   status,
+  routes,
+  routeId,
+  setRouteId = () => {},
   classNames = [],
 }: DetoursTableProps) => {
   const [filter, setFilter] = useState("")
@@ -55,6 +63,11 @@ export const DetoursTable = ({
     }
   }, [filter])
 
+  const resetInputs = () => {
+    setRouteId("all")
+    setFilter("")
+  }
+
   const filteredData = data.filter((detour) =>
     detour.intersection.toLowerCase().includes(debouncedFilter.toLowerCase())
   )
@@ -65,83 +78,117 @@ export const DetoursTable = ({
       className={joinClasses([...classNames, "c-detours-table"])}
       variant={status === DetourStatus.Active ? "active-detour" : ""}
     >
-      <>
-        <thead className="u-hide-for-mobile">
-          {status === DetourStatus.Closed && (
-            <tr className="search-header">
-              <th className="px-3 py-3"></th>
-              <th className="px-3 py-3">
-                <div className="c-detour-list-filter">
-                  <label
-                    className="c-detour-list-filter__label"
-                    htmlFor="intersection-filter"
-                  >
-                    Starting intersection
-                  </label>
-                  <div className="c-detour-list-filter__text">
-                    <div className="c-detour-list-filter__input-container">
-                      <input
-                        id="intersection-filter"
-                        type="text"
-                        placeholder="Search..."
-                        value={filter}
-                        onBlur={() =>
-                          fullStoryEvent("Detour Intersection Filter Used", {})
-                        }
-                        onChange={(e) => setFilter(e.target.value)}
-                        className="c-detour-list-filter__input"
-                      />
-                      {filter.length > 0 && (
-                        <button
-                          className="c-detour-list-filter__clear"
-                          onClick={() => setFilter("")}
-                          title="Clear"
-                        >
-                          <CircleXIcon />
-                        </button>
-                      )}
-                    </div>
-                    <button
-                      type="submit"
-                      title="Submit"
-                      className="c-detour-list-filter__submit"
-                      onClick={setDebouncedFilter.bind(null, filter)}
-                      disabled={filter.length === 0}
-                    >
-                      <SearchIcon />
-                      Search
-                    </button>
+      <thead className="u-hide-for-mobile">
+        {routes && status === DetourStatus.Closed && (
+          <tr className="search-header">
+            <th className="search-header__select px-3 py-3">
+              <Form.Label htmlFor="route-name">Route</Form.Label>
+              <Form.Select
+                id="route-name"
+                className="mt-2"
+                value={routeId}
+                onChange={(changeEvent) => {
+                  setRouteId(changeEvent.target.value)
+                }}
+              >
+                <option key="" value="all">
+                  Please select route
+                </option>
+                {routes?.map((route: Route) => (
+                  <option key={route.id} value={route.id}>
+                    {route.name}
+                  </option>
+                ))}
+              </Form.Select>
+            </th>
+            <th className="px-3 py-3">
+              <div className="c-detour-list-filter">
+                <label
+                  className="c-detour-list-filter__label"
+                  htmlFor="intersection-filter"
+                >
+                  Starting intersection
+                </label>
+                <div className="c-detour-list-filter__text">
+                  <div className="c-detour-list-filter__input-container">
+                    <input
+                      id="intersection-filter"
+                      type="text"
+                      placeholder="Search..."
+                      value={filter}
+                      onBlur={() =>
+                        fullStoryEvent("Detour Intersection Filter Used", {})
+                      }
+                      onChange={(e) => setFilter(e.target.value)}
+                      className="c-detour-list-filter__input"
+                    />
+                    {filter.length > 0 && (
+                      <button
+                        className="c-detour-list-filter__clear"
+                        onClick={() => setFilter("")}
+                        title="Clear"
+                      >
+                        <CircleXIcon />
+                      </button>
+                    )}
                   </div>
+                  <button
+                    type="submit"
+                    title="Submit"
+                    className="c-detour-list-filter__submit"
+                    onClick={setDebouncedFilter.bind(null, filter)}
+                    disabled={filter.length === 0}
+                  >
+                    <SearchIcon />
+                    Search
+                  </button>
                 </div>
-              </th>
-              <th className="px-3 py-3"></th>
-            </tr>
-          )}
-          <tr>
-            <th className="px-3 py-4">Route and direction</th>
-            <th className="px-3 py-4 u-hide-for-mobile">
-              Starting Intersection
+              </div>
             </th>
-            <th className="px-3 py-4 u-hide-for-mobile">
-              {timestampLabelFromStatus(status)}
+            <th className="px-3 py-3 text-end">
+              <Button
+                className="icon-link"
+                variant="outline-primary"
+                data-fs-element="Reset detour search"
+                type="button"
+                title="Clear Search"
+                onClick={resetInputs}
+              >
+                <XSquare />
+                Clear
+              </Button>
             </th>
-            {status === DetourStatus.Active && (
-              <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
-            )}
           </tr>
-        </thead>
-        <tbody>
-          {filteredData.length ? (
-            <PopulatedDetourRows
-              status={status}
-              data={filteredData}
-              onOpenDetour={onOpenDetour}
-            />
-          ) : (
-            <EmptyDetourRows message={`No ${status} detours.`} />
+        )}
+        <tr>
+          <th className="px-3 py-4">Route and direction</th>
+          <th className="px-3 py-4 u-hide-for-mobile">Starting Intersection</th>
+          <th className="px-3 py-4 u-hide-for-mobile">
+            {timestampLabelFromStatus(status)}
+          </th>
+          {status === DetourStatus.Active && (
+            <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
           )}
-        </tbody>
-      </>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredData.length ? (
+          <PopulatedDetourRows
+            status={status}
+            data={filteredData}
+            onOpenDetour={onOpenDetour}
+          />
+        ) : (
+          <tr aria-hidden>
+            <td
+              colSpan={status === DetourStatus.Active ? 4 : 3}
+              className="p-3 p-md-4"
+            >
+              <EmptyDetourContent message={`No ${status} detours.`} />
+            </td>
+          </tr>
+        )}
+      </tbody>
     </Table>
   )
 }
@@ -192,15 +239,13 @@ const PopulatedDetourRows = ({
   )
 }
 
-const EmptyDetourRows = ({ message }: { message: string }) => (
-  <tr aria-hidden>
-    <td colSpan={4} className="p-3 p-md-4">
-      <div className="d-flex justify-content-center mb-3">
-        <EmptyDetourTableIcon height="100px" width="100px" />
-      </div>
-      <div className="d-flex justify-content-center">
-        <p className="fs-3 fw-light m-0">{message}</p>
-      </div>
-    </td>
-  </tr>
+const EmptyDetourContent = ({ message }: { message: string }) => (
+  <>
+    <div className="d-flex justify-content-center mb-3">
+      <EmptyDetourTableIcon height="100px" width="100px" />
+    </div>
+    <div className="d-flex justify-content-center">
+      <p className="fs-3 fw-light m-0">{message}</p>
+    </div>
+  </>
 )

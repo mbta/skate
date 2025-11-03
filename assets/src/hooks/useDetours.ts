@@ -139,8 +139,14 @@ export const useActiveDetours = (
 }
 
 // This is to refresh the Detours List page, past detours section
-export const usePastDetours = (socket: Socket | undefined) => {
-  const topic = "detours:past"
+export const usePastDetours = ({
+  socket,
+  routeId = "all",
+}: {
+  socket: Socket | undefined
+  routeId?: string
+}) => {
+  const topic = routeId === "all" ? "detours:past" : `detours:past:${routeId}`
   const [pastDetours, setPastDetours] = useState<DetoursMap | undefined>()
 
   const handleDeactivated = (data: SimpleDetour) => {
@@ -168,7 +174,7 @@ export const usePastDetours = (socket: Socket | undefined) => {
         channel = undefined
       }
     }
-  }, [socket])
+  }, [socket, topic])
   return pastDetours
 }
 
