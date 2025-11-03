@@ -17,6 +17,7 @@ interface DetoursTableProps {
   onOpenDetour: (detourId: number) => void
   status: DetourStatus
   routes?: Route[] | null
+  routeId?: string
   setRouteId?: (routeId: string) => void
   classNames?: string[]
 }
@@ -45,10 +46,10 @@ export const DetoursTable = ({
   onOpenDetour,
   status,
   routes,
+  routeId,
   setRouteId = () => {},
   classNames = [],
 }: DetoursTableProps) => {
-  const [selectedRoute, setSelectedRoute] = useState<string>("all")
   const [filter, setFilter] = useState("")
   const [debouncedFilter, setDebouncedFilter] = useState(filter)
 
@@ -62,13 +63,8 @@ export const DetoursTable = ({
     }
   }, [filter])
 
-  const setRouteFilter = (routeId: string) => {
-    setSelectedRoute(routeId)
-    setRouteId(routeId)
-  }
-
   const resetInputs = () => {
-    setRouteFilter("all")
+    setRouteId("all")
     setFilter("")
   }
 
@@ -90,9 +86,9 @@ export const DetoursTable = ({
               <Form.Select
                 id="route-name"
                 className="mt-2"
-                value={selectedRoute}
+                value={routeId}
                 onChange={(changeEvent) => {
-                  setRouteFilter(changeEvent.target.value)
+                  setRouteId(changeEvent.target.value)
                 }}
               >
                 <option key="" value="all">

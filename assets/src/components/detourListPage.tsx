@@ -117,6 +117,7 @@ export const DetourListPage = () => {
                 data={pastDetours}
                 status={DetourStatus.Closed}
                 onOpenDetour={onOpenDetour}
+                routeId={routeId}
                 setRouteId={setRouteId}
                 routes={routes}
                 classNames={["u-hide-for-mobile"]}
