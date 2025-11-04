@@ -39,9 +39,7 @@ defmodule Skate.Detours.FeedSynchronizer do
     run_at = calculate_next_run(now)
     delay = Timex.diff(run_at, now, :milliseconds)
 
-    Logger.info(
-      "pid=#{inspect(self())} scheduling next detour feed sync at #{run_at}"
-    )
+    Logger.info("pid=#{inspect(self())} scheduling next detour feed sync at #{run_at}")
 
     Process.send_after(self(), :sync_with_swiftly, delay)
   end
