@@ -530,23 +530,27 @@ defmodule SkateWeb.DetoursControllerTest do
     end
 
     @tag :authenticated
-    test "will not return detours from other users", %{conn: conn} do
+    test "will not return draft detours from other users", %{conn: conn} do
       current_user_id = populate_db_and_get_user(conn)
 
       other_user = insert(:user)
 
-      # Manually insert a detour by another user
-      Detours.upsert_from_snapshot(
-        other_user.id,
-        build(:detour_snapshot)
-      )
+      other_user_conn =
+        Phoenix.ConnTest.build_conn()
+        |> init_test_session(%{})
+        |> Guardian.Plug.sign_in(SkateWeb.AuthManager, %{id: other_user.id}, %{})
+
+      # Manually insert a draft detour by another user
+      put(other_user_conn, ~p"/api/detours/update_snapshot", %{
+        "snapshot" => :detour_snapshot |> build() |> with_id(100)
+      })
 
       conn = get(conn, ~p"/api/detours")
 
       assert %{
                "data" => %{
                  "active" => [
-                   _
+                   %{"details" => %{"author_id" => ^current_user_id}}
                  ],
                  "draft" => [
                    %{
