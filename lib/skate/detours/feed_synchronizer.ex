@@ -11,17 +11,9 @@ defmodule Skate.Detours.FeedSynchronizer do
   @run_time {4, 0, 0}
 
   def start_link(_) do
-    name = {:global, __MODULE__}
-
-    case GenServer.whereis(name) do
-      nil ->
-        {:ok, pid} = Singleton.start_child(Skate.Singleton, __MODULE__, [1], {__MODULE__, 1})
-        Logger.info("#{__MODULE__} started with pid=#{inspect(pid)}")
-        {:ok, pid}
-
-      _ ->
-        :ignore
-    end
+    {:ok, pid} = Singleton.start_child(Skate.Singleton, __MODULE__, [1], {__MODULE__, 1})
+    Logger.info("started with pid=#{inspect(pid)}")
+    {:ok, pid}
   end
 
   @impl true
@@ -48,7 +40,7 @@ defmodule Skate.Detours.FeedSynchronizer do
     delay = Timex.diff(run_at, now, :milliseconds)
 
     Logger.info(
-      "#{__MODULE__} pid=#{inspect(self())} scheduling next detour feed sync at #{run_at}"
+      "pid=#{inspect(self())} scheduling next detour feed sync at #{run_at}"
     )
 
     Process.send_after(self(), :sync_with_swiftly, delay)
