@@ -1,5 +1,5 @@
 defmodule Util.DurationTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   import ExUnit.CaptureLog, only: [capture_log: 1]
 
   alias Util.Duration
