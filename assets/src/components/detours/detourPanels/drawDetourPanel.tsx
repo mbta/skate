@@ -1,6 +1,7 @@
-import React from "react"
+import React, { PropsWithChildren } from "react"
 import { DetourShape } from "../../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
+import * as BsIcons from "../../../helpers/bsIcons"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
 import { ArrowLeft, CardChecklist } from "../../../helpers/bsIcons"
@@ -10,7 +11,7 @@ import {
   MissedStops,
 } from "../detourPanelComponents"
 
-export interface DrawDetourPanelProps {
+export interface DrawDetourPanelProps extends PropsWithChildren {
   directions?: DetourShape["directions"]
   connectionPoints?: [string, string]
   missedStops?: Stop[]
@@ -20,6 +21,7 @@ export interface DrawDetourPanelProps {
   routeDirection: string
   detourFinished?: boolean
   onReviewDetour?: () => void
+  onDeleteDetour?: () => void
   onChangeRoute: () => void
 }
 
@@ -33,7 +35,9 @@ export const DrawDetourPanel = ({
   routeDirection,
   detourFinished,
   onReviewDetour,
+  onDeleteDetour,
   onChangeRoute,
+  children,
 }: DrawDetourPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header>
@@ -88,17 +92,31 @@ export const DrawDetourPanel = ({
         {missedStops && <MissedStops missedStops={missedStops} />}
       </Panel.Body.ScrollArea>
 
-      <Panel.Body.Footer hidden={!detourFinished}>
+      <Panel.Body.Footer className="d-flex flex-column">
+        {onDeleteDetour && (
+          <Button
+            className="m-3 mb-0 flex-grow-1 icon-link c-diversion-panel__deletion-button"
+            variant="outline-danger"
+            onClick={onDeleteDetour}
+            data-fs-element="Delete Detour Draft"
+            title="Delete Draft"
+          >
+            <BsIcons.Trash />
+            Delete draft
+          </Button>
+        )}
         <Button
           className="flex-grow-1 m-3 icon-link justify-content-center"
           onClick={onReviewDetour}
           data-fs-element="Review Drawn Detour"
+          disabled={!detourFinished}
         >
           <CardChecklist />
           Review
         </Button>
       </Panel.Body.Footer>
     </Panel.Body>
+    {children}
   </Panel>
 )
 
