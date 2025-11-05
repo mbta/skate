@@ -49,6 +49,7 @@ defmodule Skate.Application do
           {Oban, Application.fetch_env!(:skate, Oban)},
           {Skate.Detours.TripModificationPublisher,
            Application.get_env(:skate, Skate.Detours.TripModificationPublisher)},
+          {Singleton.Supervisor, name: Skate.Singleton},
           Skate.Detours.FeedSynchronizer
         ]
 
