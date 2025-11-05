@@ -371,17 +371,20 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                       value=""
                     />
                   </div>
-                  <button
-                    class="c-detour-list-filter__submit"
-                    disabled=""
-                    title="Submit"
-                    type="submit"
+                  <div
+                    class="c-detour-list-filter__input-controls"
                   >
-                    <span>
-                      <svg />
-                    </span>
-                    Search
-                  </button>
+                    <button
+                      class="c-detour-list-filter__submit"
+                      disabled=""
+                      title="Submit"
+                      type="submit"
+                    >
+                      <span>
+                        <svg />
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </th>
@@ -1336,17 +1339,20 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                       value=""
                     />
                   </div>
-                  <button
-                    class="c-detour-list-filter__submit"
-                    disabled=""
-                    title="Submit"
-                    type="submit"
+                  <div
+                    class="c-detour-list-filter__input-controls"
                   >
-                    <span>
-                      <svg />
-                    </span>
-                    Search
-                  </button>
+                    <button
+                      class="c-detour-list-filter__submit"
+                      disabled=""
+                      title="Submit"
+                      type="submit"
+                    >
+                      <span>
+                        <svg />
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </th>
