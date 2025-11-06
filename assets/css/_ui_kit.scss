@@ -426,6 +426,13 @@ $color-tooltip-background: #333333;
   }
 }
 
+@mixin support-link {
+  border-radius: 4px;
+  border: 1px tokens.$eggplant-50 solid;
+  background: tokens.$eggplant-50;
+  color: tokens.$eggplant-500;
+}
+
 // #endregion
 
 // #region toggle styles
