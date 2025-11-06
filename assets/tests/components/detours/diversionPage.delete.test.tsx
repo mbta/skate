@@ -20,6 +20,7 @@ import {
   deleteDetourButton,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
 import {
+  detourInProgressFactory,
   finishedDraftDetourFactory,
   minimumDraftDetourFactory,
 } from "../../factories/detourStateMachineFactory"
@@ -61,6 +62,20 @@ describe("Detours Page: Open a Detour", () => {
 
     await userEvent.click(await screen.findByText("Draft Detour 123"))
     expect(fetchDetour).toHaveBeenCalledWith(123)
+  })
+
+  describe("detour details modal for a detour without a detour uuid", () => {
+    test("renders detour details modal without a delete draft button", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(detourInProgressFactory.build()))
+
+      render(<DetourListPage />)
+
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
+
+      expect(deleteDetourButton.query()).not.toBeInTheDocument()
+    })
   })
 
   describe("detour details modal for a minimum draft detour with a detour uuid", () => {
