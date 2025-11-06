@@ -445,20 +445,21 @@ describe("DiversionPage", () => {
     })
   })
 
-  test("when end point has been set, finish detour button is visible", async () => {
+  test("when end point has been set, finish detour button is visible and not disabled", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
-    expect(reviewDetourButton.query()).not.toBeInTheDocument()
+    expect(reviewDetourButton.query()).toBeDisabled()
 
     act(() => {
       fireEvent.click(originalRouteShape.get(container))
     })
 
     expect(reviewDetourButton.get()).toBeVisible()
+    expect(reviewDetourButton.get()).not.toBeDisabled()
   })
 
   test.each<{
