@@ -65,6 +65,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
                 title="Report an Issue"
                 href={supportLinkUrl}
                 target="_blank"
+                rel="noopener noreferrer"
                 className="icon-link nav-link support-link"
               >
                 <BsIcon.ExclamationDiamondFill /> Report an Issue
