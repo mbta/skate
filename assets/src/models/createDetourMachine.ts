@@ -529,7 +529,7 @@ export const createDetourMachine = setup({
             Deleting: {
               on: {
                 "detour.delete.delete-modal.cancel": {
-                  target: "Place Waypoint", // hm
+                  target: "Place Waypoint",
                 },
                 "detour.delete.delete-modal.delete-draft": {
                   tags: "no-save",

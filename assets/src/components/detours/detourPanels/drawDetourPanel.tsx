@@ -106,7 +106,7 @@ export const DrawDetourPanel = ({
           </Button>
         )}
         <Button
-          className="flex-grow-1 m-3 icon-link justify-content-center"
+          className="flex-grow-1 m-3 icon-link"
           onClick={onReviewDetour}
           data-fs-element="Review Drawn Detour"
           disabled={!detourFinished}
