@@ -120,3 +120,7 @@
   top: 0;
   left: 0;
 }
+
+.support-link {
+  @include support-link;
+}

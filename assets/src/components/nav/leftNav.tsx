@@ -11,10 +11,11 @@ import Tippy from "@tippyjs/react"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
-import { LinkData, getNavLinkData } from "../../navLinkData"
+import { LinkData, getNavLinkData, supportLinkUrl } from "../../navLinkData"
 import {
   ChevronDoubleLeft,
   ChevronDoubleRight,
+  ExclamationDiamondFill,
   GearFill,
   QuestionFill,
 } from "../../helpers/bsIcons"
@@ -163,6 +164,18 @@ const LeftNav = ({
         </ul>
         {toggleMobileMenu ? null : (
           <ul className="c-left-nav__links">
+            <li>
+              <a
+                className="c-left-nav__link support-link"
+                href={supportLinkUrl}
+                target="_blank"
+                title="Report an Issue"
+                rel="noopener noreferrer"
+              >
+                <ExclamationDiamondFill className="c-left-nav__icon" />
+                Report an Issue
+              </a>
+            </li>
             <li>
               <a
                 className="c-left-nav__link"

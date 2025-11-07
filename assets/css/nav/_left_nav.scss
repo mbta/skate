@@ -101,6 +101,9 @@
     outline: 2px solid tokens.$eggplant-400;
     border: 1px solid $white;
   }
+  &.support-link {
+    @include support-link;
+  }
 }
 
 .c-left-nav__view {

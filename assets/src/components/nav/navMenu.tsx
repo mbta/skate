@@ -7,6 +7,7 @@ import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
 import { LoggedInAs } from "../loggedInAs"
 import getEmailAddress from "../../userEmailAddress"
+import { supportLinkUrl } from "../../navLinkData"
 
 interface Props {
   mobileMenuIsOpen: boolean
@@ -57,6 +58,18 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
               <Nav.Link as="button" onClick={reload} className="icon-link">
                 <BsIcon.ArrowClockwise /> Refresh
               </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <a
+                onClick={toggleMobileMenu}
+                title="Report an Issue"
+                href={supportLinkUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="icon-link nav-link support-link"
+              >
+                <BsIcon.ExclamationDiamondFill /> Report an Issue
+              </a>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link

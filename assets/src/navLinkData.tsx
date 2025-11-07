@@ -52,3 +52,6 @@ export const getNavLinkData: () => LinkData[] = () => {
 
   return alwaysPresentItems.concat(maybeDetours)
 }
+
+export const supportLinkUrl =
+  "https://form.asana.com/?k=Prmofhi4iFYNYtsv7_pDWg&d=15492006741476"
