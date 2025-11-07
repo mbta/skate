@@ -38,6 +38,7 @@ import { deleteDetour, copyToDraftDetour } from "../../api"
 import { isOk } from "../../util/result"
 import CopiedDetourToast from "./alerts/copiedDetourToast"
 import { fullStoryEvent } from "../../helpers/fullStory"
+import { useMapZoomAndCenter } from "../../hooks/useMapZoomAndCenter"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -199,6 +200,13 @@ export const DiversionPage = ({
       return DetourStatus.Draft
     }
   })()
+
+  const { mapZoom, mapCenter } = useMapZoomAndCenter(
+    routeDirection ?? "",
+    routeName ?? "",
+    shape,
+    useDetourProps
+  )
 
   const detourPanel: ({
     deleteDetourCallback,
@@ -620,16 +628,8 @@ export const DiversionPage = ({
           {routingError?.type === "unknown" && <RoutingErrorAlert />}
           <DetourMap
             originalShape={shape?.points ?? []}
-            center={
-              "originalRoute" in useDetourProps
-                ? useDetourProps.originalRoute.center
-                : undefined
-            }
-            zoom={
-              "originalRoute" in useDetourProps
-                ? useDetourProps.originalRoute.zoom
-                : undefined
-            }
+            center={mapCenter}
+            zoom={mapZoom}
             detourShape={detourShape}
             startPoint={startPoint ?? undefined}
             endPoint={endPoint ?? undefined}

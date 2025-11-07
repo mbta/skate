@@ -2,11 +2,12 @@ import React, {
   PropsWithChildren,
   ReactNode,
   useContext,
+  useEffect,
   useId,
   useState,
 } from "react"
 import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
-import { Polyline, useMapEvents } from "react-leaflet"
+import { Polyline, useMap, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
 import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
@@ -109,6 +110,13 @@ interface DetourMapProps {
   editing: boolean
 }
 
+interface CenteringElementProps {
+  mapCenter: LatLngLiteral | undefined
+  oldMapCenter: LatLngLiteral | undefined
+  setOldMapCenter: (center: LatLngLiteral | undefined) => void
+  zoom: number | undefined
+}
+
 export const DetourMap = ({
   originalShape,
   detourShape,
@@ -152,6 +160,33 @@ export const DetourMap = ({
 
   const canDraw = !streetViewEnabled && editing
 
+  const [oldMapCenter, setOldMapCenter] = useState<LatLngLiteral | undefined>(
+    undefined
+  )
+
+  const CenteringElement = ({
+    mapCenter,
+    oldMapCenter,
+    setOldMapCenter,
+  }: CenteringElementProps) => {
+    const map = useMap()
+
+    useEffect(() => {
+      if (
+        oldMapCenter?.lat !== mapCenter?.lat ||
+        oldMapCenter?.lng !== mapCenter?.lng
+      ) {
+        if (mapCenter) {
+          map.flyTo(mapCenter, zoom)
+          setOldMapCenter(mapCenter)
+        }
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [map, mapCenter, setOldMapCenter])
+
+    return null
+  }
+
   return (
     <div
       className={joinClasses([
@@ -168,6 +203,12 @@ export const DetourMap = ({
           streetViewEnabled ? "c-vehicle-map-state--street-view-enabled" : ""
         }
       >
+        <CenteringElement
+          mapCenter={center}
+          oldMapCenter={oldMapCenter}
+          setOldMapCenter={setOldMapCenter}
+          zoom={zoom}
+        />
         <StreetViewControl
           position="topright"
           streetViewEnabled={streetViewEnabled}
