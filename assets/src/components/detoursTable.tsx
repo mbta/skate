@@ -122,6 +122,8 @@ export const DetoursTable = ({
                       onChange={(e) => setFilter(e.target.value)}
                       className="c-detour-list-filter__input"
                     />
+                  </div>
+                  <div className="c-detour-list-filter__input-controls">
                     {filter.length > 0 && (
                       <button
                         className="c-detour-list-filter__clear"
@@ -131,17 +133,16 @@ export const DetoursTable = ({
                         <CircleXIcon />
                       </button>
                     )}
+                    <button
+                      type="submit"
+                      title="Submit"
+                      className="c-detour-list-filter__submit"
+                      onClick={setDebouncedFilter.bind(null, filter)}
+                      disabled={filter.length === 0}
+                    >
+                      <SearchIcon />
+                    </button>
                   </div>
-                  <button
-                    type="submit"
-                    title="Submit"
-                    className="c-detour-list-filter__submit"
-                    onClick={setDebouncedFilter.bind(null, filter)}
-                    disabled={filter.length === 0}
-                  >
-                    <SearchIcon />
-                    Search
-                  </button>
                 </div>
               </div>
             </th>

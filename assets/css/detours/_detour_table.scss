@@ -115,18 +115,34 @@ $table-border-radius: 0.5rem;
 }
 
 .c-detour-list-filter__input-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 65%;
+  height: 100%;
+  padding-block: 0;
+  width: 100%;
+  border-color: $color-gray-400;
+  border-radius: 6px;
+
+  &:hover {
+    border-color: tokens.$eggplant-400;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(109, 57, 172, 0.25);
+    border-right: none;
+  }
+
+  &:focus,
+  &:focus-within,
+  &:active {
+    border-color: tokens.$eggplant-400;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(109, 57, 172, 0.25);
+    border-right: none;
+  }
 }
 
 .c-detour-list-filter__input {
   @include filter-input;
   height: 2.375rem;
   box-sizing: border-box;
-  border-right: none;
-  border-radius: 6px 0 0 6px;
+  border-radius: 6px;
   font-size: 1rem;
   width: 100%;
 
@@ -134,47 +150,19 @@ $table-border-radius: 0.5rem;
     opacity: 1;
     color: $color-gray-600;
   }
+}
 
-  &:hover {
-    border-color: tokens.$eggplant-400;
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(109, 57, 172, 0.25);
-    clip-path: inset(-0.25rem -0.1rem -0.25rem -0.25rem);
-    border-right: none;
-  }
-
-  &:focus {
-    border-color: tokens.$eggplant-400;
-    outline: 0;
-    box-shadow: 0 0 0 0.25rem rgba(109, 57, 172, 0.25);
-    clip-path: inset(-0.25rem -0.1rem -0.25rem -0.25rem);
-    border-right: none;
-  }
+.c-detour-list-filter__input-controls {
+  @include filter-input-controls;
 }
 
 .c-detour-list-filter__clear {
   @include filter-clear;
-  right: 0.5rem;
+  right: 2.5rem;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .c-detour-list-filter__submit {
-  @include button-icon(1.25rem);
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  height: 2.375rem;
-  padding: 1rem;
-  border-radius: 0 6px 6px 0;
-  font-weight: 400;
-  color: tokens.$eggplant-500;
-  text-decoration: none;
-  border: 1px solid tokens.$eggplant-500;
-  white-space: nowrap;
-  overflow: hidden;
-
-  span {
-    margin-right: 0.5rem;
-  }
+  @include filter-submit;
 }

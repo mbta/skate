@@ -408,6 +408,20 @@ $color-tooltip-background: #333333;
   }
 }
 
+@mixin filter-input-controls {
+  position: absolute;
+  // Stick to right side of box, do not intercept mouse events to the text input
+  inset: 0;
+  left: unset;
+
+  width: 0;
+
+  // Layout controls from the right side
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: end;
+}
+
 @mixin filter-clear {
   @include button-transparent;
   @include button-icon(0.875rem);
@@ -423,6 +437,40 @@ $color-tooltip-background: #333333;
 
   &:focus-within {
     color: $color-gray-700;
+  }
+}
+
+@mixin filter-submit {
+  span > svg {
+    fill: currentColor;
+
+    display: block;
+    height: 1rem;
+    aspect-ratio: 1/1;
+  }
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+  aspect-ratio: 1/1;
+
+  color: $color-eggplant-700;
+  border-radius: 0.375rem;
+
+  &[disabled] {
+    color: $color-gray-700;
+  }
+
+  &:focus {
+    border: 1px solid $color-eggplant-500;
+    box-shadow: 0px 0px 0px 2px rgba(170, 78, 242, 0.17);
+  }
+
+  &:hover svg {
+    color: $color-eggplant-500;
   }
 }
 
