@@ -181,7 +181,7 @@ export const DetourMap = ({
           setOldMapCenter(mapCenter)
         }
       }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [map, mapCenter, setOldMapCenter])
 
     return null
