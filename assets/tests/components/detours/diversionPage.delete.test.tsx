@@ -19,7 +19,11 @@ import {
   confirmDeleteDetourButton,
   deleteDetourButton,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
-import { draftDetourFactory } from "../../factories/detourStateMachineFactory"
+import {
+  detourInProgressFactory,
+  finishedDraftDetourFactory,
+  minimumDraftDetourFactory,
+} from "../../factories/detourStateMachineFactory"
 import {
   useActiveDetours,
   useDraftDetours,
@@ -60,62 +64,157 @@ describe("Detours Page: Open a Detour", () => {
     expect(fetchDetour).toHaveBeenCalledWith(123)
   })
 
-  test("renders detour details modal with delete draft button", async () => {
-    jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
+  describe("detour details modal for a detour without a detour uuid", () => {
+    test("renders detour details modal without a delete draft button", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(detourInProgressFactory.build()))
 
-    render(<DetourListPage />)
+      render(<DetourListPage />)
 
-    await userEvent.click(await screen.findByText("Draft Detour 123"))
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
 
-    expect(deleteDetourButton.get()).toBeVisible()
+      expect(deleteDetourButton.query()).not.toBeInTheDocument()
+    })
   })
 
-  test("delete draft detour confirmation modal displays when Delete Draft button clicked", async () => {
-    jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
+  describe("detour details modal for a minimum draft detour with a detour uuid", () => {
+    test("renders detour details modal with delete draft button", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(minimumDraftDetourFactory.build()))
 
-    render(<DetourListPage />)
+      render(<DetourListPage />)
 
-    await userEvent.click(await screen.findByText("Draft Detour 123"))
-    await userEvent.click(deleteDetourButton.get())
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
 
-    expect(
-      await screen.findByText("Are you sure you want to delete this draft?")
-    ).toBeVisible()
+      expect(deleteDetourButton.get()).toBeVisible()
+    })
+
+    test("delete draft detour confirmation modal displays when Delete Draft button clicked", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(minimumDraftDetourFactory.build()))
+
+      render(<DetourListPage />)
+
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
+      await userEvent.click(deleteDetourButton.get())
+
+      expect(
+        await screen.findByText("Are you sure you want to delete this draft?")
+      ).toBeVisible()
+    })
+
+    test("Clicking the Delete Draft button on the Delete Draft Detour confirmation modal calls the deleteDetour api function", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(minimumDraftDetourFactory.build()))
+
+      render(<DetourListPage />)
+
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
+      await userEvent.click(deleteDetourButton.get())
+
+      expect(
+        await screen.findByText("Are you sure you want to delete this draft?")
+      ).toBeVisible()
+
+      await userEvent.click(confirmDeleteDetourButton.get())
+
+      expect(deleteDetour).toHaveBeenCalledWith(123)
+    })
+
+    test("Clicking the Cancel button on the Delete Draft Detour confirmation modal closes the modal", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(minimumDraftDetourFactory.build()))
+
+      render(<DetourListPage />)
+
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
+      await userEvent.click(deleteDetourButton.get())
+
+      expect(
+        await screen.findByText("Are you sure you want to delete this draft?")
+      ).toBeVisible()
+
+      await userEvent.click(cancelButton.get())
+
+      expect(
+        screen.queryByText("Are you sure you want to delete this draft?")
+      ).not.toBeInTheDocument()
+
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
+    })
   })
 
-  test("Clicking the Delete Draft button on the Delete Draft Detour confirmation modal calls the deleteDetour api function", async () => {
-    jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
+  describe("detour details modal for a finished draft detour with a detour uuid", () => {
+    test("renders detour details modal with delete draft button with a finished draft detour", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(finishedDraftDetourFactory.build()))
 
-    render(<DetourListPage />)
+      render(<DetourListPage />)
 
-    await userEvent.click(await screen.findByText("Draft Detour 123"))
-    await userEvent.click(deleteDetourButton.get())
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
 
-    expect(
-      await screen.findByText("Are you sure you want to delete this draft?")
-    ).toBeVisible()
+      expect(deleteDetourButton.get()).toBeVisible()
+    })
 
-    await userEvent.click(confirmDeleteDetourButton.get())
+    test("delete draft detour confirmation modal displays when Delete Draft button clicked on a finished draft detour", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(finishedDraftDetourFactory.build()))
 
-    expect(deleteDetour).toHaveBeenCalledWith(123)
-  })
+      render(<DetourListPage />)
 
-  test("Clicking the Cancel button on the Delete Draft Detour confirmation modal closes the modal", async () => {
-    jest.mocked(fetchDetour).mockResolvedValue(Ok(draftDetourFactory.build()))
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
+      await userEvent.click(deleteDetourButton.get())
 
-    render(<DetourListPage />)
+      expect(
+        await screen.findByText("Are you sure you want to delete this draft?")
+      ).toBeVisible()
+    })
 
-    await userEvent.click(await screen.findByText("Draft Detour 123"))
-    await userEvent.click(deleteDetourButton.get())
+    test("Clicking the Delete Draft button on the Delete Draft Detour confirmation modal calls the deleteDetour api function", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(finishedDraftDetourFactory.build()))
 
-    expect(
-      await screen.findByText("Are you sure you want to delete this draft?")
-    ).toBeVisible()
+      render(<DetourListPage />)
 
-    await userEvent.click(cancelButton.get())
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
+      await userEvent.click(deleteDetourButton.get())
 
-    expect(
-      screen.queryByText("Are you sure you want to delete this draft?")
-    ).not.toBeInTheDocument()
+      expect(
+        await screen.findByText("Are you sure you want to delete this draft?")
+      ).toBeVisible()
+
+      await userEvent.click(confirmDeleteDetourButton.get())
+
+      expect(deleteDetour).toHaveBeenCalledWith(123)
+    })
+
+    test("Clicking the Cancel button on the Delete Draft Detour confirmation modal closes the modal", async () => {
+      jest
+        .mocked(fetchDetour)
+        .mockResolvedValue(Ok(finishedDraftDetourFactory.build()))
+
+      render(<DetourListPage />)
+
+      await userEvent.click(await screen.findByText("Draft Detour 123"))
+      await userEvent.click(deleteDetourButton.get())
+
+      expect(
+        await screen.findByText("Are you sure you want to delete this draft?")
+      ).toBeVisible()
+
+      await userEvent.click(cancelButton.get())
+
+      expect(
+        screen.queryByText("Are you sure you want to delete this draft?")
+      ).not.toBeInTheDocument()
+    })
   })
 })

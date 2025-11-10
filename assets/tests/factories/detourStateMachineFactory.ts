@@ -82,8 +82,8 @@ export const activeDetourFactory = Factory.define<
   }
 })
 
-export const draftDetourFactory = Factory.define<DetourWithState>(() => {
-  // Stub out a detour machine, and generate a draft detour
+export const minimumDraftDetourFactory = Factory.define<DetourWithState>(() => {
+  // Stub out a detour machine, and generate a minimum draft detour
   const machine = createActor(createDetourMachine, {
     input: originalRouteFactory.build(),
   }).start()
@@ -93,15 +93,6 @@ export const draftDetourFactory = Factory.define<DetourWithState>(() => {
   })
   machine.send({ type: "detour.save.begin-save" })
   machine.send({ type: "detour.save.set-uuid", uuid: 123 })
-  machine.send({
-    type: "detour.edit.place-waypoint",
-    location: shapePointFactory.build(),
-  })
-  machine.send({
-    type: "detour.edit.place-waypoint-on-route",
-    location: shapePointFactory.build(),
-  })
-  machine.send({ type: "detour.edit.done" })
 
   const snapshot = machine.getPersistedSnapshot()
   machine.stop()
@@ -112,6 +103,39 @@ export const draftDetourFactory = Factory.define<DetourWithState>(() => {
     state: snapshot,
   }
 })
+
+export const finishedDraftDetourFactory = Factory.define<DetourWithState>(
+  () => {
+    // Stub out a detour machine, and generate a draft detour
+    const machine = createActor(createDetourMachine, {
+      input: originalRouteFactory.build(),
+    }).start()
+    machine.send({
+      type: "detour.edit.place-waypoint-on-route",
+      location: shapePointFactory.build(),
+    })
+    machine.send({ type: "detour.save.begin-save" })
+    machine.send({ type: "detour.save.set-uuid", uuid: 123 })
+    machine.send({
+      type: "detour.edit.place-waypoint",
+      location: shapePointFactory.build(),
+    })
+    machine.send({
+      type: "detour.edit.place-waypoint-on-route",
+      location: shapePointFactory.build(),
+    })
+    machine.send({ type: "detour.edit.done" })
+
+    const snapshot = machine.getPersistedSnapshot()
+    machine.stop()
+
+    return {
+      updatedAt: 1724866392,
+      author: "fake@email.com",
+      state: snapshot,
+    }
+  }
+)
 
 export const pastDetourFactory = Factory.define<DetourWithState>(() => {
   // Start with an activated detour

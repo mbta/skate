@@ -207,6 +207,11 @@ export const DiversionPage = ({
     deleteDetourCallback: () => void
     copyToDraftDetourCallback: () => void
   }) => React.JSX.Element = () => {
+    const onDeleteDetour =
+      inTestGroup(TestGroups.DeleteDraftDetours) && snapshot.context.uuid
+        ? () => send({ type: "detour.delete.open-delete-modal" })
+        : undefined
+
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
       return (
         <DetourRouteSelectionPanel
@@ -277,7 +282,29 @@ export const DiversionPage = ({
           detourFinished={reviewDetour !== undefined}
           onReviewDetour={reviewDetour}
           onChangeRoute={() => send({ type: "detour.route-pattern.open" })}
-        />
+          onDeleteDetour={onDeleteDetour}
+        >
+          {snapshot.matches({
+            "Detour Drawing": {
+              Editing: "Deleting",
+            },
+          }) ? (
+            <DeleteDetourModal
+              onDelete={deleteDetourCallback}
+              onCancel={() =>
+                send({ type: "detour.delete.delete-modal.cancel" })
+              }
+              affectedRoute={
+                <AffectedRoute
+                  routeName={routeName ?? "??"}
+                  routeDescription={routeDescription ?? "??"}
+                  routeOrigin={routeOrigin ?? "??"}
+                  routeDirection={routeDirection ?? "??"}
+                />
+              }
+            />
+          ) : null}
+        </DrawDetourPanel>
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
@@ -307,13 +334,7 @@ export const DiversionPage = ({
                 }
               : undefined
           }
-          onDeleteDetour={
-            inTestGroup(TestGroups.DeleteDraftDetours) && snapshot.context.uuid
-              ? () => {
-                  send({ type: "detour.delete.open-delete-modal" })
-                }
-              : undefined
-          }
+          onDeleteDetour={onDeleteDetour}
           affectedRoute={
             <AffectedRoute
               routeName={routeName ?? "??"}

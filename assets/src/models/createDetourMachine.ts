@@ -248,6 +248,7 @@ export const createDetourMachine = setup({
   states: {
     "Detour Drawing": {
       initial: "Begin",
+
       states: {
         Begin: {
           tags: "no-save",
@@ -261,6 +262,7 @@ export const createDetourMachine = setup({
             { target: "Pick Route Pattern" },
           ],
         },
+
         "Pick Route Pattern": {
           initial: "Pick Route ID",
           tags: "no-save",
@@ -360,6 +362,7 @@ export const createDetourMachine = setup({
             target: "Editing",
           },
         },
+
         Editing: {
           initial: "Pick Start Point",
           on: {
@@ -390,6 +393,9 @@ export const createDetourMachine = setup({
                     },
                     "set.nearest-intersection-fallback",
                   ],
+                },
+                "detour.delete.open-delete-modal": {
+                  target: "Deleting",
                 },
               },
             },
@@ -471,6 +477,9 @@ export const createDetourMachine = setup({
                     target: "Place Waypoint",
                   },
                 ],
+                "detour.delete.open-delete-modal": {
+                  target: "Deleting",
+                },
               },
             },
             "Finished Drawing": {
@@ -512,6 +521,20 @@ export const createDetourMachine = setup({
                 "detour.edit.done": {
                   target: "Done",
                 },
+                "detour.delete.open-delete-modal": {
+                  target: "Deleting",
+                },
+              },
+            },
+            Deleting: {
+              on: {
+                "detour.delete.delete-modal.cancel": {
+                  target: "Place Waypoint",
+                },
+                "detour.delete.delete-modal.delete-draft": {
+                  tags: "no-save",
+                  target: "#Deleted",
+                },
               },
             },
             Done: {
@@ -536,6 +559,7 @@ export const createDetourMachine = setup({
             }),
           },
         },
+
         "Share Detour": {
           initial: "Reviewing",
           on: {
@@ -687,6 +711,7 @@ export const createDetourMachine = setup({
             target: "Active",
           },
         },
+
         Active: {
           initial: "Reviewing",
           states: {
@@ -742,7 +767,9 @@ export const createDetourMachine = setup({
             target: "Past",
           },
         },
+
         Past: {},
+
         Deleted: {
           id: "Deleted",
           tags: "no-save",
@@ -750,6 +777,7 @@ export const createDetourMachine = setup({
         },
       },
     },
+
     SaveState: {
       initial: "Unsaved",
       states: {
