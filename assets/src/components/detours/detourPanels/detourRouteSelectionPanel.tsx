@@ -9,6 +9,7 @@ import {
 } from "../../../schedule"
 import RoutePropertiesCard from "../../mapPage/routePropertiesCard"
 import { Brush } from "../../../helpers/bsIcons"
+import { IssueButton } from "../detourPanelComponents"
 
 interface SelectedRouteInfoWithRoutePatterns {
   selectedRoute: Route
@@ -144,9 +145,10 @@ export const DetourRouteSelectionPanel = ({
           </section>
         </Panel.Body.ScrollArea>
 
-        <Panel.Body.Footer className="d-flex">
+        <Panel.Body.Footer className="d-flex flex-column">
+          <IssueButton />
           <Button
-            className="m-3 flex-grow-1 icon-link justify-content-center"
+            className="m-3 flex-grow-1 icon-link"
             onClick={onConfirm}
             data-fs-element="Start Drawing"
           >

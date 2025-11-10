@@ -14,6 +14,7 @@ import {
   ConnectionPoints,
   CopyButton,
   MissedStops,
+  IssueButton,
 } from "../detourPanelComponents"
 import { timeAgoLabelFromDate } from "../../../util/dateTime"
 import useCurrentTime from "../../../hooks/useCurrentTime"
@@ -147,6 +148,7 @@ export const ActiveDetourPanel = ({
         </Panel.Body.ScrollArea>
 
         <Panel.Body.Footer className="d-flex flex-column">
+          <IssueButton />
           {onOpenChangeDurationModal && (
             <Button
               variant="outline-primary"

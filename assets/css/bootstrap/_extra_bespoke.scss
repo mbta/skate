@@ -1,0 +1,14 @@
+@use "../color/tokens_2024" as new_tokens;
+
+.btn-warning-light {
+  --bs-btn-bg: #{new_tokens.$lemon-300};
+  --bs-btn-color: #{new_tokens.$lemon-800};
+  --bs-btn-border-color: #{new_tokens.$lemon-700};
+  --bs-btn-focus-shadow-rgb: 202, 209, 150;
+  --bs-btn-hover-bg: #{new_tokens.$lemon-400};
+  --bs-btn-hover-color: #{new_tokens.$lemon-800};
+  --bs-btn-hover-border-color: #{new_tokens.$lemon-700};
+  --bs-btn-active-bg: #{new_tokens.$lemon-400};
+  --bs-btn-active-color: #{new_tokens.$lemon-800};
+  --bs-btn-active-border-color: #{new_tokens.$lemon-700};
+}

@@ -9,7 +9,8 @@ import {
 } from "react-bootstrap"
 import { uniqBy } from "../../helpers/array"
 import { RoutePill } from "../routePill"
-import { Files } from "../../helpers/bsIcons"
+import { Files, ExclamationDiamond } from "../../helpers/bsIcons"
+import { supportLinkUrl } from "../../navLinkData"
 
 interface ConnectionPointsProps {
   connectionPoints: [string, string]
@@ -105,4 +106,18 @@ export const CopyButton = ({ detourText }: { detourText: string }) => (
       Copy details
     </Button>
   </OverlayTrigger>
+)
+
+export const IssueButton = () => (
+  <Button
+    className="m-3 mb-0 flex-grow-1 icon-link c-diversion-panel__issue-button"
+    href={supportLinkUrl}
+    variant="warning-light"
+    target="_blank"
+    rel="noreferrer"
+    data-fs-element="Report An Issue - Detours"
+  >
+    <ExclamationDiamond />
+    Report an issue
+  </Button>
 )

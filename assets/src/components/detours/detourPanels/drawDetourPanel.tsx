@@ -9,6 +9,7 @@ import {
   AffectedRoute,
   ConnectionPoints,
   MissedStops,
+  IssueButton,
 } from "../detourPanelComponents"
 
 export interface DrawDetourPanelProps extends PropsWithChildren {
@@ -93,6 +94,7 @@ export const DrawDetourPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex flex-column">
+        <IssueButton />
         {onDeleteDetour && (
           <Button
             className="m-3 mb-0 flex-grow-1 icon-link c-diversion-panel__deletion-button"
