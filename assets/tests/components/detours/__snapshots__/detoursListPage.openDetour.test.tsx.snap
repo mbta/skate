@@ -659,7 +659,35 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
               </div>
               <div
                 class="border-top d-flex mt-auto d-flex flex-column"
-              />
+              >
+                <a
+                  class="m-3 mb-0 flex-grow-1 icon-link c-diversion-panel__issue-button btn btn-warning-light"
+                  data-fs-element="Report An Issue - Detours"
+                  href="https://form.asana.com/?k=Prmofhi4iFYNYtsv7_pDWg&d=15492006741476"
+                  rel="noreferrer"
+                  role="button"
+                  tabindex="0"
+                  target="_blank"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="bi bi-exclamation-diamond"
+                    fill="currentColor"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"
+                    />
+                    <path
+                      d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"
+                    />
+                  </svg>
+                  Report an issue
+                </a>
+              </div>
             </div>
           </article>
         </div>
@@ -1631,7 +1659,35 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             </div>
             <div
               class="border-top d-flex mt-auto d-flex flex-column"
-            />
+            >
+              <a
+                class="m-3 mb-0 flex-grow-1 icon-link c-diversion-panel__issue-button btn btn-warning-light"
+                data-fs-element="Report An Issue - Detours"
+                href="https://form.asana.com/?k=Prmofhi4iFYNYtsv7_pDWg&d=15492006741476"
+                rel="noreferrer"
+                role="button"
+                tabindex="0"
+                target="_blank"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="bi bi-exclamation-diamond"
+                  fill="currentColor"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.48 1.48 0 0 1 0-2.098zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"
+                  />
+                  <path
+                    d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"
+                  />
+                </svg>
+                Report an issue
+              </a>
+            </div>
           </div>
         </article>
       </div>
