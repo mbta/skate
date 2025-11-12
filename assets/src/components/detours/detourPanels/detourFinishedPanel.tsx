@@ -6,6 +6,7 @@ import {
   ConnectionPoints,
   CopyButton,
   MissedStops,
+  IssueButton,
 } from "../detourPanelComponents"
 import { Stop } from "../../../schedule"
 
@@ -85,6 +86,7 @@ export const DetourFinishedPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex flex-column">
+        <IssueButton />
         {onDeleteDetour && (
           <Button
             className="m-3 mb-0 flex-grow-1 icon-link c-diversion-panel__deletion-button"

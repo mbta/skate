@@ -9,6 +9,7 @@ import {
   ConnectionPoints,
   CopyButton,
   MissedStops,
+  IssueButton,
 } from "../detourPanelComponents"
 
 export interface PastDetourPanelProps {
@@ -89,6 +90,7 @@ export const PastDetourPanel = ({
         {missedStops && <MissedStops missedStops={missedStops} />}
       </Panel.Body.ScrollArea>
       <Panel.Body.Footer className="d-flex flex-column">
+        <IssueButton />
         <Button
           className="m-3 flex-grow-1 icon-link"
           variant="outline-primary"
