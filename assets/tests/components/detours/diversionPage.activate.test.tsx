@@ -369,6 +369,23 @@ describe("DiversionPage activate workflow", () => {
         screen.getByRole("button", { name: "Return to regular route" })
       ).toBeVisible()
     })
+
+    test("'Active Detour' screen has a 'Report an issue' button", async () => {
+      await diversionPageOnActiveDetourScreen()
+
+      expect(
+        screen.getByRole("button", { name: "Report an issue" })
+      ).toBeVisible()
+    })
+
+    test("'Active Detour' screen does not have 'Report an issue' button for non-dispatchers", async () => {
+      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+      await diversionPageOnActiveDetourScreen()
+
+      expect(
+        screen.queryByRole("button", { name: "Report an issue" })
+      ).not.toBeInTheDocument()
+    })
   })
 })
 

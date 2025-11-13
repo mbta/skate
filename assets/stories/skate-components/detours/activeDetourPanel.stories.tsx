@@ -43,6 +43,7 @@ const meta = {
     activatedAt: new Date(),
     detourDuration: "3 hours",
     detourReason: "Construction",
+    showIssueButton: false,
   },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by
   // default, we should be able to remove this after that is added
@@ -60,3 +61,19 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Story: Story = {}
+
+export const WithButtons: Story = {
+  args: {
+    showIssueButton: true,
+    onOpenChangeDurationModal: () => {},
+    onOpenDeactivateModal: () => {},
+  },
+}
+
+export const WithoutButtons: Story = {
+  args: {
+    showIssueButton: false,
+    onOpenDeactivateModal: undefined,
+    onOpenChangeDurationModal: undefined,
+  },
+}

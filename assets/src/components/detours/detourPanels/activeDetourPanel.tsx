@@ -28,6 +28,7 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
   routeDescription: string
   routeOrigin: string
   routeDirection: string
+  showIssueButton: boolean
   onOpenDeactivateModal?: () => void
   onOpenChangeDurationModal?: () => void
   onNavigateBack: () => void
@@ -53,6 +54,7 @@ export const ActiveDetourPanel = ({
   activatedAt,
   detourDuration,
   detourReason,
+  showIssueButton,
 }: ActiveDetourPanelProps) => {
   const backButton = (
     <Button
@@ -148,7 +150,7 @@ export const ActiveDetourPanel = ({
         </Panel.Body.ScrollArea>
 
         <Panel.Body.Footer className="d-flex flex-column">
-          <IssueButton />
+          {showIssueButton && <IssueButton />}
           {onOpenChangeDurationModal && (
             <Button
               variant="outline-primary"

@@ -477,6 +477,7 @@ export const DiversionPage = ({
           routeOrigin={routeOrigin ?? "??"}
           routeDirection={routeDirection ?? "??"}
           onNavigateBack={onClose}
+          showIssueButton={userInTestGroup(TestGroups.DetoursPilot)}
           onOpenDeactivateModal={
             userInTestGroup(TestGroups.DetoursPilot)
               ? () => {
