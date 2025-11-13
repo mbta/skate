@@ -95,6 +95,7 @@ defmodule Schedule.Gtfs.Route do
 
   @spec shuttle_route?(t) :: boolean
   def shuttle_route?(%__MODULE__{id: "Shuttle-CopleyForestHillsViaBackBay"}), do: false
+  def shuttle_route?(%__MODULE__{id: "Shuttle-BackBayForestHills"}), do: false
   def shuttle_route?(%__MODULE__{description: "Rail Replacement Bus"}), do: true
   def shuttle_route?(%__MODULE__{}), do: false
 
