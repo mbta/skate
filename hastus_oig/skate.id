@@ -32,7 +32,7 @@ file trips
          {
          item csc_name { value 'Get(crew_schedule).csc_name' }
          item csc_gar_rating_area { value 'Get(crew_schedule).csc_gar_rating_area' }
-         item dty_number { value 'Get(duty).dty_number' }
+         item dty_number { value 'Get(duty, 1).dty_number' }
          item blk_number_for_MBTA_AVL { value 'Get(block).blk_number_for_MBTA_AVL' }
          item trp_time_start { value 'trp_time_start' } { mask "_0hh'mm" }
          item trp_time_end { value 'trp_time_end' } { mask "_0hh'mm" }
