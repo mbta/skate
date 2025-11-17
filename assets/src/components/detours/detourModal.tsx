@@ -52,7 +52,7 @@ export const DetourModal = ({
         author: detour.author,
         updatedAt: detour.updatedAt,
       }
-      : { originalRoute: originalRoute || {} }
+    : { originalRoute: originalRoute || {} }
 
   return (
     <Modal className="c-detour-modal" show={show} transition={Fade}>
@@ -79,7 +79,18 @@ const FromRouterParam = () => {
   const [searchParams] = useSearchParams()
   const showFromCopyParams = searchParams.get("fromCopy") === "true"
   const numberId = typeof id !== "undefined" ? parseInt(id) : id
-  return <>{id && <DetourModal onClose={() => navigate("/detours")} detourId={numberId} show={true} showFromCopy={showFromCopyParams} />}</>
+  return (
+    <>
+      {id && (
+        <DetourModal
+          onClose={() => navigate("/detours")}
+          detourId={numberId}
+          show={true}
+          showFromCopy={showFromCopyParams}
+        />
+      )}
+    </>
+  )
 }
 
 DetourModal.FromRouterParam = FromRouterParam

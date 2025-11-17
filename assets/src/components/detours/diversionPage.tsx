@@ -128,7 +128,7 @@ export const DiversionPage = ({
 
     editedSelectedDuration,
   } = useDetour(useDetourProps)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const deleteDetourCallback = useCallback(() => {
     if (snapshot.context.uuid) {
@@ -149,7 +149,7 @@ export const DiversionPage = ({
         }
       })
     }
-  }, [onClose, onOpenDetour, snapshot.context.uuid])
+  }, [onClose, onOpenDetour, navigate, snapshot.context.uuid])
 
   const nearestIntersectionDirection = [
     { instruction: "From " + nearestIntersection },
