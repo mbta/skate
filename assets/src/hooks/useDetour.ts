@@ -10,6 +10,7 @@ import {
 } from "../models/createDetourMachine"
 import { Snapshot } from "xstate"
 import { useEffect } from "react"
+// import { useNavigate } from "react-router-dom"
 
 export type UseDetourInput =
   | {
@@ -30,6 +31,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
       : {
           input: useDetourProps.originalRoute,
         }
+  // const navigate = useNavigate()
   const [snapshot, send, actorRef] = useMachine(createDetourMachine, input)
 
   // Record snapshots when changed
@@ -54,6 +56,8 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
             .can({ type: "detour.save.set-uuid", uuid: uuid.ok })
         ) {
           actorRef.send({ type: "detour.save.set-uuid", uuid: uuid.ok })
+          // Honestly, on "start drawing a detour", maybe we should save and transition as a start
+          // navigate(`/detours/${uuid.ok}`, { replace: true })
         }
       })
     })

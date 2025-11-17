@@ -18,6 +18,7 @@ import {
   usePastDetours,
 } from "../hooks/useDetours"
 import { SocketContext } from "../contexts/socketContext"
+import { useNavigate } from "react-router-dom"
 
 export const DetourListPage = () => {
   const routes = useContext(RoutesContext)
@@ -28,6 +29,7 @@ export const DetourListPage = () => {
   const [detourId, setDetourId] = useState<number | undefined>()
 
   const { show: showDetourModal, newDetour: isNewDetour } = showDetourModalProps
+  const navigate = useNavigate()
   const [routeId, setRouteId] = useState<string>("all")
 
   // Wait for the detour channels to initialize
@@ -69,12 +71,7 @@ export const DetourListPage = () => {
       {userInTestGroup(TestGroups.DetoursPilot) && (
         <Button
           className="c-detour-list-page__button icon-link fw-light px-3 py-2 u-hide-for-mobile"
-          onClick={() =>
-            setShowDetourModalProps({
-              show: true,
-              newDetour: true,
-            })
-          }
+          onClick={() => navigate("/detours/new")}
           data-fs-element="Add Detour"
         >
           <PlusSquare />

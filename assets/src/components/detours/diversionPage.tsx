@@ -64,7 +64,6 @@ const parseIntoDirectionsList = (directions: string) => {
 
 interface DiversionPageFunctions {
   onClose: () => void
-  onOpenDetour?: (detourId: number, props?: { fromCopy: boolean }) => void
   showFromCopy?: boolean
 }
 
@@ -88,7 +87,6 @@ export type DiversionPageProps = DiversionPageStateProps &
 
 export const DiversionPage = ({
   onClose,
-  onOpenDetour,
   showFromCopy,
   ...useDetourProps
 }: DiversionPageProps) => {
@@ -147,7 +145,7 @@ export const DiversionPage = ({
         }
       })
     }
-  }, [onClose, onOpenDetour, navigate, snapshot.context.uuid])
+  }, [onClose, navigate, snapshot.context.uuid])
 
   const nearestIntersectionDirection = [
     { instruction: "From " + nearestIntersection },

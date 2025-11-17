@@ -73,6 +73,20 @@ export const DetourModal = ({
   )
 }
 
+const NewFromRouterParam = () => {
+  const navigate = useNavigate()
+  return (
+    <>
+      <DetourModal
+        onClose={() => navigate("/detours")}
+        show={true}
+        showFromCopy={false}
+        isNewDetour={true}
+      />
+    </>
+  )
+}
+
 const FromRouterParam = () => {
   const navigate = useNavigate()
   const { id } = useParams()
@@ -94,3 +108,4 @@ const FromRouterParam = () => {
 }
 
 DetourModal.FromRouterParam = FromRouterParam
+DetourModal.NewFromRouterParam = NewFromRouterParam
