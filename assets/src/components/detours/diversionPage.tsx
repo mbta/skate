@@ -40,6 +40,7 @@ import CopiedDetourToast from "./alerts/copiedDetourToast"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { useMapZoomAndCenter } from "../../hooks/useMapZoomAndCenter"
 import { LatLngLiteral } from "leaflet"
+import { useNavigate } from "react-router-dom"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -127,6 +128,7 @@ export const DiversionPage = ({
 
     editedSelectedDuration,
   } = useDetour(useDetourProps)
+  const navigate = useNavigate();
 
   const deleteDetourCallback = useCallback(() => {
     if (snapshot.context.uuid) {
@@ -143,7 +145,7 @@ export const DiversionPage = ({
       copyToDraftDetour(snapshot.context.uuid).then((response) => {
         if (response && isOk(response)) {
           onClose()
-          onOpenDetour && onOpenDetour(response?.ok, { fromCopy: true })
+          navigate(`/detours/${response.ok}?fromCopy=true`)
         }
       })
     }

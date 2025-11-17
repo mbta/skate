@@ -11,10 +11,10 @@ import { Route } from "../schedule"
 import { CircleXIcon } from "./circleXIcon"
 import { SearchIcon } from "../helpers/icon"
 import { fullStoryEvent } from "../helpers/fullStory"
+import { useNavigate } from "react-router-dom"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
-  onOpenDetour: (detourId: number) => void
   status: DetourStatus
   routes?: Route[] | null
   routeId?: string
@@ -43,7 +43,6 @@ export const timestampLabelFromStatus = (status: DetourStatus) => {
 
 export const DetoursTable = ({
   data,
-  onOpenDetour,
   status,
   routes,
   routeId,
@@ -52,6 +51,7 @@ export const DetoursTable = ({
 }: DetoursTableProps) => {
   const [filter, setFilter] = useState("")
   const [debouncedFilter, setDebouncedFilter] = useState(filter)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -177,7 +177,7 @@ export const DetoursTable = ({
           <PopulatedDetourRows
             status={status}
             data={filteredData}
-            onOpenDetour={onOpenDetour}
+            navigate={navigate}
           />
         ) : (
           <tr aria-hidden>
@@ -197,11 +197,11 @@ export const DetoursTable = ({
 const PopulatedDetourRows = ({
   data,
   status,
-  onOpenDetour,
+  navigate
 }: {
   data: SimpleDetour[]
   status: DetourStatus
-  onOpenDetour: (detourId: number) => void
+  navigate: (path: string) => void
 }) => {
   const epochNow = useCurrentTime()
   const epochNowInSeconds = epochNow.valueOf() / 1000
@@ -209,7 +209,7 @@ const PopulatedDetourRows = ({
   return (
     <>
       {data.map((detour, index) => (
-        <tr key={index} onClick={() => onOpenDetour(detour.id)}>
+        <tr key={index} onClick={() => navigate(`/detours/${detour.id}`)}>
           <td className="align-middle p-3">
             <div className="d-flex">
               <RoutePill routeName={detour.route} />

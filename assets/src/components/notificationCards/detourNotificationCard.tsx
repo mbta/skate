@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import {
   Notification,
   DetourNotificationStatus,
@@ -8,9 +8,7 @@ import {
 } from "../../realtime"
 import { CardBody, CardReadable } from "../card"
 import { RoutePill } from "../routePill"
-import { DetourModal } from "../detours/detourModal"
-import { DetourId } from "../../models/detoursList"
-import { useLoadDetour } from "../../hooks/useLoadDetour"
+import { useNavigate } from "react-router-dom"
 
 const Description = ({
   notification,
@@ -100,29 +98,6 @@ const notificationTitle = (notification: Notification<DetourNotifications>) => {
   return null
 }
 
-const DetourNotificationModal = ({
-  detourId,
-  show,
-  onClose,
-}: {
-  detourId: DetourId
-  show: boolean
-  onClose: () => void
-}) => {
-  const { detour } = useLoadDetour(detourId)
-
-  return detour ? (
-    <DetourModal
-      onClose={onClose}
-      show={show}
-      key={detourId ?? ""}
-      snapshot={detour.state}
-      author={detour.author}
-      updatedAt={detour.updatedAt}
-    />
-  ) : null
-}
-
 export const DetourNotificationCard = ({
   notification,
   currentTime,
@@ -138,15 +113,11 @@ export const DetourNotificationCard = ({
   onRead: (notification: Notification) => void
   noFocusOrHover?: boolean
 }) => {
-  const [showDetourModal, setShowDetourModal] = useState(false)
+  const navigate = useNavigate()
   const detourId = notification.content.detourId
 
   const onSelect = () => {
-    setShowDetourModal(true)
-  }
-
-  const onCloseDetour = () => {
-    setShowDetourModal(false)
+    navigate(`/detours/${detourId}`)
   }
 
   return (
@@ -168,13 +139,6 @@ export const DetourNotificationCard = ({
           <Description notification={notification} />
         </CardBody>
       </CardReadable>
-      {showDetourModal && detourId && (
-        <DetourNotificationModal
-          show
-          detourId={detourId}
-          onClose={onCloseDetour}
-        />
-      )}
     </>
   )
 }
