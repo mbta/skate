@@ -254,9 +254,7 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           }}
           show
           key={detourId ?? ""}
-          snapshot={detour.state}
-          author={detour.author}
-          updatedAt={detour.updatedAt}
+          detourId={detourId}
         />
       )}
     </div>
