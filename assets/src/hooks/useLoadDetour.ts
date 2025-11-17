@@ -13,9 +13,11 @@ export const useLoadDetour = (detourId: DetourId | undefined) => {
         return undefined
       }
       const detourResponse = await fetchDetour(detourId)
+
       if (isErr(detourResponse)) {
-        return undefined
+        return null
       }
+
       const snapshot = isValidSnapshot(
         createDetourMachine,
         detourResponse.ok.state
