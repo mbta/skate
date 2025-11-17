@@ -197,7 +197,7 @@ export const DetoursTable = ({
 const PopulatedDetourRows = ({
   data,
   status,
-  navigate
+  navigate,
 }: {
   data: SimpleDetour[]
   status: DetourStatus
