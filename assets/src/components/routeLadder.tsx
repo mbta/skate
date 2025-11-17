@@ -33,8 +33,9 @@ import {
 import { RoutePill } from "./routePill"
 import { Card, CloseButton, Dropdown } from "react-bootstrap"
 import { joinClasses, joinTruthy } from "../helpers/dom"
-import { DetourId, SimpleDetour } from "../models/detoursList"
+import { SimpleDetour } from "../models/detoursList"
 import { DetoursMap } from "../hooks/useDetours"
+import { useNavigate } from "react-router-dom"
 
 interface Props {
   route: Route
@@ -48,7 +49,6 @@ interface Props {
   ladderCrowdingToggles: LadderCrowdingToggles
   hasAlert: boolean
   onAddDetour?: (route: Route) => void
-  onOpenDetour?: (detourId: DetourId) => void
   skateDetoursForRoute?: DetoursMap
 }
 
@@ -61,7 +61,6 @@ export const Header = ({
   hasAlert,
   isAdmin,
   onClickAddDetour,
-  onOpenDetour,
   skateDetoursForRoute,
 }: {
   routeName: string
@@ -69,9 +68,10 @@ export const Header = ({
   hasAlert: boolean
   isAdmin: boolean
   onClickAddDetour?: () => void
-  onOpenDetour?: (detourId: DetourId) => void
   skateDetoursForRoute?: DetoursMap
 }) => {
+  const navigate = useNavigate()
+
   const routePillId = "route-pill" + useId()
   const routeOptionsToggleId = "route-options-toggle" + useId()
   return (
@@ -131,7 +131,7 @@ export const Header = ({
                         <Dropdown.Item
                           key={detour.id}
                           className="icon-link"
-                          onClick={() => onOpenDetour?.(detour.id)}
+                          onClick={() => navigate(`/detours/${detour.id}`)}
                         >
                           {detour.direction === "Outbound" ? (
                             <ArrowDownLeftSquare />
@@ -266,7 +266,6 @@ const RouteLadder = ({
   ladderCrowdingToggles,
   hasAlert,
   onAddDetour,
-  onOpenDetour,
   skateDetoursForRoute,
 }: Props) => {
   const ladderDirection = getLadderDirectionForRoute(ladderDirections, route.id)
@@ -303,7 +302,6 @@ const RouteLadder = ({
         onClickAddDetour={() => {
           onAddDetour?.(route)
         }}
-        onOpenDetour={onOpenDetour}
         skateDetoursForRoute={
           skateDetoursForRoute && Object.values(skateDetoursForRoute).length > 0
             ? skateDetoursForRoute

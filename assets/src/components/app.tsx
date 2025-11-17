@@ -114,6 +114,10 @@ export const AppRoutes = () => {
                       element={<DetourListPage />}
                     />
                     <BrowserRoute
+                      path="/detours/new"
+                      element={<DetourModal.NewFromRouterParam />}
+                    />
+                    <BrowserRoute
                       path="/detours/:id"
                       element={<DetourModal.FromRouterParam />}
                     />

@@ -20,7 +20,6 @@ const Fade = ({ children, ...props }: ModalTransitionProps) => (
 
 export const DetourModal = ({
   onClose,
-  onOpenDetour,
   show,
   detourId,
   isNewDetour,
@@ -29,7 +28,6 @@ export const DetourModal = ({
   ...useDetourProps
 }: {
   onClose: () => void
-  onOpenDetour?: (detourId: number) => void
   show: boolean
   isNewDetour?: boolean // could be original route
   detourId?: number
@@ -65,11 +63,24 @@ export const DetourModal = ({
           {...useDetourProps}
           {...detourForPage}
           onClose={onClose}
-          onOpenDetour={onOpenDetour}
           showFromCopy={showFromCopy}
         />
       )}
     </Modal>
+  )
+}
+
+const NewFromRouterParam = () => {
+  const navigate = useNavigate()
+  return (
+    <>
+      <DetourModal
+        onClose={() => navigate("/detours")}
+        show={true}
+        showFromCopy={false}
+        isNewDetour={true}
+      />
+    </>
   )
 }
 
@@ -94,3 +105,4 @@ const FromRouterParam = () => {
 }
 
 DetourModal.FromRouterParam = FromRouterParam
+DetourModal.NewFromRouterParam = NewFromRouterParam

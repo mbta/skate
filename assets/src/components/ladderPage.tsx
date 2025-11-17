@@ -28,10 +28,8 @@ import { SaveIcon, PlusThinIcon } from "../helpers/icon"
 import { tagManagerEvent } from "../helpers/googleTagManager"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { usePanelStateFromStateDispatchContext } from "../hooks/usePanelState"
-import { DetourModal } from "./detours/detourModal"
 import { Route } from "../schedule"
-import { DetourId } from "../models/detoursList"
-import { useLoadDetour } from "../hooks/useLoadDetour"
+import { useNavigate } from "react-router-dom"
 
 type DrawerContent = "route_picker" | "presets"
 
@@ -119,6 +117,7 @@ const AddTabButton = ({
 }
 
 const LadderPage = (): ReactElement<HTMLDivElement> => {
+  const navigate = useNavigate()
   const [{ routeTabs, pickerContainerIsVisible, mobileMenuIsOpen }, dispatch] =
     useContext(StateDispatchContext)
 
@@ -146,11 +145,6 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
     : "c-ladder-page--picker-container-hidden"
 
   const mobileMenuClass = mobileMenuIsOpen ? "blurred-mobile" : ""
-
-  const [showDetourModal, setShowDetourModal] = useState(false)
-  const [routeForDetour, setRouteForDetour] = useState<Route | null>(null)
-  const [detourId, setDetourId] = useState<DetourId | undefined>()
-  const { detour } = useLoadDetour(detourId)
 
   return (
     <div
@@ -226,37 +220,11 @@ const LadderPage = (): ReactElement<HTMLDivElement> => {
           }
           ladderDirections={ladderDirections}
           ladderCrowdingToggles={ladderCrowdingToggles}
-          onAddDetour={(route) => {
-            setRouteForDetour(route)
-            setShowDetourModal(true)
-          }}
-          onOpenDetour={(detourId) => {
-            setDetourId(detourId)
-            setShowDetourModal(true)
+          onAddDetour={(route: Route) => {
+            navigate(`/detours/new?route=${route.id}`)
           }}
         />
       </div>
-      {routeForDetour && (
-        <DetourModal
-          originalRoute={{ route: routeForDetour }}
-          show={showDetourModal}
-          onClose={() => {
-            setShowDetourModal(false)
-            setRouteForDetour(null)
-          }}
-        />
-      )}
-      {showDetourModal && detour && (
-        <DetourModal
-          onClose={() => {
-            setShowDetourModal(false)
-            setDetourId(undefined)
-          }}
-          show
-          key={detourId ?? ""}
-          detourId={detourId}
-        />
-      )}
     </div>
   )
 }

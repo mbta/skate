@@ -10,7 +10,7 @@ import useTimepoints from "../hooks/useTimepoints"
 import { SocketContext } from "../contexts/socketContext"
 import useAlerts from "../hooks/useAlerts"
 import { DetoursMap, useActiveDetours } from "../hooks/useDetours"
-import { DetourId, SimpleDetour } from "../models/detoursList"
+import { SimpleDetour } from "../models/detoursList"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 
 export const findRouteById = (
@@ -27,7 +27,6 @@ interface Props {
   ladderDirections: LadderDirections
   ladderCrowdingToggles: LadderCrowdingToggles
   onAddDetour?: (route: Route) => void
-  onOpenDetour?: (detourId: DetourId) => void
 }
 
 const RouteLadders = ({
@@ -39,7 +38,6 @@ const RouteLadders = ({
   ladderDirections,
   ladderCrowdingToggles,
   onAddDetour,
-  onOpenDetour,
 }: Props) => {
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
     useContext(VehiclesByRouteIdContext)
@@ -114,7 +112,6 @@ const RouteLadders = ({
           ladderCrowdingToggles={ladderCrowdingToggles}
           hasAlert={routesWithAlerts.includes(route.id)}
           onAddDetour={onAddDetour}
-          onOpenDetour={onOpenDetour}
           skateDetoursForRoute={skateDetoursByRouteName[route.name]}
         />
       ))}
