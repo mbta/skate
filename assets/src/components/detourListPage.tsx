@@ -27,10 +27,7 @@ export const DetourListPage = () => {
   }>({ show: false, newDetour: false })
   const [detourId, setDetourId] = useState<number | undefined>()
 
-  const {
-    show: showDetourModal,
-    newDetour: isNewDetour,
-  } = showDetourModalProps
+  const { show: showDetourModal, newDetour: isNewDetour } = showDetourModalProps
   const [routeId, setRouteId] = useState<string>("all")
 
   // Wait for the detour channels to initialize
@@ -57,10 +54,7 @@ export const DetourListPage = () => {
     setShowDetourModalProps({ show: show, newDetour: false })
   }
 
-  const onOpenDetour = (
-    detourId: number,
-    props = { newDetour: false }
-  ) => {
+  const onOpenDetour = (detourId: number, props = { newDetour: false }) => {
     setDetourId(detourId)
     setShowDetourModalProps({ show: true, ...props })
   }
