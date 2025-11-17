@@ -32,6 +32,7 @@ import { DetourListPage } from "./detourListPage"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { MinimalLadderPage } from "./minimalLadderPage"
 import { MinimalLadder } from "./minimalLadder"
+import { DetourModal } from "./detours/detourModal"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -107,7 +108,16 @@ export const AppRoutes = () => {
                 />
                 <BrowserRoute path="/settings" element={<SettingsPage />} />
                 {inTestGroup(TestGroups.DetoursList) && (
-                  <BrowserRoute path="/detours" element={<DetourListPage />} />
+                  <>
+                    <BrowserRoute
+                      path="/detours"
+                      element={<DetourListPage />}
+                    />
+                    <BrowserRoute
+                      path="/detours/:id"
+                      element={<DetourModal.FromRouterParam />}
+                    />
+                  </>
                 )}
               </Route>
               <Route
