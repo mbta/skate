@@ -11,8 +11,8 @@ jobs:
     uses: mbta/workflows/.github/workflows/asana.yml@main
     with:
       development-section: "✏️ In Progress"
-      review-section: "👀 PR Review"
-      merged-section: "Merged / Not Deployed"
+      review-section: "👀 In Review"
+      merged-section: "🚀 Ready to Deploy"
       trigger-phrase: "Asana Ticket.*:"
       attach-pr: true
     secrets:
