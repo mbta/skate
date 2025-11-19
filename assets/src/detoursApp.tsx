@@ -1,8 +1,8 @@
 // We need to import the CSS so that webpack will load it.
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
-declare function require(name: string): string
-require("../css/app.scss")
+// declare function require(name: string): string
+// require("../css/app.scss")
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
@@ -21,7 +21,7 @@ import { tagManagerIdentify } from "./helpers/googleTagManager"
 import { fullStoryInit } from "./helpers/fullStory"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
 import { userUuid } from "./util/userUuid"
-import App from "./components/app"
+import DetoursApp from "./components/detoursApp"
 
 document.documentElement.dataset.demoMode = inTestGroup(
   TestGroups.DemoMode
@@ -45,6 +45,6 @@ tagManagerIdentify(userUuid())
 const root = createRoot(document.getElementById("app")!)
 root.render(
   <AppStateWrapper>
-    <App />
+    <DetoursApp />{" "}
   </AppStateWrapper>
 )

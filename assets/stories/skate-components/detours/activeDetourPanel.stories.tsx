@@ -39,7 +39,7 @@ const meta = {
     routeDirection: "Outbound",
     onOpenDeactivateModal: undefined,
     onOpenChangeDurationModal: undefined,
-    onNavigateBack: undefined,
+    // onNavigateBack: undefined,
     activatedAt: new Date(),
     detourDuration: "3 hours",
     detourReason: "Construction",

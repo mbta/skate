@@ -6,7 +6,6 @@ import { StateDispatchProvider } from "../contexts/stateDispatchContext"
 import usePersistedStateReducer from "../hooks/usePersistedStateReducer"
 import useRoutes from "../hooks/useRoutes"
 import useSocket from "../hooks/useSocket"
-import App from "./app"
 
 export const AppStateProvider = ({ children }: PropsWithChildren) => {
   const [state, dispatch] = usePersistedStateReducer()
@@ -23,10 +22,8 @@ export const AppStateProvider = ({ children }: PropsWithChildren) => {
     </StateDispatchProvider>
   )
 }
-const AppStateWrapper = (): JSX.Element => (
-  <AppStateProvider>
-    <App />
-  </AppStateProvider>
+const AppStateWrapper = ({ children }: PropsWithChildren): JSX.Element => (
+  <AppStateProvider>{children}</AppStateProvider>
 )
 
 export default AppStateWrapper

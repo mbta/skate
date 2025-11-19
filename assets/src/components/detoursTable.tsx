@@ -11,7 +11,7 @@ import { Route } from "../schedule"
 import { CircleXIcon } from "./circleXIcon"
 import { SearchIcon } from "../helpers/icon"
 import { fullStoryEvent } from "../helpers/fullStory"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
@@ -51,7 +51,7 @@ export const DetoursTable = ({
 }: DetoursTableProps) => {
   const [filter, setFilter] = useState("")
   const [debouncedFilter, setDebouncedFilter] = useState(filter)
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -177,7 +177,7 @@ export const DetoursTable = ({
           <PopulatedDetourRows
             status={status}
             data={filteredData}
-            navigate={navigate}
+            // navigate={navigate}
           />
         ) : (
           <tr aria-hidden>
@@ -197,11 +197,11 @@ export const DetoursTable = ({
 const PopulatedDetourRows = ({
   data,
   status,
-  navigate,
-}: {
+}: // navigate,
+{
   data: SimpleDetour[]
   status: DetourStatus
-  navigate: (path: string) => void
+  // navigate: (path: string) => void
 }) => {
   const epochNow = useCurrentTime()
   const epochNowInSeconds = epochNow.valueOf() / 1000
@@ -209,7 +209,10 @@ const PopulatedDetourRows = ({
   return (
     <>
       {data.map((detour, index) => (
-        <tr key={index} onClick={() => navigate(`/detours/${detour.id}`)}>
+        <tr
+          key={index}
+          onClick={() => window.location.assign(`/detours/${detour.id}`)}
+        >
           <td className="align-middle p-3">
             <div className="d-flex">
               <RoutePill routeName={detour.route} />

@@ -30,7 +30,6 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
   routeDirection: string
   onOpenDeactivateModal?: () => void
   onOpenChangeDurationModal?: () => void
-  onNavigateBack: () => void
 
   detourReason: string
   detourDuration: string
@@ -48,7 +47,6 @@ export const ActiveDetourPanel = ({
   routeDirection,
   onOpenDeactivateModal,
   onOpenChangeDurationModal,
-  onNavigateBack,
   children,
   activatedAt,
   detourDuration,
@@ -59,7 +57,7 @@ export const ActiveDetourPanel = ({
       className="c-diversion-panel__back-button icon-link my-3"
       variant="outline-primary"
       size="sm"
-      onClick={onNavigateBack}
+      href="/detours"
     >
       <ArrowLeft />
       Back

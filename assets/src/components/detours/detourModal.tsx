@@ -4,7 +4,7 @@ import { Modal } from "@restart/ui"
 import { ModalTransitionProps } from "@restart/ui/esm/Modal"
 import { CSSTransition } from "react-transition-group"
 import { Spinner } from "react-bootstrap"
-import { useParams, useNavigate, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 import { useLoadDetour } from "../../hooks/useLoadDetour"
 import { OriginalRoute } from "../../models/detour"
 
@@ -19,7 +19,6 @@ const Fade = ({ children, ...props }: ModalTransitionProps) => (
 )
 
 export const DetourModal = ({
-  onClose,
   show,
   detourId,
   isNewDetour,
@@ -27,7 +26,6 @@ export const DetourModal = ({
   showFromCopy = false,
   ...useDetourProps
 }: {
-  onClose: () => void
   show: boolean
   isNewDetour?: boolean // could be original route
   detourId?: number
@@ -53,6 +51,7 @@ export const DetourModal = ({
     : { originalRoute: originalRoute || {} }
 
   return (
+    // <div className="c-detour-modal">
     <Modal className="c-detour-modal" show={show} transition={Fade}>
       {isLoadingDetour && !isNewDetour ? (
         <div className="text-bg-light position-absolute inset-0 opacity-75 d-flex justify-content-center align-items-center">
@@ -62,7 +61,6 @@ export const DetourModal = ({
         <DiversionPage
           {...useDetourProps}
           {...detourForPage}
-          onClose={onClose}
           showFromCopy={showFromCopy}
         />
       )}
@@ -71,22 +69,10 @@ export const DetourModal = ({
 }
 
 const NewFromRouterParam = () => {
-  const navigate = useNavigate()
-  return (
-    <>
-      <DetourModal
-        onClose={() => navigate("/detours")}
-        show={true}
-        showFromCopy={false}
-        isNewDetour={true}
-      />
-    </>
-  )
+  return <DetourModal show={true} showFromCopy={false} isNewDetour={true} />
 }
 
-const FromRouterParam = () => {
-  const navigate = useNavigate()
-  const { id } = useParams()
+const FromRouterParam = ({ detourId: id }: { detourId: string }) => {
   const [searchParams] = useSearchParams()
   const showFromCopyParams = searchParams.get("fromCopy") === "true"
   const numberId = typeof id !== "undefined" ? parseInt(id) : id
@@ -94,7 +80,6 @@ const FromRouterParam = () => {
     <>
       {id && (
         <DetourModal
-          onClose={() => navigate("/detours")}
           detourId={numberId}
           show={true}
           showFromCopy={showFromCopyParams}

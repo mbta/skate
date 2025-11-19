@@ -8,7 +8,7 @@ import React, {
 import { DrawDetourPanel } from "./detourPanels/drawDetourPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
-import { CloseButton } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import { OriginalRoute } from "../../models/detour"
 import { joinClasses } from "../../helpers/dom"
 import { AsProp } from "react-bootstrap/esm/helpers"
@@ -63,7 +63,6 @@ const parseIntoDirectionsList = (directions: string) => {
 }
 
 interface DiversionPageFunctions {
-  onClose: () => void
   showFromCopy?: boolean
 }
 
@@ -86,7 +85,6 @@ export type DiversionPageProps = DiversionPageStateProps &
   DiversionPageFunctions
 
 export const DiversionPage = ({
-  onClose,
   showFromCopy,
   ...useDetourProps
 }: DiversionPageProps) => {
@@ -129,23 +127,21 @@ export const DiversionPage = ({
   const deleteDetourCallback = useCallback(() => {
     if (snapshot.context.uuid) {
       deleteDetour(snapshot.context.uuid).then(() => {
-        onClose()
         return send({ type: "detour.delete.delete-modal.delete-draft" })
       })
     }
-  }, [onClose, send, snapshot.context.uuid])
+  }, [send, snapshot.context.uuid])
 
   const copyToDraftDetourCallback = useCallback(() => {
     fullStoryEvent("Copy Past Detour to Draft", {})
     if (snapshot.context.uuid) {
       copyToDraftDetour(snapshot.context.uuid).then((response) => {
         if (response && isOk(response)) {
-          onClose()
           navigate(`/detours/${response.ok}?fromCopy=true`)
         }
       })
     }
-  }, [onClose, navigate, snapshot.context.uuid])
+  }, [navigate, snapshot.context.uuid])
 
   const nearestIntersectionDirection = [
     { instruction: "From " + nearestIntersection },
@@ -476,7 +472,6 @@ export const DiversionPage = ({
           routeDescription={routeDescription ?? "??"}
           routeOrigin={routeOrigin ?? "??"}
           routeDirection={routeDirection ?? "??"}
-          onNavigateBack={onClose}
           onOpenDeactivateModal={
             userInTestGroup(TestGroups.DetoursPilot)
               ? () => {
@@ -558,7 +553,6 @@ export const DiversionPage = ({
           routeDescription={routeDescription ?? "??"}
           routeOrigin={routeOrigin ?? "??"}
           routeDirection={routeDirection ?? "??"}
-          onNavigateBack={onClose}
           onCopyToDraftDetour={copyToDraftDetourCallback}
         />
       )
@@ -605,7 +599,12 @@ export const DiversionPage = ({
           ) : isMobile(displayType) ? (
             <div className="flex-grow-1 fw-semibold text-center">Detours</div>
           ) : null}
-          <CloseButton className="p-4" onClick={onClose} />
+          <Button
+            variant="close"
+            className="p-4 c-alert__close-button"
+            href="/detours"
+          />
+          {/* <CloseButton variant="close" className="p-4" href="/detours" /> */}
         </header>
 
         <div

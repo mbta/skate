@@ -17,11 +17,11 @@ import {
   usePastDetours,
 } from "../hooks/useDetours"
 import { SocketContext } from "../contexts/socketContext"
-import { useNavigate } from "react-router-dom"
+// import { useNavigate } from "react-router-dom"
 
 export const DetourListPage = () => {
   const routes = useContext(RoutesContext)
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [routeId, setRouteId] = useState<string>("all")
 
   // Wait for the detour channels to initialize
@@ -49,7 +49,7 @@ export const DetourListPage = () => {
       {userInTestGroup(TestGroups.DetoursPilot) && (
         <Button
           className="c-detour-list-page__button icon-link fw-light px-3 py-2 u-hide-for-mobile"
-          onClick={() => navigate("/detours/new")}
+          href={"/detours/new"}
           data-fs-element="Add Detour"
         >
           <PlusSquare />

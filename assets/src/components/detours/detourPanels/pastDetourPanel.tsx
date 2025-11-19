@@ -35,7 +35,6 @@ export const PastDetourPanel = ({
   routeOrigin,
   routeDirection,
   onCopyToDraftDetour,
-  onNavigateBack,
 }: PastDetourPanelProps) => (
   <Panel as="article">
     <Panel.Header className="">
@@ -46,16 +45,14 @@ export const PastDetourPanel = ({
     <Panel.Body className="d-flex flex-column">
       <Panel.Body.ScrollArea>
         <div className="d-flex justify-content-between align-items-center">
-          {onNavigateBack && (
-            <Button
-              className="icon-link my-3"
-              variant="outline-primary"
-              onClick={onNavigateBack}
-            >
-              <ArrowLeft />
-              Back
-            </Button>
-          )}
+          <Button
+            className="icon-link my-3"
+            variant="outline-primary"
+            href="/detours"
+          >
+            <ArrowLeft />
+            Back
+          </Button>
         </div>
         <AffectedRoute
           routeName={routeName}

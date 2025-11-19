@@ -7,7 +7,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin")
 
 module.exports = (env, options) => {
   const plugins = [
-    new MiniCssExtractPlugin({ filename: "../css/app.css" }),
+    new MiniCssExtractPlugin({ filename: "../css/[name].css" }),
     new CopyWebpackPlugin({ patterns: [{ from: "static/", to: "../" }] }),
   ]
 
@@ -15,6 +15,7 @@ module.exports = (env, options) => {
 
   return {
     optimization: {
+      runtimeChunk: "single",
       minimize: useMinimization,
       minimizer: [
         new TerserPlugin({ parallel: true }),
@@ -23,10 +24,18 @@ module.exports = (env, options) => {
     },
     devtool: "source-map",
     entry: {
-      "./js/app.tsx": ["./src/app.tsx"].concat(glob.sync("./vendor/**/*.js")),
+      app: {
+        import: ["./src/app.tsx"].concat(glob.sync("./vendor/**/*.js"))
+        // dependOn: 'vendor'
+      },
+      detoursApp: { 
+        import: ["./src/detoursApp.tsx"], //.concat(glob.sync("./vendor/**/*.js")),
+        // dependOn: 'vendor'
+      },
+      // vendor: glob.sync("./node_modules/**/*.js")
     },
     output: {
-      filename: "app.js",
+      filename: "[name].js",
       path: path.resolve(__dirname, "../priv/static/js"),
     },
     module: {
