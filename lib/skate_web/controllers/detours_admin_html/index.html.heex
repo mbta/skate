@@ -1,13 +1,13 @@
 <.form for={@conn} action={~p"/detours_admin"} method="DELETE">
-  <%= submit("Clear all detours",
+  {submit("Clear all detours",
     onclick: "return confirm('Are you sure? This cannot be undone.')"
-  ) %>
+  )}
 </.form>
 
 <.form for={@conn} action={~p"/detours_admin/sync_swiftly"} method="DELETE">
-  <%= submit("Sync detours with Swiftly",
+  {submit("Sync detours with Swiftly",
     onclick: "return confirm('Are you sure?')"
-  ) %>
+  )}
 </.form>
 
 <table>
@@ -27,16 +27,16 @@
   <tbody>
     <%= for detour <- @detours do %>
       <tr>
-        <td><%= detour.route_name %>: <%= detour.direction %> to <%= detour.headsign %></td>
-        <td><%= detour.nearest_intersection %></td>
-        <td><%= detour.estimated_duration %></td>
-        <td><%= detour.reason %></td>
-        <td><%= detour.status %></td>
-        <td><%= detour.author.email %></td>
+        <td>{detour.route_name}: {detour.direction} to {detour.headsign}</td>
+        <td>{detour.nearest_intersection}</td>
+        <td>{detour.estimated_duration}</td>
+        <td>{detour.reason}</td>
+        <td>{detour.status}</td>
+        <td>{detour.author.email}</td>
         <td>
-          <%= detour.updated_at
+          {detour.updated_at
           |> DateTime.from_naive!("America/New_York")
-          |> DateTime.to_string() %>
+          |> DateTime.to_string()}
         </td>
         <td><.link href={~p"/detours_admin/#{detour.id}"}>verify</.link></td>
       </tr>
