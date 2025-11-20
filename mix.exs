@@ -76,6 +76,7 @@ defmodule Skate.MixProject do
       {:gen_stage, "~> 1.2.1"},
       {:guardian, "~> 2.0"},
       {:guardian_phoenix, "~> 2.0"},
+      {:hackney, "~> 1.23.0"},
       {:haversine, "~> 0.1.0"},
       {:httpoison, "~> 2.2.1"},
       {:http_stage, "~> 0.2.0"},
