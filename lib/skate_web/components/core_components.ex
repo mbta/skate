@@ -21,7 +21,7 @@ defmodule SkateWeb.CoreComponents do
     <%= case assigns[:field].errors do %>
       <% list = [_head | _tail] -> %>
         <%= for {error, _} <- list do %>
-          <span class="error-tag"><%= error %></span>
+          <span class="error-tag">{error}</span>
         <% end %>
       <% [] -> %>
     <% end %>
@@ -58,7 +58,7 @@ defmodule SkateWeb.CoreComponents do
 
     ~H"""
     <div {@attributes}>
-      Environment: <%= @env %>
+      Environment: {@env}
     </div>
     """
   end

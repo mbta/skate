@@ -12,15 +12,15 @@
   <tbody>
     <%= for swiftly_adjustment <- @swiftly_adjustments do %>
       <tr>
-        <td><%= swiftly_adjustment.id %></td>
-        <td><%= swiftly_adjustment.notes %></td>
-        <td><%= swiftly_adjustment.status %></td>
-        <td><%= swiftly_adjustment.validity %></td>
+        <td>{swiftly_adjustment.id}</td>
+        <td>{swiftly_adjustment.notes}</td>
+        <td>{swiftly_adjustment.status}</td>
+        <td>{swiftly_adjustment.validity}</td>
         <% relevant_detour = Map.get(@detours_map, swiftly_adjustment.notes) %>
         <%= if relevant_detour do %>
           <td>
             <.link href={~p"/detours_admin/#{relevant_detour.id}"}>
-              <%= relevant_detour.status %>
+              {relevant_detour.status}
             </.link>
           </td>
         <% else %>
