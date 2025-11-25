@@ -39,6 +39,7 @@ import { isOk } from "../../util/result"
 import CopiedDetourToast from "./alerts/copiedDetourToast"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { useMapZoomAndCenter } from "../../hooks/useMapZoomAndCenter"
+import { LatLngLiteral } from "leaflet"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -205,7 +206,7 @@ export const DiversionPage = ({
     routeDirection ?? "",
     routeName ?? "",
     shape,
-    useDetourProps
+    useDetourProps as { originalRoute: { center: LatLngLiteral; zoom: number } }
   )
 
   const detourPanel: ({
