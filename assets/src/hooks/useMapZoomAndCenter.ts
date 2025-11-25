@@ -7,7 +7,9 @@ export const useMapZoomAndCenter = (
   routeDirection: string,
   routeName: string,
   shape: Shape | null | undefined,
-  useDetourProps: { originalRoute: { center: LatLngLiteral; zoom: number } } | {}
+  useDetourProps:
+    | { originalRoute: { center: LatLngLiteral; zoom: number } }
+    | object
 ) => {
   const [mapCenter, setMapCenter] = useState<LatLngLiteral | undefined>(
     undefined
