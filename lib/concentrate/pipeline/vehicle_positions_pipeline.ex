@@ -42,10 +42,12 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
           headers: %{
             "Authorization" => opts[:swiftly_authorization_key]
           },
-          params: %{
-            unassigned: "true",
-            verbose: "true"
-          }
+          get_opts: [
+            params: %{
+              unassigned: "true",
+              verbose: "true"
+            }
+          ]
         )
       else
         nil

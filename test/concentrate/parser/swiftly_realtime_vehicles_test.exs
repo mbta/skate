@@ -9,8 +9,8 @@ defmodule Concentrate.Parser.SwiftlyRealtimeVehiclesTest do
 
   describe "parse/1" do
     test "parsing an enhanced VehiclePositions JSON file returns only VehiclePosition structs" do
-      binary = File.read!(fixture_path("swiftly_realtime_vehicles.json"))
-      parsed = SwiftlyRealtimeVehicles.parse(binary)
+      json = json_from_fixture("swiftly_realtime_vehicles.json")
+      parsed = SwiftlyRealtimeVehicles.parse(json)
       assert is_list(parsed)
 
       for update <- parsed do

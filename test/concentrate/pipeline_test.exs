@@ -15,7 +15,7 @@ defmodule Concentrate.PipelineTest do
       assert %{
                id: :test_name,
                start:
-                 {Concentrate.Producer.HTTP, :start_link,
+                 {HttpStage, :start_link,
                   [
                     {"http://example.com",
                      [name: :test_name, parser: Concentrate.Parser.GTFSRealtimeEnhanced]}
