@@ -75,7 +75,7 @@ const NewFromRouterParam = () => {
   return (
     <>
       <DetourModal
-        onClose={() => navigate("/detours")}
+        onClose={() => navigate(-1)}
         show={true}
         showFromCopy={false}
         isNewDetour={true}
@@ -94,7 +94,7 @@ const FromRouterParam = () => {
     <>
       {id && (
         <DetourModal
-          onClose={() => navigate("/detours")}
+          onClose={() => navigate(-1)}
           detourId={numberId}
           show={true}
           showFromCopy={showFromCopyParams}
