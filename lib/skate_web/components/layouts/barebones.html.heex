@@ -8,7 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <title><%= assigns[:title] || "Skate" %></title>
+    <title>{assigns[:title] || "Skate"}</title>
 
     <link
       rel="apple-touch-icon"
@@ -77,7 +77,7 @@
   <body>
     <.admin_banner />
     <main role="main" class="container">
-      <%= @inner_content %>
+      {@inner_content}
     </main>
   </body>
 </html>

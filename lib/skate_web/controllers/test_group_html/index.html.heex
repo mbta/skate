@@ -1,16 +1,16 @@
 <h1>Test Groups</h1>
 <ul>
   <%= for test_group <- @test_groups do %>
-    <li><.link href={~p"/test_groups/#{test_group.id}"}><%= test_group.name %></.link></li>
+    <li><.link href={~p"/test_groups/#{test_group.id}"}>{test_group.name}</.link></li>
   <% end %>
 </ul>
 
 <.form :let={f} for={@changeset} action={~p"/test_groups/create"}>
   <div>
     <%= label do %>
-      Name: <%= text_input(f, :name) %>
+      Name: {text_input(f, :name)}
     <% end %>
-    <%= submit("Create") %>
+    {submit("Create")}
   </div>
   <div>
     <.form_error field={f[:name]} />
