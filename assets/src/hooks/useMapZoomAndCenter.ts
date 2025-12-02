@@ -9,7 +9,8 @@ export const useMapZoomAndCenter = (
   shape: Shape | null | undefined,
   useDetourProps:
     | { originalRoute: { center: LatLngLiteral; zoom: number } }
-    | object
+    | object,
+  useLatLngParams?: boolean
 ) => {
   const [mapCenter, setMapCenter] = useState<LatLngLiteral | undefined>(
     undefined
@@ -40,14 +41,17 @@ export const useMapZoomAndCenter = (
       newMapCenter?.lat !== mapCenter?.lat &&
       newMapCenter?.lng !== mapCenter?.lng
 
-    if (!routeChanged && directionChanged) {
-      setPreviousRouteDirection(routeDirection)
-    } else if (zoomChanged) {
+    if (useLatLngParams) {
+      setMapCenter(useDetourPropsCenter || undefined)
       setMapZoom(useDetourPropsZoomLevel)
+    } else if (!routeChanged && directionChanged) {
+      setPreviousRouteDirection(routeDirection)
     } else if (shapeChanged || routeChanged) {
       setPreviousRouteName(routeName)
       setMapCenter(newMapCenter)
       setMapZoom(13)
+    } else if (zoomChanged) {
+      setMapZoom(useDetourPropsZoomLevel)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [

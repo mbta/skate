@@ -288,9 +288,15 @@ const MapPage = (): ReactElement<HTMLDivElement> => {
     }
   }
   const navigate = useNavigate()
-  const onStartDetour = (route: OriginalRoute) => {
+  const onStartDetour = ({
+    route,
+    routePattern,
+    center,
+    zoom,
+  }: OriginalRoute) => {
+    const coords = center ? `${center.lat},${center.lng}` : undefined
     navigate(
-      `/detours/new?route=${route.route?.id}&routePattern=${route.routePattern?.id}`
+      `/detours/new?route=${route?.id}&routePattern=${routePattern?.id}&center=${coords}&zoom=${zoom}`
     )
   }
 

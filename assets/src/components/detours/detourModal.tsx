@@ -7,6 +7,8 @@ import { Spinner } from "react-bootstrap"
 import { useParams, useNavigate, useSearchParams } from "react-router-dom"
 import { useLoadDetour } from "../../hooks/useLoadDetour"
 import { OriginalRoute } from "../../models/detour"
+import { useRoute } from "../../contexts/routesContext"
+import usePatternsByIdForRoute from "../../hooks/usePatternsByIdForRoute"
 
 const Fade = ({ children, ...props }: ModalTransitionProps) => (
   <CSSTransition
@@ -22,14 +24,14 @@ export const DetourModal = ({
   onClose,
   show,
   detourId,
-  isNewDetour,
+  isNewDetour = false,
   originalRoute,
   showFromCopy = false,
   ...useDetourProps
 }: {
   onClose: () => void
   show: boolean
-  isNewDetour?: boolean // could be original route
+  isNewDetour?: boolean
   detourId?: number
   originalRoute?: OriginalRoute
   showFromCopy?: boolean
@@ -52,6 +54,8 @@ export const DetourModal = ({
       }
     : { originalRoute: originalRoute || {} }
 
+  const useLatLngParams = originalRoute && originalRoute.center !== undefined
+
   return (
     <Modal className="c-detour-modal" show={show} transition={Fade}>
       {isLoadingDetour && !isNewDetour ? (
@@ -64,6 +68,7 @@ export const DetourModal = ({
           {...detourForPage}
           onClose={onClose}
           showFromCopy={showFromCopy}
+          useLatLngParams={useLatLngParams}
         />
       )}
     </Modal>
@@ -72,15 +77,45 @@ export const DetourModal = ({
 
 const NewFromRouterParam = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const routeId = searchParams.get("route")
+  const routePatternId = searchParams.get("routePattern")
+  const center = searchParams.get("center")
+  const centerAsLiteral = center
+    ? {
+        lat: parseFloat(center.split(",")[0]),
+        lng: parseFloat(center.split(",")[1]),
+      }
+    : undefined
+  const zoom = searchParams.get("zoom")
+  const zoomAsNumber = zoom !== null ? parseInt(zoom) : undefined
+  const route = useRoute(routeId)
+  const routePatterns = usePatternsByIdForRoute(routeId)
+  const routePattern =
+    routePatternId && routePatterns
+      ? { routePattern: routePatterns[routePatternId] }
+      : {}
+
+  const originalRoute =
+    route && routePatterns
+      ? Object.assign(
+          { route: route, center: centerAsLiteral, zoom: zoomAsNumber },
+          routePattern
+        )
+      : undefined
+
+  const isLoadingRoutes = routeId && !originalRoute
+
   return (
-    <>
+    !isLoadingRoutes && (
       <DetourModal
         onClose={() => navigate(-1)}
         show={true}
         showFromCopy={false}
         isNewDetour={true}
+        originalRoute={originalRoute}
       />
-    </>
+    )
   )
 }
 

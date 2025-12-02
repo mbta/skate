@@ -67,6 +67,7 @@ const parseIntoDirectionsList = (directions: string) => {
 interface DiversionPageFunctions {
   onClose: () => void
   showFromCopy?: boolean
+  useLatLngParams?: boolean
 }
 
 interface DiversionPageFromInput {
@@ -90,6 +91,7 @@ export type DiversionPageProps = DiversionPageStateProps &
 export const DiversionPage = ({
   onClose,
   showFromCopy,
+  useLatLngParams,
   ...useDetourProps
 }: DiversionPageProps) => {
   const {
@@ -206,7 +208,10 @@ export const DiversionPage = ({
     routeDirection ?? "",
     routeName ?? "",
     shape,
-    useDetourProps as { originalRoute: { center: LatLngLiteral; zoom: number } }
+    useDetourProps as {
+      originalRoute: { center: LatLngLiteral; zoom: number }
+    },
+    useLatLngParams
   )
 
   const detourPanel: ({
