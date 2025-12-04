@@ -1,5 +1,6 @@
 import { describe, expect, jest, test } from "@jest/globals"
-import { act, renderHook, waitFor } from "@testing-library/react"
+import { renderHook, waitFor } from "@testing-library/react"
+import { act } from "react"
 import { useApiCall } from "../../src/hooks/useApiCall"
 import { PromiseWithResolvers } from "../testHelpers/PromiseWithResolvers"
 

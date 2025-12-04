@@ -11,8 +11,7 @@ import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import { LatLng } from "leaflet"
 import * as Leaflet from "leaflet"
-import React, { MutableRefObject } from "react"
-import { act } from "@testing-library/react"
+import React, { act, MutableRefObject } from "react"
 import { Map as LeafletMap } from "leaflet"
 import Map, {
   defaultCenter,

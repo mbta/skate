@@ -1,5 +1,6 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
-import { act, renderHook, waitFor } from "@testing-library/react"
+import { renderHook, waitFor } from "@testing-library/react"
+import { act } from "react"
 import * as Api from "../../src/api"
 import usePatternsByIdForRoute from "../../src/hooks/usePatternsByIdForRoute"
 import { routePatternFactory } from "../factories/routePattern"

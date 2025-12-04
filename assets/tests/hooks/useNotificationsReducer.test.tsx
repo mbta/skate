@@ -1,7 +1,7 @@
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "expectPut"] }] */
 import { jest, describe, test, expect } from "@jest/globals"
-import React from "react"
-import { act, renderHook } from "@testing-library/react"
+import React, { act } from "react"
+import { renderHook } from "@testing-library/react"
 import { Socket } from "phoenix"
 import { ReactNode } from "react"
 import { SocketProvider } from "../../src/contexts/socketContext"

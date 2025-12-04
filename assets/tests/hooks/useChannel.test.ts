@@ -1,5 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import { act, renderHook } from "@testing-library/react"
+import { renderHook } from "@testing-library/react"
+import { act } from "react"
 import { string, unknown } from "superstruct"
 import {
   useChannel,
