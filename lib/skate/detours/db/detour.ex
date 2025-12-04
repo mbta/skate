@@ -42,7 +42,7 @@ defmodule Skate.Detours.Db.Detour do
     field :nearest_intersection, :string, virtual: true
 
     # Activated properties
-    field :estimated_duration, :string, virtual: true
+    field :estimated_duration, :string
     field :reason, :string, virtual: true
 
     # -------------------------------------------------------
@@ -56,6 +56,7 @@ defmodule Skate.Detours.Db.Detour do
     |> cast(attrs, [:state, :activated_at])
     |> validate_activated_at()
     |> add_status()
+    |> add_estimated_duration()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
   end
@@ -96,6 +97,19 @@ defmodule Skate.Detours.Db.Detour do
 
       {{:data, nil}, {:ok, _state}} ->
         put_change(changeset, :status, :draft)
+
+      _ ->
+        changeset
+    end
+  end
+
+  defp add_estimated_duration(changeset) do
+    case {fetch_field(changeset, :estimated_duration), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"selectedDuration" => estimated_duration}}}} ->
+        put_change(changeset, :estimated_duration, estimated_duration)
+
+      {{:data, _}, {:ok, _state}} ->
+        put_change(changeset, :estimated_duration, nil)
 
       _ ->
         changeset
@@ -158,7 +172,6 @@ defmodule Skate.Detours.Db.Detour do
           :headsign -> select_route_pattern_headsign(query)
           :direction -> select_direction(query)
           :nearest_intersection -> select_starting_intersection(query)
-          :estimated_duration -> select_estimated_duration(query)
           :reason -> select_reason(query)
           :direction_id -> select_direction_id(query)
           :coordinates -> select_coordinates(query)
@@ -206,6 +219,7 @@ defmodule Skate.Detours.Db.Detour do
         :activated_at,
         :updated_at,
         :status,
+        :estimated_duration,
 
         # Virtual Fields
         :route_id,
@@ -215,7 +229,6 @@ defmodule Skate.Detours.Db.Detour do
         :headsign,
         :direction,
         :nearest_intersection,
-        :estimated_duration,
 
         # Nested Fields
         author: [:email, :id]
@@ -281,12 +294,6 @@ defmodule Skate.Detours.Db.Detour do
     def select_starting_intersection(query \\ base(), key \\ :nearest_intersection) do
       select_merge(query, [detour: d], %{
         ^key => d.state["context"]["nearestIntersection"]
-      })
-    end
-
-    def select_estimated_duration(query \\ base(), key \\ :estimated_duration) do
-      select_merge(query, [detour: d], %{
-        ^key => d.state["context"]["selectedDuration"]
       })
     end
 
