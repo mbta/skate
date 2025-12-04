@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
-import React, { ReactElement } from "react"
+import React from "react"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import useVehicleForNotification from "../../src/hooks/useVehicleForNotification"
 import {
@@ -34,9 +34,9 @@ const ghostData: GhostData = ghostDataFactory.build({ run_id: runId })
 
 const vehicleData: VehicleData = vehicleDataFactory.build({ run_id: runId })
 
-const wrapper = ({ children }: { children: ReactElement<HTMLElement> }) => (
+const wrapper = ({ children }: { children: React.ReactNode }) => (
   <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-    {children}
+    {children as React.ReactElement}
   </StateDispatchProvider>
 )
 

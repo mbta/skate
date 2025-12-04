@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import { act, renderHook } from "@testing-library/react"
-import React from "react"
+import { renderHook } from "@testing-library/react"
+import React, { act } from "react"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import routeFactory from "../factories/route"

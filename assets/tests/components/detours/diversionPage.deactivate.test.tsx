@@ -1,4 +1,4 @@
-import React from "react"
+import React, { act } from "react"
 import {
   DiversionPage as DiversionPageDefault,
   DiversionPageProps,
@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
-import { act, fireEvent, render, within } from "@testing-library/react"
+import { fireEvent, render, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {
   activateDetourButton,

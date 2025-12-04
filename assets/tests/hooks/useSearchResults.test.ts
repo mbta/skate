@@ -1,5 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import { act, renderHook } from "@testing-library/react"
+import { renderHook } from "@testing-library/react"
+import { act } from "react"
 import { useSearchResults } from "../../src/hooks/useSearchResults"
 import { VehiclePropertyQuery } from "../../src/models/searchQuery"
 import { VehicleData, vehicleFromData } from "../../src/models/vehicleData"

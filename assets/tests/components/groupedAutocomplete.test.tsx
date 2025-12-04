@@ -2,8 +2,7 @@ import { jest, describe, test, expect } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import { getAllByRole, render, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import React, { MutableRefObject } from "react"
-import { act } from "react"
+import React, { act, MutableRefObject } from "react"
 
 import {
   CursorExitDirection,
@@ -162,6 +161,7 @@ describe("<GroupedAutocomplete/>", () => {
           ),
         ]}
       />
+    )
 
     expect(option3Selector.get(persistentGroup)).toBeInTheDocument()
     expect(option4Selector.get(persistentGroup)).toBeInTheDocument()
@@ -501,7 +501,6 @@ describe("<GroupedAutocomplete/>", () => {
             ),
           ]}
         />
-
       )
 
       const btn = option(idVehicle.label!).get(listbox().get())
@@ -552,7 +551,6 @@ describe("<GroupedAutocomplete/>", () => {
           ),
         ]}
       />
-
     )
 
     act(() => {
