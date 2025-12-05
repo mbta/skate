@@ -4,7 +4,6 @@ defmodule Skate.Detours.Detours do
   """
 
   import Ecto.Query, warn: false
-  alias Skate.Detours.Detour.ActivatedDetourDetails
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
   alias Skate.Detours.SnapshotSerde
@@ -96,7 +95,7 @@ defmodule Skate.Detours.Detours do
     where(query, [detour: d], d.status == ^status)
   end
 
-  @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | ActivatedDetourDetails.t() | nil
+  @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | nil
   def db_detour_to_detour(
         %{
           status: :active,
@@ -113,11 +112,12 @@ defmodule Skate.Detours.Detours do
       )
     end
 
+    # TODO: Re-name this
     details &&
-      %ActivatedDetourDetails{
-        activated_at: activated_at || DateTime.utc_now(),
-        estimated_duration: estimated_duration,
-        details: details
+      %DetailedDetour{
+        details
+        | activated_at: activated_at || DateTime.utc_now(),
+          estimated_duration: estimated_duration
       }
   end
 
@@ -137,10 +137,10 @@ defmodule Skate.Detours.Detours do
     end
 
     details &&
-      %ActivatedDetourDetails{
-        activated_at: activated_at || DateTime.utc_now(),
-        estimated_duration: estimated_duration || "Until further notice",
-        details: details
+      %DetailedDetour{
+        details
+        | activated_at: activated_at || DateTime.utc_now(),
+          estimated_duration: estimated_duration || "Until further notice"
       }
   end
 
@@ -161,10 +161,10 @@ defmodule Skate.Detours.Detours do
     end
 
     details &&
-      %ActivatedDetourDetails{
-        activated_at: activated_at || DateTime.utc_now(),
-        estimated_duration: estimated_duration || "Until further notice",
-        details: details
+      %DetailedDetour{
+        details
+        | activated_at: activated_at || DateTime.utc_now(),
+          estimated_duration: estimated_duration || "Until further notice"
       }
   end
 
@@ -401,7 +401,7 @@ defmodule Skate.Detours.Detours do
        ) do
     Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
-    %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+    %DetailedDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
     Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
@@ -429,7 +429,7 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        )
        when previous_duration != selected_duration do
-    %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+    %DetailedDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
     Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)

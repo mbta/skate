@@ -489,16 +489,14 @@ defmodule SkateWeb.DetoursControllerTest do
                "data" => %{
                  "active" => [
                    %{
-                     "details" => %{
-                       "author_id" => ^author_id,
-                       "direction" => "Outbound",
-                       "intersection" => "Street A & Avenue B",
-                       "name" => "Headsign",
-                       "route" => "23",
-                       "via_variant" => "1",
-                       "status" => "active",
-                       "updated_at" => _
-                     }
+                     "author_id" => ^author_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street A & Avenue B",
+                     "name" => "Headsign",
+                     "route" => "23",
+                     "via_variant" => "1",
+                     "status" => "active",
+                     "updated_at" => _
                    }
                  ],
                  "draft" => [
@@ -550,7 +548,7 @@ defmodule SkateWeb.DetoursControllerTest do
       assert %{
                "data" => %{
                  "active" => [
-                   %{"details" => %{"author_id" => ^current_user_id}}
+                   %{"author_id" => ^current_user_id}
                  ],
                  "draft" => [
                    %{
@@ -633,16 +631,14 @@ defmodule SkateWeb.DetoursControllerTest do
                  "active" => [
                    %{
                      "activated_at" => "2024-01-01T13:00:00.000000Z",
-                     "details" => %{
-                       "author_id" => ^author_id,
-                       "direction" => "Outbound",
-                       "intersection" => "Street A & Avenue B",
-                       "name" => "Headsign",
-                       "route" => "23",
-                       "via_variant" => "1",
-                       "status" => "active",
-                       "updated_at" => _
-                     }
+                     "author_id" => ^author_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street A & Avenue B",
+                     "name" => "Headsign",
+                     "route" => "23",
+                     "via_variant" => "1",
+                     "status" => "active",
+                     "updated_at" => _
                    }
                  ],
                  "draft" => [

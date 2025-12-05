@@ -18,7 +18,9 @@ defmodule Skate.Detours.Detour do
             intersection: String.t(),
             updated_at: integer(),
             author_id: integer(),
-            status: :active | :draft | :past
+            status: :active | :draft | :past,
+            activated_at: DateTime.t() | nil,
+            estimated_duration: String.t() | nil
           }
 
     @derive Jason.Encoder
@@ -32,7 +34,9 @@ defmodule Skate.Detours.Detour do
       :intersection,
       :updated_at,
       :author_id,
-      :status
+      :status,
+      :activated_at,
+      :estimated_duration
     ]
 
     def from(
@@ -101,26 +105,6 @@ defmodule Skate.Detours.Detour do
       |> DateTime.from_naive!("Etc/UTC")
       |> DateTime.to_unix()
     end
-  end
-
-  defmodule ActivatedDetourDetails do
-    @moduledoc """
-    Extended information for active detours
-    """
-
-    @type t :: %__MODULE__{
-            activated_at: DateTime.t(),
-            estimated_duration: String.t(),
-            details: Detailed.t()
-          }
-
-    @derive Jason.Encoder
-
-    defstruct [
-      :activated_at,
-      :estimated_duration,
-      :details
-    ]
   end
 
   defmodule WithState do

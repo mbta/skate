@@ -103,7 +103,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  7
+                  5
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -111,7 +111,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign 7
+                    Headsign 5
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"
@@ -124,7 +124,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A7 & Avenue B7
+              Street A5 & Avenue B5
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -147,7 +147,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  8
+                  6
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -168,7 +168,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A8 & Avenue B8
+              Street A6 & Avenue B6
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -446,7 +446,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  9
+                  3
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -467,7 +467,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A9 & Avenue B9
+              Street A3 & Avenue B3
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -1099,7 +1099,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  4
+                  3
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -1107,7 +1107,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign 4
+                    Headsign 3
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"
@@ -1120,7 +1120,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A4 & Avenue B4
+              Street A3 & Avenue B3
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -1143,7 +1143,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  5
+                  4
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -1164,7 +1164,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A5 & Avenue B5
+              Street A4 & Avenue B4
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -1442,7 +1442,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  6
+                  2
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -1463,7 +1463,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A6 & Avenue B6
+              Street A2 & Avenue B2
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
