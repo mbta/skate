@@ -108,9 +108,6 @@ defmodule Skate.Detours.Db.Detour do
       {{:data, _}, {:ok, %{"context" => %{"selectedDuration" => estimated_duration}}}} ->
         put_change(changeset, :estimated_duration, estimated_duration)
 
-      {{:data, _}, {:ok, _state}} ->
-        put_change(changeset, :estimated_duration, nil)
-
       _ ->
         changeset
     end
