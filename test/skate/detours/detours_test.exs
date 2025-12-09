@@ -144,6 +144,7 @@ defmodule Skate.Detours.DetoursTest do
         :detour
         |> build()
         |> with_author(original_author)
+        |> activated()
         |> deactivated()
         |> insert()
 
@@ -155,6 +156,7 @@ defmodule Skate.Detours.DetoursTest do
       assert draft_detour.state["context"]["activatedAt"] == nil
       refute draft_detour.id == detour.id
       assert draft_detour.copied_from_id == detour.id
+      assert draft_detour.estimated_duration == nil
     end
   end
 end
