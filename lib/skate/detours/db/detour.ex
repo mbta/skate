@@ -76,7 +76,7 @@ defmodule Skate.Detours.Db.Detour do
       })
 
     detour
-    |> change(%{activated_at: nil})
+    |> change(%{activated_at: nil, estimated_duration: nil})
     |> change(%{state: new_state})
   end
 

@@ -309,7 +309,7 @@ defmodule Skate.Detours.Detours do
       new_detour_attrs =
         detour
         |> Map.from_struct()
-        |> Map.drop([:id, :inserted_at, :updated_at, :activated_at, :deactivated_at, :status])
+        |> Map.take([:state])
         |> Map.put(:status, :draft)
 
       {:ok, new_draft_detour} =
