@@ -8,8 +8,6 @@ defmodule Skate.Repo.Migrations.BackfillDetourEstimatedDuration.MigratingSchema 
   typed_schema "detours" do
     field :state, :map
     field :estimated_duration, :string, null: true
-
-    timestamps()
   end
 end
 
