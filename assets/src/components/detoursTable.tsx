@@ -225,7 +225,9 @@ const PopulatedDetourRows = ({
             {detour.intersection}
           </td>
           <td className="align-middle p-3 u-hide-for-mobile">
-            {status === DetourStatus.Active && detour.activatedAt
+            {(status === DetourStatus.Active ||
+              status === DetourStatus.Closed) &&
+            detour.activatedAt
               ? timeAgoLabelFromDate(detour.activatedAt, epochNow)
               : timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
           </td>
