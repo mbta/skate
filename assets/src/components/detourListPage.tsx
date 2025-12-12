@@ -10,25 +10,18 @@ import {
   SvgProps,
 } from "../helpers/bsIcons"
 import RoutesContext from "../contexts/routesContext"
-import { DetourModal } from "./detours/detourModal"
 import { joinClasses } from "../helpers/dom"
-import { useLoadDetour } from "../hooks/useLoadDetour"
 import {
   useActiveDetours,
   useDraftDetours,
   usePastDetours,
 } from "../hooks/useDetours"
 import { SocketContext } from "../contexts/socketContext"
+import { useNavigate } from "react-router-dom"
 
 export const DetourListPage = () => {
   const routes = useContext(RoutesContext)
-  const [showDetourModalProps, setShowDetourModalProps] = useState<{
-    show: boolean
-    fromCopy: boolean
-  }>({ show: false, fromCopy: false })
-  const [detourId, setDetourId] = useState<number | undefined>()
-
-  const { show: showDetourModal, fromCopy: showFromCopy } = showDetourModalProps
+  const navigate = useNavigate()
   const [routeId, setRouteId] = useState<string>("all")
 
   // Wait for the detour channels to initialize
@@ -51,28 +44,12 @@ export const DetourListPage = () => {
     Object.values(pastDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
   // --- End of detour channel initialization
 
-  const { detour, isLoading: isLoadingDetour } = useLoadDetour(detourId)
-
-  const setShowDetourModal = (show: boolean) => {
-    setShowDetourModalProps({ show: show, fromCopy: false })
-  }
-
-  const onOpenDetour = (detourId: number, props = { fromCopy: false }) => {
-    setDetourId(detourId)
-    setShowDetourModalProps({ show: true, ...props })
-  }
-
-  const onCloseDetour = () => {
-    setDetourId(undefined)
-    setShowDetourModal(false)
-  }
-
   return (
     <div className="c-detour-list-page h-100 overflow-y-auto p-0 p-md-4 bg-white">
       {userInTestGroup(TestGroups.DetoursPilot) && (
         <Button
           className="c-detour-list-page__button icon-link fw-light px-3 py-2 u-hide-for-mobile"
-          onClick={() => setShowDetourModal(true)}
+          onClick={() => navigate("/detours/new")}
           data-fs-element="Add Detour"
         >
           <PlusSquare />
@@ -90,7 +67,6 @@ export const DetourListPage = () => {
           <DetoursTable
             data={activeDetours}
             status={DetourStatus.Active}
-            onOpenDetour={onOpenDetour}
             classNames={["mb-5"]}
           />
           {userInTestGroup(TestGroups.DetoursPilot) && (
@@ -104,7 +80,6 @@ export const DetourListPage = () => {
               <DetoursTable
                 data={draftDetours}
                 status={DetourStatus.Draft}
-                onOpenDetour={onOpenDetour}
                 classNames={["mb-5", "u-hide-for-mobile"]}
               />
               <Title
@@ -116,7 +91,6 @@ export const DetourListPage = () => {
               <DetoursTable
                 data={pastDetours}
                 status={DetourStatus.Closed}
-                onOpenDetour={onOpenDetour}
                 routeId={routeId}
                 setRouteId={setRouteId}
                 routes={routes}
@@ -129,28 +103,6 @@ export const DetourListPage = () => {
         <div className="position-absolute inset-0 opacity-75 d-flex justify-content-center align-items-center">
           <Spinner />
         </div>
-      )}
-
-      {/* `detourId` exists before `stateOfDetourModal` does, so need this conditional
-       * to ensure that either there's no `detourId` selected (i.e. make a new detour)
-       * or the state has been successfully fetched from the api
-       */}
-      {showDetourModal && (!detourId || detour) && (
-        <DetourModal
-          onClose={onCloseDetour}
-          onOpenDetour={onOpenDetour}
-          show
-          key={detourId ?? ""}
-          isLoadingDetour={isLoadingDetour}
-          showFromCopy={showFromCopy}
-          {...(detour
-            ? {
-                snapshot: detour.state,
-                author: detour.author,
-                updatedAt: detour.updatedAt,
-              }
-            : { originalRoute: {} })}
-        />
       )}
     </div>
   )

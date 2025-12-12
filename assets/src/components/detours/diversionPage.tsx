@@ -40,6 +40,7 @@ import CopiedDetourToast from "./alerts/copiedDetourToast"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { useMapZoomAndCenter } from "../../hooks/useMapZoomAndCenter"
 import { LatLngLiteral } from "leaflet"
+import { useNavigate } from "react-router-dom"
 
 const displayFieldsFromRouteAndPattern = (
   route: Route,
@@ -65,8 +66,8 @@ const parseIntoDirectionsList = (directions: string) => {
 
 interface DiversionPageFunctions {
   onClose: () => void
-  onOpenDetour?: (detourId: number, props?: { fromCopy: boolean }) => void
   showFromCopy?: boolean
+  useLatLngParams?: boolean
 }
 
 interface DiversionPageFromInput {
@@ -89,8 +90,8 @@ export type DiversionPageProps = DiversionPageStateProps &
 
 export const DiversionPage = ({
   onClose,
-  onOpenDetour,
   showFromCopy,
+  useLatLngParams,
   ...useDetourProps
 }: DiversionPageProps) => {
   const {
@@ -127,6 +128,7 @@ export const DiversionPage = ({
 
     editedSelectedDuration,
   } = useDetour(useDetourProps)
+  const navigate = useNavigate()
 
   const deleteDetourCallback = useCallback(() => {
     if (snapshot.context.uuid) {
@@ -143,11 +145,11 @@ export const DiversionPage = ({
       copyToDraftDetour(snapshot.context.uuid).then((response) => {
         if (response && isOk(response)) {
           onClose()
-          onOpenDetour && onOpenDetour(response?.ok, { fromCopy: true })
+          navigate(`/detours/${response.ok}?fromCopy=true`)
         }
       })
     }
-  }, [onClose, onOpenDetour, snapshot.context.uuid])
+  }, [onClose, navigate, snapshot.context.uuid])
 
   const nearestIntersectionDirection = [
     { instruction: "From " + nearestIntersection },
@@ -206,7 +208,10 @@ export const DiversionPage = ({
     routeDirection ?? "",
     routeName ?? "",
     shape,
-    useDetourProps as { originalRoute: { center: LatLngLiteral; zoom: number } }
+    useDetourProps as {
+      originalRoute: { center: LatLngLiteral; zoom: number }
+    },
+    useLatLngParams
   )
 
   const detourPanel: ({
