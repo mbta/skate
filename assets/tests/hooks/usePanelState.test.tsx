@@ -202,7 +202,7 @@ describe("usePanelStateFromStateDispatchContext", () => {
               view: viewFactory.currentState(currentState).build(),
             })}
           >
-            {children}
+            {children as React.ReactElement}
           </StateDispatchProvider>
         ),
       }
@@ -222,7 +222,7 @@ describe("usePanelStateFromStateDispatchContext", () => {
             dispatch={dispatch}
             state={stateFactory.build()}
           >
-            {children}
+            {children as React.ReactElement}
           </StateDispatchProvider>
         ),
       }

@@ -22,6 +22,7 @@ export const StreetViewControl = ({
     streetViewEnabled
       ? {
           click: (e) => {
+            e.originalEvent.stopImmediatePropagation()
             const source = {
                 latitude: e.latlng.lat,
                 longitude: e.latlng.lng,

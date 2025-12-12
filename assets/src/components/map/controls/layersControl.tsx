@@ -12,6 +12,7 @@ import { MapLayersIcon } from "../../../helpers/icon"
 import { CustomControl } from "./customControl"
 import { TileTypeContext } from "../../../contexts/tileTypeContext"
 import { Form, ListGroup } from "react-bootstrap"
+import { LeafletMouseEvent } from "leaflet"
 
 interface LayersButtonStateProps {
   showLayersList: boolean
@@ -190,7 +191,8 @@ const VehicleLayerOptions = ({
 
 export const LayersControl = (props: LayersButtonProps) => {
   useMapEvents({
-    click: () => {
+    click: (e: LeafletMouseEvent) => {
+      e.originalEvent.stopImmediatePropagation()
       props.onChangeLayersListVisibility(false)
     },
   })

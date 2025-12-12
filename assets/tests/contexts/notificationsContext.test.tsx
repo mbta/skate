@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
-import { act, renderHook } from "@testing-library/react"
-import React, { ReactNode, useContext } from "react"
+import { renderHook } from "@testing-library/react"
+import React, { act, ReactNode, useContext } from "react"
 import {
   NotificationsContext,
   NotificationsProvider,

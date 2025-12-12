@@ -5,15 +5,19 @@ import { ModalTransitionProps } from "@restart/ui/esm/Modal"
 import { CSSTransition } from "react-transition-group"
 import { Spinner } from "react-bootstrap"
 
-const Fade = ({ children, ...props }: ModalTransitionProps) => (
-  <CSSTransition
-    timeout={300}
-    classNames="c-detour-modal__transition"
-    {...props}
-  >
-    {children}
-  </CSSTransition>
-)
+const Fade = ({ children, ...props }: ModalTransitionProps) => {
+  const nodeRef = React.useRef(null)
+  return (
+    <CSSTransition
+      timeout={300}
+      classNames="c-detour-modal__transition"
+      nodeRef={nodeRef}
+      {...props}
+    >
+      <div ref={nodeRef}>{children}</div>
+    </CSSTransition>
+  )
+}
 
 export const DetourModal = ({
   onClose,

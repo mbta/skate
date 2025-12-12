@@ -2,8 +2,7 @@ import { jest, describe, test, expect } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import { getAllByRole, render, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import React, { MutableRefObject } from "react"
-import { act } from "react-dom/test-utils"
+import React, { act, MutableRefObject } from "react"
 
 import {
   CursorExitDirection,

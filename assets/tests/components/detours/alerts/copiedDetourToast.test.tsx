@@ -9,13 +9,13 @@ import CopiedDetourToast from "../../../../src/components/detours/alerts/copiedD
 describe("copiedDetourToast", () => {
   test("clicking close button closes the alert", async () => {
     render(<CopiedDetourToast />)
+    const button = closeButton.get()
 
-    expect(closeButton.get()).toBeVisible()
+    expect(button).toBeVisible()
 
-    await userEvent.click(closeButton.get())
+    await userEvent.click(button)
 
-    // Short timeout, wait for animation but don't wait for the default timeout / auto-close
-    await waitForElementToBeRemoved(() => closeButton.get(), { timeout: 5 })
+    expect(button).not.toBeInTheDocument()
   })
 
   test("the alert auto-closes after timeout milliseconds if the alert is not dismissed", async () => {

@@ -1,4 +1,4 @@
-import { LatLngExpression, Marker } from "leaflet"
+import { LatLngExpression, LeafletMouseEvent, Marker } from "leaflet"
 import React, {
   PropsWithChildren,
   useContext,
@@ -87,7 +87,8 @@ export const VehicleMarker = ({
   }, [shouldShowPopup, isPopupVisible])
 
   const eventHandlers = {
-    click: () => {
+    click: (e: LeafletMouseEvent) => {
+      e.originalEvent.stopImmediatePropagation()
       onSelect && onSelect(vehicle)
       onShouldShowPopupChange(false)
     },
