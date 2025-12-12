@@ -69,7 +69,6 @@ export const Follower = ({
       // always call onUpdate with validated positions
       onUpdate?.(map, currentLatLngs)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, shouldFollow, isAnimatingFollowUpdate, currentLatLngs, onUpdate])
 
   return null
