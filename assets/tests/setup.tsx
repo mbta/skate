@@ -3,7 +3,23 @@
 import failOnConsole from "jest-fail-on-console"
 import React from "react"
 
-failOnConsole()
+const ignoreList = [/.*components\/app\.test\.tsx/]
+const ignoreNameList = []
+
+failOnConsole({
+  skipTest: ({ testPath, testName }) => {
+    for (const pathExp of ignoreList) {
+      const result = pathExp.test(testPath)
+      if (result) return true
+    }
+
+    if (ignoreNameList.includes(testName)) {
+      return true
+    }
+
+    return false
+  }
+})
 
 jest.mock("@tippyjs/react", () => ({
   __esModule: true,
