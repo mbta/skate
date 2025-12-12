@@ -5,9 +5,9 @@ defmodule Skate.Detours.Detour do
 
   alias Schedule.Gtfs.RoutePattern
 
-  defmodule Detailed do
+  defmodule Simple do
     @moduledoc """
-    Detailed detours have had the db detour state parsed into attributes
+    Simple detours have had the db detour state parsed into attributes
     """
     @type t :: %__MODULE__{
             id: integer(),

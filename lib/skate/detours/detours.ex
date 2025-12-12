@@ -7,7 +7,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
   alias Skate.Detours.SnapshotSerde
-  alias Skate.Detours.Detour.Detailed, as: DetailedDetour
+  alias Skate.Detours.Detour.Simple, as: SimpleDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Notifications
   alias Skate.Settings.{TestGroup, User}
@@ -95,7 +95,7 @@ defmodule Skate.Detours.Detours do
     where(query, [detour: d], d.status == ^status)
   end
 
-  @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | nil
+  @spec db_detour_to_detour(Detour.t()) :: SimpleDetour.t() | nil
   def db_detour_to_detour(
         %{
           status: :active,
@@ -104,7 +104,7 @@ defmodule Skate.Detours.Detours do
         } = db_detour
       )
       when estimated_duration != nil do
-    details = DetailedDetour.from(:active, db_detour)
+    simple_detour = SimpleDetour.from(:active, db_detour)
 
     if activated_at == nil do
       Logger.warning(
@@ -112,10 +112,9 @@ defmodule Skate.Detours.Detours do
       )
     end
 
-    # TODO: Re-name this
-    details &&
-      %DetailedDetour{
-        details
+    simple_detour &&
+      %SimpleDetour{
+        simple_detour
         | activated_at: activated_at || DateTime.utc_now(),
           estimated_duration: estimated_duration
       }
@@ -128,7 +127,7 @@ defmodule Skate.Detours.Detours do
           state: %{"context" => %{"selectedDuration" => estimated_duration}}
         } = db_detour
       ) do
-    details = DetailedDetour.from(:active, db_detour)
+    simple_detour = SimpleDetour.from(:active, db_detour)
 
     if activated_at == nil || estimated_duration == nil do
       Logger.warning(
@@ -136,9 +135,9 @@ defmodule Skate.Detours.Detours do
       )
     end
 
-    details &&
-      %DetailedDetour{
-        details
+    simple_detour &&
+      %SimpleDetour{
+        simple_detour
         | activated_at: activated_at || DateTime.utc_now(),
           estimated_duration: estimated_duration || "Until further notice"
       }
@@ -152,7 +151,7 @@ defmodule Skate.Detours.Detours do
         } = db_detour
       ) do
     estimated_duration = state["context"]["selectedDuration"]
-    details = DetailedDetour.from(:active, db_detour)
+    simple_detour = SimpleDetour.from(:active, db_detour)
 
     if activated_at == nil || estimated_duration == nil do
       Logger.warning(
@@ -160,16 +159,16 @@ defmodule Skate.Detours.Detours do
       )
     end
 
-    details &&
-      %DetailedDetour{
-        details
+    simple_detour &&
+      %SimpleDetour{
+        simple_detour
         | activated_at: activated_at || DateTime.utc_now(),
           estimated_duration: estimated_duration || "Until further notice"
       }
   end
 
   def db_detour_to_detour(%{status: status} = db_detour) do
-    DetailedDetour.from(status, db_detour)
+    SimpleDetour.from(status, db_detour)
   end
 
   @spec get_detour_route_id(detour :: map()) :: String.t()
@@ -401,7 +400,7 @@ defmodule Skate.Detours.Detours do
        ) do
     Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
-    %DetailedDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+    %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
     Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
@@ -429,7 +428,7 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        )
        when previous_duration != selected_duration do
-    %DetailedDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+    %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
     Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)

@@ -54,7 +54,7 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
+                  %Skate.Detours.Detour.Simple{
                     author_id: _,
                     direction: _,
                     id: 3,
@@ -64,7 +64,7 @@ defmodule SkateWeb.DetoursChannelTest do
                     status: :active,
                     updated_at: updated_at_2
                   },
-                  %Skate.Detours.Detour.Detailed{
+                  %Skate.Detours.Detour.Simple{
                     author_id: _,
                     direction: _,
                     id: 2,
@@ -105,7 +105,7 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
+                  %Skate.Detours.Detour.Simple{
                     author_id: _,
                     direction: _,
                     id: 3,
@@ -137,7 +137,7 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
+                  %Skate.Detours.Detour.Simple{
                     author_id: _,
                     direction: _,
                     id: 2,
@@ -169,7 +169,7 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
+                  %Skate.Detours.Detour.Simple{
                     author_id: ^authenticated_user_id,
                     direction: _,
                     id: 4,
@@ -222,7 +222,7 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
+                  %Skate.Detours.Detour.Simple{
                     author_id: _,
                     direction: _,
                     id: 4,
@@ -232,7 +232,7 @@ defmodule SkateWeb.DetoursChannelTest do
                     status: :past,
                     updated_at: _
                   },
-                  %Skate.Detours.Detour.Detailed{
+                  %Skate.Detours.Detour.Simple{
                     author_id: _,
                     direction: _,
                     id: 5,
@@ -283,7 +283,7 @@ defmodule SkateWeb.DetoursChannelTest do
       assert {:ok,
               %{
                 data: [
-                  %Skate.Detours.Detour.Detailed{
+                  %Skate.Detours.Detour.Simple{
                     author_id: _,
                     direction: _,
                     id: 4,
