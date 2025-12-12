@@ -18,7 +18,7 @@ failOnConsole({
     }
 
     return false
-  }
+  },
 })
 
 jest.mock("@tippyjs/react", () => ({

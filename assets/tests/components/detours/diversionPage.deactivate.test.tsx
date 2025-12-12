@@ -59,7 +59,7 @@ const diversionPageOnActiveDetourScreen = async (
   props?: Partial<DiversionPageProps>
 ) => {
   const { container } = render(<DiversionPage {...props} />)
-  const user = userEvent.setup({ delay: 100})
+  const user = userEvent.setup({ delay: 100 })
 
   act(() => {
     fireEvent.click(originalRouteShape.get(container))
@@ -110,7 +110,7 @@ describe("DiversionPage deactivate workflow", () => {
   })
 
   test("clicking the 'Return to regular route' button from the the deactivate modal deactivates the detour", async () => {
-    const { user } =await diversionPageOnActiveDetourScreen()
+    const { user } = await diversionPageOnActiveDetourScreen()
 
     await user.click(regularRouteButton.get())
 
