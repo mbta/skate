@@ -7,7 +7,7 @@ import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
 import { byRole } from "testing-library-selector"
 import {
-  activeDetourDataFactory,
+  simpleActiveDetourFactory,
   simpleDetourFactory,
 } from "../../factories/detourListFactory"
 import {
@@ -15,7 +15,6 @@ import {
   useDraftDetours,
   usePastDetours,
 } from "../../../src/hooks/useDetours"
-import { simpleDetourFromActivatedData } from "../../../src/models/detoursList"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import routeFactory from "../../factories/route"
@@ -28,12 +27,11 @@ jest.mock("../../../src/helpers/fullStory")
 
 beforeEach(() => {
   jest.mocked(useActiveDetours).mockReturnValue([
-    simpleDetourFromActivatedData(activeDetourDataFactory.build()),
-    simpleDetourFromActivatedData(
-      activeDetourDataFactory.build({
-        details: { name: "Headsign A", direction: "Outbound" },
-      })
-    ),
+    simpleActiveDetourFactory.build(),
+    simpleActiveDetourFactory.build({
+      name: "Headsign A",
+      direction: "Outbound",
+    }),
   ])
   jest.mocked(useDraftDetours).mockReturnValue([])
   jest

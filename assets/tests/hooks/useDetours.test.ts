@@ -2,7 +2,7 @@ import { describe, expect, test } from "@jest/globals"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import { act, renderHook } from "@testing-library/react"
 import {
-  activeDetourDataFactory,
+  simpleActiveDetourDataFactory,
   simpleDetourDataFactory,
 } from "../factories/detourListFactory"
 import {
@@ -12,35 +12,23 @@ import {
   usePastDetours,
 } from "../../src/hooks/useDetours"
 import {
-  ActivatedDetourData,
+  SimpleActiveDetourData,
   SimpleDetourData,
-  simpleDetourFromActivatedData,
+  simpleDetourFromActiveData,
   simpleDetourFromData,
 } from "../../src/models/detoursList"
 import { RouteId } from "../../src/schedule"
 
-const detourA = simpleDetourDataFactory.build()
-const detourB = simpleDetourDataFactory.build()
-const detourC = simpleDetourDataFactory.build()
-const detourD = simpleDetourDataFactory.build()
-
-const parsedDetourA = simpleDetourFromData(detourA)
-const parsedDetourB = simpleDetourFromData(detourB)
-const parsedDetourC = simpleDetourFromData(detourC)
-const parsedDetourD = simpleDetourFromData(detourD)
-
-const detours = [detourA, detourB, detourC]
-
 describe("useActiveDetours", () => {
-  const detourA = activeDetourDataFactory.build()
-  const detourB = activeDetourDataFactory.build()
-  const detourC = activeDetourDataFactory.build()
-  const detourD = activeDetourDataFactory.build()
+  const detourA = simpleActiveDetourDataFactory.build()
+  const detourB = simpleActiveDetourDataFactory.build()
+  const detourC = simpleActiveDetourDataFactory.build()
+  const detourD = simpleActiveDetourDataFactory.build()
 
-  const parsedDetourA = simpleDetourFromActivatedData(detourA)
-  const parsedDetourB = simpleDetourFromActivatedData(detourB)
-  const parsedDetourC = simpleDetourFromActivatedData(detourC)
-  const parsedDetourD = simpleDetourFromActivatedData(detourD)
+  const parsedDetourA = simpleDetourFromActiveData(detourA)
+  const parsedDetourB = simpleDetourFromActiveData(detourB)
+  const parsedDetourC = simpleDetourFromActiveData(detourC)
+  const parsedDetourD = simpleDetourFromActiveData(detourD)
 
   const detours = [detourA, detourB, detourC]
   test("parses initial detours message from joining a channel", () => {
@@ -50,9 +38,9 @@ describe("useActiveDetours", () => {
     const { result } = renderHook(() => useActiveDetours(mockSocket))
 
     expect(result.current).toStrictEqual({
-      [detourA.details.id]: parsedDetourA,
-      [detourB.details.id]: parsedDetourB,
-      [detourC.details.id]: parsedDetourC,
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
     })
   })
 
@@ -62,7 +50,7 @@ describe("useActiveDetours", () => {
 
     const mockEvents: Record<
       string,
-      undefined | ((data: { data: ActivatedDetourData }) => void)
+      undefined | ((data: { data: SimpleActiveDetourData }) => void)
     > = {
       activated: undefined,
     }
@@ -78,10 +66,10 @@ describe("useActiveDetours", () => {
     act(() => mockEvents["activated"]?.({ data: detourD }))
 
     expect(result.current).toStrictEqual({
-      [detourA.details.id]: parsedDetourA,
-      [detourB.details.id]: parsedDetourB,
-      [detourC.details.id]: parsedDetourC,
-      [detourD.details.id]: parsedDetourD,
+      [detourA.id]: parsedDetourA,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
+      [detourD.id]: parsedDetourD,
     })
   })
 
@@ -106,18 +94,29 @@ describe("useActiveDetours", () => {
 
     act(() =>
       mockEvents["deactivated"]?.({
-        data: simpleDetourDataFactory.build(detourA.details),
+        data: simpleDetourDataFactory.build(detourA),
       })
     )
 
     expect(result.current).toStrictEqual({
-      [detourB.details.id]: parsedDetourB,
-      [detourC.details.id]: parsedDetourC,
+      [detourB.id]: parsedDetourB,
+      [detourC.id]: parsedDetourC,
     })
   })
 })
 
 describe("usePastDetours", () => {
+  const detourA = simpleDetourDataFactory.build()
+  const detourB = simpleDetourDataFactory.build()
+  const detourC = simpleDetourDataFactory.build()
+  const detourD = simpleDetourDataFactory.build()
+
+  const parsedDetourA = simpleDetourFromData(detourA)
+  const parsedDetourB = simpleDetourFromData(detourB)
+  const parsedDetourC = simpleDetourFromData(detourC)
+  const parsedDetourD = simpleDetourFromData(detourD)
+
+  const detours = [detourA, detourB, detourC]
   test("parses initial detours message", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: detours })
@@ -221,6 +220,17 @@ describe("usePastDetours", () => {
 })
 
 describe("useDraftDetours", () => {
+  const detourA = simpleDetourDataFactory.build()
+  const detourB = simpleDetourDataFactory.build()
+  const detourC = simpleDetourDataFactory.build()
+  const detourD = simpleDetourDataFactory.build()
+
+  const parsedDetourA = simpleDetourFromData(detourA)
+  const parsedDetourB = simpleDetourFromData(detourB)
+  const parsedDetourC = simpleDetourFromData(detourC)
+  const parsedDetourD = simpleDetourFromData(detourD)
+
+  const detours = [detourA, detourB, detourC]
   test("parses initial detours message", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: detours })
@@ -273,7 +283,7 @@ describe("useDraftDetours", () => {
 
     const mockEvents: Record<
       string,
-      undefined | ((data: { data: ActivatedDetourData }) => void)
+      undefined | ((data: { data: SimpleActiveDetourData }) => void)
     > = {
       activated: undefined,
     }
@@ -288,7 +298,12 @@ describe("useDraftDetours", () => {
 
     act(() =>
       mockEvents["activated"]?.({
-        data: activeDetourDataFactory.build({ details: detourA }),
+        data: simpleActiveDetourDataFactory.build({
+          ...detourA,
+          status: "active",
+          activated_at: new Date(),
+          estimated_duration: "2 hours",
+        }),
       })
     )
 
@@ -335,10 +350,10 @@ describe("useActiveDetoursByRoute", () => {
   })
 
   test("returns results from joining a channel", async () => {
-    const detours = activeDetourDataFactory.buildList(3)
+    const detours = simpleActiveDetourDataFactory.buildList(3)
     const [detourA, detourB, detourC] = detours
     const [parsedDetourA, parsedDetourB, parsedDetourC] = detours.map(
-      simpleDetourFromActivatedData
+      simpleDetourFromActiveData
     )
 
     const mockSocket = makeMockSocket()
@@ -357,17 +372,17 @@ describe("useActiveDetoursByRoute", () => {
 
     expect(result.current).toEqual({
       "1": {
-        [detourA.details.id]: parsedDetourA,
-        [detourB.details.id]: parsedDetourB,
-        [detourC.details.id]: parsedDetourC,
+        [detourA.id]: parsedDetourA,
+        [detourB.id]: parsedDetourB,
+        [detourC.id]: parsedDetourC,
       },
     })
   })
 
   test("returns results pushed to the channel", async () => {
-    const detours = activeDetourDataFactory.buildList(4)
+    const detours = simpleActiveDetourDataFactory.buildList(4)
     const [, , , detourD] = detours
-    const [, , , parsedDetourD] = detours.map(simpleDetourFromActivatedData)
+    const [, , , parsedDetourD] = detours.map(simpleDetourFromActiveData)
 
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
@@ -385,7 +400,7 @@ describe("useActiveDetoursByRoute", () => {
 
     expect(result.current).toEqual({
       "1": {
-        [detourD.details.id]: parsedDetourD,
+        [detourD.id]: parsedDetourD,
       },
     })
   })

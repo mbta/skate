@@ -73,7 +73,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  15
+                  7
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -81,7 +81,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign 15
+                    Headsign 7
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"
@@ -94,7 +94,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A15 & Avenue B15
+              Street A7 & Avenue B7
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -112,7 +112,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  13
+                  5
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -120,7 +120,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign 13
+                    Headsign 5
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"
@@ -133,7 +133,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A13 & Avenue B13
+              Street A5 & Avenue B5
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -151,7 +151,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  14
+                  6
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -159,7 +159,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign 14
+                    Headsign 6
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"
@@ -172,7 +172,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A14 & Avenue B14
+              Street A6 & Avenue B6
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -630,7 +630,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  3
+                  1
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -651,7 +651,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A3 & Avenue B3
+              Street A1 & Avenue B1
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -739,7 +739,7 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  4
+                  3
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -747,7 +747,7 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
                   <div
                     class="pb-1 fs-4 fw-semibold"
                   >
-                    Headsign 4
+                    Headsign 3
                   </div>
                   <div
                     class="c-detours-table__route-info-direction fs-6"
@@ -760,7 +760,7 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A4 & Avenue B4
+              Street A3 & Avenue B3
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -783,7 +783,7 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
                 <div
                   class="c-route-pill c-route-pill--bus"
                 >
-                  5
+                  4
                 </div>
                 <div
                   class="c-detours-table__route-info-text d-inline-block"
@@ -804,7 +804,7 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Street A5 & Avenue B5
+              Street A4 & Avenue B4
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"

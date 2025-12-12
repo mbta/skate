@@ -1,9 +1,9 @@
 import { Channel, Socket } from "phoenix"
 import {
-  ActivatedDetourData,
+  SimpleActiveDetourData,
   SimpleDetour,
   SimpleDetourData,
-  simpleDetourFromActivatedData,
+  simpleDetourFromActiveData,
   simpleDetourFromData,
 } from "../models/detoursList"
 import { useEffect, useState } from "react"
@@ -27,7 +27,7 @@ const subscribe = (
   handleActivated: ((data: SimpleDetour) => void) | undefined,
   handleDeactivated: ((data: SimpleDetour) => void) | undefined,
   handleDeleted: ((detourId: number) => void) | undefined,
-  initialMessageType: typeof SimpleDetourData | typeof ActivatedDetourData
+  initialMessageType: typeof SimpleDetourData | typeof SimpleActiveDetourData
 ): Channel => {
   const channel = socket.channel(topic)
 
@@ -38,8 +38,8 @@ const subscribe = (
     })
   handleActivated &&
     channel.on("activated", ({ data: unknownData }: { data: unknown }) => {
-      const data = create(unknownData, ActivatedDetourData)
-      handleActivated(simpleDetourFromActivatedData(data))
+      const data = create(unknownData, SimpleActiveDetourData)
+      handleActivated(simpleDetourFromActiveData(data))
     })
   handleDeactivated &&
     channel.on("deactivated", ({ data: unknownData }: { data: unknown }) => {
@@ -59,9 +59,9 @@ const subscribe = (
     .receive("ok", ({ data: unknownData }: { data: unknown }) => {
       const data = (() => {
         switch (initialMessageType) {
-          case ActivatedDetourData: {
-            return create(unknownData, array(ActivatedDetourData)).map(
-              simpleDetourFromActivatedData
+          case SimpleActiveDetourData: {
+            return create(unknownData, array(SimpleActiveDetourData)).map(
+              simpleDetourFromActiveData
             )
           }
           case SimpleDetourData:
@@ -124,7 +124,7 @@ export const useActiveDetours = (
         handleActivated,
         handleDeactivated,
         undefined,
-        ActivatedDetourData
+        SimpleActiveDetourData
       )
     }
 
@@ -235,12 +235,12 @@ const subscribeByRoute = (
   const channel = socket.channel(topic + routeId)
 
   channel.on("activated", ({ data: unknownData }: { data: unknown }) => {
-    const data = create(unknownData, ActivatedDetourData)
+    const data = create(unknownData, SimpleActiveDetourData)
     setDetours((activeDetours) => ({
       ...activeDetours,
       [routeId]: {
         ...activeDetours[routeId],
-        [data.details.id]: simpleDetourFromActivatedData(data),
+        [data.id]: simpleDetourFromActiveData(data),
       },
     }))
   })
@@ -256,9 +256,9 @@ const subscribeByRoute = (
   channel
     .join()
     .receive("ok", ({ data: unknownData }: { data: unknown }) => {
-      const data = create(unknownData, array(ActivatedDetourData))
+      const data = create(unknownData, array(SimpleActiveDetourData))
       const detoursMap = Object.fromEntries(
-        data.map((v) => [v.details.id, simpleDetourFromActivatedData(v)])
+        data.map((v) => [v.id, simpleDetourFromActiveData(v)])
       )
       setDetours((detoursByRouteId) => ({
         ...detoursByRouteId,
