@@ -229,7 +229,7 @@ const PopulatedDetourRows = ({
               ? timeAgoLabelFromDate(detour.activatedAt, epochNow)
               : timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
           </td>
-          {detour.estimatedDuration && (
+          {status === DetourStatus.Active && detour.estimatedDuration && (
             <td className="align-middle p-3 u-hide-for-mobile">
               {detour.estimatedDuration}
             </td>
