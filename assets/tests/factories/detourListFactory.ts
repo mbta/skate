@@ -46,7 +46,6 @@ export const simpleDetourDataFactory = Factory.define<SimpleDetourData>(
   ({ sequence }) => ({
     id: sequence,
     route: `${sequence}`,
-    via_variant: `${sequence}`,
     direction: "Inbound",
     name: `Headsign ${sequence}`,
     status: "draft",
@@ -61,7 +60,6 @@ export const simpleActiveDetourDataFactory =
   Factory.define<SimpleActiveDetourData>(({ sequence }) => ({
     id: sequence,
     route: `${sequence}`,
-    via_variant: `${sequence}`,
     direction: "Inbound",
     name: `Headsign ${sequence}`,
     status: "active",

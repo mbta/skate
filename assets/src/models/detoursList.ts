@@ -15,7 +15,6 @@ export type DetourId = number
 export interface SimpleDetour {
   id: DetourId
   route: string
-  viaVariant: string
   direction: string
   name: string
   intersection: string
@@ -36,7 +35,6 @@ export const detourId = number()
 export const SimpleDetourData = type({
   id: detourId,
   route: string(),
-  via_variant: string(),
   direction: string(),
   name: string(),
   intersection: string(),
@@ -51,7 +49,6 @@ export const SimpleDetourData = type({
 export const SimpleActiveDetourData = type({
   id: detourId,
   route: string(),
-  via_variant: string(),
   direction: string(),
   name: string(),
   intersection: string(),
@@ -69,7 +66,6 @@ export const simpleDetourFromData = (
 ): SimpleDetour => ({
   id: detourData.id,
   route: detourData.route,
-  viaVariant: detourData.via_variant,
   direction: detourData.direction,
   name: detourData.name,
   intersection: detourData.intersection,

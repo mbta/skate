@@ -3,7 +3,6 @@ defmodule Skate.Detours.Detour do
   Modules for different detour structures that can be read from the db
   """
 
-  alias Schedule.Gtfs.RoutePattern
   require Logger
 
   defmodule Simple do
@@ -13,7 +12,6 @@ defmodule Skate.Detours.Detour do
     @type t :: %__MODULE__{
             id: integer(),
             route: String.t(),
-            via_variant: String.t(),
             direction: String.t(),
             name: String.t(),
             intersection: String.t(),
@@ -29,7 +27,6 @@ defmodule Skate.Detours.Detour do
     defstruct [
       :id,
       :route,
-      :via_variant,
       :direction,
       :name,
       :intersection,
@@ -89,7 +86,6 @@ defmodule Skate.Detours.Detour do
       %__MODULE__{
         id: id,
         route: route_name,
-        via_variant: RoutePattern.via_variant(route_pattern_id),
         direction: direction,
         name: headsign,
         intersection: nearest_intersection,
@@ -121,7 +117,6 @@ defmodule Skate.Detours.Detour do
            id: id,
            author_id: author_id,
            updated_at: updated_at,
-           route_pattern_id: route_pattern_id,
            route_name: route_name,
            headsign: headsign,
            nearest_intersection: nearest_intersection,
@@ -133,7 +128,6 @@ defmodule Skate.Detours.Detour do
       %__MODULE__{
         id: id,
         route: route_name,
-        via_variant: route_pattern_id && RoutePattern.via_variant(route_pattern_id),
         direction: direction,
         name: headsign,
         intersection: nearest_intersection,
