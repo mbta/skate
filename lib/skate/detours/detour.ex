@@ -4,6 +4,7 @@ defmodule Skate.Detours.Detour do
   """
 
   alias Schedule.Gtfs.RoutePattern
+  require Logger
 
   defmodule Simple do
     @moduledoc """
@@ -40,50 +41,51 @@ defmodule Skate.Detours.Detour do
     ]
 
     def from(
-          status,
+          :active,
           %{
+            status: :active,
+            activated_at: activated_at,
+            estimated_duration: estimated_duration,
+            state: state
+          } = db_detour
+        ) do
+      if activated_at == nil || estimated_duration == nil do
+        selected_duration = state["context"]["selectedDuration"]
+
+        Logger.warning(
+          "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)} estimated_duration=#{inspect(estimated_duration)} selected_duration=#{selected_duration}"
+        )
+      end
+
+      simple_detour = extract_from_attributes(db_detour)
+
+      %__MODULE__{
+        simple_detour
+        | activated_at: activated_at || DateTime.utc_now(),
+          estimated_duration: estimated_duration || "Until further notice"
+      }
+    end
+
+    def from(
+          _status,
+          %{
+            id: id,
+            status: status,
             state: %{
               "context" => %{
                 "route" => %{"name" => route_name, "directionNames" => direction_names},
                 "routePattern" => %{
                   "headsign" => headsign,
-                  "directionId" => direction_id,
-                  "id" => route_pattern_id
+                  "directionId" => direction_id
                 },
                 "nearestIntersection" => nearest_intersection
               }
-            }
+            },
+            updated_at: updated_at
           } = db_detour
         ) do
       direction = Map.get(direction_names, Integer.to_string(direction_id))
 
-      %__MODULE__{
-        id: db_detour.id,
-        route: route_name,
-        via_variant: RoutePattern.via_variant(route_pattern_id),
-        direction: direction,
-        name: headsign,
-        intersection: nearest_intersection,
-        updated_at: timestamp_to_unix(db_detour.updated_at),
-        author_id: db_detour.author_id,
-        status: status
-      }
-    end
-
-    def from(status, %{
-          id: id,
-          author_id: author_id,
-          updated_at: updated_at,
-          route_pattern_id: route_pattern_id,
-          route_name: route_name,
-          headsign: headsign,
-          nearest_intersection: nearest_intersection,
-          direction: direction
-        })
-        when not is_nil(headsign) and
-               not is_nil(direction) and
-               not is_nil(route_name) and
-               not is_nil(nearest_intersection) do
       %__MODULE__{
         id: id,
         route: route_name,
@@ -92,12 +94,56 @@ defmodule Skate.Detours.Detour do
         name: headsign,
         intersection: nearest_intersection,
         updated_at: timestamp_to_unix(updated_at),
-        author_id: author_id,
+        author_id: db_detour.author_id,
         status: status
       }
     end
 
-    def from(_status, _attrs), do: nil
+    def from(
+          _status,
+          %{
+            id: _id,
+            author_id: _author_id,
+            updated_at: _updated_at,
+            route_name: _route_name,
+            headsign: _headsign,
+            nearest_intersection: _nearest_intersection,
+            direction: _direction,
+            estimated_duration: _estimated_duration,
+            activated_at: _activated_at,
+            status: _db_status
+          } = db_detour
+        ) do
+      extract_from_attributes(db_detour)
+    end
+
+    defp extract_from_attributes(%{
+           id: id,
+           author_id: author_id,
+           updated_at: updated_at,
+           route_pattern_id: route_pattern_id,
+           route_name: route_name,
+           headsign: headsign,
+           nearest_intersection: nearest_intersection,
+           direction: direction,
+           estimated_duration: estimated_duration,
+           activated_at: activated_at,
+           status: status
+         }) do
+      %__MODULE__{
+        id: id,
+        route: route_name,
+        via_variant: route_pattern_id && RoutePattern.via_variant(route_pattern_id),
+        direction: direction,
+        name: headsign,
+        intersection: nearest_intersection,
+        updated_at: timestamp_to_unix(updated_at),
+        author_id: author_id,
+        estimated_duration: estimated_duration,
+        activated_at: activated_at,
+        status: status
+      }
+    end
 
     # Converts the db timestamp to unix
     defp timestamp_to_unix(db_date) do
