@@ -60,7 +60,21 @@ defmodule SkateWeb.DetoursControllerTest do
     test "updates detour in database if detour uuid provided", %{conn: conn} do
       conn =
         put(conn, "/api/detours/update_snapshot", %{
-          "snapshot" => %{"context" => %{"uuid" => 8}}
+          "snapshot" => %{
+            "context" => %{
+              "nearestIntersection" => "Street A & Avenue B",
+              "route" => %{
+                "directionNames" => %{"0" => "Outbound", "1" => "Inbound"},
+                "name" => "23"
+              },
+              "routePattern" => %{
+                "directionId" => 0,
+                "headsign" => "Headsign",
+                "id" => "23-1-0"
+              },
+              "uuid" => 8
+            }
+          }
         })
 
       assert %{"data" => 8} = json_response(conn, 200)

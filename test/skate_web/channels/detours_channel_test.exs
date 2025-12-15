@@ -113,7 +113,9 @@ defmodule SkateWeb.DetoursChannelTest do
                     name: "detour_route_pattern_headsign:" <> _,
                     route: "66",
                     status: :active,
-                    updated_at: _
+                    updated_at: _,
+                    estimated_duration: "1 hour",
+                    activated_at: %DateTime{}
                   }
                 ]
               },
@@ -145,7 +147,9 @@ defmodule SkateWeb.DetoursChannelTest do
                     name: "detour_route_pattern_headsign:" <> _,
                     route: "SL1",
                     status: :active,
-                    updated_at: _
+                    updated_at: _,
+                    estimated_duration: "1 hour",
+                    activated_at: %DateTime{}
                   }
                 ]
               },
@@ -177,7 +181,9 @@ defmodule SkateWeb.DetoursChannelTest do
                     name: "detour_route_pattern_headsign:" <> _,
                     route: "detour_route_name:" <> _,
                     status: :draft,
-                    updated_at: _
+                    updated_at: _,
+                    estimated_duration: nil,
+                    activated_at: nil
                   }
                 ]
               },
@@ -230,7 +236,9 @@ defmodule SkateWeb.DetoursChannelTest do
                     name: "detour_route_pattern_headsign:" <> _,
                     route: "detour_route_name:" <> _,
                     status: :past,
-                    updated_at: _
+                    updated_at: _,
+                    estimated_duration: nil,
+                    activated_at: nil
                   },
                   %Skate.Detours.Detour.Simple{
                     author_id: _,
@@ -240,7 +248,9 @@ defmodule SkateWeb.DetoursChannelTest do
                     name: "detour_route_pattern_headsign:" <> _,
                     route: "57",
                     status: :past,
-                    updated_at: _
+                    updated_at: _,
+                    estimated_duration: nil,
+                    activated_at: nil
                   }
                 ]
               },
@@ -291,7 +301,9 @@ defmodule SkateWeb.DetoursChannelTest do
                     name: "detour_route_pattern_headsign:" <> _,
                     route: "66",
                     status: :past,
-                    updated_at: _
+                    updated_at: _,
+                    estimated_duration: nil,
+                    activated_at: nil
                   }
                 ]
               },
