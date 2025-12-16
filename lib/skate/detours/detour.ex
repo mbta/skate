@@ -65,22 +65,28 @@ defmodule Skate.Detours.Detour do
 
     def from(
           _status,
-          %{
-            id: id,
-            status: status,
-            state: %{
-              "context" => %{
-                "route" => %{"name" => route_name, "directionNames" => direction_names},
-                "routePattern" => %{
-                  "headsign" => headsign,
-                  "directionId" => direction_id
-                },
-                "nearestIntersection" => nearest_intersection
-              }
-            },
-            updated_at: updated_at
-          } = db_detour
+          attrs
         ) do
+      extract_from_attributes(attrs)
+    end
+
+    defp extract_from_attributes(
+           %{
+             id: id,
+             status: status,
+             state: %{
+               "context" => %{
+                 "route" => %{"name" => route_name, "directionNames" => direction_names},
+                 "routePattern" => %{
+                   "headsign" => headsign,
+                   "directionId" => direction_id
+                 },
+                 "nearestIntersection" => nearest_intersection
+               }
+             },
+             updated_at: updated_at
+           } = db_detour
+         ) do
       direction = Map.get(direction_names, Integer.to_string(direction_id))
 
       %__MODULE__{
@@ -95,24 +101,6 @@ defmodule Skate.Detours.Detour do
       }
     end
 
-    def from(
-          _status,
-          %{
-            id: _id,
-            author_id: _author_id,
-            updated_at: _updated_at,
-            route_name: _route_name,
-            headsign: _headsign,
-            nearest_intersection: _nearest_intersection,
-            direction: _direction,
-            estimated_duration: _estimated_duration,
-            activated_at: _activated_at,
-            status: _db_status
-          } = db_detour
-        ) do
-      extract_from_attributes(db_detour)
-    end
-
     defp extract_from_attributes(%{
            id: id,
            author_id: author_id,
@@ -124,7 +112,9 @@ defmodule Skate.Detours.Detour do
            estimated_duration: estimated_duration,
            activated_at: activated_at,
            status: status
-         }) do
+         })
+         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) and
+                not is_nil(nearest_intersection) do
       %__MODULE__{
         id: id,
         route: route_name,
@@ -137,6 +127,14 @@ defmodule Skate.Detours.Detour do
         activated_at: activated_at,
         status: status
       }
+    end
+
+    defp extract_from_attributes(db_detour) do
+      Logger.error(
+        "detour_missing_info id=#{db_detour.id} status=#{inspect(db_detour.status)} headsign=#{inspect(db_detour.headsign)} route_name=#{db_detour.route_name} direction=#{db_detour.direction}"
+      )
+
+      nil
     end
 
     # Converts the db timestamp to unix
