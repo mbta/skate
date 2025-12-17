@@ -3,22 +3,23 @@ defmodule Skate.Detours.Detour do
   Modules for different detour structures that can be read from the db
   """
 
-  alias Schedule.Gtfs.RoutePattern
+  require Logger
 
-  defmodule Detailed do
+  defmodule Simple do
     @moduledoc """
-    Detailed detours have had the db detour state parsed into attributes
+    Simple detours have had the db detour state parsed into attributes
     """
     @type t :: %__MODULE__{
             id: integer(),
             route: String.t(),
-            via_variant: String.t(),
             direction: String.t(),
             name: String.t(),
             intersection: String.t(),
             updated_at: integer(),
             author_id: integer(),
-            status: :active | :draft | :past
+            status: :active | :draft | :past,
+            activated_at: DateTime.t() | nil,
+            estimated_duration: String.t() | nil
           }
 
     @derive Jason.Encoder
@@ -26,74 +27,115 @@ defmodule Skate.Detours.Detour do
     defstruct [
       :id,
       :route,
-      :via_variant,
       :direction,
       :name,
       :intersection,
       :updated_at,
       :author_id,
-      :status
+      :status,
+      :activated_at,
+      :estimated_duration
     ]
 
     def from(
-          status,
+          :active,
           %{
-            state: %{
-              "context" => %{
-                "route" => %{"name" => route_name, "directionNames" => direction_names},
-                "routePattern" => %{
-                  "headsign" => headsign,
-                  "directionId" => direction_id,
-                  "id" => route_pattern_id
-                },
-                "nearestIntersection" => nearest_intersection
-              }
-            }
+            status: :active,
+            activated_at: activated_at,
+            estimated_duration: estimated_duration,
+            state: state
           } = db_detour
         ) do
+      if activated_at == nil || estimated_duration == nil do
+        selected_duration = state["context"]["selectedDuration"]
+
+        Logger.warning(
+          "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)} estimated_duration=#{inspect(estimated_duration)} selected_duration=#{selected_duration}"
+        )
+      end
+
+      simple_detour = extract_from_attributes(db_detour)
+
+      %__MODULE__{
+        simple_detour
+        | activated_at: activated_at || DateTime.utc_now(),
+          estimated_duration: estimated_duration || "Until further notice"
+      }
+    end
+
+    def from(
+          _status,
+          attrs
+        ) do
+      extract_from_attributes(attrs)
+    end
+
+    defp extract_from_attributes(
+           %{
+             id: id,
+             status: status,
+             state: %{
+               "context" => %{
+                 "route" => %{"name" => route_name, "directionNames" => direction_names},
+                 "routePattern" => %{
+                   "headsign" => headsign,
+                   "directionId" => direction_id
+                 },
+                 "nearestIntersection" => nearest_intersection
+               }
+             },
+             updated_at: updated_at
+           } = db_detour
+         ) do
       direction = Map.get(direction_names, Integer.to_string(direction_id))
 
       %__MODULE__{
-        id: db_detour.id,
+        id: id,
         route: route_name,
-        via_variant: RoutePattern.via_variant(route_pattern_id),
         direction: direction,
         name: headsign,
         intersection: nearest_intersection,
-        updated_at: timestamp_to_unix(db_detour.updated_at),
+        updated_at: timestamp_to_unix(updated_at),
         author_id: db_detour.author_id,
         status: status
       }
     end
 
-    def from(status, %{
-          id: id,
-          author_id: author_id,
-          updated_at: updated_at,
-          route_pattern_id: route_pattern_id,
-          route_name: route_name,
-          headsign: headsign,
-          nearest_intersection: nearest_intersection,
-          direction: direction
-        })
-        when not is_nil(headsign) and
-               not is_nil(direction) and
-               not is_nil(route_name) and
-               not is_nil(nearest_intersection) do
+    defp extract_from_attributes(%{
+           id: id,
+           author_id: author_id,
+           updated_at: updated_at,
+           route_name: route_name,
+           headsign: headsign,
+           nearest_intersection: nearest_intersection,
+           direction: direction,
+           estimated_duration: estimated_duration,
+           activated_at: activated_at,
+           status: status
+         })
+         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) and
+                not is_nil(nearest_intersection) do
       %__MODULE__{
         id: id,
         route: route_name,
-        via_variant: RoutePattern.via_variant(route_pattern_id),
         direction: direction,
         name: headsign,
         intersection: nearest_intersection,
         updated_at: timestamp_to_unix(updated_at),
         author_id: author_id,
+        estimated_duration: estimated_duration,
+        activated_at: activated_at,
         status: status
       }
     end
 
-    def from(_status, _attrs), do: nil
+    defp extract_from_attributes(db_detour) do
+      Logger.error(
+        "detour_missing_info id=#{db_detour.id} status=#{inspect(db_detour.status)} headsign=#{inspect(db_detour.headsign)} route_name=#{db_detour.route_name} direction=#{db_detour.direction}"
+      )
+
+      nil
+    end
 
     # Converts the db timestamp to unix
     defp timestamp_to_unix(db_date) do
@@ -101,26 +143,6 @@ defmodule Skate.Detours.Detour do
       |> DateTime.from_naive!("Etc/UTC")
       |> DateTime.to_unix()
     end
-  end
-
-  defmodule ActivatedDetourDetails do
-    @moduledoc """
-    Extended information for active detours
-    """
-
-    @type t :: %__MODULE__{
-            activated_at: DateTime.t(),
-            estimated_duration: String.t(),
-            details: Detailed.t()
-          }
-
-    @derive Jason.Encoder
-
-    defstruct [
-      :activated_at,
-      :estimated_duration,
-      :details
-    ]
   end
 
   defmodule WithState do

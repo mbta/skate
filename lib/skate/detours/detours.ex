@@ -4,11 +4,10 @@ defmodule Skate.Detours.Detours do
   """
 
   import Ecto.Query, warn: false
-  alias Skate.Detours.Detour.ActivatedDetourDetails
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
   alias Skate.Detours.SnapshotSerde
-  alias Skate.Detours.Detour.Detailed, as: DetailedDetour
+  alias Skate.Detours.Detour.Simple, as: SimpleDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Notifications
   alias Skate.Settings.{TestGroup, User}
@@ -96,80 +95,9 @@ defmodule Skate.Detours.Detours do
     where(query, [detour: d], d.status == ^status)
   end
 
-  @spec db_detour_to_detour(Detour.t()) :: DetailedDetour.t() | ActivatedDetourDetails.t() | nil
-  def db_detour_to_detour(
-        %{
-          status: :active,
-          activated_at: activated_at,
-          estimated_duration: estimated_duration
-        } = db_detour
-      )
-      when estimated_duration != nil do
-    details = DetailedDetour.from(:active, db_detour)
-
-    if activated_at == nil do
-      Logger.warning(
-        "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)}"
-      )
-    end
-
-    details &&
-      %ActivatedDetourDetails{
-        activated_at: activated_at || DateTime.utc_now(),
-        estimated_duration: estimated_duration,
-        details: details
-      }
-  end
-
-  def db_detour_to_detour(
-        %{
-          status: :active,
-          activated_at: activated_at,
-          state: %{"context" => %{"selectedDuration" => estimated_duration}}
-        } = db_detour
-      ) do
-    details = DetailedDetour.from(:active, db_detour)
-
-    if activated_at == nil || estimated_duration == nil do
-      Logger.warning(
-        "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)} estimated_duration=#{inspect(estimated_duration)}"
-      )
-    end
-
-    details &&
-      %ActivatedDetourDetails{
-        activated_at: activated_at || DateTime.utc_now(),
-        estimated_duration: estimated_duration || "Until further notice",
-        details: details
-      }
-  end
-
-  def db_detour_to_detour(
-        %{
-          status: :active,
-          activated_at: activated_at,
-          state: state
-        } = db_detour
-      ) do
-    estimated_duration = state["context"]["selectedDuration"]
-    details = DetailedDetour.from(:active, db_detour)
-
-    if activated_at == nil || estimated_duration == nil do
-      Logger.warning(
-        "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)} estimated_duration=#{inspect(estimated_duration)}"
-      )
-    end
-
-    details &&
-      %ActivatedDetourDetails{
-        activated_at: activated_at || DateTime.utc_now(),
-        estimated_duration: estimated_duration || "Until further notice",
-        details: details
-      }
-  end
-
+  @spec db_detour_to_detour(Detour.t()) :: SimpleDetour.t() | nil
   def db_detour_to_detour(%{status: status} = db_detour) do
-    DetailedDetour.from(status, db_detour)
+    SimpleDetour.from(status, db_detour)
   end
 
   @spec get_detour_route_id(detour :: map()) :: String.t()
@@ -401,7 +329,7 @@ defmodule Skate.Detours.Detours do
        ) do
     Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
-    %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+    %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
     Skate.Detours.NotificationScheduler.detour_activated(detour, expires_at)
@@ -429,7 +357,7 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        )
        when previous_duration != selected_duration do
-    %ActivatedDetourDetails{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+    %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
     Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)

@@ -607,7 +607,6 @@ describe("LadderPage", () => {
       "1": simpleDetourFactory.build({
         id: 1,
         route: "1",
-        viaVariant: "C",
         direction: "Inbound",
         intersection: "A St & B Av",
       }),
@@ -639,7 +638,7 @@ describe("LadderPage", () => {
     )
 
     await userEvent.click(
-      screen.getByRole("button", { name: /1_C Inbound - A St/ })
+      screen.getByRole("button", { name: /1 Inbound - A St/ })
     )
 
     expect(screen.getByRole("heading", { name: "Active Detour" })).toBeVisible()

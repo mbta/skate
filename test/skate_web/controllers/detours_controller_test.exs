@@ -60,7 +60,21 @@ defmodule SkateWeb.DetoursControllerTest do
     test "updates detour in database if detour uuid provided", %{conn: conn} do
       conn =
         put(conn, "/api/detours/update_snapshot", %{
-          "snapshot" => %{"context" => %{"uuid" => 8}}
+          "snapshot" => %{
+            "context" => %{
+              "nearestIntersection" => "Street A & Avenue B",
+              "route" => %{
+                "directionNames" => %{"0" => "Outbound", "1" => "Inbound"},
+                "name" => "23"
+              },
+              "routePattern" => %{
+                "directionId" => 0,
+                "headsign" => "Headsign",
+                "id" => "23-1-0"
+              },
+              "uuid" => 8
+            }
+          }
         })
 
       assert %{"data" => 8} = json_response(conn, 200)
@@ -489,16 +503,13 @@ defmodule SkateWeb.DetoursControllerTest do
                "data" => %{
                  "active" => [
                    %{
-                     "details" => %{
-                       "author_id" => ^author_id,
-                       "direction" => "Outbound",
-                       "intersection" => "Street A & Avenue B",
-                       "name" => "Headsign",
-                       "route" => "23",
-                       "via_variant" => "1",
-                       "status" => "active",
-                       "updated_at" => _
-                     }
+                     "author_id" => ^author_id,
+                     "direction" => "Outbound",
+                     "intersection" => "Street A & Avenue B",
+                     "name" => "Headsign",
+                     "route" => "23",
+                     "status" => "active",
+                     "updated_at" => _
                    }
                  ],
                  "draft" => [
@@ -508,7 +519,6 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street Y & Avenue Z",
                      "name" => "Headsign",
                      "route" => "75",
-                     "via_variant" => "2",
                      "status" => "draft",
                      "updated_at" => _
                    }
@@ -520,7 +530,6 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street C & Avenue D",
                      "name" => "Headsign",
                      "route" => "47",
-                     "via_variant" => "A",
                      "status" => "past",
                      "updated_at" => _
                    }
@@ -550,7 +559,7 @@ defmodule SkateWeb.DetoursControllerTest do
       assert %{
                "data" => %{
                  "active" => [
-                   %{"details" => %{"author_id" => ^current_user_id}}
+                   %{"author_id" => ^current_user_id}
                  ],
                  "draft" => [
                    %{
@@ -559,7 +568,6 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street Y & Avenue Z",
                      "name" => "Headsign",
                      "route" => "75",
-                     "via_variant" => "2",
                      "status" => "draft",
                      "updated_at" => _
                    }
@@ -571,100 +579,6 @@ defmodule SkateWeb.DetoursControllerTest do
                      "intersection" => "Street C & Avenue D",
                      "name" => "Headsign",
                      "route" => "47",
-                     "via_variant" => "A",
-                     "status" => "past",
-                     "updated_at" => _
-                   }
-                 ]
-               }
-             } = json_response(conn, 200)
-    end
-
-    @tag :authenticated
-    test "detours that have an old schema are omitted in the returned lists", %{conn: conn} do
-      author_id = populate_db_and_get_user(conn)
-
-      # Insert a detour with no headsign
-      put(conn, "/api/detours/update_snapshot", %{
-        "snapshot" => %{
-          "context" => %{
-            "route" => %{
-              "id" => "23",
-              "name" => "23",
-              "directionNames" => %{
-                "0" => "Outbound",
-                "1" => "Inbound"
-              }
-            },
-            "routePattern" => %{
-              "directionId" => 0
-            },
-            "nearestIntersection" => "Street A & Avenue B",
-            "uuid" => 4
-          },
-          "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
-        }
-      })
-
-      # Insert a detour with no directionNames
-      put(conn, "/api/detours/update_snapshot", %{
-        "snapshot" => %{
-          "context" => %{
-            "route" => %{
-              "id" => "23",
-              "name" => "23"
-            },
-            "routePattern" => %{
-              "headsign" => "Headsign",
-              "directionId" => 0,
-              "id" => "23-1-0"
-            },
-            "nearestIntersection" => "Street A & Avenue B",
-            "uuid" => 5
-          },
-          "value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}
-        }
-      })
-
-      conn = get(conn, ~p"/api/detours")
-
-      assert %{
-               "data" => %{
-                 "active" => [
-                   %{
-                     "activated_at" => "2024-01-01T13:00:00.000000Z",
-                     "details" => %{
-                       "author_id" => ^author_id,
-                       "direction" => "Outbound",
-                       "intersection" => "Street A & Avenue B",
-                       "name" => "Headsign",
-                       "route" => "23",
-                       "via_variant" => "1",
-                       "status" => "active",
-                       "updated_at" => _
-                     }
-                   }
-                 ],
-                 "draft" => [
-                   %{
-                     "author_id" => ^author_id,
-                     "direction" => "Outbound",
-                     "intersection" => "Street Y & Avenue Z",
-                     "name" => "Headsign",
-                     "route" => "75",
-                     "via_variant" => "2",
-                     "status" => "draft",
-                     "updated_at" => _
-                   }
-                 ],
-                 "past" => [
-                   %{
-                     "author_id" => ^author_id,
-                     "direction" => "Inbound",
-                     "intersection" => "Street C & Avenue D",
-                     "name" => "Headsign",
-                     "route" => "47",
-                     "via_variant" => "A",
                      "status" => "past",
                      "updated_at" => _
                    }
