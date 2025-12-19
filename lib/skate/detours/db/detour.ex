@@ -25,6 +25,17 @@ defmodule Skate.Detours.Db.Detour do
 
     timestamps()
 
+    # -------------------------------------------------------
+    # Activated properties
+    field :estimated_duration, :string
+    field :reason, :string
+
+    # -------------------------------------------------------
+    # Map point properties
+    field :start_point, :map
+    field :end_point, :map
+    field :waypoints, {:array, :map}
+
     ## Detour virtual fields
     # -------------------------------------------------------
 
@@ -41,12 +52,6 @@ defmodule Skate.Detours.Db.Detour do
     # Default detour properties
     field :nearest_intersection, :string, virtual: true
 
-    # Activated properties
-    field :estimated_duration, :string
-    field :reason, :string
-
-    # -------------------------------------------------------
-
     has_many :detour_status_notifications, Notifications.Db.Detour
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
   end
@@ -58,6 +63,9 @@ defmodule Skate.Detours.Db.Detour do
     |> add_status()
     |> add_estimated_duration()
     |> add_reason()
+    |> add_start_point()
+    |> add_end_point()
+    |> add_waypoints()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
   end
@@ -118,6 +126,36 @@ defmodule Skate.Detours.Db.Detour do
     case {fetch_field(changeset, :reason), fetch_change(changeset, :state)} do
       {{:data, _}, {:ok, %{"context" => %{"selectedReason" => reason}}}} ->
         put_change(changeset, :reason, reason)
+
+      _ ->
+        changeset
+    end
+  end
+
+  defp add_start_point(changeset) do
+    case {fetch_field(changeset, :start_point), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"startPoint" => start_point}}}} ->
+        put_change(changeset, :start_point, start_point)
+
+      _ ->
+        changeset
+    end
+  end
+
+  defp add_end_point(changeset) do
+    case {fetch_field(changeset, :end_point), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"endPoint" => end_point}}}} ->
+        put_change(changeset, :end_point, end_point)
+
+      _ ->
+        changeset
+    end
+  end
+
+  defp add_waypoints(changeset) do
+    case {fetch_field(changeset, :waypoints), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"waypoints" => waypoints}}}} ->
+        put_change(changeset, :waypoints, waypoints)
 
       _ ->
         changeset
