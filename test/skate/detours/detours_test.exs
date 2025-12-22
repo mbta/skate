@@ -157,6 +157,7 @@ defmodule Skate.Detours.DetoursTest do
       refute draft_detour.id == detour.id
       assert draft_detour.copied_from_id == detour.id
       assert draft_detour.estimated_duration == nil
+      assert draft_detour.reason == nil
     end
   end
 end

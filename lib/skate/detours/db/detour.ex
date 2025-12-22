@@ -43,7 +43,7 @@ defmodule Skate.Detours.Db.Detour do
 
     # Activated properties
     field :estimated_duration, :string
-    field :reason, :string, virtual: true
+    field :reason, :string
 
     # -------------------------------------------------------
 
@@ -57,6 +57,7 @@ defmodule Skate.Detours.Db.Detour do
     |> validate_activated_at()
     |> add_status()
     |> add_estimated_duration()
+    |> add_reason()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
   end
@@ -76,7 +77,7 @@ defmodule Skate.Detours.Db.Detour do
       })
 
     detour
-    |> change(%{activated_at: nil, estimated_duration: nil})
+    |> change(%{activated_at: nil, estimated_duration: nil, reason: nil})
     |> change(%{state: new_state})
   end
 
@@ -107,6 +108,16 @@ defmodule Skate.Detours.Db.Detour do
     case {fetch_field(changeset, :estimated_duration), fetch_change(changeset, :state)} do
       {{:data, _}, {:ok, %{"context" => %{"selectedDuration" => estimated_duration}}}} ->
         put_change(changeset, :estimated_duration, estimated_duration)
+
+      _ ->
+        changeset
+    end
+  end
+
+  defp add_reason(changeset) do
+    case {fetch_field(changeset, :reason), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"selectedReason" => reason}}}} ->
+        put_change(changeset, :reason, reason)
 
       _ ->
         changeset
@@ -169,7 +180,6 @@ defmodule Skate.Detours.Db.Detour do
           :headsign -> select_route_pattern_headsign(query)
           :direction -> select_direction(query)
           :nearest_intersection -> select_starting_intersection(query)
-          :reason -> select_reason(query)
           :direction_id -> select_direction_id(query)
           :coordinates -> select_coordinates(query)
           _unknown -> query
@@ -217,6 +227,7 @@ defmodule Skate.Detours.Db.Detour do
         :updated_at,
         :status,
         :estimated_duration,
+        :reason,
 
         # Virtual Fields
         :route_id,
@@ -291,12 +302,6 @@ defmodule Skate.Detours.Db.Detour do
     def select_starting_intersection(query \\ base(), key \\ :nearest_intersection) do
       select_merge(query, [detour: d], %{
         ^key => d.state["context"]["nearestIntersection"]
-      })
-    end
-
-    def select_reason(query \\ base(), key \\ :reason) do
-      select_merge(query, [detour: d], %{
-        ^key => d.state["context"]["selectedReason"]
       })
     end
 
