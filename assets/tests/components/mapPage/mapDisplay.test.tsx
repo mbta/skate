@@ -841,9 +841,31 @@ describe("<MapDisplay />", () => {
 
         const pullBackVehicle = vehicleFactory.build({
           endOfTripType: "pull_back",
+          latitude: 42.3601,
+          longitude: -71.0589,
+          routeId: "1",
+          routePatternId: "1-_-0",
+        })
+
+        const routePattern = routePatternFactory.build({
+          id: pullBackVehicle.routePatternId as string,
+          routeId: pullBackVehicle.routeId,
+          shape: shapeFactory.build({
+            points: [
+              { lat: 42.3601, lon: -71.0589 },
+              { lat: 42.3602, lon: -71.059 },
+            ],
+          }),
         })
 
         mockUsePullbackVehicles([pullBackVehicle])
+        mockUseVehicleForId([pullBackVehicle])
+        mockUseVehiclesForRouteMap({
+          [pullBackVehicle.routeId]: [pullBackVehicle],
+        })
+        jest.mocked(usePatternsByIdForRoute).mockReturnValue({
+          [routePattern.id]: routePattern,
+        })
 
         render(
           <MapDisplay

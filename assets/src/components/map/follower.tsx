@@ -35,19 +35,38 @@ export const Follower = ({
   shouldFollow = true,
 }: FollowerProps & InteractiveFollowState) => {
   const map = useMap()
-  const [currentLatLngs, setCurrentLatLngs] = useState<LatLng[]>(positions)
-
-  if (
-    !equalByElements(positions, currentLatLngs, (lhs, rhs) => lhs.equals(rhs))
-  ) {
-    setCurrentLatLngs(positions)
+  function isValidLatLng(p: LatLng | null | undefined): p is LatLng {
+    return (
+      !!p &&
+      typeof (p as any).lat === "number" &&
+      typeof (p as any).lng === "number" &&
+      Number.isFinite((p as any).lat) &&
+      Number.isFinite((p as any).lng)
+    )
   }
+
+  const validPositions = (positions || []).filter(isValidLatLng)
+
+  const [currentLatLngs, setCurrentLatLngs] = useState<LatLng[]>(validPositions)
+
+  // Sync state from validated positions inside an effect (avoid setState during render)
+  useEffect(() => {
+    if (
+      !equalByElements(validPositions, currentLatLngs, (lhs, rhs) =>
+        lhs.equals(rhs)
+      )
+    ) {
+      setCurrentLatLngs(validPositions)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(validPositions)])
 
   useEffect(() => {
     if (map !== null && shouldFollow) {
       if (isAnimatingFollowUpdate !== undefined) {
         isAnimatingFollowUpdate.current = true
       }
+      // always call onUpdate with validated positions
       onUpdate?.(map, currentLatLngs)
     }
   }, [map, shouldFollow, isAnimatingFollowUpdate, currentLatLngs, onUpdate])
@@ -155,12 +174,20 @@ export const autoCenter = (
   latLngs: LatLngExpression[],
   pickerContainerIsVisible: boolean
 ): void => {
-  if (latLngs.length === 0) {
+  const validLatLngs = latLngs.filter((latLng) => {
+    if (Array.isArray(latLng)) {
+      return !isNaN(latLng[0]) && !isNaN(latLng[1])
+    }
+    const ll = latLng as LatLng
+    return !isNaN(ll.lat) && !isNaN(ll.lng)
+  })
+
+  if (validLatLngs.length === 0) {
     map.setView(defaultCenter, 13, { animate: false })
-  } else if (latLngs.length === 1) {
-    map.setView(latLngs[0], 16)
-  } else if (latLngs.length > 1) {
-    map.fitBounds(Leaflet.latLngBounds(latLngs), {
+  } else if (validLatLngs.length === 1) {
+    map.setView(validLatLngs[0], 16)
+  } else if (validLatLngs.length > 1) {
+    map.fitBounds(Leaflet.latLngBounds(validLatLngs), {
       paddingBottomRight: [20, 50],
       paddingTopLeft: [pickerContainerIsVisible ? 220 : 20, 20],
     })
@@ -182,8 +209,13 @@ export const usePickerContainerFollowerFn = () => {
 export const drawerOffsetAutoCenter =
   (useCurrentZoom: boolean, topLeft: PointExpression): UpdateMapFromPointsFn =>
   (map, points) => {
-    if (points.length === 0) {
-      // If there are no points, blink to default center
+    // Filter out invalid points
+    const validPoints = points.filter(
+      (point) => !isNaN(point.lat) && !isNaN(point.lng)
+    )
+
+    if (validPoints.length === 0) {
+      // If there are no valid points, blink to default center
       map.setView(defaultCenter, 13, { animate: false })
       return
     }
@@ -191,7 +223,7 @@ export const drawerOffsetAutoCenter =
     const { width, height } = map.getContainer().getBoundingClientRect()
     const mapContainerBounds = new Bounds([0, 0], [width, height])
 
-    if (points.length === 1) {
+    if (validPoints.length === 1) {
       const currentZoom = map.getZoom()
       const targetZoom = useCurrentZoom && currentZoom >= 13 ? currentZoom : 16
       const innerBounds = new Bounds(
@@ -205,7 +237,7 @@ export const drawerOffsetAutoCenter =
 
       const targetPoint = map
           // Project the target point into screenspace for the target zoom
-          .project(points[0], targetZoom)
+          .project(validPoints[0], targetZoom)
           // Offset the target point in screenspace to move the center of the map
           // to apply the padding to the center
           .subtract(offset),
@@ -215,7 +247,7 @@ export const drawerOffsetAutoCenter =
       // Zoom/Pan center of map to offset location in worldspace
       map.setView(targetLatLng, targetZoom)
     } else {
-      const pointsBounds = Leaflet.latLngBounds(points)
+      const pointsBounds = Leaflet.latLngBounds(validPoints)
       map.fitBounds(pointsBounds, {
         paddingBottomRight: [50, 20],
         paddingTopLeft: topLeft,

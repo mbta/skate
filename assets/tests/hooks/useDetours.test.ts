@@ -1,6 +1,7 @@
 import { describe, expect, test } from "@jest/globals"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
-import { act, renderHook } from "@testing-library/react"
+import { renderHook } from "@testing-library/react"
+import { act } from "react"
 import {
   simpleActiveDetourDataFactory,
   simpleDetourDataFactory,

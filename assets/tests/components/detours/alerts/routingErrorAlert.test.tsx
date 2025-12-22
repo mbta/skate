@@ -1,7 +1,7 @@
 import { describe, test, expect } from "@jest/globals"
 import React from "react"
 import "@testing-library/jest-dom/jest-globals"
-import { render, waitForElementToBeRemoved } from "@testing-library/react"
+import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { closeButton } from "../../../testHelpers/selectors/components/closeButton"
 import RoutingErrorAlert from "../../../../src/components/detours/alerts/routingErrorAlert"
@@ -9,11 +9,12 @@ import RoutingErrorAlert from "../../../../src/components/detours/alerts/routing
 describe("routeErrorAlert", () => {
   test("clicking close button closes the alert", async () => {
     render(<RoutingErrorAlert />)
+    const button = closeButton.get()
 
-    expect(closeButton.get()).toBeVisible()
+    expect(button).toBeVisible()
 
-    await userEvent.click(closeButton.get())
+    await userEvent.click(button)
 
-    await waitForElementToBeRemoved(() => closeButton.get())
+    expect(button).not.toBeInTheDocument()
   })
 })

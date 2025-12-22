@@ -1,4 +1,4 @@
-import React from "react"
+import React, { act } from "react"
 import {
   DiversionPage as DiversionPageDefault,
   DiversionPageProps,
@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
-import { act, fireEvent, render, within } from "@testing-library/react"
+import { fireEvent, render, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {
   activateDetourButton,
@@ -59,6 +59,7 @@ const diversionPageOnActiveDetourScreen = async (
   props?: Partial<DiversionPageProps>
 ) => {
   const { container } = render(<DiversionPage {...props} />)
+  const user = userEvent.setup({ delay: 100 })
 
   act(() => {
     fireEvent.click(originalRouteShape.get(container))
@@ -66,15 +67,15 @@ const diversionPageOnActiveDetourScreen = async (
   act(() => {
     fireEvent.click(originalRouteShape.get(container))
   })
-  await userEvent.click(reviewDetourButton.get())
-  await userEvent.click(activateDetourButton.get())
-  await userEvent.click(threeHoursRadio.get())
-  await userEvent.click(nextButton.get())
-  await userEvent.click(constructionRadio.get())
-  await userEvent.click(nextButton.get())
-  await userEvent.click(activateButton.get())
+  await user.click(reviewDetourButton.get())
+  await user.click(activateDetourButton.get())
+  await user.click(threeHoursRadio.get())
+  await user.click(nextButton.get())
+  await user.click(constructionRadio.get())
+  await user.click(nextButton.get())
+  await user.click(activateButton.get())
 
-  return { container }
+  return { container, user }
 }
 
 const nextButton = byRole("button", { name: "Next" })
@@ -93,25 +94,25 @@ const cancelButton = byRole("button", { name: "Cancel" })
 
 describe("DiversionPage deactivate workflow", () => {
   test("clicking the 'Return to regular route' button keeps existing headers on the screen", async () => {
-    await diversionPageOnActiveDetourScreen()
+    const { user } = await diversionPageOnActiveDetourScreen()
 
-    await userEvent.click(regularRouteButton.get())
+    await user.click(regularRouteButton.get())
     expect(activeDetourHeading.get()).toBeVisible()
 
     expect(pastDetourHeading.query()).not.toBeInTheDocument()
   })
 
   test("clicking the 'Return to regular route' button opens the deactivate modal", async () => {
-    await diversionPageOnActiveDetourScreen()
+    const { user } = await diversionPageOnActiveDetourScreen()
 
-    await userEvent.click(regularRouteButton.get())
+    await user.click(regularRouteButton.get())
     expect(returnModalHeading.get()).toBeVisible()
   })
 
   test("clicking the 'Return to regular route' button from the the deactivate modal deactivates the detour", async () => {
-    await diversionPageOnActiveDetourScreen()
+    const { user } = await diversionPageOnActiveDetourScreen()
 
-    await userEvent.click(regularRouteButton.get())
+    await user.click(regularRouteButton.get())
 
     // We need to query this button in a different way from other
     // buttons because it's not the only button with the label "Return
@@ -122,17 +123,17 @@ describe("DiversionPage deactivate workflow", () => {
     const confirmButton = within(modal!).getByRole("button", {
       name: "Return to regular route",
     })
-    await userEvent.click(confirmButton)
+    await user.click(confirmButton)
 
     expect(activeDetourHeading.query()).not.toBeInTheDocument()
     expect(pastDetourHeading.get()).toBeVisible()
   })
 
   test("clicking the 'Cancel' button from the the deactivate modal closes the modal", async () => {
-    await diversionPageOnActiveDetourScreen()
+    const { user } = await diversionPageOnActiveDetourScreen()
 
-    await userEvent.click(regularRouteButton.get())
-    await userEvent.click(cancelButton.get())
+    await user.click(regularRouteButton.get())
+    await user.click(cancelButton.get())
 
     expect(activeDetourHeading.get()).toBeVisible()
     expect(pastDetourHeading.query()).not.toBeInTheDocument()

@@ -8,7 +8,7 @@ import {
 } from "../../src/api"
 import { renderHook, waitFor } from "@testing-library/react"
 import { useDetour } from "../../src/hooks/useDetour"
-import { act } from "react-dom/test-utils"
+import { act } from "react"
 import { detourShapeFactory } from "../factories/detourShapeFactory"
 import { ShapePoint } from "../../src/schedule"
 import { shapePointFactory } from "../factories/shapePointFactory"

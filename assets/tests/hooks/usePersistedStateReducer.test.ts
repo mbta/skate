@@ -6,7 +6,8 @@ import {
   beforeEach,
   afterAll,
 } from "@jest/globals"
-import { act, renderHook } from "@testing-library/react"
+import { renderHook } from "@testing-library/react"
+import { act } from "react"
 import { putUserSetting, putRouteTabs } from "../../src/api"
 import appData from "../../src/appData"
 import usePersistedStateReducer, {
