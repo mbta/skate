@@ -169,7 +169,7 @@ exports[`renders 1`] = `
               >
                 <li>
                   <a
-                    class="c-left-nav__link support-link"
+                    class="c-left-nav__link"
                     href="https://form.asana.com/?k=Prmofhi4iFYNYtsv7_pDWg&d=15492006741476"
                     rel="noopener noreferrer"
                     target="_blank"

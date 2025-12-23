@@ -166,7 +166,7 @@ const LeftNav = ({
           <ul className="c-left-nav__links">
             <li>
               <a
-                className="c-left-nav__link support-link"
+                className="c-left-nav__link"
                 href={supportLinkUrl}
                 target="_blank"
                 title="Report an Issue"
