@@ -254,7 +254,6 @@ const LeftNav = ({
                 className="c-left-nav__link"
                 onClick={() => setCollapsed(!collapsed)}
                 title={collapsed ? "Expand" : "Collapse"}
-                disabled={true}
               >
                 <span>
                   {collapsed ? (
