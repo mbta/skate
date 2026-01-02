@@ -6,15 +6,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-
   border-right: 1px solid $color-gray-300;
-
-  .c-left-nav__icon {
-    height: 1.25rem;
-    width: 1.25rem;
-    flex-shrink: 0;
-    padding-right: 0.75rem;
-  }
 
   @media not (prefers-reduced-motion: reduce) {
     transition: all 0.3s;
@@ -22,7 +14,15 @@
 }
 
 .c-left-nav--collapsed {
-  width: 4.25rem;
+  width: 5.25rem;
+
+  .c-left-nav__link {
+    gap: 1.25rem;
+  }
+
+  .c-left-nav__link:not(.c-left-nav__view) {
+    padding-left: 1.25rem;
+  }
 }
 
 .c-left-nav__modes-and-views {
@@ -33,7 +33,7 @@
   flex-grow: 1;
   box-sizing: border-box;
   width: 100%;
-
+  gap: 16px;
   background-color: tokens.$gray-50;
 
   padding: 1rem 0.875rem;
@@ -64,22 +64,32 @@
   width: calc(100% + 1px);
   margin: 0;
 
+  .c-left-nav__submenu {
+    border-left: 1px solid tokens.$gray-300;
+    padding-left: 1rem;
+  }
+
+  .c-left-nav__fill {
+    stroke: none;
+  }
+
   :not(:last-child) {
-    padding-bottom: 0.625rem;
+    margin-bottom: 16px;
   }
 }
 
 .c-left-nav__link {
-  @include button-icon(1.25rem);
+  @include button-icon(1rem);
   display: flex;
   align-items: center;
   box-sizing: border-box;
   width: 100%;
-  height: 2.5rem;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-  font-weight: 400;
-  @include font-body;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-m);
+  line-height: 150%;
+  gap: 8px;
   background-color: tokens.$eggplant-50;
   color: tokens.$eggplant-500;
   text-decoration: none;
@@ -90,7 +100,6 @@
   &:hover {
     background-color: tokens.$eggplant-100;
     color: tokens.$eggplant-600;
-    font-weight: 500;
   }
 
   &.c-left-nav__link--active {
@@ -103,14 +112,18 @@
     outline: 2px solid tokens.$eggplant-400;
     border: 1px solid $white;
   }
+
+  @media not (prefers-reduced-motion: reduce) {
+    transition: all 0.3s;
+  }
 }
 
 .c-left-nav__view {
   background-color: $white;
+  font-weight: var(--font-weight-reg);
 
   &.c-left-nav__view--active {
     background-color: tokens.$eggplant-400;
-    font-weight: 500;
     color: $white;
 
     .c-left-nav__icon {
@@ -124,9 +137,8 @@
 
   &.c-left-nav__view--disabled {
     cursor: not-allowed;
-    background-color: $color-gray-300;
-    color: $color-gray-500;
-    font-weight: var(--font-weight-reg);
+    background-color: tokens.$gray-100;
+    color: tokens.$gray-700;
   }
 
   .c-left-nav__icon {

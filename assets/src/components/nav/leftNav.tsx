@@ -1,9 +1,18 @@
-import React, { useState, useContext } from "react"
+import React, { ComponentProps, useState, useContext } from "react"
 import { NavLink } from "react-router-dom"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import NotificationBellIcon from "../notificationBellIcon"
-import { LateIcon, SwingIcon, HamburgerIcon } from "../../helpers/icon"
+import {
+  LateIcon,
+  SwingIcon,
+  HamburgerIcon,
+  LadderIcon,
+  MapIcon,
+  SearchMapIcon,
+  SpeechBubbleIcon,
+} from "../../helpers/icon"
+import { DetourNavIcon } from "../../helpers/navIcons"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { togglePickerContainer } from "../../state"
 import NavMenu from "./navMenu"
@@ -11,11 +20,10 @@ import Tippy from "@tippyjs/react"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
-import { LinkData, getNavLinkData, supportLinkUrl } from "../../navLinkData"
+import { LinkData, supportLinkUrl } from "../../navLinkData"
 import {
   ChevronDoubleLeft,
   ChevronDoubleRight,
-  ExclamationDiamondFill,
   GearFill,
   QuestionFill,
 } from "../../helpers/bsIcons"
@@ -71,8 +79,6 @@ const LeftNav = ({
         ]
       : ["c-left-nav__icon", "c-left-nav__icon--notifications-view"]
 
-  const navLinkData = getNavLinkData()
-
   return (
     <div className={"c-left-nav" + (collapsed ? " c-left-nav--collapsed" : "")}>
       {toggleMobileMenu ? (
@@ -92,75 +98,114 @@ const LeftNav = ({
       ) : null}
       <div className="c-left-nav__modes-and-views">
         <ul className="c-left-nav__links">
-          {navLinkData.map((linkData) => (
-            <li key={linkData.title}>
-              <LeftNavLink linkData={linkData} />
-            </li>
-          ))}
           <li>
-            <hr />
-          </li>
-          {inTestGroup(TestGroups.LateView) || dispatcherFlag ? (
-            <li>
-              <ViewToggle
-                icon={
-                  <LateIcon className="c-left-nav__icon c-left-nav__icon--late-view" />
-                }
-                name="Late View"
-                viewIsOpen={openView === OpenView.Late}
-                toggleView={() => {
-                  tagManagerEvent("late_view_toggled")
-                  if (openView !== OpenView.Late) {
-                    // only fire event when opening
-                    fullStoryEvent("User opened Late View", {})
-                  }
-                  openLateView()
+            <LeftNavLink
+              linkData={{
+                title: "Route Ladders",
+                path: "/",
+                navIcon: LadderIcon,
+              }}
+            />
+            <ul className="c-left-nav__submenu">
+              <li>
+                <ViewToggle
+                  icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
+                  viewIsOpen={openView === OpenView.NotificationDrawer}
+                  toggleView={() => {
+                    openNotificationDrawer()
 
-                  if (closePickerOnViewOpen && pickerContainerIsVisible) {
-                    dispatch(togglePickerContainer())
+                    tagManagerEvent("notifications_opened")
+
+                    if (closePickerOnViewOpen && pickerContainerIsVisible) {
+                      dispatch(togglePickerContainer())
+                    }
+                  }}
+                  name="Notifications"
+                />
+              </li>
+              <li>
+                <ViewToggle
+                  icon={
+                    <SwingIcon className="c-left-nav__icon c-left-nav__icon--swings-view" />
                   }
+                  name="Swings View"
+                  viewIsOpen={openView === OpenView.Swings}
+                  toggleView={() => {
+                    if (openView !== OpenView.Swings) {
+                      // only fire event when opening
+                      fullStoryEvent("User opened Swings View", {})
+                    }
+
+                    tagManagerEvent("swings_view_toggled")
+                    openSwingsView()
+
+                    if (closePickerOnViewOpen && pickerContainerIsVisible) {
+                      dispatch(togglePickerContainer())
+                    }
+                  }}
+                />
+              </li>
+              {inTestGroup(TestGroups.LateView) || dispatcherFlag ? (
+                <li>
+                  <ViewToggle
+                    icon={
+                      <LateIcon className="c-left-nav__icon c-left-nav__icon--late-view" />
+                    }
+                    name="Late View"
+                    viewIsOpen={openView === OpenView.Late}
+                    toggleView={() => {
+                      tagManagerEvent("late_view_toggled")
+                      if (openView !== OpenView.Late) {
+                        // only fire event when opening
+                        fullStoryEvent("User opened Late View", {})
+                      }
+                      openLateView()
+
+                      if (closePickerOnViewOpen && pickerContainerIsVisible) {
+                        dispatch(togglePickerContainer())
+                      }
+                    }}
+                  />
+                </li>
+              ) : null}
+            </ul>
+          </li>
+          <li>
+            <LeftNavLink
+              linkData={{
+                title: "Shuttle Map",
+                path: "/shuttle-map",
+                navIcon: MapIcon,
+              }}
+            />{" "}
+          </li>
+          <li>
+            <LeftNavLink
+              linkData={{
+                title: "Search Map",
+                path: "/map",
+                navIcon: SearchMapIcon,
+                onClick: () =>
+                  fullStoryEvent("Search Map nav entry clicked", {}),
+              }}
+            />
+          </li>
+          {inTestGroup(TestGroups.DetoursList) ? (
+            <li>
+              {" "}
+              <LeftNavLink
+                linkData={{
+                  title: "Detours",
+                  path: "/detours",
+                  navIcon: (props: ComponentProps<"span">) => (
+                    <span {...props}>
+                      <DetourNavIcon />
+                    </span>
+                  ),
                 }}
               />
             </li>
           ) : null}
-          <li>
-            <ViewToggle
-              icon={
-                <SwingIcon className="c-left-nav__icon c-left-nav__icon--swings-view" />
-              }
-              name="Swings View"
-              viewIsOpen={openView === OpenView.Swings}
-              toggleView={() => {
-                if (openView !== OpenView.Swings) {
-                  // only fire event when opening
-                  fullStoryEvent("User opened Swings View", {})
-                }
-
-                tagManagerEvent("swings_view_toggled")
-                openSwingsView()
-
-                if (closePickerOnViewOpen && pickerContainerIsVisible) {
-                  dispatch(togglePickerContainer())
-                }
-              }}
-            />
-          </li>
-          <li>
-            <ViewToggle
-              icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
-              viewIsOpen={openView === OpenView.NotificationDrawer}
-              toggleView={() => {
-                openNotificationDrawer()
-
-                tagManagerEvent("notifications_opened")
-
-                if (closePickerOnViewOpen && pickerContainerIsVisible) {
-                  dispatch(togglePickerContainer())
-                }
-              }}
-              name="Notifications"
-            />
-          </li>
         </ul>
         {toggleMobileMenu ? null : (
           <ul className="c-left-nav__links">
@@ -172,7 +217,7 @@ const LeftNav = ({
                 title="Report an Issue"
                 rel="noopener noreferrer"
               >
-                <ExclamationDiamondFill className="c-left-nav__icon" />
+                <SpeechBubbleIcon className="c-left-nav__icon c-left-nav__fill" />
                 Report an Issue
               </a>
             </li>
@@ -183,7 +228,9 @@ const LeftNav = ({
                 target="_blank"
                 href="/user-guide"
               >
-                <QuestionFill className="c-left-nav__icon" />
+                <span>
+                  <QuestionFill className="c-left-nav__icon c-left-nav__fill" />
+                </span>
                 About Skate
               </a>
             </li>
@@ -196,7 +243,9 @@ const LeftNav = ({
                 title="Settings"
                 to="/settings"
               >
-                <GearFill className="c-left-nav__icon" />
+                <span>
+                  <GearFill className="c-left-nav__icon c-left-nav__fill" />
+                </span>
                 Settings
               </NavLink>
             </li>
@@ -205,12 +254,15 @@ const LeftNav = ({
                 className="c-left-nav__link"
                 onClick={() => setCollapsed(!collapsed)}
                 title={collapsed ? "Expand" : "Collapse"}
+                disabled={true}
               >
-                {collapsed ? (
-                  <ChevronDoubleRight className="c-left-nav__icon" />
-                ) : (
-                  <ChevronDoubleLeft className="c-left-nav__icon" />
-                )}
+                <span>
+                  {collapsed ? (
+                    <ChevronDoubleRight className="c-left-nav__icon c-left-nav__fill" />
+                  ) : (
+                    <ChevronDoubleLeft className="c-left-nav__icon c-left-nav__fill" />
+                  )}
+                </span>
                 Collapse
               </button>
             </li>
