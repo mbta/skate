@@ -41,6 +41,63 @@ defmodule Concentrate.MergeTest do
       assert_receive :timeout, 500
     end
 
+    test "handles partial updates without replacing existing data" do
+      from = make_from()
+      {_, state, _} = init(initial_timeout: 100, timeout: 100)
+      assert_receive :timeout, 500
+      {:noreply, _, state} = handle_info(:timeout, state)
+
+      {_, state} = handle_subscribe(:producer, [], from, state)
+
+      # First, send a full update with two vehicles
+      vehicle_1 = VehiclePosition.new(id: "v1", latitude: 1.0, longitude: 1.0, last_updated: 1)
+      vehicle_2 = VehiclePosition.new(id: "v2", latitude: 2.0, longitude: 2.0, last_updated: 1)
+      {:noreply, [], state} = handle_events([[vehicle_1, vehicle_2]], from, state)
+
+      # Then send a partial update with one vehicle
+      vehicle_3 = VehiclePosition.new(id: "v3", latitude: 3.0, longitude: 3.0, last_updated: 2)
+      {:noreply, [], state} = handle_events([{:partial, [vehicle_3]}], from, state)
+
+      # Verify all three vehicles are present
+      {:noreply, [grouped], _state} = handle_info(:timeout, state)
+
+      vehicle_ids =
+        grouped
+        |> Enum.flat_map(fn {_tu, vps, _stus} -> vps end)
+        |> Enum.map(&VehiclePosition.id/1)
+        |> Enum.sort()
+
+      assert vehicle_ids == ["v1", "v2", "v3"]
+    end
+
+    test "partial updates can update existing items" do
+      from = make_from()
+      {_, state, _} = init(initial_timeout: 100, timeout: 100)
+      assert_receive :timeout, 500
+      {:noreply, _, state} = handle_info(:timeout, state)
+
+      {_, state} = handle_subscribe(:producer, [], from, state)
+
+      # First, send a full update with one vehicle
+      vehicle_1 = VehiclePosition.new(id: "v1", latitude: 1.0, longitude: 1.0, last_updated: 1)
+      {:noreply, [], state} = handle_events([[vehicle_1]], from, state)
+
+      # Then send a partial update that updates the same vehicle
+      vehicle_1_updated =
+        VehiclePosition.new(id: "v1", latitude: 10.0, longitude: 10.0, last_updated: 2)
+
+      {:noreply, [], state} = handle_events([{:partial, [vehicle_1_updated]}], from, state)
+
+      # Verify the vehicle was updated
+      {:noreply, [grouped], _state} = handle_info(:timeout, state)
+
+      vehicles = Enum.flat_map(grouped, fn {_tu, vps, _stus} -> vps end)
+
+      assert length(vehicles) == 1
+      [vehicle] = vehicles
+      assert VehiclePosition.latitude(vehicle) == 10.0
+    end
+
     test "when Logging debug messages, does not crash" do
       log_level = Logger.level()
 

@@ -22,15 +22,22 @@ defmodule Concentrate.Merge.Table do
     %{table | data: Map.delete(table.data, source_name)}
   end
 
-  def update(%{data: data} = table, source_name, items) do
-    item_list =
+  def partial_update(%{data: data} = table, source_name, items) do
+    new_item_list =
       Map.new(items, fn item ->
         module = Mergeable.impl_for!(item)
         key = {module, module.key(item)}
         {key, item}
       end)
 
-    %{table | data: %{data | source_name => item_list}}
+    data = Map.update(data, source_name, new_item_list, &Map.merge(&1, new_item_list))
+    %{table | data: data}
+  end
+
+  def update(table, source_name, items) do
+    table
+    |> remove(source_name)
+    |> partial_update(source_name, items)
   end
 
   def items(%{data: empty}) when empty == %{} do
