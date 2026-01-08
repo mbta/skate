@@ -62,13 +62,13 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
             <Nav.Item>
               <a
                 onClick={toggleMobileMenu}
-                title="Report an Issue"
+                title="Report Issue"
                 href={supportLinkUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="icon-link nav-link support-link"
               >
-                <BsIcon.ExclamationDiamondFill /> Report an Issue
+                <BsIcon.ExclamationDiamondFill /> Report Issue
               </a>
             </Nav.Item>
             <Nav.Item>
