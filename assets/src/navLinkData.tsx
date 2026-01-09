@@ -9,7 +9,7 @@ type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 export interface LinkData {
   title: string
   path: string
-  navIcon:
+  NavIcon:
     | React.JSXElementConstructor<HTMLElementProps>
     | ((props: NavIconProps) => React.JSX.Element)
   onClick?: () => void
@@ -18,10 +18,12 @@ export interface LinkData {
 
 export interface ButtonData {
   title: string
-  onClick: () => void
   NavIcon:
-    | React.JSXElementConstructor<HTMLElementProps>
-    | ((props: NavIconProps) => React.JSX.Element)
+  | React.JSXElementConstructor<HTMLElementProps>
+  | ((props: NavIconProps) => React.JSX.Element)
+  onClick: () => void
+  viewIsOpen?: boolean
+  disabled?: boolean
 }
 
 export const supportLinkUrl =

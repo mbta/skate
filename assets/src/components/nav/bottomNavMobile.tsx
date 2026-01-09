@@ -12,11 +12,7 @@ import { fullStoryEvent } from "../../helpers/fullStory"
 import { ButtonData, LinkData } from "../../navLinkData"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
-interface BottomNavLinkProps {
-  linkData: LinkData
-}
-
-const BottomNavLink = ({ linkData }: BottomNavLinkProps) => {
+const BottomNavLink = ({ title, path, onClick, NavIcon }: LinkData) => {
   return (
     <li>
       <NavLink
@@ -24,12 +20,12 @@ const BottomNavLink = ({ linkData }: BottomNavLinkProps) => {
           "c-bottom-nav-mobile__link" +
           (isActive ? " c-bottom-nav-mobile__link--active" : "")
         }
-        title={linkData.title}
-        to={linkData.path}
-        onClick={linkData.onClick}
+        title={title}
+        to={path}
+        onClick={onClick}
       >
-        <linkData.navIcon className="c-bottom-nav-mobile__icon" />
-        <span className="c-bottom-nav-mobile__text">{linkData.title}</span>
+        <NavIcon className="c-bottom-nav-mobile__icon" />
+        <span className="c-bottom-nav-mobile__text">{title}</span>
       </NavLink>
     </li>
   )
@@ -67,13 +63,7 @@ const BottomNavMobile: React.FC<Props> = ({
       }
     >
       <ul className="c-bottom-nav-mobile__links">
-        <BottomNavLink
-          linkData={{
-            title: "Routes",
-            path: "/",
-            navIcon: LadderIcon,
-          }}
-        />
+        <BottomNavLink title="Routes" path="/" NavIcon={LadderIcon} />
         <BottomNavButton
           title="Swings"
           onClick={() => {
@@ -81,34 +71,26 @@ const BottomNavMobile: React.FC<Props> = ({
             fullStoryEvent("User opened Swings View", {})
             openSwingsView()
           }}
-          NavIcon={() => <SwingIcon className="c-bottom-nav-mobile__icon c-bottom-nav-mobile__icon--swings-view"/>}
+          NavIcon={() => (
+            <SwingIcon className="c-bottom-nav-mobile__icon c-bottom-nav-mobile__icon--swings-view" />
+          )}
         />
+        <BottomNavLink title="Shuttle" path="/shuttle-map" NavIcon={MapIcon} />
         <BottomNavLink
-          linkData={{
-            title: "Shuttle",
-            path: "/shuttle-map",
-            navIcon: MapIcon,
-          }}
-        />
-        <BottomNavLink
-          linkData={{
-            title: "Search",
-            path: "/map",
-            navIcon: SearchMapIcon,
-            onClick: () => fullStoryEvent("Search Map nav entry clicked", {}),
-          }}
+          title="Search"
+          path="/map"
+          NavIcon={SearchMapIcon}
+          onClick={() => fullStoryEvent("Search Map nav entry clicked", {})}
         />
         {inTestGroup(TestGroups.DetoursList) && (
           <BottomNavLink
-            linkData={{
-              title: "Detours",
-              path: "/detours",
-              navIcon: (props: ComponentProps<"span">) => (
-                <span {...props}>
-                  <DetourNavIcon />
-                </span>
-              ),
-            }}
+            title="Detours"
+            path="/detours"
+            NavIcon={(props: ComponentProps<"span">) => (
+              <span {...props}>
+                <DetourNavIcon />
+              </span>
+            )}
           />
         )}
       </ul>

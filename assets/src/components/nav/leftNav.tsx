@@ -18,7 +18,7 @@ import Tippy from "@tippyjs/react"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
 import { usePanelStateFromStateDispatchContext } from "../../hooks/usePanelState"
-import { LinkData, supportLinkUrl } from "../../navLinkData"
+import { ButtonData, LinkData, supportLinkUrl } from "../../navLinkData"
 import {
   ChevronDoubleLeft,
   ChevronDoubleRight,
@@ -27,21 +27,22 @@ import {
 } from "../../helpers/bsIcons"
 import isDispatcher from "../../userIsDispatcher"
 
-interface LeftNavLinkProps {
-  linkData: LinkData
-}
-
-const LeftNavLink = ({ linkData }: LeftNavLinkProps): JSX.Element => (
+const LeftNavLink = ({
+  title,
+  path,
+  NavIcon,
+  onClick,
+}: LinkData): JSX.Element => (
   <NavLink
     className={({ isActive }) =>
       "c-left-nav__link" + (isActive ? " c-left-nav__link--active" : "")
     }
-    title={linkData.title}
-    to={linkData.path}
-    onClick={linkData.onClick}
+    title={title}
+    to={path}
+    onClick={onClick}
   >
-    <linkData.navIcon className="c-left-nav__icon" />
-    {linkData.title}
+    <NavIcon className="c-left-nav__icon" />
+    {title}
   </NavLink>
 )
 
@@ -79,19 +80,15 @@ const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
       <div className="c-left-nav__modes-and-views">
         <ul className="c-left-nav__links">
           <li>
-            <LeftNavLink
-              linkData={{
-                title: "Route Ladders",
-                path: "/",
-                navIcon: LadderIcon,
-              }}
-            />
+            <LeftNavLink title="Route Ladders" path="/" NavIcon={LadderIcon} />
             <ul className="c-left-nav__submenu">
               <li>
                 <ViewToggle
-                  icon={<NotificationBellIcon extraClasses={bellIconClasses} />}
+                  NavIcon={() => (
+                    <NotificationBellIcon extraClasses={bellIconClasses} />
+                  )}
                   viewIsOpen={openView === OpenView.NotificationDrawer}
-                  toggleView={() => {
+                  onClick={() => {
                     openNotificationDrawer()
 
                     tagManagerEvent("notifications_opened")
@@ -100,17 +97,17 @@ const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
                       dispatch(togglePickerContainer())
                     }
                   }}
-                  name="Notifications"
+                  title="Notifications"
                 />
               </li>
               <li>
                 <ViewToggle
-                  icon={
+                  NavIcon={() => (
                     <SwingIcon className="c-left-nav__icon c-left-nav__icon--swings-view" />
-                  }
-                  name="Swings View"
+                  )}
+                  title="Swings View"
                   viewIsOpen={openView === OpenView.Swings}
-                  toggleView={() => {
+                  onClick={() => {
                     if (openView !== OpenView.Swings) {
                       // only fire event when opening
                       fullStoryEvent("User opened Swings View", {})
@@ -128,12 +125,12 @@ const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
               {inTestGroup(TestGroups.LateView) || dispatcherFlag ? (
                 <li>
                   <ViewToggle
-                    icon={
+                    NavIcon={() => (
                       <LateIcon className="c-left-nav__icon c-left-nav__icon--late-view" />
-                    }
-                    name="Late View"
+                    )}
+                    title="Late View"
                     viewIsOpen={openView === OpenView.Late}
-                    toggleView={() => {
+                    onClick={() => {
                       tagManagerEvent("late_view_toggled")
                       if (openView !== OpenView.Late) {
                         // only fire event when opening
@@ -152,37 +149,29 @@ const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
           </li>
           <li>
             <LeftNavLink
-              linkData={{
-                title: "Shuttle Map",
-                path: "/shuttle-map",
-                navIcon: MapIcon,
-              }}
-            />{" "}
+              title="Shuttle Map"
+              path="/shuttle-map"
+              NavIcon={MapIcon}
+            />
           </li>
           <li>
             <LeftNavLink
-              linkData={{
-                title: "Search Map",
-                path: "/map",
-                navIcon: SearchMapIcon,
-                onClick: () =>
-                  fullStoryEvent("Search Map nav entry clicked", {}),
-              }}
+              title="Search Map"
+              path="/map"
+              NavIcon={SearchMapIcon}
+              onClick={() => fullStoryEvent("Search Map nav entry clicked", {})}
             />
           </li>
           {inTestGroup(TestGroups.DetoursList) ? (
             <li>
-              {" "}
               <LeftNavLink
-                linkData={{
-                  title: "Detours",
-                  path: "/detours",
-                  navIcon: (props: ComponentProps<"span">) => (
-                    <span {...props}>
-                      <DetourNavIcon />
-                    </span>
-                  ),
-                }}
+                title="Detours"
+                path="/detours"
+                NavIcon={(props: ComponentProps<"span">) => (
+                  <span {...props}>
+                    <DetourNavIcon />
+                  </span>
+                )}
               />
             </li>
           ) : null}
@@ -215,19 +204,15 @@ const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
             </a>
           </li>
           <li>
-            <NavLink
-              className={({ isActive }) =>
-                "c-left-nav__link" +
-                (isActive ? " c-left-nav__link--active" : "")
-              }
+            <LeftNavLink
               title="Settings"
-              to="/settings"
-            >
-              <span>
-                <GearFill className="c-left-nav__icon c-left-nav__fill" />
-              </span>
-              Settings
-            </NavLink>
+              path="/settings"
+              NavIcon={(props: ComponentProps<"span">) => (
+                <span {...props}>
+                  <GearFill className="c-left-nav__icon c-left-nav__fill" />
+                </span>
+              )}
+            />
           </li>
           {deviceType !== "mobile" && (
             <li>
@@ -254,18 +239,12 @@ const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
 }
 
 const ViewToggle = ({
-  icon,
-  name,
+  NavIcon,
+  title,
   viewIsOpen,
-  toggleView,
+  onClick,
   disabled,
-}: {
-  icon: JSX.Element
-  name: string
-  viewIsOpen: boolean
-  toggleView: () => void
-  disabled?: boolean
-}): JSX.Element => {
+}: ButtonData): JSX.Element => {
   const buttonContent = (
     <button
       className={
@@ -273,12 +252,12 @@ const ViewToggle = ({
         (viewIsOpen ? " c-left-nav__view--active" : "") +
         (disabled ? " c-left-nav__view--disabled" : "")
       }
-      onClick={toggleView}
-      title={name}
+      onClick={onClick}
+      title={title}
       aria-disabled={disabled}
     >
-      {icon}
-      {name}
+      <NavIcon className="c-left-nav__icon" />
+      {title}
     </button>
   )
 
