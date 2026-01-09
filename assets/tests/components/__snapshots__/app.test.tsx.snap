@@ -175,14 +175,14 @@ exports[`App renders 1`] = `
                     href="https://form.asana.com/?k=Prmofhi4iFYNYtsv7_pDWg&d=15492006741476"
                     rel="noopener noreferrer"
                     target="_blank"
-                    title="Report an Issue"
+                    title="Report Issue"
                   >
                     <span
                       class="c-left-nav__icon c-left-nav__fill"
                     >
                       <svg />
                     </span>
-                    Report an Issue
+                    Report Issue
                   </a>
                 </li>
                 <li>
