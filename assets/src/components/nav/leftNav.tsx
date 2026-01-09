@@ -6,7 +6,6 @@ import NotificationBellIcon from "../notificationBellIcon"
 import {
   LateIcon,
   SwingIcon,
-  HamburgerIcon,
   LadderIcon,
   MapIcon,
   SearchMapIcon,
@@ -15,7 +14,6 @@ import {
 import { DetourNavIcon } from "../../helpers/navIcons"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { togglePickerContainer } from "../../state"
-import NavMenu from "./navMenu"
 import Tippy from "@tippyjs/react"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { OpenView } from "../../state/pagePanelState"
@@ -27,6 +25,7 @@ import {
   GearFill,
   QuestionFill,
 } from "../../helpers/bsIcons"
+import isDispatcher from "../../userIsDispatcher"
 
 interface LeftNavLinkProps {
   linkData: LinkData
@@ -47,19 +46,12 @@ const LeftNavLink = ({ linkData }: LeftNavLinkProps): JSX.Element => (
 )
 
 interface Props {
-  toggleMobileMenu?: () => void
-  defaultToCollapsed: boolean
-  dispatcherFlag: boolean
+  deviceType: string
   closePickerOnViewOpen?: boolean
 }
 
-const LeftNav = ({
-  toggleMobileMenu,
-  defaultToCollapsed,
-  dispatcherFlag,
-  closePickerOnViewOpen,
-}: Props): JSX.Element => {
-  const [{ mobileMenuIsOpen, pickerContainerIsVisible }, dispatch] =
+const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
+  const [{ pickerContainerIsVisible }, dispatch] =
     useContext(StateDispatchContext)
   const {
     currentView: { openView },
@@ -67,8 +59,11 @@ const LeftNav = ({
     openSwingsView,
     openNotificationDrawer,
   } = usePanelStateFromStateDispatchContext()
+  const dispatcherFlag = isDispatcher()
 
-  const [collapsed, setCollapsed] = useState<boolean>(defaultToCollapsed)
+  const [collapsed, setCollapsed] = useState<boolean>(
+    deviceType === "mobile_landscape_tablet_portrait" || deviceType === "tablet"
+  )
 
   const bellIconClasses =
     openView == OpenView.NotificationDrawer
@@ -81,21 +76,6 @@ const LeftNav = ({
 
   return (
     <div className={"c-left-nav" + (collapsed ? " c-left-nav--collapsed" : "")}>
-      {toggleMobileMenu ? (
-        <NavMenu
-          mobileMenuIsOpen={mobileMenuIsOpen}
-          toggleMobileMenu={toggleMobileMenu}
-        />
-      ) : null}
-      {toggleMobileMenu ? (
-        <button
-          className="c-left-nav__menu-button"
-          onClick={toggleMobileMenu}
-          title="Menu"
-        >
-          <HamburgerIcon className="c-top-nav-mobile__icon" />
-        </button>
-      ) : null}
       <div className="c-left-nav__modes-and-views">
         <ul className="c-left-nav__links">
           <li>
@@ -207,48 +187,49 @@ const LeftNav = ({
             </li>
           ) : null}
         </ul>
-        {toggleMobileMenu ? null : (
-          <ul className="c-left-nav__links">
-            <li>
-              <a
-                className="c-left-nav__link"
-                href={supportLinkUrl}
-                target="_blank"
-                title="Report Issue"
-                rel="noopener noreferrer"
-              >
-                <SpeechBubbleIcon className="c-left-nav__icon c-left-nav__fill" />
-                Report Issue
-              </a>
-            </li>
-            <li>
-              <a
-                className="c-left-nav__link"
-                title="About Skate"
-                target="_blank"
-                href="/user-guide"
-              >
-                <span>
-                  <QuestionFill className="c-left-nav__icon c-left-nav__fill" />
-                </span>
-                About Skate
-              </a>
-            </li>
-            <li>
-              <NavLink
-                className={({ isActive }) =>
-                  "c-left-nav__link" +
-                  (isActive ? " c-left-nav__link--active" : "")
-                }
-                title="Settings"
-                to="/settings"
-              >
-                <span>
-                  <GearFill className="c-left-nav__icon c-left-nav__fill" />
-                </span>
-                Settings
-              </NavLink>
-            </li>
+        {deviceType === "mobile" && <hr className="w-100 my-0" />}
+        <ul className="c-left-nav__links">
+          <li>
+            <a
+              className="c-left-nav__link"
+              href={supportLinkUrl}
+              target="_blank"
+              title="Report an Issue"
+              rel="noopener noreferrer"
+            >
+              <SpeechBubbleIcon className="c-left-nav__icon c-left-nav__fill" />
+              Report an Issue
+            </a>
+          </li>
+          <li>
+            <a
+              className="c-left-nav__link"
+              title="About Skate"
+              target="_blank"
+              href="/user-guide"
+            >
+              <span>
+                <QuestionFill className="c-left-nav__icon c-left-nav__fill" />
+              </span>
+              About Skate
+            </a>
+          </li>
+          <li>
+            <NavLink
+              className={({ isActive }) =>
+                "c-left-nav__link" +
+                (isActive ? " c-left-nav__link--active" : "")
+              }
+              title="Settings"
+              to="/settings"
+            >
+              <span>
+                <GearFill className="c-left-nav__icon c-left-nav__fill" />
+              </span>
+              Settings
+            </NavLink>
+          </li>
+          {deviceType !== "mobile" && (
             <li>
               <button
                 className="c-left-nav__link"
@@ -265,8 +246,8 @@ const LeftNav = ({
                 Collapse
               </button>
             </li>
-          </ul>
-        )}
+          )}
+        </ul>
       </div>
     </div>
   )

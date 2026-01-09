@@ -33,17 +33,17 @@ export const getNavLinkData: () => LinkData[] = () => {
 
   const alwaysPresentItems: LinkData[] = [
     {
-      title: "Route Ladders",
+      title: "Routes",
       path: "/",
       navIcon: LadderIcon,
     },
     {
-      title: "Shuttle Map",
+      title: "Shuttle",
       path: "/shuttle-map",
       navIcon: MapIcon,
     },
     {
-      title: "Search Map",
+      title: "Search",
       path: "/map",
       navIcon: SearchMapIcon,
       onClick: () => fullStoryEvent("Search Map nav entry clicked", {}),

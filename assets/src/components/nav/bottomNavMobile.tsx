@@ -1,9 +1,16 @@
-import React from "react"
-import { SwingIcon } from "../../helpers/icon"
+import React, { ComponentProps } from "react"
+import {
+  LadderIcon,
+  MapIcon,
+  SearchMapIcon,
+  SwingIcon,
+} from "../../helpers/icon"
+import { DetourNavIcon } from "../../helpers/navIcons"
 import { NavLink } from "react-router-dom"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import { fullStoryEvent } from "../../helpers/fullStory"
-import { LinkData, getNavLinkData } from "../../navLinkData"
+import { LinkData } from "../../navLinkData"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 interface BottomNavLinkProps {
   linkData: LinkData
@@ -19,6 +26,7 @@ const BottomNavLink = ({ linkData }: BottomNavLinkProps) => (
     to={linkData.path}
   >
     <linkData.navIcon className="c-bottom-nav-mobile__icon" />
+    <span className="c-bottom-nav-mobile__text">{linkData.title}</span>
   </NavLink>
 )
 
@@ -31,8 +39,6 @@ const BottomNavMobile: React.FC<Props> = ({
   mobileMenuIsOpen,
   openSwingsView,
 }) => {
-  const navLinkData = getNavLinkData()
-
   return (
     <div
       data-testid="bottom-nav-mobile"
@@ -41,14 +47,15 @@ const BottomNavMobile: React.FC<Props> = ({
       }
     >
       <ul className="c-bottom-nav-mobile__links">
-        {navLinkData
-          .filter((linkData) => !linkData.hideOnMobile)
-          .map((linkData) => (
-            <li key={linkData.title}>
-              <BottomNavLink linkData={linkData} />
-            </li>
-          ))}
-
+        <li>
+          <BottomNavLink
+            linkData={{
+              title: "Routes",
+              path: "/",
+              navIcon: LadderIcon,
+            }}
+          />
+        </li>
         <li>
           <button
             className="c-bottom-nav-mobile__button"
@@ -60,8 +67,43 @@ const BottomNavMobile: React.FC<Props> = ({
             title="Swings View"
           >
             <SwingIcon className="c-bottom-nav-mobile__icon c-bottom-nav-mobile__icon--swings-view" />
+            <span className="c-bottom-nav-mobile__text">Swings</span>
           </button>
         </li>
+        <li>
+          <BottomNavLink
+            linkData={{
+              title: "Shuttle",
+              path: "/shuttle-map",
+              navIcon: MapIcon,
+            }}
+          />
+        </li>
+        <li>
+          <BottomNavLink
+            linkData={{
+              title: "Search",
+              path: "/map",
+              navIcon: SearchMapIcon,
+              onClick: () => fullStoryEvent("Search Map nav entry clicked", {}),
+            }}
+          />
+        </li>
+        {inTestGroup(TestGroups.DetoursList) && (
+          <li>
+            <BottomNavLink
+              linkData={{
+                title: "Detours",
+                path: "/detours",
+                navIcon: (props: ComponentProps<"span">) => (
+                  <span {...props}>
+                    <DetourNavIcon />
+                  </span>
+                ),
+              }}
+            />
+          </li>
+        )}
       </ul>
     </div>
   )

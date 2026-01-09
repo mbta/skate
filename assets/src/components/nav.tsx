@@ -1,5 +1,4 @@
 import React from "react"
-import appData from "../appData"
 import useScreenSize from "../hooks/useScreenSize"
 import LeftNav from "./nav/leftNav"
 import TopNav from "./nav/topNav"
@@ -41,29 +40,13 @@ const Nav: React.FC<Props> = ({ children }) => {
                 isViewOpen && deviceType === "mobile_landscape_tablet_portrait"
               }
             >
-              <LeftNav
-                defaultToCollapsed={
-                  deviceType === "mobile_landscape_tablet_portrait" ||
-                  deviceType === "tablet"
-                }
-                key={deviceType}
-                dispatcherFlag={readDispatcherFlag()}
-              />
+              <LeftNav deviceType={deviceType} />
             </div>
           </>
           <div className="l-nav__app-content">{children}</div>
         </div>
       )
   }
-}
-
-const readDispatcherFlag = (): boolean => {
-  const data = appData()
-  if (!data) {
-    return false
-  }
-
-  return data.dispatcherFlag === "true"
 }
 
 export default Nav
