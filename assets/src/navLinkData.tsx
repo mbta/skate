@@ -1,8 +1,8 @@
 import React, { ComponentProps } from "react"
 import { fullStoryEvent } from "./helpers/fullStory"
 import { LadderIcon, MapIcon, SearchMapIcon } from "./helpers/icon"
-import inTestGroup, { TestGroups } from "./userInTestGroup"
 import { DetourNavIcon, NavIconProps } from "./helpers/navIcons"
+import inTestGroup, { TestGroups } from "./userInTestGroup"
 
 type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 
@@ -16,41 +16,12 @@ export interface LinkData {
   hideOnMobile?: boolean
 }
 
-export const getNavLinkData: () => LinkData[] = () => {
-  const maybeDetours = inTestGroup(TestGroups.DetoursList)
-    ? [
-        {
-          title: "Detours",
-          path: "/detours",
-          navIcon: (props: ComponentProps<"span">) => (
-            <span {...props}>
-              <DetourNavIcon />
-            </span>
-          ),
-        },
-      ]
-    : []
-
-  const alwaysPresentItems: LinkData[] = [
-    {
-      title: "Routes",
-      path: "/",
-      navIcon: LadderIcon,
-    },
-    {
-      title: "Shuttle",
-      path: "/shuttle-map",
-      navIcon: MapIcon,
-    },
-    {
-      title: "Search",
-      path: "/map",
-      navIcon: SearchMapIcon,
-      onClick: () => fullStoryEvent("Search Map nav entry clicked", {}),
-    },
-  ]
-
-  return alwaysPresentItems.concat(maybeDetours)
+export interface ButtonData {
+  title: string
+  onClick: () => void
+  NavIcon:
+    | React.JSXElementConstructor<HTMLElementProps>
+    | ((props: NavIconProps) => React.JSX.Element)
 }
 
 export const supportLinkUrl =
