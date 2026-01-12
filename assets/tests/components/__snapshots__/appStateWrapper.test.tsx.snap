@@ -79,7 +79,8 @@ exports[`renders 1`] = `
             </ul>
           </div>
         </div>
-        <div
+        <nav
+          aria-label="Primary Navigation"
           class="l-nav__nav-bar l-nav__nav-bar--left"
         >
           <div
@@ -149,7 +150,6 @@ exports[`renders 1`] = `
                     </span>
                     Shuttle Map
                   </a>
-                   
                 </li>
                 <li>
                   <a
@@ -216,7 +216,9 @@ exports[`renders 1`] = `
                     href="/settings"
                     title="Settings"
                   >
-                    <span>
+                    <span
+                      class="c-left-nav__icon"
+                    >
                       <svg
                         aria-hidden="true"
                         class="c-left-nav__icon c-left-nav__fill"
@@ -265,7 +267,7 @@ exports[`renders 1`] = `
               </ul>
             </div>
           </div>
-        </div>
+        </nav>
         <div
           class="l-nav__app-content"
         >

@@ -52,8 +52,9 @@ const BottomNavMobile: React.FC<Props> = ({
   openSwingsView,
 }) => {
   return (
-    <div
+    <nav
       data-testid="bottom-nav-mobile"
+      aria-label="Bottom Navigation"
       className={
         "c-bottom-nav-mobile" + (mobileMenuIsOpen ? " blurred-mobile" : "")
       }
@@ -104,7 +105,7 @@ const BottomNavMobile: React.FC<Props> = ({
           </li>
         )}
       </ul>
-    </div>
+    </nav>
   )
 }
 

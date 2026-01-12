@@ -22,8 +22,9 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
     <>
       {/* ignore static element warning - the container should not appear interactive */}
       {/* eslint-disable-next-line */}
-      <div
+      <nav
         data-testid="nav-menu"
+        aria-label="Primary Naviation"
         className={joinClasses([
           "c-nav-menu",
           mobileMenuIsOpen ? "c-nav-menu--open" : "c-nav-menu--closed",
@@ -69,7 +70,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
           )}
           <LeftNav deviceType="mobile" />
         </div>
-      </div>
+      </nav>
       {mobileMenuIsOpen && (
         <div
           data-testid="nav-menu-backdrop"

@@ -34,14 +34,15 @@ const Nav: React.FC<Props> = ({ children }) => {
             >
               <TopNav />
             </div>
-            <div
+            <nav
+              aria-label="Primary Navigation"
               className="l-nav__nav-bar l-nav__nav-bar--left"
               hidden={
                 isViewOpen && deviceType === "mobile_landscape_tablet_portrait"
               }
             >
               <LeftNav deviceType={deviceType} />
-            </div>
+            </nav>
           </>
           <div className="l-nav__app-content">{children}</div>
         </div>

@@ -41,19 +41,18 @@ jest.mock("../../../src/hooks/usePanelState")
 
 beforeEach(() => {
   mockUsePanelState()
-  jest.mocked(getTestGroups).mockReturnValue([])
+  jest.mocked(getTestGroups).mockReturnValue([TestGroups.LateView])
 })
 
 describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
     const result = render(
       <BrowserRouter>
-        <LeftNav defaultToCollapsed={false} dispatcherFlag={true} />
+        <LeftNav deviceType="desktop" />
       </BrowserRouter>
     )
 
     expect(result.queryByText("Route Ladders")).not.toBeNull()
-    expect(result.queryByText("Late View")).not.toBeNull()
     expect(result.queryByText("Swings View")).not.toBeNull()
     expect(result.queryByText("Shuttle Map")).not.toBeNull()
     expect(result.queryByText("Search Map")).not.toBeNull()
@@ -65,7 +64,7 @@ describe("LeftNav", () => {
   test("text still appears in collapsed state", () => {
     const result = render(
       <BrowserRouter>
-        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+        <LeftNav deviceType="tablet" />
       </BrowserRouter>
     )
 
@@ -89,7 +88,7 @@ describe("LeftNav", () => {
   test("puts the --collapsed CSS class on a collapsed menu", () => {
     const { container } = render(
       <BrowserRouter>
-        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+        <LeftNav deviceType="tablet" />
       </BrowserRouter>
     )
 
@@ -103,7 +102,7 @@ describe("LeftNav", () => {
 
     render(
       <BrowserRouter>
-        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+        <LeftNav deviceType="tablet" />
       </BrowserRouter>
     )
 
@@ -120,7 +119,7 @@ describe("LeftNav", () => {
 
     render(
       <BrowserRouter>
-        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+        <LeftNav deviceType="tablet" />
       </BrowserRouter>
     )
 
@@ -132,36 +131,18 @@ describe("LeftNav", () => {
 
     render(
       <BrowserRouter>
-        <LeftNav defaultToCollapsed={true} dispatcherFlag={true} />
+        <LeftNav deviceType="tablet" />
       </BrowserRouter>
     )
 
     expect(screen.queryByTitle("Detours")).toBeNull()
   })
 
-  test("can toggle nav menu on tablet layout", async () => {
-    const toggleMobileMenu = jest.fn()
-    const user = userEvent.setup()
-    const result = render(
-      <BrowserRouter>
-        <LeftNav
-          toggleMobileMenu={toggleMobileMenu}
-          defaultToCollapsed={false}
-          dispatcherFlag={false}
-        />
-      </BrowserRouter>
-    )
-
-    await user.click(result.getByTitle("Menu"))
-
-    expect(toggleMobileMenu).toHaveBeenCalled()
-  })
-
   test("can toggle collapsed", async () => {
     const user = userEvent.setup()
     const result = render(
       <BrowserRouter>
-        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+        <LeftNav deviceType="desktop" />
       </BrowserRouter>
     )
 
@@ -178,10 +159,12 @@ describe("LeftNav", () => {
     )
   })
 
-  test("does not render late view option when dispatcher flag is false", () => {
+  test("does not render late view option when not in test group", () => {
+    jest.mocked(getTestGroups).mockReturnValue([])
+
     const result = render(
       <BrowserRouter>
-        <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+        <LeftNav deviceType="desktop" />
       </BrowserRouter>
     )
 
@@ -195,7 +178,7 @@ describe("LeftNav", () => {
     const result = render(
       <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
-          <LeftNav defaultToCollapsed={false} dispatcherFlag={true} />
+          <LeftNav deviceType="desktop" />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -216,16 +199,12 @@ describe("LeftNav", () => {
         dispatch={dispatch}
       >
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={true}
-            dispatcherFlag={true}
-            closePickerOnViewOpen={true}
-          />
+          <LeftNav deviceType="tablet" closePickerOnViewOpen={true} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
 
-    await user.click(result.getByTitle("Late View"))
+    await user.click(result.getByTitle("Swings View"))
 
     expect(dispatch).toHaveBeenCalledWith(togglePickerContainer())
   })
@@ -237,7 +216,7 @@ describe("LeftNav", () => {
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
-          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+          <LeftNav deviceType="desktop" />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -258,11 +237,7 @@ describe("LeftNav", () => {
         dispatch={dispatch}
       >
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={true}
-            dispatcherFlag={true}
-            closePickerOnViewOpen={true}
-          />
+          <LeftNav deviceType="tablet" closePickerOnViewOpen={true} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -275,18 +250,18 @@ describe("LeftNav", () => {
   test("view button displays selected state when that view is enabled", async () => {
     mockUsePanelState({
       currentView: pageViewFactory.build({
-        openView: OpenView.Late,
+        openView: OpenView.Swings,
       }),
     })
     const result = render(
       <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
         <BrowserRouter>
-          <LeftNav defaultToCollapsed={false} dispatcherFlag={true} />
+          <LeftNav deviceType="desktop" />
         </BrowserRouter>
       </StateDispatchProvider>
     )
 
-    expect(result.getByTitle("Late View")).toHaveClass(
+    expect(result.getByTitle("Swings View")).toHaveClass(
       "c-left-nav__view--active"
     )
   })
@@ -297,7 +272,7 @@ describe("LeftNav", () => {
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <BrowserRouter>
-          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+          <LeftNav deviceType="desktop" />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -317,11 +292,7 @@ describe("LeftNav", () => {
         dispatch={dispatch}
       >
         <BrowserRouter>
-          <LeftNav
-            defaultToCollapsed={true}
-            dispatcherFlag={true}
-            closePickerOnViewOpen={true}
-          />
+          <LeftNav deviceType="tablet" closePickerOnViewOpen={true} />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -343,7 +314,7 @@ describe("LeftNav", () => {
         dispatch={jest.fn()}
       >
         <BrowserRouter>
-          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+          <LeftNav deviceType="desktop" />
         </BrowserRouter>
       </StateDispatchProvider>
     )
@@ -365,7 +336,7 @@ describe("LeftNav", () => {
         dispatch={jest.fn()}
       >
         <BrowserRouter>
-          <LeftNav defaultToCollapsed={false} dispatcherFlag={false} />
+          <LeftNav deviceType="desktop" />
         </BrowserRouter>
       </StateDispatchProvider>
     )

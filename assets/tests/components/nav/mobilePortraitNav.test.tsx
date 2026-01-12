@@ -19,8 +19,8 @@ describe("MobilePortraitNav", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTitle("Swings View")).toBeVisible()
-    expect(result.queryByTitle("Notifications")).toBeVisible()
+    expect(result.queryByTitle("Routes")).toBeVisible()
+    expect(result.queryByTitle("Menu")).toBeVisible()
   })
 
   test("doesn't render top / bottom nav when a view or panel is open", () => {
@@ -33,7 +33,7 @@ describe("MobilePortraitNav", () => {
       </StateDispatchProvider>
     )
 
-    expect(result.queryByTitle("Swings View")).not.toBeVisible()
-    expect(result.queryByTitle("Notifications")).not.toBeVisible()
+    expect(result.queryByTitle("Routes")).not.toBeVisible()
+    expect(result.queryByTitle("Menu")).not.toBeVisible()
   })
 })

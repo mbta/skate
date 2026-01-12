@@ -39,12 +39,13 @@ const TopNavMobile: React.FC<Props> = ({
   const location = useLocation()
 
   return (
-    <div className="c-top-nav-mobile" data-testid="top-nav-mobile">
+    <div className="c-top-nav-mobile">
       <NavMenu
         mobileMenuIsOpen={mobileMenuIsOpen}
         toggleMobileMenu={toggleMobileMenu}
       />
-      <div
+      <header
+        data-testid="top-nav-mobile"
         className={
           "c-top-nav-mobile__inner" +
           (mobileMenuIsOpen ? " blurred-mobile" : "")
@@ -79,7 +80,7 @@ const TopNavMobile: React.FC<Props> = ({
             />
           </button>
         </div>
-      </div>
+      </header>
     </div>
   )
 }
