@@ -183,11 +183,11 @@ const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
               className="c-left-nav__link"
               href={supportLinkUrl}
               target="_blank"
-              title="Report an Issue"
+              title="Report Issue"
               rel="noopener noreferrer"
             >
               <SpeechBubbleIcon className="c-left-nav__icon c-left-nav__fill" />
-              Report an Issue
+              Report Issue
             </a>
           </li>
           <li>
