@@ -19,8 +19,8 @@ export interface LinkData {
 export interface ButtonData {
   title: string
   NavIcon:
-  | React.JSXElementConstructor<HTMLElementProps>
-  | ((props: NavIconProps) => React.JSX.Element)
+    | React.JSXElementConstructor<HTMLElementProps>
+    | ((props: NavIconProps) => React.JSX.Element)
   onClick: () => void
   viewIsOpen?: boolean
   disabled?: boolean

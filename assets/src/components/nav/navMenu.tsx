@@ -1,7 +1,8 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { Nav } from "react-bootstrap"
-import { OldCloseIcon, LogoIcon } from "../../helpers/icon"
+import { LogoIcon } from "../../helpers/icon"
+import CloseButton from "../closeButton"
 import * as BsIcon from "../../helpers/bsIcons"
 import { joinClasses } from "../../helpers/dom"
 import { reload } from "../../models/browser"
@@ -30,28 +31,18 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
         onClick={(e) => {
           const element = e.target as HTMLElement
           // is the clicked element in a link or button within the nav-menu
-          if (element.closest('a') || element.closest('button')) {
+          if (element.closest("a") || element.closest("button")) {
             toggleMobileMenu()
           }
         }}
       >
         <div className="c-nav-menu__header">
-          <Link
-            className="c-nav-menu__logo"
-            to="/"
-            title="Skate"
-          >
-            <LogoIcon className="c-nav-menu__logo-icon" />
+          <Link className="c-nav-menu__logo" to="/" title="Skate">
+            <LogoIcon className="c-nav-menu__logo-icon d-flex align-items-center" />
           </Link>
-
-          <button
-            className="c-nav-menu__close"
-            title="Close"
-          >
-            <OldCloseIcon className="c-nav-menu__close-icon" />
-          </button>
+          <CloseButton closeButtonType="xl_light" onClick={() => {}} />
         </div>
-        <div className="p-3">
+        <div className="p-3 pt-2">
           {email && (
             <>
               <LoggedInAs email={email} className="p-2" />
