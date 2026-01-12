@@ -20,6 +20,8 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
 
   return (
     <>
+      {/* ignore static element warning - the container should not appear interactive */}
+      {/* eslint-disable-next-line */}
       <div
         data-testid="nav-menu"
         className={joinClasses([
