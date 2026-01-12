@@ -54,7 +54,9 @@ describe("TopNavMobile", () => {
       </BrowserRouter>
     )
 
-    await user.click(within(result.getByTestId("top-nav-mobile")).getByTitle('Notifications'))
+    await user.click(
+      within(result.getByTestId("top-nav-mobile")).getByTitle("Notifications")
+    )
 
     expect(openNotificationDrawer).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("notifications_opened")

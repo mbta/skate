@@ -1,4 +1,4 @@
-import appData from './appData'
+import appData from "./appData"
 
 const isDispatcher = (): boolean => {
   const data = appData()
