@@ -1,8 +1,5 @@
-import React, { ComponentProps } from "react"
-import { fullStoryEvent } from "./helpers/fullStory"
-import { LadderIcon, MapIcon, SearchMapIcon } from "./helpers/icon"
-import { DetourNavIcon, NavIconProps } from "./helpers/navIcons"
-import inTestGroup, { TestGroups } from "./userInTestGroup"
+import React from "react"
+import { NavIconProps } from "./helpers/navIcons"
 
 type HTMLElementProps = React.PropsWithoutRef<React.HTMLAttributes<HTMLElement>>
 
