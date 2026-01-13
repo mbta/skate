@@ -487,6 +487,12 @@ export const DiversionPage = ({
           routeDirection={routeDirection ?? "??"}
           onNavigateBack={onClose}
           showIssueButton={userInTestGroup(TestGroups.DetoursPilot)}
+          onEditActiveDetour={
+            userInTestGroup(TestGroups.EditActiveDetours)
+              // eslint-disable-next-line no-console
+              ? () => console.log("in edit active detours test group")
+              : undefined
+          }
           onOpenDeactivateModal={
             userInTestGroup(TestGroups.DetoursPilot)
               ? () => {
