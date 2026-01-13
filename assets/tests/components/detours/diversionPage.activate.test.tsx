@@ -386,6 +386,24 @@ describe("DiversionPage activate workflow", () => {
         screen.queryByRole("button", { name: "Report an issue" })
       ).not.toBeInTheDocument()
     })
+
+    test("'Active Detour' has 'Edit Route' button if in edit active detours test group", async () => {
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetoursList, TestGroups.EditActiveDetours])
+      await diversionPageOnActiveDetourScreen()
+
+      expect(screen.queryByRole("button", { name: "Edit Route" })).toBeVisible()
+    })
+
+    test("'Active Detour' doesn't have 'Edit Route' button if not in test group", async () => {
+      jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
+      await diversionPageOnActiveDetourScreen()
+
+      expect(
+        screen.queryByRole("button", { name: "Edit Route" })
+      ).not.toBeInTheDocument()
+    })
   })
 })
 
