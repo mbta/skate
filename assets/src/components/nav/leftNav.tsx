@@ -9,7 +9,6 @@ import {
   LadderIcon,
   MapIcon,
   SearchMapIcon,
-  SpeechBubbleIcon,
 } from "../../helpers/icon"
 import { DetourNavIcon } from "../../helpers/navIcons"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
@@ -22,6 +21,7 @@ import { ButtonData, LinkData, supportLinkUrl } from "../../navLinkData"
 import {
   ChevronDoubleLeft,
   ChevronDoubleRight,
+  ExclamationDiamondFill,
   GearFill,
   QuestionFill,
 } from "../../helpers/bsIcons"
@@ -186,7 +186,9 @@ const LeftNav = ({ deviceType, closePickerOnViewOpen }: Props): JSX.Element => {
               title="Report Issue"
               rel="noopener noreferrer"
             >
-              <SpeechBubbleIcon className="c-left-nav__icon c-left-nav__fill" />
+              <span>
+                <ExclamationDiamondFill className="c-left-nav__icon c-left-nav__fill" />
+              </span>
               Report Issue
             </a>
           </li>
