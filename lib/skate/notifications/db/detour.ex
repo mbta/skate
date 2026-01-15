@@ -46,7 +46,7 @@ defmodule Skate.Notifications.Db.Detour do
     |> Map.put_new(:notification, %{})
     |> Map.update!(:notification, fn notification ->
       Map.put_new_lazy(notification, :users, fn ->
-        Skate.Settings.User.list_users_with_route_ids(params[:route_ids])
+        Skate.Settings.User.list_users_with_route_ids([params.route_id])
       end)
     end)
   end
