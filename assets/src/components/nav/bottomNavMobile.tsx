@@ -54,7 +54,7 @@ const BottomNavMobile: React.FC<Props> = ({
   return (
     <nav
       data-testid="bottom-nav-mobile"
-      aria-label="Bottom Navigation"
+      aria-label="Bottom"
       className={
         "c-bottom-nav-mobile" + (mobileMenuIsOpen ? " blurred-mobile" : "")
       }
