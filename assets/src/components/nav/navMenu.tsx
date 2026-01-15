@@ -24,7 +24,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
        {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
       <nav
         data-testid="nav-menu"
-        aria-label="Primary Navigation"
+        aria-label="Primary"
         className={joinClasses([
           "c-nav-menu",
           mobileMenuIsOpen ? "c-nav-menu--open" : "c-nav-menu--closed",
