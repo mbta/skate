@@ -32,11 +32,23 @@ defmodule Skate.Notifications.Db.Detour do
   end
 
   def changeset(detour_notification, params) do
+    params = add_notification_params(params)
+
     detour_notification
     |> cast(params, [:status])
     |> cast_assoc(:notification)
     |> validate_required([:status])
     |> assoc_constraint(:detour)
+  end
+
+  defp add_notification_params(params) do
+    params
+    |> Map.put_new(:notification, %{})
+    |> Map.update!(:notification, fn notification ->
+      Map.put_new_lazy(notification, :users, fn ->
+        Skate.Settings.User.list_users_with_route_ids(params[:route_ids])
+      end)
+    end)
   end
 
   # Notifications are not created from external input, so there is no changeset function
