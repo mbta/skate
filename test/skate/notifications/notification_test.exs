@@ -296,9 +296,9 @@ defmodule Skate.Notifications.NotificationTest do
         :detour
         |> insert(
           # don't create a new user and affect the user count
-          author: hd(users),
-          route_id: "1"
+          author: hd(users)
         )
+        |> with_route_id("1")
         |> Notifications.Notification.create_activated_detour_notification_from_detour()
 
       detour_notification =
@@ -415,9 +415,9 @@ defmodule Skate.Notifications.NotificationTest do
         :detour
         |> insert(
           # don't create a new user and affect the user count
-          author: hd(users),
-          route_id: "1"
+          author: hd(users)
         )
+        |> with_route_id("1")
         |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
 
       detour_notification =
