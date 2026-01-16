@@ -401,17 +401,22 @@ defmodule Skate.Notifications.NotificationTest do
       assert count == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
     end
 
-    # TODO update test
-    test "creates an unread notification for all users" do
-      number_of_users = 5
-      [user | _] = insert_list(number_of_users, :user)
+    test "creates an unread notification for users with affected route ids" do
+      users =
+        insert_list(3, :user,
+          route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
+        ) ++
+          insert_list(3, :user,
+            route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["2"]) end
+          )
 
       # create new notification
       {:ok, %{notification: %{id: notification_id}}} =
         :detour
         |> insert(
           # don't create a new user and affect the user count
-          author: user
+          author: hd(users),
+          route_id: "1"
         )
         |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
 
@@ -421,7 +426,7 @@ defmodule Skate.Notifications.NotificationTest do
         |> Skate.Repo.preload(:users)
 
       # assert all users have a notification that is unread
-      assert Kernel.length(detour_notification.users) == number_of_users
+      assert Kernel.length(detour_notification.users) == 3
     end
 
     test "deletes associated detour notifications when detour is deleted" do

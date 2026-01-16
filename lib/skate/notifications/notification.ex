@@ -274,11 +274,11 @@ defmodule Skate.Notifications.Notification do
     |> Ecto.build_assoc(:detour_status_notifications)
     |> Notifications.Db.Detour.changeset(%{
       status: :deactivated,
-      notification: %{users: Skate.Settings.User.get_all()}
+      route_id: detour.state["context"]["route"]["id"]
     })
     |> Skate.Repo.insert()
     |> log_notification()
-    |> broadcast_notification(:all)
+    |> broadcast_notification(:users_from_notification)
   end
 
   @doc """
@@ -289,7 +289,7 @@ defmodule Skate.Notifications.Notification do
     |> Ecto.build_assoc(:detour_status_notifications)
     |> Notifications.Db.Detour.changeset(%{
       status: :activated,
-      route_id: detour.route_id
+      route_id: detour.state["context"]["route"]["id"]
     })
     |> Skate.Repo.insert()
     |> log_notification()
