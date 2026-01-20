@@ -148,8 +148,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     Map.get(vp, "occupancy_status")
   end
 
-  defp decode_state_of_charge(vp, vehicle_id) when is_binary(vehicle_id) do
-    if vehicle_id =~ ~r/^4[23]/ do
+  defp decode_state_of_charge(vp, vehicle_id) do
+    if is_binary(vehicle_id) and vehicle_id =~ ~r/^4[23]/ do
       case vp do
         %{
           "state_of_charge_percentage" => pct,
@@ -164,10 +164,6 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     else
       nil
     end
-  end
-
-  defp decode_state_of_charge(_vp, _) do
-    nil
   end
 
   def date(nil) do
