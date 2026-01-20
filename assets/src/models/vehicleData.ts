@@ -231,7 +231,7 @@ export function vehicleFromData(
             value: vehicleData.state_of_charge.value,
             time: dateFromEpochSeconds(vehicleData.state_of_charge.time),
             milesRemaining: calculateMilesRemaining(
-              vehicleData.state_of_charge.value
+              vehicleData.state_of_charge
             ),
           }
         : { value: null, time: null, milesRemaining: null }
