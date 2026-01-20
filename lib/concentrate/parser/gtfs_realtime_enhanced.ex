@@ -7,8 +7,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   alias Concentrate.{StopTimeUpdate, TripUpdate, VehiclePosition}
   alias Realtime.Crowding
 
-
-  @soc_vehicle_allow_pattern = ~r/^4[23]/
+  @soc_vehicle_allow_pattern ~r/^4[23]/
 
   @impl Concentrate.Parser
   def parse(json), do: decode_entities(json)
