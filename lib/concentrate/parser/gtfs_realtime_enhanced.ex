@@ -7,6 +7,8 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   alias Concentrate.{StopTimeUpdate, TripUpdate, VehiclePosition}
   alias Realtime.Crowding
 
+  @soc_vehicle_allow_list Enum.map(4200..4399, &Integer.to_string/1)
+
   @impl Concentrate.Parser
   def parse(json), do: decode_entities(json)
 
@@ -148,22 +150,22 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     Map.get(vp, "occupancy_status")
   end
 
-  defp decode_state_of_charge(vp, vehicle_id) do
-    if is_binary(vehicle_id) and vehicle_id =~ ~r/^4[23]/ do
-      case vp do
-        %{
-          "state_of_charge_percentage" => pct,
-          "state_of_charge_timestamp" => unix
-        }
-        when is_integer(pct) and is_integer(unix) ->
-          %{value: pct, time: unix}
+  defp decode_state_of_charge(vp, vehicle_id) when vehicle_id in @soc_vehicle_allow_list do
+    case vp do
+      %{
+        "state_of_charge_percentage" => pct,
+        "state_of_charge_timestamp" => unix
+      }
+      when is_integer(pct) and is_integer(unix) ->
+        %{value: pct, time: unix}
 
-        _ ->
-          %{value: nil, time: nil}
-      end
-    else
-      nil
+      _ ->
+        %{value: nil, time: nil}
     end
+  end
+
+  defp decode_state_of_charge(_vp, _) do
+    nil
   end
 
   @spec date(String.t() | nil) :: :calendar.date() | nil
