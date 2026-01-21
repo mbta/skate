@@ -166,6 +166,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     end
   end
 
+  @spec date(String.t() | nil) :: :calendar.date() | nil
   def date(nil) do
     nil
   end
