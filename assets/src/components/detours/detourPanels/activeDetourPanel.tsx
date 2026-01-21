@@ -6,6 +6,7 @@ import { Stop } from "../../../schedule"
 import {
   ArrowLeft,
   ClockHistory,
+  Edit,
   ExclamationTriangleFill,
   StopCircle,
 } from "../../../helpers/bsIcons"
@@ -32,6 +33,7 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
   onOpenDeactivateModal?: () => void
   onOpenChangeDurationModal?: () => void
   onNavigateBack: () => void
+  onEditActiveDetour?: () => void
 
   detourReason: string
   detourDuration: string
@@ -50,6 +52,7 @@ export const ActiveDetourPanel = ({
   onOpenDeactivateModal,
   onOpenChangeDurationModal,
   onNavigateBack,
+  onEditActiveDetour,
   children,
   activatedAt,
   detourDuration,
@@ -151,6 +154,19 @@ export const ActiveDetourPanel = ({
 
         <Panel.Body.Footer className="d-flex flex-column">
           {showIssueButton && <IssueButton />}
+          {onEditActiveDetour && (
+            <Button
+              disabled={true} // Disabled for now
+              className="m-3 mb-0 flex-grow-1 icon-link"
+              variant="outline-primary"
+              onClick={onEditActiveDetour}
+              data-fs-element="Edit Route"
+              title="Edit Route"
+            >
+              <Edit />
+              Edit Route
+            </Button>
+          )}
           {onOpenChangeDurationModal && (
             <Button
               variant="outline-primary"
