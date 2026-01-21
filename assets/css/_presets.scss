@@ -29,17 +29,19 @@
     font-weight: 700;
     color: $color-gray-50;
     background: $color-primary-legacy;
+    border-color: $color-primary-dark-legacy;
     border-radius: 4px;
     padding: 0.25rem 0.5rem;
     display: flex;
     align-items: center;
 
     .c-presets-panel__save-as-preset-button-icon {
-      padding-right: 0.25rem;
+      margin-right: 0.25rem;
       width: 0.75rem;
       height: 0.75rem;
 
       svg {
+        display: block;
         path {
           stroke: $color-gray-50;
         }

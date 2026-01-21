@@ -41,6 +41,7 @@
 .c-top-nav__right-items {
   display: flex;
   align-items: center;
+  margin: 0;
   padding-right: 1.5rem;
 
   :not(:last-child) {
