@@ -258,12 +258,14 @@ defmodule Skate.Notifications.Notification do
   end
 
   def create_detour_expiration_notification(%Skate.Detours.Db.Detour{} = detour, params) do
+    params = Map.put_new(params, :route_id, detour.state["context"]["route"]["id"])
+
     detour
     |> Ecto.build_assoc(:detour_expiration_notifications)
     |> Notifications.Db.DetourExpiration.changeset(params)
     |> Skate.Repo.insert()
     |> log_notification()
-    |> broadcast_notification(:all)
+    |> broadcast_notification(:users_from_notification)
   end
 
   @doc """

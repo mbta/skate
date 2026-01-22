@@ -39,19 +39,22 @@ defmodule Skate.Notifications.Db.DetourExpiration do
   Creates a new "Detour Expiration Notification"
   """
   def changeset(detour_expiration, attrs) do
-    params =
-      attrs
-      # A `%DetourExpiration{}` should always have a associated notification, so
-      # add a placeholder to the params in case `attrs` does not contain it.
-      |> Map.put_new(:notification, %{})
-      # All users are given a detour expiration notification at this time,
-      # so it is configured as default in the changeset
-      |> put_in([:notification, :users], Skate.Settings.User.get_all())
+    params = add_notification_params(attrs)
 
     detour_expiration
     |> cast(params, [:estimated_duration, :expires_in])
     |> cast_assoc(:notification, with: &Notifications.Db.Notification.changeset/2)
     |> validate_required([:estimated_duration, :expires_in, :detour_id])
     |> assoc_constraint(:detour)
+  end
+
+  defp add_notification_params(params) do
+    params
+    |> Map.put_new(:notification, %{})
+    |> Map.update!(:notification, fn notification ->
+      Map.put_new_lazy(notification, :users, fn ->
+        Skate.Settings.User.list_users_with_route_ids([params.route_id])
+      end)
+    end)
   end
 end

@@ -566,10 +566,17 @@ defmodule Skate.Notifications.NotificationTest do
   describe "create_detour_expiration_notification/2" do
     # note: main tests in doctest
 
-    # TODO update test
-    test "creates notifications for all users" do
-      users = insert_list(5, :user)
-      detour = insert(:detour, author: hd(users))
+    test "creates notifications for users with affected route_ids " do
+      insert_list(3, :user,
+        route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["2"]) end
+      )
+
+      users_with_route =
+        insert_list(3, :user,
+          route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
+        )
+
+      detour = insert(:detour, author: hd(users_with_route)) |> with_route_id("1")
 
       assert {:ok, %{notification: notification}} =
                Notification.create_detour_expiration_notification(detour, %{
@@ -577,8 +584,17 @@ defmodule Skate.Notifications.NotificationTest do
                  estimated_duration: "1 hour"
                })
 
-      assert ^users =
-               notification |> Ecto.assoc(:users) |> Skate.Repo.all() |> Enum.sort_by(& &1.id)
+      notified_users =
+        notification
+        |> Ecto.assoc(:users)
+        |> Skate.Repo.all()
+        |> Enum.map(& &1.id)
+        |> Enum.sort()
+
+      assert notified_users ==
+               users_with_route
+               |> Enum.map(& &1.id)
+               |> Enum.sort()
     end
 
     test "logs info of notification creation" do
