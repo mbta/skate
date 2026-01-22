@@ -576,7 +576,7 @@ defmodule Skate.Notifications.NotificationTest do
           route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
         )
 
-      detour = insert(:detour, author: hd(users_with_route)) |> with_route_id("1")
+      detour = with_route_id(insert(:detour, author: hd(users_with_route)), "1")
 
       assert {:ok, %{notification: notification}} =
                Notification.create_detour_expiration_notification(detour, %{
