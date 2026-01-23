@@ -20,6 +20,7 @@ interface DetourFinishedPanelProps extends PropsWithChildren {
   onActivateDetour?: () => void
   onDeleteDetour?: () => void
   affectedRoute?: ReactNode
+  isActiveDetour: boolean
 }
 
 export const DetourFinishedPanel = ({
@@ -33,10 +34,13 @@ export const DetourFinishedPanel = ({
   onDeleteDetour,
   children,
   affectedRoute,
+  isActiveDetour,
 }: DetourFinishedPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
-    <Panel.Header>
-      <h1 className="c-diversion-panel__h1 my-3">View Draft Detour</h1>
+    <Panel.Header className={isActiveDetour ? "active-detour" : ""}>
+      <h1 className="c-diversion-panel__h1 my-3">
+        {isActiveDetour ? "Review Active Detour" : "View Draft Detour"}
+      </h1>
       <CopyButton detourText={copyableDetourText} />
     </Panel.Header>
 
@@ -106,7 +110,7 @@ export const DetourFinishedPanel = ({
             data-fs-element="Begin Activate Detour"
           >
             <BsIcons.Power />
-            Start detour
+            {isActiveDetour ? "Publish Detour Edits" : "Start detour"}
           </Button>
         )}
       </Panel.Body.Footer>

@@ -121,6 +121,7 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
+    editActiveDetour,
 
     selectedDuration,
     selectedReason,
@@ -193,10 +194,10 @@ export const DiversionPage = ({
   const epochNowInSeconds = useCurrentTimeSeconds()
 
   const detourStatus = (() => {
-    if (snapshot.matches({ "Detour Drawing": "Active" })) {
-      return DetourStatus.Active
-    } else if (snapshot.matches({ "Detour Drawing": "Past" })) {
+    if (snapshot.matches({ "Detour Drawing": "Past" })) {
       return DetourStatus.Closed
+    } else if (snapshot.context.activatedAt) {
+      return DetourStatus.Active
     } else {
       return DetourStatus.Draft
     }
@@ -216,10 +217,20 @@ export const DiversionPage = ({
     deleteDetourCallback: () => void
     copyToDraftDetourCallback: () => void
   }) => React.JSX.Element = () => {
+    const isActiveDetour = detourStatus === DetourStatus.Active
+    const isDraftDetour = detourStatus === DetourStatus.Draft
     const onDeleteDetour =
-      inTestGroup(TestGroups.DeleteDraftDetours) && snapshot.context.uuid
+      inTestGroup(TestGroups.DeleteDraftDetours) &&
+      snapshot.context.uuid &&
+      isDraftDetour
         ? () => send({ type: "detour.delete.open-delete-modal" })
         : undefined
+    const onChangeRoute = isDraftDetour
+      ? () => send({ type: "detour.route-pattern.open" })
+      : undefined
+    const onCancelEdit = isActiveDetour
+      ? () => send({ type: "detour.active.edit.cancel" })
+      : undefined
 
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
       return (
@@ -290,8 +301,10 @@ export const DiversionPage = ({
           routeDirection={routeDirection ?? "??"}
           detourFinished={reviewDetour !== undefined}
           onReviewDetour={reviewDetour}
-          onChangeRoute={() => send({ type: "detour.route-pattern.open" })}
+          onChangeRoute={onChangeRoute}
           onDeleteDetour={onDeleteDetour}
+          onCancelEdit={onCancelEdit}
+          isActiveDetour={detourStatus === DetourStatus.Active}
         >
           {snapshot.matches({
             "Detour Drawing": {
@@ -317,11 +330,11 @@ export const DiversionPage = ({
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
-      editDetour
+      (editDetour || editActiveDetour)
     ) {
       return (
         <DetourFinishedPanel
-          onNavigateBack={editDetour}
+          onNavigateBack={isActiveDetour ? editActiveDetour : editDetour}
           copyableDetourText={copyableDetourText}
           // Include fallback if editedDirections was not initialized on an older detour
           editableDirections={
@@ -352,6 +365,7 @@ export const DiversionPage = ({
               routeDirection={routeDirection ?? "??"}
             />
           }
+          isActiveDetour={detourStatus === DetourStatus.Active}
         >
           {snapshot.matches({
             "Detour Drawing": {
@@ -489,8 +503,7 @@ export const DiversionPage = ({
           showIssueButton={userInTestGroup(TestGroups.DetoursPilot)}
           onEditActiveDetour={
             userInTestGroup(TestGroups.EditActiveDetours)
-              ? // eslint-disable-next-line no-console
-                () => console.log("in edit active detours test group")
+              ? () => send({ type: "detour.active.edit.resume" })
               : undefined
           }
           onOpenDeactivateModal={
@@ -595,7 +608,7 @@ export const DiversionPage = ({
           className={joinClasses([
             "l-diversion-page__header",
             "border-bottom",
-            snapshot.matches({ "Detour Drawing": "Active" }) &&
+            detourStatus === DetourStatus.Active &&
             userInTestGroup(TestGroups.DetoursPilot)
               ? "active-detour"
               : "text-bg-light",
