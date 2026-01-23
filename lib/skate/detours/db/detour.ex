@@ -133,8 +133,14 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp add_start_point(changeset) do
+    # Hypothetically, only "promote" this change if we are "activating"?
     case {fetch_field(changeset, :start_point), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"startPoint" => start_point}}}} ->
+      {{:data, _},
+       {:ok,
+        %{
+          "value" => %{"Detour Drawing" => %{"Active" => _reviewing}},
+          "context" => %{"startPoint" => start_point}
+        }}} ->
         put_change(changeset, :start_point, start_point)
 
       _ ->
@@ -144,7 +150,12 @@ defmodule Skate.Detours.Db.Detour do
 
   defp add_end_point(changeset) do
     case {fetch_field(changeset, :end_point), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"endPoint" => end_point}}}} ->
+      {{:data, _},
+       {:ok,
+        %{
+          "value" => %{"Detour Drawing" => %{"Active" => _reviewing}},
+          "context" => %{"endPoint" => end_point}
+        }}} ->
         put_change(changeset, :end_point, end_point)
 
       _ ->
@@ -154,7 +165,12 @@ defmodule Skate.Detours.Db.Detour do
 
   defp add_waypoints(changeset) do
     case {fetch_field(changeset, :waypoints), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"waypoints" => waypoints}}}} ->
+      {{:data, _},
+       {:ok,
+        %{
+          "value" => %{"Detour Drawing" => %{"Active" => _reviewing}},
+          "context" => %{"waypoints" => waypoints}
+        }}} ->
         put_change(changeset, :waypoints, waypoints)
 
       _ ->

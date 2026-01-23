@@ -366,6 +366,178 @@ export const createDetourMachine = setup({
           },
         },
 
+        "Editing Active": {
+          initial: "Finished Drawing",
+          on: {
+            "detour.active.edit.cancel": {
+              target: "Active",
+            },
+          },
+          states: {
+            "Pick Start Point": {
+              tags: "no-save",
+              on: {
+                "detour.edit.place-waypoint-on-route": {
+                  target: "Place Waypoint",
+                  actions: [
+                    {
+                      type: "detour.add-start-point",
+                      params: ({ event: { location } }) => ({
+                        location,
+                      }),
+                    },
+                    () => {
+                      fullStoryEvent("Placed Detour Start Point", {})
+                    },
+                    "set.nearest-intersection-fallback",
+                  ],
+                },
+              },
+            },
+            "Place Waypoint": {
+              invoke: [
+                {
+                  src: "fetch-nearest-intersection",
+                  input: ({ context: { startPoint } }) => ({
+                    startPoint,
+                  }),
+
+                  onDone: {
+                    actions: assign({
+                      nearestIntersection: ({ event }) => event.output,
+                    }),
+                  },
+
+                  onError: {
+                    // fallback to an em-dash on error
+                    actions: "set.nearest-intersection-fallback",
+                  },
+                },
+                {
+                  src: "fetch-detour-directions",
+                  input: ({ context: { startPoint, waypoints } }) => ({
+                    points: (startPoint ? [startPoint] : []).concat(
+                      waypoints || []
+                    ),
+                  }),
+
+                  onDone: {
+                    actions: assign({
+                      detourShape: ({ event }) => event.output,
+                    }),
+                  },
+
+                  onError: {},
+                },
+              ],
+              on: {
+                "detour.edit.place-waypoint": {
+                  target: "Place Waypoint",
+                  reenter: true,
+                  actions: [
+                    {
+                      type: "detour.add-waypoint",
+                      params: ({ event: { location } }) => ({
+                        location,
+                      }),
+                    },
+                    () => {
+                      fullStoryEvent("Placed Detour Way-Point", {})
+                    },
+                  ],
+                },
+                "detour.edit.place-waypoint-on-route": {
+                  target: "Finished Drawing",
+                  actions: [
+                    {
+                      type: "detour.add-end-point",
+                      params: ({ event: { location } }) => ({
+                        location,
+                      }),
+                    },
+                    () => {
+                      fullStoryEvent("Placed Detour End Point", {})
+                    },
+                  ],
+                },
+                "detour.edit.undo": [
+                  {
+                    guard: ({ context }) => context.waypoints.length === 0,
+                    actions: "detour.remove-start-point",
+                    target: "Pick Start Point",
+                  },
+                  {
+                    actions: "detour.remove-last-waypoint",
+                    reenter: true,
+                    target: "Place Waypoint",
+                  },
+                ],
+              },
+            },
+            "Finished Drawing": {
+              invoke: {
+                src: "fetch-finished-detour",
+                input: ({
+                  context: { routePattern, startPoint, waypoints, endPoint },
+                }) => ({
+                  routePatternId: routePattern?.id,
+                  startPoint,
+                  waypoints,
+                  endPoint,
+                }),
+
+                onDone: {
+                  actions: assign({
+                    finishedDetour: ({ event }) => event.output,
+                    detourShape: ({ event }) =>
+                      event.output?.detourShape &&
+                      Ok({
+                        ...event.output.detourShape,
+                        directions: event.output.detourShape.directions?.concat(
+                          {
+                            instruction: "Regular Route",
+                          }
+                        ),
+                      }),
+                  }),
+                },
+
+                onError: {},
+              },
+
+              on: {
+                "detour.edit.undo": {
+                  actions: "detour.remove-end-point",
+                  target: "Place Waypoint",
+                },
+                "detour.active.edit.done": {
+                  target: "Done",
+                },
+              },
+            },
+            Done: {
+              type: "final",
+            },
+          },
+
+          onDone: {
+            target: "Share Detour",
+            actions: assign({
+              editedDirections: ({ context }) => {
+                const detourShape =
+                  context.detourShape && isOk(context.detourShape)
+                    ? context.detourShape.ok
+                    : null
+
+                return [
+                  "From " + context.nearestIntersection,
+                  ...(detourShape?.directions?.map((v) => v.instruction) ?? []),
+                ].join("\n")
+              },
+            }),
+          },
+        },
+
         Editing: {
           initial: "Pick Start Point",
           on: {
@@ -717,6 +889,9 @@ export const createDetourMachine = setup({
 
         Active: {
           initial: "Reviewing",
+          on: {
+            "detour.active.edit.resume": { target: "Editing Active" },
+          },
           states: {
             Reviewing: {
               on: {

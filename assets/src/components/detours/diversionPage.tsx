@@ -115,11 +115,13 @@ export const DiversionPage = ({
     missedStops,
     routeSegments,
     connectionPoints,
+    finishedDetour,
 
     canUndo,
     undo,
     clear,
     reviewDetour,
+    reviewActiveDetour,
     editDetour,
     editActiveDetour,
 
@@ -280,6 +282,30 @@ export const DiversionPage = ({
           }}
           onConfirm={() => send({ type: "detour.route-pattern.done" })}
         />
+      )
+    } else if (snapshot.matches({ "Detour Drawing": "Editing Active" })) {
+      return (
+        <DrawDetourPanel
+          directions={extendedDirections}
+          connectionPoints={
+            connectionPoints && [
+              connectionPoints?.start?.name ?? "N/A",
+              connectionPoints?.end?.name ?? "N/A",
+            ]
+          }
+          missedStops={missedStops}
+          routeName={routeName ?? "??"}
+          routeDescription={routeDescription ?? "??"}
+          routeOrigin={routeOrigin ?? "??"}
+          routeDirection={routeDirection ?? "??"}
+          // need to fix-up for active
+          detourFinished={finishedDetour !== undefined}
+          onReviewDetour={reviewActiveDetour}
+          onChangeRoute={onChangeRoute}
+          onDeleteDetour={onDeleteDetour}
+          onCancelEdit={onCancelEdit}
+          isActiveDetour={detourStatus === DetourStatus.Active}
+        ></DrawDetourPanel>
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Editing" }) &&

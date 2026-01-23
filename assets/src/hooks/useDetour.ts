@@ -110,6 +110,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
       location: point,
     })
 
+  // canUndo
   const canUndo = snapshot.can({ type: "detour.edit.undo" })
 
   const undo = () => {
@@ -229,12 +230,18 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
 
     editActiveDetour,
 
-    reviewActiveDetour,
-
     /** When present, puts this detour in "finished mode" */
-    reviewDetour: snapshot.can({ type: "detour.edit.done" })
-      ? reviewDetour
-      : undefined,
+    reviewDetour:
+      snapshot.can({ type: "detour.edit.done" }) || finishedDetour
+        ? reviewDetour
+        : undefined,
+
+    /** When present, puts an active detour in "finished mode" */
+    reviewActiveDetour:
+      snapshot.can({ type: "detour.active.edit.done" }) || finishedDetour
+        ? reviewActiveDetour
+        : undefined,
+
     /** When present, puts this detour in "edit mode" */
     editDetour,
 
