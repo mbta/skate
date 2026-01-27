@@ -282,17 +282,23 @@ defmodule Skate.Notifications.NotificationTest do
       assert count == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
     end
 
-    test "creates an unread notification for all users" do
-      number_of_users = 5
-      [user | _] = insert_list(number_of_users, :user)
+    test "creates an unread notification for users with affected route ids" do
+      users =
+        insert_list(3, :user,
+          route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
+        ) ++
+          insert_list(3, :user,
+            route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["2"]) end
+          )
 
       # create new notification
       {:ok, %{notification: %{id: notification_id}}} =
         :detour
         |> insert(
           # don't create a new user and affect the user count
-          author: user
+          author: hd(users)
         )
+        |> with_route_id("1")
         |> Notifications.Notification.create_activated_detour_notification_from_detour()
 
       detour_notification =
@@ -301,7 +307,7 @@ defmodule Skate.Notifications.NotificationTest do
         |> Skate.Repo.preload(:users)
 
       # assert all users have a notification that is unread
-      assert Kernel.length(detour_notification.users) == number_of_users
+      assert Kernel.length(detour_notification.users) == 3
     end
 
     test "returns detour information" do
@@ -395,17 +401,23 @@ defmodule Skate.Notifications.NotificationTest do
       assert count == Skate.Repo.aggregate(Notifications.Db.Detour, :count)
     end
 
-    test "creates an unread notification for all users" do
-      number_of_users = 5
-      [user | _] = insert_list(number_of_users, :user)
+    test "creates an unread notification for users with affected route ids" do
+      users =
+        insert_list(3, :user,
+          route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
+        ) ++
+          insert_list(3, :user,
+            route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["2"]) end
+          )
 
       # create new notification
       {:ok, %{notification: %{id: notification_id}}} =
         :detour
         |> insert(
           # don't create a new user and affect the user count
-          author: user
+          author: hd(users)
         )
+        |> with_route_id("1")
         |> Notifications.Notification.create_deactivated_detour_notification_from_detour()
 
       detour_notification =
@@ -414,7 +426,7 @@ defmodule Skate.Notifications.NotificationTest do
         |> Skate.Repo.preload(:users)
 
       # assert all users have a notification that is unread
-      assert Kernel.length(detour_notification.users) == number_of_users
+      assert Kernel.length(detour_notification.users) == 3
     end
 
     test "deletes associated detour notifications when detour is deleted" do
@@ -554,10 +566,17 @@ defmodule Skate.Notifications.NotificationTest do
   describe "create_detour_expiration_notification/2" do
     # note: main tests in doctest
 
-    test "creates notifications for all users" do
-      users = insert_list(5, :user)
+    test "creates notifications for users with affected route_ids " do
+      insert_list(3, :user,
+        route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["2"]) end
+      )
 
-      detour = insert(:detour, author: hd(users))
+      users_with_route =
+        insert_list(3, :user,
+          route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
+        )
+
+      detour = with_route_id(insert(:detour, author: hd(users_with_route)), "1")
 
       assert {:ok, %{notification: notification}} =
                Notification.create_detour_expiration_notification(detour, %{
@@ -565,8 +584,17 @@ defmodule Skate.Notifications.NotificationTest do
                  estimated_duration: "1 hour"
                })
 
-      assert ^users =
-               notification |> Ecto.assoc(:users) |> Skate.Repo.all() |> Enum.sort_by(& &1.id)
+      notified_users =
+        notification
+        |> Ecto.assoc(:users)
+        |> Skate.Repo.all()
+        |> Enum.map(& &1.id)
+        |> Enum.sort()
+
+      assert notified_users ==
+               users_with_route
+               |> Enum.map(& &1.id)
+               |> Enum.sort()
     end
 
     test "logs info of notification creation" do

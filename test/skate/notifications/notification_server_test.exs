@@ -206,13 +206,16 @@ defmodule Skate.Notifications.NotificationServerTest do
     end
 
     test "create_detour_expiration_notification/3", %{pubsub_name: pubsub_name} do
-      users = insert_list(3, :user)
+      users =
+        insert_list(3, :user,
+          route_tabs: fn -> build_list(1, :db_route_tab, selected_route_ids: ["1"]) end
+        )
 
       for %{id: user_id} <- users do
         Notifications.NotificationServer.subscribe(user_id, pubsub_name)
       end
 
-      detour = insert(:detour)
+      detour = with_route_id(insert(:detour), "1")
 
       {:ok, %{notification: %{id: id}}} =
         Notifications.Notification.create_detour_expiration_notification(
