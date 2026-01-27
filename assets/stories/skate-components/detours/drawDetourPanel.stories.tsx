@@ -15,6 +15,8 @@ const meta = {
     routeOrigin: "from Andrew Station",
     routeDirection: "Outbound",
     onChangeRoute: undefined,
+    onCancelEdit: undefined,
+    isActiveDetour: false,
   },
   argTypes: {
     // Since there's not a good way to expose JSX to the Storybook frontend yet:
@@ -61,5 +63,12 @@ export const WithStops: Story = {
 export const WithChangeRouteButton: Story = {
   args: {
     onChangeRoute: () => {},
+  },
+}
+
+export const ActiveDetourWithCancelEdit: Story = {
+  args: {
+    isActiveDetour: true,
+    onCancelEdit: () => {},
   },
 }

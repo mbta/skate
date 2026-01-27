@@ -40,6 +40,7 @@ const meta = {
     onOpenDeactivateModal: undefined,
     onOpenChangeDurationModal: undefined,
     onNavigateBack: undefined,
+    onEditActiveDetour: undefined,
     activatedAt: new Date(),
     detourDuration: "3 hours",
     detourReason: "Construction",
@@ -67,6 +68,15 @@ export const WithButtons: Story = {
     showIssueButton: true,
     onOpenChangeDurationModal: () => {},
     onOpenDeactivateModal: () => {},
+  },
+}
+
+export const WithButtonsEdit: Story = {
+  args: {
+    showIssueButton: true,
+    onOpenChangeDurationModal: () => {},
+    onOpenDeactivateModal: () => {},
+    onEditActiveDetour: () => {},
   },
 }
 

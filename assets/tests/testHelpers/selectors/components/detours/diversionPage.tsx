@@ -19,7 +19,7 @@ export const cancelButton = byRole("button", { name: "Cancel" })
 export const viewDraftDetourHeading = byRole("heading", {
   name: "View Draft Detour",
 })
-export const drawDetourHeading = byRole("heading", { name: "Draw Detour" })
+export const drawDetourHeading = byRole("heading", { name: "Edit Detour" })
 
 export const originalRouteShape = {
   interactive: {

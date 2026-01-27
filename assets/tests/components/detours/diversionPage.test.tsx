@@ -1261,7 +1261,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    expect(screen.getByRole("button", { name: "Copy details" })).toBeVisible()
+    expect(screen.getByRole("button", { name: "Copy" })).toBeVisible()
   })
 
   test("'View Draft Detour' screen copies text content to clipboard when clicked copy details button", async () => {
@@ -1327,7 +1327,7 @@ describe("DiversionPage", () => {
 
     await userEvent.click(reviewDetourButton.get())
 
-    await userEvent.click(screen.getByRole("button", { name: "Copy details" }))
+    await userEvent.click(screen.getByRole("button", { name: "Copy" }))
 
     await waitFor(() =>
       expect(window.navigator.clipboard.readText()).resolves.toBe(
@@ -1398,7 +1398,7 @@ describe("DiversionPage", () => {
 
     await userEvent.type(input, "\nHello World!")
 
-    await userEvent.click(screen.getByRole("button", { name: "Copy details" }))
+    await userEvent.click(screen.getByRole("button", { name: "Copy" }))
 
     await waitFor(() =>
       expect(window.navigator.clipboard.readText()).resolves.toMatch(

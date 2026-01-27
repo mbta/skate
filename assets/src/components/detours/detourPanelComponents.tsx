@@ -103,7 +103,7 @@ export const CopyButton = ({ detourText }: { detourText: string }) => (
       data-fs-element="Copy Details"
     >
       <Files />
-      Copy details
+      Copy
     </Button>
   </OverlayTrigger>
 )
