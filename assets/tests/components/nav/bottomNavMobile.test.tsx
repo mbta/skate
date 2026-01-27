@@ -24,7 +24,7 @@ jest.mock("userTestGroups", () => ({
 jest.mock("../../../src/helpers/fullStory")
 
 describe("BottomNavMobile", () => {
-  test("clicking swings view button toggles swing view", async () => {
+  test("clicking swings button toggles swing view", async () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
     const openSwingsView = jest.fn()
     const user = userEvent.setup()
@@ -37,14 +37,14 @@ describe("BottomNavMobile", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTitle("Swings View"))
+    await user.click(result.getByTitle("Swings"))
 
     expect(openSwingsView).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("swings_view_toggled")
     expect(mockedFSEvent).toHaveBeenCalledWith("User opened Swings View", {})
   })
 
-  test("renders nav item with title 'Search Map'", () => {
+  test("renders nav item with title 'Search'", () => {
     render(
       <BrowserRouter>
         <BottomNavMobile
@@ -54,7 +54,7 @@ describe("BottomNavMobile", () => {
       </BrowserRouter>
     )
 
-    expect(screen.queryByTitle("Search Map")).toBeInTheDocument()
+    expect(screen.queryByTitle("Search")).toBeInTheDocument()
   })
 
   test("renders nav item with title 'Detours' if in test group", () => {

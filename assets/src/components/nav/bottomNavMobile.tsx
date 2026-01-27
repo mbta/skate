@@ -1,26 +1,46 @@
-import React from "react"
-import { SwingIcon } from "../../helpers/icon"
+import React, { ComponentProps } from "react"
+import {
+  LadderIcon,
+  MapIcon,
+  SearchMapIcon,
+  SwingIcon,
+} from "../../helpers/icon"
+import { DetourNavIcon } from "../../helpers/navIcons"
 import { NavLink } from "react-router-dom"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import { fullStoryEvent } from "../../helpers/fullStory"
-import { LinkData, getNavLinkData } from "../../navLinkData"
+import { ButtonData, LinkData } from "../../navLinkData"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
-interface BottomNavLinkProps {
-  linkData: LinkData
+const BottomNavLink = ({ title, path, onClick, NavIcon }: LinkData) => {
+  return (
+    <NavLink
+      className={({ isActive }) =>
+        "c-bottom-nav-mobile__link" +
+        (isActive ? " c-bottom-nav-mobile__link--active" : "")
+      }
+      title={title}
+      to={path}
+      onClick={onClick}
+    >
+      <NavIcon className="c-bottom-nav-mobile__icon" />
+      <span className="c-bottom-nav-mobile__text">{title}</span>
+    </NavLink>
+  )
 }
 
-const BottomNavLink = ({ linkData }: BottomNavLinkProps) => (
-  <NavLink
-    className={({ isActive }) =>
-      "c-bottom-nav-mobile__link" +
-      (isActive ? " c-bottom-nav-mobile__link--active" : "")
-    }
-    title={linkData.title}
-    to={linkData.path}
-  >
-    <linkData.navIcon className="c-bottom-nav-mobile__icon" />
-  </NavLink>
-)
+const BottomNavButton = ({ title, onClick, NavIcon }: ButtonData) => {
+  return (
+    <button
+      className="c-bottom-nav-mobile__button"
+      title={title}
+      onClick={onClick}
+    >
+      <NavIcon className="c-bottom-nav-mobile__icon" />
+      <span className="c-bottom-nav-mobile__text">{title}</span>
+    </button>
+  )
+}
 
 interface Props {
   mobileMenuIsOpen: boolean
@@ -31,39 +51,61 @@ const BottomNavMobile: React.FC<Props> = ({
   mobileMenuIsOpen,
   openSwingsView,
 }) => {
-  const navLinkData = getNavLinkData()
-
   return (
-    <div
+    <nav
       data-testid="bottom-nav-mobile"
+      aria-label="Bottom"
       className={
         "c-bottom-nav-mobile" + (mobileMenuIsOpen ? " blurred-mobile" : "")
       }
     >
       <ul className="c-bottom-nav-mobile__links">
-        {navLinkData
-          .filter((linkData) => !linkData.hideOnMobile)
-          .map((linkData) => (
-            <li key={linkData.title}>
-              <BottomNavLink linkData={linkData} />
-            </li>
-          ))}
-
         <li>
-          <button
-            className="c-bottom-nav-mobile__button"
+          <BottomNavLink title="Routes" path="/" NavIcon={LadderIcon} />
+        </li>
+        <li>
+          <BottomNavButton
+            title="Swings"
             onClick={() => {
               tagManagerEvent("swings_view_toggled")
               fullStoryEvent("User opened Swings View", {})
               openSwingsView()
             }}
-            title="Swings View"
-          >
-            <SwingIcon className="c-bottom-nav-mobile__icon c-bottom-nav-mobile__icon--swings-view" />
-          </button>
+            NavIcon={() => (
+              <SwingIcon className="c-bottom-nav-mobile__icon c-bottom-nav-mobile__icon--swings-view" />
+            )}
+          />
         </li>
+        <li>
+          <BottomNavLink
+            title="Shuttle"
+            path="/shuttle-map"
+            NavIcon={MapIcon}
+          />
+        </li>
+        <li>
+          <BottomNavLink
+            title="Search"
+            path="/map"
+            NavIcon={SearchMapIcon}
+            onClick={() => fullStoryEvent("Search Map nav entry clicked", {})}
+          />
+        </li>
+        {inTestGroup(TestGroups.DetoursList) && (
+          <li>
+            <BottomNavLink
+              title="Detours"
+              path="/detours"
+              NavIcon={(props: ComponentProps<"span">) => (
+                <span {...props}>
+                  <DetourNavIcon />
+                </span>
+              )}
+            />
+          </li>
+        )}
       </ul>
-    </div>
+    </nav>
   )
 }
 

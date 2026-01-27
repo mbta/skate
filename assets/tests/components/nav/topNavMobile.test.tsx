@@ -1,6 +1,6 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import React from "react"
-import { render } from "@testing-library/react"
+import { render, within } from "@testing-library/react"
 import TopNavMobile from "../../../src/components/nav/topNavMobile"
 import {
   toTitleCase,
@@ -54,7 +54,9 @@ describe("TopNavMobile", () => {
       </BrowserRouter>
     )
 
-    await user.click(result.getByTitle("Notifications"))
+    await user.click(
+      within(result.getByTestId("top-nav-mobile")).getByTitle("Notifications")
+    )
 
     expect(openNotificationDrawer).toHaveBeenCalled()
     expect(tagManagerEvent).toHaveBeenCalledWith("notifications_opened")

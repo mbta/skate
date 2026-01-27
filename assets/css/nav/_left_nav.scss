@@ -35,14 +35,7 @@
   width: 100%;
   gap: 16px;
   background-color: tokens.$gray-50;
-
   padding: 1rem 0.875rem;
-
-  hr {
-    height: 1px;
-    background-color: $color-gray-300;
-    border: none;
-  }
 }
 
 .c-left-nav__menu-button {
@@ -189,6 +182,17 @@
           }
         }
       }
+    }
+  }
+}
+
+@media screen and (max-width: map-get($breakpoints, "max-mobile-width")) {
+  .c-left-nav {
+    width: unset;
+    border-right: unset;
+
+    .c-left-nav__modes-and-views {
+      padding: unset;
     }
   }
 }
