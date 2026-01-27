@@ -117,6 +117,19 @@ describe("vehicleFromData", () => {
   })
 })
 
+test("returns vehicle data in expected format when battery bug has no state of charge data", () => {
+  const vehicleData = vehicleDataFactory.build({
+    state_of_charge: {
+      value: null,
+      time: null,
+    },
+  })
+
+  expect(vehicleFromData(vehicleData)).toMatchObject({
+    stateOfCharge: { value: null, time: null, milesRemaining: null },
+  })
+})
+
 describe("ghostFromData", () => {
   test("returns data in the expected format", () => {
     const ghostData = ghostDataFactory.build()

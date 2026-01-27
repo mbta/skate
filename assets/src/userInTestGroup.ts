@@ -12,6 +12,7 @@ export enum TestGroups {
   DetoursOnLadder = "detours-on-ladder",
   MinischeduleTimepoints = "minischedule-timepoints",
   StateOfCharge = "state-of-charge",
+  EditActiveDetours = "edit-active-detours",
 }
 
 const inTestGroup = (key: TestGroups): boolean => {

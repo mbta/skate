@@ -12,10 +12,6 @@ export type StateOfChargeMissing = {
 
 export type StateOfChargeUnknown = null
 
-export const calculateMilesRemaining = ({
-  value,
-}: {
-  value: number
-}): number => {
+export const calculateMilesRemaining = (value: number): number => {
   return value * 2
 }
