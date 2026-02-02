@@ -156,7 +156,6 @@ export const ActiveDetourPanel = ({
           {showIssueButton && <IssueButton />}
           {onEditActiveDetour && (
             <Button
-              disabled={true} // Disabled for now
               className="m-3 mb-0 flex-grow-1 icon-link"
               variant="outline-primary"
               onClick={onEditActiveDetour}

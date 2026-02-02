@@ -99,6 +99,9 @@ export const createDetourMachine = setup({
       | { type: "detour.active.open-deactivate-modal" }
       | { type: "detour.active.deactivate-modal.deactivate" }
       | { type: "detour.active.deactivate-modal.cancel" }
+      | { type: "detour.active.edit.resume" }
+      | { type: "detour.active.edit.done" }
+      | { type: "detour.active.edit.cancel" }
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: number }
       | { type: "detour.delete.open-delete-modal" }

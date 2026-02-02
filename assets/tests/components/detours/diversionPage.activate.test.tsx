@@ -104,7 +104,7 @@ const diversionPageOnConfirmModalScreen = async (
   return { container }
 }
 
-const diversionPageOnActiveDetourScreen = async (
+const diversionPageOnActivateDetourScreen = async (
   props?: Partial<DiversionPageProps>
 ) => {
   const { container } = await diversionPageOnConfirmModalScreen(props)
@@ -363,7 +363,7 @@ describe("DiversionPage activate workflow", () => {
 
   describe("from the 'Active Detour' screen", () => {
     test("'Active Detour' screen has a 'Return to regular route' button", async () => {
-      await diversionPageOnActiveDetourScreen()
+      await diversionPageOnActivateDetourScreen()
 
       expect(
         screen.getByRole("button", { name: "Return to regular route" })
@@ -371,7 +371,7 @@ describe("DiversionPage activate workflow", () => {
     })
 
     test("'Active Detour' screen has a 'Report an issue' button", async () => {
-      await diversionPageOnActiveDetourScreen()
+      await diversionPageOnActivateDetourScreen()
 
       expect(
         screen.getByRole("button", { name: "Report an issue" })
@@ -380,7 +380,7 @@ describe("DiversionPage activate workflow", () => {
 
     test("'Active Detour' screen does not have 'Report an issue' button for non-dispatchers", async () => {
       jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
-      await diversionPageOnActiveDetourScreen()
+      await diversionPageOnActivateDetourScreen()
 
       expect(
         screen.queryByRole("button", { name: "Report an issue" })
@@ -391,14 +391,14 @@ describe("DiversionPage activate workflow", () => {
       jest
         .mocked(getTestGroups)
         .mockReturnValue([TestGroups.DetoursList, TestGroups.EditActiveDetours])
-      await diversionPageOnActiveDetourScreen()
+      await diversionPageOnActivateDetourScreen()
 
       expect(screen.queryByRole("button", { name: "Edit Route" })).toBeVisible()
     })
 
     test("'Active Detour' doesn't have 'Edit Route' button if not in test group", async () => {
       jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
-      await diversionPageOnActiveDetourScreen()
+      await diversionPageOnActivateDetourScreen()
 
       expect(
         screen.queryByRole("button", { name: "Edit Route" })
@@ -409,7 +409,7 @@ describe("DiversionPage activate workflow", () => {
 
 describe("DiversionPage Activate Screen", () => {
   test("has list of detour activation properties", async () => {
-    await diversionPageOnActiveDetourScreen()
+    await diversionPageOnActivateDetourScreen()
 
     expect(
       screen.getByRole("definition", { name: "Reason" })
