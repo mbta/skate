@@ -97,12 +97,19 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp add_status(changeset) do
+    # IO.inspect(fetch_field(changeset, :status), label: "fetch status", limit: 10)
+    # IO.inspect(fetch_change(changeset, :state), label: "fetch change", limit: 10)
+
     case {fetch_field(changeset, :status), fetch_change(changeset, :state)} do
       {{:data, :active}, {:ok, %{"value" => %{"Detour Drawing" => "Past"}}}} ->
         put_change(changeset, :status, :past)
 
       {{:data, :draft}, {:ok, %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}} ->
         put_change(changeset, :status, :active)
+
+      # TODO should this be draft or not there at all
+      # {{:data, :active}, {:ok, %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}} ->
+      #   put_change(changeset, :status, :active)
 
       {{:data, nil}, {:ok, _state}} ->
         put_change(changeset, :status, :draft)
