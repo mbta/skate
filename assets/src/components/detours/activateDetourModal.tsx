@@ -65,7 +65,7 @@ export const SurroundingModal = ({
   <Modal show animation={false} onHide={onCancel}>
     <Modal.Header closeButton>
       <h3 className="fs-3 fw-semibold lh-sm my-1">
-        {modalTitle || isActiveDetour ? "Update detour" : "Start detour"}
+        {modalTitle || (isActiveDetour ? "Update detour" : "Start detour")}
       </h3>
     </Modal.Header>
     <Modal.Body>{children}</Modal.Body>
