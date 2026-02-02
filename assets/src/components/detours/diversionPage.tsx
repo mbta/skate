@@ -413,7 +413,7 @@ export const DiversionPage = ({
                     }
                   : undefined
               }
-              modalTitle={isActiveDetour ? "Update detour" : "Activate detour"}
+              isActiveDetour={isActiveDetour}
             >
               {snapshot.matches({
                 "Detour Drawing": {
@@ -448,7 +448,7 @@ export const DiversionPage = ({
                     "Share Detour": { Activating: "Confirming" },
                   },
                 }) ? (
-                <ActivateDetour.Confirming />
+                <ActivateDetour.Confirming isActiveDetour={isActiveDetour} />
               ) : null}
             </ActivateDetour.Modal>
           ) : null}

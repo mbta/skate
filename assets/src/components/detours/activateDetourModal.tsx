@@ -44,6 +44,7 @@ interface SurroundingModalProps extends PropsWithChildren {
   onActivate?: () => void
   nextStepButton?: string
   modalTitle?: string
+  isActiveDetour?: boolean
 }
 
 interface FSElementProps {
@@ -59,11 +60,12 @@ export const SurroundingModal = ({
   nextStepLabel,
   nextStepButton,
   modalTitle,
+  isActiveDetour,
 }: SurroundingModalProps & FSElementProps) => (
   <Modal show animation={false} onHide={onCancel}>
     <Modal.Header closeButton>
       <h3 className="fs-3 fw-semibold lh-sm my-1">
-        {modalTitle || "Start detour"}
+        {modalTitle || isActiveDetour ? "Update detour" : "Start detour"}
       </h3>
     </Modal.Header>
     <Modal.Body>{children}</Modal.Body>
@@ -80,9 +82,11 @@ export const SurroundingModal = ({
         <Button
           variant="primary"
           onClick={onActivate}
-          data-fs-element="Confirm Activate Detour"
+          data-fs-element={`Confirm ${
+            isActiveDetour ? "Update" : "Activate"
+          } Detour`}
         >
-          Activate detour
+          {isActiveDetour ? "Update detour" : "Activate detour"}
         </Button>
       ) : (
         <Button
@@ -162,10 +166,12 @@ const SelectingReason = ({
   </>
 )
 
-const Confirming = () => (
+const Confirming = ({ isActiveDetour }: { isActiveDetour: boolean }) => (
   <>
     <StepperBar totalSteps={3} currentStep={3} />
-    <StepSubtitle>Step 3 of 3 - Activate detour</StepSubtitle>
+    <StepSubtitle>
+      Step 3 of 3 - {isActiveDetour ? "Update" : "Activate"} detour
+    </StepSubtitle>
     <p>Are you sure that you want to activate this detour?</p>
     <p>
       Once activated, other Skate users and OIOs will be able to see this detour
