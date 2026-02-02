@@ -71,6 +71,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.done" }
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.clear-detour" }
+      | { type: "detour.edit.cancel" }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
@@ -376,6 +377,9 @@ export const createDetourMachine = setup({
             "detour.edit.clear-detour": {
               target: ".Pick Start Point",
               actions: "detour.clear",
+            },
+            "detour.edit.cancel": {
+              target: "Active",
             },
           },
           states: {
@@ -765,6 +769,11 @@ export const createDetourMachine = setup({
               },
             },
             Done: { type: "final" },
+          },
+          on: {
+            "detour.edit.resume": {
+              target: "Editing.Finished Drawing",
+            },
           },
           onDone: {
             target: "Past",

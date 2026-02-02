@@ -120,14 +120,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     send({ type: "detour.edit.clear-detour" })
   }
 
-  const editActiveDetour = () => {
-    send({ type: "detour.active.edit.resume" })
-  }
-
-  const reviewActiveDetour = () => {
-    send({ type: "detour.active.edit.done" })
-  }
-
   const reviewDetour = () => {
     send({ type: "detour.edit.done" })
   }
@@ -226,10 +218,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     clear,
 
     finishedDetour,
-
-    editActiveDetour,
-
-    reviewActiveDetour,
 
     /** When present, puts this detour in "finished mode" */
     reviewDetour: snapshot.can({ type: "detour.edit.done" })
