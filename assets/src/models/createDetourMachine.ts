@@ -115,9 +115,10 @@ export const createDetourMachine = setup({
     // -- when the route id / route pattern is getting selected
     // -- right after the route pattern is finalized, before any waypoints are added
     // That leads to the following interface: if the user begins drafting a detour, adds waypoints, and then changes the route,
-    // the database will reflect the old route and old waypoints up until the point where a new waypoint is added.
+    // the database will reflect the old route and old waypoints up until the point where a new waypoint is added,
+    // unless they are editing an already activated detour, when it will only be saved upon re-activation
     // If that UX assumption isn't the right one, we can iterate in the future!
-    tags: "no-save",
+    tags: {} as "no-save" | "save-activated",
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -695,7 +696,9 @@ export const createDetourMachine = setup({
                     },
                   },
                 },
-                Done: { type: "final" },
+                Done: {
+                  type: "final",
+                },
               },
               onDone: {
                 target: "Done",
@@ -778,9 +781,12 @@ export const createDetourMachine = setup({
           onDone: {
             target: "Past",
           },
+          tags: "save-activated"
         },
 
-        Past: {},
+        Past: {
+          tags: "save-activated"
+        },
 
         Deleted: {
           id: "Deleted",

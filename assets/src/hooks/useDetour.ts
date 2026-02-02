@@ -43,6 +43,11 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
         return
       }
 
+      // if detour already activated, do not save, unless overridden
+      if (snap.context.activatedAt && !snap.hasTag("save-activated")) {
+        return
+      }
+
       actorRef.getSnapshot().can({ type: "detour.save.begin-save" }) &&
         actorRef.send({ type: "detour.save.begin-save" })
 
