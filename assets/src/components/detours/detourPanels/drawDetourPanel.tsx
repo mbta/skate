@@ -67,7 +67,9 @@ export const DrawDetourPanel = ({
             variant="outline-primary"
             className="align-self-start icon-link my-3"
             onClick={onCancelEdit}
+            size="sm"
           >
+            <ArrowLeft />
             Cancel
           </Button>
         )}
