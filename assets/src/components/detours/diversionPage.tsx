@@ -413,6 +413,7 @@ export const DiversionPage = ({
                     }
                   : undefined
               }
+              modalTitle={isActiveDetour ? "Update detour" : "Activate detour"}
             >
               {snapshot.matches({
                 "Detour Drawing": {
