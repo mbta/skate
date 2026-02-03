@@ -40,6 +40,7 @@ export const createDetourMachine = setup({
       activatedAt?: Date
 
       editedSelectedDuration?: string
+      editedRoute?: boolean
     },
 
     input: {} as
@@ -247,6 +248,7 @@ export const createDetourMachine = setup({
     nearestIntersection: null,
     finishedDetour: undefined,
     detourShape: undefined,
+    editedRoute: false,
   }),
   type: "parallel",
   initial: "Detour Drawing",
@@ -418,6 +420,7 @@ export const createDetourMachine = setup({
                   onDone: {
                     actions: assign({
                       nearestIntersection: ({ event }) => event.output,
+                      editedRoute: true,
                     }),
                   },
 
@@ -528,6 +531,8 @@ export const createDetourMachine = setup({
                 },
                 "detour.edit.done": {
                   target: "Done",
+                  guard: ({ context }) =>
+                    !context.activatedAt || context.editedRoute === true,
                 },
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
@@ -781,11 +786,11 @@ export const createDetourMachine = setup({
           onDone: {
             target: "Past",
           },
-          tags: "save-activated"
+          tags: "save-activated",
         },
 
         Past: {
-          tags: "save-activated"
+          tags: "save-activated",
         },
 
         Deleted: {
