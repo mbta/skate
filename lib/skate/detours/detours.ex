@@ -350,17 +350,17 @@ defmodule Skate.Detours.Detours do
   end
 
   # TODO double check these conditions
-  # May change after restricting to route change only
   defp process_notifications(
          %Ecto.Changeset{
            changes: %{activated_at: _},
            data: %Detour{status: :active}
-         },
-         %Detour{}
+         } = changeset,
+         %Detour{} = detour
        ) do
-    IO.puts("update")
-    # Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
-    # Skate.Detours.NotificationScheduler.detour_deactivated(detour)
+    IO.puts("update notification")
+    Notifications.Notification.create_updated_detour_notification_from_detour(detour)
+    # TODO maybe a more responsible way of passing to duration if its changed
+    process_notifications(changeset, detour)
   end
 
   defp process_notifications(
@@ -374,7 +374,7 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour
        )
        when previous_duration != selected_duration do
-    IO.puts("duration")
+    IO.puts("duration notification")
     %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
     expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
