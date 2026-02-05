@@ -138,7 +138,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              54 hours ago
+              Aug 27, 2024
             </td>
           </tr>
           <tr>
@@ -177,7 +177,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              84 hours ago
+              Aug 26, 2024
             </td>
           </tr>
         </tbody>
@@ -656,7 +656,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              26 hours ago
+              Aug 28, 2024
             </td>
           </tr>
         </tbody>
