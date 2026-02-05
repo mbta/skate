@@ -781,11 +781,11 @@ export const createDetourMachine = setup({
           onDone: {
             target: "Past",
           },
-          tags: "save-activated"
+          tags: "save-activated",
         },
 
         Past: {
-          tags: "save-activated"
+          tags: "save-activated",
         },
 
         Deleted: {
