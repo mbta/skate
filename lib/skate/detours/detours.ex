@@ -427,7 +427,7 @@ defmodule Skate.Detours.Detours do
 
           service_adjustments_module.create_adjustment_v1(
             adjustment_request,
-            build_swiftly_opts() |> Keyword.put(:adjustment_id, adjustment_id)
+            Keyword.put(build_swiftly_opts(), :adjustment_id, adjustment_id)
           )
         else
           {:error, :not_found}
