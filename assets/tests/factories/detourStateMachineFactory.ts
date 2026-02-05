@@ -59,7 +59,7 @@ export const activeDetourFactory = Factory.define<
     location: shapePointFactory.build(),
   })
   machine.send({ type: "detour.edit.done" })
-  
+
   machine.send({ type: "detour.save.begin-save" })
   machine.send({ type: "detour.save.set-uuid", uuid: 123 })
   machine.send({ type: "detour.share.open-activate-modal" })
@@ -75,7 +75,7 @@ export const activeDetourFactory = Factory.define<
   machine.send({ type: "detour.share.activate" })
   const snapshot = machine.getPersistedSnapshot()
   machine.stop()
-  
+
   const snapshotWithActivatedAt = {
     ...snapshot,
     context: {

@@ -8,7 +8,11 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
 import { DetourListPage } from "../../../src/components/detourListPage"
-import { activateDetour, copyToDraftDetour, fetchDetour } from "../../../src/api"
+import {
+  activateDetour,
+  copyToDraftDetour,
+  fetchDetour,
+} from "../../../src/api"
 import { Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
