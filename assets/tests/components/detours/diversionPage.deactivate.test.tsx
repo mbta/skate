@@ -16,6 +16,7 @@ import {
   reviewDetourButton,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
 import {
+  activateDetour,
   fetchDetourDirections,
   fetchFinishedDetour,
   fetchNearestIntersection,
@@ -25,6 +26,7 @@ import {
 } from "../../../src/api"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import { byRole } from "testing-library-selector"
+import { Ok } from "../../../src/util/result"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -48,7 +50,10 @@ beforeEach(() => {
   jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
-  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
+  jest.mocked(putDetourUpdate).mockResolvedValue(Ok(42))
+  jest
+    .mocked(activateDetour)
+    .mockResolvedValue(Ok({ activated_at: new Date() }))
 
   jest
     .mocked(getTestGroups)

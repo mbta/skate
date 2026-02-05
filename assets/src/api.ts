@@ -28,7 +28,9 @@ import {
   array,
   assert,
   boolean,
+  coerce,
   create,
+  date,
   enums,
   Infer,
   is,
@@ -584,6 +586,31 @@ export const deleteDetour = (id: number): Promise<Result<boolean, never>> => {
         "Content-Type": "application/json",
         "x-csrf-token": getCsrfToken(),
       },
+    },
+  })
+}
+
+export const activateDetour = (
+  id: number,
+  selectedDuration: string,
+  selectedReason: string
+): Promise<Result<{ activated_at: Date }, never>> => {
+  return apiCallResult({
+    url: `/api/detours/${id}/activate`,
+    OkStruct: object({
+      activated_at: coerce(date(), string(), (dateStr) => new Date(dateStr)),
+    }),
+    ErrStruct: never(),
+    requestInit: {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-csrf-token": getCsrfToken(),
+      },
+      body: JSON.stringify({
+        selected_duration: selectedDuration,
+        selected_reason: selectedReason,
+      }),
     },
   })
 }
