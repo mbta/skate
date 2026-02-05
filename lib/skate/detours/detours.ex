@@ -274,8 +274,7 @@ defmodule Skate.Detours.Detours do
       |> put_in(["value", "Detour Drawing"], %{"Active" => "Reviewing"})
 
     changeset =
-      detour
-      |> Detour.changeset(%{
+      Detour.changeset(detour, %{
         state: new_state,
         activated_at: DateTime.utc_now()
       })
