@@ -8,7 +8,7 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
 import { DetourListPage } from "../../../src/components/detourListPage"
-import { deleteDetour, fetchDetour, putDetourUpdate } from "../../../src/api"
+import { activateDetour, deleteDetour, fetchDetour, putDetourUpdate } from "../../../src/api"
 import { Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
@@ -47,6 +47,9 @@ beforeEach(() => {
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
   jest.mocked(deleteDetour).mockReturnValue(neverPromise())
+  jest
+    .mocked(activateDetour)
+    .mockResolvedValue(Ok({ activated_at: new Date() }))
   jest
     .mocked(getTestGroups)
     .mockReturnValue([

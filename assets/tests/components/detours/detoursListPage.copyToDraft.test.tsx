@@ -8,7 +8,7 @@ import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
 import { DetourListPage } from "../../../src/components/detourListPage"
-import { copyToDraftDetour, fetchDetour } from "../../../src/api"
+import { activateDetour, copyToDraftDetour, fetchDetour } from "../../../src/api"
 import { Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import getTestGroups from "../../../src/userTestGroups"
@@ -42,6 +42,9 @@ beforeEach(() => {
     .mocked(getTestGroups)
     .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
   jest.mocked(copyToDraftDetour).mockReturnValue(Promise.resolve(Ok(123)))
+  jest
+    .mocked(activateDetour)
+    .mockResolvedValue(Ok({ activated_at: new Date() }))
 })
 
 describe("Detours Page: Copy To Draft", () => {

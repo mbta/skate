@@ -78,6 +78,7 @@ export const createDetourMachine = setup({
       | { type: "detour.share.edit-directions"; detourText: string }
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.share.open-activate-modal" }
+      | { type: "detour.share.activate" }
       | {
           type: "detour.share.activate-modal.select-duration"
           duration: string

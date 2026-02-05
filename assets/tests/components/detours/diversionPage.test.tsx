@@ -9,6 +9,7 @@ import {
 import React, { act } from "react"
 import "@testing-library/jest-dom/jest-globals"
 import {
+  activateDetour,
   FetchDetourDirectionsError,
   fetchDetourDirections,
   fetchFinishedDetour,
@@ -82,6 +83,9 @@ beforeEach(() => {
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
+  jest
+    .mocked(activateDetour)
+    .mockResolvedValue(Ok({ activated_at: new Date() }))
 })
 
 describe("DiversionPage", () => {

@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import React, { act } from "react"
 import "@testing-library/jest-dom/jest-globals"
 import {
+  activateDetour,
   fetchNearestIntersection,
   fetchRoutePatterns,
   putDetourUpdate,
@@ -41,6 +42,9 @@ beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([])
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
+  jest
+    .mocked(activateDetour)
+    .mockResolvedValue(Ok({ activated_at: new Date() }))
 })
 
 describe("DiversionPage autosave flow", () => {

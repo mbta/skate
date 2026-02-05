@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
-import { fireEvent, render, within } from "@testing-library/react"
+import { fireEvent, render, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {
   activateDetourButton,
@@ -79,6 +79,9 @@ const diversionPageOnActiveDetourScreen = async (
   await user.click(constructionRadio.get())
   await user.click(nextButton.get())
   await user.click(activateButton.get())
+
+  // Wait for the async server-side activation to complete
+  await waitFor(() => expect(activeDetourHeading.get()).toBeVisible())
 
   return { container, user }
 }
