@@ -211,6 +211,7 @@ defmodule Skate.Detours.Detours do
   end
 
   defp handle_detour_updated(changeset, new_record, author_id) do
+    IO.inspect(changeset, limit: 30)
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
     update_swiftly(changeset, new_record)
@@ -411,12 +412,13 @@ defmodule Skate.Detours.Detours do
   defp update_swiftly(
          %Ecto.Changeset{
            data: %Detour{status: :active},
-           changes: %{activated_at: _}
+           changes: %{edited_at: _} = changes
          },
          %Detour{} = detour,
          true
        ) do
     service_adjustments_module = service_adjustments_module()
+    IO.inspect(changes, limit: 30)
 
     case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
       {:ok, adjustments_response} ->
