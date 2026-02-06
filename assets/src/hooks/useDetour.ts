@@ -43,6 +43,11 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
         return
       }
 
+      // if detour already activated, do not save, unless overridden
+      if (snap.context.activatedAt && !snap.hasTag("save-activated")) {
+        return
+      }
+
       actorRef.getSnapshot().can({ type: "detour.save.begin-save" }) &&
         actorRef.send({ type: "detour.save.begin-save" })
 
@@ -118,14 +123,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
 
   const clear = () => {
     send({ type: "detour.edit.clear-detour" })
-  }
-
-  const editActiveDetour = () => {
-    send({ type: "detour.active.edit.resume" })
-  }
-
-  const reviewActiveDetour = () => {
-    send({ type: "detour.active.edit.done" })
   }
 
   const reviewDetour = () => {
@@ -226,10 +223,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     clear,
 
     finishedDetour,
-
-    editActiveDetour,
-
-    reviewActiveDetour,
 
     /** When present, puts this detour in "finished mode" */
     reviewDetour: snapshot.can({ type: "detour.edit.done" })

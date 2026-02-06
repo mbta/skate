@@ -121,7 +121,6 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
-    editActiveDetour,
 
     selectedDuration,
     selectedReason,
@@ -229,7 +228,7 @@ export const DiversionPage = ({
       ? () => send({ type: "detour.route-pattern.open" })
       : undefined
     const onCancelEdit = isActiveDetour
-      ? () => send({ type: "detour.active.edit.cancel" })
+      ? () => send({ type: "detour.edit.cancel" })
       : undefined
 
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
@@ -330,11 +329,11 @@ export const DiversionPage = ({
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
-      (editDetour || editActiveDetour)
+      editDetour
     ) {
       return (
         <DetourFinishedPanel
-          onNavigateBack={isActiveDetour ? editActiveDetour : editDetour}
+          onNavigateBack={editDetour}
           copyableDetourText={copyableDetourText}
           // Include fallback if editedDirections was not initialized on an older detour
           editableDirections={
@@ -503,7 +502,7 @@ export const DiversionPage = ({
           showIssueButton={userInTestGroup(TestGroups.DetoursPilot)}
           onEditActiveDetour={
             userInTestGroup(TestGroups.EditActiveDetours)
-              ? () => send({ type: "detour.active.edit.resume" })
+              ? editDetour
               : undefined
           }
           onOpenDeactivateModal={

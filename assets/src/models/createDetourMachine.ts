@@ -40,6 +40,7 @@ export const createDetourMachine = setup({
       activatedAt?: Date
 
       editedSelectedDuration?: string
+      editedRoute?: boolean
     },
 
     input: {} as
@@ -71,6 +72,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.done" }
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.clear-detour" }
+      | { type: "detour.edit.cancel" }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
@@ -114,9 +116,10 @@ export const createDetourMachine = setup({
     // -- when the route id / route pattern is getting selected
     // -- right after the route pattern is finalized, before any waypoints are added
     // That leads to the following interface: if the user begins drafting a detour, adds waypoints, and then changes the route,
-    // the database will reflect the old route and old waypoints up until the point where a new waypoint is added.
+    // the database will reflect the old route and old waypoints up until the point where a new waypoint is added,
+    // unless they are editing an already activated detour, when it will only be saved upon re-activation
     // If that UX assumption isn't the right one, we can iterate in the future!
-    tags: "no-save",
+    tags: {} as "no-save" | "save-activated",
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -245,6 +248,7 @@ export const createDetourMachine = setup({
     nearestIntersection: null,
     finishedDetour: undefined,
     detourShape: undefined,
+    editedRoute: false,
   }),
   type: "parallel",
   initial: "Detour Drawing",
@@ -377,6 +381,9 @@ export const createDetourMachine = setup({
               target: ".Pick Start Point",
               actions: "detour.clear",
             },
+            "detour.edit.cancel": {
+              target: "Active",
+            },
           },
           states: {
             "Pick Start Point": {
@@ -413,6 +420,7 @@ export const createDetourMachine = setup({
                   onDone: {
                     actions: assign({
                       nearestIntersection: ({ event }) => event.output,
+                      editedRoute: true,
                     }),
                   },
 
@@ -523,6 +531,8 @@ export const createDetourMachine = setup({
                 },
                 "detour.edit.done": {
                   target: "Done",
+                  guard: ({ context }) =>
+                    !context.activatedAt || context.editedRoute === true,
                 },
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
@@ -691,7 +701,9 @@ export const createDetourMachine = setup({
                     },
                   },
                 },
-                Done: { type: "final" },
+                Done: {
+                  type: "final",
+                },
               },
               onDone: {
                 target: "Done",
@@ -766,12 +778,20 @@ export const createDetourMachine = setup({
             },
             Done: { type: "final" },
           },
+          on: {
+            "detour.edit.resume": {
+              target: "Editing.Finished Drawing",
+            },
+          },
           onDone: {
             target: "Past",
           },
+          tags: "save-activated",
         },
 
-        Past: {},
+        Past: {
+          tags: "save-activated",
+        },
 
         Deleted: {
           id: "Deleted",
