@@ -9,7 +9,14 @@ config :skate,
   base_tileset_url: System.get_env("BASE_TILESET_URL"),
   satellite_tileset_url: System.get_env("SATELLITE_TILESET_URL"),
   aws_place_index: System.get_env("AWS_PLACE_INDEX"),
-  environment_name: System.get_env("ENVIRONMENT_NAME", "missing-env")
+  environment_name: System.get_env("ENVIRONMENT_NAME", "missing-env"),
+  google_tag_manager_id: System.get_env("GOOGLE_TAG_MANAGER_ID"),
+  tileset_url: System.get_env("TILESET_URL"),
+  gtfs_url: System.get_env("GTFS_URL"),
+  hastus_url: System.get_env("SKATE_HASTUS_URL"),
+  busloc_url: System.get_env("BUSLOC_URL"),
+  trip_updates_url: System.get_env("TRIP_UPDATES_URL"),
+  fullstory_org: System.get_env("FULLSTORY_ORG")
 
 # MBTA API
 config :skate,
@@ -65,6 +72,18 @@ pool_size =
 config :skate, Skate.Repo, pool_size: pool_size
 
 if config_env() == :prod do
+  config :skate,
+    geonames_token: System.get_env("GEONAMES_TOKEN")
+
+  config :skate, SkateWeb.Endpoint,
+    url: [host: System.get_env("HOST"), port: 80],
+    static_url: [
+      scheme: System.get_env("STATIC_SCHEME"),
+      host: System.get_env("STATIC_HOST"),
+      port: System.get_env("STATIC_PORT"),
+      path: System.get_env("STATIC_PATH")
+    ]
+
   # If this var is non-existent, we'll disable sentry by not setting `dsn`
   if System.get_env("SENTRY_BACKEND_DSN") do
     config :sentry,

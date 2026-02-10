@@ -2,7 +2,6 @@ import Config
 
 config :skate,
   geonames_url_base: "https://ba-secure.geonames.net",
-  geonames_token: {:system, "GEONAMES_TOKEN"},
   redirect_http?: true,
   record_appcues: true,
   record_fullstory: true,
@@ -24,13 +23,6 @@ config :sentry,
 config :skate, SkateWeb.Endpoint,
   server: true,
   http: [:inet6, port: System.get_env("PORT") || 4000, compress: true],
-  url: [host: {:system, "HOST"}, port: 80],
-  static_url: [
-    scheme: {:system, "STATIC_SCHEME"},
-    host: {:system, "STATIC_HOST"},
-    port: {:system, "STATIC_PORT"},
-    path: {:system, "STATIC_PATH"}
-  ],
   cache_static_manifest: "priv/static/cache_manifest.json",
   check_origin: [
     "https://*.mbta.com",
