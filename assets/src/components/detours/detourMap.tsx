@@ -390,7 +390,9 @@ const WaypointMarker = ({ position }: { position: LatLngLiteral }) => (
       className: "",
     }}
     icon={<WaypointIcon />}
-  />
+  >
+    <MapTooltip>Click to remove</MapTooltip>
+  </ReactMarker>
 )
 
 export const WaypointIcon = () => (
