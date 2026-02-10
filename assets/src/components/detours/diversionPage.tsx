@@ -678,6 +678,9 @@ export const DiversionPage = ({
             unfinishedRouteSegments={unfinishedRouteSegments}
             routeSegments={routeSegments}
             onAddWaypoint={addWaypoint}
+            onDeleteWaypoint={(index) =>
+              send({ type: "detour.edit.delete-waypoint", index })
+            }
             onClickOriginalShape={addConnectionPoint ?? (() => {})}
             undoDisabled={canUndo === false}
             onUndo={undo ?? (() => {})}

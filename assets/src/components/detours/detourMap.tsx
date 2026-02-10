@@ -6,7 +6,11 @@ import React, {
   useId,
   useState,
 } from "react"
-import { LatLngLiteral, LeafletMouseEvent } from "leaflet"
+import {
+  LatLngLiteral,
+  LeafletMouseEvent,
+  LeafletMouseEventHandlerFn,
+} from "leaflet"
 import { Polyline, useMap, useMapEvents } from "react-leaflet"
 import Leaflet from "leaflet"
 import Map from "../map"
@@ -85,6 +89,8 @@ interface DetourMapProps {
    */
   onAddWaypoint?: (point: ShapePoint) => void
 
+  onDeleteWaypoint?: (index: number) => void
+
   /**
    * User signal to describe the state of the undo button.
    */
@@ -129,6 +135,7 @@ export const DetourMap = ({
 
   onClickOriginalShape,
   onAddWaypoint,
+  onDeleteWaypoint,
 
   unfinishedRouteSegments,
 
@@ -259,10 +266,11 @@ export const DetourMap = ({
           <StartMarker position={shapePointToLatLngLiteral(startPoint)} />
         )}
 
-        {waypoints.map((position) => (
+        {waypoints.map((position, index) => (
           <WaypointMarker
             key={JSON.stringify(position)}
             position={shapePointToLatLngLiteral(position)}
+            onClick={() => onDeleteWaypoint?.(index)}
           />
         ))}
 
@@ -381,14 +389,21 @@ const StartOrEndIcon = ({ classSuffix }: { classSuffix: string }) => (
   </svg>
 )
 
-const WaypointMarker = ({ position }: { position: LatLngLiteral }) => (
+const WaypointMarker = ({
+  position,
+  onClick,
+}: {
+  position: LatLngLiteral
+  onClick?: LeafletMouseEventHandlerFn
+}) => (
   <ReactMarker
-    interactive={false}
+    interactive={true}
     position={position}
     divIconSettings={{
       iconSize: [10, 10],
       className: "",
     }}
+    eventHandlers={{ click: onClick }}
     icon={<WaypointIcon />}
   >
     <MapTooltip>Click to remove</MapTooltip>

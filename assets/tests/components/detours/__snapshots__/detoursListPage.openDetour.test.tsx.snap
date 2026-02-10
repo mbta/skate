@@ -834,7 +834,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                     </svg>
                   </div>
                   <div
-                    class="leaflet-marker-icon leaflet-zoom-hide"
+                    class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
                     role="button"
                     style="margin-left: -5px; margin-top: -5px; width: 10px; height: 10px; left: 0px; top: -1px; z-index: -1;"
                     tabindex="0"
@@ -1834,7 +1834,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                     </svg>
                   </div>
                   <div
-                    class="leaflet-marker-icon leaflet-zoom-hide"
+                    class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
                     role="button"
                     style="margin-left: -5px; margin-top: -5px; width: 10px; height: 10px; left: 0px; top: 0px; z-index: 0;"
                     tabindex="0"
