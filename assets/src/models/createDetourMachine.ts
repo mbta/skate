@@ -38,7 +38,6 @@ export const createDetourMachine = setup({
       selectedReason?: string
 
       activatedAt?: Date
-      editedAt?: Date
 
       editedSelectedDuration?: string
       editedRoute?: boolean
@@ -697,8 +696,7 @@ export const createDetourMachine = setup({
                       actions: assign({
                         // Record current time, should be done on the backend,
                         // but that requires a larger refactor of the state machine
-                        activatedAt: ({context}) => context.activatedAt || new Date(),
-                        editedAt: ({context}) => context.activatedAt && new Date()
+                        activatedAt: () => new Date(),
                       }),
                     },
                   },
@@ -847,6 +845,5 @@ export const DetourSnapshotData = type({
   context: type({
     // Convert serialized dates back into `Date`'s
     activatedAt: optional(coerce(date(), string(), (str) => new Date(str))),
-    editedAt: optional(coerce(date(), string(), (str) => new Date(str))),
   }),
 })
