@@ -8,6 +8,7 @@ import {
   fetchFinishedDetour,
   fetchNearestIntersection,
   fetchRoutePatterns,
+  activateDetour,
 } from "../api"
 import { DetourShape, FinishedDetour } from "./detour"
 import { fullStoryEvent } from "../helpers/fullStory"
@@ -79,6 +80,7 @@ export const createDetourMachine = setup({
       | { type: "detour.share.edit-directions"; detourText: string }
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.share.open-activate-modal" }
+      | { type: "detour.share.activate" }
       | {
           type: "detour.share.activate-modal.select-duration"
           duration: string
@@ -194,6 +196,31 @@ export const createDetourMachine = setup({
         )
       }
     ),
+
+    "activate-detour": fromPromise<
+      { activated_at: Date },
+      {
+        uuid?: number
+        selectedDuration?: string
+        selectedReason?: string
+      }
+    >(async ({ input: { uuid, selectedDuration, selectedReason } }) => {
+      if (!uuid || !selectedDuration || !selectedReason) {
+        throw "Missing activation inputs"
+      }
+
+      const result = await activateDetour(
+        uuid,
+        selectedDuration,
+        selectedReason
+      )
+
+      if (isOk(result)) {
+        return result.ok
+      } else {
+        throw "Failed to activate detour"
+      }
+    }),
   },
   actions: {
     "set.route-pattern": assign({
@@ -692,12 +719,36 @@ export const createDetourMachine = setup({
                       target: "Selecting Reason",
                     },
                     "detour.share.activate-modal.activate": {
+                      target: "Activating Server",
+                    },
+                  },
+                },
+                "Activating Server": {
+                  invoke: {
+                    id: "activate-detour",
+                    src: "activate-detour",
+                    input: ({
+                      context: { uuid, selectedDuration, selectedReason },
+                    }) => ({
+                      uuid,
+                      selectedDuration,
+                      selectedReason,
+                    }),
+                    onDone: {
                       target: "Done",
                       actions: assign({
-                        // Record current time, should be done on the backend,
-                        // but that requires a larger refactor of the state machine
-                        activatedAt: () => new Date(),
+                        activatedAt: ({ event }) => event.output.activated_at,
                       }),
+                    },
+                    onError: {
+                      // Still transition to Done even on error to allow the snapshot to save
+                      target: "Done",
+                      actions: ({ event }) => {
+                        // Log error to Sentry
+                        throw new Error(
+                          `Failed to activate detour on server: ${event.error}`
+                        )
+                      },
                     },
                   },
                 },
