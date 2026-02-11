@@ -189,7 +189,8 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    detour_changeset = Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
+    detour_changeset =
+      Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
     detour_db_result =
       Skate.Repo.insert(
