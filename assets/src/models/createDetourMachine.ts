@@ -714,6 +714,7 @@ export const createDetourMachine = setup({
                   },
                 },
                 "Activating Server": {
+                  tags: "no-save",
                   invoke: {
                     id: "activate-detour",
                     src: "activate-detour",
@@ -742,7 +743,7 @@ export const createDetourMachine = setup({
                     },
                   },
                 },
-                Done: { type: "final" },
+                Done: { type: "final", tags: "no-save" },
               },
               onDone: {
                 target: "Done",
