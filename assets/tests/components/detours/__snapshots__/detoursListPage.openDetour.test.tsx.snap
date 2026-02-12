@@ -472,7 +472,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              26 hours ago
+              Aug 28, 2024
             </td>
           </tr>
         </tbody>
@@ -1472,7 +1472,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              26 hours ago
+              Aug 28, 2024
             </td>
           </tr>
         </tbody>
@@ -1504,7 +1504,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             >
               Last edited
             </strong>
-            26 hours ago
+            Aug 28, 2024
           </span>
           <span
             class="l-diversion-page__header-details"
