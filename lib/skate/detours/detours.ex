@@ -455,11 +455,15 @@ defmodule Skate.Detours.Detours do
   defp update_swiftly(
          %Ecto.Changeset{
            data: %Detour{status: :active},
-           changes: %{activated_at: _}
+           changes: %{updated_at: _} = changes
          },
          %Detour{} = detour,
          true
-       ) do
+       )
+       when is_map_key(changes, :reason) or
+              is_map_key(changes, :end_point) or
+              is_map_key(changes, :start_point) or
+              is_map_key(changes, :waypoints) do
     service_adjustments_module = service_adjustments_module()
 
     case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do

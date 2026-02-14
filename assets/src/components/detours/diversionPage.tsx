@@ -616,12 +616,16 @@ export const DiversionPage = ({
         >
           {"snapshot" in useDetourProps && !isMobile(displayType) ? (
             <>
-              <span className="l-diversion-page__header-details">
-                <strong className="font-m-semi me-2">
-                  {timestampLabelFromStatus(detourStatus)}
-                </strong>
-                {timeAgoLabel(epochNowInSeconds, useDetourProps.updatedAt)}
-              </span>
+              {detourStatus !== DetourStatus.Active && (
+                <>
+                  <span className="l-diversion-page__header-details">
+                    <strong className="font-m-semi me-2">
+                      {timestampLabelFromStatus(detourStatus)}
+                    </strong>
+                    {timeAgoLabel(epochNowInSeconds, useDetourProps.updatedAt)}
+                  </span>
+                </>
+              )}
               <span className="l-diversion-page__header-details">
                 <strong className="font-m-semi me-2">Created by</strong>
                 {useDetourProps.author}
