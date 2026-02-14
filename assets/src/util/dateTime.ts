@@ -101,8 +101,18 @@ export const timeAgoLabel = (
   const second = 1
   const minute = second * 60
   const hour = minute * 60
+  const day = hour * 24
 
   const duration = epochNowInSeconds - epochTime
+
+  if (duration >= 1 * day) {
+    const date = dateFromEpochSeconds(epochTime)
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
 
   if (duration > 1 * hour) {
     return `${Math.floor(duration / hour)} hours ago`

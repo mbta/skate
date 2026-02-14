@@ -238,13 +238,9 @@ defmodule Skate.Detours.Detours do
   def activate_detour(detour_id, user_id, selected_duration, selected_reason) do
     with {:ok, detour} <- fetch_detour_for_activation(detour_id, user_id),
          :ok <- validate_detour_status(detour),
-         {:ok, updated_detour} <-
-           update_detour_for_activation(detour, selected_duration, selected_reason) do
-      handle_detour_updated(
-        Detour.changeset(detour, %{status: :active}),
-        updated_detour,
-        user_id
-      )
+         changeset <- build_activation_changeset(detour, selected_duration, selected_reason),
+         {:ok, updated_detour} <- Repo.update(changeset) do
+      handle_detour_updated(changeset, updated_detour, user_id)
 
       {:ok, updated_detour}
     end
@@ -267,20 +263,17 @@ defmodule Skate.Detours.Detours do
   defp validate_detour_status(%Detour{status: :draft}), do: :ok
   defp validate_detour_status(_), do: {:error, :invalid_status}
 
-  defp update_detour_for_activation(detour, selected_duration, selected_reason) do
+  defp build_activation_changeset(detour, selected_duration, selected_reason) do
     new_state =
       detour.state
       |> put_in(["context", "selectedDuration"], selected_duration)
       |> put_in(["context", "selectedReason"], selected_reason)
       |> put_in(["value", "Detour Drawing"], %{"Active" => "Reviewing"})
 
-    changeset =
-      Detour.changeset(detour, %{
-        state: new_state,
-        activated_at: DateTime.utc_now()
-      })
-
-    Repo.update(changeset)
+    Detour.changeset(detour, %{
+      state: new_state,
+      activated_at: DateTime.utc_now()
+    })
   end
 
   def copy_to_draft_detour(detour, author_id) do
