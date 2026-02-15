@@ -231,6 +231,14 @@ export const DiversionPage = ({
       ? () => send({ type: "detour.edit.cancel" })
       : undefined
 
+    const onActivate = isActiveDetour
+      ? snapshot.can({ type: "detour.share.activate-modal.update" })
+        ? () => send({ type: "detour.share.activate-modal.update" })
+        : undefined
+      : snapshot.can({ type: "detour.share.activate-modal.activate" })
+      ? () => send({ type: "detour.share.activate-modal.activate" })
+      : undefined
+
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
       return (
         <DetourRouteSelectionPanel
@@ -404,15 +412,7 @@ export const DiversionPage = ({
                     }
                   : undefined
               }
-              onActivate={
-                snapshot.can({
-                  type: "detour.share.activate-modal.activate",
-                })
-                  ? () => {
-                      send({ type: "detour.share.activate-modal.activate" })
-                    }
-                  : undefined
-              }
+              onActivate={onActivate}
               isActiveDetour={isActiveDetour}
             >
               {snapshot.matches({

@@ -17,6 +17,7 @@ import {
   viewDraftDetourHeading,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
 import {
+  activateDetour,
   fetchDetourDirections,
   fetchFinishedDetour,
   fetchNearestIntersection,
@@ -26,6 +27,7 @@ import {
 } from "../../../src/api"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import { byRole } from "testing-library-selector"
+import { Ok } from "../../../src/util/result"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -49,7 +51,10 @@ beforeEach(() => {
   jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
-  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
+  jest.mocked(putDetourUpdate).mockResolvedValue(Ok(42))
+  jest
+    .mocked(activateDetour)
+    .mockResolvedValue(Ok({ activated_at: new Date() }))
 
   jest
     .mocked(getTestGroups)
@@ -358,6 +363,22 @@ describe("DiversionPage activate workflow", () => {
       expect(
         screen.getByRole("heading", { name: "Active Detour" })
       ).toBeVisible()
+    })
+
+    test("the 'Activate' button calls the activateDetour API with selected duration and reason", async () => {
+      jest.mocked(activateDetour).mockClear()
+
+      await diversionPageOnConfirmModalScreen()
+
+      await userEvent.click(activateButton.get())
+
+      await screen.findByRole("heading", { name: "Active Detour" })
+
+      expect(activateDetour).toHaveBeenCalledWith(
+        expect.any(Number),
+        "3 hours",
+        "Construction"
+      )
     })
   })
 

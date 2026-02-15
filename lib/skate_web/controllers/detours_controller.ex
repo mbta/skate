@@ -161,6 +161,29 @@ defmodule SkateWeb.DetoursController do
     json(conn, %{data: true})
   end
 
+  @spec activate_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def activate_detour(conn, %{
+        "detour_id" => detour_id,
+        "selected_duration" => selected_duration,
+        "selected_reason" => selected_reason
+      }) do
+    %{id: user_id} = AuthManager.Plug.current_resource(conn)
+
+    case Detours.activate_detour(detour_id, user_id, selected_duration, selected_reason) do
+      {:ok, detour} ->
+        json(conn, %{data: %{activated_at: detour.activated_at}})
+
+      {:error, :not_found} ->
+        send_resp(conn, :not_found, "detour not found")
+
+      {:error, :unauthorized} ->
+        send_resp(conn, :forbidden, "unauthorized")
+
+      {:error, _reason} ->
+        send_resp(conn, :internal_server_error, "failed to activate detour")
+    end
+  end
+
   def copy_to_draft_detour(conn, %{"detour_id" => detour_id}) do
     %{id: user_id} = AuthManager.Plug.current_resource(conn)
     detour = Detours.get_detour!(detour_id)
