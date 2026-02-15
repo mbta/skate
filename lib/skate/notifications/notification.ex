@@ -314,7 +314,6 @@ defmodule Skate.Notifications.Notification do
   end
 
   @spec unexpired_notifications_for_user(DbUser.id(), (-> Util.Time.timestamp())) :: [t()]
-  @spec unexpired_notifications_for_user(integer()) :: [Skate.Notifications.Notification.t()]
   def unexpired_notifications_for_user(user_id, now_fn \\ &Util.Time.now/0) do
     import Notifications.Db.Notification.Queries
 
