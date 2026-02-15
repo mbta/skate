@@ -371,7 +371,6 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    IO.puts("activate notification")
     Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
     %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
@@ -387,7 +386,6 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    IO.puts("deactivate notification")
     Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
     Skate.Detours.NotificationScheduler.detour_deactivated(detour)
   end
@@ -406,17 +404,13 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    IO.puts("update notification")
-
     if is_map_key(changes, :end_point) or
          is_map_key(changes, :start_point) or
          is_map_key(changes, :waypoints) do
-      IO.puts("route change")
       Notifications.Notification.create_updated_detour_notification_from_detour(detour)
     end
 
     if previous_duration != selected_duration do
-      IO.puts("duration change")
       %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
       expires_at = calculate_expiration_timestamp(detour, estimated_duration)
 
