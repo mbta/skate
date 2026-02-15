@@ -212,7 +212,6 @@ defmodule Skate.Detours.Detours do
   end
 
   defp handle_detour_updated(changeset, new_record, author_id) do
-    IO.inspect(changeset, label: "changeset", limit: 20)
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
     update_swiftly(changeset, new_record)
@@ -372,7 +371,7 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    IO.puts("new active")
+    IO.puts("activate notification")
     Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
     %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
@@ -388,41 +387,41 @@ defmodule Skate.Detours.Detours do
          },
          %Detour{} = detour
        ) do
-    IO.puts("deactivate")
+    IO.puts("deactivate notification")
     Notifications.Notification.create_deactivated_detour_notification_from_detour(detour)
     Skate.Detours.NotificationScheduler.detour_deactivated(detour)
   end
 
-  # TODO double check these conditions
   defp process_notifications(
          %Ecto.Changeset{
-           changes: %{activated_at: _},
-           data: %Detour{status: :active}
-         } = changeset,
-         %Detour{} = detour
-       ) do
-    IO.puts("update notification")
-    Notifications.Notification.create_updated_detour_notification_from_detour(detour)
-    # TODO maybe a more responsible way of passing to duration if its changed
-    process_notifications(changeset, detour)
-  end
-
-  defp process_notifications(
-         %Ecto.Changeset{
+           changes:
+             %{
+               updated_at: _,
+               state: %{"context" => %{"selectedDuration" => selected_duration}}
+             } = changes,
            data: %Detour{
              status: :active,
              state: %{"context" => %{"selectedDuration" => previous_duration}}
-           },
-           changes: %{state: %{"context" => %{"selectedDuration" => selected_duration}}}
+           }
          },
          %Detour{} = detour
-       )
-       when previous_duration != selected_duration do
-    IO.puts("duration notification")
-    %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
-    expires_at = calculate_expiration_timestamp(detour, estimated_duration)
+       ) do
+    IO.puts("update notification")
 
-    Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)
+    if is_map_key(changes, :end_point) or
+         is_map_key(changes, :start_point) or
+         is_map_key(changes, :waypoints) do
+      IO.puts("route change")
+      Notifications.Notification.create_updated_detour_notification_from_detour(detour)
+    end
+
+    if previous_duration != selected_duration do
+      IO.puts("duration change")
+      %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+      expires_at = calculate_expiration_timestamp(detour, estimated_duration)
+
+      Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)
+    end
   end
 
   defp process_notifications(_, _), do: nil
