@@ -420,7 +420,8 @@ defmodule Skate.Detours.Detours do
     adjustments_response
     |> Map.get(:adjustments, [])
     |> Enum.filter(fn adjustment ->
-      Map.get(adjustment, :notes) == Integer.to_string(detour.id)
+      Map.get(adjustment, :notes) == Integer.to_string(detour.id) and
+        Map.get(adjustment, :feedId) =~ System.get_env("ENVIRONMENT_NAME", "missing-env")
     end)
     |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
     |> Enum.at(0)
@@ -460,8 +461,7 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour,
          true
        )
-       when is_map_key(changes, :reason) or
-              is_map_key(changes, :end_point) or
+       when is_map_key(changes, :end_point) or
               is_map_key(changes, :start_point) or
               is_map_key(changes, :waypoints) do
     service_adjustments_module = service_adjustments_module()
@@ -476,7 +476,7 @@ defmodule Skate.Detours.Detours do
           service_adjustments_module.create_adjustment_v1(
             adjustment_request,
             Keyword.put(build_swiftly_opts(), :adjustment_id, adjustment_id)
-          )
+          ) |> dbg()
         else
           {:error, :not_found}
         end
