@@ -298,7 +298,7 @@ defmodule Skate.Notifications.Notification do
     |> broadcast_notification(:users_from_notification)
   end
 
-    @doc """
+  @doc """
   Creates a new Detour Status notification for an updated detour and broadcasts to subscribed users.
   """
   def create_updated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
