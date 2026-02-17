@@ -3,7 +3,12 @@ import { Table, Form, Button } from "react-bootstrap"
 import { XSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
 import { useCurrentTime } from "../hooks/useCurrentTime"
-import { timeAgoLabel, timeAgoLabelFromDate } from "../util/dateTime"
+import {
+  timeAgoLabel,
+  timeAgoLabelFromDate,
+  formattedTimeDiff,
+  dateFromEpochSeconds,
+} from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
@@ -194,6 +199,17 @@ export const DetoursTable = ({
   )
 }
 
+const isUpdatedAfterActivated = ({
+  activatedAt,
+  updatedAt,
+}: {
+  activatedAt: Date | null
+  updatedAt: number
+}): boolean => {
+  if (!activatedAt || !updatedAt) return false
+  return dateFromEpochSeconds(updatedAt).valueOf() > activatedAt.valueOf()
+}
+
 const PopulatedDetourRows = ({
   data,
   status,
@@ -225,9 +241,16 @@ const PopulatedDetourRows = ({
             {detour.intersection}
           </td>
           <td className="align-middle p-3 u-hide-for-mobile">
-            {status === DetourStatus.Active && detour.activatedAt
-              ? timeAgoLabelFromDate(detour.activatedAt, epochNow)
-              : timeAgoLabel(epochNowInSeconds, detour.updatedAt)}
+            {status === DetourStatus.Active && detour.activatedAt ? (
+              <>
+                {isUpdatedAfterActivated(detour) && (
+                  <div>{timeAgoLabel(epochNowInSeconds, detour.updatedAt)}</div>
+                )}
+                <div>{timeAgoLabelFromDate(detour.activatedAt, epochNow)}</div>
+              </>
+            ) : (
+              timeAgoLabel(epochNowInSeconds, detour.updatedAt)
+            )}
           </td>
           {status === DetourStatus.Active && detour.estimatedDuration && (
             <td className="align-middle p-3 u-hide-for-mobile">
