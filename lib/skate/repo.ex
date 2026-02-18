@@ -6,9 +6,9 @@ defmodule Skate.Repo do
     adapter: Ecto.Adapters.Postgres
 
   def add_prod_credentials(config, auth_token_fn \\ &ExAws.RDS.generate_db_auth_token/4) do
-    hostname = System.get_env("POSTGRES_HOSTNAME")
-    port = String.to_integer(System.get_env("POSTGRES_PORT", "5432"))
-    username = System.get_env("POSTGRES_USERNAME")
+    hostname = System.get_env("PGHOST")
+    port = String.to_integer(System.get_env("PGPORT", "5432"))
+    username = System.get_env("PGUSERNAME")
 
     token =
       auth_token_fn.(

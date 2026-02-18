@@ -106,9 +106,9 @@ jobs:
       - name: Run tests
         run: mix test --cover --include 'Test.Integration'
         env:
-          POSTGRES_USERNAME: ${{env.DATABASE_USER}}
-          POSTGRES_PASSWORD: ${{env.DATABASE_PASSWORD}}
-          POSTGRES_HOSTNAME: ${{env.DATABASE_HOST}}
+          PGUSERNAME: ${{env.DATABASE_USER}}
+          PGPASSWORD: ${{env.DATABASE_PASSWORD}}
+          PGHOST: ${{env.DATABASE_HOST}}
           GUARDIAN_SECRET_KEY: ${{env.GUARDIAN_SECRET_KEY}}
       - uses: mbta/actions/dialyzer@v2
 
@@ -140,7 +140,7 @@ jobs:
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
       - name: Install dependencies
-        run: npm --prefix=assets ci 
+        run: npm --prefix=assets ci
       - name: Check types / linting / formatting
         run: npm --prefix=assets run check
       - name: Run tests

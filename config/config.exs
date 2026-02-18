@@ -102,12 +102,10 @@ config :skate, SkateWeb.AuthManager,
   secret_key: nil
 
 config :skate, Skate.Repo,
+  # Postgrex _would_ get `port` from the `PGPORT` env var, but `ecto_sql`
+  # intercepts and adds 5432 as the default if `port` is not specified
+  port: System.get_env("PGPORT"),
   types: Skate.PostgrexTypes,
-  database: "skate_dev",
-  username: System.get_env("POSTGRES_USERNAME", System.get_env("USER")),
-  password: System.get_env("POSTGRES_PASSWORD", ""),
-  hostname: System.get_env("POSTGRES_HOSTNAME", "localhost"),
-  port: System.get_env("POSTGRES_PORT", "5432") |> String.to_integer(),
   show_sensitive_data_on_connection_error: true,
   backoff_min: 5_000
 

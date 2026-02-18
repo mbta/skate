@@ -6,7 +6,7 @@
 ## Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
 export ERL_FLAGS="+MIscs 2048"
 
-## Authentication/authorization secret. 
+## Authentication/authorization secret.
 ## You _can_ generate a value using `mix phx.gen.secret`
 export GUARDIAN_SECRET_KEY=$(openssl rand -base64 48)
 
@@ -16,9 +16,9 @@ export SECRET_KEY_BASE=$(openssl rand -base64 48)
 
 ## Postgres configuration: username, password, and hostname
 ## * Your local Postgres server should go here
-# export POSTGRES_USERNAME=
-# export POSTGRES_PASSWORD=
-# export POSTGRES_HOSTNAME=
+# export PGUSERNAME=
+# export PGPASSWORD=
+# export PGHOST=
 
 ## URL of the [MBTA v3 API](https://github.com/mbta/api) for retrieving live train positions
 # export API_URL=
