@@ -6,6 +6,8 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
 
   @type opts :: [
           busloc_url: String.t(),
+          busloc_topic: String.t(),
+          broker_configs: [EmqttFailover.Config.t()],
           swiftly_authorization_key: String.t(),
           swiftly_realtime_vehicles_url: String.t()
         ]
@@ -23,14 +25,24 @@ defmodule Concentrate.Pipeline.VehiclePositionsPipeline do
 
   def sources(opts) do
     realtime_enhanced_child =
-      if opts[:busloc_url] do
-        Pipeline.source(
-          :gtfs_realtime_enhanced,
-          opts[:busloc_url],
-          Concentrate.Parser.GTFSRealtimeEnhanced
-        )
-      else
-        nil
+      cond do
+        opts[:busloc_topic] && opts[:broker_configs] ->
+          Pipeline.mqtt_source(
+            :gtfs_realtime_enhanced,
+            Concentrate.Parser.GTFSRealtimeEnhanced,
+            topics: [opts[:busloc_topic]],
+            broker_configs: opts[:broker_configs]
+          )
+
+        opts[:busloc_url] ->
+          Pipeline.source(
+            :gtfs_realtime_enhanced,
+            opts[:busloc_url],
+            Concentrate.Parser.GTFSRealtimeEnhanced
+          )
+
+        true ->
+          nil
       end
 
     swiftly_child =

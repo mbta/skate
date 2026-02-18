@@ -15,6 +15,7 @@ config :skate,
   gtfs_url: System.get_env("GTFS_URL"),
   hastus_url: System.get_env("SKATE_HASTUS_URL"),
   busloc_url: System.get_env("BUSLOC_URL"),
+  busloc_topic: System.get_env("BUSLOC_TOPIC"),
   trip_updates_url: System.get_env("TRIP_UPDATES_URL"),
   fullstory_org: System.get_env("FULLSTORY_ORG")
 
@@ -114,33 +115,36 @@ if config_env() == :prod do
       keycloak: keycloak_opts
     ]
 
-  mqtt_url = System.get_env("MQTT_BROKER_URLS")
+  config :skate, DNSCluster, query: System.get_env("DNS_CLUSTER_QUERY") || :ignore
 
-  if mqtt_url not in [nil, ""] do
-    topic_prefix = System.get_env("MQTT_TOPIC_PREFIX", "")
-    username = System.get_env("MQTT_BROKER_USERNAME")
-
-    passwords =
-      case System.get_env("MQTT_BROKER_PASSWORDS") do
-        nil -> [nil]
-        "" -> [nil]
-        passwords -> String.split(passwords, " ")
-      end
-
-    configs =
-      for url <- String.split(mqtt_url, " "),
-          password <- passwords do
-        EmqttFailover.Config.from_url(url, username: username, password: password)
-      end
-
+  # Configure MQTT publishing if MQTT is configured
+  if System.get_env("MQTT_BROKER_URLS") not in [nil, ""] do
     config :skate, Skate.MqttConnection,
       enabled?: true,
-      broker_configs: configs,
-      broker_topic_prefix: topic_prefix
+      broker_topic_prefix: System.get_env("MQTT_TOPIC_PREFIX", "")
 
-    # Configure TripModifications to publish if the env var is present
     config :skate, Skate.Detours.TripModificationPublisher, start: true
   end
+end
 
-  config :skate, DNSCluster, query: System.get_env("DNS_CLUSTER_QUERY") || :ignore
+# MQTT configuration - works in all environments when MQTT_BROKER_URLS is set
+mqtt_url = System.get_env("MQTT_BROKER_URLS")
+
+if mqtt_url not in [nil, ""] do
+  username = System.get_env("MQTT_BROKER_USERNAME")
+
+  passwords =
+    case System.get_env("MQTT_BROKER_PASSWORDS") do
+      nil -> [nil]
+      "" -> [nil]
+      passwords -> String.split(passwords, " ")
+    end
+
+  configs =
+    for url <- String.split(mqtt_url, " "),
+        password <- passwords do
+      EmqttFailover.Config.from_url(url, username: username, password: password)
+    end
+
+  config :skate, Skate.MqttConnection, broker_configs: configs
 end

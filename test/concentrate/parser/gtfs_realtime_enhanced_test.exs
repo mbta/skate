@@ -39,6 +39,99 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
       assert length(stop_time_updates) > 0
       assert Enum.all?(stop_time_updates, &match?(%{remark: _remark}, &1))
     end
+
+    test "returns {:partial, entities} when incrementality is DIFFERENTIAL" do
+      json = %{
+        "header" => %{
+          "incrementality" => "DIFFERENTIAL",
+          "timestamp" => 1_234_567_890
+        },
+        "entity" => [
+          %{
+            "vehicle" => %{
+              "position" => %{"latitude" => 42.0, "longitude" => -71.0},
+              "timestamp" => 1_234_567_890,
+              "trip" => %{"trip_id" => "trip1", "route_id" => "route1"},
+              "vehicle" => %{"id" => "v1"}
+            }
+          }
+        ]
+      }
+
+      result = GTFSRealtimeEnhanced.parse(json)
+      assert {:partial, entities} = result
+      assert is_list(entities)
+      assert length(entities) > 0
+    end
+
+    test "returns {:partial, entities} when incrementality is 1 (numeric DIFFERENTIAL)" do
+      json = %{
+        "header" => %{
+          "incrementality" => 1,
+          "timestamp" => 1_234_567_890
+        },
+        "entity" => [
+          %{
+            "vehicle" => %{
+              "position" => %{"latitude" => 42.0, "longitude" => -71.0},
+              "timestamp" => 1_234_567_890,
+              "trip" => %{"trip_id" => "trip1", "route_id" => "route1"},
+              "vehicle" => %{"id" => "v1"}
+            }
+          }
+        ]
+      }
+
+      result = GTFSRealtimeEnhanced.parse(json)
+      assert {:partial, entities} = result
+      assert is_list(entities)
+    end
+
+    test "returns list (not partial) when incrementality is FULL_DATASET" do
+      json = %{
+        "header" => %{
+          "incrementality" => "FULL_DATASET",
+          "timestamp" => 1_234_567_890
+        },
+        "entity" => [
+          %{
+            "vehicle" => %{
+              "position" => %{"latitude" => 42.0, "longitude" => -71.0},
+              "timestamp" => 1_234_567_890,
+              "trip" => %{"trip_id" => "trip1", "route_id" => "route1"},
+              "vehicle" => %{"id" => "v1"}
+            }
+          }
+        ]
+      }
+
+      result = GTFSRealtimeEnhanced.parse(json)
+      assert is_list(result)
+      refute match?({:partial, _}, result)
+    end
+
+    test "returns list (not partial) when incrementality is 0 (numeric FULL_DATASET)" do
+      json = %{
+        "header" => %{
+          "incrementality" => 0,
+          "timestamp" => 1_234_567_890
+        },
+        "entity" => [
+          %{
+            "vehicle" => %{
+              "position" => %{"latitude" => 42.0, "longitude" => -71.0},
+              "timestamp" => 1_234_567_890,
+              "trip" => %{"trip_id" => "trip1", "route_id" => "route1"},
+              "vehicle" => %{"id" => "v1"}
+            }
+          }
+        ]
+      }
+
+      result = GTFSRealtimeEnhanced.parse(json)
+      assert is_list(result)
+      refute match?({:partial, _}, result)
+    end
   end
 
   describe "decode_trip_update/1" do
