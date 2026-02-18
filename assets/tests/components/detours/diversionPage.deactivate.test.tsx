@@ -8,7 +8,7 @@ import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
-import { fireEvent, render, within } from "@testing-library/react"
+import { fireEvent, render, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import {
   activateDetourButton,
@@ -16,6 +16,7 @@ import {
   reviewDetourButton,
 } from "../../testHelpers/selectors/components/detours/diversionPage"
 import {
+  activateDetour,
   fetchDetourDirections,
   fetchFinishedDetour,
   fetchNearestIntersection,
@@ -25,6 +26,7 @@ import {
 } from "../../../src/api"
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import { byRole } from "testing-library-selector"
+import { Ok } from "../../../src/util/result"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -48,7 +50,10 @@ beforeEach(() => {
   jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
   jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
-  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
+  jest.mocked(putDetourUpdate).mockResolvedValue(Ok(42))
+  jest
+    .mocked(activateDetour)
+    .mockResolvedValue(Ok({ activated_at: new Date() }))
 
   jest
     .mocked(getTestGroups)
@@ -74,6 +79,9 @@ const diversionPageOnActiveDetourScreen = async (
   await user.click(constructionRadio.get())
   await user.click(nextButton.get())
   await user.click(activateButton.get())
+
+  // Wait for the async server-side activation to complete
+  await waitFor(() => expect(activeDetourHeading.get()).toBeVisible())
 
   return { container, user }
 }

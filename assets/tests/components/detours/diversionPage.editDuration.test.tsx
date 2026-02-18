@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event"
 import { screen } from "@testing-library/dom"
 import { render } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
-import { fetchDetour, putDetourUpdate } from "../../../src/api"
+import { activateDetour, fetchDetour, putDetourUpdate } from "../../../src/api"
 import { DetourListPage } from "../../../src/components/detourListPage"
 import { Ok } from "../../../src/util/result"
 import { detourListFactory } from "../../factories/detourListFactory"
@@ -38,7 +38,10 @@ beforeEach(() => {
   jest.mocked(usePastDetours).mockReturnValue(detours.past)
 
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
-  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
+  jest.mocked(putDetourUpdate).mockResolvedValue(Ok(42))
+  jest
+    .mocked(activateDetour)
+    .mockResolvedValue(Ok({ activated_at: new Date() }))
 
   jest
     .mocked(getTestGroups)

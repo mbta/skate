@@ -232,6 +232,49 @@ defmodule Skate.Detours.Detours do
     )
   end
 
+  @spec activate_detour(String.t(), DbUser.id(), String.t(), String.t()) ::
+          {:ok, Detour.t()} | {:error, :not_found | :unauthorized | :invalid_status}
+  def activate_detour(detour_id, user_id, selected_duration, selected_reason) do
+    with {:ok, detour} <- fetch_detour_for_activation(detour_id, user_id),
+         :ok <- validate_detour_status(detour),
+         changeset <- build_activation_changeset(detour, selected_duration, selected_reason),
+         {:ok, updated_detour} <- Repo.update(changeset) do
+      handle_detour_updated(changeset, updated_detour, user_id)
+
+      {:ok, updated_detour}
+    end
+  end
+
+  defp fetch_detour_for_activation(detour_id, user_id) do
+    case Repo.get(Detour, detour_id) do
+      nil ->
+        {:error, :not_found}
+
+      detour ->
+        if detour.author_id == user_id do
+          {:ok, detour}
+        else
+          {:error, :unauthorized}
+        end
+    end
+  end
+
+  defp validate_detour_status(%Detour{status: :draft}), do: :ok
+  defp validate_detour_status(_), do: {:error, :invalid_status}
+
+  defp build_activation_changeset(detour, selected_duration, selected_reason) do
+    new_state =
+      detour.state
+      |> put_in(["context", "selectedDuration"], selected_duration)
+      |> put_in(["context", "selectedReason"], selected_reason)
+      |> put_in(["value", "Detour Drawing"], %{"Active" => "Reviewing"})
+
+    Detour.changeset(detour, %{
+      state: new_state,
+      activated_at: DateTime.utc_now()
+    })
+  end
+
   def copy_to_draft_detour(detour, author_id) do
     if detour.status == :past do
       new_detour_attrs =

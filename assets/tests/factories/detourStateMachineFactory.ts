@@ -59,6 +59,9 @@ export const activeDetourFactory = Factory.define<
     location: shapePointFactory.build(),
   })
   machine.send({ type: "detour.edit.done" })
+
+  machine.send({ type: "detour.save.begin-save" })
+  machine.send({ type: "detour.save.set-uuid", uuid: 123 })
   machine.send({ type: "detour.share.open-activate-modal" })
   machine.send({
     type: "detour.share.activate-modal.select-duration",
@@ -69,16 +72,22 @@ export const activeDetourFactory = Factory.define<
     type: "detour.share.activate-modal.select-reason",
     reason: "Emergency",
   })
-  machine.send({ type: "detour.share.activate-modal.next" })
-  machine.send({ type: "detour.share.activate-modal.activate" })
-
+  machine.send({ type: "detour.share.activate" })
   const snapshot = machine.getPersistedSnapshot()
   machine.stop()
+
+  const snapshotWithActivatedAt = {
+    ...snapshot,
+    context: {
+      ...(snapshot as any).context,
+      activatedAt: new Date(),
+    },
+  }
 
   return {
     updatedAt: 1724866392,
     author: "fake@email.com",
-    state: snapshot,
+    state: snapshotWithActivatedAt,
   }
 })
 
@@ -167,8 +176,7 @@ export const pastDetourFactory = Factory.define<DetourWithState>(() => {
     type: "detour.share.activate-modal.select-reason",
     reason: "Emergency",
   })
-  machine.send({ type: "detour.share.activate-modal.next" })
-  machine.send({ type: "detour.share.activate-modal.activate" })
+  machine.send({ type: "detour.share.activate" })
 
   // Deactivate the detour
   machine.send({ type: "detour.active.open-deactivate-modal" })
@@ -177,9 +185,17 @@ export const pastDetourFactory = Factory.define<DetourWithState>(() => {
   const snapshot = machine.getPersistedSnapshot()
   machine.stop()
 
+  const snapshotWithActivatedAt = {
+    ...snapshot,
+    context: {
+      ...(snapshot as any).context,
+      activatedAt: new Date(),
+    },
+  }
+
   return {
     updatedAt: 1724866392,
     author: "fake@email.com",
-    state: snapshot,
+    state: snapshotWithActivatedAt,
   }
 })
