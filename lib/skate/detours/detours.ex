@@ -392,19 +392,30 @@ defmodule Skate.Detours.Detours do
 
   defp process_notifications(
          %Ecto.Changeset{
+           changes:
+             %{
+               updated_at: _,
+               state: %{"context" => %{"selectedDuration" => selected_duration}}
+             } = changes,
            data: %Detour{
              status: :active,
              state: %{"context" => %{"selectedDuration" => previous_duration}}
-           },
-           changes: %{state: %{"context" => %{"selectedDuration" => selected_duration}}}
+           }
          },
          %Detour{} = detour
-       )
-       when previous_duration != selected_duration do
-    %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
-    expires_at = calculate_expiration_timestamp(detour, estimated_duration)
+       ) do
+    if is_map_key(changes, :end_point) or
+         is_map_key(changes, :start_point) or
+         is_map_key(changes, :waypoints) do
+      Notifications.Notification.create_updated_detour_notification_from_detour(detour)
+    end
 
-    Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)
+    if previous_duration != selected_duration do
+      %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
+      expires_at = calculate_expiration_timestamp(detour, estimated_duration)
+
+      Skate.Detours.NotificationScheduler.detour_duration_changed(detour, expires_at)
+    end
   end
 
   defp process_notifications(_, _), do: nil

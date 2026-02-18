@@ -73,6 +73,7 @@ export const DetourNotificationData = type({
   status: enums([
     DetourNotificationStatus.Activated,
     DetourNotificationStatus.Deactivated,
+    DetourNotificationStatus.Updated,
   ]),
   detour_id: detourId,
   headsign: string(),

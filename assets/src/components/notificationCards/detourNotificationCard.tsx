@@ -94,6 +94,9 @@ const notificationTitle = (notification: Notification<DetourNotifications>) => {
       case DetourNotificationStatus.Deactivated: {
         return "Detour - Closed"
       }
+      case DetourNotificationStatus.Updated: {
+        return "Detour - Updated Route"
+      }
     }
   }
 
