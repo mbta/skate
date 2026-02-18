@@ -4,6 +4,7 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -174,6 +175,23 @@ export const DetourMap = ({
     undefined
   )
 
+  const waypoints_markers = useMemo(
+    () =>
+      waypoints.map((position, index) => (
+        <WaypointMarker
+          key={`${index}-${position.lat}-${position.lon}`}
+          position={shapePointToLatLngLiteral(position)}
+          onClick={onDeleteWaypoint && (() => onDeleteWaypoint(index))}
+          onDragEnd={
+            onMoveWaypoint &&
+            ((newLocation) =>
+              onMoveWaypoint(index, latLngLiteralToShapePoint(newLocation)))
+          }
+        />
+      )),
+    [waypoints, onMoveWaypoint, onDeleteWaypoint]
+  )
+
   const CenteringElement = ({
     mapCenter,
     oldMapCenter,
@@ -269,16 +287,7 @@ export const DetourMap = ({
           <StartMarker position={shapePointToLatLngLiteral(startPoint)} />
         )}
 
-        {waypoints.map((position, index) => (
-          <WaypointMarker
-            key={`${index}-${position.lat}-${position.lon}`}
-            position={shapePointToLatLngLiteral(position)}
-            onClick={onDeleteWaypoint && (() => onDeleteWaypoint(index))}
-            onDragEnd={(newLocation) =>
-              onMoveWaypoint?.(index, latLngLiteralToShapePoint(newLocation))
-            }
-          />
-        ))}
+        {waypoints_markers}
 
         {endPoint && (
           <EndMarker position={shapePointToLatLngLiteral(endPoint)} />
