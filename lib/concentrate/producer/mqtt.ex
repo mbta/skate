@@ -4,7 +4,7 @@ defmodule Concentrate.Producer.Mqtt do
   """
   use GenStage
   require Logger
-  alias EmqttFailover.Connection
+  alias Skate.MqttConnection
   @start_link_opts [:name]
 
   defmodule State do
@@ -31,8 +31,8 @@ defmodule Concentrate.Producer.Mqtt do
           fun
       end
 
-    start_opts = emqtt_opts(opts)
-    {:ok, _client} = Connection.start_link(start_opts)
+    topics = opts[:topics] || []
+    {:ok, _client} = MqttConnection.start_link(topics)
 
     {
       :producer,
@@ -63,18 +63,6 @@ defmodule Concentrate.Producer.Mqtt do
   def handle_info({:disconnected, _pid, reason}, state) do
     Logger.warning("MQTT producer disconnected from broker: #{inspect(reason)}")
     {:noreply, [], state}
-  end
-
-  defp emqtt_opts(opts) do
-    configs = Keyword.fetch!(opts, :broker_configs)
-    topics = opts[:topics] || []
-
-    [
-      configs: configs,
-      client_id_prefix: "skate-prd",
-      handler: {EmqttFailover.ConnectionHandler.Parent, parent: self(), topics: topics},
-      backoff: Keyword.get(opts, :backoff)
-    ]
   end
 
   defp decode_payload(<<0x1F, 0x8B, _::binary>> = payload) do
