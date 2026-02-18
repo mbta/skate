@@ -11,13 +11,12 @@ defmodule Swiftly.API.ServiceAdjustments do
   @doc """
   https://swiftly-inc.stoplight.io/docs/service-adjustments/10cf60084522d-create-adjustment
 
-  Create adjustment
-
-  Create a new adjustment
+  Create or update adjustment
 
   ## Options
 
     * `agency`: Agency ID
+    * `adjustment_id`: Swiftly adjustment ID to update
 
   """
   @spec create_adjustment_v1(
@@ -34,9 +33,15 @@ defmodule Swiftly.API.ServiceAdjustments do
       |> assert_agency_param!()
       |> Keyword.take([:agency])
 
+    path =
+      case opts[:adjustment_id] do
+        nil -> "/adjustments"
+        id -> "/adjustments/#{id}"
+      end
+
     %HTTPoison.Request{
       method: :post,
-      url: opts |> fetch_base_url() |> URI.append_path("/adjustments") |> URI.to_string(),
+      url: opts |> fetch_base_url() |> URI.append_path(path) |> URI.to_string(),
       params: params,
       body:
         body
@@ -54,7 +59,7 @@ defmodule Swiftly.API.ServiceAdjustments do
         body = Jason.decode!(response_body)
 
         Logger.info(
-          "adjustment_created_in_swiftly adjustment_id=#{Map.get(body, "adjustmentId")}"
+          "adjustment_#{if opts[:adjustment_id], do: "updated", else: "created"}_in_swiftly adjustment_id=#{Map.get(body, "adjustmentId")}"
         )
 
         {:ok, Swiftly.API.ServiceAdjustments.AdjustmentIdResponse.load(body)}

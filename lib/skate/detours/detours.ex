@@ -189,7 +189,8 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    detour_changeset = Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
+    detour_changeset =
+      Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
     detour_db_result =
       Skate.Repo.insert(
@@ -415,6 +416,17 @@ defmodule Skate.Detours.Detours do
     end
   end
 
+  defp get_adjustment_id(detour, adjustments_response) do
+    adjustments_response
+    |> Map.get(:adjustments, [])
+    |> Enum.filter(fn adjustment ->
+      Map.get(adjustment, :notes) == Integer.to_string(detour.id) and
+        Map.get(adjustment, :feedId) =~ System.get_env("ENVIRONMENT_NAME", "missing-env")
+    end)
+    |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
+    |> Enum.at(0)
+  end
+
   defp update_swiftly(changeset, detour) do
     update_swiftly_fn = fn -> update_swiftly(changeset, detour, test_group_enabled?()) end
 
@@ -444,6 +456,39 @@ defmodule Skate.Detours.Detours do
   defp update_swiftly(
          %Ecto.Changeset{
            data: %Detour{status: :active},
+           changes: %{updated_at: _} = changes
+         },
+         %Detour{} = detour,
+         true
+       )
+       when is_map_key(changes, :end_point) or
+              is_map_key(changes, :start_point) or
+              is_map_key(changes, :waypoints) do
+    service_adjustments_module = service_adjustments_module()
+
+    case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
+      {:ok, adjustments_response} ->
+        adjustment_id = get_adjustment_id(detour, adjustments_response)
+
+        if adjustment_id do
+          {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
+
+          service_adjustments_module.create_adjustment_v1(
+            adjustment_request,
+            Keyword.put(build_swiftly_opts(), :adjustment_id, adjustment_id)
+          )
+        else
+          {:error, :not_found}
+        end
+
+      {:error, _} = error ->
+        error
+    end
+  end
+
+  defp update_swiftly(
+         %Ecto.Changeset{
+           data: %Detour{status: :active},
            changes: %{status: :past}
          },
          %Detour{} = detour,
@@ -453,14 +498,7 @@ defmodule Skate.Detours.Detours do
 
     case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
       {:ok, adjustments_response} ->
-        adjustment_id =
-          adjustments_response
-          |> Map.get(:adjustments, [])
-          |> Enum.filter(fn adjustment ->
-            Map.get(adjustment, :notes) == Integer.to_string(detour.id)
-          end)
-          |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
-          |> Enum.at(0)
+        adjustment_id = get_adjustment_id(detour, adjustments_response)
 
         if adjustment_id do
           service_adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())

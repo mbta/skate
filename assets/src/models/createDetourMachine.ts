@@ -39,6 +39,7 @@ export const createDetourMachine = setup({
       selectedReason?: string
 
       activatedAt?: Date
+      updatedAt?: Date
 
       editedSelectedDuration?: string
       editedRoute?: boolean
@@ -92,6 +93,7 @@ export const createDetourMachine = setup({
       | { type: "detour.share.activate-modal.next" }
       | { type: "detour.share.activate-modal.cancel" }
       | { type: "detour.share.activate-modal.back" }
+      | { type: "detour.share.activate-modal.update" }
       | { type: "detour.share.activate-modal.activate" }
       | { type: "detour.active.open-change-duration-modal" }
       | {
@@ -721,6 +723,9 @@ export const createDetourMachine = setup({
                     "detour.share.activate-modal.activate": {
                       target: "Activating Server",
                     },
+                    "detour.share.activate-modal.update": {
+                      target: "Done",
+                    },
                   },
                 },
                 "Activating Server": {
@@ -895,5 +900,6 @@ export const DetourSnapshotData = type({
   context: type({
     // Convert serialized dates back into `Date`'s
     activatedAt: optional(coerce(date(), string(), (str) => new Date(str))),
+    updatedAt: optional(coerce(date(), string(), (str) => new Date(str))),
   }),
 })
