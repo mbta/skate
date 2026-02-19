@@ -47,7 +47,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.done" }
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.clear-detour" }
-      | { type: "detour.edit.cancel"; closeFunc?: Function }
+      | { type: "detour.edit.cancel"; closeFunc?: () => void }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
@@ -931,7 +931,7 @@ type MachineContext = {
   editedSelectedDuration?: string
   editedRoute?: boolean
   savedContext?: MachineContext
-  closeFunc?: Function
+  closeFunc?: () => void
 }
 
 /**
