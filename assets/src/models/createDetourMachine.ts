@@ -47,8 +47,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.done" }
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.clear-detour" }
-      | { type: "detour.edit.open-discard-modal" }
-      | { type: "detour.edit.cancel" }
+      | { type: "detour.edit.cancel"; closeFunc?: Function }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
@@ -386,9 +385,21 @@ export const createDetourMachine = setup({
               target: ".Pick Start Point",
               actions: "detour.clear",
             },
-            "detour.edit.open-discard-modal": {
-              target: "Discarding",
-            },
+            "detour.edit.cancel": [
+              {
+                guard: ({ context }) =>
+                  context.activatedAt !== undefined &&
+                  context.editedRoute === true,
+                target: "Discarding",
+                actions: assign({
+                  closeFunc: ({ event }) => event.closeFunc,
+                }),
+              },
+              {
+                guard: ({ context }) => context.activatedAt !== undefined,
+                target: "Active",
+              },
+            ],
           },
           states: {
             "Pick Start Point": {
@@ -586,12 +597,22 @@ export const createDetourMachine = setup({
             "detour.discard-modal.cancel": {
               target: "Editing.History",
             },
-            "detour.discard-modal.confirm": {
-              target: "Active",
-              actions: assign(({ context }) => ({
-                ...context.savedContext,
-              })),
-            },
+            "detour.discard-modal.confirm": [
+              {
+                guard: ({ context }) => !context.closeFunc,
+                target: "Active",
+                actions: assign(({ context }) => {
+                  return {
+                    ...context.savedContext,
+                  }
+                }),
+              },
+              {
+                guard: ({ context }) => !!context.closeFunc,
+                actions: ({ context }) =>
+                  context.closeFunc && context.closeFunc(),
+              },
+            ],
           },
         },
 
@@ -910,6 +931,7 @@ type MachineContext = {
   editedSelectedDuration?: string
   editedRoute?: boolean
   savedContext?: MachineContext
+  closeFunc?: Function
 }
 
 /**

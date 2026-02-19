@@ -229,7 +229,7 @@ export const DiversionPage = ({
       ? () => send({ type: "detour.route-pattern.open" })
       : undefined
     const onCancelEdit = isActiveDetour
-      ? () => send({ type: "detour.edit.open-discard-modal" })
+      ? () => send({ type: "detour.edit.cancel" })
       : undefined
 
     const onActivate = isActiveDetour
@@ -652,7 +652,17 @@ export const DiversionPage = ({
           ) : isMobile(displayType) ? (
             <div className="flex-grow-1 fw-semibold text-center">Detours</div>
           ) : null}
-          <CloseButton className="p-4" onClick={onClose} />
+          <CloseButton
+            className="p-4"
+            onClick={() =>
+              snapshot.can({ type: "detour.edit.cancel" })
+                ? send({
+                    type: "detour.edit.cancel",
+                    closeFunc: onClose,
+                  })
+                : onClose()
+            }
+          />
         </header>
 
         <div

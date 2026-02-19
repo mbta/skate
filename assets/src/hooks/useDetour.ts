@@ -35,7 +35,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
   // Record snapshots when changed
   useEffect(() => {
     const snapshotSubscription = actorRef.subscribe((snap) => {
-      console.log(snap.value, snap.historyValue)
       const persistedSnapshot = actorRef.getPersistedSnapshot()
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
