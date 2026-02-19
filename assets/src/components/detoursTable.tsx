@@ -6,7 +6,6 @@ import { useCurrentTime } from "../hooks/useCurrentTime"
 import {
   timeAgoLabel,
   timeAgoLabelFromDate,
-  formattedTimeDiff,
   dateFromEpochSeconds,
 } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
@@ -38,7 +37,7 @@ export const timestampLabelFromStatus = (status: DetourStatus) => {
     case DetourStatus.Draft:
       return "Last edited"
     case DetourStatus.Active:
-      return "On detour since"
+      return "Last published"
     case DetourStatus.Closed:
       return "Last used"
     default:
@@ -244,7 +243,9 @@ const PopulatedDetourRows = ({
             {status === DetourStatus.Active && detour.activatedAt ? (
               <>
                 {isUpdatedAfterActivated(detour) && (
-                  <div>{timeAgoLabel(epochNowInSeconds, detour.updatedAt)}</div>
+                  <span className="time-pill mb-1">
+                    {timeAgoLabel(epochNowInSeconds, detour.updatedAt)} - Edited
+                  </span>
                 )}
                 <div>{timeAgoLabelFromDate(detour.activatedAt, epochNow)}</div>
               </>

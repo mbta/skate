@@ -90,6 +90,14 @@ $table-border-radius: 0.5rem;
       }
     }
   }
+
+  .time-pill {
+    display: inline-block;
+    border-radius: 8px;
+    background-color: tokens.$gray-200;
+    padding: 1px 5px;
+    width: max-content;
+  }
 }
 
 .c-detours-table__route-info-text {
