@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
+exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
 <body>
   <div>
     <div
@@ -53,7 +53,7 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
-              On detour since
+              Last published
             </th>
             <th
               class="px-3 py-4 u-hide-for-mobile"
@@ -99,46 +99,15 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              23 hours ago
-            </td>
-          </tr>
-          <tr>
-            <td
-              class="align-middle p-3"
-            >
-              <div
-                class="d-flex"
+              <span
+                class="time-pill mb-1"
               >
-                <div
-                  class="c-route-pill c-route-pill--bus"
-                >
-                  5
-                </div>
-                <div
-                  class="c-detours-table__route-info-text d-inline-block"
-                >
-                  <div
-                    class="pb-1 fs-4 fw-semibold"
-                  >
-                    Headsign 5
-                  </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
-                  >
-                    Inbound
-                  </div>
-                </div>
+                18 hours ago
+                 - Edited
+              </span>
+              <div>
+                23 hours ago
               </div>
-            </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            >
-              Street A5 & Avenue B5
-            </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            >
-              Aug 27, 2024
             </td>
           </tr>
           <tr>
@@ -177,7 +146,62 @@ exports[`DetourListPage orders active detour list by activatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Aug 26, 2024
+              <span
+                class="time-pill mb-1"
+              >
+                Aug 28, 2024
+                 - Edited
+              </span>
+              <div>
+                Aug 26, 2024
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="align-middle p-3"
+            >
+              <div
+                class="d-flex"
+              >
+                <div
+                  class="c-route-pill c-route-pill--bus"
+                >
+                  5
+                </div>
+                <div
+                  class="c-detours-table__route-info-text d-inline-block"
+                >
+                  <div
+                    class="pb-1 fs-4 fw-semibold"
+                  >
+                    Headsign 5
+                  </div>
+                  <div
+                    class="c-detours-table__route-info-direction fs-6"
+                  >
+                    Inbound
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              Street A5 & Avenue B5
+            </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            >
+              <span
+                class="time-pill mb-1"
+              >
+                Aug 28, 2024
+                 - Edited
+              </span>
+              <div>
+                Aug 27, 2024
+              </div>
             </td>
           </tr>
         </tbody>
@@ -267,7 +291,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
-              On detour since
+              Last published
             </th>
             <th
               class="px-3 py-4 u-hide-for-mobile"
@@ -313,7 +337,9 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Just now
+              <div>
+                Just now
+              </div>
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -357,7 +383,9 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Just now
+              <div>
+                Just now
+              </div>
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -719,7 +747,7 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
-              On detour since
+              Last published
             </th>
             <th
               class="px-3 py-4 u-hide-for-mobile"
@@ -765,7 +793,9 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Just now
+              <div>
+                Just now
+              </div>
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
@@ -809,7 +839,9 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              Just now
+              <div>
+                Just now
+              </div>
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"

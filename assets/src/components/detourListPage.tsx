@@ -40,9 +40,7 @@ export const DetourListPage = () => {
 
   const activeDetours =
     activeDetoursMap &&
-    Object.values(activeDetoursMap).sort(
-      (a, b) => b.activatedAt - a.activatedAt
-    )
+    Object.values(activeDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
   const draftDetours =
     draftDetoursMap &&
     Object.values(draftDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)

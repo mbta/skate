@@ -102,7 +102,7 @@ describe("DetourListPage", () => {
     expect(screen.queryByText("No closed detours.")).not.toBeInTheDocument()
   })
 
-  test("orders active detour list by activatedAt value", async () => {
+  test("orders active detour list by updatedAt value", async () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
     jest.mocked(useActiveDetours).mockReturnValue({
@@ -110,7 +110,7 @@ describe("DetourListPage", () => {
         // Drafted third
         id: 8,
         // Updated second
-        updatedAt: 1724876500,
+        updatedAt: 1724816500,
         // Activated second
         activatedAt: new Date(1724766392000),
       }),
@@ -118,7 +118,7 @@ describe("DetourListPage", () => {
         // Drafted second
         id: 7,
         // Updated third
-        updatedAt: 1724876600,
+        updatedAt: 1724856600,
         // Activated first
         activatedAt: new Date(1724656392000),
       }),
@@ -126,7 +126,7 @@ describe("DetourListPage", () => {
         // Drafted first
         id: 1,
         // Updated first
-        updatedAt: 1724876400,
+        updatedAt: 1724896400,
         // Activated third
         activatedAt: new Date(1724876392000),
       }),
