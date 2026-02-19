@@ -16,34 +16,7 @@ import { type, optional, coerce, date, string } from "superstruct"
 
 export const createDetourMachine = setup({
   types: {
-    context: {} as {
-      uuid: number | undefined
-      route?: Route
-      routePattern?: RoutePattern
-
-      routePatterns?: RoutePattern[]
-
-      waypoints: ShapePoint[]
-      startPoint: ShapePoint | undefined
-      endPoint: ShapePoint | undefined
-
-      nearestIntersection: string | null
-
-      detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
-
-      finishedDetour: FinishedDetour | undefined | null
-
-      editedDirections?: string
-
-      selectedDuration?: string
-      selectedReason?: string
-
-      activatedAt?: Date
-      updatedAt?: Date
-
-      editedSelectedDuration?: string
-      editedRoute?: boolean
-    },
+    context: {} as MachineContext,
 
     input: {} as
       | {
@@ -412,6 +385,7 @@ export const createDetourMachine = setup({
             },
             "detour.edit.cancel": {
               target: "Active",
+              actions: assign(({ context }) => ({ ...context.savedContext })),
             },
           },
           states: {
@@ -836,6 +810,12 @@ export const createDetourMachine = setup({
           on: {
             "detour.edit.resume": {
               target: "Editing.Finished Drawing",
+              actions: assign({
+                savedContext: ({ context }) => ({
+                  ...context,
+                  savedContext: undefined,
+                }),
+              }),
             },
           },
           onDone: {
@@ -882,6 +862,36 @@ export const createDetourMachine = setup({
     },
   },
 })
+
+type MachineContext = {
+  uuid: number | undefined
+  route?: Route
+  routePattern?: RoutePattern
+
+  routePatterns?: RoutePattern[]
+
+  waypoints: ShapePoint[]
+  startPoint: ShapePoint | undefined
+  endPoint: ShapePoint | undefined
+
+  nearestIntersection: string | null
+
+  detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
+
+  finishedDetour: FinishedDetour | undefined | null
+
+  editedDirections?: string
+
+  selectedDuration?: string
+  selectedReason?: string
+
+  activatedAt?: Date
+  updatedAt?: Date
+
+  editedSelectedDuration?: string
+  editedRoute?: boolean
+  savedContext?: MachineContext
+}
 
 /**
  * This refers to the type of `input` provided in

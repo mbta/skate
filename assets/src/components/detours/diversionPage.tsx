@@ -27,6 +27,7 @@ import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
 import { DeleteDetourModal } from "./deleteDetourModal"
+import { DiscardChangesModal } from "./discardChangesModal"
 import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
 import useScreenSize from "../../hooks/useScreenSize"
@@ -121,6 +122,7 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
+    discardChanges,
 
     selectedDuration,
     selectedReason,
@@ -227,9 +229,7 @@ export const DiversionPage = ({
     const onChangeRoute = isDraftDetour
       ? () => send({ type: "detour.route-pattern.open" })
       : undefined
-    const onCancelEdit = isActiveDetour
-      ? () => send({ type: "detour.edit.cancel" })
-      : undefined
+    const onCancelEdit = isActiveDetour ? discardChanges : undefined
 
     const onActivate = isActiveDetour
       ? snapshot.can({ type: "detour.share.activate-modal.update" })

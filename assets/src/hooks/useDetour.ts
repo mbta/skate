@@ -35,6 +35,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
   // Record snapshots when changed
   useEffect(() => {
     const snapshotSubscription = actorRef.subscribe((snap) => {
+      console.log(snap.context)
       const persistedSnapshot = actorRef.getPersistedSnapshot()
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
@@ -131,6 +132,10 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
 
   const editDetour = () => {
     send({ type: "detour.edit.resume" })
+  }
+
+  const discardChanges = () => {
+    send({ type: "detour.edit.cancel" })
   }
 
   const missedStops = finishedDetour?.missedStops || undefined
@@ -230,6 +235,8 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
       : undefined,
     /** When present, puts this detour in "edit mode" */
     editDetour,
+    /** Resets detour to original snapshot */
+    discardChanges,
 
     /**
      * Detour duration as selected in the activate-detour flow
