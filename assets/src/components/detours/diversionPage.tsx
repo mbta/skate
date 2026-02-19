@@ -122,7 +122,6 @@ export const DiversionPage = ({
     clear,
     reviewDetour,
     editDetour,
-    discardChanges,
 
     selectedDuration,
     selectedReason,
@@ -229,7 +228,9 @@ export const DiversionPage = ({
     const onChangeRoute = isDraftDetour
       ? () => send({ type: "detour.route-pattern.open" })
       : undefined
-    const onCancelEdit = isActiveDetour ? discardChanges : undefined
+    const onCancelEdit = isActiveDetour
+      ? () => send({ type: "detour.edit.open-discard-modal" })
+      : undefined
 
     const onActivate = isActiveDetour
       ? snapshot.can({ type: "detour.share.activate-modal.update" })
@@ -289,8 +290,9 @@ export const DiversionPage = ({
         />
       )
     } else if (
-      snapshot.matches({ "Detour Drawing": "Editing" }) &&
-      routePattern
+      routePattern &&
+      (snapshot.matches({ "Detour Drawing": "Discarding" }) ||
+        snapshot.matches({ "Detour Drawing": "Editing" }))
     ) {
       return (
         <DrawDetourPanel
@@ -333,6 +335,22 @@ export const DiversionPage = ({
               }
             />
           ) : null}
+          {snapshot.matches({
+            "Detour Drawing": "Discarding",
+          }) && (
+            <DiscardChangesModal
+              onConfirm={() => send({ type: "detour.discard-modal.confirm" })}
+              onCancel={() => send({ type: "detour.discard-modal.cancel" })}
+              affectedRoute={
+                <AffectedRoute
+                  routeName={routeName ?? "??"}
+                  routeDescription={routeDescription ?? "??"}
+                  routeOrigin={routeOrigin ?? "??"}
+                  routeDirection={routeDirection ?? "??"}
+                />
+              }
+            />
+          )}
         </DrawDetourPanel>
       )
     } else if (

@@ -47,10 +47,13 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.done" }
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.clear-detour" }
+      | { type: "detour.edit.open-discard-modal" }
       | { type: "detour.edit.cancel" }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.undo" }
+      | { type: "detour.discard-modal.confirm" }
+      | { type: "detour.discard-modal.cancel" }
       | { type: "detour.share.edit-directions"; detourText: string }
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.share.open-activate-modal" }
@@ -383,9 +386,8 @@ export const createDetourMachine = setup({
               target: ".Pick Start Point",
               actions: "detour.clear",
             },
-            "detour.edit.cancel": {
-              target: "Active",
-              actions: assign(({ context }) => ({ ...context.savedContext })),
+            "detour.edit.open-discard-modal": {
+              target: "Discarding",
             },
           },
           states: {
@@ -556,6 +558,9 @@ export const createDetourMachine = setup({
             Done: {
               type: "final",
             },
+            History: {
+              type: "history",
+            },
           },
 
           onDone: {
@@ -573,6 +578,20 @@ export const createDetourMachine = setup({
                 ].join("\n")
               },
             }),
+          },
+        },
+
+        Discarding: {
+          on: {
+            "detour.discard-modal.cancel": {
+              target: "Editing.History",
+            },
+            "detour.discard-modal.confirm": {
+              target: "Active",
+              actions: assign(({ context }) => ({
+                ...context.savedContext,
+              })),
+            },
           },
         },
 
