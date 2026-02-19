@@ -268,7 +268,7 @@ export const DetourMap = ({
 
         {waypoints.map((position, index) => (
           <WaypointMarker
-            key={JSON.stringify(position)}
+            key={`${index}-${position.lat}-${position.lon}`}
             position={shapePointToLatLngLiteral(position)}
             onClick={() => onDeleteWaypoint?.(index)}
           />

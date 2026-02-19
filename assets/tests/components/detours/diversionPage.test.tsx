@@ -165,6 +165,55 @@ describe("DiversionPage", () => {
     })
   })
 
+  test("hovering waypoint shows waypoint tooltip", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    act(() => {
+      fireEvent.mouseOver(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")!
+      )
+    })
+
+    expect(
+      await screen.findByRole("tooltip", { name: "Click to remove" })
+    ).toBeVisible()
+  })
+
+  test("clicking a waypoint deletes the waypoint", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+    act(() => {
+      fireEvent.click(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")!
+      )
+    })
+
+    await waitFor(() => {
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(1)
+    })
+  })
+
   test("directions starts out with placeholder text", async () => {
     render(<DiversionPage />)
 
@@ -415,6 +464,42 @@ describe("DiversionPage", () => {
       expect(
         container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
       ).toHaveLength(1)
+
+      expect(screen.getAllByTitle("Detour End")).toHaveLength(1)
+    })
+  })
+
+  test("clicking a waypoint after the detour is ended deletes the waypoint", async () => {
+    const { container } = render(<DiversionPage />)
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    act(() => {
+      fireEvent.click(container.querySelector(".c-vehicle-map")!)
+    })
+
+    act(() => {
+      fireEvent.click(originalRouteShape.get(container))
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTitle("Detour End")).toBeVisible()
+    })
+
+    act(() => {
+      fireEvent.click(
+        container.querySelector(".c-detour_map-circle-marker--detour-point")!
+      )
+    })
+
+    await waitFor(() => {
+      expect(screen.getAllByTitle("Detour Start")).toHaveLength(1)
+
+      expect(
+        container.querySelectorAll(".c-detour_map-circle-marker--detour-point")
+      ).toHaveLength(0)
 
       expect(screen.getAllByTitle("Detour End")).toHaveLength(1)
     })
