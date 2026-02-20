@@ -560,48 +560,52 @@ defmodule Skate.Detours.Detours do
       "swiftly_sync swiftly_matched_adjustments=#{MapSet.size(swiftly_detour_ids)} extra_in_swiftly=#{length(extra_in_swiftly)} missing_in_swiftly=#{length(missing_in_swiftly)}"
     )
 
-    if length(extra_in_swiftly) > 0 do
-      Enum.each(extra_in_swiftly, fn extra_detour_id ->
-        adjustment_id =
-          swiftly_adjustments_map
-          |> Map.get(extra_detour_id)
-          |> Map.get(:id)
+    Enum.each(extra_in_swiftly, fn extra_detour_id ->
+      adjustment_id =
+        swiftly_adjustments_map
+        |> Map.get(extra_detour_id)
+        |> Map.get(:id)
 
-        if adjustment_id do
-          result = adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())
+      sync_delete_extra(adjustments_module, extra_detour_id, adjustment_id)
+    end)
 
-          case result do
-            {:error, reason} ->
-              Logger.error(
-                "swiftly_sync delete_extra_failed detour_id=#{extra_detour_id} adjustment_id=#{adjustment_id} reason=#{inspect(reason)}"
-              )
-
-            _ ->
-              Logger.info(
-                "swiftly_sync deleted_extra detour_id=#{extra_detour_id} adjustment_id=#{adjustment_id}"
-              )
-          end
-        end
-      end)
-    end
-
-    if length(missing_in_swiftly) > 0 do
-      Enum.each(missing_in_swiftly, fn missing_detour_id ->
-        result = create_in_swiftly(missing_detour_id, adjustments_module)
-
-        case result do
-          {:error, reason} ->
-            Logger.error(
-              "swiftly_sync create_missing_failed detour_id=#{missing_detour_id} reason=#{inspect(reason)}"
-            )
-
-          _ ->
-            Logger.info("swiftly_sync created_missing detour_id=#{missing_detour_id}")
-        end
-      end)
-    end
+    Enum.each(missing_in_swiftly, fn missing_detour_id ->
+      sync_create_missing(adjustments_module, missing_detour_id)
+    end)
 
     Logger.info("swiftly_sync completed")
+  end
+
+  defp sync_delete_extra(_adjustments_module, _detour_id, nil), do: :noop
+
+  defp sync_delete_extra(adjustments_module, detour_id, adjustment_id) do
+    result = adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())
+
+    case result do
+      {:error, reason} ->
+        Logger.error(
+          "swiftly_sync delete_extra_failed detour_id=#{detour_id} adjustment_id=#{adjustment_id} reason=#{inspect(reason)}"
+        )
+
+      _ ->
+        Logger.info(
+          "swiftly_sync deleted_extra detour_id=#{detour_id} adjustment_id=#{adjustment_id}"
+        )
+    end
+  end
+
+  defp sync_create_missing(adjustments_module, detour_id) do
+    result = create_in_swiftly(detour_id, adjustments_module)
+
+    case result do
+      {:error, reason} ->
+        Logger.error(
+          "swiftly_sync create_missing_failed detour_id=#{detour_id} reason=#{inspect(reason)}"
+        )
+
+      _ ->
+        Logger.info("swiftly_sync created_missing detour_id=#{detour_id}")
+    end
   end
 
   def get_swiftly_adjustments(adjustments_module \\ service_adjustments_module()) do
