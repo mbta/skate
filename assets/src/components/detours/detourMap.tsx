@@ -395,20 +395,29 @@ const WaypointMarker = ({
 }: {
   position: LatLngLiteral
   onClick?: LeafletMouseEventHandlerFn
-}) => (
-  <ReactMarker
-    interactive={true}
-    position={position}
-    divIconSettings={{
-      iconSize: [10, 10],
-      className: "",
-    }}
-    eventHandlers={{ click: onClick }}
-    icon={<WaypointIcon />}
-  >
-    <MapTooltip>Click to remove</MapTooltip>
-  </ReactMarker>
-)
+}) => {
+  const isInteractive = (onClick && true) || false
+
+  return (
+    <ReactMarker
+      key={`${isInteractive}`}
+      interactive={isInteractive}
+      position={position}
+      divIconSettings={{
+        iconSize: [10, 10],
+        className: "",
+      }}
+      eventHandlers={
+        (isInteractive || undefined) && {
+          click: onClick,
+        }
+      }
+      icon={<WaypointIcon />}
+    >
+      {isInteractive && <MapTooltip>Click to remove</MapTooltip>}
+    </ReactMarker>
+  )
+}
 
 export const WaypointIcon = () => (
   <svg
