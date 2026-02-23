@@ -112,7 +112,11 @@ defmodule Realtime.Vehicles do
               trip.block_id == vehicle_or_ghost.block_id && trip.route_id == route_id
             end)
 
-          block_date = Map.fetch!(date_by_block_id, incoming_trip.block_id)
+          block_date =
+            case Map.fetch(date_by_block_id, incoming_trip.block_id) do
+              {:ok, date} -> date
+              _ -> Util.Time.date_of_timestamp(System.system_time(:second))
+            end
 
           incoming_trip_start_timestamp =
             Util.Time.timestamp_for_time_of_day(incoming_trip.start_time, block_date)
