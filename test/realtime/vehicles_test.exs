@@ -246,6 +246,54 @@ defmodule Realtime.VehiclesTest do
              }
     end
 
+    test "handles interlining vehicles with missing block dates" do
+      on_route_vehicle =
+        build(:vehicle,
+          id: "on_route",
+          route_id: "route1",
+          block_id: "block2"
+        )
+
+      interlining_vehicle =
+        build(:vehicle,
+          id: "interlining",
+          route_id: "route2",
+          block_id: "block1"
+        )
+
+      trip =
+        build(:trip, %{
+          id: "trip1",
+          block_id: "block1",
+          route_id: "route1",
+          direction_id: 0,
+          stop_times: [
+            build(:gtfs_stoptime, %{
+              stop_id: "stop1",
+              time: 0,
+              timepoint_id: "timepoint"
+            })
+          ],
+          start_time: 0,
+          end_time: 0
+        })
+
+      assert Vehicles.group_by_route_with_blocks(
+               [on_route_vehicle, interlining_vehicle],
+               [trip],
+               %{},
+               %{},
+               0,
+               @timepoint_names_by_id
+             ) == %{
+               "route1" => [
+                 on_route_vehicle,
+                 %{interlining_vehicle | incoming_trip_direction_id: 0}
+               ],
+               "route2" => [interlining_vehicle]
+             }
+    end
+
     test "includes trip without a vehicle as a ghost" do
       trip =
         build(:trip, %{

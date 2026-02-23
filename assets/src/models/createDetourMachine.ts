@@ -926,7 +926,6 @@ type MachineContext = {
   selectedReason?: string
 
   activatedAt?: Date
-  updatedAt?: Date
 
   editedSelectedDuration?: string
   editedRoute?: boolean
@@ -951,6 +950,5 @@ export const DetourSnapshotData = type({
   context: type({
     // Convert serialized dates back into `Date`'s
     activatedAt: optional(coerce(date(), string(), (str) => new Date(str))),
-    updatedAt: optional(coerce(date(), string(), (str) => new Date(str))),
   }),
 })
