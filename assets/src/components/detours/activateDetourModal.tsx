@@ -171,7 +171,7 @@ const Confirming = ({ isActiveDetour }: { isActiveDetour: boolean }) => (
   <>
     <StepperBar totalSteps={3} currentStep={3} />
     <StepSubtitle>
-      Step 3 of 3 - {isActiveDetour ? "Update" : "Activate"} detour
+      Step 3 of 3 - {isActiveDetour ? "Update detour" : "Activate detour"}
     </StepSubtitle>
     <p>Are you sure that you want to activate this detour?</p>
     <p>
