@@ -82,10 +82,9 @@ export const SurroundingModal = ({
         <Button
           variant="primary"
           onClick={onActivate}
-          data-fs-element={isActiveDetour 
-            ? "Confirm Update Detour"
-            : "Confirm Active Detour"
-			}
+          data-fs-element={
+            isActiveDetour ? "Confirm Update Detour" : "Confirm Active Detour"
+          }
         >
           {isActiveDetour ? "Update detour" : "Activate detour"}
         </Button>
