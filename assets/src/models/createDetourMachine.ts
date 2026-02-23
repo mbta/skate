@@ -92,6 +92,7 @@ export const createDetourMachine = setup({
       | { type: "detour.share.activate-modal.next" }
       | { type: "detour.share.activate-modal.cancel" }
       | { type: "detour.share.activate-modal.back" }
+      | { type: "detour.share.activate-modal.update" }
       | { type: "detour.share.activate-modal.activate" }
       | { type: "detour.active.open-change-duration-modal" }
       | {
@@ -720,6 +721,9 @@ export const createDetourMachine = setup({
                     },
                     "detour.share.activate-modal.activate": {
                       target: "Activating Server",
+                    },
+                    "detour.share.activate-modal.update": {
+                      target: "Done",
                     },
                   },
                 },

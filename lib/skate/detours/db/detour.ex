@@ -66,6 +66,7 @@ defmodule Skate.Detours.Db.Detour do
     |> add_start_point()
     |> add_end_point()
     |> add_waypoints()
+    |> add_updated_at()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
   end
@@ -106,6 +107,32 @@ defmodule Skate.Detours.Db.Detour do
 
       {{:data, nil}, {:ok, _state}} ->
         put_change(changeset, :status, :draft)
+
+      _ ->
+        changeset
+    end
+  end
+
+  # Do not update updated_at if the changeset only contains state changes
+  defp add_updated_at(changeset) when map_size(changeset.changes) == 1 do
+    changeset
+  end
+
+  defp add_updated_at(changeset) do
+    case {fetch_field(changeset, :status), fetch_change(changeset, :state)} do
+      {{:data, :active}, {:ok, %{"value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}}}} ->
+        put_change(
+          changeset,
+          :updated_at,
+          NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
+        )
+
+      {{:data, :draft}, {:ok, _}} ->
+        put_change(
+          changeset,
+          :updated_at,
+          NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
+        )
 
       _ ->
         changeset
