@@ -82,9 +82,9 @@ export const SurroundingModal = ({
         <Button
           variant="primary"
           onClick={onActivate}
-          data-fs-element={`Confirm ${
-            isActiveDetour ? "Update" : "Activate"
-          } Detour`}
+          data-fs-element={
+            isActiveDetour ? "Confirm Update Detour" : "Confirm Active Detour"
+          }
         >
           {isActiveDetour ? "Update detour" : "Activate detour"}
         </Button>
@@ -170,13 +170,9 @@ const Confirming = ({ isActiveDetour }: { isActiveDetour: boolean }) => (
   <>
     <StepperBar totalSteps={3} currentStep={3} />
     <StepSubtitle>
-      Step 3 of 3 - {isActiveDetour ? "Update" : "Activate"} detour
+      Step 3 of 3 - {isActiveDetour ? "Update detour" : "Activate detour"}
     </StepSubtitle>
-    <p>Are you sure that you want to activate this detour?</p>
-    <p>
-      Once activated, other Skate users and OIOs will be able to see this detour
-      information in Skate.
-    </p>
+    information in Skate.
     <p>You still need to radio operators and create the log in IRIS.</p>
   </>
 )
