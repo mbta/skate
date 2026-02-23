@@ -172,7 +172,11 @@ const Confirming = ({ isActiveDetour }: { isActiveDetour: boolean }) => (
     <StepSubtitle>
       Step 3 of 3 - {isActiveDetour ? "Update detour" : "Activate detour"}
     </StepSubtitle>
-    information in Skate.
+    <p>Are you sure that you want to activate this detour?</p>
+    <p>
+      Once activated, other Skate users and OIOs will be able to see this detour
+      information in Skate.
+    </p>
     <p>You still need to radio operators and create the log in IRIS.</p>
   </>
 )
