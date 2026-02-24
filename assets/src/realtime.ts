@@ -130,6 +130,7 @@ export type BlockWaiverNotification = {
 export enum DetourNotificationStatus {
   Activated = "activated",
   Deactivated = "deactivated",
+  Updated = "updated",
 }
 
 export type DetourNotification = {

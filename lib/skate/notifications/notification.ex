@@ -298,6 +298,21 @@ defmodule Skate.Notifications.Notification do
     |> broadcast_notification(:users_from_notification)
   end
 
+  @doc """
+  Creates a new Detour Status notification for an updated detour and broadcasts to subscribed users.
+  """
+  def create_updated_detour_notification_from_detour(%Skate.Detours.Db.Detour{} = detour) do
+    detour
+    |> Ecto.build_assoc(:detour_status_notifications)
+    |> Notifications.Db.Detour.changeset(%{
+      status: :updated,
+      route_id: detour.state["context"]["route"]["id"]
+    })
+    |> Skate.Repo.insert()
+    |> log_notification()
+    |> broadcast_notification(:users_from_notification)
+  end
+
   @spec unexpired_notifications_for_user(DbUser.id(), (-> Util.Time.timestamp())) :: [t()]
   def unexpired_notifications_for_user(user_id, now_fn \\ &Util.Time.now/0) do
     import Notifications.Db.Notification.Queries
