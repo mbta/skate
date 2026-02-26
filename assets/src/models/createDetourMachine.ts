@@ -848,10 +848,14 @@ export const createDetourMachine = setup({
                     },
                   },
                 },
-                Done: { type: "final", tags: "no-save" },
+                Done: {
+                  type: "final",
+                  tags: "no-save",
+                },
               },
               onDone: {
                 target: "Done",
+                actions: assign({ editedRoute: false }),
               },
             },
             Deleting: {
