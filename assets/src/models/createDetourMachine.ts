@@ -518,7 +518,7 @@ export const createDetourMachine = setup({
                   actions: [
                     assign({
                       waypoints: ({ context, event }) => {
-                        const waypoints = context.waypoints
+                        const waypoints = [...context.waypoints]
                         waypoints[event.index] = event.position
                         return waypoints
                       },
@@ -594,6 +594,7 @@ export const createDetourMachine = setup({
                       type: "detour.delete-waypoint",
                       params: ({ event }) => event,
                     },
+                    assign({ editedRoute: true }),
                   ],
                 },
                 "detour.edit.move-waypoint": {
@@ -602,10 +603,11 @@ export const createDetourMachine = setup({
                   actions: [
                     assign({
                       waypoints: ({ context, event }) => {
-                        const waypoints = context.waypoints
+                        const waypoints = [...context.waypoints]
                         waypoints[event.index] = event.position
                         return waypoints
                       },
+                      editedRoute: true,
                     }),
                   ],
                 },
