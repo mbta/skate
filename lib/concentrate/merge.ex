@@ -69,11 +69,20 @@ defmodule Concentrate.Merge do
 
   @impl GenStage
   def handle_events(events, from, state) do
-    latest_data = List.last(events)
+    table =
+      Enum.reduce(events, state.table, fn event, table ->
+        case event do
+          {:partial, data} ->
+            Table.partial_update(table, from, data)
+
+          data ->
+            Table.update(table, from, data)
+        end
+      end)
 
     state = %{
       state
-      | table: Table.update(state.table, from, latest_data),
+      | table: table,
         demand: Map.update!(state.demand, from, fn demand -> demand - length(events) end)
     }
 

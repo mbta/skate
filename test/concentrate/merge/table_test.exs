@@ -5,6 +5,46 @@ defmodule Concentrate.Merge.TableTest do
   import Concentrate.Merge.Table
   alias Concentrate.{MockMerge, TestMergeable}
 
+  describe "partial_update/3" do
+    test "adds new items without removing existing items" do
+      from = :from
+      table = new()
+      table = add(table, from)
+
+      # Add initial items
+      initial_items = [%TestMergeable{key: 1, value: "a"}, %TestMergeable{key: 2, value: "b"}]
+      table = update(table, from, initial_items)
+      assert length(items(table)) == 2
+
+      # Partial update with a new item
+      new_items = [%TestMergeable{key: 3, value: "c"}]
+      table = partial_update(table, from, new_items)
+
+      assert length(items(table)) == 3
+      assert Enum.any?(items(table), fn item -> item.key == 1 end)
+      assert Enum.any?(items(table), fn item -> item.key == 2 end)
+      assert Enum.any?(items(table), fn item -> item.key == 3 end)
+    end
+
+    test "updates existing items with matching keys" do
+      from = :from
+      table = new()
+      table = add(table, from)
+
+      # Add initial items
+      initial_items = [%TestMergeable{key: 1, value: "a"}, %TestMergeable{key: 2, value: "b"}]
+      table = update(table, from, initial_items)
+
+      # Partial update with an item that has a matching key
+      updated_items = [%TestMergeable{key: 1, value: "updated"}]
+      table = partial_update(table, from, updated_items)
+
+      assert length(items(table)) == 2
+      item_1 = Enum.find(items(table), fn item -> item.key == 1 end)
+      assert item_1.value == "updated"
+    end
+  end
+
   describe "items/2" do
     property "with one source, returns the data" do
       check all(mergeables <- TestMergeable.mergeables()) do

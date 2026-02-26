@@ -12,6 +12,8 @@ defmodule Realtime.Supervisor do
 
   @impl true
   def init(:ok) do
+    mqtt_config = Application.get_env(:skate, Skate.MqttConnection)
+
     children = [
       {Registry, keys: :duplicate, name: registry_name()},
       {Realtime.BlockWaiverStore, name: Realtime.BlockWaiverStore.default_name()},
@@ -22,6 +24,8 @@ defmodule Realtime.Supervisor do
       {Concentrate.Supervisor,
        [
          busloc_url: Application.get_env(:skate, :busloc_url),
+         busloc_topic: Application.get_env(:skate, :busloc_topic),
+         broker_configs: mqtt_config[:broker_configs],
          swiftly_authorization_key: Application.get_env(:skate, :swiftly_authorization_key),
          swiftly_realtime_vehicles_url:
            Application.get_env(:skate, :swiftly_realtime_vehicles_url),

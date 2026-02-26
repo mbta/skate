@@ -35,6 +35,17 @@ defmodule Concentrate.Pipeline do
     )
   end
 
+  @spec mqtt_source(term(), module(), keyword()) :: Supervisor.child_spec()
+  def mqtt_source(source, parser, opts) do
+    Supervisor.child_spec(
+      {
+        Concentrate.Producer.Mqtt,
+        [name: source, parser: parser] ++ opts
+      },
+      id: source
+    )
+  end
+
   @spec consumer(module(), term()) :: Supervisor.child_spec()
   def consumer(module, provider) do
     Supervisor.child_spec({module, subscribe_to: [{provider, [max_demand: 1]}]}, [])
