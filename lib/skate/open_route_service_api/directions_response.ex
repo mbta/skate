@@ -9,6 +9,7 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsResponse do
   """
   @type t() :: %__MODULE__{
           coordinates: [[float()]],
+          waypoint_indexes: [pos_integer()],
           directions: [
             %{
               instruction: binary(),
@@ -34,5 +35,5 @@ defmodule Skate.OpenRouteServiceAPI.DirectionsResponse do
           | :keep_left
           | :keep_right
 
-  defstruct coordinates: [], directions: []
+  defstruct coordinates: [], directions: [], waypoint_indexes: []
 end

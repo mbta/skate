@@ -25,6 +25,7 @@ defmodule Skate.OpenRouteServiceAPI do
             %{"lat" => 0.5, "lon" => 0.1},
             %{"lat" => 1, "lon" => 0}
           ],
+          waypoint_indexes: [0, 2],
           directions: [
             %{
               instruction: "R - 1st Avenue"
@@ -81,7 +82,7 @@ defmodule Skate.OpenRouteServiceAPI do
       "features" => [
         %{
           "geometry" => %{"coordinates" => coordinates},
-          "properties" => %{"segments" => segments}
+          "properties" => %{"segments" => segments, "way_points" => waypoints}
         }
       ]
     } = payload
@@ -89,6 +90,7 @@ defmodule Skate.OpenRouteServiceAPI do
     {:ok,
      %DirectionsResponse{
        coordinates: Enum.map(coordinates, fn [lon, lat] -> %{"lat" => lat, "lon" => lon} end),
+       waypoint_indexes: waypoints,
        directions:
          segments
          |> Enum.flat_map(& &1["steps"])
