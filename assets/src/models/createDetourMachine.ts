@@ -50,6 +50,12 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.cancel"; closeFunc?: () => void }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
+      | { type: "detour.edit.delete-waypoint"; index: number }
+      | {
+          type: "detour.edit.move-waypoint"
+          index: number
+          position: ShapePoint
+        }
       | { type: "detour.edit.undo" }
       | { type: "detour.discard-modal.confirm" }
       | { type: "detour.discard-modal.cancel" }
@@ -229,6 +235,10 @@ export const createDetourMachine = setup({
     "detour.remove-end-point": assign({
       endPoint: undefined,
       finishedDetour: undefined,
+    }),
+    "detour.delete-waypoint": assign({
+      waypoints: ({ context }, params: { index: number }) =>
+        context.waypoints.filter((_, i) => i != params.index),
     }),
     "detour.clear": assign({
       startPoint: undefined,
@@ -492,6 +502,29 @@ export const createDetourMachine = setup({
                     },
                   ],
                 },
+                "detour.edit.delete-waypoint": {
+                  target: "Place Waypoint",
+                  reenter: true,
+                  actions: [
+                    {
+                      type: "detour.delete-waypoint",
+                      params: ({ event }) => event,
+                    },
+                  ],
+                },
+                "detour.edit.move-waypoint": {
+                  target: "Place Waypoint",
+                  reenter: true,
+                  actions: [
+                    assign({
+                      waypoints: ({ context, event }) => {
+                        const waypoints = context.waypoints
+                        waypoints[event.index] = event.position
+                        return waypoints
+                      },
+                    }),
+                  ],
+                },
                 "detour.edit.undo": [
                   {
                     guard: ({ context }) => context.waypoints.length === 0,
@@ -552,6 +585,29 @@ export const createDetourMachine = setup({
                 },
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
+                },
+                "detour.edit.delete-waypoint": {
+                  target: "Finished Drawing",
+                  reenter: true,
+                  actions: [
+                    {
+                      type: "detour.delete-waypoint",
+                      params: ({ event }) => event,
+                    },
+                  ],
+                },
+                "detour.edit.move-waypoint": {
+                  target: "Finished Drawing",
+                  reenter: true,
+                  actions: [
+                    assign({
+                      waypoints: ({ context, event }) => {
+                        const waypoints = context.waypoints
+                        waypoints[event.index] = event.position
+                        return waypoints
+                      },
+                    }),
+                  ],
                 },
               },
             },

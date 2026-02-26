@@ -22,7 +22,7 @@ defmodule Skate.Notifications.Db.Detour do
     belongs_to :detour, Skate.Detours.Db.Detour
     has_one :notification, Notifications.Db.Notification
 
-    field :status, Ecto.Enum, values: [:activated, :deactivated]
+    field :status, Ecto.Enum, values: [:activated, :deactivated, :updated]
 
     # Derived from the associated detour
     field :headsign, :any, virtual: true
