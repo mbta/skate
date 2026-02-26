@@ -657,9 +657,9 @@ export const DiversionPage = ({
           <CloseButton
             className="p-4"
             onClick={() =>
-              snapshot.can({ type: "detour.edit.cancel" })
+              snapshot.can({ type: "detour.edit.close" })
                 ? send({
-                    type: "detour.edit.cancel",
+                    type: "detour.edit.close",
                     closeFunc: onClose,
                   })
                 : onClose()

@@ -47,7 +47,8 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.done" }
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.clear-detour" }
-      | { type: "detour.edit.cancel"; closeFunc?: () => void }
+      | { type: "detour.edit.cancel" }
+      | { type: "detour.edit.close"; closeFunc?: () => void }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.delete-waypoint"; index: number }
@@ -384,6 +385,8 @@ export const createDetourMachine = setup({
           },
         },
 
+        // on edit, cancel goes to active and close goes onClose
+        // on edit, if active edited, cancel opens dialog, then goes active, close, opens dialog, fires onClose
         Editing: {
           initial: "Pick Start Point",
           on: {
@@ -401,15 +404,21 @@ export const createDetourMachine = setup({
                   context.activatedAt !== undefined &&
                   context.editedRoute === true,
                 target: "Discarding",
-                actions: assign({
-                  closeFunc: ({ event }) => event.closeFunc,
-                }),
               },
               {
                 guard: ({ context }) => context.activatedAt !== undefined,
                 target: "Active",
               },
             ],
+            "detour.edit.close": {
+              guard: ({ context }) =>
+                context.activatedAt !== undefined &&
+                context.editedRoute === true,
+              target: "Discarding",
+              actions: assign({
+                closeFunc: ({ event }) => event.closeFunc,
+              }),
+            },
           },
           states: {
             "Pick Start Point": {
@@ -582,7 +591,6 @@ export const createDetourMachine = setup({
                   target: "Done",
                   guard: ({ context }) =>
                     !context.activatedAt || context.editedRoute === true,
-                  actions: assign({ editedRoute: false }),
                 },
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
@@ -684,6 +692,15 @@ export const createDetourMachine = setup({
             "detour.share.activate": {
               target: "Active",
             },
+            "detour.edit.close": [
+              {
+                guard: ({ context }) => context.activatedAt !== undefined,
+                target: "Discarding",
+                actions: assign({
+                  closeFunc: ({ event }) => event.closeFunc,
+                }),
+              },
+            ],
           },
           states: {
             Reviewing: {
