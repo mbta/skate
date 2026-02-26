@@ -243,9 +243,9 @@ const PopulatedDetourRows = ({
             {status === DetourStatus.Active && detour.activatedAt ? (
               <>
                 {isUpdatedAfterActivated(detour) && (
-                  <span className="time-pill mb-1">
+                  <div className="time-pill mb-1">
                     {timeAgoLabel(epochNowInSeconds, detour.updatedAt)} - Edited
-                  </span>
+                  </div>
                 )}
                 <div>{timeAgoLabelFromDate(detour.activatedAt, epochNow)}</div>
               </>

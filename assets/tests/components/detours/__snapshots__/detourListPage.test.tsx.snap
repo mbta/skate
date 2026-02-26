@@ -99,12 +99,12 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              <span
+              <div
                 class="time-pill mb-1"
               >
                 18 hours ago
                  - Edited
-              </span>
+              </div>
               <div>
                 23 hours ago
               </div>
@@ -146,12 +146,12 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              <span
+              <div
                 class="time-pill mb-1"
               >
                 Aug 28, 2024
                  - Edited
-              </span>
+              </div>
               <div>
                 Aug 26, 2024
               </div>
@@ -193,12 +193,12 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
             <td
               class="align-middle p-3 u-hide-for-mobile"
             >
-              <span
+              <div
                 class="time-pill mb-1"
               >
                 Aug 28, 2024
                  - Edited
-              </span>
+              </div>
               <div>
                 Aug 27, 2024
               </div>
