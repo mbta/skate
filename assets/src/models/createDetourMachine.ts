@@ -77,6 +77,11 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | { type: "detour.edit.delete-waypoint"; index: number }
+      | {
+          type: "detour.edit.move-waypoint"
+          index: number
+          position: ShapePoint
+        }
       | { type: "detour.edit.undo" }
       | { type: "detour.share.edit-directions"; detourText: string }
       | { type: "detour.share.copy-detour"; detourText: string }
@@ -519,6 +524,19 @@ export const createDetourMachine = setup({
                     },
                   ],
                 },
+                "detour.edit.move-waypoint": {
+                  target: "Place Waypoint",
+                  reenter: true,
+                  actions: [
+                    assign({
+                      waypoints: ({ context, event }) => {
+                        const waypoints = context.waypoints
+                        waypoints[event.index] = event.position
+                        return waypoints
+                      },
+                    }),
+                  ],
+                },
                 "detour.edit.undo": [
                   {
                     guard: ({ context }) => context.waypoints.length === 0,
@@ -588,6 +606,19 @@ export const createDetourMachine = setup({
                       type: "detour.delete-waypoint",
                       params: ({ event }) => event,
                     },
+                  ],
+                },
+                "detour.edit.move-waypoint": {
+                  target: "Finished Drawing",
+                  reenter: true,
+                  actions: [
+                    assign({
+                      waypoints: ({ context, event }) => {
+                        const waypoints = context.waypoints
+                        waypoints[event.index] = event.position
+                        return waypoints
+                      },
+                    }),
                   ],
                 },
               },

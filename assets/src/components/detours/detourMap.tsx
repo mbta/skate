@@ -4,6 +4,8 @@ import React, {
   useContext,
   useEffect,
   useId,
+  useMemo,
+  useRef,
   useState,
 } from "react"
 import {
@@ -90,6 +92,7 @@ interface DetourMapProps {
   onAddWaypoint?: (point: ShapePoint) => void
 
   onDeleteWaypoint?: (index: number) => void
+  onMoveWaypoint?: (index: number, latLng: ShapePoint) => void
 
   /**
    * User signal to describe the state of the undo button.
@@ -136,6 +139,7 @@ export const DetourMap = ({
   onClickOriginalShape,
   onAddWaypoint,
   onDeleteWaypoint,
+  onMoveWaypoint,
 
   unfinishedRouteSegments,
 
@@ -169,6 +173,23 @@ export const DetourMap = ({
 
   const [oldMapCenter, setOldMapCenter] = useState<LatLngLiteral | undefined>(
     undefined
+  )
+
+  const waypoints_markers = useMemo(
+    () =>
+      waypoints.map((position, index) => (
+        <WaypointMarker
+          key={`${index}-${position.lat}-${position.lon}`}
+          position={shapePointToLatLngLiteral(position)}
+          onClick={onDeleteWaypoint && (() => onDeleteWaypoint(index))}
+          onDragEnd={
+            onMoveWaypoint &&
+            ((newLocation) =>
+              onMoveWaypoint(index, latLngLiteralToShapePoint(newLocation)))
+          }
+        />
+      )),
+    [waypoints, onMoveWaypoint, onDeleteWaypoint]
   )
 
   const CenteringElement = ({
@@ -266,13 +287,7 @@ export const DetourMap = ({
           <StartMarker position={shapePointToLatLngLiteral(startPoint)} />
         )}
 
-        {waypoints.map((position, index) => (
-          <WaypointMarker
-            key={`${index}-${position.lat}-${position.lon}`}
-            position={shapePointToLatLngLiteral(position)}
-            onClick={onDeleteWaypoint && (() => onDeleteWaypoint(index))}
-          />
-        ))}
+        {waypoints_markers}
 
         {endPoint && (
           <EndMarker position={shapePointToLatLngLiteral(endPoint)} />
@@ -392,16 +407,21 @@ const StartOrEndIcon = ({ classSuffix }: { classSuffix: string }) => (
 const WaypointMarker = ({
   position,
   onClick,
+  onDragEnd,
 }: {
   position: LatLngLiteral
   onClick?: LeafletMouseEventHandlerFn
+  onDragEnd?: (latlng: LatLngLiteral) => void
 }) => {
-  const isInteractive = (onClick && true) || false
+  const isInteractive = onClick || onDragEnd ? true : false
+  const markerRef = useRef<Leaflet.Marker | null>(null)
 
   return (
     <ReactMarker
       key={`${isInteractive}`}
       interactive={isInteractive}
+      draggable={isInteractive}
+      ref={markerRef}
       position={position}
       divIconSettings={{
         iconSize: [10, 10],
@@ -410,11 +430,19 @@ const WaypointMarker = ({
       eventHandlers={
         (isInteractive || undefined) && {
           click: onClick,
+          dragend: () => {
+            const marker = markerRef.current
+            if (marker != null) {
+              onDragEnd?.(marker.getLatLng())
+            }
+          },
         }
       }
       icon={<WaypointIcon />}
     >
-      {isInteractive && <MapTooltip>Click to remove</MapTooltip>}
+      {isInteractive && (
+        <MapTooltip>Drag to change route, click to remove</MapTooltip>
+      )}
     </ReactMarker>
   )
 }

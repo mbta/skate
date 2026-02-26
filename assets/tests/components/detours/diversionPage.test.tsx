@@ -187,7 +187,9 @@ describe("DiversionPage", () => {
     })
 
     expect(
-      await screen.findByRole("tooltip", { name: "Click to remove" })
+      await screen.findByRole("tooltip", {
+        name: "Drag to change route, click to remove",
+      })
     ).toBeVisible()
   })
 
