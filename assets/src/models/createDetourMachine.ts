@@ -582,6 +582,7 @@ export const createDetourMachine = setup({
                   target: "Done",
                   guard: ({ context }) =>
                     !context.activatedAt || context.editedRoute === true,
+                  actions: assign({ editedRoute: false }),
                 },
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
