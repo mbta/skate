@@ -12,16 +12,11 @@ defmodule Concentrate.Producer.MqttTest do
     :ok
   end
 
-  defp broker_configs do
-    [EmqttFailover.Config.from_url("mqtt://localhost", username: "system", password: "manager")]
-  end
-
   @tag "Test.Integration": :mqtt
   test "can dispatch events from an MQTT stream" do
     topic = "test/topic/#{System.unique_integer()}"
 
     opts = [
-      broker_configs: broker_configs(),
       topics: [topic],
       parser: __MODULE__.PassThroughParser
     ]
@@ -56,7 +51,6 @@ defmodule Concentrate.Producer.MqttTest do
     topic = "test/topic/#{System.unique_integer()}"
 
     opts = [
-      broker_configs: broker_configs(),
       topics: [topic],
       parser: &__MODULE__.PassThroughParser.parse/1
     ]
@@ -89,7 +83,6 @@ defmodule Concentrate.Producer.MqttTest do
     payload = "payload"
 
     opts = [
-      broker_configs: broker_configs(),
       topics: [topic],
       parser: __MODULE__.PassThroughParser
     ]
