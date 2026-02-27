@@ -19,46 +19,38 @@ defmodule Skate.OpenRouteServiceAPITest do
           ]
         } ->
           {:ok,
-           %{
-             "features" => [
+           build(:ors_directions_json, %{
+             coordinates: [
+               [0, 0],
+               [0.1, 0.5],
+               [0, 1]
+             ],
+             segments: [
                %{
-                 "geometry" => %{
-                   "coordinates" => [
-                     [0, 0],
-                     [0.1, 0.5],
-                     [0, 1]
-                   ]
-                 },
-                 "properties" => %{
-                   "segments" => [
-                     %{
-                       "steps" => [
-                         %{
-                           "instruction" => "Turn right onto 1st Avenue",
-                           "name" => "1st Avenue",
-                           "type" => 1
-                         }
-                       ]
-                     },
-                     %{
-                       "steps" => [
-                         %{
-                           "instruction" => "Turn left onto 2nd Place",
-                           "name" => "2nd Place",
-                           "type" => 0
-                         },
-                         %{
-                           "instruction" => "Arrive",
-                           "name" => "-",
-                           "type" => 10
-                         }
-                       ]
-                     }
-                   ]
-                 }
+                 "steps" => [
+                   %{
+                     "instruction" => "Turn right onto 1st Avenue",
+                     "name" => "1st Avenue",
+                     "type" => 1
+                   }
+                 ]
+               },
+               %{
+                 "steps" => [
+                   %{
+                     "instruction" => "Turn left onto 2nd Place",
+                     "name" => "2nd Place",
+                     "type" => 0
+                   },
+                   %{
+                     "instruction" => "Arrive",
+                     "name" => "-",
+                     "type" => 10
+                   }
+                 ]
                }
              ]
-           }}
+           })}
 
         %DirectionsRequest{
           coordinates: [[10, 0], [10, 1]]
