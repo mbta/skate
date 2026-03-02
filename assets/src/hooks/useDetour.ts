@@ -114,9 +114,18 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
       }
     : undefined
 
-  const insertWaypoint = (location, index) => {
-    send({ type: "detour.edit.insert-waypoint", location, index })
-  }
+  const canInsertWaypoint = () =>
+    snapshot.can({
+      type: "detour.edit.insert-waypoint",
+      location: { lat: 0, lon: 0 },
+      index: 0,
+    })
+
+  const insertWaypoint = canInsertWaypoint()
+    ? (location: ShapePoint, index: number) => {
+        send({ type: "detour.edit.insert-waypoint", location, index })
+      }
+    : undefined
 
   const deleteWaypointMemo = useCallback(
     (index: number) => send({ type: "detour.edit.delete-waypoint", index }),
