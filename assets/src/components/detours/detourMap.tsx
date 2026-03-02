@@ -1,6 +1,7 @@
 import React, {
   PropsWithChildren,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useId,
@@ -219,62 +220,6 @@ export const DetourMap = ({
     return null
   }
 
-  const Detour = () => {
-    const draggingRef = useRef(false)
-    const newWaypointIndex = useRef<number | null>(null) // TODO maybe join these
-    const map = useMap()
-
-    const startDrag = (index: number) => {
-      draggingRef.current = true
-      newWaypointIndex.current = index
-      map.dragging.disable()
-    }
-
-    const endDrag = (e: LeafletMouseEvent) => {
-      if (!draggingRef.current) return
-      if (newWaypointIndex.current === null) return
-
-      onInsertWaypoint &&
-        onInsertWaypoint(
-          latLngLiteralToShapePoint(e.latlng),
-          newWaypointIndex.current
-        )
-
-      draggingRef.current = false
-      newWaypointIndex.current = null
-      map.dragging.enable()
-      map.off("mouseup", endDrag)
-    }
-
-    map.on("mouseup", endDrag)
-
-    const detourMultiRoute = waypointIndexes
-      ? waypointIndexes.reduce((acc: LatLngLiteral[][], cur, i) => {
-          if (i === 0) return []
-          const c = detourShape
-            .slice(waypointIndexes[i - 1], cur + 1)
-            .map(shapePointToLatLngLiteral)
-          return [...acc, c]
-        }, [])
-      : [detourShape.map(shapePointToLatLngLiteral)]
-
-    return detourMultiRoute.map(
-      (detourSegment: LatLngLiteral[], index: number) => (
-        <Polyline
-          positions={detourSegment}
-          weight={6}
-          interactive={true}
-          className="c-detour_map--detour-route-shape"
-          eventHandlers={{
-            mousedown: () => startDrag(index),
-          }}
-        >
-          <MapTooltip>Drag to change route</MapTooltip>
-        </Polyline>
-      )
-    )
-  }
-
   return (
     <div
       className={joinClasses([
@@ -353,7 +298,11 @@ export const DetourMap = ({
           <EndMarker position={shapePointToLatLngLiteral(endPoint)} />
         )}
 
-        <Detour />
+        <Detour
+          onInsertWaypoint={onInsertWaypoint}
+          waypointIndexes={waypointIndexes}
+          detourShape={detourShape}
+        />
 
         {routeSegments ? (
           <DivertedRouteShape segments={routeSegments} />
@@ -402,6 +351,106 @@ export const DetourMap = ({
         </ZoomLevelWrapper>
       </Map>
     </div>
+  )
+}
+
+const Detour = ({
+  onInsertWaypoint,
+  waypointIndexes,
+  detourShape,
+}: {
+  onInsertWaypoint?: (point: ShapePoint, index: number) => void
+  waypointIndexes: number[]
+  detourShape: ShapePoint[]
+}) => {
+  const newWaypointIndex = useRef<number | null>(null)
+  const map = useMap()
+  const isInteractive = !!onInsertWaypoint
+  const [position, setPosition] = useState<LatLngLiteral | null>(null)
+
+  const moveDrag = useCallback((e: LeafletMouseEvent) => {
+    setPosition(e.latlng)
+  }, [])
+
+  const endDrag = useCallback(
+    (e: LeafletMouseEvent) => {
+      if (newWaypointIndex.current === null) return
+      onInsertWaypoint &&
+        onInsertWaypoint(
+          latLngLiteralToShapePoint(e.latlng),
+          newWaypointIndex.current
+        )
+
+      newWaypointIndex.current = null
+      map.dragging.enable()
+      setPosition(null)
+      map.off("mousemove", moveDrag)
+      map.off("mouseup", endDrag)
+    },
+    [map, onInsertWaypoint, moveDrag]
+  )
+
+  const startDrag = useCallback(
+    (e: LeafletMouseEvent, index: number) => {
+      newWaypointIndex.current = index
+      map.dragging.disable()
+      setPosition(e.latlng)
+      map.on("mousemove", moveDrag)
+      map.on("mouseup", endDrag)
+    },
+    [map, moveDrag, endDrag]
+  )
+
+  const detourMultiRoute = useMemo(
+    () =>
+      waypointIndexes
+        ? waypointIndexes.reduce((acc: LatLngLiteral[][], cur, i) => {
+            if (i === 0) return []
+            const currentSlice = detourShape
+              .slice(waypointIndexes[i - 1], cur + 1)
+              .map(shapePointToLatLngLiteral)
+            return [...acc, currentSlice]
+          }, [])
+        : [detourShape.map(shapePointToLatLngLiteral)],
+    [waypointIndexes, detourShape]
+  )
+
+  return (
+    <>
+      {position && (
+        <ReactMarker
+          position={position}
+          divIconSettings={{
+            iconSize: [10, 10],
+            className: "c-detour_map--detour-route-shape--temporary-marker",
+          }}
+          icon={<WaypointIcon />}
+        />
+      )}
+      {detourMultiRoute.map((detourSegment: LatLngLiteral[], index: number) => (
+        <React.Fragment key={`${index}-detour-segment`}>
+          {isInteractive && (
+            <Polyline
+              positions={detourSegment}
+              weight={32}
+              interactive={true}
+              className="c-detour_map--detour-route-shape--click-area"
+              eventHandlers={{
+                mousedown: (e) => startDrag(e, index),
+              }}
+            >
+              <MapTooltip>Drag to change route</MapTooltip>
+            </Polyline>
+          )}
+          <Polyline
+            positions={detourSegment}
+            weight={6}
+            interactive={false}
+            className="c-detour_map--detour-route-shape"
+          />
+        </React.Fragment>
+      ))}
+    </>
   )
 }
 

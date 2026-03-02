@@ -55,6 +55,16 @@
   opacity: 50%;
 }
 
+.c-detour_map--detour-route-shape--click-area {
+  stroke: tokens.$eggplant-400;
+  opacity: 0%;
+  stroke-linecap: butt;
+}
+
+.c-detour_map--detour-route-shape--temporary-marker {
+  cursor: grabbing;
+}
+
 .c-detour_map-circle-marker--start {
   stroke: tokens.$detour-start-point;
   fill: tokens.$detour-start-point;
