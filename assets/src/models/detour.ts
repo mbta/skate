@@ -31,6 +31,7 @@ export const detourStateFromData = (
 export interface DetourShape {
   coordinates: ShapePoint[]
   directions?: DetourDirection[]
+  waypoint_indexes?: number[]
 }
 
 export type DetourDirection = {

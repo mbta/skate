@@ -76,6 +76,11 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.cancel" }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
+      | {
+          type: "detour.edit.insert-waypoint"
+          location: ShapePoint
+          index: number
+        }
       | { type: "detour.edit.delete-waypoint"; index: number }
       | {
           type: "detour.edit.move-waypoint"
@@ -248,6 +253,16 @@ export const createDetourMachine = setup({
       waypoints: ({ context }, params: { location: ShapePoint }) => [
         ...context.waypoints,
         params.location,
+      ],
+    }),
+    "detour.insert-waypoint": assign({
+      waypoints: (
+        { context },
+        params: { location: ShapePoint; index: number }
+      ) => [
+        ...context.waypoints.slice(0, params.index),
+        params.location,
+        ...context.waypoints.slice(params.index),
       ],
     }),
     "detour.remove-last-waypoint": assign({
@@ -537,6 +552,14 @@ export const createDetourMachine = setup({
                     }),
                   ],
                 },
+                "detour.edit.insert-waypoint": {
+                  target: "Place Waypoint",
+                  reenter: true,
+                  actions: {
+                    type: "detour.insert-waypoint",
+                    params: ({ event }) => event,
+                  },
+                },
                 "detour.edit.undo": [
                   {
                     guard: ({ context }) => context.waypoints.length === 0,
@@ -620,6 +643,14 @@ export const createDetourMachine = setup({
                       },
                     }),
                   ],
+                },
+                "detour.edit.insert-waypoint": {
+                  target: "Finished Drawing",
+                  reenter: true,
+                  actions: {
+                    type: "detour.insert-waypoint",
+                    params: ({ event }) => event,
+                  },
                 },
               },
             },

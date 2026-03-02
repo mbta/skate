@@ -49,6 +49,7 @@ interface DetourMapProps {
    * Coordinates to display as the detour line.
    */
   detourShape: ShapePoint[]
+  waypointIndexes: number[]
 
   /*
    * Stops along the original route shape
@@ -129,6 +130,7 @@ interface CenteringElementProps {
 export const DetourMap = ({
   originalShape,
   detourShape,
+  waypointIndexes,
 
   stops,
 
@@ -138,6 +140,7 @@ export const DetourMap = ({
 
   onClickOriginalShape,
   onAddWaypoint,
+  onInsertWaypoint,
   onDeleteWaypoint,
   onMoveWaypoint,
 
@@ -213,6 +216,59 @@ export const DetourMap = ({
     }, [map, mapCenter, setOldMapCenter])
 
     return null
+  }
+
+  const Detour = () => {
+    const draggingRef = useRef(false)
+    const newWaypointIndex = useRef<number | null>(null) // TODO maybe join these
+    const map = useMap()
+
+    const startDrag = (_, index: number) => {
+      draggingRef.current = true
+      newWaypointIndex.current = index
+      map.dragging.disable()
+    }
+
+    const endDrag = (e: any) => {
+      if (!draggingRef.current) return
+      if (newWaypointIndex.current === null) return
+
+      onInsertWaypoint(
+        latLngLiteralToShapePoint(e.latlng),
+        newWaypointIndex.current
+      )
+
+      draggingRef.current = false
+      newWaypointIndex.current = null
+      map.dragging.enable()
+      map.off("mouseup", endDrag)
+    }
+
+    map.on("mouseup", endDrag)
+
+    const detourMultiRoute = waypointIndexes
+      ? waypointIndexes.reduce((acc: any, cur, i) => {
+          if (i === 0) return []
+          const c = detourShape
+            .slice(waypointIndexes[i - 1], cur + 1)
+            .map(shapePointToLatLngLiteral)
+          return [...acc, c]
+        }, [])
+      : [detourShape.map(shapePointToLatLngLiteral)]
+
+    return detourMultiRoute.map((detourSegment, index) => (
+      <Polyline
+        positions={detourSegment}
+        weight={6}
+        interactive={true}
+        className="c-detour_map--detour-route-shape"
+        eventHandlers={{
+          mousedown: (e) => startDrag(e, index),
+        }}
+      >
+        <MapTooltip>Drag to change route</MapTooltip>
+      </Polyline>
+    ))
   }
 
   return (
@@ -293,12 +349,7 @@ export const DetourMap = ({
           <EndMarker position={shapePointToLatLngLiteral(endPoint)} />
         )}
 
-        <Polyline
-          positions={detourShape.map(shapePointToLatLngLiteral)}
-          weight={6}
-          interactive={false}
-          className="c-detour_map--detour-route-shape"
-        />
+        <Detour />
 
         {routeSegments ? (
           <DivertedRouteShape segments={routeSegments} />
