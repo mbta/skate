@@ -27,6 +27,7 @@ import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
 import { DeleteDetourModal } from "./deleteDetourModal"
+import { DiscardChangesModal } from "./discardChangesModal"
 import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
 import useScreenSize from "../../hooks/useScreenSize"
@@ -291,8 +292,9 @@ export const DiversionPage = ({
         />
       )
     } else if (
-      snapshot.matches({ "Detour Drawing": "Editing" }) &&
-      routePattern
+      routePattern &&
+      (snapshot.matches({ "Detour Drawing": "Discarding" }) ||
+        snapshot.matches({ "Detour Drawing": "Editing" }))
     ) {
       return (
         <DrawDetourPanel
@@ -335,6 +337,22 @@ export const DiversionPage = ({
               }
             />
           ) : null}
+          {snapshot.matches({
+            "Detour Drawing": "Discarding",
+          }) && (
+            <DiscardChangesModal
+              onConfirm={() => send({ type: "detour.discard-modal.confirm" })}
+              onCancel={() => send({ type: "detour.discard-modal.cancel" })}
+              affectedRoute={
+                <AffectedRoute
+                  routeName={routeName ?? "??"}
+                  routeDescription={routeDescription ?? "??"}
+                  routeOrigin={routeOrigin ?? "??"}
+                  routeDirection={routeDirection ?? "??"}
+                />
+              }
+            />
+          )}
         </DrawDetourPanel>
       )
     } else if (
@@ -636,7 +654,17 @@ export const DiversionPage = ({
           ) : isMobile(displayType) ? (
             <div className="flex-grow-1 fw-semibold text-center">Detours</div>
           ) : null}
-          <CloseButton className="p-4" onClick={onClose} />
+          <CloseButton
+            className="p-4"
+            onClick={() =>
+              snapshot.can({ type: "detour.edit.close" })
+                ? send({
+                    type: "detour.edit.close",
+                    closeFunc: onClose,
+                  })
+                : onClose()
+            }
+          />
         </header>
 
         <div
