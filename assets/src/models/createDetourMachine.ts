@@ -16,33 +16,7 @@ import { type, optional, coerce, date, string } from "superstruct"
 
 export const createDetourMachine = setup({
   types: {
-    context: {} as {
-      uuid: number | undefined
-      route?: Route
-      routePattern?: RoutePattern
-
-      routePatterns?: RoutePattern[]
-
-      waypoints: ShapePoint[]
-      startPoint: ShapePoint | undefined
-      endPoint: ShapePoint | undefined
-
-      nearestIntersection: string | null
-
-      detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
-
-      finishedDetour: FinishedDetour | undefined | null
-
-      editedDirections?: string
-
-      selectedDuration?: string
-      selectedReason?: string
-
-      activatedAt?: Date
-
-      editedSelectedDuration?: string
-      editedRoute?: boolean
-    },
+    context: {} as MachineContext,
 
     input: {} as
       | {
@@ -74,6 +48,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.clear-detour" }
       | { type: "detour.edit.cancel" }
+      | { type: "detour.edit.close"; closeFunc?: () => void }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
       | {
@@ -88,6 +63,8 @@ export const createDetourMachine = setup({
           position: ShapePoint
         }
       | { type: "detour.edit.undo" }
+      | { type: "detour.discard-modal.confirm" }
+      | { type: "detour.discard-modal.cancel" }
       | { type: "detour.share.edit-directions"; detourText: string }
       | { type: "detour.share.copy-detour"; detourText: string }
       | { type: "detour.share.open-activate-modal" }
@@ -424,6 +401,8 @@ export const createDetourMachine = setup({
           },
         },
 
+        // on edit, cancel goes to active and close goes onClose
+        // on edit, if active edited, cancel opens dialog, then goes active, close, opens dialog, fires onClose
         Editing: {
           initial: "Pick Start Point",
           on: {
@@ -435,8 +414,26 @@ export const createDetourMachine = setup({
               target: ".Pick Start Point",
               actions: "detour.clear",
             },
-            "detour.edit.cancel": {
-              target: "Active",
+            "detour.edit.cancel": [
+              {
+                guard: ({ context }) =>
+                  context.activatedAt !== undefined &&
+                  context.editedRoute === true,
+                target: "Discarding",
+              },
+              {
+                guard: ({ context }) => context.activatedAt !== undefined,
+                target: "Active",
+              },
+            ],
+            "detour.edit.close": {
+              guard: ({ context }) =>
+                context.activatedAt !== undefined &&
+                context.editedRoute === true,
+              target: "Discarding",
+              actions: assign({
+                closeFunc: ({ event }) => event.closeFunc,
+              }),
             },
           },
           states: {
@@ -546,7 +543,7 @@ export const createDetourMachine = setup({
                   actions: [
                     assign({
                       waypoints: ({ context, event }) => {
-                        const waypoints = context.waypoints
+                        const waypoints = [...context.waypoints]
                         waypoints[event.index] = event.position
                         return waypoints
                       },
@@ -630,6 +627,7 @@ export const createDetourMachine = setup({
                       type: "detour.delete-waypoint",
                       params: ({ event }) => event,
                     },
+                    assign({ editedRoute: true }),
                   ],
                 },
                 "detour.edit.move-waypoint": {
@@ -638,10 +636,11 @@ export const createDetourMachine = setup({
                   actions: [
                     assign({
                       waypoints: ({ context, event }) => {
-                        const waypoints = context.waypoints
+                        const waypoints = [...context.waypoints]
                         waypoints[event.index] = event.position
                         return waypoints
                       },
+                      editedRoute: true,
                     }),
                   ],
                 },
@@ -669,6 +668,9 @@ export const createDetourMachine = setup({
             Done: {
               type: "final",
             },
+            History: {
+              type: "history",
+            },
           },
 
           onDone: {
@@ -689,6 +691,30 @@ export const createDetourMachine = setup({
           },
         },
 
+        Discarding: {
+          on: {
+            "detour.discard-modal.cancel": {
+              target: "Editing.History",
+            },
+            "detour.discard-modal.confirm": [
+              {
+                guard: ({ context }) => !context.closeFunc,
+                target: "Active",
+                actions: assign(({ context }) => {
+                  return {
+                    ...context.savedContext,
+                  }
+                }),
+              },
+              {
+                guard: ({ context }) => !!context.closeFunc,
+                actions: ({ context }) =>
+                  context.closeFunc && context.closeFunc(),
+              },
+            ],
+          },
+        },
+
         "Share Detour": {
           initial: "Reviewing",
           on: {
@@ -698,6 +724,15 @@ export const createDetourMachine = setup({
             "detour.share.activate": {
               target: "Active",
             },
+            "detour.edit.close": [
+              {
+                guard: ({ context }) => context.activatedAt !== undefined,
+                target: "Discarding",
+                actions: assign({
+                  closeFunc: ({ event }) => event.closeFunc,
+                }),
+              },
+            ],
           },
           states: {
             Reviewing: {
@@ -845,10 +880,14 @@ export const createDetourMachine = setup({
                     },
                   },
                 },
-                Done: { type: "final", tags: "no-save" },
+                Done: {
+                  type: "final",
+                  tags: "no-save",
+                },
               },
               onDone: {
                 target: "Done",
+                actions: assign({ editedRoute: false }),
               },
             },
             Deleting: {
@@ -923,6 +962,12 @@ export const createDetourMachine = setup({
           on: {
             "detour.edit.resume": {
               target: "Editing.Finished Drawing",
+              actions: assign({
+                savedContext: ({ context }) => ({
+                  ...context,
+                  savedContext: undefined,
+                }),
+              }),
             },
           },
           onDone: {
@@ -969,6 +1014,36 @@ export const createDetourMachine = setup({
     },
   },
 })
+
+type MachineContext = {
+  uuid: number | undefined
+  route?: Route
+  routePattern?: RoutePattern
+
+  routePatterns?: RoutePattern[]
+
+  waypoints: ShapePoint[]
+  startPoint: ShapePoint | undefined
+  endPoint: ShapePoint | undefined
+
+  nearestIntersection: string | null
+
+  detourShape: Result<DetourShape, FetchDetourDirectionsError> | undefined
+
+  finishedDetour: FinishedDetour | undefined | null
+
+  editedDirections?: string
+
+  selectedDuration?: string
+  selectedReason?: string
+
+  activatedAt?: Date
+
+  editedSelectedDuration?: string
+  editedRoute?: boolean
+  savedContext?: MachineContext
+  closeFunc?: () => void
+}
 
 /**
  * This refers to the type of `input` provided in
