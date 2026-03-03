@@ -487,7 +487,7 @@ defmodule Skate.Detours.Detours do
   defp do_sync_swiftly_with_skate(_adjustments_module, false), do: :ok
 
   defp do_sync_swiftly_with_skate(adjustments_module, true) do
-    Logger.info("swiftly_sync starting")
+    Logger.info("event=swiftly_sync starting")
 
     skate_detour_ids =
       Skate.Detours.Db.Detour.Queries.select_detour_list_info()
@@ -496,7 +496,7 @@ defmodule Skate.Detours.Detours do
       |> Enum.map(fn detour -> detour.id end)
       |> MapSet.new()
 
-    Logger.info("swiftly_sync skate_active_detours=#{MapSet.size(skate_detour_ids)}")
+    Logger.info("event=swiftly_sync skate_active_detours=#{MapSet.size(skate_detour_ids)}")
 
     swiftly_adjustments =
       case adjustments_module.get_adjustments_v1(
@@ -504,17 +504,17 @@ defmodule Skate.Detours.Detours do
            ) do
         {:ok, adjustments_response} ->
           adjustments = Map.get(adjustments_response, :adjustments, [])
-          Logger.info("swiftly_sync fetched_adjustments=#{length(adjustments)}")
+          Logger.info("event=swiftly_sync fetched_adjustments=#{length(adjustments)}")
           adjustments
 
         {:error, reason} = error ->
-          Logger.error("swiftly_sync get_adjustments_failed reason=#{inspect(reason)}")
+          Logger.error("event=swiftly_sync get_adjustments_failed reason=#{inspect(reason)}")
           error
       end
 
     case swiftly_adjustments do
       {:error, _} ->
-        Logger.error("swiftly_sync aborting due to failed adjustment fetch")
+        Logger.error("event=swiftly_sync aborting due to failed adjustment fetch")
         :error
 
       adjustments when is_list(adjustments) ->
@@ -557,7 +557,7 @@ defmodule Skate.Detours.Detours do
       skate_detour_ids |> MapSet.difference(swiftly_detour_ids) |> MapSet.to_list()
 
     Logger.info(
-      "swiftly_sync swiftly_matched_adjustments=#{MapSet.size(swiftly_detour_ids)} extra_in_swiftly=#{length(extra_in_swiftly)} missing_in_swiftly=#{length(missing_in_swiftly)}"
+      "event=swiftly_sync swiftly_matched_adjustments=#{MapSet.size(swiftly_detour_ids)} extra_in_swiftly=#{length(extra_in_swiftly)} missing_in_swiftly=#{length(missing_in_swiftly)}"
     )
 
     Enum.each(extra_in_swiftly, fn extra_detour_id ->
@@ -573,7 +573,7 @@ defmodule Skate.Detours.Detours do
       sync_create_missing(adjustments_module, missing_detour_id)
     end)
 
-    Logger.info("swiftly_sync completed")
+    Logger.info("event=swiftly_sync completed")
   end
 
   defp sync_delete_extra(_adjustments_module, _detour_id, nil), do: :noop
@@ -584,12 +584,12 @@ defmodule Skate.Detours.Detours do
     case result do
       {:error, reason} ->
         Logger.error(
-          "swiftly_sync delete_extra_failed detour_id=#{detour_id} adjustment_id=#{adjustment_id} reason=#{inspect(reason)}"
+          "event=swiftly_sync delete_extra_failed detour_id=#{detour_id} adjustment_id=#{adjustment_id} reason=#{inspect(reason)}"
         )
 
       _ ->
         Logger.info(
-          "swiftly_sync deleted_extra detour_id=#{detour_id} adjustment_id=#{adjustment_id}"
+          "event=swiftly_sync deleted_extra detour_id=#{detour_id} adjustment_id=#{adjustment_id}"
         )
     end
   end
@@ -600,11 +600,11 @@ defmodule Skate.Detours.Detours do
     case result do
       {:error, reason} ->
         Logger.error(
-          "swiftly_sync create_missing_failed detour_id=#{detour_id} reason=#{inspect(reason)}"
+          "event=swiftly_sync create_missing_failed detour_id=#{detour_id} reason=#{inspect(reason)}"
         )
 
       _ ->
-        Logger.info("swiftly_sync created_missing detour_id=#{detour_id}")
+        Logger.info("event=swiftly_sync created_missing detour_id=#{detour_id}")
     end
   end
 
