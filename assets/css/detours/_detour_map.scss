@@ -53,12 +53,20 @@
 .c-detour_map--detour-route-shape {
   stroke: tokens.$eggplant-400;
   opacity: 50%;
+
+  &:hover {
+    opacity: 70%;
+  }
 }
 
 .c-detour_map--detour-route-shape--click-area {
   stroke: tokens.$eggplant-400;
   opacity: 0%;
   stroke-linecap: butt;
+
+  &:hover {
+    opacity: 20%;
+  }
 }
 
 .c-detour_map--detour-route-shape--temporary-marker {
@@ -81,4 +89,21 @@
   stroke: tokens.$eggplant-500;
   fill: white;
   display: block;
+
+  :first-child {
+    fill: tokens.$eggplant-500;
+    stroke: none;
+    opacity: 0;
+  }
+
+  &:hover {
+    :first-child {
+      opacity: 20%;
+    }
+
+    :last-child {
+      transform: scale(1.5);
+      transform-origin: center;
+    }
+  }
 }

@@ -421,7 +421,7 @@ const Detour = ({
         <ReactMarker
           position={position}
           divIconSettings={{
-            iconSize: [10, 10],
+            iconSize: [40, 40],
             className: "c-detour_map--detour-route-shape--temporary-marker",
           }}
           icon={<WaypointIcon />}
@@ -528,7 +528,7 @@ const WaypointMarker = ({
       ref={markerRef}
       position={position}
       divIconSettings={{
-        iconSize: [10, 10],
+        iconSize: [40, 40],
         className: "",
       }}
       eventHandlers={
@@ -555,11 +555,12 @@ export const WaypointIcon = () => (
   <svg
     width="100%"
     height="100%"
-    viewBox="0 0 10 10"
+    viewBox="0 0 40 40"
     fill="none"
     className="c-detour_map-circle-marker--detour-point"
   >
-    <circle cx={5} cy={5} r={4.5} />
+    <circle cx={20} cy={20} r={20} />
+    <circle cx={20} cy={20} r={5} />
   </svg>
 )
 
