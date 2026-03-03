@@ -102,6 +102,15 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
       ? detourShape.ok.waypoint_indexes
       : undefined
 
+  // if saved snapshots do not include the new waypoint_indexes prop
+  // refetch by reentering the editing state
+  // only needed for the first edit on pre 2026-03 draft detours
+  useEffect(() => {
+    if (detourShape && isOk(detourShape) && !detourShape.ok.waypoint_indexes) {
+      send({ type: "detour.edit.reenter" })
+    }
+  }, [])
+
   const canAddWaypoint = () =>
     snapshot.can({
       type: "detour.edit.place-waypoint",

@@ -46,6 +46,7 @@ export const createDetourMachine = setup({
         }
       | { type: "detour.edit.done" }
       | { type: "detour.edit.resume" }
+      | { type: "detour.edit.reenter" }
       | { type: "detour.edit.clear-detour" }
       | { type: "detour.edit.cancel" }
       | { type: "detour.edit.close"; closeFunc?: () => void }
@@ -498,6 +499,10 @@ export const createDetourMachine = setup({
                 },
               ],
               on: {
+                "detour.edit.reenter": {
+                  target: "Place Waypoint",
+                  reenter: true,
+                },
                 "detour.edit.place-waypoint": {
                   target: "Place Waypoint",
                   reenter: true,
@@ -607,6 +612,10 @@ export const createDetourMachine = setup({
               },
 
               on: {
+                "detour.edit.reenter": {
+                  target: "Finished Drawing",
+                  reenter: true,
+                },
                 "detour.edit.undo": {
                   actions: "detour.remove-end-point",
                   target: "Place Waypoint",
