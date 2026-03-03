@@ -106,9 +106,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
   // refetch by reentering the editing state
   // only needed for the first edit on pre 2026-03 draft detours
   useEffect(() => {
-    if (detourShape && isOk(detourShape) && !detourShape.ok.waypoint_indexes) {
-      send({ type: "detour.edit.reenter" })
-    }
+    send({ type: "detour.edit.reenter" })
   }, [send])
 
   const canAddWaypoint = () =>
