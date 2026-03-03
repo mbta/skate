@@ -109,7 +109,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     if (detourShape && isOk(detourShape) && !detourShape.ok.waypoint_indexes) {
       send({ type: "detour.edit.reenter" })
     }
-  }, [])
+  }, [send])
 
   const canAddWaypoint = () =>
     snapshot.can({

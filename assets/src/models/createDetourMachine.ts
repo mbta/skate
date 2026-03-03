@@ -502,6 +502,12 @@ export const createDetourMachine = setup({
                 "detour.edit.reenter": {
                   target: "Place Waypoint",
                   reenter: true,
+                  guard: ({ context: { detourShape } }) =>
+                    !!(
+                      detourShape &&
+                      isOk(detourShape) &&
+                      !detourShape.ok.waypoint_indexes
+                    ),
                 },
                 "detour.edit.place-waypoint": {
                   target: "Place Waypoint",
@@ -615,6 +621,12 @@ export const createDetourMachine = setup({
                 "detour.edit.reenter": {
                   target: "Finished Drawing",
                   reenter: true,
+                  guard: ({ context: { detourShape } }) =>
+                    !!(
+                      detourShape &&
+                      isOk(detourShape) &&
+                      !detourShape.ok.waypoint_indexes
+                    ),
                 },
                 "detour.edit.undo": {
                   actions: "detour.remove-end-point",
