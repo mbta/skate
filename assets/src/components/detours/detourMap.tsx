@@ -50,7 +50,7 @@ interface DetourMapProps {
    * Coordinates to display as the detour line.
    */
   detourShape: ShapePoint[]
-  waypointIndexes: number[]
+  waypointIndexes?: number[]
 
   /*
    * Stops along the original route shape
@@ -360,12 +360,12 @@ const Detour = ({
   detourShape,
 }: {
   onInsertWaypoint?: (point: ShapePoint, index: number) => void
-  waypointIndexes: number[]
+  waypointIndexes?: number[]
   detourShape: ShapePoint[]
 }) => {
   const newWaypointIndex = useRef<number | null>(null)
   const map = useMap()
-  const isInteractive = !!onInsertWaypoint
+  const isInteractive = !!(onInsertWaypoint && waypointIndexes)
   const [position, setPosition] = useState<LatLngLiteral | null>(null)
 
   const moveDrag = useCallback((e: LeafletMouseEvent) => {
