@@ -251,19 +251,6 @@ defmodule Skate.Detours.SnapshotSerde do
   defp nearestintersection_from_detour(%Detour{nearest_intersection: nearest_intersection}),
     do: nearest_intersection
 
-  defp nearestintersection_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "nearestIntersection" => nearest_intersection
-           }
-         }
-       }) do
-    log_fallback("nearestIntersection")
-    nearest_intersection
-  end
-
-  defp nearestintersection_from_detour(_), do: nil
-
   # defp detourshape_from_detour(%Detour{detour_shape: detour_shape}), do: detour_shape
   defp detourshape_from_detour(%Detour{
          state: %{
