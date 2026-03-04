@@ -193,6 +193,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
         %{value: pct, time: unix}
 
       _ ->
+        Logger.warning("SOC missing for vehicle_id: #{vehicle_id}")
         %{value: nil, time: nil}
     end
   end
