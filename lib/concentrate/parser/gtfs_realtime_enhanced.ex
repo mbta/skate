@@ -184,7 +184,9 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   end
 
   defp decode_state_of_charge(vp, vehicle_id) when vehicle_id in @soc_vehicle_allow_list do
-    vp = Map.put(vp, "state_of_charge_percentage", nil)
+    # TODO remove
+    vp = Map.put(vp, "state_of_charge_percentage", "")
+
     case vp do
       %{
         "state_of_charge_percentage" => pct,
@@ -194,7 +196,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
         %{value: pct, time: unix}
 
       _ ->
-        if not is_nil(vp.run_id) do
+        if not is_nil(Map.get(vp, "run_id")) do
           Logger.warning("SOC missing for vehicle_id: #{vehicle_id}")
         end
 
