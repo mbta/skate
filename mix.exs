@@ -55,6 +55,7 @@ defmodule Skate.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:unzip, "~> 0.13.0"},
       {:doctest_formatter, "~> 0.4.0", runtime: false},
       {:bypass, "~> 2.1.0", only: :test},
       {:castore, "~> 0.1.5"},

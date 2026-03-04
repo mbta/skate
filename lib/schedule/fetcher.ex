@@ -306,13 +306,36 @@ defmodule Schedule.Fetcher do
   # Returns a map from those file names to the data in each file
   @spec unzip_files(binary(), [String.t()]) :: Data.files()
   defp unzip_files(zip_binary, file_names) do
-    # erlang needs file names as charlists.
-    file_names = Enum.map(file_names, &String.to_charlist/1)
-    {:ok, unzipped_files} = :zip.unzip(zip_binary, [{:file_list, file_names}, :memory])
+    {:ok, zip_handle} =
+      zip_binary
+      |> MemZip.new()
+      |> Unzip.new()
 
-    unzipped_files
-    # Convert filenames back from charlists to strings
-    |> Enum.map(fn {file_name, data} -> {to_string(file_name), data} end)
-    |> Map.new()
+    for file_path <- file_names, into: %{} do
+      {file_path, Unzip.file_stream!(zip_handle, file_path)}
+    end
+    |> dbg
   end
+end
+
+defmodule MemZip do
+  @type t :: %__MODULE__{
+          blob: binary(),
+          byte_size: non_neg_integer()
+        }
+  defstruct [:blob, :byte_size]
+
+  @spec new(binary()) :: %__MODULE__{}
+  def new(blob),
+    do: %__MODULE__{
+      blob: blob,
+      byte_size: byte_size(blob)
+    }
+end
+
+defimpl Unzip.FileAccess, for: MemZip do
+  def pread(%MemZip{blob: blob} = _memzip, offset, length),
+    do: {:ok, binary_slice(blob, offset, length)}
+
+  def size(%MemZip{byte_size: size} = _zip), do: {:ok, size}
 end
