@@ -25,9 +25,10 @@ import { RoutesProvider } from "../../src/contexts/routesContext"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
-import { fetchDetour } from "../../src/api"
+import { fetchDetour, putDetourUpdate } from "../../src/api"
 import { Ok } from "../../src/util/result"
 import { detourInProgressFactory } from "../factories/detourStateMachineFactory"
+import { neverPromise } from "../testHelpers/mockHelpers"
 
 jest.mock("../../src/api")
 jest.mock("../../src/helpers/fullStory")
@@ -40,6 +41,7 @@ beforeEach(() => {
   jest
     .mocked(fetchDetour)
     .mockResolvedValue(Ok(detourInProgressFactory.build()))
+  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 })
 
 const routes = [

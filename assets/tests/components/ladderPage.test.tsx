@@ -42,7 +42,7 @@ import { TestGroups } from "../../src/userInTestGroup"
 import { blockWaiverNotificationFactory } from "../factories/notification"
 import { useActiveDetours } from "../../src/hooks/useDetours"
 import { activeDetourFactory } from "../factories/detourStateMachineFactory"
-import { fetchDetour, fetchRoutePatterns } from "../../src/api"
+import { fetchDetour, fetchRoutePatterns, putDetourUpdate } from "../../src/api"
 import { Ok } from "../../src/util/result"
 import { neverPromise } from "../testHelpers/mockHelpers"
 import { simpleDetourFactory } from "../factories/detourListFactory"
@@ -79,6 +79,7 @@ beforeEach(() => {
   jest.mocked(getTestGroups).mockReturnValue([])
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
   jest.mocked(useActiveDetours).mockReturnValue({})
+  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 
   // To get the "Add new detour modal" test working
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())

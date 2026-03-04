@@ -13,4 +13,5 @@ export const directionsFactory = Factory.define<DetourDirection>(
 export const detourShapeFactory = Factory.define<DetourShape>(() => ({
   coordinates: shapePointFactory.buildList(3),
   directions: directionsFactory.buildList(3),
+  waypoint_indexes: [0, 1],
 }))
