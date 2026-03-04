@@ -184,9 +184,6 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   end
 
   defp decode_state_of_charge(vp, vehicle_id) when vehicle_id in @soc_vehicle_allow_list do
-    # TODO remove
-    vp = Map.put(vp, "state_of_charge_percentage", "")
-
     case vp do
       %{
         "state_of_charge_percentage" => pct,
