@@ -33,10 +33,13 @@ defmodule Skate.DetourFactory do
       end
 
       def detour_factory do
+        state = build(:detour_snapshot)
+
         %Skate.Detours.Db.Detour{
           author: build(:user),
-          state: build(:detour_snapshot),
-          status: :draft
+          state: state,
+          status: :draft,
+          nearest_intersection: state["context"]["nearestIntersection"]
         }
       end
 
@@ -212,8 +215,12 @@ defmodule Skate.DetourFactory do
         put_in(state["context"]["routePattern"]["headsign"], id)
       end
 
-      def with_nearest_intersection(%Skate.Detours.Db.Detour{} = detour, headsign) do
-        %{detour | state: with_nearest_intersection(detour.state, headsign)}
+      def with_nearest_intersection(%Skate.Detours.Db.Detour{} = detour, value) do
+        %{
+          detour
+          | state: with_nearest_intersection(detour.state, value),
+            nearest_intersection: value
+        }
       end
 
       def with_nearest_intersection(

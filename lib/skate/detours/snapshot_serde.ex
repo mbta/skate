@@ -248,7 +248,9 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp waypoints_from_detour(_), do: nil
 
-  # defp nearestintersection_from_detour(%Detour{nearest_intersection: nearest_intersection}), do: nearest_intersection
+  defp nearestintersection_from_detour(%Detour{nearest_intersection: nearest_intersection}),
+    do: nearest_intersection
+
   defp nearestintersection_from_detour(%Detour{
          state: %{
            "context" => %{

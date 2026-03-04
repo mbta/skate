@@ -50,7 +50,7 @@ defmodule Skate.Detours.Db.Detour do
     field :coordinates, {:array, :map}, virtual: true
 
     # Default detour properties
-    field :nearest_intersection, :string, virtual: true
+    field :nearest_intersection, :string
 
     has_many :detour_status_notifications, Notifications.Db.Detour
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
@@ -63,6 +63,7 @@ defmodule Skate.Detours.Db.Detour do
     |> add_status()
     |> add_estimated_duration()
     |> add_reason()
+    |> add_nearest_intersection()
     |> add_start_point()
     |> add_end_point()
     |> add_waypoints()
@@ -159,6 +160,16 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
+  defp add_nearest_intersection(changeset) do
+    case {fetch_field(changeset, :nearest_intersection), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"nearestIntersection" => nearest_intersection}}}} ->
+        put_change(changeset, :nearest_intersection, nearest_intersection)
+
+      _ ->
+        changeset
+    end
+  end
+
   defp add_start_point(changeset) do
     case {fetch_field(changeset, :start_point), fetch_change(changeset, :state)} do
       {{:data, _}, {:ok, %{"context" => %{"startPoint" => start_point}}}} ->
@@ -244,7 +255,6 @@ defmodule Skate.Detours.Db.Detour do
           :route_pattern_name -> select_route_pattern_name(query)
           :headsign -> select_route_pattern_headsign(query)
           :direction -> select_direction(query)
-          :nearest_intersection -> select_starting_intersection(query)
           :direction_id -> select_direction_id(query)
           :coordinates -> select_coordinates(query)
           _unknown -> query
@@ -293,6 +303,7 @@ defmodule Skate.Detours.Db.Detour do
         :status,
         :estimated_duration,
         :reason,
+        :nearest_intersection,
 
         # Virtual Fields
         :route_id,
@@ -301,7 +312,6 @@ defmodule Skate.Detours.Db.Detour do
         :route_pattern_name,
         :headsign,
         :direction,
-        :nearest_intersection,
 
         # Nested Fields
         author: [:email, :id]
@@ -361,12 +371,6 @@ defmodule Skate.Detours.Db.Detour do
     def select_direction_id(query \\ base(), key \\ :direction_id) do
       select_merge(query, [detour: d], %{
         ^key => d.state["context"]["routePattern"]["directionId"]
-      })
-    end
-
-    def select_starting_intersection(query \\ base(), key \\ :nearest_intersection) do
-      select_merge(query, [detour: d], %{
-        ^key => d.state["context"]["nearestIntersection"]
       })
     end
 
