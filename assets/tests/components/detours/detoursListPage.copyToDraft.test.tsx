@@ -57,7 +57,6 @@ describe("Detours Page: Copy To Draft", () => {
   test("calls API with correct detour ID", async () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
     const pastDetour = pastDetourFactory.build()
-    console.log(pastDetour)
     jest.mocked(fetchDetour).mockResolvedValue(Ok(pastDetour))
     render(<DetourListPage />)
 
