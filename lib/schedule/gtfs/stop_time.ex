@@ -34,7 +34,7 @@ defmodule Schedule.Gtfs.StopTime do
   @spec parse(binary()) :: by_trip_id()
   def parse(file_binary) do
     file_binary
-    |> Csv.parse()
+    |> Csv.parse(to_list?: & &1)
     |> trip_stop_times_from_csv()
   end
 
