@@ -183,18 +183,24 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
     Map.get(vp, "occupancy_status")
   end
 
-  defp decode_state_of_charge(vp, vehicle_id) when vehicle_id in @soc_vehicle_allow_list do
-    case vp do
-      %{
-        "state_of_charge_percentage" => pct,
-        "state_of_charge_timestamp" => unix
-      }
-      when is_integer(pct) and is_integer(unix) ->
-        %{value: pct, time: unix}
+  defp decode_state_of_charge(
+         %{
+           "state_of_charge_percentage" => pct,
+           "state_of_charge_timestamp" => unix
+         },
+         vehicle_id
+       )
+       when vehicle_id in @soc_vehicle_allow_list and is_integer(pct) and is_integer(unix) do
+    %{value: pct, time: unix}
+  end
 
-      _ ->
-        %{value: nil, time: nil}
+  defp decode_state_of_charge(vp, vehicle_id)
+       when vehicle_id in @soc_vehicle_allow_list do
+    if not is_nil(Map.get(vp, "run_id")) do
+      Logger.warning("SOC missing for vehicle_id: #{vehicle_id}")
     end
+
+    %{value: nil, time: nil}
   end
 
   defp decode_state_of_charge(_vp, _) do
