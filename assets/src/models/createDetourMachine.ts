@@ -243,9 +243,6 @@ export const createDetourMachine = setup({
         ...context.waypoints.slice(params.index),
       ],
     }),
-    "detour.remove-last-waypoint": assign({
-      waypoints: ({ context }) => context.waypoints.slice(0, -1),
-    }),
     "detour.add-end-point": assign({
       endPoint: (_, params: { location: ShapePoint }) => params.location,
     }),
