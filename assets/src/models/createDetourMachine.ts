@@ -428,6 +428,7 @@ export const createDetourMachine = setup({
             },
             "detour.edit.clear-detour": {
               target: ".Pick Start Point",
+              guard: ({ context }) => !!context.startPoint,
               actions: [
                 {
                   type: "detour.undo.insert",
