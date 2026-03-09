@@ -242,7 +242,6 @@ export const createDetourMachine = setup({
         params.location,
         ...context.waypoints.slice(params.index),
       ],
-      editedRoute: true,
     }),
     "detour.remove-last-waypoint": assign({
       waypoints: ({ context }) => context.waypoints.slice(0, -1),
@@ -303,7 +302,6 @@ export const createDetourMachine = setup({
     nearestIntersection: null,
     finishedDetour: undefined,
     detourShape: undefined,
-    editedRoute: false,
     undoStack: [],
   }),
   type: "parallel",
@@ -476,9 +474,10 @@ export const createDetourMachine = setup({
             ],
             "detour.edit.cancel": [
               {
-                guard: ({ context }) =>
-                  context.activatedAt !== undefined &&
-                  context.editedRoute === true,
+                guard: ({ context: { activatedAt, undoStack } }) =>
+                  activatedAt !== undefined &&
+                  undoStack !== undefined &&
+                  undoStack.length > 0,
                 target: "Discarding",
               },
               {
@@ -487,9 +486,10 @@ export const createDetourMachine = setup({
               },
             ],
             "detour.edit.close": {
-              guard: ({ context }) =>
-                context.activatedAt !== undefined &&
-                context.editedRoute === true,
+              guard: ({ context: { activatedAt, undoStack } }) =>
+                activatedAt !== undefined &&
+                undoStack !== undefined &&
+                undoStack.length > 0,
               target: "Discarding",
               actions: assign({
                 closeFunc: ({ event }) => event.closeFunc,
@@ -535,7 +535,6 @@ export const createDetourMachine = setup({
                   onDone: {
                     actions: assign({
                       nearestIntersection: ({ event }) => event.output,
-                      editedRoute: true,
                     }),
                   },
 
@@ -706,8 +705,9 @@ export const createDetourMachine = setup({
                 },
                 "detour.edit.done": {
                   target: "Done",
-                  guard: ({ context }) =>
-                    !context.activatedAt || context.editedRoute === true,
+                  guard: ({ context: { activatedAt, undoStack } }) =>
+                    !activatedAt ||
+                    (undoStack !== undefined && undoStack.length > 0),
                 },
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
@@ -724,7 +724,6 @@ export const createDetourMachine = setup({
                       type: "detour.delete-waypoint",
                       params: ({ event }) => event,
                     },
-                    assign({ editedRoute: true }),
                   ],
                 },
                 "detour.edit.move-waypoint": {
@@ -741,7 +740,6 @@ export const createDetourMachine = setup({
                         waypoints[event.index] = event.position
                         return waypoints
                       },
-                      editedRoute: true,
                     }),
                   ],
                 },
@@ -994,7 +992,7 @@ export const createDetourMachine = setup({
               },
               onDone: {
                 target: "Done",
-                actions: assign({ editedRoute: false }),
+                actions: assign({ undoStack: [] }),
               },
             },
             Deleting: {
@@ -1147,7 +1145,6 @@ type MachineContext = {
   activatedAt?: Date
 
   editedSelectedDuration?: string
-  editedRoute?: boolean
   savedContext?: MachineContext
   closeFunc?: () => void
   undoStack?: { target: string; patch: Object }[]

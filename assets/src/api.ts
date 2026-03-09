@@ -545,7 +545,9 @@ export const putDetourUpdate = (
         "Content-Type": "application/json",
         "x-csrf-token": getCsrfToken(),
       },
-      body: JSON.stringify({ snapshot: snapshot }),
+      body: JSON.stringify({ snapshot: snapshot }, (_, value) =>
+        value === undefined ? null : value
+      ),
     },
   })
 

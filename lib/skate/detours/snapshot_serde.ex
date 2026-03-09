@@ -140,7 +140,8 @@ defmodule Skate.Detours.SnapshotSerde do
       "editedDirections" => editeddirections_from_detour(detour),
       "selectedDuration" => selectedduration_from_detour(detour),
       "selectedReason" => selectedreason_from_detour(detour),
-      "activatedAt" => activated_at_from_detour(detour)
+      "activatedAt" => activated_at_from_detour(detour),
+      "undoStack" => undostack_from_detour(detour)
     })
   end
 
@@ -303,6 +304,20 @@ defmodule Skate.Detours.SnapshotSerde do
   end
 
   defp editeddirections_from_detour(_), do: nil
+
+  # defp undostack_from_detour(%Detour{finished_detour: finished_detour}), do: finished_detour
+  defp undostack_from_detour(%Detour{
+         state: %{
+           "context" => %{
+             "undoStack" => undo_stack
+           }
+         }
+       }) do
+    log_fallback("undoStack")
+    undo_stack
+  end
+
+  defp undostack_from_detour(_), do: nil
 
   # defp selectedduration_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
   defp selectedduration_from_detour(
