@@ -80,8 +80,7 @@ defmodule Skate.Detours.SnapshotSerde do
       "value" => state_from_detour(detour),
       "status" => "active",
       "context" => context_from_detour(detour),
-      "children" => snapshot_children_from_detour(detour),
-      "historyValue" => %{}
+      "children" => snapshot_children_from_detour(detour)
     }
   end
 
