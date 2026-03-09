@@ -206,7 +206,8 @@ const isUpdatedAfterActivated = ({
   updatedAt: number
 }): boolean => {
   if (!activatedAt || !updatedAt) return false
-  return dateFromEpochSeconds(updatedAt).valueOf() > activatedAt.valueOf()
+  const bufferMs = 60_000
+  return dateFromEpochSeconds(updatedAt).valueOf() > activatedAt.valueOf() + bufferMs
 }
 
 const PopulatedDetourRows = ({
