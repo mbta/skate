@@ -1140,7 +1140,7 @@ type MachineContext = {
   editedSelectedDuration?: string
   savedContext?: MachineContext
   closeFunc?: () => void
-  undoStack?: { target: string; patch: Object }[]
+  undoStack?: { target: string; patch: Partial<MachineContext> }[]
 }
 
 /**
