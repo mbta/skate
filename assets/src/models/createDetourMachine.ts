@@ -265,6 +265,29 @@ export const createDetourMachine = setup({
       finishedDetour: undefined,
       detourShape: undefined,
     }),
+    "detour.undo.insert": assign({
+      undoStack: ({ context, self }, params: Partial<MachineContext>) => {
+        const snap = self.getSnapshot()
+
+        const matchTarget = () => {
+          const matches = (name: string) =>
+            snap.matches({ "Detour Drawing": { Editing: name } })
+
+          if (matches("Pick Start Point")) return "Pick Start Point"
+          if (matches("Place Waypoint")) return "Place Waypoint"
+          return "Finished Drawing"
+        }
+
+        const existingStack = context.undoStack || []
+
+        return [{ target: matchTarget(), patch: params }, ...existingStack]
+      },
+    }),
+    "detour.undo.apply": assign(({ context }) => ({
+      ...context,
+      ...context.undoStack?.[0].patch,
+      undoStack: context.undoStack?.slice(1),
+    })),
     "set.nearest-intersection-fallback": assign({
       nearestIntersection: "—",
     }),
@@ -281,6 +304,7 @@ export const createDetourMachine = setup({
     finishedDetour: undefined,
     detourShape: undefined,
     editedRoute: false,
+    undoStack: [],
   }),
   type: "parallel",
   initial: "Detour Drawing",
@@ -413,8 +437,43 @@ export const createDetourMachine = setup({
             },
             "detour.edit.clear-detour": {
               target: ".Pick Start Point",
-              actions: "detour.clear",
+              actions: [
+                {
+                  type: "detour.undo.insert",
+                  params: ({
+                    context: { startPoint, waypoints, endPoint },
+                  }) => ({
+                    startPoint,
+                    waypoints,
+                    endPoint,
+                  }),
+                },
+                "detour.clear",
+              ],
             },
+            "detour.edit.undo": [
+              {
+                target: ".Pick Start Point",
+                guard: ({ context }) =>
+                  context?.undoStack?.[0]?.target === "Pick Start Point",
+                actions: "detour.undo.apply",
+                reenter: true,
+              },
+              {
+                target: ".Place Waypoint",
+                guard: ({ context }) =>
+                  context?.undoStack?.[0]?.target === "Place Waypoint",
+                actions: "detour.undo.apply",
+                reenter: true,
+              },
+              {
+                target: ".Finished Drawing",
+                guard: ({ context }) =>
+                  context?.undoStack?.[0]?.target === "Finished Drawing",
+                actions: "detour.undo.apply",
+                reenter: true,
+              },
+            ],
             "detour.edit.cancel": [
               {
                 guard: ({ context }) =>
@@ -444,6 +503,10 @@ export const createDetourMachine = setup({
                 "detour.edit.place-waypoint-on-route": {
                   target: "Place Waypoint",
                   actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: { startPoint: undefined, detourShape: undefined },
+                    },
                     {
                       type: "detour.add-start-point",
                       params: ({ event: { location } }) => ({
@@ -514,6 +577,10 @@ export const createDetourMachine = setup({
                   reenter: true,
                   actions: [
                     {
+                      type: "detour.undo.insert",
+                      params: ({ context: { waypoints } }) => ({ waypoints }),
+                    },
+                    {
                       type: "detour.add-waypoint",
                       params: ({ event: { location } }) => ({
                         location,
@@ -527,6 +594,13 @@ export const createDetourMachine = setup({
                 "detour.edit.place-waypoint-on-route": {
                   target: "Finished Drawing",
                   actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: {
+                        endPoint: undefined,
+                        finishedDetour: undefined,
+                      },
+                    },
                     {
                       type: "detour.add-end-point",
                       params: ({ event: { location } }) => ({
@@ -543,6 +617,10 @@ export const createDetourMachine = setup({
                   reenter: true,
                   actions: [
                     {
+                      type: "detour.undo.insert",
+                      params: ({ context: { waypoints } }) => ({ waypoints }),
+                    },
+                    {
                       type: "detour.delete-waypoint",
                       params: ({ event }) => event,
                     },
@@ -552,6 +630,10 @@ export const createDetourMachine = setup({
                   target: "Place Waypoint",
                   reenter: true,
                   actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: ({ context: { waypoints } }) => ({ waypoints }),
+                    },
                     assign({
                       waypoints: ({ context, event }) => {
                         const waypoints = [...context.waypoints]
@@ -564,23 +646,17 @@ export const createDetourMachine = setup({
                 "detour.edit.insert-waypoint": {
                   target: "Place Waypoint",
                   reenter: true,
-                  actions: {
-                    type: "detour.insert-waypoint",
-                    params: ({ event }) => event,
-                  },
+                  actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: ({ context: { waypoints } }) => ({ waypoints }),
+                    },
+                    {
+                      type: "detour.insert-waypoint",
+                      params: ({ event }) => event,
+                    },
+                  ],
                 },
-                "detour.edit.undo": [
-                  {
-                    guard: ({ context }) => context.waypoints.length === 0,
-                    actions: "detour.remove-start-point",
-                    target: "Pick Start Point",
-                  },
-                  {
-                    actions: "detour.remove-last-waypoint",
-                    reenter: true,
-                    target: "Place Waypoint",
-                  },
-                ],
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
                 },
@@ -628,10 +704,6 @@ export const createDetourMachine = setup({
                       !detourShape.ok.waypoint_indexes
                     ),
                 },
-                "detour.edit.undo": {
-                  actions: "detour.remove-end-point",
-                  target: "Place Waypoint",
-                },
                 "detour.edit.done": {
                   target: "Done",
                   guard: ({ context }) =>
@@ -645,6 +717,10 @@ export const createDetourMachine = setup({
                   reenter: true,
                   actions: [
                     {
+                      type: "detour.undo.insert",
+                      params: ({ context: { waypoints } }) => ({ waypoints }),
+                    },
+                    {
                       type: "detour.delete-waypoint",
                       params: ({ event }) => event,
                     },
@@ -655,6 +731,10 @@ export const createDetourMachine = setup({
                   target: "Finished Drawing",
                   reenter: true,
                   actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: ({ context: { waypoints } }) => ({ waypoints }),
+                    },
                     assign({
                       waypoints: ({ context, event }) => {
                         const waypoints = [...context.waypoints]
@@ -668,10 +748,16 @@ export const createDetourMachine = setup({
                 "detour.edit.insert-waypoint": {
                   target: "Finished Drawing",
                   reenter: true,
-                  actions: {
-                    type: "detour.insert-waypoint",
-                    params: ({ event }) => event,
-                  },
+                  actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: ({ context: { waypoints } }) => ({ waypoints }),
+                    },
+                    {
+                      type: "detour.insert-waypoint",
+                      params: ({ event }) => event,
+                    },
+                  ],
                 },
               },
             },
@@ -1064,6 +1150,7 @@ type MachineContext = {
   editedRoute?: boolean
   savedContext?: MachineContext
   closeFunc?: () => void
+  undoStack?: { target: string; patch: Object }[]
 }
 
 /**
