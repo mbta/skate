@@ -9,14 +9,13 @@ defmodule Schedule.Csv do
           {:format, format()}
           | {:filter, (row() -> boolean())}
           | {:parse, (row() -> row_struct)}
-          | {:to_list?, (Enumerable.t() -> Enumerable.t())}
   @type options(row_struct) :: [option(row_struct)]
 
   @doc """
-  Takes binary csv data
+  Takes binary CSV data
   Optionally takes a function to filter which rows to include in the result.
   Optionally takes a function to parse each row
-  Returns a list of results
+  Returns a `m:Stream` of results
 
   More than one filter is allowed
 
@@ -24,16 +23,19 @@ defmodule Schedule.Csv do
   e.g. %{"col1" => "1", "col2" => "x"}
 
   iex> Schedule.Csv.parse("col1,col2\\n1,x\\n2,y")
+  ...> |> Enum.to_list()
   [%{"col1" => "1", "col2" => "x"}, %{"col1" => "2", "col2" => "y"}]
 
   iex> Schedule.Csv.parse("col1,col2\\n1,x\\n2,y\\n3,z",
   ...>   filter: fn row -> row["col2"] != "y" end,
   ...>   parse: fn row -> String.to_integer(row["col1"]) end
   ...> )
+  ...> |> Enum.to_list()
   [1, 3]
   """
-  @spec parse(binary() | nil) :: [row()]
-  @spec parse(binary() | nil, options(row_struct)) :: [row_struct] when row_struct: var
+  @spec parse(binary() | nil) :: Enumerable.t(row())
+  @spec parse(binary() | nil, options(row_struct)) :: Enumerable.t(row_struct)
+        when row_struct: var
   def parse(file_binary, options \\ [])
 
   def parse(nil, _options) do
@@ -44,7 +46,6 @@ defmodule Schedule.Csv do
     format = Keyword.get(options, :format, :gtfs)
     filters = Keyword.get_values(options, :filter)
     parser = Keyword.get(options, :parse, & &1)
-    to_list? = Keyword.get(options, :to_list?, &Enum.to_list/1)
 
     file_binary
     |> String.split("\n")
@@ -57,7 +58,6 @@ defmodule Schedule.Csv do
         []
       end
     end)
-    |> to_list?.()
   end
 
   @spec format_opts(format()) :: Keyword.t()
