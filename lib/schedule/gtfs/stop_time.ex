@@ -38,7 +38,7 @@ defmodule Schedule.Gtfs.StopTime do
     |> trip_stop_times_from_csv()
   end
 
-  @spec trip_stop_times_from_csv([Csv.row()]) :: by_trip_id()
+  @spec trip_stop_times_from_csv(Enumerable.t(Csv.row())) :: by_trip_id()
   def trip_stop_times_from_csv(stop_times_csv) do
     stop_times_csv
     |> Stream.chunk_by(fn stop_time_row -> stop_time_row["trip_id"] end)
