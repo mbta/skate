@@ -9,6 +9,7 @@ defmodule Schedule.Csv do
           {:format, format()}
           | {:filter, (row() -> boolean())}
           | {:parse, (row() -> row_struct)}
+          | {:to_list?, (Enumerable.t() -> Enumerable.t())}
   @type options(row_struct) :: [option(row_struct)]
 
   @doc """
@@ -43,6 +44,7 @@ defmodule Schedule.Csv do
     format = Keyword.get(options, :format, :gtfs)
     filters = Keyword.get_values(options, :filter)
     parser = Keyword.get(options, :parse, & &1)
+    to_list? = Keyword.get(options, :to_list?, &Enum.to_list/1)
 
     file_binary
     |> String.split("\n")
@@ -55,7 +57,7 @@ defmodule Schedule.Csv do
         []
       end
     end)
-    |> Enum.to_list()
+    |> to_list?.()
   end
 
   @spec format_opts(format()) :: Keyword.t()
