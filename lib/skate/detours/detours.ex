@@ -272,7 +272,7 @@ defmodule Skate.Detours.Detours do
 
     Detour.changeset(detour, %{
       state: new_state,
-      activated_at: DateTime.utc_now()
+      activated_at: DateTime.utc_now(:millisecond)
     })
   end
 

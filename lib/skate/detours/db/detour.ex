@@ -119,15 +119,25 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp add_updated_at(changeset) do
-    case {fetch_field(changeset, :status), fetch_change(changeset, :state)} do
-      {{:data, :active}, {:ok, %{"value" => %{"Detour Drawing" => %{"Active" => "Reviewing"}}}}} ->
+    case {fetch_field(changeset, :status), fetch_field(changeset, :activated_at)} do
+      # Set updated_at to activated_at when first activating a detour
+      {{:changes, :active}, {:changes, activated_at}} ->
+        put_change(
+          changeset,
+          :updated_at,
+          NaiveDateTime.truncate(DateTime.to_naive(activated_at), :second)
+        )
+
+      # Relies on snapshots being suppressed for changes to active detours
+      {{:data, :active}, _} ->
         put_change(
           changeset,
           :updated_at,
           NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
         )
 
-      {{:data, :draft}, {:ok, _}} ->
+      # Always update timestamp for drafts
+      {{:data, :draft}, _} ->
         put_change(
           changeset,
           :updated_at,
