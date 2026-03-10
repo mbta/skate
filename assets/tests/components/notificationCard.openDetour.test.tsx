@@ -7,7 +7,8 @@ import { detourActivatedNotificationFactory } from "../factories/notification"
 import routeFactory from "../factories/route"
 import userEvent from "@testing-library/user-event"
 import { RoutesProvider } from "../../src/contexts/routesContext"
-import { fetchDetour } from "../../src/api"
+import { neverPromise } from "../testHelpers/mockHelpers"
+import { fetchDetour, putDetourUpdate } from "../../src/api"
 import { Ok } from "../../src/util/result"
 import getTestGroups from "../../src/userTestGroups"
 import { TestGroups } from "../../src/userInTestGroup"
@@ -46,6 +47,7 @@ describe("NotificationCard", () => {
     jest
       .mocked(fetchDetour)
       .mockResolvedValue(Ok(detourInProgressFactory.build()))
+    jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 
     const n = detourActivatedNotificationFactory.build()
 

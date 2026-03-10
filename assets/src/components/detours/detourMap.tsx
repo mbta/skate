@@ -1,6 +1,7 @@
 import React, {
   PropsWithChildren,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useId,
@@ -49,6 +50,7 @@ interface DetourMapProps {
    * Coordinates to display as the detour line.
    */
   detourShape: ShapePoint[]
+  waypointIndexes?: number[]
 
   /*
    * Stops along the original route shape
@@ -91,6 +93,7 @@ interface DetourMapProps {
    */
   onAddWaypoint?: (point: ShapePoint) => void
 
+  onInsertWaypoint?: (point: ShapePoint, index: number) => void
   onDeleteWaypoint?: (index: number) => void
   onMoveWaypoint?: (index: number, latLng: ShapePoint) => void
 
@@ -129,6 +132,7 @@ interface CenteringElementProps {
 export const DetourMap = ({
   originalShape,
   detourShape,
+  waypointIndexes,
 
   stops,
 
@@ -138,6 +142,7 @@ export const DetourMap = ({
 
   onClickOriginalShape,
   onAddWaypoint,
+  onInsertWaypoint,
   onDeleteWaypoint,
   onMoveWaypoint,
 
@@ -293,11 +298,10 @@ export const DetourMap = ({
           <EndMarker position={shapePointToLatLngLiteral(endPoint)} />
         )}
 
-        <Polyline
-          positions={detourShape.map(shapePointToLatLngLiteral)}
-          weight={6}
-          interactive={false}
-          className="c-detour_map--detour-route-shape"
+        <Detour
+          onInsertWaypoint={onInsertWaypoint}
+          waypointIndexes={waypointIndexes}
+          detourShape={detourShape}
         />
 
         {routeSegments ? (
@@ -347,6 +351,106 @@ export const DetourMap = ({
         </ZoomLevelWrapper>
       </Map>
     </div>
+  )
+}
+
+const Detour = ({
+  onInsertWaypoint,
+  waypointIndexes,
+  detourShape,
+}: {
+  onInsertWaypoint?: (point: ShapePoint, index: number) => void
+  waypointIndexes?: number[]
+  detourShape: ShapePoint[]
+}) => {
+  const newWaypointIndex = useRef<number | null>(null)
+  const map = useMap()
+  const isInteractive = !!(onInsertWaypoint && waypointIndexes)
+  const [position, setPosition] = useState<LatLngLiteral | null>(null)
+
+  const moveDrag = useCallback((e: LeafletMouseEvent) => {
+    setPosition(e.latlng)
+  }, [])
+
+  const endDrag = useCallback(
+    (e: LeafletMouseEvent) => {
+      if (newWaypointIndex.current === null) return
+      onInsertWaypoint &&
+        onInsertWaypoint(
+          latLngLiteralToShapePoint(e.latlng),
+          newWaypointIndex.current
+        )
+
+      newWaypointIndex.current = null
+      map.dragging.enable()
+      setPosition(null)
+      map.off("mousemove", moveDrag)
+      map.off("mouseup", endDrag)
+    },
+    [map, onInsertWaypoint, moveDrag]
+  )
+
+  const startDrag = useCallback(
+    (e: LeafletMouseEvent, index: number) => {
+      newWaypointIndex.current = index
+      map.dragging.disable()
+      setPosition(e.latlng)
+      map.on("mousemove", moveDrag)
+      map.on("mouseup", endDrag)
+    },
+    [map, moveDrag, endDrag]
+  )
+
+  const detourMultiRoute = useMemo(
+    () =>
+      waypointIndexes
+        ? waypointIndexes.reduce((acc: LatLngLiteral[][], cur, i) => {
+            if (i === 0) return []
+            const currentSlice = detourShape
+              .slice(waypointIndexes[i - 1], cur + 1)
+              .map(shapePointToLatLngLiteral)
+            return [...acc, currentSlice]
+          }, [])
+        : [detourShape.map(shapePointToLatLngLiteral)],
+    [waypointIndexes, detourShape]
+  )
+
+  return (
+    <>
+      {position && (
+        <ReactMarker
+          position={position}
+          divIconSettings={{
+            iconSize: [40, 40],
+            className: "c-detour_map--detour-route-shape--temporary-marker",
+          }}
+          icon={<WaypointIcon />}
+        />
+      )}
+      {detourMultiRoute.map((detourSegment: LatLngLiteral[], index: number) => (
+        <React.Fragment key={`${index}-detour-segment`}>
+          {isInteractive && (
+            <Polyline
+              positions={detourSegment}
+              weight={32}
+              interactive={true}
+              className="c-detour_map--detour-route-shape--click-area"
+              eventHandlers={{
+                mousedown: (e) => startDrag(e, index),
+              }}
+            >
+              <MapTooltip>Drag to change route</MapTooltip>
+            </Polyline>
+          )}
+          <Polyline
+            positions={detourSegment}
+            weight={6}
+            interactive={false}
+            className="c-detour_map--detour-route-shape"
+          />
+        </React.Fragment>
+      ))}
+    </>
   )
 }
 
@@ -424,7 +528,7 @@ const WaypointMarker = ({
       ref={markerRef}
       position={position}
       divIconSettings={{
-        iconSize: [10, 10],
+        iconSize: [40, 40],
         className: "",
       }}
       eventHandlers={
@@ -451,11 +555,12 @@ export const WaypointIcon = () => (
   <svg
     width="100%"
     height="100%"
-    viewBox="0 0 10 10"
+    viewBox="0 0 40 40"
     fill="none"
     className="c-detour_map-circle-marker--detour-point"
   >
-    <circle cx={5} cy={5} r={4.5} />
+    <circle cx={20} cy={20} r={20} />
+    <circle cx={20} cy={20} r={5} />
   </svg>
 )
 

@@ -12,6 +12,7 @@ import {
   activateDetour,
   copyToDraftDetour,
   fetchDetour,
+  putDetourUpdate,
 } from "../../../src/api"
 import { Ok } from "../../../src/util/result"
 import { neverPromise } from "../../testHelpers/mockHelpers"
@@ -40,6 +41,7 @@ beforeEach(() => {
   jest.mocked(useActiveDetours).mockReturnValue(detourList.active)
   jest.mocked(useDraftDetours).mockReturnValue(detourList.draft)
   jest.mocked(usePastDetours).mockReturnValue(detourList.past)
+  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
 
   jest.mocked(fetchDetour).mockReturnValue(neverPromise())
   jest

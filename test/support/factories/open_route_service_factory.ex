@@ -32,12 +32,15 @@ defmodule Skate.OpenRouteServiceFactory do
             build_list(3, :ors_directions_segment_json)
           end)
 
+        waypoint_indexes = Map.get(attrs, :waypoints, [0, length(coordinates) - 1])
+
         %{
           "features" => [
             %{
               "geometry" => %{"coordinates" => coordinates},
               "properties" => %{
-                "segments" => segments
+                "segments" => segments,
+                "way_points" => waypoint_indexes
               }
             }
           ]
