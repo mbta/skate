@@ -1,6 +1,5 @@
 import React, {
   PropsWithChildren,
-  ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -29,10 +28,7 @@ import { RouteSegments, UnfinishedRouteSegments } from "../../models/detour"
 import { MapButton } from "../map/controls/mapButton"
 import { ArrowLeftSquare, XSquare } from "../../helpers/bsIcons"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
-import {
-  StopMarkerWithStopCard,
-  StopMarkerWithToolTip,
-} from "../map/markers/stopMarker"
+import { StopMarkerWithStopCard } from "../map/markers/stopMarker"
 import {
   LayersControl,
   LayersControlState,
@@ -217,7 +213,7 @@ export const DetourMap = ({
         onDragEnd={onMoveStartPoint}
       />
     )
-  }, [startPoint, routeSegments, onMoveStartPoint])
+  }, [startPoint, routeSegments, originalShape, onMoveStartPoint])
 
   const end_point = useMemo(() => {
     if (!endPoint) return null
