@@ -436,6 +436,7 @@ const Detour = ({
 
   const startDrag = useCallback(
     (e: LeafletMouseEvent, index: number) => {
+      e.originalEvent.preventDefault() // prevent bounding path from gaining focus
       newWaypointIndex.current = index
       map.dragging.disable()
       setPosition(e.latlng)
