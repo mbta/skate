@@ -102,6 +102,8 @@ export const DiversionPage = ({
     addWaypoint,
     insertWaypoint,
     moveWaypoint,
+    moveStartPoint,
+    moveEndPoint,
     deleteWaypoint,
 
     startPoint,
@@ -715,6 +717,8 @@ export const DiversionPage = ({
             onInsertWaypoint={insertWaypoint}
             onDeleteWaypoint={deleteWaypoint}
             onMoveWaypoint={moveWaypoint}
+            onMoveStartPoint={moveStartPoint}
+            onMoveEndPoint={moveEndPoint}
             onClickOriginalShape={addConnectionPoint ?? (() => {})}
             undoDisabled={canUndo === false}
             onUndo={undo ?? (() => {})}
