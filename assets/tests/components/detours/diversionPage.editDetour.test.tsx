@@ -44,7 +44,7 @@ beforeEach(() => {
     ])
 })
 
-const undoButton = byRole("button", { name: "Undo" })
+const clearButton = byRole("button", { name: "Clear" })
 const discardModalHeading = byRole("heading", {
   name: "Discard unsaved changes?",
 })
@@ -73,7 +73,7 @@ describe("Detours Page: Edit Active Detour", () => {
 
   test("clicking cancel shows discard changes warning before going to 'Active Detour' page", async () => {
     await diversionPageOnActivateDetourScreen()
-    await userEvent.click(undoButton.get())
+    await userEvent.click(clearButton.get())
 
     await userEvent.click(byRole("button", { name: "Cancel" }).get())
 
@@ -86,7 +86,7 @@ describe("Detours Page: Edit Active Detour", () => {
 
   test("clicking Close shows discard changes warning before going to Detour List page", async () => {
     await diversionPageOnActivateDetourScreen()
-    await userEvent.click(undoButton.get())
+    await userEvent.click(clearButton.get())
 
     await userEvent.click(byRole("button", { name: "Close" }).get())
 

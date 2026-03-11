@@ -65,7 +65,6 @@ defmodule Skate.DetourFactory do
           },
           "value" => %{},
           "children" => %{},
-          "historyValue" => %{},
           "status" => "active"
         }
       end

@@ -858,7 +858,7 @@ describe("DiversionPage", () => {
     expect(screen.queryByTitle("Detour End")).toBeNull()
   })
 
-  test("clicking on 'Clear' disables 'Undo' and 'Clear'", async () => {
+  test("clicking on 'Clear' disables 'Clear'", async () => {
     const { container } = render(<DiversionPage />)
 
     act(() => {
@@ -878,7 +878,6 @@ describe("DiversionPage", () => {
     })
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Undo" })).toBeDisabled()
       expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled()
     })
   })

@@ -718,7 +718,7 @@ export const DiversionPage = ({
             onClickOriginalShape={addConnectionPoint ?? (() => {})}
             undoDisabled={canUndo === false}
             onUndo={undo ?? (() => {})}
-            onClear={clear ?? (() => {})}
+            onClear={clear ?? undefined}
             stops={stops}
             editing={snapshot.matches({ "Detour Drawing": "Editing" })}
           />
