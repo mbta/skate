@@ -90,11 +90,25 @@ interface DetourMapProps {
    * @param point
    */
   onAddWaypoint?: (point: ShapePoint) => void
-
+  /**
+   * Callback fired when the route is dragged to add a waypoint.
+   */
   onInsertWaypoint?: (point: ShapePoint, index: number) => void
+  /**
+   * Callback fired when a waypoint is clicked.
+   */
   onDeleteWaypoint?: (index: number) => void
+  /**
+   * Callback fired when a waypoint is dragged to move it.
+   */
   onMoveWaypoint?: (index: number, latLng: ShapePoint) => void
+  /**
+   * Callback fired when a startPoint is dragged to move it.
+   */
   onMoveStartPoint?: (latLng: ShapePoint) => void
+  /**
+   * Callback fired when a endPoint is dragged to move it.
+   */
   onMoveEndPoint?: (latLng: ShapePoint) => void
 
   /**
@@ -325,8 +339,7 @@ export const DetourMap = ({
         {start_point}
 
         {waypoints_markers}
-        {/* maybe make an invisible complete original route shape */}
-        {/* might have to restructure this */}
+
         {end_point}
 
         <Detour
@@ -490,8 +503,6 @@ const MapEvents = (props: Leaflet.LeafletEventHandlerFnMap) => {
   return null
 }
 
-// TODO abstract out to use waypoint marker?
-// add snap line prop?
 const StartOrEndMarker = ({
   place,
   position,

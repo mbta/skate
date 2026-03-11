@@ -228,10 +228,25 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
      * - {@link endPoint} is not set.
      */
     addWaypoint,
+    /**
+     * Inserts a new waypoint at a given index
+     */
     insertWaypoint,
+    /**
+     * Changes the coordinates of a waypoint at a given index
+     */
     moveWaypoint,
+    /**
+     * Changes the coordinates of the startPoint
+     */
     moveStartPoint,
-    moveEndPoint, // TODO comments
+    /**
+     * Changes the coordinates of the endPoint
+     */
+    moveEndPoint,
+    /**
+     * Removes the waypoint at a given index
+     */
     deleteWaypoint,
     /**
      * Sets {@link startPoint} if unset.
