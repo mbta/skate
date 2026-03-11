@@ -9,13 +9,12 @@ import React, {
   useRef,
   useState,
 } from "react"
-import {
+import Leaflet, {
   LatLngLiteral,
   LeafletMouseEvent,
   LeafletMouseEventHandlerFn,
 } from "leaflet"
 import { Polyline, useMap, useMapEvents } from "react-leaflet"
-import Leaflet from "leaflet"
 import Map from "../map"
 import { CustomControl } from "../map/controls/customControl"
 import { ReactMarker } from "../map/utilities/reactMarker"
@@ -30,7 +29,10 @@ import { RouteSegments, UnfinishedRouteSegments } from "../../models/detour"
 import { MapButton } from "../map/controls/mapButton"
 import { ArrowLeftSquare, XSquare } from "../../helpers/bsIcons"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
-import { StopMarkerWithStopCard } from "../map/markers/stopMarker"
+import {
+  StopMarkerWithStopCard,
+  StopMarkerWithToolTip,
+} from "../map/markers/stopMarker"
 import {
   LayersControl,
   LayersControlState,
@@ -96,6 +98,8 @@ interface DetourMapProps {
   onInsertWaypoint?: (point: ShapePoint, index: number) => void
   onDeleteWaypoint?: (index: number) => void
   onMoveWaypoint?: (index: number, latLng: ShapePoint) => void
+  onMoveStartPoint?: (latLng: ShapePoint) => void
+  onMoveEndPoint?: (latLng: ShapePoint) => void
 
   /**
    * User signal to describe the state of the undo button.
@@ -145,6 +149,8 @@ export const DetourMap = ({
   onInsertWaypoint,
   onDeleteWaypoint,
   onMoveWaypoint,
+  onMoveStartPoint,
+  onMoveEndPoint,
 
   unfinishedRouteSegments,
 
@@ -196,6 +202,38 @@ export const DetourMap = ({
       )),
     [waypoints, onMoveWaypoint, onDeleteWaypoint]
   )
+
+  const start_point = useMemo(() => {
+    if (!startPoint) return null
+
+    const segment = routeSegments
+      ? routeSegments.beforeDetour.concat(routeSegments.detour)
+      : originalShape
+    return (
+      <StartOrEndMarker
+        place="start"
+        position={shapePointToLatLngLiteral(startPoint)}
+        snapLine={segment.map(shapePointToLatLngLiteral)}
+        onDragEnd={onMoveStartPoint}
+      />
+    )
+  }, [startPoint, routeSegments, onMoveStartPoint])
+
+  const end_point = useMemo(() => {
+    if (!endPoint) return null
+
+    const segment = routeSegments
+      ? routeSegments.detour.concat(routeSegments.afterDetour)
+      : []
+    return (
+      <StartOrEndMarker
+        place="end"
+        position={shapePointToLatLngLiteral(endPoint)}
+        snapLine={segment.map(shapePointToLatLngLiteral)}
+        onDragEnd={onMoveEndPoint}
+      />
+    )
+  }, [endPoint, routeSegments, onMoveEndPoint])
 
   const CenteringElement = ({
     mapCenter,
@@ -288,15 +326,12 @@ export const DetourMap = ({
           }}
         />
 
-        {startPoint && (
-          <StartMarker position={shapePointToLatLngLiteral(startPoint)} />
-        )}
+        {start_point}
 
         {waypoints_markers}
-
-        {endPoint && (
-          <EndMarker position={shapePointToLatLngLiteral(endPoint)} />
-        )}
+        {/* maybe make an invisible complete original route shape */}
+        {/* might have to restructure this */}
+        {end_point}
 
         <Detour
           onInsertWaypoint={onInsertWaypoint}
@@ -459,39 +494,80 @@ const MapEvents = (props: Leaflet.LeafletEventHandlerFnMap) => {
   return null
 }
 
-export const StartMarker = ({ position }: { position: LatLngLiteral }) => (
-  <StartOrEndMarker
-    title="Detour Start"
-    position={position}
-    icon={<StartIcon />}
-  />
-)
-
-export const EndMarker = ({ position }: { position: LatLngLiteral }) => (
-  <StartOrEndMarker title="Detour End" position={position} icon={<EndIcon />} />
-)
-
+// TODO abstract out to use waypoint marker?
+// add snap line prop?
 const StartOrEndMarker = ({
-  title,
+  place,
   position,
-  icon,
+  snapLine,
+  onDragEnd,
 }: {
-  title: string
+  place: "start" | "end"
   position: LatLngLiteral
-  icon: ReactNode
-}) => (
-  <ReactMarker
-    interactive={false}
-    position={position}
-    divIconSettings={{
-      iconSize: [16, 16],
-      iconAnchor: new Leaflet.Point(8, 8),
-      className: "",
-    }}
-    title={title}
-    icon={icon}
-  />
-)
+  snapLine: LatLngLiteral[]
+  onDragEnd?: (position: ShapePoint) => void
+}) => {
+  const map = useMap()
+  const isInteractive = !!onDragEnd
+  const markerRef = useRef<Leaflet.Marker | null>(null)
+  const lineRef = useRef<Leaflet.Polyline | null>(null)
+
+  return (
+    <>
+      <Polyline
+        ref={lineRef}
+        className={`c-detour_map-circle-marker--${place}-snap`}
+        interactive={false}
+        weight={30}
+        positions={snapLine}
+        opacity={0}
+      />
+      <ReactMarker
+        key={`${place}-${isInteractive}`}
+        title={`detour ${place}`}
+        interactive={isInteractive}
+        draggable={isInteractive}
+        ref={markerRef}
+        position={position}
+        divIconSettings={{
+          iconSize: [40, 40],
+          iconAnchor: new Leaflet.Point(20, 20),
+          className: "",
+        }}
+        eventHandlers={
+          (isInteractive || undefined) && {
+            dragstart: () => {
+              const line = lineRef.current
+              if (!line) return
+
+              line.setStyle({ opacity: 0.2 })
+            },
+            drag: (e: any) => {
+              const marker = markerRef.current
+              const line = lineRef.current
+              if (!marker || !line) return
+
+              const layerPoint = map.latLngToLayerPoint(e.latlng)
+              const closestPoint = line.closestLayerPoint(layerPoint)
+              marker.setLatLng(map.layerPointToLatLng(closestPoint))
+            },
+            dragend: () => {
+              const marker = markerRef.current
+              const line = lineRef.current
+              if (!marker) return
+
+              line?.setStyle({ opacity: 0 })
+              onDragEnd?.(latLngLiteralToShapePoint(marker.getLatLng()))
+            },
+          }
+        }
+        icon={place === "start" ? <StartIcon /> : <EndIcon />}
+      >
+        {isInteractive && <MapTooltip>Drag to change route</MapTooltip>}
+      </ReactMarker>
+    </>
+  )
+}
 
 export const StartIcon = () => <StartOrEndIcon classSuffix={"start"} />
 export const EndIcon = () => <StartOrEndIcon classSuffix={"end"} />
@@ -500,11 +576,14 @@ const StartOrEndIcon = ({ classSuffix }: { classSuffix: string }) => (
   <svg
     height="100%"
     width="100%"
-    viewBox="0 0 16 16"
+    viewBox="0 0 40 40"
     className={"c-detour_map-circle-marker--" + classSuffix}
   >
-    <circle cx={8} cy={8} r={7.5} opacity={0.5} />
-    <circle cx={8} cy={8} r={6} stroke="white" strokeWidth={2} />
+    <circle cx={20} cy={20} r={20} opacity={0} />
+    <g>
+      <circle cx={20} cy={20} r={7.5} opacity={0.5} />
+      <circle cx={20} cy={20} r={6} stroke="white" strokeWidth={2} />
+    </g>
   </svg>
 )
 
