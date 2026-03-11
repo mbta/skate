@@ -258,7 +258,7 @@ export const createDetourMachine = setup({
       detourShape: undefined,
     }),
     "detour.undo.insert": assign({
-      undoStack: ({ context, self }, params: Partial<MachineContext>) => {
+      undoStack: ({ context, self }, params: ContextPatch) => {
         const snap = self.getSnapshot()
 
         const matchTarget = () => {
@@ -275,11 +275,24 @@ export const createDetourMachine = setup({
         return [{ target: matchTarget(), patch: params }, ...existingStack]
       },
     }),
-    "detour.undo.apply": assign(({ context }) => ({
-      ...context,
-      ...context.undoStack?.[0].patch,
-      undoStack: context.undoStack?.slice(1),
-    })),
+    "detour.undo.apply": assign(({ context }) => {
+      if (!context.undoStack || context.undoStack.length === 0) return context
+
+      // patches to clear property values are stored as null to be preserved when serialized
+      // to align with MachineContext types, patches with null values are assigned as undefined
+      const patch = Object.fromEntries(
+        Object.entries(context.undoStack[0].patch).map(([k, v]) => [
+          k,
+          v ?? undefined,
+        ])
+      )
+
+      return {
+        ...context,
+        ...patch,
+        undoStack: context.undoStack?.slice(1),
+      }
+    }),
     "set.nearest-intersection-fallback": assign({
       nearestIntersection: "—",
     }),
@@ -499,7 +512,7 @@ export const createDetourMachine = setup({
                   actions: [
                     {
                       type: "detour.undo.insert",
-                      params: { startPoint: undefined, detourShape: undefined },
+                      params: { startPoint: null, detourShape: null },
                     },
                     {
                       type: "detour.add-start-point",
@@ -590,8 +603,8 @@ export const createDetourMachine = setup({
                     {
                       type: "detour.undo.insert",
                       params: {
-                        endPoint: undefined,
-                        finishedDetour: undefined,
+                        endPoint: null,
+                        finishedDetour: null,
                       },
                     },
                     {
@@ -1141,8 +1154,13 @@ type MachineContext = {
   editedSelectedDuration?: string
   savedContext?: MachineContext
   closeFunc?: () => void
-  undoStack?: { target: string; patch: Partial<MachineContext> }[]
+  undoStack?: {
+    target: string
+    patch: ContextPatch
+  }[]
 }
+
+type ContextPatch = { [P in keyof MachineContext]?: MachineContext[P] | null }
 
 /**
  * This refers to the type of `input` provided in
