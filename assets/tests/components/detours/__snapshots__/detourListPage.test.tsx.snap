@@ -60,6 +60,11 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
             >
               Est. Duration
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Reason
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -109,6 +114,9 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                 23 hours ago
               </div>
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
           <tr>
             <td
@@ -156,6 +164,9 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                 Aug 26, 2024
               </div>
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
           <tr>
             <td
@@ -203,6 +214,9 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                 Aug 27, 2024
               </div>
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
         </tbody>
       </table>
@@ -298,6 +312,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               Est. Duration
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Reason
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -346,6 +365,9 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               2 hours
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
           <tr>
             <td
@@ -392,6 +414,9 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               2 hours
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
         </tbody>
       </table>
@@ -645,6 +670,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               Last used
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Reason
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -686,6 +716,9 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               Aug 28, 2024
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
         </tbody>
       </table>
@@ -754,6 +787,11 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             >
               Est. Duration
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Reason
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -802,6 +840,9 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             >
               2 hours
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
           <tr>
             <td
@@ -848,6 +889,9 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             >
               2 hours
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
         </tbody>
       </table>

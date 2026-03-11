@@ -198,10 +198,7 @@ export const DetoursTable = ({
           />
         ) : (
           <tr aria-hidden>
-            <td
-              colSpan={columnCount(status)}
-              className="p-3 p-md-4"
-            >
+            <td colSpan={columnCount(status)} className="p-3 p-md-4">
               <EmptyDetourContent message={`No ${status} detours.`} />
             </td>
           </tr>

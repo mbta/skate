@@ -90,6 +90,11 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             >
               Est. Duration
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Reason
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -138,6 +143,9 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             >
               2 hours
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
           <tr>
             <td
@@ -184,6 +192,9 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             >
               2 hours
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
         </tbody>
       </table>
@@ -437,6 +448,11 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             >
               Last used
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Reason
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -478,6 +494,9 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             >
               Aug 28, 2024
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
         </tbody>
       </table>
@@ -1094,6 +1113,11 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             >
               Est. Duration
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Reason
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -1142,6 +1166,9 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             >
               2 hours
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
           <tr>
             <td
@@ -1188,6 +1215,9 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             >
               2 hours
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
         </tbody>
       </table>
@@ -1441,6 +1471,11 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             >
               Last used
             </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
+              Reason
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -1482,6 +1517,9 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             >
               Aug 28, 2024
             </td>
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
+            />
           </tr>
         </tbody>
       </table>
