@@ -180,21 +180,21 @@ describe("DetourMap", () => {
   test("displays `startPoint` when provided", async () => {
     const { rerender } = render(<DetourMapWithDefaults />)
 
-    expect(screen.queryByTitle("Detour Start")).not.toBeInTheDocument()
+    expect(screen.queryByTitle("detour start")).not.toBeInTheDocument()
 
     rerender(<DetourMapWithDefaults startPoint={{ lat: 0, lon: 0 }} />)
 
-    expect(screen.getByTitle("Detour Start")).toBeVisible()
+    expect(screen.getByTitle("detour start")).toBeVisible()
   })
 
   test("displays `endPoint` when provided", async () => {
     const { rerender } = render(<DetourMapWithDefaults />)
 
-    expect(screen.queryByTitle("Detour End")).not.toBeInTheDocument()
+    expect(screen.queryByTitle("detour end")).not.toBeInTheDocument()
 
     rerender(<DetourMapWithDefaults endPoint={{ lat: 0, lon: 0 }} />)
 
-    expect(screen.getByTitle("Detour End")).toBeVisible()
+    expect(screen.getByTitle("detour end")).toBeVisible()
   })
 
   test("displays `waypoints` when provided", async () => {
