@@ -3,7 +3,7 @@
 exports[`Modal renders Chelsea Lowered modal 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
@@ -44,7 +44,7 @@ exports[`Modal renders Chelsea Lowered modal 1`] = `
 exports[`Modal renders Chelsea Raised modal 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
@@ -126,7 +126,7 @@ exports[`Modal renders inactive notification modal when appropriate 1`] = `
 exports[`Modal renders loading modal when appropriate 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div

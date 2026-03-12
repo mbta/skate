@@ -3,7 +3,7 @@
 exports[`Detours Page: Open a Detour renders detour details in an open drawer on mobile 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div>
     <div

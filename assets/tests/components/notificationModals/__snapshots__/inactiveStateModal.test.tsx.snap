@@ -3,7 +3,7 @@
 exports[`InactiveNotificationModal renders for a notification with a run currently on break 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
@@ -44,7 +44,7 @@ exports[`InactiveNotificationModal renders for a notification with a run current
 exports[`InactiveNotificationModal renders for a notification with a run that finished in the past 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
@@ -85,7 +85,7 @@ exports[`InactiveNotificationModal renders for a notification with a run that fi
 exports[`InactiveNotificationModal renders for a notification with a run that has only nonrevenue work left 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
@@ -126,7 +126,7 @@ exports[`InactiveNotificationModal renders for a notification with a run that ha
 exports[`InactiveNotificationModal renders for a notification with multiple current runs 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
@@ -167,7 +167,7 @@ exports[`InactiveNotificationModal renders for a notification with multiple curr
 exports[`InactiveNotificationModal renders for a notification with multiple upcoming runs 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
@@ -249,7 +249,7 @@ exports[`InactiveNotificationModal renders for a notification with no runs 1`] =
 exports[`InactiveNotificationModal renders for a notification with one current run 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
@@ -290,7 +290,7 @@ exports[`InactiveNotificationModal renders for a notification with one current r
 exports[`InactiveNotificationModal renders for a notification with one upcoming run 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 1024px;"
+  style="padding-right: 2048px;"
 >
   <div />
   <div
