@@ -108,7 +108,7 @@ interface DetourMapProps {
   /**
    * Callback fired when the clear button is clicked.
    */
-  onClear: () => void
+  onClear?: () => void
 
   /*
    * Center and zoom to position the map correctly when it renders
@@ -260,7 +260,7 @@ export const DetourMap = ({
         </CustomControl>
         <CustomControl position="bottomleft" className="leaflet-bar">
           <MapButton
-            disabled={undoDisabled}
+            disabled={onClear === undefined}
             onClick={onClear}
             size="lg"
             title="Clear"
