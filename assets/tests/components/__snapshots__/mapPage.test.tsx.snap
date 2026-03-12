@@ -1794,7 +1794,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             <div
               class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
               role="button"
-              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27; z-index: 27;"
+              style="margin-left: 0px; margin-top: 0px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27;"
               tabindex="0"
             >
               <svg
@@ -1814,7 +1814,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             <div
               class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
               role="button"
-              style="margin-left: -15px; margin-top: 10px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27; z-index: 27;"
+              style="margin-left: -15px; margin-top: 10px; width: 12px; height: 12px; left: 223px; top: 27px; z-index: 27;"
               tabindex="0"
             >
               <svg
