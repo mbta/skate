@@ -47,7 +47,7 @@ export const DrawDetourPanel = ({
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header className={isActiveDetour ? "active-detour" : ""}>
       <h1 className="c-diversion-panel__h1 my-3">
-        {isActiveDetour ? "Edit Active Detour" : "Edit Detour"}
+        {isActiveDetour ? "Edit Active Detour" : "Draw Detour"}
       </h1>
     </Panel.Header>
     <Panel.Body className="d-flex flex-column">
