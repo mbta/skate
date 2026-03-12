@@ -32,6 +32,16 @@ export enum DetourStatus {
   Closed = "closed",
 }
 
+const hasReasonColumn = (status: DetourStatus) =>
+  status === DetourStatus.Active || status === DetourStatus.Closed
+
+const columnCount = (status: DetourStatus) => {
+  let count = 3 // Route/direction, Starting Intersection, Timestamp
+  if (status === DetourStatus.Active) count++ // Est. Duration
+  if (hasReasonColumn(status)) count++ // Reason
+  return count
+}
+
 export const timestampLabelFromStatus = (status: DetourStatus) => {
   switch (status) {
     case DetourStatus.Draft:
@@ -174,6 +184,9 @@ export const DetoursTable = ({
           {status === DetourStatus.Active && (
             <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
           )}
+          {hasReasonColumn(status) && (
+            <th className="px-3 py-4 u-hide-for-mobile">Reason</th>
+          )}
         </tr>
       </thead>
       <tbody>
@@ -185,10 +198,7 @@ export const DetoursTable = ({
           />
         ) : (
           <tr aria-hidden>
-            <td
-              colSpan={status === DetourStatus.Active ? 4 : 3}
-              className="p-3 p-md-4"
-            >
+            <td colSpan={columnCount(status)} className="p-3 p-md-4">
               <EmptyDetourContent message={`No ${status} detours.`} />
             </td>
           </tr>
@@ -259,6 +269,11 @@ const PopulatedDetourRows = ({
           {status === DetourStatus.Active && detour.estimatedDuration && (
             <td className="align-middle p-3 u-hide-for-mobile">
               {detour.estimatedDuration}
+            </td>
+          )}
+          {hasReasonColumn(status) && (
+            <td className="align-middle p-3 u-hide-for-mobile">
+              {detour.reason}
             </td>
           )}
         </tr>

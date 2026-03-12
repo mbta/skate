@@ -21,6 +21,7 @@ export interface SimpleDetour {
   updatedAt: number
   activatedAt: Date | null
   estimatedDuration: string | null
+  reason: string | null
   status: "active" | "draft" | "past"
 }
 
@@ -44,6 +45,7 @@ export const SimpleDetourData = type({
     coerce(date(), string(), (dateStr) => new Date(dateStr))
   ),
   estimated_duration: nullable(string()),
+  reason: nullable(string()),
 })
 
 export const SimpleActiveDetourData = type({
@@ -56,6 +58,7 @@ export const SimpleActiveDetourData = type({
   status: literal("active"),
   activated_at: coerce(date(), string(), (dateStr) => new Date(dateStr)),
   estimated_duration: string(),
+  reason: nullable(string()),
 })
 
 export type SimpleDetourData = Infer<typeof SimpleDetourData>
@@ -73,6 +76,7 @@ export const simpleDetourFromData = (
   status: detourData.status,
   activatedAt: detourData.activated_at,
   estimatedDuration: detourData.estimated_duration,
+  reason: detourData.reason,
 })
 
 export const simpleDetourFromActiveData = (
