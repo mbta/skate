@@ -72,6 +72,10 @@ export const activeDetourFactory = Factory.define<
     type: "detour.share.activate-modal.select-reason",
     reason: "Emergency",
   })
+
+  machine.send({ type: "detour.share.activate-modal.next" })
+  machine.send({ type: "detour.share.activate-modal.update" })
+
   machine.send({ type: "detour.share.activate" })
   const snapshot = machine.getPersistedSnapshot()
   machine.stop()

@@ -170,9 +170,9 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     send({ type: "detour.edit.undo" })
   }
 
-  const clear = () => {
-    send({ type: "detour.edit.clear-detour" })
-  }
+  const clear = snapshot.can({ type: "detour.edit.clear-detour" })
+    ? () => send({ type: "detour.edit.clear-detour" })
+    : undefined
 
   const reviewDetour = () => {
     send({ type: "detour.edit.done" })
