@@ -76,13 +76,35 @@
 .c-detour_map-circle-marker--start {
   stroke: tokens.$detour-start-point;
   fill: tokens.$detour-start-point;
-  display: block;
+}
+
+.c-detour_map-circle-marker--start-snap {
+  stroke: tokens.$detour-start-point;
 }
 
 .c-detour_map-circle-marker--end {
   stroke: $color-strawberry-700;
   fill: $color-strawberry-700;
+}
+
+.c-detour_map-circle-marker--end-snap {
+  stroke: $color-strawberry-700;
+}
+
+.c-detour_map-circle-marker--start,
+.c-detour_map-circle-marker--end {
   display: block;
+
+  &:hover {
+    :first-child {
+      opacity: 20%;
+    }
+
+    g {
+      transform: scale(1.5);
+      transform-origin: center;
+    }
+  }
 }
 
 .c-detour_map-circle-marker--detour-point {
