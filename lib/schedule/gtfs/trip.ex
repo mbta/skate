@@ -44,11 +44,12 @@ defmodule Schedule.Gtfs.Trip do
 
   @spec parse(binary() | nil, MapSet.t(Route.id())) :: [t()]
   def parse(file_binary, route_ids) do
-    Csv.parse(
-      file_binary,
+    file_binary
+    |> Csv.parse(
       filter: &row_in_route_id_set?(&1, route_ids),
       parse: &from_csv_row/1
     )
+    |> Enum.to_list()
   end
 
   @spec from_csv_row(Csv.row()) :: t()
