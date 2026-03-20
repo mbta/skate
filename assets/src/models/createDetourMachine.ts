@@ -63,6 +63,14 @@ export const createDetourMachine = setup({
           index: number
           position: ShapePoint
         }
+      | {
+          type: "detour.edit.move-start-point"
+          position: ShapePoint
+        }
+      | {
+          type: "detour.edit.move-end-point"
+          position: ShapePoint
+        }
       | { type: "detour.edit.undo" }
       | { type: "detour.discard-modal.confirm" }
       | { type: "detour.discard-modal.cancel" }
@@ -222,10 +230,6 @@ export const createDetourMachine = setup({
     }),
     "detour.add-start-point": assign({
       startPoint: (_, params: { location: ShapePoint }) => params.location,
-    }),
-    "detour.remove-start-point": assign({
-      startPoint: undefined,
-      detourShape: undefined,
     }),
     "detour.add-waypoint": assign({
       waypoints: ({ context }, params: { location: ShapePoint }) => [
@@ -618,6 +622,17 @@ export const createDetourMachine = setup({
                     },
                   ],
                 },
+                "detour.edit.move-start-point": {
+                  target: "Place Waypoint",
+                  reenter: true,
+                  actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: ({ context: { startPoint } }) => ({ startPoint }),
+                    },
+                    assign({ startPoint: ({ event }) => event.position }),
+                  ],
+                },
                 "detour.edit.delete-waypoint": {
                   target: "Place Waypoint",
                   reenter: true,
@@ -716,8 +731,27 @@ export const createDetourMachine = setup({
                     !activatedAt ||
                     (undoStack !== undefined && undoStack.length > 0),
                 },
-                "detour.delete.open-delete-modal": {
-                  target: "Deleting",
+                "detour.edit.move-start-point": {
+                  target: "Finished Drawing",
+                  reenter: true,
+                  actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: ({ context: { startPoint } }) => ({ startPoint }),
+                    },
+                    assign({ startPoint: ({ event }) => event.position }),
+                  ],
+                },
+                "detour.edit.move-end-point": {
+                  target: "Finished Drawing",
+                  reenter: true,
+                  actions: [
+                    {
+                      type: "detour.undo.insert",
+                      params: ({ context: { endPoint } }) => ({ endPoint }),
+                    },
+                    assign({ endPoint: ({ event }) => event.position }),
+                  ],
                 },
                 "detour.edit.delete-waypoint": {
                   target: "Finished Drawing",
@@ -763,6 +797,9 @@ export const createDetourMachine = setup({
                       params: ({ event }) => event,
                     },
                   ],
+                },
+                "detour.delete.open-delete-modal": {
+                  target: "Deleting",
                 },
               },
             },
