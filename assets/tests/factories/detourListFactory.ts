@@ -53,6 +53,7 @@ export const simpleDetourDataFactory = Factory.define<SimpleDetourData>(
     updated_at: 1724866392,
     activated_at: null,
     estimated_duration: null,
+    reason: null,
   })
 )
 
@@ -67,6 +68,7 @@ export const simpleActiveDetourDataFactory =
     updated_at: 1724866392,
     activated_at: new Date(),
     estimated_duration: "2 hours",
+    reason: null,
   }))
 
 export const simpleDetourFactory = Factory.define<SimpleDetour>(() =>
