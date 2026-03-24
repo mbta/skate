@@ -19,7 +19,8 @@ defmodule Skate.Detours.Detour do
             author_id: integer(),
             status: :active | :draft | :past,
             activated_at: DateTime.t() | nil,
-            estimated_duration: String.t() | nil
+            estimated_duration: String.t() | nil,
+            reason: String.t() | nil
           }
 
     @derive Jason.Encoder
@@ -34,7 +35,8 @@ defmodule Skate.Detours.Detour do
       :author_id,
       :status,
       :activated_at,
-      :estimated_duration
+      :estimated_duration,
+      :reason
     ]
 
     def from(
@@ -97,7 +99,8 @@ defmodule Skate.Detours.Detour do
         intersection: nearest_intersection,
         updated_at: timestamp_to_unix(updated_at),
         author_id: db_detour.author_id,
-        status: status
+        status: status,
+        reason: db_detour.reason
       }
     end
 
@@ -111,6 +114,7 @@ defmodule Skate.Detours.Detour do
            direction: direction,
            estimated_duration: estimated_duration,
            activated_at: activated_at,
+           reason: reason,
            status: status
          })
          when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) and
@@ -125,6 +129,7 @@ defmodule Skate.Detours.Detour do
         author_id: author_id,
         estimated_duration: estimated_duration,
         activated_at: activated_at,
+        reason: reason,
         status: status
       }
     end
