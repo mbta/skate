@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react"
 import { Table, Form, Button } from "react-bootstrap"
 import { XSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
+import { DateTimePicker } from "./dateTimePicker"
 import { useCurrentTime } from "../hooks/useCurrentTime"
 import {
   timeAgoLabel,
   timeAgoLabelFromDate,
   dateFromEpochSeconds,
+  isSameDay,
 } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
@@ -66,6 +68,7 @@ export const DetoursTable = ({
 }: DetoursTableProps) => {
   const [filter, setFilter] = useState("")
   const [debouncedFilter, setDebouncedFilter] = useState(filter)
+  const [dates, setDates] = useState<Date[]>([])
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -80,11 +83,19 @@ export const DetoursTable = ({
   const resetInputs = () => {
     setRouteId("all")
     setFilter("")
+    setDates([])
   }
 
-  const filteredData = data.filter((detour) =>
-    detour.intersection.toLowerCase().includes(debouncedFilter.toLowerCase())
-  )
+  const filteredData = data
+    .filter((detour) =>
+      detour.intersection.toLowerCase().includes(debouncedFilter.toLowerCase())
+    )
+    .filter((detour) => {
+      if (dates.length === 0) return true
+
+      const updatedDate = dateFromEpochSeconds(detour.updatedAt)
+      return dates.some((date) => isSameDay(date, updatedDate))
+    })
 
   return (
     <Table
@@ -160,7 +171,23 @@ export const DetoursTable = ({
                 </div>
               </div>
             </th>
-            <th className="px-3 py-3 text-end">
+            <th className="px-3 py-3" colSpan={2}>
+              <div className="c-detour-list-filter">
+                <label className="c-detour-list-filter__label" htmlFor="date-filter">
+                  Date
+                </label>
+                <DateTimePicker
+                  id="date-filter"
+                  className="c-detour-list-filter__text"
+                  value={dates}
+                  options={{
+                    maxDate: new Date(),
+                    onChange: setDates,
+                  }}
+                />
+              </div>
+            </th>
+            {/* <th className="px-3 py-3">
               <Button
                 className="icon-link"
                 variant="outline-primary"
@@ -172,7 +199,7 @@ export const DetoursTable = ({
                 <XSquare />
                 Clear
               </Button>
-            </th>
+            </th> */}
           </tr>
         )}
         <tr>

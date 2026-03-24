@@ -129,3 +129,6 @@ export const timeAgoLabelFromDate = (start: Date, end: Date) => {
   const second = 1000
   return timeAgoLabel(end.getTime() / second, start.getTime() / second)
 }
+
+export const isSameDay = (first: Date, second: Date) =>
+  first.toDateString() === second.toDateString()
