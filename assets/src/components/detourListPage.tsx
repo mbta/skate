@@ -79,42 +79,52 @@ export const DetourListPage = () => {
       )}
       {activeDetours && draftDetours && pastDetours ? (
         <>
-          <Title
-            title="Active detours"
-            icon={GlobeAmericas}
-            visibility="All Skate users"
-            classNames={["d-flex"]}
-          />
           <DetoursTable
             data={activeDetours}
             status={DetourStatus.Active}
             onOpenDetour={onOpenDetour}
             classNames={["mb-5"]}
+            title={
+              <Title
+                title="Active detours"
+                icon={GlobeAmericas}
+                visibility="All Skate users"
+                classNames={["d-flex"]}
+              />
+            }
           />
+          {/* options
+            1. move title into DetourTable
+            2. add Button here, onClick={clearDetour} ... requires value exposed ... 
+          */}
           {userInTestGroup(TestGroups.DetoursPilot) && (
             <>
-              <Title
-                title="Draft detours"
-                icon={LockFill}
-                visibility="Only you"
-                classNames={["u-hide-for-mobile", "d-md-flex"]}
-              />
               <DetoursTable
                 data={draftDetours}
                 status={DetourStatus.Draft}
                 onOpenDetour={onOpenDetour}
+                title={
+                  <Title
+                    title="Draft detours"
+                    icon={LockFill}
+                    visibility="Only you"
+                    classNames={["u-hide-for-mobile", "d-md-flex"]}
+                  />
+                }
                 classNames={["mb-5", "u-hide-for-mobile"]}
-              />
-              <Title
-                title="Closed detours"
-                icon={PeopleFill}
-                visibility="Dispatchers and supervisors"
-                classNames={["u-hide-for-mobile", "d-md-flex"]}
               />
               <DetoursTable
                 data={pastDetours}
                 status={DetourStatus.Closed}
                 onOpenDetour={onOpenDetour}
+                title={
+                  <Title
+                    title="Closed detours"
+                    icon={PeopleFill}
+                    visibility="Dispatchers and supervisors"
+                    classNames={["u-hide-for-mobile", "d-md-flex"]}
+                  />
+                }
                 routeId={routeId}
                 setRouteId={setRouteId}
                 routes={routes}

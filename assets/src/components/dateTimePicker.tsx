@@ -55,13 +55,13 @@ export const DateTimePicker = ({
         {...props}
       />
       <div className="c-date-time-picker__input-controls">
-        {/* {fpRef.current && fpRef.current.selectedDates.length > 0 && ( */}
-        <button onClick={() => fpRef.current && fpRef.current.clear()}>
-          <span>
-            <CircleXIcon />
-          </span>
-        </button>
-        {/* )} */}
+        {fpRef.current && fpRef.current.selectedDates.length > 0 && (
+          <button onClick={() => fpRef.current && fpRef.current.clear()}>
+            <span>
+              <CircleXIcon />
+            </span>
+          </button>
+        )}
         <button data-toggle>
           <span>
             <Calendar />
