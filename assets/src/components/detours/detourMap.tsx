@@ -550,12 +550,12 @@ const StartOrEndMarker = ({
 
               line.setStyle({ opacity: 0.2 })
             },
-            drag: (e: any) => {
+            drag: () => {
               const marker = markerRef.current
               const line = lineRef.current
               if (!marker || !line) return
 
-              const layerPoint = map.latLngToLayerPoint(e.latlng)
+              const layerPoint = map.latLngToLayerPoint(marker.getLatLng())
               const closestPoint = line.closestLayerPoint(layerPoint)
               marker.setLatLng(map.layerPointToLatLng(closestPoint))
             },
