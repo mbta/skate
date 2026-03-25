@@ -173,11 +173,13 @@ export const DetoursTable = ({
             </th>
             <th className="px-3 py-3" colSpan={2}>
               <div className="c-detour-list-filter">
-                <label className="c-detour-list-filter__label" htmlFor="date-filter">
+                <label
+                  className="c-detour-list-filter__label"
+                  htmlFor="date-filter"
+                >
                   Date
                 </label>
                 <DateTimePicker
-                  id="date-filter"
                   className="c-detour-list-filter__text"
                   value={dates}
                   options={{
