@@ -384,15 +384,15 @@ $color-tooltip-background: #333333;
 
   padding-right: 64px;
   text-overflow: ellipsis;
-  border-color: tokens.$gray-400;
+  border-color: new_tokens.$gray-400;
 
   &:hover {
-    border-color: tokens.$eggplant-500;
-    box-shadow: 0 0 0 4px rgba(tokens.$eggplant-500, 0.25);
+    border-color: new_tokens.$eggplant-500;
+    box-shadow: 0 0 0 4px rgba(new_tokens.$eggplant-500, 0.25);
   }
 
   &::placeholder {
-    color: tokens.$gray-700;
+    color: new_tokens.$gray-700;
   }
 }
 
@@ -411,7 +411,7 @@ $color-tooltip-background: #333333;
 
   button {
     @include button-icon(16px);
-    color: tokens.$gray-800;
+    color: new_tokens.$gray-800;
     min-width: 32px;
 
     &:hover,
@@ -426,55 +426,9 @@ $color-tooltip-background: #333333;
 }
 
 @mixin filter-clear {
-  @include button-transparent;
-  @include button-icon(0.875rem);
-  position: absolute;
-  display: flex;
-  width: 0.875rem;
-  height: 0.875rem;
-  color: $color-gray-600;
-
-  &:hover {
-    color: $color-gray-400;
-  }
-
-  &:focus-within {
-    color: $color-gray-700;
-  }
 }
 
 @mixin filter-submit {
-  span > svg {
-    fill: currentColor;
-
-    display: block;
-    height: 1rem;
-    aspect-ratio: 1/1;
-  }
-
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  height: 100%;
-  aspect-ratio: 1/1;
-
-  color: $color-eggplant-700;
-  border-radius: 0.375rem;
-
-  &[disabled] {
-    color: $color-gray-700;
-  }
-
-  &:focus {
-    border: 1px solid $color-eggplant-500;
-    box-shadow: 0px 0px 0px 2px rgba(170, 78, 242, 0.17);
-  }
-
-  &:hover svg {
-    color: $color-eggplant-500;
-  }
 }
 
 // #endregion
