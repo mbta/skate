@@ -436,7 +436,7 @@ describe("DiversionPage Activate Screen", () => {
       screen.getByRole("definition", { name: "Reason" })
     ).toHaveTextContent("Construction")
     expect(
-      screen.getByRole("definition", { name: "On detour since" })
+      screen.getByRole("definition", { name: "Last published" })
     ).toHaveTextContent("Just now")
     expect(
       screen.getByRole("definition", { name: "Est. Duration" })

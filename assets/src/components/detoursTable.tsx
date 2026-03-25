@@ -6,7 +6,7 @@ import { useCurrentTime } from "../hooks/useCurrentTime"
 import {
   timeAgoLabel,
   timeAgoLabelFromDate,
-  dateFromEpochSeconds,
+  isUpdatedAfterActivated,
 } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
@@ -205,20 +205,6 @@ export const DetoursTable = ({
         )}
       </tbody>
     </Table>
-  )
-}
-
-const isUpdatedAfterActivated = ({
-  activatedAt,
-  updatedAt,
-}: {
-  activatedAt: Date | null
-  updatedAt: number
-}): boolean => {
-  if (!activatedAt || !updatedAt) return false
-  const bufferMs = 60_000
-  return (
-    dateFromEpochSeconds(updatedAt).valueOf() > activatedAt.valueOf() + bufferMs
   )
 }
 
