@@ -160,7 +160,10 @@ export const DetoursTable = ({
                 </div>
               </div>
             </th>
-            <th className="px-3 py-3 text-end">
+            <th
+              className="px-3 py-3 text-end"
+              colSpan={columnCount(status) - 2}
+            >
               <Button
                 className="icon-link"
                 variant="outline-primary"
