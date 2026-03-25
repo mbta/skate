@@ -299,7 +299,7 @@ export const Combobox = ({
           }
         }}
       >
-        <div className="c-search-form__search-input-container">
+        <div className="input-group-filter">
           <input
             className="c-search-form__input"
             placeholder="Search"
@@ -318,53 +318,51 @@ export const Combobox = ({
             ref={formSearchInput}
             onFocus={() => setAutocompleteEnabled(true)}
           />
-        </div>
-        <div
-          className="c-search-form__input-controls"
-          role="presentation"
-          onKeyDown={(e) => {
-            // Allow buttons to be pressed by space bar by preventing the parent
-            // keydown handler
-            if (e.key === " ") {
-              e.stopPropagation()
-            }
-          }}
-        >
-          <button
-            hidden={inputText.length === 0}
-            className="c-search-form__clear c-circle-x-icon-container"
-            type="button"
-            title="Clear Search"
-            onClick={(e) => {
-              e.stopPropagation()
-              onClear?.(e)
+          <div
+            role="presentation"
+            onKeyDown={(e) => {
+              // Allow buttons to be pressed by space bar by preventing the parent
+              // keydown handler
+              if (e.key === " ") {
+                e.stopPropagation()
+              }
             }}
           >
-            <CircleXIcon />
-          </button>
-          {comboboxType == "map_search" && (
             <button
-              type="submit"
-              title="Submit"
-              className="c-search-form__submit"
-              onClick={onSubmit}
-              // TODO(design): add error states instead of using `disabled`
-              disabled={!isValidSearchText(inputText)}
-            >
-              <SearchIcon />
-            </button>
-          )}
-          {comboboxType == "select" && (
-            <button
+              hidden={inputText.length === 0}
               type="button"
-              // TODO: rename this class (follow-up PR)
-              className="c-search-form__submit"
-              onClick={onSubmit}
+              title="Clear Search"
+              onClick={(e) => {
+                e.stopPropagation()
+                onClear?.(e)
+              }}
             >
-              <ChevronDown />
+              <CircleXIcon />
             </button>
-          )}
+            {comboboxType == "map_search" && (
+              <button
+                type="submit"
+                title="Submit"
+                onClick={onSubmit}
+                // TODO(design): add error states instead of using `disabled`
+                disabled={!isValidSearchText(inputText)}
+              >
+                <SearchIcon />
+              </button>
+            )}
+            {comboboxType == "select" && (
+              <button
+                type="button"
+                // TODO: rename this class (follow-up PR)
+                className="c-search-form__submit"
+                onClick={onSubmit}
+              >
+                <ChevronDown />
+              </button>
+            )}
+          </div>
         </div>
+
         <div
           className="c-search-form__autocomplete-container"
           hidden={!autocompleteVisible}

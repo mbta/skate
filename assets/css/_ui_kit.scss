@@ -379,6 +379,10 @@ $color-tooltip-background: #333333;
   font-weight: 400;
 }
 
+@mixin filter-placeholder {
+  color: new_tokens.$gray-700;
+}
+
 @mixin filter-input {
   @extend .form-control;
 

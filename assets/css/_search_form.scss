@@ -27,60 +27,6 @@
   position: relative;
 }
 
-.c-search-form__search-input-container {
-  // Use bootstrap control as base for now
-  @extend .form-control;
-
-  // fill control defined valid area
-  height: 100%;
-  // Make space for `input-controls`
-  padding-right: calc(2.25rem * 2);
-  // Ignore bootstrap padding due to `input-controls`
-  padding-block: 0;
-
-  border-color: $color-gray-400;
-
-  &:focus,
-  &:focus-within,
-  &:active {
-    border: 1px solid $color-eggplant-500;
-    box-shadow: 0px 0px 0px 2px #aa4ef22b;
-    color: $color-gray-800;
-  }
-}
-
-.c-search-form__input {
-  // Align self within parent boundaries
-  width: 100%;
-  height: 100%;
-
-  // Match font size from the Route Picker Search
-  @include font-small;
-
-  // Remove default displays
-  border: none;
-}
-
-// #region Search Input Buttons
-.c-search-form__input-controls {
-  @include filter-input-controls;
-}
-
-.c-search-form__clear {
-  @include button-icon(0.875rem);
-
-  // Reserve space around icon in flex container
-  flex: 0;
-
-  height: 100%;
-  aspect-ratio: 1/1;
-}
-
-.c-search-form__submit {
-  @include filter-submit;
-}
-// #endregion Search Input Buttons
-
 // #region Autocomplete Control
 // Hide the autocomplete control by default
 .c-search-form__autocomplete-container {
@@ -96,7 +42,7 @@
 
   // -- Visually join the bottom of the input bar with autocomplete by squaring
   //    off the bottom
-  .c-search-form__search-input-container {
+  .c-search-form__input {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
   }

@@ -6,7 +6,7 @@
 }
 
 .c-garage-filter__header {
-  color: tokens.$gray-700;
+  @include filter-placeholder;
 }
 
 .c-garage-filter__show-hide-button {

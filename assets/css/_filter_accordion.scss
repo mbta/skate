@@ -1,5 +1,10 @@
 .c-filter-accordion {
-  @extend .c-garage-filter;
+  @include filter-input;
+  padding: unset;
+
+  &__header {
+    @include filter-placeholder;
+  }
 
   // Visible when collapsed
   &__toggle-button {
