@@ -627,6 +627,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             </th>
             <th
               class="px-3 py-3 text-end"
+              colspan="2"
             >
               <button
                 class="icon-link btn btn-outline-primary"
