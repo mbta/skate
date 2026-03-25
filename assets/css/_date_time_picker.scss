@@ -1,44 +1,5 @@
 @use "./color/tokens_2024" as tokens;
 
-.c-date-time-picker {
-  position: relative;
-  display: flex;
-
-  input {
-    padding-right: 64px;
-    text-overflow: ellipsis;
-    border-color: tokens.$gray-400;
-
-    &:hover {
-      border-color: tokens.$eggplant-500;
-      box-shadow: 0 0 0 4px rgba(tokens.$eggplant-500, 0.25);
-    }
-
-    &::placeholder {
-      color: tokens.$gray-700;
-    }
-  }
-
-  .c-date-time-picker__input-controls {
-    @include filter-input-controls;
-
-    button {
-      @include button-icon(16px);
-      color: tokens.$gray-800;
-      min-width: 32px;
-
-      &:hover,
-      &:focus {
-        color: var(--bs-primary);
-      }
-
-      span svg {
-        stroke: none;
-      }
-    }
-  }
-}
-
 .flatpickr-calendar {
   .flatpickr-current-month {
     .flatpickr-monthDropdown-months {

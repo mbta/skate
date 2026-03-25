@@ -46,15 +46,9 @@ export const DateTimePicker = ({
   }, [value])
 
   return (
-    <div className={`c-date-time-picker ${className || ""}`} ref={inputRef}>
-      <input
-        className="form-control"
-        type="text"
-        data-input
-        placeholder="Select date"
-        {...props}
-      />
-      <div className="c-date-time-picker__input-controls">
+    <div className={`input-group-filter ${className || ""}`} ref={inputRef}>
+      <input type="text" data-input placeholder="Select date" {...props} />
+      <div className="">
         {fpRef.current && fpRef.current.selectedDates.length > 0 && (
           <button onClick={() => fpRef.current && fpRef.current.clear()}>
             <span>

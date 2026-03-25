@@ -12,3 +12,16 @@
   --bs-btn-active-color: #{new_tokens.$lemon-800};
   --bs-btn-active-border-color: #{new_tokens.$lemon-700};
 }
+
+.input-group-filter {
+  position: relative;
+  display: flex;
+
+  input {
+    @include filter-input;
+
+    & + div {
+      @include filter-input-controls;
+    }
+  }
+}
