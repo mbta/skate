@@ -25,3 +25,11 @@
     }
   }
 }
+
+.select-filter {
+  @include filter-border;
+
+  &:has(option[value="all"]:checked) {
+    @include filter-placeholder;
+  }
+}

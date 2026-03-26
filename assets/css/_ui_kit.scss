@@ -383,11 +383,7 @@ $color-tooltip-background: #333333;
   color: new_tokens.$gray-700;
 }
 
-@mixin filter-input {
-  @extend .form-control;
-
-  padding-right: 64px;
-  text-overflow: ellipsis;
+@mixin filter-border {
   border-color: new_tokens.$gray-400;
 
   &:hover {
@@ -396,8 +392,17 @@ $color-tooltip-background: #333333;
   }
 
   &::placeholder {
-    color: new_tokens.$gray-700;
+    @include filter-placeholder;
   }
+}
+
+@mixin filter-input {
+  @extend .form-control;
+
+  padding-right: 64px;
+  text-overflow: ellipsis;
+
+  @include filter-border;
 }
 
 @mixin filter-input-controls {
@@ -481,11 +486,6 @@ select {
   background-repeat: no-repeat, repeat;
   background-position: right 0.7em top 50%, 0 0;
   background-size: 0.65em auto, 100%;
-
-  &:focus,
-  &:hover {
-    color: $color-secondary-dark;
-  }
 }
 
 // #endregion

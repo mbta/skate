@@ -130,7 +130,7 @@ export const DetoursTable = ({
                 <Form.Label htmlFor="route-name">Route</Form.Label>
                 <Form.Select
                   id="route-name"
-                  className="mt-2"
+                  className="select-filter mt-2"
                   value={routeId}
                   onChange={(changeEvent) => {
                     setRouteId(changeEvent.target.value)
@@ -154,38 +154,34 @@ export const DetoursTable = ({
                   >
                     Starting intersection
                   </label>
-                  <div className="c-detour-list-filter__text">
-                    <div className="c-detour-list-filter__input-container">
-                      <input
-                        id="intersection-filter"
-                        type="text"
-                        placeholder="Search..."
-                        value={filter}
-                        onBlur={() =>
-                          fullStoryEvent("Detour Intersection Filter Used", {})
-                        }
-                        onChange={(e) => setFilter(e.target.value)}
-                        className="c-detour-list-filter__input"
-                      />
-                    </div>
-                    <div className="c-detour-list-filter__input-controls">
+                  <div className="input-group-filter mt-2">
+                    <input
+                      id="intersection-filter"
+                      type="text"
+                      placeholder="Search..."
+                      value={filter}
+                      onBlur={() =>
+                        fullStoryEvent("Detour Intersection Filter Used", {})
+                      }
+                      onChange={(e) => setFilter(e.target.value)}
+                    />
+                    <div>
                       {filter.length > 0 && (
-                        <button
-                          className="c-detour-list-filter__clear"
-                          onClick={() => setFilter("")}
-                          title="Clear"
-                        >
-                          <CircleXIcon />
+                        <button onClick={() => setFilter("")} title="Clear">
+                          <span>
+                            <CircleXIcon />
+                          </span>
                         </button>
                       )}
                       <button
                         type="submit"
                         title="Submit"
-                        className="c-detour-list-filter__submit"
                         onClick={setDebouncedFilter.bind(null, filter)}
                         disabled={filter.length === 0}
                       >
-                        <SearchIcon />
+                        <span>
+                          <SearchIcon />
+                        </span>
                       </button>
                     </div>
                   </div>
@@ -200,7 +196,7 @@ export const DetoursTable = ({
                     Date
                   </label>
                   <DateTimePicker
-                    className="c-detour-list-filter__text"
+                    className="mt-2"
                     value={dates}
                     options={{
                       maxDate: new Date(),
