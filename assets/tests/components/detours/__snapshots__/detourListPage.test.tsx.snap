@@ -803,6 +803,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                     >
                       <span>
                         <svg
+                          aria-hidden="true"
                           class="bi bi-calendar3"
                           fill="currentColor"
                           height="16"

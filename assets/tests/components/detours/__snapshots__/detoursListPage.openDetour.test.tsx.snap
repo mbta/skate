@@ -577,6 +577,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                     >
                       <span>
                         <svg
+                          aria-hidden="true"
                           class="bi bi-calendar3"
                           fill="currentColor"
                           height="16"
@@ -2284,6 +2285,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                     >
                       <span>
                         <svg
+                          aria-hidden="true"
                           class="bi bi-calendar3"
                           fill="currentColor"
                           height="16"
