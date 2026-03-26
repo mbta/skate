@@ -56,11 +56,12 @@ defmodule Schedule.Gtfs.Stop do
   """
   @spec parse(binary() | nil) :: [t()]
   def parse(file_binary) do
-    Csv.parse(
-      file_binary,
+    file_binary
+    |> Csv.parse(
       parse: &from_csv_row/1,
       filter: fn row -> Map.has_key?(@location_type_map, row["location_type"]) end
     )
+    |> Enum.to_list()
   end
 
   @spec parent_station_id(t() | nil) :: id() | nil

@@ -73,12 +73,13 @@ defmodule Schedule.Hastus.Trip do
 
   @spec parse(binary() | nil) :: [t()]
   def parse(file_binary) do
-    Csv.parse(
-      file_binary,
+    file_binary
+    |> Csv.parse(
       filter: &complete_row?/1,
       parse: &from_csv_row/1,
       format: :hastus
     )
+    |> Enum.to_list()
   end
 
   @spec run_key(t()) :: Run.key()

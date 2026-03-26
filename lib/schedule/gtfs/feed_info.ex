@@ -27,7 +27,7 @@ defmodule Schedule.Gtfs.FeedInfo do
   def parse(file_binary) do
     file_binary
     |> Csv.parse(parse: &from_csv_row/1)
-    |> List.first()
+    |> Enum.at(0)
   end
 
   @spec from_csv_row(Csv.row()) :: t()

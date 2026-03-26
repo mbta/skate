@@ -427,14 +427,17 @@ defmodule Schedule.Data do
     directions_by_route_id = directions_by_route_id(gtfs_files["directions.txt"])
 
     all_routes =
-      Csv.parse(
-        gtfs_files["routes.txt"],
+      gtfs_files["routes.txt"]
+      |> Csv.parse(
         filter: &Route.row_has_route_type?/1,
         parse: &Route.from_csv_row(&1, directions_by_route_id)
       )
+      |> Enum.to_list()
 
     all_route_patterns =
-      Csv.parse(gtfs_files["route_patterns.txt"], parse: &RoutePattern.from_csv_row/1)
+      gtfs_files["route_patterns.txt"]
+      |> Csv.parse(parse: &RoutePattern.from_csv_row/1)
+      |> Enum.to_list()
 
     all_stop_times_by_trip_id = StopTime.parse(gtfs_files["stop_times.txt"])
 

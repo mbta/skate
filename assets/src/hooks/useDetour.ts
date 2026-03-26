@@ -145,6 +145,32 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     ? deleteWaypointMemo
     : undefined
 
+  const moveStartPointMemo = useCallback(
+    (position: ShapePoint) =>
+      send({ type: "detour.edit.move-start-point", position }),
+    [send]
+  )
+
+  const moveStartPoint = snapshot.can({
+    type: "detour.edit.move-start-point",
+    position: { lat: -1, lon: -1 },
+  })
+    ? moveStartPointMemo
+    : undefined
+
+  const moveEndPointMemo = useCallback(
+    (position: ShapePoint) =>
+      send({ type: "detour.edit.move-end-point", position }),
+    [send]
+  )
+
+  const moveEndPoint = snapshot.can({
+    type: "detour.edit.move-end-point",
+    position: { lat: -1, lon: -1 },
+  })
+    ? moveEndPointMemo
+    : undefined
+
   const moveWaypointMemo = useCallback(
     (index: number, position: ShapePoint) =>
       send({ type: "detour.edit.move-waypoint", index, position }),
@@ -202,8 +228,25 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
      * - {@link endPoint} is not set.
      */
     addWaypoint,
+    /**
+     * Inserts a new waypoint at a given index
+     */
     insertWaypoint,
+    /**
+     * Changes the coordinates of a waypoint at a given index
+     */
     moveWaypoint,
+    /**
+     * Changes the coordinates of the startPoint
+     */
+    moveStartPoint,
+    /**
+     * Changes the coordinates of the endPoint
+     */
+    moveEndPoint,
+    /**
+     * Removes the waypoint at a given index
+     */
     deleteWaypoint,
     /**
      * Sets {@link startPoint} if unset.
