@@ -38,32 +38,37 @@ defmodule Schedule.Gtfs.StopTime do
     |> trip_stop_times_from_csv()
   end
 
-  @spec trip_stop_times_from_csv([Csv.row()]) :: by_trip_id()
+  @spec trip_stop_times_from_csv(Enumerable.t(Csv.row())) :: by_trip_id()
   def trip_stop_times_from_csv(stop_times_csv) do
     stop_times_csv
-    |> Enum.group_by(fn stop_time_row -> stop_time_row["trip_id"] end)
-    |> Helpers.map_values(fn stop_times_on_trip ->
-      stop_times_on_trip
-      |> Enum.sort_by(&stop_sequence_integer/1)
-      |> Enum.map(fn stop_time_row ->
-        time_string =
-          if stop_time_row["arrival_time"] == "" do
-            stop_time_row["departure_time"]
-          else
-            stop_time_row["arrival_time"]
-          end
+    |> Stream.chunk_by(fn stop_time_row -> stop_time_row["trip_id"] end)
+    |> Map.new(fn stop_times_on_trip ->
+      [%{"trip_id" => trip_id} | _] = stop_times_on_trip
 
-        time = Util.Time.parse_hhmmss(time_string)
-        # Use nil instead of an empty string for timepoint_id if there is no checkpoint_id
-        timepoint_id =
-          if stop_time_row["checkpoint_id"] == "", do: nil, else: stop_time_row["checkpoint_id"]
+      data =
+        stop_times_on_trip
+        |> Enum.sort_by(&stop_sequence_integer/1)
+        |> Enum.map(fn stop_time_row ->
+          time_string =
+            if stop_time_row["arrival_time"] == "" do
+              stop_time_row["departure_time"]
+            else
+              stop_time_row["arrival_time"]
+            end
 
-        %__MODULE__{
-          stop_id: stop_time_row["stop_id"],
-          time: time,
-          timepoint_id: timepoint_id
-        }
-      end)
+          time = Util.Time.parse_hhmmss(time_string)
+          # Use nil instead of an empty string for timepoint_id if there is no checkpoint_id
+          timepoint_id =
+            if stop_time_row["checkpoint_id"] == "", do: nil, else: stop_time_row["checkpoint_id"]
+
+          %__MODULE__{
+            stop_id: stop_time_row["stop_id"],
+            time: time,
+            timepoint_id: timepoint_id
+          }
+        end)
+
+      {trip_id, data}
     end)
   end
 
