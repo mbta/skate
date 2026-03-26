@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react"
+import React, { useRef, useEffect, useMemo } from "react"
 import flatpickr from "flatpickr"
 import { Options } from "flatpickr/dist/types/options"
 
@@ -21,6 +21,9 @@ export const DateTimePicker = ({
   const inputRef = useRef<HTMLDivElement | null>(null)
   const fpRef = useRef<flatpickr.Instance | null>(null)
 
+  // needed to prevent the flatpickr instance from being recreated on rerender
+  const stableOptions = useMemo(() => options, [])
+
   useEffect(() => {
     if (inputRef.current) {
       fpRef.current = flatpickr(inputRef.current, {
@@ -28,7 +31,7 @@ export const DateTimePicker = ({
         altFormat: "D, M j, Y",
         wrap: true,
         mode: "multiple",
-        ...options,
+        ...stableOptions,
       })
     }
 
@@ -38,8 +41,7 @@ export const DateTimePicker = ({
         fpRef.current = null
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // as a react wrapper for flatpickr, we don't want to list out all their possible configuration options here
+  }, [stableOptions])
 
   useEffect(() => {
     if (fpRef.current) {
