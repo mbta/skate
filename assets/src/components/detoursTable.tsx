@@ -241,14 +241,14 @@ export const DetoursTable = ({
             <th className="px-3 py-4 u-hide-for-mobile">
               Starting Intersection
             </th>
+            {hasReasonColumn(status) && (
+              <th className="px-3 py-4 u-hide-for-mobile">Reason</th>
+            )}
             <th className="px-3 py-4 u-hide-for-mobile">
               {timestampLabelFromStatus(status)}
             </th>
             {status === DetourStatus.Active && (
               <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
-            )}
-            {hasReasonColumn(status) && (
-              <th className="px-3 py-4 u-hide-for-mobile">Reason</th>
             )}
           </tr>
         </thead>
