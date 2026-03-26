@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import { Table, Form, Button } from "react-bootstrap"
 import { XSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
@@ -72,7 +72,7 @@ export const DetoursTable = ({
   const [filter, setFilter] = useState("")
   const [debouncedFilter, setDebouncedFilter] = useState(filter)
   const [dates, setDates] = useState<Date[]>([])
-  const [reason, setReason] = useState<string>("")
+  const [reason, setReason] = useState<string>("all")
   const hasFilters = routes && status === DetourStatus.Closed
 
   useEffect(() => {
@@ -89,18 +89,35 @@ export const DetoursTable = ({
     setRouteId("all")
     setFilter("")
     setDates([])
+    setReason("all")
   }
 
-  const filteredData = data
-    .filter((detour) =>
-      detour.intersection.toLowerCase().includes(debouncedFilter.toLowerCase())
-    )
-    .filter((detour) => {
-      if (dates.length === 0) return true
+  const filteredData = useMemo(() => {
+    let result = data
 
-      const updatedDate = dateFromEpochSeconds(detour.updatedAt)
-      return dates.some((date) => isSameDay(date, updatedDate))
-    })
+    if (debouncedFilter !== "") {
+      result = result.filter((detour) =>
+        detour.intersection
+          .toLowerCase()
+          .includes(debouncedFilter.toLowerCase())
+      )
+    }
+
+    if (dates.length > 0) {
+      result = result.filter((detour) => {
+        const updatedDate = dateFromEpochSeconds(detour.updatedAt)
+        return dates.some((date) => isSameDay(date, updatedDate))
+      })
+    }
+
+    if (reason !== "all") {
+      result = result.filter(
+        (detour) => reason.toLowerCase() === detour.reason?.toLowerCase()
+      )
+    }
+
+    return result
+  }, [data, debouncedFilter, dates, reason])
 
   return (
     <>
@@ -299,6 +316,11 @@ const PopulatedDetourRows = ({
           <td className="align-middle p-3 u-hide-for-mobile">
             {detour.intersection}
           </td>
+          {hasReasonColumn(status) && (
+            <td className="align-middle p-3 u-hide-for-mobile">
+              {detour.reason}
+            </td>
+          )}
           <td className="align-middle p-3 u-hide-for-mobile">
             {status === DetourStatus.Active && detour.activatedAt ? (
               <>
@@ -316,11 +338,6 @@ const PopulatedDetourRows = ({
           {status === DetourStatus.Active && detour.estimatedDuration && (
             <td className="align-middle p-3 u-hide-for-mobile">
               {detour.estimatedDuration}
-            </td>
-          )}
-          {hasReasonColumn(status) && (
-            <td className="align-middle p-3 u-hide-for-mobile">
-              {detour.reason}
             </td>
           )}
         </tr>
