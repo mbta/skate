@@ -17,6 +17,7 @@ import { Route } from "../schedule"
 import { CircleXIcon } from "./circleXIcon"
 import { SearchIcon } from "../helpers/icon"
 import { fullStoryEvent } from "../helpers/fullStory"
+import detourReasons from "../data/detourReasons"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
@@ -71,6 +72,7 @@ export const DetoursTable = ({
   const [filter, setFilter] = useState("")
   const [debouncedFilter, setDebouncedFilter] = useState(filter)
   const [dates, setDates] = useState<Date[]>([])
+  const [reason, setReason] = useState<string>("")
   const hasFilters = routes && status === DetourStatus.Closed
 
   useEffect(() => {
@@ -126,7 +128,7 @@ export const DetoursTable = ({
         <thead className="u-hide-for-mobile">
           {hasFilters && (
             <tr className="search-header">
-              <th className="search-header__select px-3 py-3">
+              <th className="px-3 py-3">
                 <Form.Label htmlFor="route-name">Route</Form.Label>
                 <Form.Select
                   id="route-name"
@@ -137,7 +139,7 @@ export const DetoursTable = ({
                   }}
                 >
                   <option key="" value="all">
-                    Please select route
+                    Select route
                   </option>
                   {routes?.map((route: Route) => (
                     <option key={route.id} value={route.id}>
@@ -147,54 +149,64 @@ export const DetoursTable = ({
                 </Form.Select>
               </th>
               <th className="px-3 py-3">
-                <div className="c-detour-list-filter">
-                  <label
-                    className="c-detour-list-filter__label"
-                    htmlFor="intersection-filter"
-                  >
-                    Starting intersection
-                  </label>
-                  <div className="input-group-filter mt-2">
-                    <input
-                      id="intersection-filter"
-                      type="text"
-                      placeholder="Search..."
-                      value={filter}
-                      onBlur={() =>
-                        fullStoryEvent("Detour Intersection Filter Used", {})
-                      }
-                      onChange={(e) => setFilter(e.target.value)}
-                    />
-                    <div>
-                      {filter.length > 0 && (
-                        <button onClick={() => setFilter("")} title="Clear">
-                          <span>
-                            <CircleXIcon />
-                          </span>
-                        </button>
-                      )}
-                      <button
-                        type="submit"
-                        title="Submit"
-                        onClick={setDebouncedFilter.bind(null, filter)}
-                        disabled={filter.length === 0}
-                      >
+                <label htmlFor="intersection-filter">
+                  Starting intersection
+                </label>
+                <div className="input-group-filter mt-2">
+                  <input
+                    id="intersection-filter"
+                    type="text"
+                    placeholder="Search..."
+                    value={filter}
+                    onBlur={() =>
+                      fullStoryEvent("Detour Intersection Filter Used", {})
+                    }
+                    onChange={(e) => setFilter(e.target.value)}
+                  />
+                  <div>
+                    {filter.length > 0 && (
+                      <button onClick={() => setFilter("")} title="Clear">
                         <span>
-                          <SearchIcon />
+                          <CircleXIcon />
                         </span>
                       </button>
-                    </div>
+                    )}
+                    <button
+                      type="submit"
+                      title="Submit"
+                      onClick={setDebouncedFilter.bind(null, filter)}
+                      disabled={filter.length === 0}
+                    >
+                      <span>
+                        <SearchIcon />
+                      </span>
+                    </button>
                   </div>
                 </div>
               </th>
-              <th className="px-3 py-3" colSpan={2}>
-                <div className="c-detour-list-filter">
-                  <label
-                    className="c-detour-list-filter__label"
-                    htmlFor="date-filter"
-                  >
-                    Date
-                  </label>
+              <th className="px-3 py-3 c-detours-table__col-sm">
+                <Form.Label htmlFor="reason-name">Reason</Form.Label>
+                <Form.Select
+                  id="route-name"
+                  className="select-filter mt-2"
+                  value={reason}
+                  onChange={(e) => {
+                    setReason(e.target.value)
+                  }}
+                >
+                  <option key="" value="all">
+                    Select reason
+                  </option>
+                  {detourReasons.map((reason) => (
+                    <option key={reason} value={reason}>
+                      {reason}
+                    </option>
+                  ))}
+                </Form.Select>
+              </th>
+              <th className="px-3 py-3 c-detours-table__col-sm">
+                <div>
+                  <label htmlFor="date-filter">Date</label>
                   <DateTimePicker
                     className="mt-2"
                     value={dates}

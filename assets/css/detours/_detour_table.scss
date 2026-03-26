@@ -21,21 +21,14 @@ $table-border-radius: 0.5rem;
   .search-header {
     th {
       background: tokens.$eggplant-50;
-    }
-
-    &__select {
-      width: 33%;
 
       label {
         @include filter-label;
       }
 
-      select {
-        width: 80%;
-
-        @include media-breakpoint-down(lg) {
-          width: 100%;
-        }
+      &.c-detours-table__col-sm {
+        width: 15%;
+        min-width: 150px;
       }
     }
   }
@@ -109,8 +102,4 @@ $table-border-radius: 0.5rem;
 
 .c-detours-table__route-info-direction {
   color: tokens.$gray-600;
-}
-
-.c-detour-list-filter__label {
-  @include filter-label;
 }
