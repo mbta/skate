@@ -115,7 +115,7 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   # Do not update updated_at if the changeset only contains state changes
-  defp add_updated_at(changeset) when map_size(changeset.changes) == 1 do
+  defp add_updated_at(changeset) when map_size(changeset.changes) < 2 do
     changeset
   end
 
