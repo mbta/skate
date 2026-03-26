@@ -40,18 +40,14 @@ exports[`LadderPage renders the empty state 1`] = `
         class="c-route-picker u-hideable"
       >
         <div
-          class="c-route-filter"
+          class="input-group-filter"
         >
-          <div
-            class="c-route-filter__text"
-          >
-            <input
-              class="c-route-filter__input"
-              placeholder="Search routes"
-              type="text"
-              value=""
-            />
-          </div>
+          <input
+            placeholder="Search routes"
+            type="text"
+            value=""
+          />
+          <div />
         </div>
         <div
           class="c-garage-filter"
@@ -156,18 +152,14 @@ exports[`LadderPage renders with alerts 1`] = `
         class="c-route-picker u-hideable"
       >
         <div
-          class="c-route-filter"
+          class="input-group-filter"
         >
-          <div
-            class="c-route-filter__text"
-          >
-            <input
-              class="c-route-filter__input"
-              placeholder="Search routes"
-              type="text"
-              value=""
-            />
-          </div>
+          <input
+            placeholder="Search routes"
+            type="text"
+            value=""
+          />
+          <div />
         </div>
         <div
           class="c-garage-filter"
@@ -444,18 +436,14 @@ exports[`LadderPage renders with route tabs 1`] = `
         class="c-route-picker u-hideable"
       >
         <div
-          class="c-route-filter"
+          class="input-group-filter"
         >
-          <div
-            class="c-route-filter__text"
-          >
-            <input
-              class="c-route-filter__input"
-              placeholder="Search routes"
-              type="text"
-              value=""
-            />
-          </div>
+          <input
+            placeholder="Search routes"
+            type="text"
+            value=""
+          />
+          <div />
         </div>
         <div
           class="c-garage-filter"
@@ -685,18 +673,14 @@ exports[`LadderPage renders with selectedRoutes in different order than routes d
         class="c-route-picker u-hideable"
       >
         <div
-          class="c-route-filter"
+          class="input-group-filter"
         >
-          <div
-            class="c-route-filter__text"
-          >
-            <input
-              class="c-route-filter__input"
-              placeholder="Search routes"
-              type="text"
-              value=""
-            />
-          </div>
+          <input
+            placeholder="Search routes"
+            type="text"
+            value=""
+          />
+          <div />
         </div>
         <div
           class="c-garage-filter"
@@ -946,18 +930,14 @@ exports[`LadderPage renders with timepoints 1`] = `
         class="c-route-picker u-hideable"
       >
         <div
-          class="c-route-filter"
+          class="input-group-filter"
         >
-          <div
-            class="c-route-filter__text"
-          >
-            <input
-              class="c-route-filter__input"
-              placeholder="Search routes"
-              type="text"
-              value=""
-            />
-          </div>
+          <input
+            placeholder="Search routes"
+            type="text"
+            value=""
+          />
+          <div />
         </div>
         <div
           class="c-garage-filter"
