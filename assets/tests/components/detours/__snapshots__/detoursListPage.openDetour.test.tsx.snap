@@ -405,6 +405,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
             </th>
             <th
               class="px-3 py-3 text-end"
+              colspan="2"
             >
               <button
                 class="icon-link btn btn-outline-primary"
@@ -1469,6 +1470,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
             </th>
             <th
               class="px-3 py-3 text-end"
+              colspan="2"
             >
               <button
                 class="icon-link btn btn-outline-primary"
