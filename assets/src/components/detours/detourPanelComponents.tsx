@@ -53,6 +53,7 @@ interface AffectedRouteProps {
   routeDescription: string
   routeOrigin: string
   routeDirection: string
+  displayTitle?: boolean
 }
 
 export const AffectedRoute = ({
@@ -60,11 +61,14 @@ export const AffectedRoute = ({
   routeDescription,
   routeOrigin,
   routeDirection,
+  displayTitle = true,
 }: AffectedRouteProps) => (
   <section className="mt-2">
-    <h2 className="c-diversion-panel__section-header c-detour-panel__subheader">
-      Affected route
-    </h2>
+    {displayTitle && (
+      <h2 className="c-diversion-panel__section-header c-detour-panel__subheader">
+        Affected route
+      </h2>
+    )}
     <div className="d-flex">
       <RoutePill className="me-2 align-top" routeName={routeName} />
 

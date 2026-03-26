@@ -337,6 +337,7 @@ export const DiversionPage = ({
                   routeDescription={routeDescription ?? "??"}
                   routeOrigin={routeOrigin ?? "??"}
                   routeDirection={routeDirection ?? "??"}
+                  displayTitle={false}
                 />
               }
             />
@@ -353,6 +354,7 @@ export const DiversionPage = ({
                   routeDescription={routeDescription ?? "??"}
                   routeOrigin={routeOrigin ?? "??"}
                   routeDirection={routeDirection ?? "??"}
+                  displayTitle={false}
                 />
               }
             />
