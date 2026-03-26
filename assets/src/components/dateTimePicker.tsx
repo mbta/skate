@@ -9,7 +9,7 @@ import { CircleXIcon } from "./circleXIcon"
 interface Props {
   value: Date[]
   options: Options
-  className?: String
+  className?: string
 }
 
 export const DateTimePicker = ({
@@ -37,7 +37,7 @@ export const DateTimePicker = ({
         fpRef.current = null
       }
     }
-  }, [])
+  }, [options])
 
   useEffect(() => {
     if (fpRef.current) {
