@@ -39,7 +39,7 @@ export const DateTimePicker = ({
       }
     }
     // needed to prevent the flatpickr instance from being recreated on rerender
-    // as a react wrapper for flatpickr, we don't want to list out all their possible configuration options here
+    // as a react wrapper, we don't want to list out all their possible configuration options here
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
