@@ -337,7 +337,9 @@ export const Combobox = ({
                 onClear?.(e)
               }}
             >
-              <CircleXIcon />
+              <span>
+                <CircleXIcon />
+              </span>
             </button>
             {comboboxType == "map_search" && (
               <button
@@ -347,7 +349,9 @@ export const Combobox = ({
                 // TODO(design): add error states instead of using `disabled`
                 disabled={!isValidSearchText(inputText)}
               >
-                <SearchIcon />
+                <span>
+                  <SearchIcon />
+                </span>
               </button>
             )}
             {comboboxType == "select" && (

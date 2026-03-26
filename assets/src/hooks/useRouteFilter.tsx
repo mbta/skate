@@ -57,7 +57,9 @@ export const RouteFilter = ({
       <div>
         {filterText.length > 0 ? (
           <button onClick={clearTextInput} title="Clear">
-            <CircleXIcon />
+            <span>
+              <CircleXIcon />
+            </span>
           </button>
         ) : null}
       </div>
