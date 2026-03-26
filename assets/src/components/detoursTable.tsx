@@ -228,7 +228,7 @@ export const DetoursTable = ({
                     className="mt-2"
                     value={dates}
                     options={{
-                      maxDate: new Date(),
+                      maxDate: "today",
                       onChange: setDates,
                     }}
                   />

@@ -24,7 +24,8 @@ export const DateTimePicker = ({
   useEffect(() => {
     if (inputRef.current) {
       fpRef.current = flatpickr(inputRef.current, {
-        dateFormat: "D, M j, Y",
+        altInput: true,
+        altFormat: "D, M j, Y",
         wrap: true,
         mode: "multiple",
         ...options,
@@ -37,7 +38,8 @@ export const DateTimePicker = ({
         fpRef.current = null
       }
     }
-  }, [options])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // as a react wrapper for flatpickr, we don't want to list out all their possible configuration options here
 
   useEffect(() => {
     if (fpRef.current) {
