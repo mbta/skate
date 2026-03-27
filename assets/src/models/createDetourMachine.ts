@@ -1024,7 +1024,6 @@ export const createDetourMachine = setup({
           initial: "Reviewing",
           states: {
             Reviewing: {
-              tags: "no-save",
               on: {
                 "detour.active.open-deactivate-modal": {
                   target: "Deactivating",
