@@ -1,0 +1,70 @@
+@use "./color/tokens_2024" as tokens;
+
+.flatpickr-calendar {
+  .flatpickr-current-month {
+    .flatpickr-monthDropdown-months {
+      // fix bug in flatpickr where year overflows
+      display: inline-block !important;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+
+    input.cur-year {
+      color: tokens.$gray-700;
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+  }
+
+  .flatpickr-prev-month,
+  .flatpickr-next-month {
+    svg {
+      fill: tokens.$gray-900;
+    }
+
+    &:hover svg {
+      fill: tokens.$eggplant-500 !important;
+    }
+  }
+
+  .flatpickr-day {
+    color: tokens.$black;
+
+    &.today {
+      border: unset;
+    }
+
+    &:hover,
+    &.today:hover {
+      color: tokens.$black;
+      background-color: tokens.$gray-300;
+      border-color: tokens.$gray-300;
+    }
+
+    &.prevMonthDay,
+    &.nextMonthDay {
+      &:not(.flatpickr-disabled):not(.selected) {
+        color: tokens.$gray-500;
+      }
+    }
+
+    &.disabled {
+      color: tokens.$gray-300;
+    }
+
+    &.selected,
+    &.selected.prevMonthDay,
+    &.selected.nextMonthDay,
+    &.selected.today {
+      color: tokens.$white;
+      background-color: tokens.$eggplant-500;
+      border-color: tokens.$eggplant-500;
+
+      &:hover {
+        color: tokens.$white;
+        background-color: tokens.$eggplant-300;
+        border-color: tokens.$eggplant-300;
+      }
+    }
+  }
+}

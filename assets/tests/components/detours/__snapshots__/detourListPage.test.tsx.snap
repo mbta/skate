@@ -7,31 +7,35 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
       class="c-detour-list-page h-100 overflow-y-auto p-0 p-md-4 bg-white"
     >
       <div
-        class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+        class="d-flex flex-row justify-content-between align-items-start"
       >
-        <h2
-          class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+        <div
+          class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
         >
-          Active detours
-        </h2>
-        <svg
-          aria-hidden="true"
-          class="c-detour-list-page__header-icon my-auto me-1"
-          fill="currentColor"
-          height="16"
-          viewBox="0 0 16 16"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"
-          />
-        </svg>
-        <span
-          class="c-detour-list-page__header-visibility my-auto"
-        >
-          All Skate users
-        </span>
+          <h2
+            class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+          >
+            Active detours
+          </h2>
+          <svg
+            aria-hidden="true"
+            class="c-detour-list-page__header-icon my-auto me-1"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"
+            />
+          </svg>
+          <span
+            class="c-detour-list-page__header-visibility my-auto"
+          >
+            All Skate users
+          </span>
+        </div>
       </div>
       <table
         class="mb-5 c-detours-table table table-active-detour table-hover"
@@ -53,17 +57,17 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
+              Reason
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
               Last published
             </th>
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
               Est. Duration
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Reason
             </th>
           </tr>
         </thead>
@@ -103,6 +107,9 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
+            />
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
             >
               <div
                 class="time-pill mb-1"
@@ -114,9 +121,6 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                 23 hours ago
               </div>
             </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            />
           </tr>
           <tr>
             <td
@@ -153,6 +157,9 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
+            />
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
             >
               <div
                 class="time-pill mb-1"
@@ -164,9 +171,6 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                 Aug 26, 2024
               </div>
             </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            />
           </tr>
           <tr>
             <td
@@ -203,6 +207,9 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
+            />
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
             >
               <div
                 class="time-pill mb-1"
@@ -214,9 +221,6 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                 Aug 27, 2024
               </div>
             </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            />
           </tr>
         </tbody>
       </table>
@@ -259,31 +263,35 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
         </span>
       </button>
       <div
-        class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+        class="d-flex flex-row justify-content-between align-items-start"
       >
-        <h2
-          class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+        <div
+          class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
         >
-          Active detours
-        </h2>
-        <svg
-          aria-hidden="true"
-          class="c-detour-list-page__header-icon my-auto me-1"
-          fill="currentColor"
-          height="16"
-          viewBox="0 0 16 16"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"
-          />
-        </svg>
-        <span
-          class="c-detour-list-page__header-visibility my-auto"
-        >
-          All Skate users
-        </span>
+          <h2
+            class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+          >
+            Active detours
+          </h2>
+          <svg
+            aria-hidden="true"
+            class="c-detour-list-page__header-icon my-auto me-1"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"
+            />
+          </svg>
+          <span
+            class="c-detour-list-page__header-visibility my-auto"
+          >
+            All Skate users
+          </span>
+        </div>
       </div>
       <table
         class="mb-5 c-detours-table table table-active-detour table-hover"
@@ -305,17 +313,17 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
+              Reason
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
               Last published
             </th>
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
               Est. Duration
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Reason
             </th>
           </tr>
         </thead>
@@ -355,6 +363,9 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
+            />
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
             >
               <div>
                 Just now
@@ -365,9 +376,6 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               2 hours
             </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            />
           </tr>
           <tr>
             <td
@@ -404,6 +412,9 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
+            />
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
             >
               <div>
                 Just now
@@ -414,38 +425,39 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             >
               2 hours
             </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            />
           </tr>
         </tbody>
       </table>
       <div
-        class="u-hide-for-mobile d-md-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+        class="d-flex flex-row justify-content-between align-items-start"
       >
-        <h2
-          class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+        <div
+          class="u-hide-for-mobile d-md-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
         >
-          Draft detours
-        </h2>
-        <svg
-          aria-hidden="true"
-          class="c-detour-list-page__header-icon my-auto me-1"
-          fill="currentColor"
-          height="16"
-          viewBox="0 0 16 16"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"
-          />
-        </svg>
-        <span
-          class="c-detour-list-page__header-visibility my-auto"
-        >
-          Only you
-        </span>
+          <h2
+            class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+          >
+            Draft detours
+          </h2>
+          <svg
+            aria-hidden="true"
+            class="c-detour-list-page__header-icon my-auto me-1"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"
+            />
+          </svg>
+          <span
+            class="c-detour-list-page__header-visibility my-auto"
+          >
+            Only you
+          </span>
+        </div>
       </div>
       <table
         class="mb-5 u-hide-for-mobile c-detours-table table"
@@ -517,31 +529,59 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
         </tbody>
       </table>
       <div
-        class="u-hide-for-mobile d-md-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+        class="d-flex flex-row justify-content-between align-items-start"
       >
-        <h2
-          class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+        <div
+          class="u-hide-for-mobile d-md-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
         >
-          Closed detours
-        </h2>
-        <svg
-          aria-hidden="true"
-          class="c-detour-list-page__header-icon my-auto me-1"
-          fill="currentColor"
-          height="16"
-          viewBox="0 0 16 16"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
+          <h2
+            class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+          >
+            Closed detours
+          </h2>
+          <svg
+            aria-hidden="true"
+            class="c-detour-list-page__header-icon my-auto me-1"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"
+            />
+          </svg>
+          <span
+            class="c-detour-list-page__header-visibility my-auto"
+          >
+            Dispatchers and supervisors
+          </span>
+        </div>
+        <button
+          class="icon-link u-hide-for-mobile btn btn-outline-primary"
+          data-fs-element="Reset detour search"
+          title="Clear Search"
+          type="button"
         >
-          <path
-            d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"
-          />
-        </svg>
-        <span
-          class="c-detour-list-page__header-visibility my-auto"
-        >
-          Dispatchers and supervisors
-        </span>
+          <svg
+            aria-hidden="true"
+            class="bi bi-x-square"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
+            />
+            <path
+              d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
+            />
+          </svg>
+          Clear
+        </button>
       </div>
       <table
         class="u-hide-for-mobile c-detours-table table table-hover"
@@ -553,7 +593,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             class="search-header"
           >
             <th
-              class="search-header__select px-3 py-3"
+              class="px-3 py-3"
             >
               <label
                 class="form-label"
@@ -562,13 +602,13 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                 Route
               </label>
               <select
-                class="mt-2 form-select"
+                class="select-filter mt-2 form-select"
                 id="route-name"
               >
                 <option
                   value="all"
                 >
-                  Please select route
+                  Select route
                 </option>
                 <option
                   value="route1"
@@ -585,74 +625,204 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             <th
               class="px-3 py-3"
             >
-              <div
-                class="c-detour-list-filter"
+              <label
+                for="intersection-filter"
               >
-                <label
-                  class="c-detour-list-filter__label"
-                  for="intersection-filter"
-                >
-                  Starting intersection
-                </label>
-                <div
-                  class="c-detour-list-filter__text"
-                >
-                  <div
-                    class="c-detour-list-filter__input-container"
+                Starting intersection
+              </label>
+              <div
+                class="input-group-filter mt-2"
+              >
+                <input
+                  id="intersection-filter"
+                  placeholder="Search..."
+                  type="text"
+                  value=""
+                />
+                <div>
+                  <button
+                    disabled=""
+                    title="Submit"
+                    type="submit"
                   >
-                    <input
-                      class="c-detour-list-filter__input"
-                      id="intersection-filter"
-                      placeholder="Search..."
-                      type="text"
-                      value=""
-                    />
-                  </div>
-                  <div
-                    class="c-detour-list-filter__input-controls"
-                  >
-                    <button
-                      class="c-detour-list-filter__submit"
-                      disabled=""
-                      title="Submit"
-                      type="submit"
-                    >
+                    <span>
                       <span>
                         <svg />
+                      </span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </th>
+            <th
+              class="px-3 py-3 c-detours-table__col-sm"
+            >
+              <label
+                class="form-label"
+                for="reason-name"
+              >
+                Reason
+              </label>
+              <select
+                class="select-filter mt-2 form-select"
+                id="reason-name"
+              >
+                <option
+                  value="all"
+                >
+                  Select reason
+                </option>
+                <option
+                  value="Accident"
+                >
+                  Accident
+                </option>
+                <option
+                  value="Construction"
+                >
+                  Construction
+                </option>
+                <option
+                  value="Demonstration"
+                >
+                  Demonstration
+                </option>
+                <option
+                  value="Disabled bus"
+                >
+                  Disabled bus
+                </option>
+                <option
+                  value="Drawbridge being raised"
+                >
+                  Drawbridge being raised
+                </option>
+                <option
+                  value="Electrical work"
+                >
+                  Electrical work
+                </option>
+                <option
+                  value="Fire"
+                >
+                  Fire
+                </option>
+                <option
+                  value="Hazmat condition"
+                >
+                  Hazmat condition
+                </option>
+                <option
+                  value="Holiday"
+                >
+                  Holiday
+                </option>
+                <option
+                  value="Hurricane"
+                >
+                  Hurricane
+                </option>
+                <option
+                  value="Maintenance"
+                >
+                  Maintenance
+                </option>
+                <option
+                  value="Medical emergency"
+                >
+                  Medical emergency
+                </option>
+                <option
+                  value="Parade"
+                >
+                  Parade
+                </option>
+                <option
+                  value="Police activity"
+                >
+                  Police activity
+                </option>
+                <option
+                  value="Snow"
+                >
+                  Snow
+                </option>
+                <option
+                  value="Special event"
+                >
+                  Special event
+                </option>
+                <option
+                  value="Tie replacement"
+                >
+                  Tie replacement
+                </option>
+                <option
+                  value="Traffic"
+                >
+                  Traffic
+                </option>
+                <option
+                  value="Weather"
+                >
+                  Weather
+                </option>
+              </select>
+            </th>
+            <th
+              class="px-3 py-3 c-detours-table__col-sm"
+            >
+              <div>
+                <label
+                  for="date-filter"
+                >
+                  Date
+                </label>
+                <div
+                  class="input-group-filter mt-2"
+                >
+                  <input
+                    class="flatpickr-input"
+                    data-input="true"
+                    placeholder="Select date"
+                    type="hidden"
+                    value=""
+                  />
+                  <input
+                    class=" form-control input"
+                    placeholder="Select date"
+                    readonly="readonly"
+                    tabindex="0"
+                    type="text"
+                  />
+                  <div
+                    class=""
+                  >
+                    <button
+                      data-toggle="true"
+                    >
+                      <span>
+                        <svg
+                          aria-hidden="true"
+                          class="bi bi-calendar3"
+                          fill="currentColor"
+                          height="16"
+                          viewBox="0 0 16 16"
+                          width="16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857z"
+                          />
+                          <path
+                            d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"
+                          />
+                        </svg>
                       </span>
                     </button>
                   </div>
                 </div>
               </div>
-            </th>
-            <th
-              class="px-3 py-3 text-end"
-              colspan="2"
-            >
-              <button
-                class="icon-link btn btn-outline-primary"
-                data-fs-element="Reset detour search"
-                title="Clear Search"
-                type="button"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="bi bi-x-square"
-                  fill="currentColor"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  width="16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"
-                  />
-                  <path
-                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"
-                  />
-                </svg>
-                Clear
-              </button>
             </th>
           </tr>
           <tr>
@@ -669,12 +839,12 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
-              Last used
+              Reason
             </th>
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
-              Reason
+              Last used
             </th>
           </tr>
         </thead>
@@ -714,15 +884,492 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
+            />
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
             >
               Aug 28, 2024
             </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            />
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+  <div
+    class="flatpickr-calendar animate"
+    tabindex="-1"
+  >
+    <div
+      class="flatpickr-months"
+    >
+      <span
+        class="flatpickr-prev-month"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g />
+          <path
+            d="M5.207 8.471l7.146 7.147-0.707 0.707-7.853-7.854 7.854-7.853 0.707 0.707-7.147 7.146z"
+          />
+        </svg>
+      </span>
+      <div
+        class="flatpickr-month"
+      >
+        <div
+          class="flatpickr-current-month"
+        >
+          <select
+            aria-label="Month"
+            class="flatpickr-monthDropdown-months"
+            tabindex="-1"
+          >
+            <option
+              class="flatpickr-monthDropdown-month"
+              tabindex="-1"
+              value="0"
+            >
+              January
+            </option>
+            <option
+              class="flatpickr-monthDropdown-month"
+              tabindex="-1"
+              value="1"
+            >
+              February
+            </option>
+            <option
+              class="flatpickr-monthDropdown-month"
+              tabindex="-1"
+              value="2"
+            >
+              March
+            </option>
+            <option
+              class="flatpickr-monthDropdown-month"
+              tabindex="-1"
+              value="3"
+            >
+              April
+            </option>
+            <option
+              class="flatpickr-monthDropdown-month"
+              tabindex="-1"
+              value="4"
+            >
+              May
+            </option>
+            <option
+              class="flatpickr-monthDropdown-month"
+              tabindex="-1"
+              value="5"
+            >
+              June
+            </option>
+            <option
+              class="flatpickr-monthDropdown-month"
+              tabindex="-1"
+              value="6"
+            >
+              July
+            </option>
+            <option
+              class="flatpickr-monthDropdown-month"
+              tabindex="-1"
+              value="7"
+            >
+              August
+            </option>
+          </select>
+          <div
+            class="numInputWrapper"
+          >
+            <input
+              aria-label="Year"
+              class="numInput cur-year"
+              max="2024"
+              tabindex="-1"
+              type="number"
+            />
+            <span
+              class="arrowUp"
+            />
+            <span
+              class="arrowDown"
+            />
+          </div>
+        </div>
+      </div>
+      <span
+        class="flatpickr-next-month flatpickr-disabled"
+      >
+        <svg
+          version="1.1"
+          viewBox="0 0 17 17"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g />
+          <path
+            d="M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z"
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      class="flatpickr-innerContainer"
+    >
+      <div
+        class="flatpickr-rContainer"
+      >
+        <div
+          class="flatpickr-weekdays"
+        >
+          <div
+            class="flatpickr-weekdaycontainer"
+          >
+            
+      
+            <span
+              class="flatpickr-weekday"
+            >
+              
+        Sun
+            </span>
+            <span
+              class="flatpickr-weekday"
+            >
+              Mon
+            </span>
+            <span
+              class="flatpickr-weekday"
+            >
+              Tue
+            </span>
+            <span
+              class="flatpickr-weekday"
+            >
+              Wed
+            </span>
+            <span
+              class="flatpickr-weekday"
+            >
+              Thu
+            </span>
+            <span
+              class="flatpickr-weekday"
+            >
+              Fri
+            </span>
+            <span
+              class="flatpickr-weekday"
+            >
+              Sat
+      
+            </span>
+            
+      
+          </div>
+        </div>
+        <div
+          class="flatpickr-days"
+          tabindex="-1"
+        >
+          <div
+            class="dayContainer"
+          >
+            <span
+              aria-label="July 28, 2024"
+              class="flatpickr-day prevMonthDay"
+              tabindex="-1"
+            >
+              28
+            </span>
+            <span
+              aria-label="July 29, 2024"
+              class="flatpickr-day prevMonthDay"
+              tabindex="-1"
+            >
+              29
+            </span>
+            <span
+              aria-label="July 30, 2024"
+              class="flatpickr-day prevMonthDay"
+              tabindex="-1"
+            >
+              30
+            </span>
+            <span
+              aria-label="July 31, 2024"
+              class="flatpickr-day prevMonthDay"
+              tabindex="-1"
+            >
+              31
+            </span>
+            <span
+              aria-label="August 1, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              1
+            </span>
+            <span
+              aria-label="August 2, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              2
+            </span>
+            <span
+              aria-label="August 3, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              3
+            </span>
+            <span
+              aria-label="August 4, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              4
+            </span>
+            <span
+              aria-label="August 5, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              5
+            </span>
+            <span
+              aria-label="August 6, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              6
+            </span>
+            <span
+              aria-label="August 7, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              7
+            </span>
+            <span
+              aria-label="August 8, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              8
+            </span>
+            <span
+              aria-label="August 9, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              9
+            </span>
+            <span
+              aria-label="August 10, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              10
+            </span>
+            <span
+              aria-label="August 11, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              11
+            </span>
+            <span
+              aria-label="August 12, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              12
+            </span>
+            <span
+              aria-label="August 13, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              13
+            </span>
+            <span
+              aria-label="August 14, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              14
+            </span>
+            <span
+              aria-label="August 15, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              15
+            </span>
+            <span
+              aria-label="August 16, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              16
+            </span>
+            <span
+              aria-label="August 17, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              17
+            </span>
+            <span
+              aria-label="August 18, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              18
+            </span>
+            <span
+              aria-label="August 19, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              19
+            </span>
+            <span
+              aria-label="August 20, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              20
+            </span>
+            <span
+              aria-label="August 21, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              21
+            </span>
+            <span
+              aria-label="August 22, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              22
+            </span>
+            <span
+              aria-label="August 23, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              23
+            </span>
+            <span
+              aria-label="August 24, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              24
+            </span>
+            <span
+              aria-label="August 25, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              25
+            </span>
+            <span
+              aria-label="August 26, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              26
+            </span>
+            <span
+              aria-label="August 27, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              27
+            </span>
+            <span
+              aria-label="August 28, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              28
+            </span>
+            <span
+              aria-label="August 29, 2024"
+              class="flatpickr-day"
+              tabindex="-1"
+            >
+              29
+            </span>
+            <span
+              aria-label="August 30, 2024"
+              class="flatpickr-day flatpickr-disabled"
+            >
+              30
+            </span>
+            <span
+              aria-label="August 31, 2024"
+              class="flatpickr-day flatpickr-disabled"
+            >
+              31
+            </span>
+            <span
+              aria-label="September 1, 2024"
+              class="flatpickr-day nextMonthDay flatpickr-disabled"
+            >
+              1
+            </span>
+            <span
+              aria-label="September 2, 2024"
+              class="flatpickr-day nextMonthDay flatpickr-disabled"
+            >
+              2
+            </span>
+            <span
+              aria-label="September 3, 2024"
+              class="flatpickr-day nextMonthDay flatpickr-disabled"
+            >
+              3
+            </span>
+            <span
+              aria-label="September 4, 2024"
+              class="flatpickr-day nextMonthDay flatpickr-disabled"
+            >
+              4
+            </span>
+            <span
+              aria-label="September 5, 2024"
+              class="flatpickr-day nextMonthDay flatpickr-disabled"
+            >
+              5
+            </span>
+            <span
+              aria-label="September 6, 2024"
+              class="flatpickr-day nextMonthDay flatpickr-disabled"
+            >
+              6
+            </span>
+            <span
+              aria-label="September 7, 2024"
+              class="flatpickr-day nextMonthDay flatpickr-disabled"
+            >
+              7
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
@@ -735,31 +1382,35 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
       class="c-detour-list-page h-100 overflow-y-auto p-0 p-md-4 bg-white"
     >
       <div
-        class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
+        class="d-flex flex-row justify-content-between align-items-start"
       >
-        <h2
-          class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+        <div
+          class="d-flex mt-3 mt-md-0 mb-3 mx-3 mx-md-0"
         >
-          Active detours
-        </h2>
-        <svg
-          aria-hidden="true"
-          class="c-detour-list-page__header-icon my-auto me-1"
-          fill="currentColor"
-          height="16"
-          viewBox="0 0 16 16"
-          width="16"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"
-          />
-        </svg>
-        <span
-          class="c-detour-list-page__header-visibility my-auto"
-        >
-          All Skate users
-        </span>
+          <h2
+            class="my-auto fw-semibold fs-1 me-3 text-nowrap"
+          >
+            Active detours
+          </h2>
+          <svg
+            aria-hidden="true"
+            class="c-detour-list-page__header-icon my-auto me-1"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0M2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484q-.121.12-.242.234c-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z"
+            />
+          </svg>
+          <span
+            class="c-detour-list-page__header-visibility my-auto"
+          >
+            All Skate users
+          </span>
+        </div>
       </div>
       <table
         class="mb-5 c-detours-table table table-active-detour table-hover"
@@ -781,17 +1432,17 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
+              Reason
+            </th>
+            <th
+              class="px-3 py-4 u-hide-for-mobile"
+            >
               Last published
             </th>
             <th
               class="px-3 py-4 u-hide-for-mobile"
             >
               Est. Duration
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Reason
             </th>
           </tr>
         </thead>
@@ -831,6 +1482,9 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
+            />
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
             >
               <div>
                 Just now
@@ -841,9 +1495,6 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             >
               2 hours
             </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            />
           </tr>
           <tr>
             <td
@@ -880,6 +1531,9 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             </td>
             <td
               class="align-middle p-3 u-hide-for-mobile"
+            />
+            <td
+              class="align-middle p-3 u-hide-for-mobile"
             >
               <div>
                 Just now
@@ -890,9 +1544,6 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
             >
               2 hours
             </td>
-            <td
-              class="align-middle p-3 u-hide-for-mobile"
-            />
           </tr>
         </tbody>
       </table>

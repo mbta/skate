@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react"
 import { Button, Form, Modal } from "react-bootstrap"
 import { StepperBar } from "../stepperBar"
+import detourReasons from "../../data/detourReasons"
 
 export const possibleDurations = [
   "1 hour",
@@ -13,28 +14,6 @@ export const possibleDurations = [
   "8 hours",
   "Until end of service",
   "Until further notice",
-]
-
-const possibleReasons = [
-  "Accident",
-  "Construction",
-  "Demonstration",
-  "Disabled bus",
-  "Drawbridge being raised",
-  "Electrical work",
-  "Fire",
-  "Hazmat condition",
-  "Holiday",
-  "Hurricane",
-  "Maintenance",
-  "Medical emergency",
-  "Parade",
-  "Police activity",
-  "Snow",
-  "Special event",
-  "Tie replacement",
-  "Traffic",
-  "Weather",
 ]
 
 interface SurroundingModalProps extends PropsWithChildren {
@@ -149,7 +128,7 @@ const SelectingReason = ({
     <StepperBar totalSteps={3} currentStep={2} />
     <StepSubtitle>Step 2 of 3 - Select reason for detour</StepSubtitle>
     <Form>
-      {possibleReasons.map((reason) => (
+      {detourReasons.map((reason) => (
         <Form.Check
           className="mb-2"
           onChange={() => {

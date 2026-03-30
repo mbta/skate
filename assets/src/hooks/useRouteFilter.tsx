@@ -46,24 +46,20 @@ export const RouteFilter = ({
   }
 
   return (
-    <div className="c-route-filter">
-      <div className="c-route-filter__text">
-        <input
-          className="c-route-filter__input"
-          type="text"
-          value={filterText}
-          placeholder="Search routes"
-          onChange={(event) => handleTextInput(event)}
-          onKeyDown={blurOnEnter}
-        />
-
+    <div className="input-group-filter">
+      <input
+        type="text"
+        value={filterText}
+        placeholder="Search routes"
+        onChange={(event) => handleTextInput(event)}
+        onKeyDown={blurOnEnter}
+      />
+      <div>
         {filterText.length > 0 ? (
-          <button
-            className="c-route-filter__clear"
-            onClick={clearTextInput}
-            title="Clear"
-          >
-            <CircleXIcon />
+          <button onClick={clearTextInput} title="Clear">
+            <span>
+              <CircleXIcon />
+            </span>
           </button>
         ) : null}
       </div>
