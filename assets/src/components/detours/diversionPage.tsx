@@ -337,6 +337,7 @@ export const DiversionPage = ({
                   routeDescription={routeDescription ?? "??"}
                   routeOrigin={routeOrigin ?? "??"}
                   routeDirection={routeDirection ?? "??"}
+                  displayTitle={false}
                 />
               }
             />
@@ -353,6 +354,7 @@ export const DiversionPage = ({
                   routeDescription={routeDescription ?? "??"}
                   routeOrigin={routeOrigin ?? "??"}
                   routeDirection={routeDirection ?? "??"}
+                  displayTitle={false}
                 />
               }
             />
@@ -545,6 +547,9 @@ export const DiversionPage = ({
               : undefined
           }
           activatedAt={snapshot.context.activatedAt}
+          updatedAt={
+            "updatedAt" in useDetourProps ? useDetourProps.updatedAt : 0
+          }
           detourDuration={snapshot.context.selectedDuration}
           detourReason={snapshot.context.selectedReason}
         >

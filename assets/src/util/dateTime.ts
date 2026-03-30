@@ -132,3 +132,17 @@ export const timeAgoLabelFromDate = (start: Date, end: Date) => {
 
 export const isSameDay = (first: Date, second: Date) =>
   first.toDateString() === second.toDateString()
+
+export const isUpdatedAfterActivated = ({
+  activatedAt,
+  updatedAt,
+}: {
+  activatedAt: Date | null
+  updatedAt: number
+}): boolean => {
+  if (!activatedAt || !updatedAt) return false
+  const bufferMs = 60_000
+  return (
+    dateFromEpochSeconds(updatedAt).valueOf() > activatedAt.valueOf() + bufferMs
+  )
+}

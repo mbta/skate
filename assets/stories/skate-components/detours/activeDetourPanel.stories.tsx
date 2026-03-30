@@ -42,6 +42,7 @@ const meta = {
     onNavigateBack: undefined,
     onEditActiveDetour: undefined,
     activatedAt: new Date(),
+    updatedAt: 0,
     detourDuration: "3 hours",
     detourReason: "Construction",
     showIssueButton: false,
