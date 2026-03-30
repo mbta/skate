@@ -53,7 +53,7 @@ export const DateTimePicker = ({
     <div className={`input-group-filter ${className || ""}`} ref={inputRef}>
       <input type="text" data-input placeholder="Select date" {...props} />
       <div className="">
-        {fpRef.current && fpRef.current.selectedDates.length > 0 && (
+        {value.length > 0 && (
           <button onClick={() => fpRef.current && fpRef.current.clear()}>
             <span>
               <CircleXIcon />

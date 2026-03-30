@@ -204,7 +204,7 @@ export const DetoursTable = ({
               <th className="px-3 py-3 c-detours-table__col-sm">
                 <Form.Label htmlFor="reason-name">Reason</Form.Label>
                 <Form.Select
-                  id="route-name"
+                  id="reason-name"
                   className="select-filter mt-2"
                   value={reason}
                   onChange={(e) => {
