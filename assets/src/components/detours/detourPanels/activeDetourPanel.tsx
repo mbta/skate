@@ -17,8 +17,13 @@ import {
   MissedStops,
   IssueButton,
 } from "../detourPanelComponents"
-import { timeAgoLabelFromDate } from "../../../util/dateTime"
+import {
+  timeAgoLabelFromDate,
+  isUpdatedAfterActivated,
+  timeAgoLabel,
+} from "../../../util/dateTime"
 import useCurrentTime from "../../../hooks/useCurrentTime"
+import { useCurrentTimeSeconds } from "../../../hooks/useCurrentTime"
 
 export interface ActiveDetourPanelProps extends PropsWithChildren {
   copyableDetourText: string
@@ -38,6 +43,7 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
   detourReason: string
   detourDuration: string
   activatedAt: Date
+  updatedAt: number
 }
 
 export const ActiveDetourPanel = ({
@@ -55,6 +61,7 @@ export const ActiveDetourPanel = ({
   onEditActiveDetour,
   children,
   activatedAt,
+  updatedAt,
   detourDuration,
   detourReason,
   showIssueButton,
@@ -72,6 +79,7 @@ export const ActiveDetourPanel = ({
   )
 
   const currentTime = useCurrentTime()
+  const epochNowInSeconds = useCurrentTimeSeconds()
 
   const idSuffix = useId()
   const dlReasonId = "dl-reason" + idSuffix
@@ -111,10 +119,19 @@ export const ActiveDetourPanel = ({
 
             <div>
               <dt id={dlActiveSinceId} className="fw-bold me-2">
-                On detour since
+                Last published
               </dt>
               <dd aria-labelledby={dlActiveSinceId}>
-                {timeAgoLabelFromDate(activatedAt, currentTime)}
+                {isUpdatedAfterActivated({ activatedAt, updatedAt }) ? (
+                  <div className="d-inline-flex flex-column">
+                    <div className="time-pill">
+                      {timeAgoLabel(epochNowInSeconds, updatedAt)} - Edited
+                    </div>
+                    {timeAgoLabelFromDate(activatedAt, currentTime)}
+                  </div>
+                ) : (
+                  timeAgoLabelFromDate(activatedAt, currentTime)
+                )}
               </dd>
             </div>
 

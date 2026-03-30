@@ -129,3 +129,17 @@ export const timeAgoLabelFromDate = (start: Date, end: Date) => {
   const second = 1000
   return timeAgoLabel(end.getTime() / second, start.getTime() / second)
 }
+
+export const isUpdatedAfterActivated = ({
+  activatedAt,
+  updatedAt,
+}: {
+  activatedAt: Date | null
+  updatedAt: number
+}): boolean => {
+  if (!activatedAt || !updatedAt) return false
+  const bufferMs = 60_000
+  return (
+    dateFromEpochSeconds(updatedAt).valueOf() > activatedAt.valueOf() + bufferMs
+  )
+}
