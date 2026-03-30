@@ -439,7 +439,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
               </label>
               <select
                 class="select-filter mt-2 form-select"
-                id="route-name"
+                id="reason-name"
               >
                 <option
                   value="all"
@@ -2147,7 +2147,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
               </label>
               <select
                 class="select-filter mt-2 form-select"
-                id="route-name"
+                id="reason-name"
               >
                 <option
                   value="all"
