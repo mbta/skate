@@ -27,7 +27,6 @@ export const DateTimePicker = ({
         altInput: true,
         altFormat: "D, M j, Y",
         wrap: true,
-        mode: "multiple",
         ...options,
       })
     }
@@ -60,7 +59,12 @@ export const DateTimePicker = ({
             </span>
           </button>
         )}
-        <button data-toggle>
+        <button
+          onClick={(e) => {
+            e.preventDefault()
+            fpRef.current?.toggle()
+          }}
+        >
           <span>
             <Calendar />
           </span>

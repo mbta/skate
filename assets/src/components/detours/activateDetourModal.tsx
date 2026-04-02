@@ -1,20 +1,8 @@
 import React, { PropsWithChildren } from "react"
 import { Button, Form, Modal } from "react-bootstrap"
+import { DurationSelect } from "./durationSelect"
 import { StepperBar } from "../stepperBar"
 import detourReasons from "../../data/detourReasons"
-
-export const possibleDurations = [
-  "1 hour",
-  "2 hours",
-  "3 hours",
-  "4 hours",
-  "5 hours",
-  "6 hours",
-  "7 hours",
-  "8 hours",
-  "Until end of service",
-  "Until further notice",
-]
 
 interface SurroundingModalProps extends PropsWithChildren {
   onCancel: () => void
@@ -41,7 +29,8 @@ export const SurroundingModal = ({
   modalTitle,
   isActiveDetour,
 }: SurroundingModalProps & FSElementProps) => (
-  <Modal show animation={false} onHide={onCancel}>
+  // @TODO: Need to add support for nested modals or change detour page to not be a modal
+  <Modal show animation={false} onHide={onCancel} enforceFocus={false}>
     <Modal.Header closeButton>
       <h3 className="fs-3 fw-semibold lh-sm my-1">
         {modalTitle || (isActiveDetour ? "Update detour" : "Start detour")}
@@ -99,21 +88,10 @@ const SelectingDuration = ({
     <p>
       <span className="fw-bold">Time length</span> <span>(estimate)</span>
     </p>
-    <Form>
-      {possibleDurations.map((duration) => (
-        <Form.Check
-          className="mb-2"
-          onChange={() => {
-            onSelectDuration(duration)
-          }}
-          id={`duration-${duration}`}
-          key={`duration-${duration}`}
-          type="radio"
-          label={duration}
-          checked={selectedDuration === duration}
-        />
-      ))}
-    </Form>
+    <DurationSelect
+      selectedDuration={selectedDuration}
+      onSelectDuration={onSelectDuration}
+    />
   </>
 )
 

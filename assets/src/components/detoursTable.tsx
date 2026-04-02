@@ -231,6 +231,7 @@ export const DetoursTable = ({
                     options={{
                       maxDate: "today",
                       onChange: setDates,
+                      mode: "multiple",
                     }}
                   />
                 </div>
