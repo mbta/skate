@@ -6,6 +6,8 @@ defmodule Realtime.Vehicles do
   alias Schedule.Gtfs.{Direction, Timepoint}
   alias Schedule.Run
 
+  require Logger
+
   @doc """
   Return a map of vehicles & ghosts by route_id, omitting those without a route_id.
 
@@ -114,8 +116,15 @@ defmodule Realtime.Vehicles do
 
           block_date =
             case Map.fetch(date_by_block_id, incoming_trip.block_id) do
-              {:ok, date} -> date
-              _ -> Util.Time.date_of_timestamp(System.system_time(:second))
+              {:ok, date} ->
+                date
+
+              _ ->
+                Logger.warning(
+                  "block_date_missing block_id=#{incoming_trip.block_id} route_id=#{route_id}"
+                )
+
+                Util.Time.date_of_timestamp(System.system_time(:second))
             end
 
           incoming_trip_start_timestamp =
