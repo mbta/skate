@@ -41,6 +41,19 @@ export const formattedDuration = (duration: number): string => {
   return diffHours >= 1 ? `${diffHours} hr ${diffMinutesStr}` : diffMinutesStr
 }
 
+export const formatIfDate = (duration?: string): string => {
+  if (!duration) return ""
+
+  if (/\d{4}-\d{2}-\d{2}/.test(duration)) {
+    return new Date(duration).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
+  return duration
+}
+
 export const formattedTimeDiff = (a: Date, b: Date): string =>
   formattedDuration(a.valueOf() / 1000 - b.valueOf() / 1000)
 

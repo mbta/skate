@@ -810,17 +810,25 @@ defmodule Skate.Detours.Detours do
 
   defp do_calculate_expiration_timestamp(
          detour,
-         n_hours
+         duration
        )
-       when is_binary(n_hours) do
-    hours =
-      n_hours
-      |> String.split()
-      |> Enum.at(0)
-      |> String.to_integer()
+       when is_binary(duration) do
+    if duration =~ ~r/\d+ hour/ do
+      hours =
+        duration
+        |> String.split()
+        |> Enum.at(0)
+        |> String.to_integer()
 
-    detour
-    |> Map.get(:activated_at)
-    |> DateTime.add(hours, :hour)
+      detour
+      |> Map.get(:activated_at)
+      |> DateTime.add(hours, :hour)
+    end
+
+    if duration =~ ~r/\d{4}-\d{2}-\d{2}/ do
+      Date.from_iso8601!(duration)
+      |> Date.add(1)
+      |> DateTime.new!(~T[03:00:00], "America/New_York")
+    end
   end
 end

@@ -1,6 +1,7 @@
 import React from "react"
 import { SurroundingModal } from "./activateDetourModal"
 import { DurationSelect } from "./durationSelect"
+import { formatIfDate } from "../../util/dateTime"
 
 const ChangingDuration = ({
   onSelectDuration,
@@ -19,7 +20,7 @@ const ChangingDuration = ({
         className="mt-2 mb-4"
         data-testid="change-detour-duration-previous-time"
       >
-        {selectedDuration}
+        {formatIfDate(selectedDuration)}
       </p>
     </span>
     <p>

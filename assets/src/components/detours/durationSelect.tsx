@@ -17,6 +17,12 @@ const possibleDurations = [
   "Until further notice",
 ]
 
+const initialDate = (duration: any) => {
+  if (!duration) return null
+  if (possibleDurations.includes(duration)) return null
+  return new Date(duration)
+}
+
 export const DurationSelect = ({
   onSelectDuration,
   selectedDuration,
@@ -24,8 +30,8 @@ export const DurationSelect = ({
   onSelectDuration: (duration: string | undefined) => void
   selectedDuration?: string
 }) => {
-  const [date, setDate] = useState<Date | null>(null)
-  const [dateSelected, setDateSelected] = useState<Boolean>(false)
+  const [date, setDate] = useState<Date | null>(initialDate(selectedDuration))
+  const [dateSelected, setDateSelected] = useState<Boolean>(!!date)
 
   useEffect(() => {
     if (date && dateSelected) {

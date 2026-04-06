@@ -11,6 +11,7 @@ import { RoutePill } from "../routePill"
 import { DetourModal } from "../detours/detourModal"
 import { DetourId } from "../../models/detoursList"
 import { useLoadDetour } from "../../hooks/useLoadDetour"
+import { formatIfDate } from "../../util/dateTime"
 
 const Description = ({
   notification,
@@ -36,7 +37,7 @@ const Description = ({
             <>
               This detour will reach its estimated{" "}
               <strong className="d-inline-block">
-                {notification.content.estimatedDuration}
+                {formatIfDate(notification.content.estimatedDuration)}
               </strong>{" "}
               duration in{" "}
               <strong className="d-inline-block">
@@ -48,7 +49,7 @@ const Description = ({
             <>
               This detour has reached its estimated{" "}
               <strong className="d-inline-block">
-                {notification.content.estimatedDuration}
+                {formatIfDate(notification.content.estimatedDuration)}
               </strong>{" "}
               duration.
             </>
