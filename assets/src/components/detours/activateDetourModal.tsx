@@ -79,7 +79,7 @@ const SelectingDuration = ({
   onSelectDuration,
   selectedDuration,
 }: {
-  onSelectDuration: (duration: string) => void
+  onSelectDuration: (duration: string | undefined) => void
   selectedDuration?: string
 }) => (
   <>

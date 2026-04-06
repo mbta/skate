@@ -146,3 +146,7 @@ export const isUpdatedAfterActivated = ({
     dateFromEpochSeconds(updatedAt).valueOf() > activatedAt.valueOf() + bufferMs
   )
 }
+
+export const toIsoDateString = (date: Date) => {
+  return date.toISOString().split("T")[0]
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { Form } from "react-bootstrap"
 
 import { DateTimePicker } from "../dateTimePicker"
+import { toIsoDateString } from "../../util/dateTime"
 
 const possibleDurations = [
   "1 hour",
@@ -20,12 +21,19 @@ export const DurationSelect = ({
   onSelectDuration,
   selectedDuration,
 }: {
-  onSelectDuration: (duration: string) => void
+  onSelectDuration: (duration: string | undefined) => void
   selectedDuration?: string
 }) => {
-  // pass the duration as a date string in a parseable format (look at what activation date is stored as)
-  const [dates, setDates] = useState<Date[]>([])
+  const [date, setDate] = useState<Date | null>(null)
   const [dateSelected, setDateSelected] = useState<Boolean>(false)
+
+  useEffect(() => {
+    if (date && dateSelected) {
+      onSelectDuration(toIsoDateString(date))
+    } else if (dateSelected) {
+      onSelectDuration(undefined)
+    }
+  }, [date, dateSelected])
 
   return (
     <Form>
@@ -35,7 +43,7 @@ export const DurationSelect = ({
           onChange={() => {
             setDateSelected(false)
             onSelectDuration(duration)
-            setDates([])
+            setDate(null)
           }}
           id={`duration-${duration}`}
           key={`duration-${duration}`}
@@ -45,27 +53,27 @@ export const DurationSelect = ({
         />
       ))}
       <Form.Check
-        onChange={() => {
-          setDateSelected(true)
-          onSelectDuration("")
-        }}
+        onChange={() => setDateSelected(true)}
         id={"duration-date"}
         key={"duration-date"}
         type="radio"
         label="Date"
         checked={dateSelected === true}
       />
-      <DateTimePicker
-        value={dates}
-        options={{
-          minDate: "today",
-          onChange: setDates,
-          onOpen: () => {
-            setDateSelected(true)
-            onSelectDuration("")
-          },
-        }}
-      />
+      <div className="mx-4 w-75">
+        <DateTimePicker
+          value={date ? [date] : []}
+          className="w-75"
+          aria-labelledby="duration-date"
+          aria-required={dateSelected ? "true" : "false"}
+          options={{
+            minDate: "today",
+            onChange: (dates) =>
+              dates.length > 0 ? setDate(dates[0]) : setDate(null),
+            onOpen: () => setDateSelected(true),
+          }}
+        />
+      </div>
     </Form>
   )
 }
