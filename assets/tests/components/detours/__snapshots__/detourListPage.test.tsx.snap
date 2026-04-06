@@ -799,7 +799,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                     class=""
                   >
                     <button
-                      data-toggle="true"
+                      aria-label="Toggle"
                     >
                       <span>
                         <svg

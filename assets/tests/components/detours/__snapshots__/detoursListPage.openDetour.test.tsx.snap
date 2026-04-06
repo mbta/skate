@@ -573,7 +573,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                     class=""
                   >
                     <button
-                      data-toggle="true"
+                      aria-label="Toggle"
                     >
                       <span>
                         <svg
@@ -2281,7 +2281,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                     class=""
                   >
                     <button
-                      data-toggle="true"
+                      aria-label="Toggle"
                     >
                       <span>
                         <svg
