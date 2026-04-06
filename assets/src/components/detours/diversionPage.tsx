@@ -441,7 +441,6 @@ export const DiversionPage = ({
               onActivate={onActivate}
               isActiveDetour={isActiveDetour}
             >
-              {" "}
               {snapshot.matches({
                 "Detour Drawing": {
                   "Share Detour": { Activating: "Selecting Duration" },
