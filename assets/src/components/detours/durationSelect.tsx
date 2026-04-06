@@ -30,8 +30,10 @@ export const DurationSelect = ({
   onSelectDuration: (duration: string | undefined) => void
   selectedDuration?: string
 }) => {
-  const [date, setDate] = useState<Date | null>(initialDate(selectedDuration))
-  const [dateSelected, setDateSelected] = useState<Boolean>(!!date)
+  const init = initialDate(selectedDuration)
+  const [dates, setDates] = useState<Date[]>(init ? [init] : [])
+  const [dateSelected, setDateSelected] = useState<Boolean>(!!init)
+  const date = dates.length > 0 ? dates[0] : null
 
   useEffect(() => {
     if (date && dateSelected) {
@@ -49,7 +51,7 @@ export const DurationSelect = ({
           onChange={() => {
             setDateSelected(false)
             onSelectDuration(duration)
-            setDate(null)
+            setDates([])
           }}
           id={`duration-${duration}`}
           key={`duration-${duration}`}
@@ -68,14 +70,13 @@ export const DurationSelect = ({
       />
       <div className="mx-4 w-75">
         <DateTimePicker
-          value={date ? [date] : []}
+          value={dates}
           className="w-75"
           aria-labelledby="duration-date"
           aria-required={dateSelected ? "true" : "false"}
           options={{
             minDate: "today",
-            onChange: (dates) =>
-              dates.length > 0 ? setDate(dates[0]) : setDate(null),
+            onChange: setDates,
             onOpen: () => setDateSelected(true),
           }}
         />
