@@ -440,7 +440,44 @@ export const DiversionPage = ({
               }
               onActivate={onActivate}
               isActiveDetour={isActiveDetour}
-            ></ActivateDetour.Modal>
+            >
+              {" "}
+              {snapshot.matches({
+                "Detour Drawing": {
+                  "Share Detour": { Activating: "Selecting Duration" },
+                },
+              }) ? (
+                <ActivateDetour.SelectingDuration
+                  onSelectDuration={(selectedDuration: string) => {
+                    send({
+                      type: "detour.share.activate-modal.select-duration",
+                      duration: selectedDuration,
+                    })
+                  }}
+                  selectedDuration={selectedDuration}
+                />
+              ) : snapshot.matches({
+                  "Detour Drawing": {
+                    "Share Detour": { Activating: "Selecting Reason" },
+                  },
+                }) ? (
+                <ActivateDetour.SelectingReason
+                  onSelectReason={(selectedReason: string) => {
+                    send({
+                      type: "detour.share.activate-modal.select-reason",
+                      reason: selectedReason,
+                    })
+                  }}
+                  selectedReason={selectedReason}
+                />
+              ) : snapshot.matches({
+                  "Detour Drawing": {
+                    "Share Detour": { Activating: "Confirming" },
+                  },
+                }) ? (
+                <ActivateDetour.Confirming isActiveDetour={isActiveDetour} />
+              ) : null}
+            </ActivateDetour.Modal>
           ) : null}
 
           {snapshot.matches({
