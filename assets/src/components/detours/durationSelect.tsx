@@ -32,7 +32,7 @@ export const DurationSelect = ({
 }) => {
   const init = initialDate(selectedDuration)
   const [dates, setDates] = useState<Date[]>(init ? [init] : [])
-  const [dateSelected, setDateSelected] = useState<Boolean>(!!init)
+  const [dateSelected, setDateSelected] = useState<boolean>(!!init)
   const date = dates.length > 0 ? dates[0] : null
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export const DurationSelect = ({
     } else if (dateSelected) {
       onSelectDuration(undefined)
     }
-  }, [date, dateSelected])
+  }, [date, dateSelected, onSelectDuration])
 
   return (
     <Form>
