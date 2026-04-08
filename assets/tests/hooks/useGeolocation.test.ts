@@ -33,6 +33,9 @@ describe("useGeolocation", () => {
         callback({
           timestamp: 1234,
           coords: coordinates,
+          toJSON() {
+            return this
+          }
         })
 
         return 1
