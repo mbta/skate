@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Form } from "react-bootstrap"
 
 import { DateTimePicker } from "../dateTimePicker"
-import { toIsoDateString } from "../../util/dateTime"
+import { toIsoDateString, fromIsoDateString } from "../../util/dateTime"
 
 const possibleDurations = [
   "1 hour",
@@ -17,10 +17,10 @@ const possibleDurations = [
   "Until further notice",
 ]
 
-const initialDate = (duration: any) => {
+const initialDate = (duration?: string) => {
   if (!duration) return null
   if (possibleDurations.includes(duration)) return null
-  return new Date(duration)
+  return fromIsoDateString(duration)
 }
 
 export const DurationSelect = ({
@@ -31,17 +31,8 @@ export const DurationSelect = ({
   selectedDuration?: string
 }) => {
   const init = initialDate(selectedDuration)
-  const [dates, setDates] = useState<Date[]>(init ? [init] : [])
-  const [dateSelected, setDateSelected] = useState<boolean>(!!init)
-  const date = dates.length > 0 ? dates[0] : null
-
-  useEffect(() => {
-    if (date && dateSelected) {
-      onSelectDuration(toIsoDateString(date))
-    } else if (dateSelected) {
-      onSelectDuration(undefined)
-    }
-  }, [date, dateSelected, onSelectDuration])
+  const [dates, setDates] = useState<Date[]>(init ? [init] : []) // the array used by flatpickr
+  const [dateSelected, setDateSelected] = useState<boolean>(!!init) // whether the custom date radio is checked
 
   return (
     <Form>
@@ -50,8 +41,8 @@ export const DurationSelect = ({
           className="mb-2"
           onChange={() => {
             setDateSelected(false)
-            onSelectDuration(duration)
             setDates([])
+            onSelectDuration(duration)
           }}
           id={`duration-${duration}`}
           key={`duration-${duration}`}
@@ -61,7 +52,11 @@ export const DurationSelect = ({
         />
       ))}
       <Form.Check
-        onChange={() => setDateSelected(true)}
+        onChange={() => {
+          setDateSelected(true)
+          onSelectDuration(undefined)
+          setDates([])
+        }}
         id={"duration-date"}
         key={"duration-date"}
         type="radio"
@@ -76,8 +71,16 @@ export const DurationSelect = ({
           aria-required={dateSelected ? "true" : "false"}
           options={{
             minDate: "today",
-            onChange: setDates,
-            onOpen: () => setDateSelected(true),
+            onChange: (v) => {
+              setDates(v)
+              onSelectDuration(v.length > 0 ? toIsoDateString(v[0]) : undefined)
+            },
+            onOpen: () => {
+              setDateSelected(true)
+              if (dates.length === 0) {
+                onSelectDuration(undefined)
+              }
+            },
           }}
         />
       </div>
