@@ -1,5 +1,11 @@
 export const now = (): Date => new Date()
 
+export const tomorrow = (): Date => {
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  return d
+}
+
 export const serviceDaySeconds = (currentTime: Date): number => {
   const serviceDateStart = new Date(currentTime.getTime())
 

@@ -2,7 +2,11 @@ import React, { useState } from "react"
 import { Form } from "react-bootstrap"
 
 import { DateTimePicker } from "../dateTimePicker"
-import { toIsoDateString, fromIsoDateString } from "../../util/dateTime"
+import {
+  toIsoDateString,
+  fromIsoDateString,
+  tomorrow,
+} from "../../util/dateTime"
 
 const possibleDurations = [
   "1 hour",
@@ -70,7 +74,7 @@ export const DurationSelect = ({
           aria-labelledby="duration-date"
           aria-required={dateSelected ? "true" : "false"}
           options={{
-            minDate: "today",
+            minDate: toIsoDateString(tomorrow()),
             onChange: (v) => {
               setDates(v)
               onSelectDuration(v.length > 0 ? toIsoDateString(v[0]) : undefined)
