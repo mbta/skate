@@ -1,5 +1,6 @@
 defmodule Realtime.VehiclesTest do
   use ExUnit.Case
+  import ExUnit.CaptureLog
   import Test.Support.Helpers
   import Skate.Factory
 
@@ -278,20 +279,25 @@ defmodule Realtime.VehiclesTest do
           end_time: 0
         })
 
-      assert Vehicles.group_by_route_with_blocks(
-               [on_route_vehicle, interlining_vehicle],
-               [trip],
-               %{},
-               %{},
-               0,
-               @timepoint_names_by_id
-             ) == %{
-               "route1" => [
-                 on_route_vehicle,
-                 %{interlining_vehicle | incoming_trip_direction_id: 0}
-               ],
-               "route2" => [interlining_vehicle]
-             }
+      log =
+        capture_log([level: :warning], fn ->
+          assert Vehicles.group_by_route_with_blocks(
+                   [on_route_vehicle, interlining_vehicle],
+                   [trip],
+                   %{},
+                   %{},
+                   0,
+                   @timepoint_names_by_id
+                 ) == %{
+                   "route1" => [
+                     on_route_vehicle,
+                     %{interlining_vehicle | incoming_trip_direction_id: 0}
+                   ],
+                   "route2" => [interlining_vehicle]
+                 }
+        end)
+
+      assert log =~ "block_date_missing block_id=block1 route_id=route1"
     end
 
     test "includes trip without a vehicle as a ghost" do
