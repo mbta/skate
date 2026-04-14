@@ -2,3 +2,7 @@ webpack.config.js
 babel.config.js
 .eslintrc.js
 __mocks__
+package.json
+package-lock.json
+tsconfig.json
+tsconfig.test.json

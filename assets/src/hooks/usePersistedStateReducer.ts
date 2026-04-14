@@ -78,7 +78,6 @@ const usePersistedStateReducer = (): [State, Dispatch] => {
         })
     }
   }, [routeTabsToPush, routeTabsPushInProgress])
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   return [state, dispatch]
 }

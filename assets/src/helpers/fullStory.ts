@@ -16,5 +16,5 @@ export const fullStoryInit = (
 export const fullStoryEvent = (
   ...args: Parameters<typeof FullStory.event>
 ): void => {
-  FullStory.isInitialized() && FullStory.event(...args)
+  if (FullStory.isInitialized()) FullStory.event(...args)
 }

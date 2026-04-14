@@ -150,7 +150,7 @@ export const DiversionPage = ({
       copyToDraftDetour(snapshot.context.uuid).then((response) => {
         if (response && isOk(response)) {
           onClose()
-          onOpenDetour && onOpenDetour(response?.ok, { fromCopy: true })
+          if (onOpenDetour) onOpenDetour(response?.ok, { fromCopy: true })
         }
       })
     }
@@ -286,7 +286,7 @@ export const DiversionPage = ({
             }
           }}
           onSelectRoutePattern={(routePattern) => {
-            routePattern &&
+            if (routePattern)
               send({
                 type: "detour.route-pattern.select-pattern",
                 routePattern,

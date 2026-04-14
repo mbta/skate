@@ -419,7 +419,7 @@ const Detour = ({
   const endDrag = useCallback(
     (e: LeafletMouseEvent) => {
       if (newWaypointIndex.current === null) return
-      onInsertWaypoint &&
+      if (onInsertWaypoint)
         onInsertWaypoint(
           latLngLiteralToShapePoint(e.latlng),
           newWaypointIndex.current
