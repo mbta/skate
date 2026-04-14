@@ -6,7 +6,9 @@ import stateFactory from "../factories/applicationState"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 
 export const Router = ({ children }: { children: React.ReactNode }) => (
-  <BrowserRouter future={{ v7_startTransition: true }}>{children}</BrowserRouter>
+  <BrowserRouter future={{ v7_startTransition: true }}>
+    {children}
+  </BrowserRouter>
 )
 
 export const RealDispatchWrapper = ({
