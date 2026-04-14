@@ -1,7 +1,7 @@
 import { jest, describe, test, expect } from "@jest/globals"
 import { render } from "@testing-library/react"
 import React from "react"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../testHelpers/wrappers"
 import "@testing-library/jest-dom/jest-globals"
 import renderer from "react-test-renderer"
 import RightPanel from "../../src/components/rightPanel"
@@ -24,9 +24,9 @@ describe("rightPanel", () => {
   test("shows nothing if nothing is selected", () => {
     const tree = renderer
       .create(
-        <BrowserRouter>
+        <Router>
           <RightPanel openView={OpenView.None} />
-        </BrowserRouter>
+        </Router>
       )
       .toJSON()
     expect(tree).toEqual(null)
