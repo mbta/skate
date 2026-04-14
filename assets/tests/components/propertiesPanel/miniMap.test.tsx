@@ -61,7 +61,10 @@ describe("MiniMap", () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
 
     render(
-      <MemoryRouter initialEntries={["/"]}>
+      <MemoryRouter
+        initialEntries={["/"]}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
           <MiniMap
             vehicle={vehicle}
@@ -90,7 +93,10 @@ describe("MiniMap", () => {
     const mockDispatch = jest.fn()
 
     render(
-      <MemoryRouter initialEntries={["/"]}>
+      <MemoryRouter
+        initialEntries={["/"]}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
           <MiniMap
             vehicle={vehicle}
@@ -108,7 +114,10 @@ describe("MiniMap", () => {
 
   test("Map doesn't include fullscreen button", () => {
     render(
-      <MemoryRouter initialEntries={["/"]}>
+      <MemoryRouter
+        initialEntries={["/"]}
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      >
         <MiniMap
           vehicle={vehicle}
           routeVehicles={[]}

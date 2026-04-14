@@ -131,7 +131,12 @@ const vehicle: VehicleInScheduledService = vehicleFactory.build({
 })
 
 const MemoryRouterWrapper = ({ children }: { children: ReactNode }) => (
-  <MemoryRouter initialEntries={["/"]}>{children}</MemoryRouter>
+  <MemoryRouter
+    future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    initialEntries={["/"]}
+  >
+    {children}
+  </MemoryRouter>
 )
 
 describe("VehiclePropertiesPanel", () => {

@@ -169,7 +169,10 @@ describe("PropertiesPanel", () => {
     jest.mocked(useVehicleForId).mockImplementationOnce(() => vehicle)
 
     const result = render(
-      <MemoryRouter initialEntries={["/"]}>
+      <MemoryRouter
+        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+        initialEntries={["/"]}
+      >
         <PropertiesPanelWrapper vehicleOrGhost={vehicle} />
       </MemoryRouter>
     )
