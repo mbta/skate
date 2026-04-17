@@ -35,19 +35,15 @@ defmodule Skate.Detours.Db.Detour do
     field :start_point, :map
     field :end_point, :map
     field :waypoints, {:array, :map}
-
-    ## Detour virtual fields
-    # -------------------------------------------------------
+    field :coordinates, {:array, :map}
 
     # Route properties
-    field :route_id, :string, virtual: true
-    field :route_name, :string, virtual: true
-    field :route_pattern_id, :string, virtual: true
-    field :route_pattern_name, :string, virtual: true
-    field :headsign, :string, virtual: true
-    field :direction, :string, virtual: true
-    field :direction_id, :integer, virtual: true
-    field :coordinates, {:array, :map}, virtual: true
+    field :route_id, :string
+    field :route_name, :string
+    field :route_pattern_id, :string
+    field :route_pattern_name, :string
+    field :headsign, :string
+    field :direction, :string
 
     # Default detour properties
     field :nearest_intersection, :string
@@ -67,6 +63,13 @@ defmodule Skate.Detours.Db.Detour do
     |> add_start_point()
     |> add_end_point()
     |> add_waypoints()
+    |> add_coordinates()
+    |> add_route_id()
+    |> add_route_name()
+    |> add_route_pattern_id()
+    |> add_route_pattern_name()
+    |> add_direction()
+    |> add_headsign()
     |> add_updated_at()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
@@ -210,6 +213,84 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
+  def add_route_id(changeset) do
+    case {fetch_field(changeset, :route_id), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"route" => %{"id" => route_id}}}}} ->
+        put_change(changeset, :route_id, route_id)
+
+      _ ->
+        changeset
+    end
+  end
+
+  def add_route_name(changeset) do
+    case {fetch_field(changeset, :route_name), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"route" => %{"name" => route_name}}}}} ->
+        put_change(changeset, :route_name, route_name)
+
+      _ ->
+        changeset
+    end
+  end
+
+  def add_route_pattern_id(changeset) do
+    case {fetch_field(changeset, :route_pattern_id), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"id" => route_pattern_id}}}}} ->
+        put_change(changeset, :route_pattern_id, route_pattern_id)
+
+      _ ->
+        changeset
+    end
+  end
+
+  def add_route_pattern_name(changeset) do
+    case {fetch_field(changeset, :route_pattern_name), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"name" => route_pattern_name}}}}} ->
+        put_change(changeset, :route_pattern_name, route_pattern_name)
+
+      _ ->
+        changeset
+    end
+  end
+
+  def add_headsign(changeset) do
+    case {fetch_field(changeset, :headsign), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"headsign" => headsign}}}}} ->
+        put_change(changeset, :headsign, headsign)
+
+      _ ->
+        changeset
+    end
+  end
+
+  def add_coordinates(changeset) do
+    case {fetch_field(changeset, :coordinates), fetch_change(changeset, :state)} do
+      {{:data, _},
+       {:ok, %{"context" => %{"detourShape" => %{"ok" => %{"coordinates" => coordinates}}}}}} ->
+        put_change(changeset, :coordinates, coordinates)
+
+      _ ->
+        changeset
+    end
+  end
+
+  def add_direction(changeset) do
+    case {fetch_field(changeset, :direction), fetch_change(changeset, :state)} do
+      {{:data, _},
+       {:ok,
+        %{
+          "context" => %{
+            "route" => %{"directionNames" => directionNames},
+            "routePattern" => %{"directionId" => directionId}
+          }
+        }}} ->
+        put_change(changeset, :direction, directionNames["#{directionId}"])
+
+      _ ->
+        changeset
+    end
+  end
+
   defmodule Queries do
     @moduledoc """
     Defines composable queries for retrieving `Skate.Detours.Db.Detour`
@@ -224,7 +305,7 @@ defmodule Skate.Detours.Db.Detour do
     end
 
     @doc """
-    Builds a query that _selects_ data from columns or extracts from the JSON `:state`.
+    Builds a query that _selects_ data from columns.
 
     **IMPORTANT**: When filtering fields for associations, you
     MUST include the foreign keys used in the relationship,
@@ -232,44 +313,14 @@ defmodule Skate.Detours.Db.Detour do
     """
     def select_fields(query \\ base(), fields)
 
-    def select_fields(query, :all),
-      do: select_fields(query, Skate.Detours.Db.Detour.__schema__(:virtual_fields))
+    def select_fields(query, :all) do
+      select_fields(query, Skate.Detours.Db.Detour.__schema__(:fields))
+    end
 
     def select_fields(query, fields) when is_list(fields) do
-      %{virtual_fields: wanted_virtual_fields, fields: wanted_fields} = split_fields(fields)
-
       query
-      |> add_author?(wanted_fields)
-      |> select_merge(^wanted_fields)
-      |> select_virtual_fields(wanted_virtual_fields)
-    end
-
-    defp split_fields(input_fields) do
-      schema_virtual_fields = Skate.Detours.Db.Detour.__schema__(:virtual_fields)
-
-      {virtual_fields, fields} =
-        Enum.split_with(input_fields, fn field -> field in schema_virtual_fields end)
-
-      %{
-        virtual_fields: virtual_fields,
-        fields: fields
-      }
-    end
-
-    defp select_virtual_fields(query, fields) when is_list(fields) do
-      Enum.reduce(fields, query, fn field, query ->
-        case field do
-          :route_id -> select_route_id(query)
-          :route_name -> select_route_name(query)
-          :route_pattern_id -> select_route_pattern_id(query)
-          :route_pattern_name -> select_route_pattern_name(query)
-          :headsign -> select_route_pattern_headsign(query)
-          :direction -> select_direction(query)
-          :direction_id -> select_direction_id(query)
-          :coordinates -> select_coordinates(query)
-          _unknown -> query
-        end
-      end)
+      |> add_author?(fields)
+      |> select_merge(^fields)
     end
 
     def sorted_by_last_updated(query \\ base()) do
@@ -314,80 +365,18 @@ defmodule Skate.Detours.Db.Detour do
         :estimated_duration,
         :reason,
         :nearest_intersection,
-
-        # Virtual Fields
         :route_id,
         :route_name,
         :route_pattern_id,
         :route_pattern_name,
         :headsign,
         :direction,
+        :coordinates,
 
         # Nested Fields
         author: [:email, :id]
       ])
       |> sorted_by_last_updated()
-    end
-
-    def select_route_id(query \\ base(), key \\ :route_id) do
-      select_merge(query, [detour: d], %{^key => d.state["context"]["route"]["id"]})
-    end
-
-    def select_route_name(query \\ base(), key \\ :route_name) do
-      select_merge(query, [detour: d], %{^key => d.state["context"]["route"]["name"]})
-    end
-
-    def select_route_pattern_name(query \\ base(), key \\ :route_pattern_name) do
-      select_merge(query, [detour: d], %{^key => d.state["context"]["routePattern"]["name"]})
-    end
-
-    def select_route_pattern_headsign(query \\ base(), key \\ :headsign) do
-      select_merge(query, [detour: d], %{^key => d.state["context"]["routePattern"]["headsign"]})
-    end
-
-    def select_route_pattern_id(query \\ base(), key \\ :route_pattern_id) do
-      select_merge(query, [detour: d], %{^key => d.state["context"]["routePattern"]["id"]})
-    end
-
-    def select_direction(query \\ base(), key \\ :direction) do
-      select_merge(query, [detour: d], %{
-        # Ecto can't figure out how to index a JSON map via another JSON value
-        # because (in the ways it was tried) Ecto won't allow us to use the
-        # value from the associated detour, `ad`, as a value in the
-        # ["JSON path"](https://hexdocs.pm/ecto/Ecto.Query.API.html#json_extract_path/2).
-        #
-        # i.e., this
-        #   ad.state["context"]["route"]["directionNames"][
-        #      ad.state["context"]["routePattern"]["directionId"]
-        #   ]
-        #
-        # But, Postgres _is_ able to do this, _if_ we get the types correct.
-        # A JSON value in Postgres is either of type JSON or JSONB, but
-        # - indexing a JSON array requires an `INTEGER`,
-        # - accessing a JSON map, requires Postgres's `TEXT` type.
-        #
-        # So because we know the `directionId` will correspond to the keys in
-        # `directionNames`, casting the `directionId` to `TEXT` allows us to
-        # access the `directionNames` JSON map
-        ^key =>
-          fragment(
-            "? -> CAST(? AS TEXT)",
-            d.state["context"]["route"]["directionNames"],
-            d.state["context"]["routePattern"]["directionId"]
-          )
-      })
-    end
-
-    def select_direction_id(query \\ base(), key \\ :direction_id) do
-      select_merge(query, [detour: d], %{
-        ^key => d.state["context"]["routePattern"]["directionId"]
-      })
-    end
-
-    def select_coordinates(query \\ base(), key \\ :coordinates) do
-      select_merge(query, [detour: d], %{
-        ^key => d.state["context"]["detourShape"]["ok"]["coordinates"]
-      })
     end
   end
 end
