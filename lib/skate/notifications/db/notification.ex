@@ -327,10 +327,6 @@ defmodule Skate.Notifications.Db.Notification do
                 left_join: assoc(de, :detour),
                 as: :detour
               )
-              |> Skate.Detours.Db.Detour.Queries.select_route_name(:route)
-              |> Skate.Detours.Db.Detour.Queries.select_route_pattern_name(:origin)
-              |> Skate.Detours.Db.Detour.Queries.select_route_pattern_headsign(:headsign)
-              |> Skate.Detours.Db.Detour.Queries.select_direction(:direction)
             ),
           on: n.detour_expiration_id == de.id,
           as: ^binding
