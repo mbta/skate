@@ -773,10 +773,10 @@ defmodule Skate.Detours.Detours do
     |> DateTime.to_unix()
   end
 
-  defp calculate_expiration_timestamp(%{status: :active} = detour, estimated_duration),
+  def calculate_expiration_timestamp(%{status: :active} = detour, estimated_duration),
     do: do_calculate_expiration_timestamp(detour, estimated_duration)
 
-  defp calculate_expiration_timestamp(_, _), do: nil
+  def calculate_expiration_timestamp(_, _), do: nil
 
   defp do_calculate_expiration_timestamp(
          _detour,
@@ -813,22 +813,25 @@ defmodule Skate.Detours.Detours do
          duration
        )
        when is_binary(duration) do
-    if duration =~ ~r/\d+ hour/ do
-      hours =
-        duration
-        |> String.split()
-        |> Enum.at(0)
-        |> String.to_integer()
+    cond do
+      duration =~ ~r/\d+ hour/ ->
+        hours =
+          duration
+          |> String.split()
+          |> Enum.at(0)
+          |> String.to_integer()
 
-      detour
-      |> Map.get(:activated_at)
-      |> DateTime.add(hours, :hour)
-    end
+        detour
+        |> Map.get(:activated_at)
+        |> DateTime.add(hours, :hour)
 
-    if duration =~ ~r/\d{4}-\d{2}-\d{2}/ do
-      Date.from_iso8601!(duration)
-      |> Date.add(1)
-      |> DateTime.new!(~T[03:00:00], "America/New_York")
+      duration =~ ~r/\d{4}-\d{2}-\d{2}/ ->
+        Date.from_iso8601!(duration)
+        |> Date.add(1)
+        |> DateTime.new!(~T[03:00:00], "America/New_York")
+
+      true ->
+        nil
     end
   end
 end
