@@ -13,6 +13,7 @@ export enum TestGroups {
   MinischeduleTimepoints = "minischedule-timepoints",
   StateOfCharge = "state-of-charge",
   EditActiveDetours = "edit-active-detours",
+  TextOnlyDetours = "text-only-detours",
 }
 
 const inTestGroup = (key: TestGroups): boolean => {
