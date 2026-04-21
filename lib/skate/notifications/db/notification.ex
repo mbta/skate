@@ -324,8 +324,15 @@ defmodule Skate.Notifications.Db.Notification do
               from(
                 de in Notifications.Db.DetourExpiration,
                 as: ^binding,
-                left_join: assoc(de, :detour),
-                as: :detour
+                left_join: d_detour in assoc(de, :detour),
+                as: :detour,
+                select: %{
+                  de
+                  | headsign: d_detour.headsign,
+                    route: d_detour.route_name,
+                    direction: d_detour.direction,
+                    origin: d_detour.nearest_intersection
+                }
               )
             ),
           on: n.detour_expiration_id == de.id,

@@ -40,10 +40,12 @@ defmodule Skate.Detours.Detours do
       iex> active_detours_by_route()
       [%Detour{}, ...]
   """
+  # TODO remove and replace with detours_for_route
   def active_detours_by_route(route_id) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> where([detour: d], d.status == :active)
     |> Repo.all()
+    |> dbg()
     |> Enum.filter(fn detour ->
       detour.route_id == route_id
     end)
@@ -773,10 +775,10 @@ defmodule Skate.Detours.Detours do
     |> DateTime.to_unix()
   end
 
-  defp calculate_expiration_timestamp(%{status: :active} = detour, estimated_duration),
+  def calculate_expiration_timestamp(%{status: :active} = detour, estimated_duration),
     do: do_calculate_expiration_timestamp(detour, estimated_duration)
 
-  defp calculate_expiration_timestamp(_, _), do: nil
+  def calculate_expiration_timestamp(_, _), do: nil
 
   defp do_calculate_expiration_timestamp(
          _detour,
@@ -810,17 +812,28 @@ defmodule Skate.Detours.Detours do
 
   defp do_calculate_expiration_timestamp(
          detour,
-         n_hours
+         duration
        )
-       when is_binary(n_hours) do
-    hours =
-      n_hours
-      |> String.split()
-      |> Enum.at(0)
-      |> String.to_integer()
+       when is_binary(duration) do
+    cond do
+      duration =~ ~r/\d+ hour/ ->
+        hours =
+          duration
+          |> String.split()
+          |> Enum.at(0)
+          |> String.to_integer()
 
-    detour
-    |> Map.get(:activated_at)
-    |> DateTime.add(hours, :hour)
+        detour
+        |> Map.get(:activated_at)
+        |> DateTime.add(hours, :hour)
+
+      duration =~ ~r/\d{4}-\d{2}-\d{2}/ ->
+        Date.from_iso8601!(duration)
+        |> Date.add(1)
+        |> DateTime.new!(~T[03:00:00], "America/New_York")
+
+      true ->
+        nil
+    end
   end
 end
