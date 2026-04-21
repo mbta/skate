@@ -129,7 +129,7 @@ defmodule Skate.Notifications.Db.Detour do
         | headsign: d.headsign,
           route: d.route_name,
           direction: d.direction,
-          origin: d.nearest_intersection
+          origin: d.route_pattern_name
       })
     end
   end

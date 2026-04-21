@@ -331,7 +331,7 @@ defmodule Skate.Notifications.Db.Notification do
                   | headsign: d_detour.headsign,
                     route: d_detour.route_name,
                     direction: d_detour.direction,
-                    origin: d_detour.nearest_intersection
+                    origin: d_detour.route_pattern_name
                 }
               )
             ),
