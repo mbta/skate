@@ -328,10 +328,10 @@ defmodule Skate.Notifications.Db.Notification do
                 as: :detour,
                 select: %{
                   de
-                  | headsign: d_detour.headsign,
-                    route: d_detour.route_name,
-                    direction: d_detour.direction,
-                    origin: d_detour.route_pattern_name
+                  | route: d_detour.route_name,
+                    origin: d_detour.route_pattern_name,
+                    headsign: d_detour.headsign,
+                    direction: d_detour.direction
                 }
               )
             ),
