@@ -133,7 +133,7 @@ export const DrawDetourPanel = ({
             onClick={onCantDraw}
           >
             <Edit />
-            Can't draw detour
+            Can&apos;t draw detour
           </Button>
         )}
         <Button
@@ -163,8 +163,8 @@ const DirectionsHelpText = ({ hasCantDraw }: { hasCantDraw: boolean }) => (
     {hasCantDraw && (
       <p className="c-diversion-panel__help-text">
         <i>
-          Click the “Can't draw detour” button if Skate doesn't allow you to
-          draw this detour.
+          Click the “Can&apos;t draw detour” button if Skate doesn&apos;t allow
+          you to draw this detour.
         </i>
       </p>
     )}
