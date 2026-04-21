@@ -32,26 +32,6 @@ defmodule Skate.Detours.Detours do
     |> Repo.all()
   end
 
-  @doc """
-  Returns the list of detours by route id with author, sorted by updated_at
-
-  ## Examples
-
-      iex> active_detours_by_route()
-      [%Detour{}, ...]
-  """
-  # TODO remove and replace with detours_for_route
-  def active_detours_by_route(route_id) do
-    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
-    |> where([detour: d], d.status == :active)
-    |> Repo.all()
-    |> dbg()
-    |> Enum.filter(fn detour ->
-      detour.route_id == route_id
-    end)
-    |> Enum.map(&db_detour_to_detour/1)
-  end
-
   def detours_for_route("all", status) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
