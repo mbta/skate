@@ -1,15 +1,14 @@
 import React, { PropsWithChildren } from "react"
 import { DetourShape } from "../../../models/detour"
 import { Button, ListGroup } from "react-bootstrap"
-import * as BsIcons from "../../../helpers/bsIcons"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
-import { ArrowLeft, CardChecklist } from "../../../helpers/bsIcons"
+import { ArrowLeft, CardChecklist, Edit, Trash } from "../../../helpers/bsIcons"
 import {
   AffectedRoute,
   ConnectionPoints,
-  MissedStops,
   IssueButton,
+  MissedStops,
 } from "../detourPanelComponents"
 
 export interface DrawDetourPanelProps extends PropsWithChildren {
@@ -25,6 +24,7 @@ export interface DrawDetourPanelProps extends PropsWithChildren {
   onDeleteDetour?: () => void
   onChangeRoute?: () => void
   onCancelEdit?: () => void
+  onCantDraw?: () => void
   isActiveDetour: boolean
 }
 
@@ -41,6 +41,7 @@ export const DrawDetourPanel = ({
   onDeleteDetour,
   onChangeRoute,
   onCancelEdit,
+  onCantDraw,
   isActiveDetour,
   children,
 }: DrawDetourPanelProps) => (
@@ -110,7 +111,8 @@ export const DrawDetourPanel = ({
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex flex-column">
-        <IssueButton />
+        {/* Remove when removing the TextOnlyDetours test group */}
+        {!onCantDraw && <IssueButton />}
         {onDeleteDetour && (
           <Button
             className="m-3 mb-0 flex-grow-1 icon-link c-diversion-panel__deletion-button"
@@ -119,8 +121,19 @@ export const DrawDetourPanel = ({
             data-fs-element="Delete Detour Draft"
             title="Delete Draft"
           >
-            <BsIcons.Trash />
+            <Trash />
             Delete draft
+          </Button>
+        )}
+        {onCantDraw && (
+          <Button
+            className="m-3 mb-0 flex-grow-1 icon-link"
+            data-fs-element="Cant Draw Detour"
+            variant="outline-primary"
+            onClick={onCantDraw}
+          >
+            <Edit />
+            Can't draw detour
           </Button>
         )}
         <Button
