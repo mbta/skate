@@ -99,7 +99,7 @@ export const DrawDetourPanel = ({
               ))}
             </ListGroup>
           ) : (
-            <DirectionsHelpText />
+            <DirectionsHelpText hasCantDraw={!!onCantDraw} />
           )}
         </section>
 
@@ -151,12 +151,22 @@ export const DrawDetourPanel = ({
   </Panel>
 )
 
-const DirectionsHelpText = () => (
-  <p className="c-diversion-panel__help-text">
-    <i>
-      Click a point on the regular route to start drawing your detour. As you
-      continue to select points on the map, turn-by-turn directions will appear
-      in this panel.
-    </i>
-  </p>
+const DirectionsHelpText = ({ hasCantDraw }: { hasCantDraw: boolean }) => (
+  <>
+    <p className="c-diversion-panel__help-text">
+      <i>
+        Click a point on the regular route to start drawing your detour. As you
+        continue to select points on the map, turn-by-turn directions will
+        appear in this panel.
+      </i>
+    </p>
+    {hasCantDraw && (
+      <p className="c-diversion-panel__help-text">
+        <i>
+          Click the “Can't draw detour” button if Skate doesn't allow you to
+          draw this detour.
+        </i>
+      </p>
+    )}
+  </>
 )

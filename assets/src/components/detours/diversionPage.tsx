@@ -246,7 +246,7 @@ export const DiversionPage = ({
       : undefined
 
     const onCantDraw = inTestGroup(TestGroups.TextOnlyDetours)
-      ? () => send({ type: "detour.edit.done" })
+      ? () => send({ type: "detour.edit.cant-draw" })
       : undefined
 
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
