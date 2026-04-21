@@ -280,11 +280,11 @@ defmodule Skate.Detours.Db.Detour do
        {:ok,
         %{
           "context" => %{
-            "route" => %{"directionNames" => directionNames},
-            "routePattern" => %{"directionId" => directionId}
+            "route" => %{"directionNames" => direction_names},
+            "routePattern" => %{"directionId" => direction_id}
           }
         }}} ->
-        put_change(changeset, :direction, directionNames["#{directionId}"])
+        put_change(changeset, :direction, direction_names["#{direction_id}"])
 
       _ ->
         changeset
