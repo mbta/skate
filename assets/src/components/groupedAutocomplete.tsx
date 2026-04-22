@@ -553,7 +553,7 @@ export const GroupedAutocomplete = ({
                     aria-selected={selected}
                     onFocus={(e) => {
                       // Set cursor to this location if focused.
-                      !selected &&
+                      if (!selected)
                         setCursorLocation({
                           group: groupIndex,
                           option: optionIndex,

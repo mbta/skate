@@ -7,7 +7,7 @@ import {
   pageOrTabName,
 } from "../../../src/components/nav/topNavMobile"
 import userEvent from "@testing-library/user-event"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../../testHelpers/wrappers"
 import "@testing-library/jest-dom/jest-globals"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 
@@ -23,14 +23,14 @@ describe("TopNavMobile", () => {
 
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <TopNavMobile
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
           mobileMenuIsOpen={false}
         />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(result.getByTitle("Menu"))
@@ -44,14 +44,14 @@ describe("TopNavMobile", () => {
 
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <TopNavMobile
           toggleMobileMenu={toggleMobileMenu}
           openNotificationDrawer={openNotificationDrawer}
           routeTabs={[]}
           mobileMenuIsOpen={false}
         />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(

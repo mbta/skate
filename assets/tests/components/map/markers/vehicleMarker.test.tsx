@@ -89,7 +89,7 @@ describe("VehicleMarker", () => {
         ).toBeInTheDocument()
       })
 
-      assertSpecialClass !== null &&
+      if (assertSpecialClass !== null)
         test(`should render with class \`${assertSpecialClass}\``, () => {
           const { container } = render(
             <VehicleMarker

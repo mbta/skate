@@ -1,7 +1,7 @@
 import React from "react"
 import { DiversionPage, DiversionPageStateProps } from "./diversionPage"
 import { Modal } from "@restart/ui"
-import { ModalTransitionProps } from "@restart/ui/esm/Modal"
+import { ModalTransitionProps } from "@restart/ui/Modal"
 import { CSSTransition } from "react-transition-group"
 import { Spinner } from "react-bootstrap"
 

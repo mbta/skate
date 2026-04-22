@@ -48,7 +48,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
         return
       }
 
-      actorRef.getSnapshot().can({ type: "detour.save.begin-save" }) &&
+      if (actorRef.getSnapshot().can({ type: "detour.save.begin-save" }))
         actorRef.send({ type: "detour.save.begin-save" })
 
       putDetourUpdate(persistedSnapshot).then((uuid) => {

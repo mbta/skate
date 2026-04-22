@@ -234,7 +234,7 @@ export const ShuttleMap = ({
         <InterruptibleFollower
           {...state}
           setShouldFollow={(shouldFollow) => {
-            shouldFollow === false && setShouldFollow(false)
+            if (shouldFollow === false) setShouldFollow(false)
           }}
           positions={followPositions}
           onUpdate={followerFn}

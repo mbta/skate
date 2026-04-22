@@ -3,7 +3,7 @@ import "@testing-library/jest-dom/jest-globals"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import React from "react"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../../testHelpers/wrappers"
 import LeftNav from "../../../src/components/nav/leftNav"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
@@ -47,9 +47,9 @@ beforeEach(() => {
 describe("LeftNav", () => {
   test("renders non-collapsed state", () => {
     const result = render(
-      <BrowserRouter>
+      <Router>
         <LeftNav deviceType="desktop" />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(result.queryByText("Route Ladders")).not.toBeNull()
@@ -63,9 +63,9 @@ describe("LeftNav", () => {
 
   test("text still appears in collapsed state", () => {
     const result = render(
-      <BrowserRouter>
+      <Router>
         <LeftNav deviceType="tablet" />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(result.queryByText("Route Ladders")).not.toBeNull()
@@ -87,9 +87,9 @@ describe("LeftNav", () => {
 
   test("puts the --collapsed CSS class on a collapsed menu", () => {
     const { container } = render(
-      <BrowserRouter>
+      <Router>
         <LeftNav deviceType="tablet" />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(container.querySelector(".c-left-nav")).toHaveClass(
@@ -101,9 +101,9 @@ describe("LeftNav", () => {
     const mockedFSEvent = jest.mocked(fullStoryEvent)
 
     render(
-      <BrowserRouter>
+      <Router>
         <LeftNav deviceType="tablet" />
-      </BrowserRouter>
+      </Router>
     )
 
     await userEvent.click(screen.getByRole("link", { name: "Search Map" }))
@@ -118,9 +118,9 @@ describe("LeftNav", () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
     render(
-      <BrowserRouter>
+      <Router>
         <LeftNav deviceType="tablet" />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(screen.queryByTitle("Detours")).toBeInTheDocument()
@@ -130,9 +130,9 @@ describe("LeftNav", () => {
     jest.mocked(getTestGroups).mockReturnValue([])
 
     render(
-      <BrowserRouter>
+      <Router>
         <LeftNav deviceType="tablet" />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(screen.queryByTitle("Detours")).toBeNull()
@@ -141,9 +141,9 @@ describe("LeftNav", () => {
   test("can toggle collapsed", async () => {
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <LeftNav deviceType="desktop" />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(result.getByTitle("Collapse"))
@@ -163,9 +163,9 @@ describe("LeftNav", () => {
     jest.mocked(getTestGroups).mockReturnValue([])
 
     const result = render(
-      <BrowserRouter>
+      <Router>
         <LeftNav deviceType="desktop" />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(result.queryByText("Late View")).toBeNull()
@@ -177,9 +177,9 @@ describe("LeftNav", () => {
     const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="desktop" />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -198,9 +198,9 @@ describe("LeftNav", () => {
         state={{ ...initialState, pickerContainerIsVisible: true }}
         dispatch={dispatch}
       >
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="tablet" closePickerOnViewOpen={true} />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -215,9 +215,9 @@ describe("LeftNav", () => {
     const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="desktop" />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -236,9 +236,9 @@ describe("LeftNav", () => {
         state={{ ...initialState, pickerContainerIsVisible: true }}
         dispatch={dispatch}
       >
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="tablet" closePickerOnViewOpen={true} />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -255,9 +255,9 @@ describe("LeftNav", () => {
     })
     const result = render(
       <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="desktop" />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -271,9 +271,9 @@ describe("LeftNav", () => {
     const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="desktop" />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -291,9 +291,9 @@ describe("LeftNav", () => {
         state={{ ...initialState, pickerContainerIsVisible: true }}
         dispatch={dispatch}
       >
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="tablet" closePickerOnViewOpen={true} />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -313,9 +313,9 @@ describe("LeftNav", () => {
         state={stateFactory.build({})}
         dispatch={jest.fn()}
       >
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="desktop" />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -335,9 +335,9 @@ describe("LeftNav", () => {
         state={stateFactory.build({})}
         dispatch={jest.fn()}
       >
-        <BrowserRouter>
+        <Router>
           <LeftNav deviceType="desktop" />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 

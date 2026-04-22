@@ -114,9 +114,7 @@ describe("Card", () => {
         title="My Card"
         icon={<>Bar</>}
         style="white"
-        openCallback={() => {
-          null
-        }}
+        openCallback={() => {}}
       >
         Foo
       </Card>

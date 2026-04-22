@@ -16,7 +16,7 @@ import {
   within,
 } from "@testing-library/react"
 import React from "react"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../testHelpers/wrappers"
 import MapPage from "../../src/components/mapPage"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { useLocationSearchResults } from "../../src/hooks/useLocationSearchResults"
@@ -223,9 +223,9 @@ describe("<MapPage />", () => {
           state={stateFactory.build()}
           dispatch={jest.fn()}
         >
-          <BrowserRouter>
+          <Router>
             <MapPage />
-          </BrowserRouter>
+          </Router>
         </StateDispatchProvider>
       )
 
@@ -239,9 +239,9 @@ describe("<MapPage />", () => {
           state={stateFactory.build()}
           dispatch={jest.fn()}
         >
-          <BrowserRouter>
+          <Router>
             <MapPage />
-          </BrowserRouter>
+          </Router>
         </StateDispatchProvider>
       )
       expect(layersControlButton.get()).toBeInTheDocument()
@@ -254,9 +254,9 @@ describe("<MapPage />", () => {
           state={stateFactory.build()}
           dispatch={jest.fn()}
         >
-          <BrowserRouter>
+          <Router>
             <MapPage />
-          </BrowserRouter>
+          </Router>
         </StateDispatchProvider>
       )
 
@@ -416,9 +416,9 @@ describe("<MapPage />", () => {
 
     const { container } = render(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <MapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -479,9 +479,9 @@ describe("<MapPage />", () => {
         state={stateFactory.build({ searchPageState: activeSearch })}
         dispatch={mockDispatch}
       >
-        <BrowserRouter>
+        <Router>
           <MapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -507,9 +507,9 @@ describe("<MapPage />", () => {
         })}
         dispatch={mockDispatch}
       >
-        <BrowserRouter>
+        <Router>
           <MapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -944,9 +944,9 @@ describe("<MapPage />", () => {
 
     render(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <MapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -992,9 +992,9 @@ describe("<MapPage />", () => {
 
     render(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <MapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -1049,9 +1049,9 @@ describe("<MapPage />", () => {
     render(
       <StateDispatchProvider state={state} dispatch={mockDispatch}>
         <RoutesProvider routes={[route]}>
-          <BrowserRouter>
+          <Router>
             <MapPage />
-          </BrowserRouter>
+          </Router>
         </RoutesProvider>
       </StateDispatchProvider>
     )
@@ -1152,9 +1152,9 @@ describe("<MapPage />", () => {
             })}
             dispatch={jest.fn()}
           >
-            <BrowserRouter>
+            <Router>
               <MapPage />
-            </BrowserRouter>
+            </Router>
           </StateDispatchProvider>
         )
 

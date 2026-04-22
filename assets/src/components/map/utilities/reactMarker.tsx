@@ -33,6 +33,7 @@ export interface ReactMarkerProps extends Omit<MarkerProps, "icon"> {
  * @param {ReactMarkerProps} props Component Props with {@link DivIconOptions `divIconSettings`}
  */
 export const ReactMarker = forwardRef<LeafletMarker<any>, ReactMarkerProps>(
+  // eslint-disable-next-line react/prop-types
   ({ icon, divIconSettings, children, ...markerProps }, ref) => {
     const { divIcon, iconContainer } = useReactDivIcon(divIconSettings)
 

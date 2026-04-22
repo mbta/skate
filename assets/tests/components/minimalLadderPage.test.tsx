@@ -7,7 +7,7 @@ import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { MinimalLadderPage } from "../../src/components/minimalLadderPage"
 import routeTabFactory from "../factories/routeTab"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../testHelpers/wrappers"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import stateFactory from "../factories/applicationState"
 
@@ -65,11 +65,11 @@ describe("MinimalLadderPage", () => {
     })
     const { asFragment } = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <MinimalLadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 

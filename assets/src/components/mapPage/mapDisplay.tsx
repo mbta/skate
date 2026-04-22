@@ -318,7 +318,7 @@ const SelectedVehicleDataLayers = ({
                     zoom={map.getZoom()}
                     onClick={(detourInfo) => {
                       setShouldShowPopup(false)
-                      onStartDetour && onStartDetour(detourInfo)
+                      if (onStartDetour) onStartDetour(detourInfo)
                     }}
                   />
                 )}

@@ -81,7 +81,7 @@ export const SurroundingModal = ({
   </Modal>
 )
 
-interface StepSubtitleProps extends PropsWithChildren {}
+type StepSubtitleProps = PropsWithChildren
 const StepSubtitle = ({ children }: StepSubtitleProps) => (
   <h5 className="fs-5 fw-semibold mb-3 mt-1">{children}</h5>
 )

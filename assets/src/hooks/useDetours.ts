@@ -31,22 +31,22 @@ const subscribe = (
 ): Channel => {
   const channel = socket.channel(topic)
 
-  handleDrafted &&
+  if (handleDrafted)
     channel.on("drafted", ({ data: unknownData }: { data: unknown }) => {
       const data = create(unknownData, SimpleDetourData)
       handleDrafted(simpleDetourFromData(data))
     })
-  handleActivated &&
+  if (handleActivated)
     channel.on("activated", ({ data: unknownData }: { data: unknown }) => {
       const data = create(unknownData, SimpleActiveDetourData)
       handleActivated(simpleDetourFromActiveData(data))
     })
-  handleDeactivated &&
+  if (handleDeactivated)
     channel.on("deactivated", ({ data: unknownData }: { data: unknown }) => {
       const data = create(unknownData, SimpleDetourData)
       handleDeactivated(simpleDetourFromData(data))
     })
-  handleDeleted &&
+  if (handleDeleted)
     channel.on("deleted", ({ data: detourId }: { data: unknown }) => {
       if (typeof detourId === "number") {
         handleDeleted(detourId)
