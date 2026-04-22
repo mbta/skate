@@ -1,3 +1,5 @@
+import flatpickr from "flatpickr"
+
 export const now = (): Date => new Date()
 
 export const tomorrow = (): Date => {
@@ -171,5 +173,5 @@ export const isUpdatedAfterActivated = ({
 }
 
 export const toIsoDateString = (date: Date) => {
-  return date.toISOString().split("T")[0]
+  return flatpickr.formatDate(date, "Y-m-d")
 }
