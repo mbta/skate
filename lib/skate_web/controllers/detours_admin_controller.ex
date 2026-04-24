@@ -86,32 +86,27 @@ defmodule SkateWeb.DetoursAdminController do
     )
   end
 
+  @spec get_detours() :: [map()]
   defp get_detours() do
-    Detours.list_detours([
-      :id,
+    import Ecto.Query
 
-      # Route column
-      :route_name,
-      :direction,
-      :headsign,
-
-      # Intersection column
-      :nearest_intersection,
-
-      # Updated At column
-      :updated_at,
-
-      # Detour Status Column
-      :status,
-      :estimated_duration,
-      :reason,
-      # For some reason, without the primary keys explicitly present in the
-      # query, we're not able to preload the association. So we need the
-      # `User.id` and `Detour.id` explicitly in the query.
-      author: [
-        :email,
-        :id
-      ]
-    ])
+    Skate.Detours.Db.Detour
+    |> join(:inner, [d], a in assoc(d, :author), as: :author)
+    |> select([d, author: a], %{
+      id: d.id,
+      route_name: d.route_name,
+      direction: d.direction,
+      headsign: d.headsign,
+      nearest_intersection: d.nearest_intersection,
+      updated_at: d.updated_at,
+      status: d.status,
+      estimated_duration: d.estimated_duration,
+      reason: d.reason,
+      author: %{
+        email: a.email,
+        id: a.id
+      }
+    })
+    |> Skate.Repo.all()
   end
 end

@@ -22,6 +22,7 @@ defmodule Skate.Detours.Detours do
       iex> list_detours()
       [%Detour{}, ...]
   """
+
   def list_detours do
     Repo.all(Skate.Detours.Db.Detour.Queries.select_detour_list_info())
   end
@@ -54,11 +55,7 @@ defmodule Skate.Detours.Detours do
   end
 
   defp apply_route_id_filter(query, route_id) do
-    where(
-      query,
-      [detour: d],
-      fragment("? -> ? -> ? ->> ? = ?", d.state, "context", "route", "id", ^route_id)
-    )
+    where(query, [detour: d], d.route_id == ^route_id)
   end
 
   def detours_for_user(user_id, status) do
@@ -77,14 +74,9 @@ defmodule Skate.Detours.Detours do
     where(query, [detour: d], d.status == ^status)
   end
 
-  @spec db_detour_to_detour(Detour.t()) :: SimpleDetour.t() | nil
   def db_detour_to_detour(%{status: status} = db_detour) do
     SimpleDetour.from(status, db_detour)
   end
-
-  @spec get_detour_route_id(detour :: map()) :: String.t()
-  defp get_detour_route_id(%{state: %{"context" => %{"route" => %{"id" => route_id}}}}),
-    do: route_id
 
   @doc """
   Gets a single detour.
@@ -297,13 +289,11 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp broadcast_detour(%Detour{status: :active} = detour, author_id) do
+  defp broadcast_detour(%Detour{status: :active, route_id: route_id} = detour, author_id) do
     author_uuid =
       author_id
       |> User.get_by_id!()
       |> Map.get(:uuid)
-
-    route_id = get_detour_route_id(detour)
 
     Phoenix.PubSub.broadcast(
       Skate.PubSub,
@@ -324,9 +314,7 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  defp broadcast_detour(%Detour{status: :past} = detour, _author_id) do
-    route_id = get_detour_route_id(detour)
-
+  defp broadcast_detour(%Detour{status: :past, route_id: route_id} = detour, _author_id) do
     Phoenix.PubSub.broadcast(
       Skate.PubSub,
       "detours:active:" <> route_id,

@@ -213,7 +213,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  def add_route_id(changeset) do
+  defp add_route_id(changeset) do
     case {fetch_field(changeset, :route_id), fetch_change(changeset, :state)} do
       {{:data, _}, {:ok, %{"context" => %{"route" => %{"id" => route_id}}}}} ->
         put_change(changeset, :route_id, route_id)
@@ -223,7 +223,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  def add_route_name(changeset) do
+  defp add_route_name(changeset) do
     case {fetch_field(changeset, :route_name), fetch_change(changeset, :state)} do
       {{:data, _}, {:ok, %{"context" => %{"route" => %{"name" => route_name}}}}} ->
         put_change(changeset, :route_name, route_name)
@@ -233,7 +233,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  def add_route_pattern_id(changeset) do
+  defp add_route_pattern_id(changeset) do
     case {fetch_field(changeset, :route_pattern_id), fetch_change(changeset, :state)} do
       {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"id" => route_pattern_id}}}}} ->
         put_change(changeset, :route_pattern_id, route_pattern_id)
@@ -243,7 +243,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  def add_route_pattern_name(changeset) do
+  defp add_route_pattern_name(changeset) do
     case {fetch_field(changeset, :route_pattern_name), fetch_change(changeset, :state)} do
       {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"name" => route_pattern_name}}}}} ->
         put_change(changeset, :route_pattern_name, route_pattern_name)
@@ -253,7 +253,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  def add_headsign(changeset) do
+  defp add_headsign(changeset) do
     case {fetch_field(changeset, :headsign), fetch_change(changeset, :state)} do
       {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"headsign" => headsign}}}}} ->
         put_change(changeset, :headsign, headsign)
@@ -263,7 +263,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  def add_coordinates(changeset) do
+  defp add_coordinates(changeset) do
     case {fetch_field(changeset, :coordinates), fetch_change(changeset, :state)} do
       {{:data, _},
        {:ok, %{"context" => %{"detourShape" => %{"ok" => %{"coordinates" => coordinates}}}}}} ->
@@ -274,7 +274,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  def add_direction(changeset) do
+  defp add_direction(changeset) do
     case {fetch_field(changeset, :direction), fetch_change(changeset, :state)} do
       {{:data, _},
        {:ok,
@@ -348,34 +348,35 @@ defmodule Skate.Detours.Db.Detour do
     """
     def with_author(query \\ base()) do
       from([detour: d] in query,
-        join: a in assoc(d, :author),
-        preload: [author: a]
+        join: a in assoc(d, :author)
       )
     end
 
-    def select_detour_list_info(query \\ base()) do
+    def select_detour_list_info(query \\ from(Skate.Detours.Db.Detour, as: :detour)) do
       query
-      |> select_fields([
-        # Table Columns
-        :id,
-        :author_id,
-        :activated_at,
-        :updated_at,
-        :status,
-        :estimated_duration,
-        :reason,
-        :nearest_intersection,
-        :route_id,
-        :route_name,
-        :route_pattern_id,
-        :route_pattern_name,
-        :headsign,
-        :direction,
-        :coordinates,
-
-        # Nested Fields
-        author: [:email, :id]
-      ])
+      |> with_author()
+      |> select([d, a], %{
+        id: d.id,
+        author_id: d.author_id,
+        activated_at: d.activated_at,
+        updated_at: d.updated_at,
+        status: d.status,
+        state: d.state,
+        estimated_duration: d.estimated_duration,
+        reason: d.reason,
+        nearest_intersection: d.nearest_intersection,
+        route_id: d.route_id,
+        route_name: d.route_name,
+        route_pattern_id: d.route_pattern_id,
+        route_pattern_name: d.route_pattern_name,
+        headsign: d.headsign,
+        direction: d.direction,
+        coordinates: d.coordinates,
+        author: %{
+          email: a.email,
+          id: a.id
+        }
+      })
       |> sorted_by_last_updated()
     end
   end
