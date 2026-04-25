@@ -148,6 +148,7 @@ defmodule Skate.Detours.Db.Detour do
           nil -> changeset
           value -> put_change(changeset, field, value)
         end
+
       _ ->
         changeset
     end
