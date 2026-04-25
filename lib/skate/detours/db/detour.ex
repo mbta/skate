@@ -57,19 +57,7 @@ defmodule Skate.Detours.Db.Detour do
     |> cast(attrs, [:state, :activated_at])
     |> validate_activated_at()
     |> add_status()
-    |> add_estimated_duration()
-    |> add_reason()
-    |> add_nearest_intersection()
-    |> add_start_point()
-    |> add_end_point()
-    |> add_waypoints()
-    |> add_coordinates()
-    |> add_route_id()
-    |> add_route_name()
-    |> add_route_pattern_id()
-    |> add_route_pattern_name()
-    |> add_direction()
-    |> add_headsign()
+    |> prepare_changes(&populate_fields_from_state/1)
     |> add_updated_at()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
@@ -153,117 +141,36 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  defp add_estimated_duration(changeset) do
-    case {fetch_field(changeset, :estimated_duration), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"selectedDuration" => estimated_duration}}}} ->
-        put_change(changeset, :estimated_duration, estimated_duration)
-
+  defp put_change_from_state(changeset, field, path) do
+    case {fetch_field(changeset, field), fetch_change(changeset, :state)} do
+      {{:data, _}, {:ok, state}} ->
+        case get_in(state, path) do
+          nil -> changeset
+          value -> put_change(changeset, field, value)
+        end
       _ ->
         changeset
     end
   end
 
-  defp add_reason(changeset) do
-    case {fetch_field(changeset, :reason), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"selectedReason" => reason}}}} ->
-        put_change(changeset, :reason, reason)
-
-      _ ->
-        changeset
-    end
+  defp populate_fields_from_state(changeset) do
+    changeset
+    |> put_change_from_state(:estimated_duration, ["context", "selectedDuration"])
+    |> put_change_from_state(:reason, ["context", "selectedReason"])
+    |> put_change_from_state(:nearest_intersection, ["context", "nearestIntersection"])
+    |> put_change_from_state(:start_point, ["context", "startPoint"])
+    |> put_change_from_state(:end_point, ["context", "endPoint"])
+    |> put_change_from_state(:waypoints, ["context", "waypoints"])
+    |> put_change_from_state(:route_id, ["context", "route", "id"])
+    |> put_change_from_state(:route_name, ["context", "route", "name"])
+    |> put_change_from_state(:route_pattern_id, ["context", "routePattern", "id"])
+    |> put_change_from_state(:route_pattern_name, ["context", "routePattern", "name"])
+    |> put_change_from_state(:headsign, ["context", "routePattern", "headsign"])
+    |> populate_coordinates_from_state()
+    |> populate_direction_from_state()
   end
 
-  defp add_nearest_intersection(changeset) do
-    case {fetch_field(changeset, :nearest_intersection), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"nearestIntersection" => nearest_intersection}}}} ->
-        put_change(changeset, :nearest_intersection, nearest_intersection)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_start_point(changeset) do
-    case {fetch_field(changeset, :start_point), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"startPoint" => start_point}}}} ->
-        put_change(changeset, :start_point, start_point)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_end_point(changeset) do
-    case {fetch_field(changeset, :end_point), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"endPoint" => end_point}}}} ->
-        put_change(changeset, :end_point, end_point)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_waypoints(changeset) do
-    case {fetch_field(changeset, :waypoints), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"waypoints" => waypoints}}}} ->
-        put_change(changeset, :waypoints, waypoints)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_route_id(changeset) do
-    case {fetch_field(changeset, :route_id), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"route" => %{"id" => route_id}}}}} ->
-        put_change(changeset, :route_id, route_id)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_route_name(changeset) do
-    case {fetch_field(changeset, :route_name), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"route" => %{"name" => route_name}}}}} ->
-        put_change(changeset, :route_name, route_name)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_route_pattern_id(changeset) do
-    case {fetch_field(changeset, :route_pattern_id), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"id" => route_pattern_id}}}}} ->
-        put_change(changeset, :route_pattern_id, route_pattern_id)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_route_pattern_name(changeset) do
-    case {fetch_field(changeset, :route_pattern_name), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"name" => route_pattern_name}}}}} ->
-        put_change(changeset, :route_pattern_name, route_pattern_name)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_headsign(changeset) do
-    case {fetch_field(changeset, :headsign), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, %{"context" => %{"routePattern" => %{"headsign" => headsign}}}}} ->
-        put_change(changeset, :headsign, headsign)
-
-      _ ->
-        changeset
-    end
-  end
-
-  defp add_coordinates(changeset) do
+  defp populate_coordinates_from_state(changeset) do
     case {fetch_field(changeset, :coordinates), fetch_change(changeset, :state)} do
       {{:data, _},
        {:ok, %{"context" => %{"detourShape" => %{"ok" => %{"coordinates" => coordinates}}}}}} ->
@@ -274,7 +181,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  defp add_direction(changeset) do
+  defp populate_direction_from_state(changeset) do
     case {fetch_field(changeset, :direction), fetch_change(changeset, :state)} do
       {{:data, _},
        {:ok,
