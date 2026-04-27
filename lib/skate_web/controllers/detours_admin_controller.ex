@@ -3,6 +3,7 @@ defmodule SkateWeb.DetoursAdminController do
   Provides a list of detours in Skate's system and a button to clear them all
   """
 
+  import Ecto.Query
   alias Skate.Detours.Detours
   alias Skate.Settings.User
   use SkateWeb, :controller
@@ -86,10 +87,7 @@ defmodule SkateWeb.DetoursAdminController do
     )
   end
 
-  @spec get_detours() :: [map()]
   defp get_detours() do
-    import Ecto.Query
-
     Skate.Detours.Db.Detour
     |> join(:inner, [d], a in assoc(d, :author), as: :author)
     |> select([d, author: a], %{
