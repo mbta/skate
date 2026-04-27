@@ -2,6 +2,7 @@
 // @ts-nocheck
 import failOnConsole from "jest-fail-on-console"
 import React from "react"
+import { randomUUID } from "node:crypto"
 
 const ignoreList = [/.*components\/app\.test\.tsx/]
 const ignoreNameList = []
@@ -56,6 +57,14 @@ document.createElementNS = function (namespaceURI, qualifiedName) {
   }
   return element
 }
+
+Object.defineProperty(global, "crypto", {
+  value: {
+    randomUUID: randomUUID,
+  },
+  writable: true,
+  configurable: true,
+})
 
 beforeEach(() => {
   // eslint-disable-next-line jest/no-standalone-expect
