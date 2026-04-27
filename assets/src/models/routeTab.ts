@@ -8,7 +8,6 @@ import {
   LadderCrowdingToggles,
   emptyLadderCrowdingTogglesByRouteId,
 } from "./ladderCrowdingToggle"
-import { v4 as uuidv4 } from "uuid"
 import { uniq, flatten } from "../helpers/array"
 import {
   array,
@@ -45,7 +44,7 @@ export const RouteTabData = type({
 export type RouteTabData = Infer<typeof RouteTabData>
 
 export const newRouteTab = (ordering: number): RouteTab => ({
-  uuid: uuidv4(),
+  uuid: crypto.randomUUID(),
   isCurrentTab: true,
   selectedRouteIds: [],
   ladderDirections: emptyLadderDirectionsByRouteId,
@@ -239,7 +238,7 @@ export const applyRouteTabEdit = (
   } else {
     const editedRouteTab = {
       ...updateFn(tabToEdit),
-      uuid: uuidv4(),
+      uuid: crypto.randomUUID(),
       saveChangesToTabUuid: tabToEdit.uuid,
     }
 
