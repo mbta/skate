@@ -1,4 +1,5 @@
 import { describe, test, expect } from "@jest/globals"
+import { randomUUID } from "crypto"
 import {
   currentRouteTab,
   instantiatePresetByUUID,
@@ -75,7 +76,7 @@ describe("isPreset", () => {
     const routeTab = routeTabFactory.build({
       presetName: "My Preset",
       ordering: undefined,
-      saveChangesToTabUuid: crypto.randomUUID(),
+      saveChangesToTabUuid: randomUUID(),
     })
 
     expect(isPreset(routeTab)).toBeFalsy()
@@ -87,7 +88,7 @@ describe("isEditedPreset", () => {
     const routeTab = routeTabFactory.build({
       presetName: "My Preset",
       ordering: 0,
-      saveChangesToTabUuid: crypto.randomUUID(),
+      saveChangesToTabUuid: randomUUID(),
     })
 
     expect(isEditedPreset(routeTab)).toBeTruthy()
