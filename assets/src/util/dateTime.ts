@@ -1,4 +1,12 @@
+import flatpickr from "flatpickr"
+
 export const now = (): Date => new Date()
+
+export const tomorrow = (): Date => {
+  const d = new Date()
+  d.setDate(d.getDate() + 1)
+  return d
+}
 
 export const serviceDaySeconds = (currentTime: Date): number => {
   const serviceDateStart = new Date(currentTime.getTime())
@@ -39,6 +47,23 @@ export const formattedDuration = (duration: number): string => {
   const diffMinutesStr = `${diffMinutes} min`
 
   return diffHours >= 1 ? `${diffHours} hr ${diffMinutesStr}` : diffMinutesStr
+}
+export const fromIsoDateString = (date: string): Date => {
+  const [year, month, day] = date.split("-").map((x) => parseInt(x))
+  return new Date(year, month - 1, day)
+}
+
+export const formatIfDate = (duration?: string): string => {
+  if (!duration) return ""
+
+  if (/\d{4}-\d{2}-\d{2}/.test(duration)) {
+    return fromIsoDateString(duration).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
+  return duration
 }
 
 export const formattedTimeDiff = (a: Date, b: Date): string =>
@@ -145,4 +170,8 @@ export const isUpdatedAfterActivated = ({
   return (
     dateFromEpochSeconds(updatedAt).valueOf() > activatedAt.valueOf() + bufferMs
   )
+}
+
+export const toIsoDateString = (date: Date) => {
+  return flatpickr.formatDate(date, "Y-m-d")
 }

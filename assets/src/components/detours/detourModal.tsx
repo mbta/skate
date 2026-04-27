@@ -34,7 +34,12 @@ export const DetourModal = ({
   isLoadingDetour?: boolean
 } & DiversionPageStateProps) => {
   return (
-    <Modal className="c-detour-modal" show={show} transition={Fade}>
+    <Modal
+      className="c-detour-modal"
+      show={show}
+      transition={Fade}
+      enforceFocus={false}
+    >
       {isLoadingDetour ? (
         <div className="text-bg-light position-absolute inset-0 opacity-75 d-flex justify-content-center align-items-center">
           <Spinner />

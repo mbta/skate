@@ -160,4 +160,53 @@ defmodule Skate.Detours.DetoursTest do
       assert draft_detour.reason == nil
     end
   end
+
+  describe "calculate_expiration_timestamp" do
+    @activated_at ~U[2026-01-05 15:00:00.000000Z]
+
+    test "calculates expiration from hour duration" do
+      detour =
+        :detour
+        |> build()
+        |> activated(@activated_at, "2 hours")
+
+      assert DateTime.compare(
+               Detours.calculate_expiration_timestamp(detour, "2 hours"),
+               DateTime.add(@activated_at, 2, :hour)
+             ) == :eq
+    end
+
+    test "calculates expiration from date" do
+      detour =
+        :detour
+        |> build()
+        |> activated(@activated_at, "2026-01-10")
+
+      assert DateTime.compare(
+               Detours.calculate_expiration_timestamp(detour, "2026-01-10"),
+               DateTime.new!(~D[2026-01-11], ~T[03:00:00], "America/New_York")
+             ) == :eq
+    end
+
+    test "calculates expiration from end of service" do
+      detour =
+        :detour
+        |> build()
+        |> activated(@activated_at, "Until end of service")
+
+      assert DateTime.compare(
+               Detours.calculate_expiration_timestamp(detour, "Until end of service"),
+               DateTime.new!(~D[2026-01-06], ~T[03:00:00], "America/New_York")
+             ) == :eq
+    end
+
+    test "does not return expiration when unknown" do
+      detour =
+        :detour
+        |> build()
+        |> activated(@activated_at, "Until further notice")
+
+      assert Detours.calculate_expiration_timestamp(detour, "Until further notice") == nil
+    end
+  end
 end

@@ -35,7 +35,7 @@
     }
 
     &:hover,
-    &.today:hover {
+    &:not(.flatpickr-disabled).today:hover {
       color: tokens.$black;
       background-color: tokens.$gray-300;
       border-color: tokens.$gray-300;
