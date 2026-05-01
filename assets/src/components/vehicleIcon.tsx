@@ -676,7 +676,6 @@ const BatteryStatusIcon = ({
 }: {
   vehicle: VehicleInScheduledService
 }) => {
-  console.log(vehicle)
   return <IconBatteryStatus stateOfChargeValue={vehicle.stateOfCharge?.value} />
 }
 
