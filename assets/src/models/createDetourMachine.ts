@@ -49,6 +49,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.reenter" }
       | { type: "detour.edit.clear-detour" }
       | { type: "detour.edit.cancel" }
+      | { type: "detour.edit.cant-draw" }
       | { type: "detour.edit.close"; closeFunc?: () => void }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
@@ -506,6 +507,10 @@ export const createDetourMachine = setup({
                 closeFunc: ({ event }) => event.closeFunc,
               }),
             },
+            "detour.edit.cant-draw": {
+              target: ".Type Detour",
+              actions: "detour.clear",
+            },
           },
           states: {
             "Pick Start Point": {
@@ -802,6 +807,9 @@ export const createDetourMachine = setup({
                   target: "Deleting",
                 },
               },
+            },
+            "Type Detour": {
+              // state for typing directions
             },
             Deleting: {
               on: {

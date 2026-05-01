@@ -20,7 +20,6 @@ import { Snapshot } from "xstate"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { ActiveDetourPanel } from "./detourPanels/activeDetourPanel"
 import { PastDetourPanel } from "./detourPanels/pastDetourPanel"
-import userInTestGroup from "../../userInTestGroup"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { timeAgoLabel } from "../../util/dateTime"
 import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
@@ -246,6 +245,10 @@ export const DiversionPage = ({
       ? () => send({ type: "detour.share.activate-modal.activate" })
       : undefined
 
+    const onCantDraw = inTestGroup(TestGroups.TextOnlyDetours)
+      ? () => send({ type: "detour.edit.cant-draw" })
+      : undefined
+
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
       return (
         <DetourRouteSelectionPanel
@@ -319,6 +322,7 @@ export const DiversionPage = ({
           onChangeRoute={onChangeRoute}
           onDeleteDetour={onDeleteDetour}
           onCancelEdit={onCancelEdit}
+          onCantDraw={onCantDraw}
           isActiveDetour={detourStatus === DetourStatus.Active}
         >
           {snapshot.matches({
@@ -526,21 +530,19 @@ export const DiversionPage = ({
           routeOrigin={routeOrigin ?? "??"}
           routeDirection={routeDirection ?? "??"}
           onNavigateBack={onClose}
-          showIssueButton={userInTestGroup(TestGroups.DetoursPilot)}
+          showIssueButton={inTestGroup(TestGroups.DetoursPilot)}
           onEditActiveDetour={
-            userInTestGroup(TestGroups.EditActiveDetours)
-              ? editDetour
-              : undefined
+            inTestGroup(TestGroups.EditActiveDetours) ? editDetour : undefined
           }
           onOpenDeactivateModal={
-            userInTestGroup(TestGroups.DetoursPilot)
+            inTestGroup(TestGroups.DetoursPilot)
               ? () => {
                   send({ type: "detour.active.open-deactivate-modal" })
                 }
               : undefined
           }
           onOpenChangeDurationModal={
-            userInTestGroup(TestGroups.DetoursPilot)
+            inTestGroup(TestGroups.DetoursPilot)
               ? () => {
                   send({ type: "detour.active.open-change-duration-modal" })
                 }
@@ -644,7 +646,7 @@ export const DiversionPage = ({
             "l-diversion-page__header",
             "border-bottom",
             detourStatus === DetourStatus.Active &&
-            userInTestGroup(TestGroups.DetoursPilot)
+            inTestGroup(TestGroups.DetoursPilot)
               ? "active-detour"
               : "text-bg-light",
           ])}
@@ -686,7 +688,7 @@ export const DiversionPage = ({
           className={joinClasses([
             "l-diversion-page__panel",
             snapshot.matches({ "Detour Drawing": "Active" }) &&
-            userInTestGroup(TestGroups.DetoursPilot)
+            inTestGroup(TestGroups.DetoursPilot)
               ? "active-detour"
               : "text-bg-light",
           ])}
