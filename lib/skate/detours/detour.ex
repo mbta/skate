@@ -93,7 +93,7 @@ defmodule Skate.Detours.Detour do
         direction: direction,
         name: headsign,
         intersection: nearest_intersection,
-        updated_at: timestamp_to_unix(updated_at),
+        updated_at: Util.Time.timestamp_to_unix(updated_at),
         author_id: author_id,
         estimated_duration: estimated_duration,
         activated_at: activated_at,
@@ -128,7 +128,7 @@ defmodule Skate.Detours.Detour do
         direction: direction,
         name: headsign,
         intersection: nearest_intersection,
-        updated_at: timestamp_to_unix(updated_at),
+        updated_at: Util.Time.timestamp_to_unix(updated_at),
         author_id: db_detour.author_id,
         status: status,
         reason: db_detour.reason
@@ -141,13 +141,6 @@ defmodule Skate.Detours.Detour do
       )
 
       nil
-    end
-
-    # Converts the db timestamp to unix
-    defp timestamp_to_unix(db_date) do
-      db_date
-      |> DateTime.from_naive!("Etc/UTC")
-      |> DateTime.to_unix()
     end
   end
 
@@ -168,5 +161,105 @@ defmodule Skate.Detours.Detour do
       :state,
       :updated_at
     ]
+  end
+
+  defmodule ReportDetour do
+    @moduledoc """
+    Report active detours contain the information required by LAMP and others
+    """
+
+    @type t :: %__MODULE__{
+            id: integer(),
+            route_id: String.t(),
+            reason: String.t(),
+            nearest_intersection: String.t(),
+            estimated_duration: String.t(),
+            activated_at: integer(),
+            updated_at: integer(),
+            direction_id: Integer.t(),
+            missed_stops: [String.t()],
+            connection_points: [String.t()],
+            route_segments: %{
+              before_detour: [Util.Location.From.t()],
+              after_detour: [Util.Location.From.t()],
+              bypassed_segment: [Util.Location.From.t()],
+              after_detour: [Util.Location.From.t()]
+            }
+          }
+    # detour commence stop?
+    # detour end stop?
+
+    @derive Jason.Encoder
+
+    defstruct [
+      :id,
+      :route_id,
+      :reason,
+      :nearest_intersection,
+      :estimated_duration,
+      :activated_at,
+      :updated_at,
+      :direction_id,
+      :missed_stops,
+      :connection_points,
+      :route_segments
+    ]
+
+    def from(%{
+          id: id,
+          route_id: route_id,
+          reason: reason,
+          nearest_intersection: nearest_intersection,
+          estimated_duration: estimated_duration,
+          activated_at: activated_at,
+          updated_at: updated_at,
+          state: %{
+            "context" => %{
+              "routePattern" => %{
+                "directionId" => direction_id
+              },
+              "finishedDetour" => %{
+                "missedStops" => missed_stops,
+                "connectionPoint" => %{
+                  "start" => %{
+                    "id" => connection_start_stop_id
+                  },
+                  "end" => %{
+                    "id" => connection_end_stop_id
+                  }
+                },
+                "routeSegments" => %{
+                  "beforeDetour" => before_detour,
+                  "afterDetour" => after_detour,
+                  "detour" => bypassed_segment
+                },
+                "detourShape" => %{"coordinates" => detour_segment}
+              }
+            }
+          }
+        }) do
+      %__MODULE__{
+        id: id,
+        route_id: route_id,
+        reason: reason,
+        nearest_intersection: nearest_intersection,
+        estimated_duration: estimated_duration,
+        activated_at: DateTime.to_unix(activated_at),
+        updated_at: Util.Time.timestamp_to_unix(updated_at),
+        direction_id: direction_id,
+        missed_stops: Enum.map(missed_stops, & &1["id"]),
+        connection_points: [connection_start_stop_id, connection_end_stop_id],
+        route_segments: %{
+          before_detour: before_detour,
+          detour_segment: detour_segment,
+          bypassed_segment: bypassed_segment,
+          after_detour: after_detour
+        }
+      }
+    end
+
+    def from(_db_detour) do
+      IO.puts("ack")
+    end
   end
 end

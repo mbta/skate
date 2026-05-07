@@ -233,4 +233,12 @@ defmodule Util.Time do
     |> Timex.shift(hours: -12)
     |> Timex.to_unix()
   end
+
+  # Converts the db timestamp to unix
+  @spec timestamp_to_unix(NaiveDateTime.t()) :: timestamp()
+  def timestamp_to_unix(db_date) do
+    db_date
+    |> DateTime.from_naive!("Etc/UTC")
+    |> DateTime.to_unix()
+  end
 end

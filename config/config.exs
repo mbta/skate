@@ -119,7 +119,8 @@ config :skate, Oban,
       Oban.Plugins.Cron,
       crontab: [
         {"*/15 * * * *", Skate.Oban.CleanUpNotifications,
-         args: %{"cutoff_days" => 1, "limit" => 1000}}
+         args: %{"cutoff_days" => 1, "limit" => 1000}},
+        {"* * * * *", Skate.Oban.ReportActiveDetours}
       ]
     }
   ]
