@@ -4,18 +4,7 @@ defmodule Swiftly.Api.RequestTest do
 
   import Swiftly.API.Requests
   alias Swiftly.API.ServiceAdjustments.{CreateAdjustmentRequestV1, DetourV0CreationDetailsV1}
-
-  defp get_detour_with_all_virtual_fields(id) do
-    [detour] =
-      Repo.all(
-        Skate.Detours.Db.Detour.Queries.select_fields(
-          from(d in Skate.Detours.Db.Detour, as: :detour, where: d.id == ^id),
-          :all
-        )
-      )
-
-    detour
-  end
+  alias Skate.Detours.Detours
 
   describe "to_swiftly" do
     test "it translates an active detour to the format expected by swiftly" do
@@ -28,7 +17,7 @@ defmodule Swiftly.Api.RequestTest do
         |> activated(~U[2025-03-27 12:45:00.00Z])
         |> insert()
 
-      detour = get_detour_with_all_virtual_fields(detour.id)
+      detour = Detours.get_detour!(detour.id)
 
       assert {:ok,
               %CreateAdjustmentRequestV1{
@@ -68,7 +57,7 @@ defmodule Swiftly.Api.RequestTest do
         |> activated(~U[2025-03-27 12:45:00.00Z])
         |> insert()
 
-      detour = get_detour_with_all_virtual_fields(detour.id)
+      detour = Detours.get_detour!(detour.id)
 
       assert {:ok,
               %CreateAdjustmentRequestV1{

@@ -124,10 +124,12 @@ defmodule Skate.Notifications.Db.Detour do
     def select_detour_notification_info(query \\ base()) do
       query
       |> with_detour()
-      |> Skate.Detours.Db.Detour.Queries.select_route_name(:route)
-      |> Skate.Detours.Db.Detour.Queries.select_route_pattern_name(:origin)
-      |> Skate.Detours.Db.Detour.Queries.select_route_pattern_headsign(:headsign)
-      |> Skate.Detours.Db.Detour.Queries.select_direction(:direction)
+      |> select_merge([detour: d], %{
+        headsign: d.headsign,
+        route: d.route_name,
+        direction: d.direction,
+        origin: d.route_pattern_name
+      })
     end
   end
 end

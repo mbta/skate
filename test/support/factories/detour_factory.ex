@@ -39,7 +39,17 @@ defmodule Skate.DetourFactory do
           author: build(:user),
           state: state,
           status: :draft,
-          nearest_intersection: state["context"]["nearestIntersection"]
+          nearest_intersection: state["context"]["nearestIntersection"],
+          route_id: state["context"]["route"]["id"],
+          route_name: state["context"]["route"]["name"],
+          route_pattern_id: state["context"]["routePattern"]["id"],
+          route_pattern_name: state["context"]["routePattern"]["name"],
+          headsign: state["context"]["routePattern"]["headsign"],
+          direction:
+            Map.get(
+              state["context"]["route"]["directionNames"],
+              Integer.to_string(state["context"]["routePattern"]["directionId"])
+            )
         }
       end
 
@@ -136,8 +146,16 @@ defmodule Skate.DetourFactory do
         %{detour | updated_at: updated_at}
       end
 
-      def with_route(%Skate.Detours.Db.Detour{} = detour, %{name: _, id: _} = route) do
-        %{detour | state: with_route(detour.state, route)}
+      def with_route(
+            %Skate.Detours.Db.Detour{} = detour,
+            %{name: route_name, id: route_id} = route
+          ) do
+        %{
+          detour
+          | state: with_route(detour.state, route),
+            route_name: route_name,
+            route_id: route_id
+        }
       end
 
       def with_route(
@@ -150,7 +168,7 @@ defmodule Skate.DetourFactory do
       end
 
       def with_route_name(%Skate.Detours.Db.Detour{} = detour, name) do
-        %{detour | state: with_route_name(detour.state, name)}
+        %{detour | state: with_route_name(detour.state, name), route_name: name}
       end
 
       def with_route_name(
@@ -172,9 +190,16 @@ defmodule Skate.DetourFactory do
       end
 
       def with_direction(%Skate.Detours.Db.Detour{} = detour, direction) do
+        direction_str =
+          case direction do
+            :inbound -> "Inbound"
+            :outbound -> "Outbound"
+          end
+
         %{
           detour
-          | state: with_direction(detour.state, direction)
+          | state: with_direction(detour.state, direction),
+            direction: direction_str
         }
       end
 
@@ -204,7 +229,7 @@ defmodule Skate.DetourFactory do
       end
 
       def with_headsign(%Skate.Detours.Db.Detour{} = detour, headsign) do
-        %{detour | state: with_headsign(detour.state, headsign)}
+        %{detour | state: with_headsign(detour.state, headsign), headsign: headsign}
       end
 
       def with_headsign(
