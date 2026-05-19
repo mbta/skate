@@ -62,8 +62,6 @@ Object.defineProperty(global, "crypto", {
   value: {
     randomUUID: randomUUID,
   },
-  writable: true,
-  configurable: true,
 })
 
 beforeEach(() => {
