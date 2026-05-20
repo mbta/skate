@@ -8,4 +8,5 @@ export default Factory.define<GeolocationCoordinates>(() => ({
   altitude: 0,
   altitudeAccuracy: 0,
   speed: 0,
+  toJSON: () => ({}),
 }))

@@ -89,7 +89,7 @@ export const VehicleMarker = ({
   const eventHandlers = {
     click: (e: LeafletMouseEvent) => {
       e.originalEvent.stopImmediatePropagation()
-      onSelect && onSelect(vehicle)
+      if (onSelect) onSelect(vehicle)
       onShouldShowPopupChange(false)
     },
     contextmenu: () => {

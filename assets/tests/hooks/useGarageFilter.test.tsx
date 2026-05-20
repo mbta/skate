@@ -12,7 +12,7 @@ import {
 } from "../../src/hooks/useGarageFilter"
 import { tagManagerEvent } from "../../src/helpers/googleTagManager"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../testHelpers/wrappers"
 import { initialState, toggleShowGaragesFilter } from "../../src/state"
 import { fullStoryEvent } from "../../src/helpers/fullStory"
 
@@ -104,9 +104,9 @@ describe("GarageFilter", () => {
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
+        <Router>
           <GarageFilter {...mockGarageFilter} />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -117,9 +117,9 @@ describe("GarageFilter", () => {
   test("Garage filter does not render by default", () => {
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
+        <Router>
           <GarageFilter {...mockGarageFilter} />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -135,9 +135,9 @@ describe("GarageFilter", () => {
         state={{ ...initialState, showGaragesFilter: true }}
         dispatch={dispatch}
       >
-        <BrowserRouter>
+        <Router>
           <GarageFilter {...mockGarageFilter} />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 

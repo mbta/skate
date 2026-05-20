@@ -80,7 +80,7 @@ export const createDetourMachine = setup({
       | { type: "detour.share.activate" }
       | {
           type: "detour.share.activate-modal.select-duration"
-          duration: string
+          duration: string | undefined
         }
       | {
           type: "detour.share.activate-modal.select-reason"
@@ -94,7 +94,7 @@ export const createDetourMachine = setup({
       | { type: "detour.active.open-change-duration-modal" }
       | {
           type: "detour.active.change-duration-modal.select-duration"
-          duration: string
+          duration: string | undefined
         }
       | { type: "detour.active.change-duration-modal.done" }
       | { type: "detour.active.change-duration-modal.cancel" }
@@ -1100,6 +1100,8 @@ export const createDetourMachine = setup({
                       context: { editedSelectedDuration },
                     }) => editedSelectedDuration,
                   }),
+                  guard: ({ context: { editedSelectedDuration } }) =>
+                    editedSelectedDuration !== undefined,
                 },
                 "detour.active.change-duration-modal.cancel": {
                   target: "Reviewing",
@@ -1183,7 +1185,7 @@ type MachineContext = {
 
   editedDirections?: string
 
-  selectedDuration?: string
+  selectedDuration?: string | undefined
   selectedReason?: string
 
   activatedAt?: Date

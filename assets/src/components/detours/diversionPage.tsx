@@ -150,7 +150,7 @@ export const DiversionPage = ({
       copyToDraftDetour(snapshot.context.uuid).then((response) => {
         if (response && isOk(response)) {
           onClose()
-          onOpenDetour && onOpenDetour(response?.ok, { fromCopy: true })
+          if (onOpenDetour) onOpenDetour(response?.ok, { fromCopy: true })
         }
       })
     }
@@ -286,7 +286,7 @@ export const DiversionPage = ({
             }
           }}
           onSelectRoutePattern={(routePattern) => {
-            routePattern &&
+            if (routePattern)
               send({
                 type: "detour.route-pattern.select-pattern",
                 routePattern,
@@ -447,7 +447,7 @@ export const DiversionPage = ({
                 },
               }) ? (
                 <ActivateDetour.SelectingDuration
-                  onSelectDuration={(selectedDuration: string) => {
+                  onSelectDuration={(selectedDuration: string | undefined) => {
                     send({
                       type: "detour.share.activate-modal.select-duration",
                       duration: selectedDuration,
@@ -576,15 +576,21 @@ export const DiversionPage = ({
               onCancel={() =>
                 send({ type: "detour.active.change-duration-modal.cancel" })
               }
-              onNext={() =>
-                send({ type: "detour.active.change-duration-modal.done" })
+              onNext={
+                snapshot.can({
+                  type: "detour.active.change-duration-modal.done",
+                })
+                  ? () => {
+                      send({ type: "detour.active.change-duration-modal.done" })
+                    }
+                  : undefined
               }
               nextStepButton="Done"
               nextStepLabel="Confirm Duration"
               modalTitle="Change detour duration"
             >
               <ChangeDuration.Body
-                onSelectDuration={(selectedDuration: string) => {
+                onSelectDuration={(selectedDuration: string | undefined) => {
                   send({
                     type: "detour.active.change-duration-modal.select-duration",
                     duration: selectedDuration,

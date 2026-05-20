@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import * as browser from "../../../src/models/browser"
 import NavMenu from "../../../src/components/nav/navMenu"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../../testHelpers/wrappers"
 import getEmailAddress from "../../../src/userEmailAddress"
 
 jest.mock("../../../src/helpers/drift", () => ({
@@ -31,9 +31,9 @@ describe("NavMenu", () => {
 
     const user = userEvent.setup()
     render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(screen.getByTestId("nav-menu-backdrop"))
@@ -45,9 +45,9 @@ describe("NavMenu", () => {
     const toggleMobileMenu = jest.fn()
 
     render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={false} />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(screen.queryByTestId("nav-menu-backdrop")).not.toBeInTheDocument()
@@ -57,9 +57,9 @@ describe("NavMenu", () => {
     const toggleMobileMenu = jest.fn()
 
     const result = render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(result.getByTestId("nav-menu")).toHaveClass("c-nav-menu--open")
@@ -69,9 +69,9 @@ describe("NavMenu", () => {
     const toggleMobileMenu = jest.fn()
 
     const result = render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={false} />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(result.getByTestId("nav-menu")).not.toHaveClass("c-nav-menu--open")
@@ -81,9 +81,9 @@ describe("NavMenu", () => {
     jest.mocked(getEmailAddress).mockReturnValue("test@example.localhost")
 
     render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={jest.fn()} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(await screen.findByText("Logged in as")).toBeVisible()
@@ -93,9 +93,9 @@ describe("NavMenu", () => {
     jest.mocked(getEmailAddress).mockReturnValue("test@example.localhost")
 
     render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={jest.fn()} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(screen.getByRole("link", { name: "Logout" })).toBeVisible()
@@ -110,9 +110,9 @@ describe("NavMenu", () => {
 
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(result.getByRole("button", { name: "Refresh" }))
@@ -125,9 +125,9 @@ describe("NavMenu", () => {
 
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(result.getByRole("link", { name: "Settings" }))
@@ -140,9 +140,9 @@ describe("NavMenu", () => {
 
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(result.getByRole("link", { name: "About Skate" }))
@@ -155,9 +155,9 @@ describe("NavMenu", () => {
 
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(result.getByTitle("Skate"))
@@ -170,9 +170,9 @@ describe("NavMenu", () => {
 
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <NavMenu toggleMobileMenu={toggleMobileMenu} mobileMenuIsOpen={true} />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(result.getByRole("button", { name: /close/i }))

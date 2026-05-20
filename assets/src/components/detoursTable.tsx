@@ -8,6 +8,7 @@ import {
   timeAgoLabel,
   timeAgoLabelFromDate,
   dateFromEpochSeconds,
+  formatIfDate,
   isSameDay,
   isUpdatedAfterActivated,
 } from "../util/dateTime"
@@ -231,6 +232,7 @@ export const DetoursTable = ({
                     options={{
                       maxDate: "today",
                       onChange: setDates,
+                      mode: "multiple",
                     }}
                   />
                 </div>
@@ -324,7 +326,7 @@ const PopulatedDetourRows = ({
           </td>
           {status === DetourStatus.Active && detour.estimatedDuration && (
             <td className="align-middle p-3 u-hide-for-mobile">
-              {detour.estimatedDuration}
+              {formatIfDate(detour.estimatedDuration)}
             </td>
           )}
         </tr>

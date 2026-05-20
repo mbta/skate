@@ -15,6 +15,7 @@ interface SvgIconProps extends SvgIconWrapperProps {
  * attribute to the `container` element.
  */
 export const SvgIcon = forwardRef<HTMLSpanElement, SvgIconProps>(
+  // eslint-disable-next-line react/prop-types
   ({ svgText, ...props }, ref) => (
     // eslint-disable-next-line react/no-danger
     <span ref={ref} {...props} dangerouslySetInnerHTML={{ __html: svgText }} />

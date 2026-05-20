@@ -320,8 +320,8 @@ describe("LateView", () => {
     await userEvent.click(
       result.getByTestId(`row-checkbox-${missingLogonGhost1.runId}`)
     )
-    expectIndeterminateValue(result, missingMasterCheckboxId, true),
-      expectCheckedValue(result, missingMasterCheckboxId, false)
+    expectIndeterminateValue(result, missingMasterCheckboxId, true)
+    expectCheckedValue(result, missingMasterCheckboxId, false)
 
     // select second missing logon - master checkbox checked
 
@@ -329,8 +329,8 @@ describe("LateView", () => {
       result.getByTestId(`row-checkbox-${missingLogonGhost2.runId}`)
     )
 
-    expectIndeterminateValue(result, missingMasterCheckboxId, false),
-      expectCheckedValue(result, missingMasterCheckboxId, true)
+    expectIndeterminateValue(result, missingMasterCheckboxId, false)
+    expectCheckedValue(result, missingMasterCheckboxId, true)
   })
 
   test("master checkbox toggles multiple rows for late buses table", async () => {

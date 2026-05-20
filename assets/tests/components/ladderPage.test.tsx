@@ -8,7 +8,7 @@ import {
   waitFor,
 } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../testHelpers/wrappers"
 import LadderPage from "../../src/components/ladderPage"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
@@ -91,9 +91,9 @@ beforeEach(() => {
 describe("LadderPage", () => {
   test("renders the empty state", async () => {
     const result = render(
-      <BrowserRouter>
+      <Router>
         <LadderPage />
-      </BrowserRouter>
+      </Router>
     )
     await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
   })
@@ -121,11 +121,11 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
@@ -151,11 +151,11 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -185,11 +185,11 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -217,11 +217,11 @@ describe("LadderPage", () => {
     const user = userEvent.setup()
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -247,11 +247,11 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -287,11 +287,11 @@ describe("LadderPage", () => {
     })
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -321,11 +321,11 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -343,11 +343,11 @@ describe("LadderPage", () => {
     })
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -375,11 +375,11 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -407,11 +407,11 @@ describe("LadderPage", () => {
 
     render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -433,11 +433,11 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
@@ -457,11 +457,11 @@ describe("LadderPage", () => {
     jest.mocked(useTimepoints).mockImplementationOnce(() => timepointsByRouteId)
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
@@ -481,11 +481,11 @@ describe("LadderPage", () => {
     jest.mocked(useAlerts).mockReturnValue({ 28: [], 1: ["Route 1 detour"] })
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     await waitFor(() => expect(result.asFragment()).toMatchSnapshot())
@@ -541,9 +541,9 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <LadderPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     await waitFor(() => expect(result.queryByText("Vehicles")).toBeNull())
@@ -561,9 +561,9 @@ describe("LadderPage", () => {
     }
     const result = render(
       <StateDispatchProvider state={state} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <LadderPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     await waitFor(() => expect(result.queryByText("Vehicles")).toBeNull())
@@ -582,11 +582,11 @@ describe("LadderPage", () => {
     })
     const { container } = render(
       <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -624,11 +624,11 @@ describe("LadderPage", () => {
     })
     const { container } = render(
       <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -658,11 +658,11 @@ describe("LadderPage", () => {
     })
     const { container } = render(
       <StateDispatchProvider state={mockState} dispatch={jest.fn()}>
-        <BrowserRouter>
+        <Router>
           <RoutesProvider routes={routes}>
             <LadderPage />
           </RoutesProvider>
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 

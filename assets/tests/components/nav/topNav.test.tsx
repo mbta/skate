@@ -5,7 +5,7 @@ import TopNav from "../../../src/components/nav/topNav"
 import userEvent from "@testing-library/user-event"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState } from "../../../src/state"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../../testHelpers/wrappers"
 import "@testing-library/jest-dom/jest-globals"
 import * as browser from "../../../src/models/browser"
 
@@ -19,9 +19,9 @@ describe("TopNav", () => {
     const user = userEvent.setup()
     render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
+        <Router>
           <TopNav />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -35,9 +35,9 @@ describe("TopNav", () => {
       const dispatch = jest.fn()
       render(
         <StateDispatchProvider state={initialState} dispatch={dispatch}>
-          <BrowserRouter>
+          <Router>
             <TopNav />
-          </BrowserRouter>
+          </Router>
         </StateDispatchProvider>
       )
 
@@ -51,9 +51,9 @@ describe("TopNav", () => {
       const user = userEvent.setup()
       render(
         <StateDispatchProvider state={initialState} dispatch={dispatch}>
-          <BrowserRouter>
+          <Router>
             <TopNav />
-          </BrowserRouter>
+          </Router>
         </StateDispatchProvider>
       )
 
@@ -75,9 +75,9 @@ describe("TopNav", () => {
       const user = userEvent.setup()
       render(
         <StateDispatchProvider state={initialState} dispatch={dispatch}>
-          <BrowserRouter>
+          <Router>
             <TopNav />
-          </BrowserRouter>
+          </Router>
         </StateDispatchProvider>
       )
 

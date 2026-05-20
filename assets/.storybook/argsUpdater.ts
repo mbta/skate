@@ -1,6 +1,7 @@
 // argsUpdater.ts
 import { useArgs } from "@storybook/preview-api"
-import type { DecoratorFunction, Renderer } from "@storybook/types"
+import type { DecoratorFunction } from "@storybook/types"
+import type { ReactRenderer } from "@storybook/react"
 
 type Fn = (...args: any) => any
 
@@ -12,7 +13,6 @@ type Fn = (...args: any) => any
  * @see https://github.com/storybookjs/storybook/issues/17089#issuecomment-1704390992
  */
 export function argsUpdater<
-  TRenderer extends Renderer,
   TArgs extends { [name: string]: any },
   TArgName extends keyof {
     [K in keyof TArgs as Fn extends TArgs[K] ? K : never]: TArgs[K]
@@ -23,7 +23,7 @@ export function argsUpdater<
     currentArgs: TArgs,
     ...args: TArgs[TArgName] extends Fn ? Parameters<TArgs[TArgName]> : []
   ) => Partial<TArgs>
-): DecoratorFunction<TRenderer, TArgs> {
+): DecoratorFunction<ReactRenderer, TArgs> {
   return (storyFn, ctx) => {
     const [currentArgs, updateArgs] = useArgs<TArgs>()
     const prevValue = ctx.args[argName]

@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../testHelpers/wrappers"
 import { render, waitFor } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 import renderer from "react-test-renderer"
@@ -39,9 +39,9 @@ describe("SettingsPage", () => {
     const tree = renderer
       .create(
         <StateDispatchProvider state={initialState} dispatch={mockDispatch}>
-          <BrowserRouter>
+          <Router>
             <SettingsPage />
-          </BrowserRouter>
+          </Router>
         </StateDispatchProvider>
       )
       .toJSON()
@@ -60,9 +60,9 @@ describe("SettingsPage", () => {
 
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <SettingsPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -77,9 +77,9 @@ describe("SettingsPage", () => {
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <BrowserRouter>
+        <Router>
           <SettingsPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -109,9 +109,9 @@ describe("SettingsPage", () => {
 
     const result = render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
-        <BrowserRouter>
+        <Router>
           <SettingsPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     expect(result.getByTestId("shuttle-vehicle-label-run-number")).toBeChecked()
@@ -123,9 +123,9 @@ describe("SettingsPage", () => {
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <BrowserRouter>
+        <Router>
           <SettingsPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -148,9 +148,9 @@ describe("SettingsPage", () => {
 
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={testDispatch}>
-        <BrowserRouter>
+        <Router>
           <SettingsPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 

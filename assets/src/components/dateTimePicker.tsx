@@ -27,7 +27,6 @@ export const DateTimePicker = ({
         altInput: true,
         altFormat: "D, M j, Y",
         wrap: true,
-        mode: "multiple",
         ...options,
       })
     }
@@ -54,13 +53,22 @@ export const DateTimePicker = ({
       <input type="text" data-input placeholder="Select date" {...props} />
       <div className="">
         {value.length > 0 && (
-          <button onClick={() => fpRef.current && fpRef.current.clear()}>
+          <button
+            aria-label="Clear"
+            onClick={() => fpRef.current && fpRef.current.clear()}
+          >
             <span>
               <CircleXIcon />
             </span>
           </button>
         )}
-        <button data-toggle>
+        <button
+          aria-label="Toggle"
+          onClick={(e) => {
+            e.preventDefault()
+            fpRef.current?.toggle()
+          }}
+        >
           <span>
             <Calendar />
           </span>

@@ -18,9 +18,10 @@ import {
   IssueButton,
 } from "../detourPanelComponents"
 import {
-  timeAgoLabelFromDate,
+  formatIfDate,
   isUpdatedAfterActivated,
   timeAgoLabel,
+  timeAgoLabelFromDate,
 } from "../../../util/dateTime"
 import useCurrentTime from "../../../hooks/useCurrentTime"
 import { useCurrentTimeSeconds } from "../../../hooks/useCurrentTime"
@@ -139,7 +140,9 @@ export const ActiveDetourPanel = ({
               <dt id={dlDurationId} className="fw-bold me-2">
                 Est. Duration
               </dt>
-              <dd aria-labelledby={dlDurationId}>{detourDuration}</dd>
+              <dd aria-labelledby={dlDurationId}>
+                {formatIfDate(detourDuration)}
+              </dd>
             </div>
           </dl>
 
