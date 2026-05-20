@@ -577,7 +577,7 @@ const AdditionalIcons = ({
 }) => {
   const showAlertIcon = !!alertIconStyle
   const showBatteryIcon =
-    !!vehicle && !isGhost(vehicle) && !!vehicle.stateOfCharge?.time
+    !!vehicle && !isGhost(vehicle) && !!vehicle.stateOfCharge
   const [x1, y1, x2, y2] = calcXY(orientation, showBatteryIcon, status)
 
   return (

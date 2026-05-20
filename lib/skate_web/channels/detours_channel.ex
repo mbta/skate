@@ -18,7 +18,7 @@ defmodule SkateWeb.DetoursChannel do
   @impl SkateWeb.AuthenticatedChannel
   def join_authenticated("detours:active:" <> route_id, _message, socket) do
     SkateWeb.Endpoint.subscribe("detours:active:" <> route_id)
-    detours = Detours.active_detours_by_route(route_id)
+    detours = Detours.detours_for_route(route_id, :active)
     {:ok, %{data: detours}, socket}
   end
 

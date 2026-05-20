@@ -6,16 +6,16 @@ import "@testing-library/jest-dom/jest-globals"
 import MobilePortraitNav from "../../../src/components/nav/mobilePortraitNav"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
 import { initialState } from "../../../src/state"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../../testHelpers/wrappers"
 
 describe("MobilePortraitNav", () => {
   test("renders top / bottom nav", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
+        <Router>
           <MobilePortraitNav isViewOpen={false} />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -27,9 +27,9 @@ describe("MobilePortraitNav", () => {
     const dispatch = jest.fn()
     const result = render(
       <StateDispatchProvider state={initialState} dispatch={dispatch}>
-        <BrowserRouter>
+        <Router>
           <MobilePortraitNav isViewOpen={true} />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 

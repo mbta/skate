@@ -49,7 +49,7 @@ export const AppRoutes = () => {
   // Keep panel in sync with current path
   const { pathname: path } = location
   useEffect(() => {
-    isPagePath(path) && setPath(path)
+    if (isPagePath(path)) setPath(path)
   }, [path, setPath])
 
   const vehiclesByRouteIdNeeded =
@@ -172,7 +172,9 @@ const RouteElement = ({
 
 const App = (): ReactElement<HTMLDivElement> => {
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
       <AppRoutes />
     </BrowserRouter>
   )

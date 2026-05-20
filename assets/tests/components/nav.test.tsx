@@ -1,6 +1,6 @@
 import { jest, describe, test, expect, beforeEach } from "@jest/globals"
 import React from "react"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../testHelpers/wrappers"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
 
@@ -31,9 +31,9 @@ describe("Nav", () => {
     jest.mocked(useScreenSize).mockReturnValueOnce("mobile")
 
     const result = render(
-      <BrowserRouter>
+      <Router>
         <Nav>Hello, world!</Nav>
-      </BrowserRouter>
+      </Router>
     )
 
     expect(result.getByTestId("top-nav-mobile")).not.toBeNull()
@@ -46,9 +46,9 @@ describe("Nav", () => {
       .mockReturnValueOnce("mobile_landscape_tablet_portrait")
 
     const { container } = render(
-      <BrowserRouter>
+      <Router>
         <Nav>Hello, world!</Nav>
-      </BrowserRouter>
+      </Router>
     )
 
     expect(container.querySelector(".c-left-nav")).toHaveClass(
@@ -63,9 +63,9 @@ describe("Nav", () => {
       .mockReturnValueOnce("mobile_landscape_tablet_portrait")
 
     const result = render(
-      <BrowserRouter>
+      <Router>
         <Nav>Hello, world!</Nav>
-      </BrowserRouter>
+      </Router>
     )
 
     expect(result.getByTitle("Route Ladders")).not.toBeVisible()
@@ -76,9 +76,9 @@ describe("Nav", () => {
     jest.mocked(useScreenSize).mockReturnValueOnce("tablet")
 
     const { container } = render(
-      <BrowserRouter>
+      <Router>
         <Nav>Hello, world!</Nav>
-      </BrowserRouter>
+      </Router>
     )
 
     expect(container.querySelector(".c-left-nav")).toHaveClass(
@@ -88,9 +88,9 @@ describe("Nav", () => {
 
   test("renders nav item with title 'Search Map'", () => {
     render(
-      <BrowserRouter>
+      <Router>
         <Nav>Hello, world!</Nav>
-      </BrowserRouter>
+      </Router>
     )
 
     expect(screen.queryByTitle("Search Map")).toBeInTheDocument()
@@ -100,9 +100,9 @@ describe("Nav", () => {
     jest.mocked(useScreenSize).mockReturnValueOnce("desktop")
 
     const result = render(
-      <BrowserRouter>
+      <Router>
         <Nav>Hello, world!</Nav>
-      </BrowserRouter>
+      </Router>
     )
 
     expect(result.queryByTitle("Route Ladders")).not.toBeNull()

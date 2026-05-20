@@ -5,7 +5,7 @@ import "@testing-library/jest-dom/jest-globals"
 import BottomNavMobile from "../../../src/components/nav/bottomNavMobile"
 import userEvent from "@testing-library/user-event"
 import { initialState } from "../../../src/state"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../../testHelpers/wrappers"
 import { tagManagerEvent } from "../../../src/helpers/googleTagManager"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
@@ -29,12 +29,12 @@ describe("BottomNavMobile", () => {
     const openSwingsView = jest.fn()
     const user = userEvent.setup()
     const result = render(
-      <BrowserRouter>
+      <Router>
         <BottomNavMobile
           mobileMenuIsOpen={initialState.mobileMenuIsOpen}
           openSwingsView={openSwingsView}
         />
-      </BrowserRouter>
+      </Router>
     )
 
     await user.click(result.getByTitle("Swings"))
@@ -46,12 +46,12 @@ describe("BottomNavMobile", () => {
 
   test("renders nav item with title 'Search'", () => {
     render(
-      <BrowserRouter>
+      <Router>
         <BottomNavMobile
           mobileMenuIsOpen={initialState.mobileMenuIsOpen}
           openSwingsView={jest.fn()}
         />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(screen.queryByTitle("Search")).toBeInTheDocument()
@@ -61,12 +61,12 @@ describe("BottomNavMobile", () => {
     jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursList])
 
     render(
-      <BrowserRouter>
+      <Router>
         <BottomNavMobile
           mobileMenuIsOpen={initialState.mobileMenuIsOpen}
           openSwingsView={jest.fn()}
         />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(screen.queryByTitle("Detours")).toBeVisible()
@@ -76,12 +76,12 @@ describe("BottomNavMobile", () => {
     jest.mocked(getTestGroups).mockReturnValue([])
 
     render(
-      <BrowserRouter>
+      <Router>
         <BottomNavMobile
           mobileMenuIsOpen={initialState.mobileMenuIsOpen}
           openSwingsView={jest.fn()}
         />
-      </BrowserRouter>
+      </Router>
     )
 
     expect(screen.queryByTitle("Detours")).not.toBeInTheDocument()

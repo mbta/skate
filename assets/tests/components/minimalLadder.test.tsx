@@ -66,7 +66,10 @@ describe("MinimalLadders", () => {
     const { asFragment } = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
-          <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
+          <MemoryRouter
+            future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+            initialEntries={[`/minimal/abcdef`]}
+          >
             <Routes>
               <Route
                 path="/minimal/:id"

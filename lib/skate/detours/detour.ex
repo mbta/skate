@@ -72,6 +72,37 @@ defmodule Skate.Detours.Detour do
       extract_from_attributes(attrs)
     end
 
+    defp extract_from_attributes(%{
+           id: id,
+           author_id: author_id,
+           updated_at: updated_at,
+           route_name: route_name,
+           headsign: headsign,
+           nearest_intersection: nearest_intersection,
+           direction: direction,
+           estimated_duration: estimated_duration,
+           activated_at: activated_at,
+           reason: reason,
+           status: status
+         })
+         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) and
+                not is_nil(nearest_intersection) do
+      %__MODULE__{
+        id: id,
+        route: route_name,
+        direction: direction,
+        name: headsign,
+        intersection: nearest_intersection,
+        updated_at: timestamp_to_unix(updated_at),
+        author_id: author_id,
+        estimated_duration: estimated_duration,
+        activated_at: activated_at,
+        reason: reason,
+        status: status
+      }
+    end
+
+    # Backup retrieve from state in case the information was not fetched correctly from the database fields
     defp extract_from_attributes(
            %{
              id: id,
@@ -101,36 +132,6 @@ defmodule Skate.Detours.Detour do
         author_id: db_detour.author_id,
         status: status,
         reason: db_detour.reason
-      }
-    end
-
-    defp extract_from_attributes(%{
-           id: id,
-           author_id: author_id,
-           updated_at: updated_at,
-           route_name: route_name,
-           headsign: headsign,
-           nearest_intersection: nearest_intersection,
-           direction: direction,
-           estimated_duration: estimated_duration,
-           activated_at: activated_at,
-           reason: reason,
-           status: status
-         })
-         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) and
-                not is_nil(nearest_intersection) do
-      %__MODULE__{
-        id: id,
-        route: route_name,
-        direction: direction,
-        name: headsign,
-        intersection: nearest_intersection,
-        updated_at: timestamp_to_unix(updated_at),
-        author_id: author_id,
-        estimated_duration: estimated_duration,
-        activated_at: activated_at,
-        reason: reason,
-        status: status
       }
     end
 

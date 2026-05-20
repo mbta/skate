@@ -9,7 +9,7 @@ import {
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/jest-globals"
-import { BrowserRouter } from "react-router-dom"
+import { Router } from "../testHelpers/wrappers"
 import ShuttleMapPage, {
   allTrainVehicles,
 } from "../../src/components/shuttleMapPage"
@@ -97,18 +97,18 @@ describe("Shuttle Map Page", () => {
   test("renders", () => {
     ;(useShuttleVehicles as jest.Mock).mockImplementationOnce(() => [shuttle])
     const result = render(
-      <BrowserRouter>
+      <Router>
         <ShuttleMapPage />
-      </BrowserRouter>
+      </Router>
     )
     expect(result.asFragment()).toMatchSnapshot()
   })
 
   test("Has the layers control", () => {
     render(
-      <BrowserRouter>
+      <Router>
         <ShuttleMapPage />
-      </BrowserRouter>
+      </Router>
     )
     expect(layersControlButton.get()).toBeInTheDocument()
   })
@@ -119,9 +119,9 @@ describe("Shuttle Map Page", () => {
     ;(useRouteShapes as jest.Mock).mockImplementationOnce(() => [shape])
     ;(useTripShape as jest.Mock).mockImplementationOnce(() => [shape])
     const result = render(
-      <BrowserRouter>
+      <Router>
         <ShuttleMapPage />
-      </BrowserRouter>
+      </Router>
     )
     expect(result.asFragment()).toMatchSnapshot()
   })
@@ -139,9 +139,9 @@ describe("Shuttle Map Page", () => {
     }))
 
     const result = render(
-      <BrowserRouter>
+      <Router>
         <ShuttleMapPage />
-      </BrowserRouter>
+      </Router>
     )
     expect(result.asFragment()).toMatchSnapshot()
   })
@@ -154,9 +154,9 @@ describe("Shuttle Map Page", () => {
         state={{ ...initialState, selectedShuttleRunIds: [shuttle.runId!] }}
         dispatch={dispatch}
       >
-        <BrowserRouter>
+        <Router>
           <ShuttleMapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     expect(result.asFragment()).toMatchSnapshot()
@@ -170,9 +170,9 @@ describe("Shuttle Map Page", () => {
         state={{ ...initialState, selectedShuttleRunIds: "all" }}
         dispatch={dispatch}
       >
-        <BrowserRouter>
+        <Router>
           <ShuttleMapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     expect(result.asFragment()).toMatchSnapshot()
@@ -186,9 +186,9 @@ describe("Shuttle Map Page", () => {
         state={{ ...initialState, selectedShuttleRunIds: "all" }}
         dispatch={dispatch}
       >
-        <BrowserRouter>
+        <Router>
           <ShuttleMapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
     await animationFramePromise()
@@ -206,9 +206,9 @@ describe("Shuttle Map Page", () => {
         state={{ ...initialState, selectedShuttleRunIds: ["shuttle run"] }}
         dispatch={dispatch}
       >
-        <BrowserRouter>
+        <Router>
           <ShuttleMapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 
@@ -226,9 +226,9 @@ describe("Shuttle Map Page", () => {
         state={{ ...initialState, selectedShuttleRunIds: "all" }}
         dispatch={mockDispatch}
       >
-        <BrowserRouter>
+        <Router>
           <ShuttleMapPage />
-        </BrowserRouter>
+        </Router>
       </StateDispatchProvider>
     )
 

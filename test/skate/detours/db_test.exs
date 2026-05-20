@@ -13,7 +13,7 @@ defmodule Skate.Detours.DbTest do
 
     test "list_detours/0 returns all detours" do
       %{id: id} = detour_fixture()
-      assert [%{id: ^id}] = Skate.Repo.preload(Detours.list_detours(), :author)
+      assert [%{id: ^id}] = Detours.list_detours()
     end
 
     test "get_detour!/1 returns the detour with given id" do
