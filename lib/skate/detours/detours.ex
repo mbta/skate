@@ -744,13 +744,6 @@ defmodule Skate.Detours.Detours do
     Detour.changeset(detour, attrs)
   end
 
-  # Converts the db timestamp to unix
-  defp timestamp_to_unix(db_date) do
-    db_date
-    |> DateTime.from_naive!("Etc/UTC")
-    |> DateTime.to_unix()
-  end
-
   def calculate_expiration_timestamp(%{status: :active} = detour, estimated_duration),
     do: do_calculate_expiration_timestamp(detour, estimated_duration)
 
