@@ -1,9 +1,9 @@
+import { randomUUID } from "crypto"
 import { Factory } from "fishery"
 import { RouteTab } from "../../src/models/routeTab"
-import { v4 as uuidv4 } from "uuid"
 
 const defaultRouteTabFactory = Factory.define<RouteTab>(({ sequence }) => ({
-  uuid: uuidv4(),
+  uuid: randomUUID(),
   isCurrentTab: false,
   ordering: sequence,
 

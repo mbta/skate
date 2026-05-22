@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto"
 import { describe, test, expect } from "@jest/globals"
 import {
   currentRouteTab,
@@ -17,7 +18,6 @@ import {
   findFirstOpenTabWith,
   selectTabByUUID,
 } from "../../src/models/routeTab"
-import { v4 as uuidv4 } from "uuid"
 import routeTabFactory from "../factories/routeTab"
 
 describe("highestExistingOrdering", () => {
@@ -76,7 +76,7 @@ describe("isPreset", () => {
     const routeTab = routeTabFactory.build({
       presetName: "My Preset",
       ordering: undefined,
-      saveChangesToTabUuid: uuidv4(),
+      saveChangesToTabUuid: randomUUID(),
     })
 
     expect(isPreset(routeTab)).toBeFalsy()
@@ -88,7 +88,7 @@ describe("isEditedPreset", () => {
     const routeTab = routeTabFactory.build({
       presetName: "My Preset",
       ordering: 0,
-      saveChangesToTabUuid: uuidv4(),
+      saveChangesToTabUuid: randomUUID(),
     })
 
     expect(isEditedPreset(routeTab)).toBeTruthy()
