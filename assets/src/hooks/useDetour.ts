@@ -80,6 +80,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     selectedReason,
     editedSelectedDuration,
   } = snapshot.context
+  console.log(snapshot.context.isTextOnly)
 
   const { result: unfinishedDetour } = useApiCall({
     apiCall: useCallback(async () => {

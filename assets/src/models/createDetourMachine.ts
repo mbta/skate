@@ -73,6 +73,7 @@ export const createDetourMachine = setup({
           position: ShapePoint
         }
       | { type: "detour.edit.undo" }
+      | { type: "detour.type.back" }
       | { type: "detour.discard-modal.confirm" }
       | { type: "detour.discard-modal.cancel" }
       | { type: "detour.share.edit-directions"; detourText: string }
@@ -314,6 +315,7 @@ export const createDetourMachine = setup({
     finishedDetour: undefined,
     detourShape: undefined,
     undoStack: [],
+    isTextOnly: false,
   }),
   type: "parallel",
   initial: "Detour Drawing",
@@ -508,8 +510,8 @@ export const createDetourMachine = setup({
               }),
             },
             "detour.edit.cant-draw": {
-              target: ".Type Detour",
-              actions: "detour.clear",
+              target: "Type Detour",
+              actions: ["detour.clear", assign({ isTextOnly: true })],
             },
           },
           states: {
@@ -808,9 +810,6 @@ export const createDetourMachine = setup({
                 },
               },
             },
-            "Type Detour": {
-              // state for typing directions
-            },
             Deleting: {
               on: {
                 "detour.delete.delete-modal.cancel": {
@@ -846,6 +845,16 @@ export const createDetourMachine = setup({
               },
             }),
           },
+        },
+
+        "Type Detour": {
+          on: {
+            "detour.type.back": {
+              target: "Editing",
+              actions: assign({ isTextOnly: false }),
+            },
+          },
+          onDone: { target: "Share Detour" },
         },
 
         Discarding: {
@@ -1201,6 +1210,7 @@ type MachineContext = {
   editedSelectedDuration?: string
   savedContext?: MachineContext
   closeFunc?: () => void
+  isTextOnly?: boolean
   undoStack?: {
     target: string
     patch: ContextPatch

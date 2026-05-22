@@ -20,6 +20,7 @@ import { Snapshot } from "xstate"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { ActiveDetourPanel } from "./detourPanels/activeDetourPanel"
 import { PastDetourPanel } from "./detourPanels/pastDetourPanel"
+import { TypeDetourPanel } from "./detourPanels/typeDetourPanel"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { timeAgoLabel } from "../../util/dateTime"
 import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
@@ -364,6 +365,19 @@ export const DiversionPage = ({
             />
           )}
         </DrawDetourPanel>
+      )
+    } else if (snapshot.matches({ "Detour Drawing": "Type Detour" })) {
+      return (
+        <TypeDetourPanel
+          routeName={routeName ?? "??"}
+          routeDescription={routeDescription ?? "??"}
+          routeOrigin={routeOrigin ?? "??"}
+          routeDirection={routeDirection ?? "??"}
+          onSubmitDetour={() => {}}
+          onDeleteDetour={onDeleteDetour}
+          onBack={() => send({ type: "detour.type.back" })}
+          isActiveDetour={detourStatus === DetourStatus.Active}
+        />
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
@@ -738,6 +752,7 @@ export const DiversionPage = ({
             onClear={clear ?? undefined}
             stops={stops}
             editing={snapshot.matches({ "Detour Drawing": "Editing" })}
+            isTextOnly={snapshot.context.isTextOnly}
           />
         </div>
       </article>

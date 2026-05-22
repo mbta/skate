@@ -1,5 +1,6 @@
 import {
   array,
+  boolean,
   coerce,
   date,
   enums,
@@ -23,6 +24,7 @@ export interface SimpleDetour {
   estimatedDuration: string | null
   reason: string | null
   status: "active" | "draft" | "past"
+  isTextOnly: boolean
 }
 
 export interface SimpleActiveDetour extends SimpleDetour {
@@ -46,6 +48,7 @@ export const SimpleDetourData = type({
   ),
   estimated_duration: nullable(string()),
   reason: nullable(string()),
+  is_text_only: boolean(),
 })
 
 export const SimpleActiveDetourData = type({
@@ -59,6 +62,7 @@ export const SimpleActiveDetourData = type({
   activated_at: coerce(date(), string(), (dateStr) => new Date(dateStr)),
   estimated_duration: string(),
   reason: nullable(string()),
+  is_text_only: boolean(),
 })
 
 export type SimpleDetourData = Infer<typeof SimpleDetourData>
@@ -76,6 +80,7 @@ export const simpleDetourFromData = (
   status: detourData.status,
   activatedAt: detourData.activated_at,
   estimatedDuration: detourData.estimated_duration,
+  isTextOnly: detourData.is_text_only,
   reason: detourData.reason,
 })
 

@@ -23,6 +23,7 @@ import {
   shapePointToLatLngLiteral,
 } from "../../util/pointLiterals"
 import { MapTooltip } from "../map/tooltip"
+import TextOnlyAlert from "./alerts/textOnlyAlert"
 import { joinClasses } from "../../helpers/dom"
 import { RouteSegments, UnfinishedRouteSegments } from "../../models/detour"
 import { MapButton } from "../map/controls/mapButton"
@@ -134,6 +135,11 @@ interface DetourMapProps {
    * Map is in editing state, and is therefore interactive
    */
   editing: boolean
+
+  /*
+   * Map is display-only in a way that implies they must type
+   */
+  isTextOnly?: boolean
 }
 
 interface CenteringElementProps {
@@ -174,6 +180,7 @@ export const DetourMap = ({
   zoom,
 
   editing,
+  isTextOnly,
 }: DetourMapProps) => {
   const id = useId()
 
@@ -273,6 +280,7 @@ export const DetourMap = ({
       className={joinClasses([
         "h-100",
         onClickMap && "c-detour_map--map__clickable",
+        isTextOnly ? " c-detour_map--text-only" : "",
       ])}
     >
       <Map
@@ -290,33 +298,38 @@ export const DetourMap = ({
           setOldMapCenter={setOldMapCenter}
           zoom={zoom}
         />
+        <TextOnlyAlert />
         <StreetViewControl
           position="topright"
           streetViewEnabled={streetViewEnabled}
           setStreetViewEnabled={setStreetViewEnabled}
         />
-        <CustomControl position="bottomleft" className="leaflet-bar">
-          <MapButton
-            disabled={undoDisabled}
-            onClick={onUndo}
-            size="lg"
-            title="Undo"
-            data-fs-element="Undo"
-          >
-            <ArrowLeftSquare />
-          </MapButton>
-        </CustomControl>
-        <CustomControl position="bottomleft" className="leaflet-bar">
-          <MapButton
-            disabled={onClear === undefined}
-            onClick={onClear}
-            size="lg"
-            title="Clear"
-            data-fs-element="Clear"
-          >
-            <XSquare />
-          </MapButton>
-        </CustomControl>
+        {!isTextOnly && (
+          <>
+            <CustomControl position="bottomleft" className="leaflet-bar">
+              <MapButton
+                disabled={undoDisabled}
+                onClick={onUndo}
+                size="lg"
+                title="Undo"
+                data-fs-element="Undo"
+              >
+                <ArrowLeftSquare />
+              </MapButton>
+            </CustomControl>
+            <CustomControl position="bottomleft" className="leaflet-bar">
+              <MapButton
+                disabled={onClear === undefined}
+                onClick={onClear}
+                size="lg"
+                title="Clear"
+                data-fs-element="Clear"
+              >
+                <XSquare />
+              </MapButton>
+            </CustomControl>
+          </>
+        )}
 
         <LayersControlState>
           {(open, setOpen) => (
