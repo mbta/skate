@@ -13,7 +13,7 @@ const config: Config = {
     ],
   },
   transformIgnorePatterns: [
-    "/node_modules/(?!(@react-leaflet|react-leaflet|screenfull|uuid)/)",
+    "/node_modules/(?!(@react-leaflet|react-leaflet|screenfull)/)",
   ],
   testRegex: "(src|tests)/.*\\.test\\.tsx?$",
   modulePaths: ["<rootDir>/src"],

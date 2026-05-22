@@ -810,6 +810,9 @@ export const createDetourMachine = setup({
                 },
               },
             },
+            "Type Detour": {
+              // state for typing directions
+            },
             Deleting: {
               on: {
                 "detour.delete.delete-modal.cancel": {
