@@ -66,7 +66,7 @@ defmodule Skate.MixProject do
       {:dns_cluster, "~> 0.1.3"},
       {:ecto_sql, "~> 3.4"},
       {:ehmon, github: "mbta/ehmon", only: :prod},
-      {:emqtt_failover, "~> 0.3.0"},
+      {:emqtt_failover, "~> 0.4.1"},
       {:ex_aws, "~> 2.1"},
       {:ex_aws_rds, "~> 2.0.2"},
       {:ex_aws_secretsmanager, "~> 2.0"},
