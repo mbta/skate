@@ -79,8 +79,8 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     selectedDuration,
     selectedReason,
     editedSelectedDuration,
+    typedDetour,
   } = snapshot.context
-  console.log(snapshot.context.isTextOnly)
 
   const { result: unfinishedDetour } = useApiCall({
     apiCall: useCallback(async () => {
@@ -345,5 +345,13 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
      * Detour duration while editing is in progress
      */
     editedSelectedDuration,
+    /**
+     * Text only detour text object
+     */
+    typedDetour: typedDetour ?? {
+      directions: "",
+      connectionPoints: "",
+      missedStops: "",
+    },
   }
 }

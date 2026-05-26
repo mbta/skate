@@ -133,6 +133,7 @@ export const DiversionPage = ({
     selectedReason,
 
     editedSelectedDuration,
+    typedDetour,
   } = useDetour(useDetourProps)
 
   const deleteDetourCallback = useCallback(() => {
@@ -373,9 +374,16 @@ export const DiversionPage = ({
           routeDescription={routeDescription ?? "??"}
           routeOrigin={routeOrigin ?? "??"}
           routeDirection={routeDirection ?? "??"}
+          typedDetour={typedDetour}
           onSubmitDetour={() => {}}
           onDeleteDetour={onDeleteDetour}
           onBack={() => send({ type: "detour.type.back" })}
+          onChangeTypedDetour={(partialTypedDetour) =>
+            send({
+              type: "detour.type.edit-typed-detour",
+              typedDetour: partialTypedDetour,
+            })
+          }
           isActiveDetour={detourStatus === DetourStatus.Active}
         />
       )

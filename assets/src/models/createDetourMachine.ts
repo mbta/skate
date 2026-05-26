@@ -10,7 +10,7 @@ import {
   fetchRoutePatterns,
   activateDetour,
 } from "../api"
-import { DetourShape, FinishedDetour } from "./detour"
+import { DetourShape, FinishedDetour, TypedDetour } from "./detour"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { type, optional, coerce, date, string } from "superstruct"
 
@@ -74,6 +74,10 @@ export const createDetourMachine = setup({
         }
       | { type: "detour.edit.undo" }
       | { type: "detour.type.back" }
+      | {
+          type: "detour.type.edit-typed-detour"
+          typedDetour: Partial<TypedDetour>
+        }
       | { type: "detour.discard-modal.confirm" }
       | { type: "detour.discard-modal.cancel" }
       | { type: "detour.share.edit-directions"; detourText: string }
@@ -511,7 +515,12 @@ export const createDetourMachine = setup({
             },
             "detour.edit.cant-draw": {
               target: "Type Detour",
-              actions: ["detour.clear", assign({ isTextOnly: true })],
+              actions: [
+                "detour.clear",
+                assign({
+                  isTextOnly: true,
+                }),
+              ],
             },
           },
           states: {
@@ -854,7 +863,20 @@ export const createDetourMachine = setup({
           on: {
             "detour.type.back": {
               target: "Editing",
-              actions: assign({ isTextOnly: false }),
+              actions: assign({ isTextOnly: false, typedDetour: undefined }),
+            },
+            "detour.type.edit-typed-detour": {
+              target: "Type Detour",
+              actions: assign({
+                typedDetour: ({ context: { typedDetour }, event }) => {
+                  if (!typedDetour) return
+
+                  return {
+                    ...typedDetour,
+                    ...event.typedDetour,
+                  }
+                },
+              }),
             },
           },
           onDone: { target: "Share Detour" },
@@ -1203,6 +1225,7 @@ type MachineContext = {
 
   finishedDetour: FinishedDetour | undefined | null
 
+  typedDetour?: TypedDetour
   editedDirections?: string
 
   selectedDuration?: string | undefined
