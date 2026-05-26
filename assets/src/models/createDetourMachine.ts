@@ -869,10 +869,14 @@ export const createDetourMachine = setup({
               target: "Type Detour",
               actions: assign({
                 typedDetour: ({ context: { typedDetour }, event }) => {
-                  if (!typedDetour) return
+                  const current = typedDetour || {
+                    directions: "",
+                    missedStops: "",
+                    connectionPoints: "",
+                  }
 
                   return {
-                    ...typedDetour,
+                    ...current,
                     ...event.typedDetour,
                   }
                 },

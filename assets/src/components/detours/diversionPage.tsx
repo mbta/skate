@@ -378,12 +378,12 @@ export const DiversionPage = ({
           onSubmitDetour={() => {}}
           onDeleteDetour={onDeleteDetour}
           onBack={() => send({ type: "detour.type.back" })}
-          onChangeTypedDetour={(partialTypedDetour) =>
+          onChangeTypedDetour={(partialTypedDetour) => {
             send({
               type: "detour.type.edit-typed-detour",
               typedDetour: partialTypedDetour,
             })
-          }
+          }}
           isActiveDetour={detourStatus === DetourStatus.Active}
         />
       )

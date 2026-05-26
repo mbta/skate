@@ -31,7 +31,6 @@ export const TypeDetourPanel = ({
   onChangeTypedDetour,
   children,
 }: TypeDetourPanelProps) => {
-  console.log(typedDetour)
   return (
     <Panel as="article" className="c-diversion-panel">
       <Panel.Header className={isActiveDetour ? "active-detour" : ""}>
@@ -91,6 +90,9 @@ export const TypeDetourPanel = ({
               data-fs-element="Connection Point Text"
               maxLength={1000}
             />
+            <Form.Text muted>
+              {typedDetour.connectionPoints.length}/1000
+            </Form.Text>
             <label>
               <h2 className="c-diversion-panel__section-header">
                 Missed Stops <span className="fw-normal">(optional)</span>
@@ -105,6 +107,7 @@ export const TypeDetourPanel = ({
               data-fs-element="Missed Stops Text"
               maxLength={1000}
             />
+            <Form.Text muted>{typedDetour.missedStops.length}/1000</Form.Text>
           </section>
         </Panel.Body.ScrollArea>
 
