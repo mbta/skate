@@ -33,3 +33,14 @@
     @include filter-placeholder;
   }
 }
+
+// disables the green "valid" form validation styling
+// form-feedback-valid-color overridden in variable_overrides.scss
+.was-validated .form-control:valid {
+  background-image: none !important;
+  padding-right: $input-padding-x !important;
+
+  &:focus {
+    box-shadow: 0 0 0 0.25rem rgba($form-feedback-valid-color, 0.25) !important;
+  }
+}
