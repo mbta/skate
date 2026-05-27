@@ -74,6 +74,7 @@ export const createDetourMachine = setup({
         }
       | { type: "detour.edit.undo" }
       | { type: "detour.type.back" }
+      | { type: "detour.type.done" }
       | {
           type: "detour.type.edit-typed-detour"
           typedDetour: Partial<TypedDetour>
@@ -819,9 +820,6 @@ export const createDetourMachine = setup({
                 },
               },
             },
-            "Type Detour": {
-              // state for typing directions
-            },
             Deleting: {
               on: {
                 "detour.delete.delete-modal.cancel": {
@@ -882,8 +880,10 @@ export const createDetourMachine = setup({
                 },
               }),
             },
+            "detour.type.done": {
+              target: "Share Detour.Activating",
+            },
           },
-          onDone: { target: "Share Detour" },
         },
 
         Discarding: {

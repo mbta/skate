@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from "react"
-import { Button, Form } from "react-bootstrap"
+import React, { PropsWithChildren, useState } from "react"
+import { Button, Form, InputGroup } from "react-bootstrap"
 import { TypedDetour } from "../../../models/detour"
 import { Panel } from "../diversionPage"
 import { ArrowLeft, CardChecklist, Trash } from "../../../helpers/bsIcons"
@@ -31,6 +31,18 @@ export const TypeDetourPanel = ({
   onChangeTypedDetour,
   children,
 }: TypeDetourPanelProps) => {
+  const [validated, setValidated] = useState(false)
+
+  const onSubmit = (e) => {
+    const form = e.currentTarget
+    if (form.checkValidity() === false) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    setValidated(true)
+  }
+
   return (
     <Panel as="article" className="c-diversion-panel">
       <Panel.Header className={isActiveDetour ? "active-detour" : ""}>
@@ -58,56 +70,74 @@ export const TypeDetourPanel = ({
           />
 
           <section className="my-4">
-            <p className="fst-italic">
-              Enter detour details below.
-              <br />
-              Directions are required
-            </p>
-            <label>
-              <h2 className="c-diversion-panel__section-header">Directions</h2>
-            </label>
-            <Form.Control
-              as="textarea"
-              defaultValue={typedDetour.directions}
-              onChange={({ target: { value } }) =>
-                onChangeTypedDetour({ directions: value })
-              }
-              data-fs-element="Direction Text"
-              maxLength={5000}
-            />
-            <Form.Text muted>{typedDetour.directions.length}/5000</Form.Text>
-            <label>
-              <h2 className="c-diversion-panel__section-header">
-                Connection Points <span className="fw-normal">(optional)</span>
-              </h2>
-            </label>
-            <Form.Control
-              as="textarea"
-              defaultValue={typedDetour.connectionPoints}
-              onChange={({ target: { value } }) =>
-                onChangeTypedDetour({ connectionPoints: value })
-              }
-              data-fs-element="Connection Point Text"
-              maxLength={1000}
-            />
-            <Form.Text muted>
-              {typedDetour.connectionPoints.length}/1000
-            </Form.Text>
-            <label>
-              <h2 className="c-diversion-panel__section-header">
-                Missed Stops <span className="fw-normal">(optional)</span>
-              </h2>
-            </label>
-            <Form.Control
-              as="textarea"
-              defaultValue={typedDetour.missedStops}
-              onChange={({ target: { value } }) =>
-                onChangeTypedDetour({ missedStops: value })
-              }
-              data-fs-element="Missed Stops Text"
-              maxLength={1000}
-            />
-            <Form.Text muted>{typedDetour.missedStops.length}/1000</Form.Text>
+            <Form
+              id="type-detour-form"
+              noValidate
+              validated={validated}
+              onSubmit={onSubmit}
+            >
+              <p className="fst-italic">
+                Enter detour details below.
+                <br />
+                Directions are required
+              </p>
+              <label>
+                <h2 className="c-diversion-panel__section-header">
+                  Directions
+                </h2>
+              </label>
+              <Form.Control
+                as="textarea"
+                defaultValue={typedDetour.directions}
+                onChange={({ target: { value } }) =>
+                  onChangeTypedDetour({ directions: value })
+                }
+                data-fs-element="Direction Text"
+                required
+                maxLength={5000}
+              />
+              <Form.Control.Feedback type="invalid">
+                Directions are required
+              </Form.Control.Feedback>
+              <Form.Text muted className="d-block text-end">
+                {typedDetour.directions.length}/5000
+              </Form.Text>
+              <label>
+                <h2 className="c-diversion-panel__section-header">
+                  Connection Points{" "}
+                  <span className="fw-normal">(optional)</span>
+                </h2>
+              </label>
+              <Form.Control
+                as="textarea"
+                defaultValue={typedDetour.connectionPoints}
+                onChange={({ target: { value } }) =>
+                  onChangeTypedDetour({ connectionPoints: value })
+                }
+                data-fs-element="Connection Point Text"
+                maxLength={1000}
+              />
+              <Form.Text muted className="d-block text-end">
+                {typedDetour.connectionPoints.length}/1000
+              </Form.Text>
+              <label>
+                <h2 className="c-diversion-panel__section-header">
+                  Missed Stops <span className="fw-normal">(optional)</span>
+                </h2>
+              </label>
+              <Form.Control
+                as="textarea"
+                defaultValue={typedDetour.missedStops}
+                onChange={({ target: { value } }) =>
+                  onChangeTypedDetour({ missedStops: value })
+                }
+                data-fs-element="Missed Stops Text"
+                maxLength={1000}
+              />
+              <Form.Text muted className="d-block text-end">
+                {typedDetour.missedStops.length}/1000
+              </Form.Text>
+            </Form>
           </section>
         </Panel.Body.ScrollArea>
 
@@ -126,8 +156,9 @@ export const TypeDetourPanel = ({
           )}
           <Button
             className="flex-grow-1 m-3 icon-link"
-            onClick={onSubmitDetour}
             data-fs-element="Submit Typed Detour"
+            form="type-detour-form"
+            type="submit"
           >
             <CardChecklist />
             {isActiveDetour ? "Publish Detour Edits" : "Start detour"}

@@ -375,7 +375,7 @@ export const DiversionPage = ({
           routeOrigin={routeOrigin ?? "??"}
           routeDirection={routeDirection ?? "??"}
           typedDetour={typedDetour}
-          onSubmitDetour={() => {}}
+          onSubmitDetour={() => send({ type: "detour.type.done" })}
           onDeleteDetour={onDeleteDetour}
           onBack={() => send({ type: "detour.type.back" })}
           onChangeTypedDetour={(partialTypedDetour) => {
