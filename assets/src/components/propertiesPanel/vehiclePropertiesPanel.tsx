@@ -1,9 +1,7 @@
 import React, { useContext } from "react"
-import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import { useNearestIntersectionFetchResult } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
-import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { isVehicleInScheduledService } from "../../models/vehicle"
 import {
