@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useState } from "react"
+import React, { FormEvent, PropsWithChildren, useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { TypedDetour } from "../../../models/detour"
 import { Panel } from "../diversionPage"
@@ -33,8 +33,8 @@ export const TypeDetourPanel = ({
 }: TypeDetourPanelProps) => {
   const [validated, setValidated] = useState(false)
 
-  const onSubmit = (e) => {
-    const form = e.currentTarget
+  const onSubmit = (e: SubmitEvent) => {
+    const form = e.currentTarget as HTMLFormElement
     if (form.checkValidity() === false) {
       e.preventDefault()
       e.stopPropagation()
@@ -100,7 +100,10 @@ export const TypeDetourPanel = ({
                   id="form-directions"
                   aria-describedby="form-directions-character-count form-directions-feedback"
                 />
-                <Form.Control.Feedback id="form-directions-feedback" type="invalid">
+                <Form.Control.Feedback
+                  id="form-directions-feedback"
+                  type="invalid"
+                >
                   Directions are required
                 </Form.Control.Feedback>
                 <Form.Text
