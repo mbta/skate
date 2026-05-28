@@ -63,13 +63,7 @@ const useRouteVehicles = (
   const existingVehiclesAndGhosts:
     | (VehicleInScheduledService | Ghost)[]
     | undefined = routeId === null ? undefined : vehiclesByRouteId[routeId]
-  // If we haven't already fetched this route, open a new channel.
-  // const { socket } = useContext(SocketContext)
-  // const newVehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] | null =
-  //   useVehiclesForRoute(
-  //     socket,
-  //     existingVehiclesAndGhosts === undefined ? routeId : null
-  //   )
+
   return (existingVehiclesAndGhosts || [])
     .filter(isVehicleInScheduledService)
     .filter((v) => v.id !== primaryVehicleId)
