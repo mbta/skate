@@ -32,6 +32,7 @@ import { DetourListPage } from "./detourListPage"
 import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { MinimalLadderPage } from "./minimalLadderPage"
 import { MinimalLadder } from "./minimalLadder"
+import { appendIfNew } from "../helpers/array"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -55,14 +56,19 @@ export const AppRoutes = () => {
   const vehiclesByRouteIdNeeded =
     openView === OpenView.Late ||
     location.pathname === "/" ||
-    location.pathname.includes("/minimal")
+    location.pathname.includes("/minimal") ||
+    selectedVehicleOrGhost?.routeId
+
+  const vehicles = vehiclesByRouteIdNeeded
+    ? appendIfNew(
+        allOpenRouteIds(routeTabs),
+        selectedVehicleOrGhost?.routeId || ""
+      )
+    : []
 
   const { socket } = useContext(SocketContext)
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
-    useVehicles(
-      socket,
-      vehiclesByRouteIdNeeded ? allOpenRouteIds(routeTabs) : []
-    )
+    useVehicles(socket, vehicles)
 
   return (
     <div className="l-app">
