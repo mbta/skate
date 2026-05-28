@@ -59,7 +59,7 @@ export const AppRoutes = () => {
     location.pathname.includes("/minimal") ||
     selectedVehicleOrGhost?.routeId
 
-  const vehicles = vehiclesByRouteIdNeeded
+  const routeIds = vehiclesByRouteIdNeeded
     ? appendIfNew(
         allOpenRouteIds(routeTabs),
         selectedVehicleOrGhost?.routeId || ""
@@ -68,7 +68,7 @@ export const AppRoutes = () => {
 
   const { socket } = useContext(SocketContext)
   const vehiclesByRouteId: ByRouteId<(VehicleInScheduledService | Ghost)[]> =
-    useVehicles(socket, vehicles)
+    useVehicles(socket, routeIds)
 
   return (
     <div className="l-app">
