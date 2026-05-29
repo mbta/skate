@@ -2,7 +2,8 @@
 
 Skate is a web-based dispatch tool for bus inspectors, built by the MBTA. Imagine an app that helps you track the one bus you want to catch, but instead it’s helping us track all the buses that everyone wants to catch! It has the rich location data driving our mbta.com and rider apps, but also info that matters for keeping things running smoothly (operator names, bus numbers, shift schedules). For background, read our [“Skate: Building a better bus dispatch app (and how it will improve your ride)”](https://medium.com/mbta-tech/skate-building-a-better-bus-dispatch-app-and-how-it-will-improve-your-ride-51965d8ef7b9) blog post.
 
-![Animated Skate screenshot](https://miro.medium.com/max/1024/1*zuUAIdkDfYRFEDscP9qHOg.gif)
+<img width="1064" height="597" alt="Animated recording of Skate" src="https://github.com/user-attachments/assets/4e1b2b71-9c43-4244-8a3e-7cdbb014d906" />
+
 
 ## Community
 
@@ -49,6 +50,10 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 		```
 		$ MIX_ENV=test mix ecto.setup
 		```
+1. If the local environment can not be accessed due to SSL issues, try to regenerate the keys with:
+  - `openssl req -x509 -newkey rsa:4096 -keyout priv/cert/selfsigned_key.pem -out priv/cert/selfsigned.pem -sha256 -days 365 -nodes -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1”`
+  - You may need to add and trust the cert in your macos keychain
+
 ### Updating
 
 After updating merged changes or checking out a new branch (e.g. to test a new feature), you may need to do the following to update the dependencies:
@@ -64,7 +69,7 @@ Update them independently with the following commands
 ## Running the application
 
 - Start Phoenix endpoint with `` mix phx.server ``
-- Visit [`localhost:4000`](http://localhost:4000) from your browser.
+- Visit [`localhost:4000`](https://localhost:4000) from your browser.
 
 If you see the “data outage” banner when you open your local version of Skate, it means the software can’t get certain info, like crowding, which you need to be on the MBTA network for. Most features would work locally without network access.  
 
