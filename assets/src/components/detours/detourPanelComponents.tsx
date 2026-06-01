@@ -1,4 +1,5 @@
 import React from "react"
+import { DetourDirection } from "../../models/detour"
 import { Stop } from "../../schedule"
 import {
   Badge,
@@ -12,39 +13,103 @@ import { RoutePill } from "../routePill"
 import { Files, ExclamationDiamond } from "../../helpers/bsIcons"
 import { supportLinkUrl } from "../../navLinkData"
 
+interface DirectionsProps {
+  directions?: DetourDirection[]
+  typedDirections?: string
+  helperText?: React.ReactElement
+  editForm?: React.ReactElement
+}
+
+export const Directions = ({
+  directions,
+  typedDirections,
+  helperText,
+  editForm,
+}: DirectionsProps) => {
+  const Body = () => {
+    if (typedDirections) return <p>{typedDirections}</p> // placeholder
+    if (editForm) return editForm
+    if (directions)
+      return (
+        <ListGroup as="ol">
+          {directions.map((d) => (
+            <ListGroup.Item key={d.instruction} as="li">
+              {d.instruction == "Regular Route" ? (
+                <strong className="fw-medium">{d.instruction}</strong>
+              ) : (
+                d.instruction
+              )}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      )
+    return helperText
+  }
+
+  return (
+    <section className="my-4">
+      <h2 className="c-diversion-panel__section-header">Detour Directions</h2>
+      <Body />
+    </section>
+  )
+}
+
 interface ConnectionPointsProps {
-  connectionPoints: [string, string]
+  connectionPoints?: [string, string]
+  typedConnectionPoints?: string
 }
 
 export const ConnectionPoints = ({
-  connectionPoints: [connectionPointStart, connectionPointEnd],
+  connectionPoints,
+  typedConnectionPoints,
 }: ConnectionPointsProps) => (
   <section className="mb-4">
     <h2 className="c-diversion-panel__section-header">Connection Points</h2>
-    <ListGroup as="ul">
-      <ListGroup.Item>{connectionPointStart}</ListGroup.Item>
-      <ListGroup.Item>{connectionPointEnd}</ListGroup.Item>
-    </ListGroup>
+
+    {typedConnectionPoints ? (
+      <p>{typedConnectionPoints}</p> // placeholder
+    ) : (
+      connectionPoints && (
+        <ListGroup as="ul">
+          <ListGroup.Item>{connectionPoints[0]}</ListGroup.Item>
+          <ListGroup.Item>{connectionPoints[1]}</ListGroup.Item>
+        </ListGroup>
+      )
+    )}
   </section>
 )
 
 interface MissedStopsProps {
-  missedStops: Stop[]
+  missedStops?: Stop[]
+  typedMissedStops?: string
 }
 
-export const MissedStops = ({ missedStops }: MissedStopsProps) => (
+export const MissedStops = ({
+  missedStops,
+  typedMissedStops,
+}: MissedStopsProps) => (
   <section className="mb-4">
     <h2 className="c-diversion-panel__section-header">
       Missed Stops
-      <Badge pill bg="missed-stop" className="ms-2 fs-4">
-        {missedStops.length}
-      </Badge>
+      {missedStops && (
+        <Badge pill bg="missed-stop" className="ms-2 fs-4">
+          {missedStops.length}
+        </Badge>
+      )}
     </h2>
-    <ListGroup as="ul">
-      {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
-        <ListGroup.Item key={missedStop.id}>{missedStop.name}</ListGroup.Item>
-      ))}
-    </ListGroup>
+    {typedMissedStops ? (
+      <p>{typedMissedStops}</p> // placeholder
+    ) : (
+      missedStops && (
+        <ListGroup as="ul">
+          {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
+            <ListGroup.Item key={missedStop.id}>
+              {missedStop.name}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      )
+    )}
   </section>
 )
 
@@ -125,3 +190,9 @@ export const IssueButton = () => (
     Report an issue
   </Button>
 )
+
+// text detour form ?
+
+// text only alert
+
+//

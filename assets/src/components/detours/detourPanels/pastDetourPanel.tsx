@@ -5,6 +5,7 @@ import { Stop } from "../../../schedule"
 import { ArrowLeft, Copy } from "../../../helpers/bsIcons"
 import { Button, ListGroup } from "react-bootstrap"
 import {
+  Directions,
   AffectedRoute,
   ConnectionPoints,
   CopyButton,
@@ -64,30 +65,9 @@ export const PastDetourPanel = ({
           routeDirection={routeDirection}
         />
 
-        <section className="my-4">
-          <h2 className="c-diversion-panel__section-header">
-            Detour Directions
-          </h2>
-          {directions ? (
-            <ListGroup as="ol">
-              {directions.map((d) => (
-                <ListGroup.Item key={d.instruction} as="li">
-                  {d.instruction == "Regular Route" ? (
-                    <strong className="fw-medium">{d.instruction}</strong>
-                  ) : (
-                    d.instruction
-                  )}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          ) : null}
-        </section>
-
-        {connectionPoints && (
-          <ConnectionPoints connectionPoints={connectionPoints} />
-        )}
-
-        {missedStops && <MissedStops missedStops={missedStops} />}
+        <Directions directions={directions} />
+        <ConnectionPoints connectionPoints={connectionPoints} />
+        <MissedStops missedStops={missedStops} />
       </Panel.Body.ScrollArea>
       <Panel.Body.Footer className="d-flex flex-column">
         <IssueButton />

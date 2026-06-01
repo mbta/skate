@@ -1,4 +1,4 @@
-import React, { FormEvent, PropsWithChildren, useState } from "react"
+import React, { PropsWithChildren, useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { TypedDetour } from "../../../models/detour"
 import { Panel } from "../diversionPage"
@@ -12,7 +12,7 @@ export interface TypeDetourPanelProps extends PropsWithChildren {
   routeDirection: string
   typedDetour: TypedDetour
   onBack: () => void
-  onSubmitDetour?: () => void
+  onSubmitDetour: () => void
   onDeleteDetour?: () => void
   onChangeTypedDetour: (typedDetour: Partial<TypedDetour>) => void
   isActiveDetour: boolean
@@ -33,13 +33,13 @@ export const TypeDetourPanel = ({
 }: TypeDetourPanelProps) => {
   const [validated, setValidated] = useState(false)
 
-  const onSubmit = (e: SubmitEvent) => {
+  const onSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault()
     const form = e.currentTarget as HTMLFormElement
-    if (form.checkValidity() === false) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
 
+    if (form.checkValidity() === true) {
+      onSubmitDetour()
+    }
     setValidated(true)
   }
 

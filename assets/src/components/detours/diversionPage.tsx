@@ -405,6 +405,7 @@ export const DiversionPage = ({
             connectionPoints?.end?.name ?? "N/A",
           ]}
           missedStops={missedStops}
+          typedDetour={typedDetour}
           onChangeDetourText={(detourText: string) =>
             send({ type: "detour.share.edit-directions", detourText })
           }
