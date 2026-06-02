@@ -1,9 +1,10 @@
-import React from "react"
-import { DetourDirection } from "../../models/detour"
+import React, { useState } from "react"
+import { DetourDirection, TypedDetour } from "../../models/detour"
 import { Stop } from "../../schedule"
 import {
   Badge,
   Button,
+  Form,
   ListGroup,
   OverlayTrigger,
   Popover,
@@ -113,6 +114,148 @@ export const MissedStops = ({
   </section>
 )
 
+interface TypedDetourFormProps {
+  typedDetour: TypedDetour
+  onChangeTypedDetour?: (typedDetour: Partial<TypedDetour>) => void
+  onSubmitDetour?: () => void
+}
+
+export const TypeDetourForm = ({
+  typedDetour,
+  onChangeTypedDetour,
+  onSubmitDetour,
+}: TypedDetourFormProps) => {
+  const [validated, setValidated] = useState(false)
+  const isReadOnly = onSubmitDetour === undefined
+
+  const onSubmit = (e: React.SyntheticEvent) => {
+    if (!onSubmitDetour) return
+
+    e.preventDefault()
+    const form = e.currentTarget as HTMLFormElement
+
+    if (form.checkValidity() === true) {
+      onSubmitDetour()
+    }
+    setValidated(true)
+  }
+
+  const defaultValue = (value: string): string => {
+    if (isReadOnly && !value) return "—"
+
+    return value
+  }
+
+  return (
+    <section className="my-4">
+      <Form
+        id="type-detour-form"
+        noValidate
+        validated={validated}
+        onSubmit={onSubmit}
+      >
+        <p className="fst-italic">
+          Enter detour details below.
+          <br />
+          Directions are required
+        </p>
+        <Form.Group className="my-4">
+          <Form.Label
+            htmlFor="form-directions"
+            className="d-block mb-3 c-diversion-panel__section-header"
+          >
+            Directions
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            defaultValue={defaultValue(typedDetour.directions)}
+            onChange={({ target: { value } }) => {
+              onChangeTypedDetour && onChangeTypedDetour({ directions: value })
+            }}
+            data-fs-element="Direction Text"
+            required
+            maxLength={5000}
+            id="form-directions"
+            aria-describedby="form-directions-character-count form-directions-feedback"
+            readOnly={isReadOnly}
+          />
+          <Form.Control.Feedback id="form-directions-feedback" type="invalid">
+            Directions are required
+          </Form.Control.Feedback>
+          {!isReadOnly && (
+            <Form.Text
+              muted
+              className="d-block text-end"
+              id="form-directions-character-count"
+            >
+              {typedDetour.directions.length}/5000
+            </Form.Text>
+          )}
+        </Form.Group>
+        <Form.Group className="my-4">
+          <Form.Label
+            htmlFor="form-connection-points"
+            className="d-block mb-3 c-diversion-panel__section-header"
+          >
+            Connection Points <span className="fw-normal">(optional)</span>
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            defaultValue={defaultValue(typedDetour.connectionPoints)}
+            onChange={({ target: { value } }) =>
+              onChangeTypedDetour &&
+              onChangeTypedDetour({ connectionPoints: value })
+            }
+            data-fs-element="Connection Point Text"
+            maxLength={1000}
+            id="form-connection-points"
+            aria-describedby="form-connection-points-character-count"
+            readOnly={isReadOnly}
+          />
+          {!isReadOnly && (
+            <Form.Text
+              muted
+              className="d-block text-end"
+              id="form-connection-points-character-count"
+            >
+              {typedDetour.connectionPoints.length}/1000
+            </Form.Text>
+          )}
+        </Form.Group>
+        <Form.Group>
+          <Form.Label
+            htmlFor="form-missed-stops"
+            className="d-block mb-3 c-diversion-panel__section-header"
+          >
+            Missed Stops <span className="fw-normal">(optional)</span>
+          </Form.Label>
+          <Form.Control
+            as="textarea"
+            defaultValue={defaultValue(typedDetour.missedStops)}
+            onChange={({ target: { value } }) =>
+              onChangeTypedDetour && onChangeTypedDetour({ missedStops: value })
+            }
+            data-fs-element="Missed Stops Text"
+            maxLength={1000}
+            id="form-missed-stops"
+            aria-describedby="form-missed-stops-character-count"
+            readOnly={isReadOnly}
+          />
+          {!isReadOnly && (
+            <Form.Text
+              muted
+              className="d-block text-end"
+              id="form-missed-stops-character-count"
+            >
+              {typedDetour.missedStops.length}/1000
+            </Form.Text>
+          )}
+        </Form.Group>
+      </Form>
+    </section>
+  )
+}
+
 interface AffectedRouteProps {
   routeName: string
   routeDescription: string
@@ -190,9 +333,3 @@ export const IssueButton = () => (
     Report an issue
   </Button>
 )
-
-// text detour form ?
-
-// text only alert
-
-//

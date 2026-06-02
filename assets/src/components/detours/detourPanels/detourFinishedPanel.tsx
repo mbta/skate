@@ -8,6 +8,7 @@ import {
   Directions,
   MissedStops,
   IssueButton,
+  TypeDetourForm,
 } from "../detourPanelComponents"
 import { Stop } from "../../../schedule"
 import { TypedDetour } from "../../../models/detour"
@@ -72,31 +73,31 @@ export const DetourFinishedPanel = ({
               (e.g., `border`, `padding`, `margin`, `font`) between the `<Form.Control/>`
               and the `.c-autosized-textarea::after` pseudo-element.
           */}
-        <Directions
-          typedDirections={typedDetour?.directions}
-          editForm={
-            <div
-              className="c-autosized-textarea mb-2"
-              data-replicated-value={editableDirections}
-            >
-              <Form.Control
-                as="textarea"
-                value={editableDirections}
-                onChange={({ target: { value } }) => onChangeDetourText(value)}
-                data-fs-element="Detour Text"
-              />
-            </div>
-          }
-        />
-
-        <ConnectionPoints
-          connectionPoints={connectionPoints}
-          typedConnectionPoints={typedDetour?.connectionPoints}
-        />
-        <MissedStops
-          missedStops={missedStops}
-          typedMissedStops={typedDetour?.missedStops}
-        />
+        {typedDetour ? (
+          <TypeDetourForm typedDetour={typedDetour} />
+        ) : (
+          <>
+            <Directions
+              editForm={
+                <div
+                  className="c-autosized-textarea mb-2"
+                  data-replicated-value={editableDirections}
+                >
+                  <Form.Control
+                    as="textarea"
+                    value={editableDirections}
+                    onChange={({ target: { value } }) =>
+                      onChangeDetourText(value)
+                    }
+                    data-fs-element="Detour Text"
+                  />
+                </div>
+              }
+            />
+            <ConnectionPoints connectionPoints={connectionPoints} />
+            <MissedStops missedStops={missedStops} />
+          </>
+        )}
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex flex-column">

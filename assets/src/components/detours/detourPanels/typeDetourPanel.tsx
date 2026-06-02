@@ -1,9 +1,9 @@
-import React, { PropsWithChildren, useState } from "react"
-import { Button, Form } from "react-bootstrap"
+import React, { PropsWithChildren } from "react"
+import { Button } from "react-bootstrap"
 import { TypedDetour } from "../../../models/detour"
 import { Panel } from "../diversionPage"
 import { ArrowLeft, Power, Trash } from "../../../helpers/bsIcons"
-import { AffectedRoute } from "../detourPanelComponents"
+import { AffectedRoute, TypeDetourForm } from "../detourPanelComponents"
 
 export interface TypeDetourPanelProps extends PropsWithChildren {
   routeName: string
@@ -31,18 +31,6 @@ export const TypeDetourPanel = ({
   onChangeTypedDetour,
   children,
 }: TypeDetourPanelProps) => {
-  const [validated, setValidated] = useState(false)
-
-  const onSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    const form = e.currentTarget as HTMLFormElement
-
-    if (form.checkValidity() === true) {
-      onSubmitDetour()
-    }
-    setValidated(true)
-  }
-
   return (
     <Panel as="article" className="c-diversion-panel">
       <Panel.Header className={isActiveDetour ? "active-detour" : ""}>
@@ -69,106 +57,11 @@ export const TypeDetourPanel = ({
             routeDirection={routeDirection}
           />
 
-          <section className="my-4">
-            <Form
-              id="type-detour-form"
-              noValidate
-              validated={validated}
-              onSubmit={onSubmit}
-            >
-              <p className="fst-italic">
-                Enter detour details below.
-                <br />
-                Directions are required
-              </p>
-              <Form.Group className="my-4">
-                <Form.Label
-                  htmlFor="form-directions"
-                  className="d-block mb-3 c-diversion-panel__section-header"
-                >
-                  Directions
-                </Form.Label>
-                <Form.Control
-                  as="textarea"
-                  defaultValue={typedDetour.directions}
-                  onChange={({ target: { value } }) =>
-                    onChangeTypedDetour({ directions: value })
-                  }
-                  data-fs-element="Direction Text"
-                  required
-                  maxLength={5000}
-                  id="form-directions"
-                  aria-describedby="form-directions-character-count form-directions-feedback"
-                />
-                <Form.Control.Feedback
-                  id="form-directions-feedback"
-                  type="invalid"
-                >
-                  Directions are required
-                </Form.Control.Feedback>
-                <Form.Text
-                  muted
-                  className="d-block text-end"
-                  id="form-directions-character-count"
-                >
-                  {typedDetour.directions.length}/5000
-                </Form.Text>
-              </Form.Group>
-              <Form.Group className="my-4">
-                <Form.Label
-                  htmlFor="form-connection-points"
-                  className="d-block mb-3 c-diversion-panel__section-header"
-                >
-                  Connection Points{" "}
-                  <span className="fw-normal">(optional)</span>
-                </Form.Label>
-                <Form.Control
-                  as="textarea"
-                  defaultValue={typedDetour.connectionPoints}
-                  onChange={({ target: { value } }) =>
-                    onChangeTypedDetour({ connectionPoints: value })
-                  }
-                  data-fs-element="Connection Point Text"
-                  maxLength={1000}
-                  id="form-connection-points"
-                  aria-describedby="form-connection-points-character-count"
-                />
-                <Form.Text
-                  muted
-                  className="d-block text-end"
-                  id="form-connection-points-character-count"
-                >
-                  {typedDetour.connectionPoints.length}/1000
-                </Form.Text>
-              </Form.Group>
-              <Form.Group>
-                <Form.Label
-                  htmlFor="form-missed-stops"
-                  className="d-block mb-3 c-diversion-panel__section-header"
-                >
-                  Missed Stops <span className="fw-normal">(optional)</span>
-                </Form.Label>
-                <Form.Control
-                  as="textarea"
-                  defaultValue={typedDetour.missedStops}
-                  onChange={({ target: { value } }) =>
-                    onChangeTypedDetour({ missedStops: value })
-                  }
-                  data-fs-element="Missed Stops Text"
-                  maxLength={1000}
-                  id="form-missed-stops"
-                  aria-describedby="form-missed-stops-character-count"
-                />
-                <Form.Text
-                  muted
-                  className="d-block text-end"
-                  id="form-missed-stops-character-count"
-                >
-                  {typedDetour.missedStops.length}/1000
-                </Form.Text>
-              </Form.Group>
-            </Form>
-          </section>
+          <TypeDetourForm
+            typedDetour={typedDetour}
+            onChangeTypedDetour={onChangeTypedDetour}
+            onSubmitDetour={onSubmitDetour}
+          />
         </Panel.Body.ScrollArea>
 
         <Panel.Body.Footer className="d-flex flex-column">
