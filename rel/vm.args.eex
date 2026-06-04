@@ -2,7 +2,7 @@
 ## -mode/-name/-sname/-setcookie are configured via env vars, do not set them here
 
 ## Give more memory to the literal allocator, used by :persistent_term
-+MIscs 2048
++MIscs 4096
 
 ## Set and restrict Erlang RPC port
 -kernel inet_dist_listen_min 57195

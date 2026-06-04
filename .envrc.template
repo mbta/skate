@@ -3,8 +3,8 @@
 ## Required Variables
 ## * These are the values you'll need to be prepared to update to run Skate locally
 
-## Erlang/OTP settings, pass "+MIscs 2048" to allocate enough memory for literals in your local dev environment
-export ERL_FLAGS="+MIscs 2048"
+## Erlang/OTP settings, pass "+MIscs 4096" to allocate enough memory for literals in your local dev environment
+export ERL_FLAGS="+MIscs 4096"
 
 ## Authentication/authorization secret. 
 ## You _can_ generate a value using `mix phx.gen.secret`
