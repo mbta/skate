@@ -44,12 +44,13 @@ defmodule Skate.Detours.Detour do
           %{
             status: :active,
             activated_at: activated_at,
-            estimated_duration: estimated_duration,
-            state: state
+            estimated_duration: estimated_duration
           } = db_detour
         ) do
+      state = Map.get(db_detour, :state, %{})
+
       if activated_at == nil || estimated_duration == nil do
-        selected_duration = state["context"]["selectedDuration"]
+        selected_duration = get_in(state, ["context", "selectedDuration"])
 
         Logger.warning(
           "active_detour_missing_info id=#{db_detour.id} activated_at=#{inspect(activated_at)} estimated_duration=#{inspect(estimated_duration)} selected_duration=#{selected_duration}"
