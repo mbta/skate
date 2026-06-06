@@ -16,6 +16,13 @@ defmodule Skate.Detours.DbTest do
       assert [%{id: ^id}] = Detours.list_detours()
     end
 
+    test "list_detours/0 does not return state or coordinates fields" do
+      detour_fixture()
+      assert [detour] = Detours.list_detours()
+      refute Map.has_key?(detour, :state)
+      refute Map.has_key?(detour, :coordinates)
+    end
+
     test "get_detour!/1 returns the detour with given id" do
       detour = detour_fixture()
 
