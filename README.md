@@ -127,6 +127,14 @@ View the application in your browser at [`https://localhost:4000`](https://local
 > ```shell
 > mix cache.clean
 > ```
+>
+> If the issue persists, you can also increase the memory for the Erlang virtual machine to accomodate the
+> size indicated in the error message:
+>
+> ```shell
+> # allocate 4000MB = 4GB
+> ERL_FLAGS="+MIscs 4000" mix phx.server
+> ```
 
 ## Running tests
 
