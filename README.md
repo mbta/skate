@@ -102,10 +102,7 @@ View the application in your browser at [`https://localhost:4000`](https://local
 >   -sha256 -days 365 -nodes -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
 > ```
 > 
-> You may also need to add and trust the root certificate authority in your macOS keychain:
-> 
-> <details>
-> <summary>Adding and trusing the root CA</summary>
+> You may also need to add and trust the root certificate authority in your macOS keychain.
 >
 > First, add the relevant file to the keychain (you will be prompted to enter your password):
 >
@@ -115,7 +112,6 @@ View the application in your browser at [`https://localhost:4000`](https://local
 >
 > Finally, configure the keychain to 'Always trust' the entry named 'localhost' under the 'Certificates' tab
 > as explained in [the official Apple documentation](https://support.apple.com/guide/keychain-access/change-the-trust-settings-of-a-certificate-kyca11871/mac).
-> </details>
 
 > [!CAUTION]
 > You may encounter the following 'out-of-memory' error when attempting to restart the application:
