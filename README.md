@@ -61,6 +61,7 @@ mix setup
 > [!NOTE]
 > Running `mix test` (as described in [the testing section](#running-tests)) will also automatically
 > initialize the database, but you can do so manually as follows:
+> 
 > ```shell
 > MIX_ENV=test mix ecto.setup
 > ```
@@ -96,6 +97,7 @@ View the application in your browser at [`https://localhost:4000`](https://local
 
 > [!TIP]
 > If you cannot access your local deployment due to SSL/TLS issues, try to regenerate the keys with:
+> 
 > ```shell
 > openssl req -x509 newkey rsa:4096 \
 >   -keyout priv/cert/selfsigned_key.pem -out priv/cert/selfsigned.pem \
