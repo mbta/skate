@@ -62,7 +62,7 @@ mix setup
 > Running `mix test` (as described in [the testing section](#running-tests)) will also automatically
 > initialize the database, but you can do so manually as follows:
 > ```shell
-> $ MIX_ENV=test mix ecto.setup
+> MIX_ENV=test mix ecto.setup
 > ```
 
 ### Updating
