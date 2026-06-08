@@ -40,19 +40,30 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 
 ### Quick Setup
 
-1. Install language dependencies with `asdf install`
-1. Setup project with `mix setup`
-	- This command will create the database, so you must first ensure your Postgres server is running and you've updated your credentials in `.envrc.private` as described in "Configuration" above.
-1. (not necessary to run the application) 
-	- The `test` command will automatically setup the database when run. 
-	- You can setup the the testing database manually by running `mix ecto.setup` in the `test` envrionment 
-		specified via `MIX_ENV`
-		```
-		$ MIX_ENV=test mix ecto.setup
-		```
-1. If the local environment can not be accessed due to SSL issues, try to regenerate the keys with:
-  - `openssl req -x509 -newkey rsa:4096 -keyout priv/cert/selfsigned_key.pem -out priv/cert/selfsigned.pem -sha256 -days 365 -nodes -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1”`
-  - You may need to add and trust the cert in your macos keychain
+First, install the project dependencies:
+
+```shell
+asdf install
+```
+
+Next, initialize the project: 
+
+```shell
+mix setup
+```
+
+> [!IMPORTANT]
+> This command will also initialize the database, so you must first ensure you have:
+> 
+> 1. A running Postgres instance is running
+> 2. Updated your credentials in `.envrc.private` as described in [the previous section](#configuring-to-run-in-a-new-environment).
+
+> [!NOTE]
+> Running `mix test` (as described in [the testing section](#running-tests)) will also automatically
+> initialize the database, but you can do so manually as follows:
+> ```shell
+> $ MIX_ENV=test mix ecto.setup
+> ```
 
 ### Updating
 
