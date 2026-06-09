@@ -32,6 +32,8 @@ jobs:
     steps:
       # Git ref points to release tag 'v4'
       - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
+        with:
+          persist-credentials: false
       - name: Get version ids
         id: version-ids
         run: |
@@ -78,6 +80,7 @@ jobs:
       - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
         with:
           fetch-depth: 0
+          persist-credentials: false
       # Git ref points to release tag 'v1'
       - uses: getsentry/action-release@a74facf8a080ecbdf1cb355f16743530d712abb7
         env:

@@ -12,6 +12,8 @@ jobs:
     steps:
       # Git ref points to release tag 'v4'
       - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
+        with:
+          persist-credentials: false
       # cache the ASDF directory, using the values from .tool-versions
       - name: ASDF cache
         # Git ref points to release tag 'v4'
@@ -79,6 +81,8 @@ jobs:
     steps:
       # Git ref points to release tag 'v4'
       - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
+        with:
+          persist-credentials: false
       - name: Restart MQTT to load mosquitto/mosquitto.conf from checkout
         run: docker restart mqtt
       - name: ASDF cache
@@ -133,6 +137,8 @@ jobs:
     steps:
       # Git ref points to release tag 'v4'
       - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
+        with:
+          persist-credentials: false
       - name: ASDF cache
         # Git ref points to release tag 'v4'
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
