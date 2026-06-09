@@ -7,6 +7,10 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      # Required by GitHub Actions reusable workflow `./github/workflows/deploy-base.yml'
+      id-token: write
+      contents: read
     name: Deploy to Dev (ECS)
     uses: ./.github/workflows/deploy-base.yml
     with:

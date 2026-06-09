@@ -9,6 +9,10 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      # Required by GitHub Actions reusable workflow `./github/workflows/deploy-base.yml'
+      id-token: write
+      contents: read
     name: Deploy to Dev-green (ECS)
     if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-to-dev-green') }}
     uses: ./.github/workflows/deploy-base.yml
