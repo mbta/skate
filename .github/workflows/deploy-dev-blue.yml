@@ -9,9 +9,19 @@ on:
 
 jobs:
   deploy:
+    permissions:
+      # Required by GitHub Actions reusable workflow `./github/workflows/deploy-base.yml'
+      id-token: write
+      contents: read
     name: Deploy to Dev-blue (ECS)
     if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-to-dev-blue') }}
     uses: ./.github/workflows/deploy-base.yml
     with:
       env: dev-blue
-    secrets: inherit
+    secrets:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

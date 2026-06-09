@@ -11,4 +11,10 @@ jobs:
     uses: ./.github/workflows/deploy-base.yml
     with:
       env: dev
-    secrets: inherit
+    secrets:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
