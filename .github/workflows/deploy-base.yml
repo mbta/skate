@@ -35,7 +35,8 @@ jobs:
       - name: Get version ids
         id: version-ids
         run: |
-          echo "sentry-release=${{github.ref}}_${{github.sha}}" | tr / - >> "$GITHUB_OUTPUT"
+          sanitized="$(tr '/' '-' <<< "${GITHUB_REF}_${GITHUB_SHA}")"
+          echo "sentry-release=${sanitized}" >> "$GITHUB_OUTPUT"
       # Git ref points to release tag 'v2'
       - uses: mbta/actions/build-push-ecr@6cff1d5eef7e0d780190353278bc84fdf6177dab
         id: build-push
@@ -44,11 +45,13 @@ jobs:
           docker-repo: ${{ secrets.DOCKER_REPO }}
           docker-additional-args: --build-arg SENTRY_RELEASE=${{steps.version-ids.outputs.sentry-release}}
       - name: Upload static assets to S3
-        run: bash upload_assets.sh ${{ steps.build-push.outputs.docker-tag }} ${{steps.version-ids.outputs.sentry-release}}
+        run: bash upload_assets.sh "${DOCKER_TAG}" "${SENTRY_RELEASE}"
         env:
+          DOCKER_TAG: ${{ steps.build-push.outputs.docker-tag }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_RELEASE: ${{ steps.version-ids.outputs.sentry-release }}
 
 
   deploy_ecs:
