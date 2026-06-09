@@ -86,6 +86,7 @@ config :skate, Schedule.CacheFile, cache_filename: nil
 
 # Configures the endpoint
 config :skate, SkateWeb.Endpoint,
+  live_view: [signing_salt: "rORrV87qK4lWkJkI6LjkX9oSJ4z5CxlN"],
   url: [host: "localhost"],
   render_errors: [view: SkateWeb.ErrorView, accepts: ~w(html json)],
   pubsub_server: Skate.PubSub

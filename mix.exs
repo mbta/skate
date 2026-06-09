@@ -104,7 +104,9 @@ defmodule Skate.MixProject do
       {:timex, "~> 3.7.5"},
       {:typed_ecto_schema, "~> 0.4.1"},
       {:ueberauth, "~> 0.10.5"},
-      {:ueberauth_oidcc, "~> 0.4.0"}
+      {:ueberauth_oidcc, "~> 0.4.0"},
+      {:phoenix_live_dashboard, "~> 0.7"},
+      {:ecto_psql_extras, "~> 0.6"}
     ]
   end
 

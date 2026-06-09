@@ -1,6 +1,6 @@
 defmodule SkateWeb.Router do
   use SkateWeb, :router
-
+  import Phoenix.LiveDashboard.Router
   # We prefer to redirect at the load balancer level, but for security through
   # redundancy, we're keeping this plug just in case.
   # A note: this does not affect anything before the `Skate.Router` plug in `endpoint.ex`
@@ -189,5 +189,10 @@ defmodule SkateWeb.Router do
   defp put_user_token(conn, _) do
     token = Guardian.Plug.current_token(conn)
     assign(conn, :user_token, token)
+  end
+
+  scope "/" do
+    pipe_through :browser
+    live_dashboard "/dashboard"
   end
 end
