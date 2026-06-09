@@ -30,12 +30,14 @@ jobs:
       docker-tag-suffix: ${{ steps.build-push.outputs.docker-tag-suffix }}
       sentry-release: ${{ steps.version-ids.outputs.sentry-release }}
     steps:
-      - uses: actions/checkout@v4
+      # Git ref points to release tag 'v4'
+      - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
       - name: Get version ids
         id: version-ids
         run: |
           echo "sentry-release=${{github.ref}}_${{github.sha}}" | tr / - >> "$GITHUB_OUTPUT"
-      - uses: mbta/actions/build-push-ecr@v2
+      # Git ref points to release tag 'v2'
+      - uses: mbta/actions/build-push-ecr@6cff1d5eef7e0d780190353278bc84fdf6177dab
         id: build-push
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -62,16 +64,19 @@ jobs:
       ECS_CLUSTER: skate
       ECS_SERVICE: skate-${{ inputs.env }}
     steps:
-      - uses: mbta/actions/deploy-ecs@v2
+      # Git ref points to release tag 'v2'
+      - uses: mbta/actions/build-push-ecr@6cff1d5eef7e0d780190353278bc84fdf6177dab
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           ecs-cluster: ${{ env.ECS_CLUSTER }}
           ecs-service: ${{ env.ECS_SERVICE }}
           docker-tag: ${{ secrets.DOCKER_REPO }}:${{ needs.build.outputs.docker-tag-suffix }}
-      - uses: actions/checkout@v4
+      # Git ref points to release tag 'v4'
+      - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
         with:
           fetch-depth: 0
-      - uses: getsentry/action-release@v1
+      # Git ref points to release tag 'v1'
+      - uses: getsentry/action-release@a74facf8a080ecbdf1cb355f16743530d712abb7
         env:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
@@ -80,7 +85,8 @@ jobs:
           environment: ${{ inputs.env }}
           version: ${{needs.build.outputs.sentry-release}}
           ignore_missing: true
-      - uses: mbta/actions/notify-slack-deploy@v2
+      # Git ref points to release tag 'v2'
+      - uses: mbta/actions/notify-slack-deploy@6cff1d5eef7e0d780190353278bc84fdf6177dab
         if: ${{ !cancelled() }}
         with:
           webhook-url: ${{ secrets.SLACK_WEBHOOK }}
