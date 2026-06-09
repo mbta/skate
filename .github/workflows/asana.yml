@@ -21,6 +21,7 @@ jobs:
       # References
       # * https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#defining-access-for-the-github_token-scopes
       {}
+    # Git ref points to latest commit on branch 'main'
     uses: mbta/workflows/.github/workflows/asana.yml@ead2d40fcc0c546bd6f099a6d8fcd9f9950eab03
     with:
       development-section: "✏️ In Progress"
