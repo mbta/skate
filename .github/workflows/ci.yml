@@ -4,6 +4,8 @@ on: [push, pull_request]
 
 jobs:
   setup:
+    permissions:
+      contents: read
     name: ASDF and Elixir dependencies
     runs-on: ubuntu-latest
 
@@ -42,6 +44,8 @@ jobs:
           mix deps.get
 
   build_elixir:
+    permissions:
+      contents: read
     name: Build and test Elixir
     runs-on: ubuntu-latest
     needs: setup
@@ -113,6 +117,8 @@ jobs:
       - uses: mbta/actions/dialyzer@v2
 
   build_typescript:
+    permissions:
+      contents: read
     name: Build and test TypeScript
     runs-on: ubuntu-latest
     needs: setup
