@@ -8,6 +8,19 @@ on:
 
 jobs:
   call-workflow:
+    permissions:
+      # Deliberately assign no permissions to suppress the zizmor warning 
+      # 'warning[excessive-permissions]'. The referenced reusable workflow (and
+      # all its underlying components) only access the following information: 
+      # 
+      #  - GitHub Actions event payload
+      #  - GitHub Actions workflow inputs and secrets
+      # 
+      # None of these require any of the default permissions.
+      #
+      # References
+      # * https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#defining-access-for-the-github_token-scopes
+      {}
     uses: mbta/workflows/.github/workflows/asana.yml@ead2d40fcc0c546bd6f099a6d8fcd9f9950eab03
     with:
       development-section: "✏️ In Progress"
