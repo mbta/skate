@@ -61,7 +61,7 @@ jobs:
       GUARDIAN_SECRET_KEY: test_guardian_secret_keys
     services:
       postgres:
-        image: postgres
+        image: postgres:18
         ports:
           - 5432:5432
         env:
