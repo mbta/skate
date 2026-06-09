@@ -63,7 +63,7 @@ jobs:
       GUARDIAN_SECRET_KEY: test_guardian_secret_keys
     services:
       postgres:
-        image: postgres:18
+        image: postgres@sha256:6491a703d8705e7547aa0b170f2e6ccae7abc2622603a96ea61ddfea1a7b4248
         ports:
           - 5432:5432
         env:
@@ -72,7 +72,7 @@ jobs:
           POSTGRES_DB: ${{env.DATABASE_NAME}}
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       mosquitto:
-        image: eclipse-mosquitto:2.0
+        image: eclipse-mosquitto@sha256:914f529386804c8278a4e581526b9be5e1604df44b30daabc70aa97dcefe5268
         ports:
           - 1883:1883
         volumes:
