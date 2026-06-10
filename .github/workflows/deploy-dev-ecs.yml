@@ -2,14 +2,18 @@ name: Deploy to Dev (ECS)
 
 on:
   workflow_dispatch:
+    # This block is purposely empty.
   push:
     branches: [main]
+
+# - https://docs.zizmor.sh/audits/#excessive-permissions
+permissions:
+  {} # Deliberately assign no default permissions.
 
 jobs:
   deploy:
     permissions:
-      # Required by GitHub Actions reusable workflow `./github/workflows/deploy-base.yml'
-      id-token: write
+      id-token: write # Required to authenticate to AWS
       contents: read
     name: Deploy to Dev (ECS)
     uses: ./.github/workflows/deploy-base.yml
