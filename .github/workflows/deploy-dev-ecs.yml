@@ -2,13 +2,27 @@ name: Deploy to Dev (ECS)
 
 on:
   workflow_dispatch:
+    # This block is purposely empty.
   push:
     branches: [main]
 
+# - https://docs.zizmor.sh/audits/#excessive-permissions
+permissions:
+  {} # Deliberately assign no default permissions.
+
 jobs:
   deploy:
+    permissions:
+      id-token: write # Required to authenticate to AWS
+      contents: read
     name: Deploy to Dev (ECS)
     uses: ./.github/workflows/deploy-base.yml
     with:
       env: dev
-    secrets: inherit
+    secrets:
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

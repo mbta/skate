@@ -1,14 +1,28 @@
 name: Asana integration for GitHub PRs
 on:
   workflow_dispatch:
+    # This block is purposely empty.
   pull_request:
     types: [review_requested, closed, opened, reopened, converted_to_draft, edited, ready_for_review]
   pull_request_review:
     types: [submitted]
 
+# - https://docs.zizmor.sh/audits/#excessive-permissions
+permissions:
+  {} # Deliberately assign no default permissions.
+
 jobs:
   call-workflow:
-    uses: mbta/workflows/.github/workflows/asana.yml@main
+    # - https://docs.zizmor.sh/audits/#excessive-permissions
+    permissions:
+      # The referenced reusable workflow (and all its underlying components) 
+      # only access the GitHub Actions event payload and workflow inputs and 
+      # secrets. None of these require any of the default permissions.
+      #
+      # - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#defining-access-for-the-github_token-scopes
+      {}
+    # Git ref points to latest commit on branch 'main'
+    uses: mbta/workflows/.github/workflows/asana.yml@ead2d40fcc0c546bd6f099a6d8fcd9f9950eab03
     with:
       development-section: "✏️ In Progress"
       review-section: "👀 In Review"
