@@ -2,9 +2,8 @@ name: Build and Publish Storybook to GitHub Pages
  
 on:
   pull_request:
-    types:
-      - synchronize
-      - labeled
+    branches:
+      - main
 
 # - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#concurrency
 # - https://docs.zizmor.sh/audits/#concurrency-limits
