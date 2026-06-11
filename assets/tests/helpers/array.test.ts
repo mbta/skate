@@ -1,5 +1,6 @@
 import { describe, test, expect } from "@jest/globals"
 import {
+  appendIfNew,
   equalByElements,
   flatten,
   intersperseString,
@@ -105,5 +106,22 @@ describe("equalByElements", () => {
 
   test("returns false with different length", () => {
     expect(equalByElements(["a", "b"], ["c"])).toBeFalsy()
+  })
+})
+
+describe("appendIfNew", () => {
+  test("does not append falsy values", () => {
+    expect(appendIfNew([], undefined)).toEqual([])
+    expect(appendIfNew(["a", "b"], null)).toEqual(["a", "b"])
+  })
+
+  test("does not append values in original array", () => {
+    expect(appendIfNew(["a", "b", "c"], "b")).toEqual(["a", "b", "c"])
+    expect(appendIfNew([1, 2, 3], 2)).toEqual([1, 2, 3])
+  })
+
+  test("appends new values to array", () => {
+    expect(appendIfNew(["a", "b", "c"], "A")).toEqual(["a", "b", "c", "A"])
+    expect(appendIfNew([1, 2, 3], 0)).toEqual([1, 2, 3, 0])
   })
 })

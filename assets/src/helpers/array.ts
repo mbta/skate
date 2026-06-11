@@ -68,7 +68,7 @@ export const equalByElements = <T>(
 }
 
 export const appendIfNew = <T>(array: T[], val?: T): T[] => {
-  if (!val) return array
+  if (val === null || val === undefined) return array
   if (array.includes(val)) return array
   return [...array, val]
 }
