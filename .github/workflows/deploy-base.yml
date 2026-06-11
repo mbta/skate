@@ -76,7 +76,7 @@ jobs:
       ECS_SERVICE: skate-${{ inputs.env }}
     steps:
       # Git ref points to release tag 'v2'
-      - uses: mbta/actions/build-push-ecr@6cff1d5eef7e0d780190353278bc84fdf6177dab
+      - uses: mbta/actions/deploy-ecs@6cff1d5eef7e0d780190353278bc84fdf6177dab
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           ecs-cluster: ${{ env.ECS_CLUSTER }}
