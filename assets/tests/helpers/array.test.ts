@@ -110,9 +110,10 @@ describe("equalByElements", () => {
 })
 
 describe("appendIfNew", () => {
-  test("does not append falsy values", () => {
+  test("does not append empty values", () => {
     expect(appendIfNew([], undefined)).toEqual([])
-    expect(appendIfNew(["a", "b"], null)).toEqual(["a", "b"])
+    expect(appendIfNew([], null)).toEqual([])
+    expect(appendIfNew(["a", "b"], "")).toEqual(["a", "b"])
   })
 
   test("does not append values in original array", () => {
