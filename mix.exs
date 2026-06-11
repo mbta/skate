@@ -94,7 +94,7 @@ defmodule Skate.MixProject do
       {:plug_cowboy, "~> 2.1"},
       {:polyline, "~> 1.4.0"},
       {:postgrex, "~> 0.15"},
-      {:sentry, "~> 12.0"},
+      {:sentry, "~> 13.0"},
       {:server_sent_event_stage, "~> 1.2.1"},
       {:singleton, "~> 1.0"},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
