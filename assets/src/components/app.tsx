@@ -59,6 +59,9 @@ export const AppRoutes = () => {
     location.pathname.includes("/minimal") ||
     selectedVehicleOrGhost?.routeId
 
+  // Fetch routes for all vehicle ladders
+  // and the route for any vehicle tracked in an open view
+  // so long as it is not already present
   const routeIds = vehiclesByRouteIdNeeded
     ? appendIfNew(
         allOpenRouteIds(routeTabs),
