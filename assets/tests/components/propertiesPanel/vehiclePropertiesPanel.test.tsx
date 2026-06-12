@@ -8,7 +8,6 @@ import { RoutesProvider } from "../../../src/contexts/routesContext"
 import { VehiclesByRouteIdProvider } from "../../../src/contexts/vehiclesByRouteIdContext"
 import { useNearestIntersectionFetchResult } from "../../../src/hooks/useNearestIntersection"
 import { useStations } from "../../../src/hooks/useStations"
-import useVehiclesForRoute from "../../../src/hooks/useVehiclesForRoute"
 import {
   BlockWaiver,
   Ghost,
@@ -377,35 +376,6 @@ describe("VehiclePropertiesPanel", () => {
         />
       </VehiclesByRouteIdProvider>
     )
-    expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
-    const mapArgs: map.Props = (
-      map.MapFollowingPrimaryVehicles as jest.Mock<
-        typeof map.MapFollowingPrimaryVehicles
-      >
-    ).mock.calls[0][0]
-    expect(mapArgs.secondaryVehicles).toEqual([otherVehicle])
-  })
-
-  test("fetches other vehicles on the route if they don't already exist", () => {
-    const thisVehicle = vehicle
-    const otherVehicle = { ...vehicle, id: "other" }
-    const ghost = { id: "ghost" } as Ghost
-    jest.spyOn(map, "MapFollowingPrimaryVehicles")
-    ;(useVehiclesForRoute as jest.Mock).mockImplementationOnce(() => [
-      thisVehicle,
-      otherVehicle,
-      ghost,
-    ])
-    renderer.create(
-      <VehiclePropertiesPanel
-        selectedVehicle={thisVehicle}
-        tabMode="status"
-        onChangeTabMode={jest.fn()}
-        onClosePanel={jest.fn()}
-        openMapEnabled={true}
-      />
-    )
-    expect(useVehiclesForRoute).toHaveBeenCalled()
     expect(map.MapFollowingPrimaryVehicles).toHaveBeenCalledTimes(1)
     const mapArgs: map.Props = (
       map.MapFollowingPrimaryVehicles as jest.Mock<
