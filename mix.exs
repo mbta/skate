@@ -71,7 +71,7 @@ defmodule Skate.MixProject do
       {:ex_aws_rds, "~> 2.0.2"},
       {:ex_aws_secretsmanager, "~> 2.0"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
-      {:ex_machina, "~> 2.7.0", only: :test},
+      {:ex_machina, "~> 2.8.0", only: :test},
       {:excellent_migrations, "~> 0.1", only: [:dev], runtime: false},
       {:gen_stage, "~> 1.2.1"},
       {:guardian, "~> 2.0"},
