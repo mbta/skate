@@ -212,6 +212,7 @@ defmodule Schedule.Fetcher do
            fetch_zip(hastus_url, hastus_file_names, latest_hastus_timestamp),
          {:ok, gtfs_files, gtfs_timestamp} <-
            fetch_zip(gtfs_url, gtfs_file_names, latest_gtfs_timestamp) do
+      # credo:disable-for-lines:26 Credo.Check.Refactor.Nesting
       if hastus_files || gtfs_files do
         with {:ok, hastus_files, hastus_timestamp} <-
                (if hastus_files do

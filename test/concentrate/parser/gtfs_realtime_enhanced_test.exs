@@ -37,7 +37,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
           %TripUpdate{} -> false
         end)
 
-      assert length(stop_time_updates) > 0
+      assert stop_time_updates != []
       assert Enum.all?(stop_time_updates, &match?(%{remark: _remark}, &1))
     end
 
@@ -62,7 +62,7 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhancedTest do
       result = GTFSRealtimeEnhanced.parse(json)
       assert {:partial, entities} = result
       assert is_list(entities)
-      assert length(entities) > 0
+      assert entities != []
     end
 
     test "returns {:partial, entities} when incrementality is 1 (numeric DIFFERENTIAL)" do

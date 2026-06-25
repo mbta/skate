@@ -34,6 +34,6 @@ defmodule SkateWeb.ShuttleController do
   @spec has_shape?(Route.t()) :: boolean()
   defp has_shape?(route) do
     shapes_fn = Application.get_env(:skate_web, :shapes_fn, &Schedule.shapes/1)
-    length(shapes_fn.(route.id)) > 0
+    shapes_fn.(route.id) != []
   end
 end
