@@ -1,6 +1,8 @@
 defmodule Skate.Repo.Migrations.FkeyNotificationsDetourExpirationNotification do
   use Ecto.Migration
 
+  # excellent_migrations:safety-assured-for-this-file column_reference_added
+
   def change do
     alter table(:notifications) do
       add(
