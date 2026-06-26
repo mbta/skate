@@ -80,6 +80,8 @@ defmodule Skate.Repo.Migrations.BackfillDetourRoutes do
       headsign: get_in(state, ["context", "routePattern", "headsign"]),
       coordinates: get_in(state, ["context", "detourShape", "ok", "coordinates"])
     }
+    |> Enum.reject(fn {_field, value} -> is_nil(value) end)
+    |> Map.new()
   end
 
   defp throttle_change_in_batches(query_fun, change_fun, last_pos \\ 0)

@@ -146,7 +146,7 @@ defmodule Skate.Detours.Db.Detour do
       {{:data, table_value}, {:ok, state}} ->
         context_value = get_in(state, path)
 
-        if table_value != context_value do
+        if table_value != context_value and not is_nil(context_value) do
           put_change(changeset, field, context_value)
         else
           changeset
