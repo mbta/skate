@@ -1,19 +1,23 @@
-defmodule Skate.Repo.Migrations.BackfillFromDetourState.MigratingSchema do
+defmodule Skate.Repo.Migrations.BackfillDetourRoutes.MigratingSchema do
+  @moduledoc """
+  Detours database table schema frozen at this point in time.
+  """
+
   use Skate.Schema
 
   typed_schema "detours" do
     field :state, :map, null: true
+    field :route_id, :string, null: true
+    field :route_name, :string, null: true
+    field :route_pattern_id, :string, null: true
+    field :route_pattern_name, :string, null: true
+    field :headsign, :string, null: true
+    field :direction, :string, null: true
     field :coordinates, {:array, :map}, null: true
-    field :nearest_intersection, :string, null: true
-    field :start_point, :map, null: true
-    field :end_point, :map, null: true
-    field :waypoints, {:array, :map}, null: true
-    field :reason, :string, null: true
-    field :estimated_duration, :string, null: true
   end
 end
 
-defmodule Skate.Repo.Migrations.BackfillFromDetourState do
+defmodule Skate.Repo.Migrations.BackfillDetourRoutes do
   # https://fly.io/phoenix-files/backfilling-data/
 
   import Ecto.Query
@@ -32,7 +36,7 @@ defmodule Skate.Repo.Migrations.BackfillFromDetourState do
 
   defp page_query(last_id) do
     from(
-      r in Skate.Repo.Migrations.BackfillFromDetourState.MigratingSchema,
+      r in Skate.Repo.Migrations.BackfillDetourRoutes.MigratingSchema,
       select: r.id,
       where: r.id > ^last_id,
       order_by: [asc: r.id],
@@ -42,12 +46,12 @@ defmodule Skate.Repo.Migrations.BackfillFromDetourState do
 
   defp do_change(batch_of_ids) do
     from(
-      r in Skate.Repo.Migrations.BackfillFromDetourState.MigratingSchema,
+      r in Skate.Repo.Migrations.BackfillDetourRoutes.MigratingSchema,
       select: [:id, :state],
       where: r.id in ^batch_of_ids
     )
     |> repo().all(log: :info)
-    |> Enum.map(fn %Skate.Repo.Migrations.BackfillFromDetourState.MigratingSchema{
+    |> Enum.map(fn %Skate.Repo.Migrations.BackfillDetourRoutes.MigratingSchema{
                      id: id,
                      state: state
                    } = detour ->
@@ -62,16 +66,22 @@ defmodule Skate.Repo.Migrations.BackfillFromDetourState do
     |> (fn changed -> {:ok, changed} end).()
   end
 
+  # func (field, func) -> Ecto.Changeset.put_change(field, func(changeset))
+
   defp map_fields(state) do
+    direction_id = get_in(state, ["context", "routePattern", "directionId"])
+
     %{
-      coordinates: get_in(state, ["context", "detourShape", "ok", "coordinates"]),
-      nearest_intersection: get_in(state, ["context", "nearestIntersection"]),
-      start_point: get_in(state, ["context", "startPoint"]),
-      end_point: get_in(state, ["context", "endPoint"]),
-      waypoints: get_in(state, ["context", "waypoints"]),
-      reason: get_in(state, ["context", "selectedReason"]),
-      estimated_duration: get_in(state, ["context", "selectedDuration"])
+      route_id: get_in(state, ["context", "route", "id"]),
+      route_name: get_in(state, ["context", "route", "name"]),
+      direction: get_in(state, ["context", "route", "directionNames", "#{direction_id}"]),
+      route_pattern_id: get_in(state, ["context", "routePattern", "id"]),
+      route_pattern_name: get_in(state, ["context", "routePattern", "name"]),
+      headsign: get_in(state, ["context", "routePattern", "headsign"]),
+      coordinates: get_in(state, ["context", "detourShape", "ok", "coordinates"])
     }
+    |> Enum.reject(fn {_field, value} -> is_nil(value) end)
+    |> Map.new()
   end
 
   defp throttle_change_in_batches(query_fun, change_fun, last_pos \\ 0)
