@@ -13,6 +13,7 @@ defmodule Skate.Repo.Migrations.BackfillFromDetourState.MigratingSchema do
     field :headsign, :string, null: true
     field :route_id, :string, null: true
     field :route_name, :string, null: true
+    field :direction, :string, null: true
     field :route_pattern_id, :string, null: true
     field :route_pattern_name, :string, null: true
   end
