@@ -47,7 +47,6 @@ defmodule Skate.Detours.Detour do
             estimated_duration: estimated_duration
           } = db_detour
         ) do
-      Logger.info("from :active id=#{db_detour.id}")
       state = Map.get(db_detour, :state, %{})
 
       if activated_at == nil || estimated_duration == nil do
@@ -89,8 +88,6 @@ defmodule Skate.Detours.Detour do
          })
          when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) and
                 not is_nil(nearest_intersection) do
-      Logger.info("extract_from_attributes main id=#{id}")
-
       %__MODULE__{
         id: id,
         route: route_name,
@@ -124,7 +121,6 @@ defmodule Skate.Detours.Detour do
              updated_at: updated_at
            } = db_detour
          ) do
-      Logger.info("extract_from_attributes backup id=#{db_detour.id}")
       direction = Map.get(direction_names, Integer.to_string(direction_id))
 
       %__MODULE__{
