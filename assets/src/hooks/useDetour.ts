@@ -79,6 +79,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     selectedDuration,
     selectedReason,
     editedSelectedDuration,
+    isTextOnly,
     typedDetour,
   } = snapshot.context
 
@@ -219,6 +220,18 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     missed: missedStopIds.has(stop.id),
   }))
 
+  const setDefaultTypedDetour = () => {
+    if (!isTextOnly) return undefined
+    if (!typedDetour)
+      return {
+        directions: "",
+        connectionPoints: "",
+        missedStops: "",
+      }
+
+    return typedDetour
+  }
+
   return {
     /** The current state machine snapshot */
     snapshot,
@@ -348,10 +361,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     /**
      * Text only detour text object
      */
-    typedDetour: typedDetour ?? {
-      directions: "",
-      connectionPoints: "",
-      missedStops: "",
-    },
+    typedDetour: setDefaultTypedDetour(),
   }
 }

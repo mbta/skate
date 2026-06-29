@@ -367,7 +367,10 @@ export const DiversionPage = ({
           )}
         </DrawDetourPanel>
       )
-    } else if (snapshot.matches({ "Detour Drawing": "Type Detour" })) {
+    } else if (
+      snapshot.matches({ "Detour Drawing": "Type Detour" }) &&
+      typedDetour
+    ) {
       return (
         <TypeDetourPanel
           routeName={routeName ?? "??"}
