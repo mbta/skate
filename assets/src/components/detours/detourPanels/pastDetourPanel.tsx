@@ -3,7 +3,7 @@ import { Panel } from "../diversionPage"
 import { DetourDirection } from "../../../models/detour"
 import { Stop } from "../../../schedule"
 import { ArrowLeft, Copy } from "../../../helpers/bsIcons"
-import { Button, ListGroup } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import {
   Directions,
   AffectedRoute,

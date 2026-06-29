@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useId } from "react"
 import { DetourDirection } from "../../../models/detour"
-import { Button, ListGroup } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
 import {

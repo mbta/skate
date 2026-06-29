@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react"
 import { DetourShape } from "../../../models/detour"
-import { Button, ListGroup } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
 import { ArrowLeft, CardChecklist, Edit, Trash } from "../../../helpers/bsIcons"
