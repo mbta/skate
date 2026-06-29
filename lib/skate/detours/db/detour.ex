@@ -58,7 +58,7 @@ defmodule Skate.Detours.Db.Detour do
     |> cast(attrs, [:state, :activated_at])
     |> validate_activated_at()
     |> add_status()
-    |> prepare_changes(&populate_fields_from_state/1)
+    |> populate_fields_from_state()
     |> add_updated_at()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
@@ -144,10 +144,13 @@ defmodule Skate.Detours.Db.Detour do
 
   defp put_change_from_state(changeset, field, path) do
     case {fetch_field(changeset, field), fetch_change(changeset, :state)} do
-      {{:data, _}, {:ok, state}} ->
-        case get_in(state, path) do
-          nil -> changeset
-          value -> put_change(changeset, field, value)
+      {{:data, table_value}, {:ok, state}} ->
+        context_value = get_in(state, path)
+
+        if table_value != context_value and not is_nil(context_value) do
+          put_change(changeset, field, context_value)
+        else
+          changeset
         end
 
       _ ->

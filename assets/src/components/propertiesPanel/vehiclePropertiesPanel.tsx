@@ -1,9 +1,7 @@
 import React, { useContext } from "react"
-import { SocketContext } from "../../contexts/socketContext"
 import { VehiclesByRouteIdContext } from "../../contexts/vehiclesByRouteIdContext"
 import { useNearestIntersectionFetchResult } from "../../hooks/useNearestIntersection"
 import { useTripShape } from "../../hooks/useShapes"
-import useVehiclesForRoute from "../../hooks/useVehiclesForRoute"
 import { hasBlockWaiver } from "../../models/blockWaiver"
 import { isVehicleInScheduledService } from "../../models/vehicle"
 import {
@@ -63,14 +61,8 @@ const useRouteVehicles = (
   const existingVehiclesAndGhosts:
     | (VehicleInScheduledService | Ghost)[]
     | undefined = routeId === null ? undefined : vehiclesByRouteId[routeId]
-  // If we haven't already fetched this route, open a new channel.
-  const { socket } = useContext(SocketContext)
-  const newVehiclesAndGhosts: (VehicleInScheduledService | Ghost)[] | null =
-    useVehiclesForRoute(
-      socket,
-      existingVehiclesAndGhosts === undefined ? routeId : null
-    )
-  return (existingVehiclesAndGhosts || newVehiclesAndGhosts || [])
+
+  return (existingVehiclesAndGhosts || [])
     .filter(isVehicleInScheduledService)
     .filter((v) => v.id !== primaryVehicleId)
 }

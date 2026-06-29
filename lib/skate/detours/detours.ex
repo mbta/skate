@@ -166,12 +166,15 @@ defmodule Skate.Detours.Detours do
     detour_changeset =
       Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
+    changed_fields =
+      if detour_changeset.changes != %{}, do: Map.keys(detour_changeset.changes), else: [:state]
+
     detour_db_result =
       Skate.Repo.insert(
         detour_changeset,
         returning: true,
         conflict_target: [:id],
-        on_conflict: {:replace_all_except, [:inserted_at]}
+        on_conflict: {:replace, changed_fields}
       )
 
     case detour_db_result do
