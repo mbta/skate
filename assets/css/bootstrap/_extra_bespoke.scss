@@ -45,6 +45,6 @@
   }
 }
 
-.form-control[readonly] {
+:not(.display-editable) > .form-control[readonly] {
   font-family: $font-family-monospace;
 }
