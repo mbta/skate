@@ -40,19 +40,31 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 
 ### Quick Setup
 
-1. Install language dependencies with `asdf install`
-1. Setup project with `mix setup`
-	- This command will create the database, so you must first ensure your Postgres server is running and you've updated your credentials in `.envrc.private` as described in "Configuration" above.
-1. (not necessary to run the application) 
-	- The `test` command will automatically setup the database when run. 
-	- You can setup the the testing database manually by running `mix ecto.setup` in the `test` envrionment 
-		specified via `MIX_ENV`
-		```
-		$ MIX_ENV=test mix ecto.setup
-		```
-1. If the local environment can not be accessed due to SSL issues, try to regenerate the keys with:
-  - `openssl req -x509 -newkey rsa:4096 -keyout priv/cert/selfsigned_key.pem -out priv/cert/selfsigned.pem -sha256 -days 365 -nodes -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1”`
-  - You may need to add and trust the cert in your macos keychain
+First, install the project dependencies:
+
+```shell
+asdf install
+```
+
+Next, initialize the project: 
+
+```shell
+mix setup
+```
+
+> [!IMPORTANT]
+> This command will also initialize the database, so you must first ensure you have:
+> 
+> 1. A running Postgres instance is running
+> 2. Updated your credentials in `.envrc.private` as described in [the previous section](#configuring-to-run-in-a-new-environment).
+
+> [!NOTE]
+> Running `mix test` (as described in [the testing section](#running-tests)) will also automatically
+> initialize the database, but you can do so manually as follows:
+> 
+> ```shell
+> MIX_ENV=test mix ecto.setup
+> ```
 
 ### Updating
 
@@ -68,10 +80,61 @@ Update them independently with the following commands
 
 ## Running the application
 
-- Start Phoenix endpoint with `` mix phx.server ``
-- Visit [`localhost:4000`](https://localhost:4000) from your browser.
+Start the Phoenix server:
 
-If you see the “data outage” banner when you open your local version of Skate, it means the software can’t get certain info, like crowding, which you need to be on the MBTA network for. Most features would work locally without network access.  
+```shell
+mix phx.server
+```
+
+View the application in your browser at [`https://localhost:4000`](https://localhost:4000).
+
+### Troubleshooting
+
+> [!NOTE]
+> If you see the "data outage" banner when you access your local deployment, it means the application could not
+> get certain information (e.g., crowding) which can only be accessed from the MBTA network. However, most
+> features should work locally without network access.  
+
+> [!TIP]
+> If you cannot access your local deployment due to SSL/TLS issues, try to regenerate the keys with:
+> 
+> ```shell
+> openssl req -x509 newkey rsa:4096 \
+>   -keyout priv/cert/selfsigned_key.pem -out priv/cert/selfsigned.pem \
+>   -sha256 -days 365 -nodes -subj "/CN=localhost" -addext "subjectAltName=DNS:localhost,IP:127.0.0.1"
+> ```
+> 
+> You may also need to add and trust the root certificate authority in your macOS keychain.
+>
+> First, add the relevant file to the keychain (you will be prompted to enter your password):
+>
+> ```shell
+> open -a 'Keychain Access' 'priv/cert/selfsigned.pem'
+> ```
+>
+> Finally, configure the keychain to 'Always trust' the entry named 'localhost' under the 'Certificates' tab
+> as explained in [the official Apple documentation](https://support.apple.com/guide/keychain-access/change-the-trust-settings-of-a-certificate-kyca11871/mac).
+
+> [!CAUTION]
+> You may encounter the following 'out-of-memory' error when attempting to restart the application:
+>
+> ```
+> literal_alloc: Cannot allocate 2628384248 bytes of memory (of type "literal").
+> ```
+>
+> You can resolve this issue by clearing the cached GTFS feed file:
+>
+> ```shell
+> mix cache.clean
+> ```
+>
+> If the issue persists, you can also increase the memory for the Erlang virtual machine to accomodate the
+> size indicated in the error message:
+>
+> ```shell
+> # allocate 4000MB = 4GB
+> ERL_FLAGS="+MIscs 4000" mix phx.server
+> ```
 
 ## Running tests
 

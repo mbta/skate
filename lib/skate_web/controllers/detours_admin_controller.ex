@@ -29,6 +29,7 @@ defmodule SkateWeb.DetoursAdminController do
 
     conn
     |> assign(:detour, Detours.db_detour_to_detour(detour))
+    |> assign(:db_detour, detour)
     |> assign(:author, author)
     |> assign(:detour_diff, detour_diff)
     |> assign(:matches, matches)

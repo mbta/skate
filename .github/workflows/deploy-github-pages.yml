@@ -4,30 +4,42 @@ on:
   push:
     branches:
       - 'main'
- 
+
+# - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#concurrency
+# - https://docs.zizmor.sh/audits/#concurrency-limits
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+# - https://docs.zizmor.sh/audits/#excessive-permissions
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  {} # Deliberately assign no default permissions
  
 # List of jobs
 jobs:
   setup:
+    permissions:
+      contents: read
     name: ASDF and Elixir dependencies
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # Git ref points to release tag 'v4'
+      - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
+        with:
+          persist-credentials: false
       # cache the ASDF directory, using the values from .tool-versions
       - name: ASDF cache
-        uses: actions/cache@v4
+        # Git ref points to release tag 'v4'
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: ~/.asdf
           key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
         id: asdf-cache
       # only run `asdf install` if we didn't hit the cache
-      - uses: asdf-vm/actions/install@v4
-        if: steps.asdf-cache.outputs.cache-hit != 'true'
+      - if: steps.asdf-cache.outputs.cache-hit != 'true'
+        # Git ref points to release tag 'v4'
+        uses: asdf-vm/actions/install@156187456fbe441e7badfe93ec1fa4dda646b27e
       - name: Setup ASDF environment
         run: |
           ASDF_DIR=$HOME/.asdf
@@ -38,26 +50,35 @@ jobs:
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
-        uses: actions/cache@v4
+        # Git ref points to release tag 'v4'
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
       - name: Install dependencies
-        if: steps.deps-cache-outputs-cache-hit != 'true'
+        if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
 
   deploy:
+    permissions:
+      contents: read
+      id-token: write # Required to deploy GitHub Pages
+      pages: write # Required to deploy GitHub Pages
     name: Deploy
     runs-on: ubuntu-latest
     needs: setup
     steps:
-      - uses: actions/checkout@v4
+      # Git ref points to release tag 'v4'
+      - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365
+        with:
+          persist-credentials: false
       - name: ASDF cache
-        uses: actions/cache@v4
+        # Git ref points to release tag 'v4'
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: ~/.asdf
           key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
@@ -72,12 +93,14 @@ jobs:
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
-        uses: actions/cache@v4
+        # Git ref points to release tag 'v4'
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
-      - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+      # Git ref points to release tag 'v1.0.3'
+      - uses: bitovi/github-actions-storybook-to-github-pages@b75ece8f984a32b2adb322065d7a8a2cc8db2d52
         with:
           install_command: npm --prefix assets ci # default: npm ci
           build_command: npm run --prefix assets build-storybook # default: npm run build-storybook

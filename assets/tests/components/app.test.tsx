@@ -15,7 +15,6 @@ import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { SocketProvider } from "../../src/contexts/socketContext"
 import useDataStatus from "../../src/hooks/useDataStatus"
 import { ConnectionStatus } from "../../src/hooks/useSocket"
-import { initialState } from "../../src/state"
 import routeTabFactory from "../factories/routeTab"
 import useVehicles from "../../src/hooks/useVehicles"
 import { vehicleFactory } from "../factories/vehicle"
@@ -90,9 +89,22 @@ describe("App", () => {
     expect(result.queryByText(/Ongoing MBTA Data Outage/)).toBeVisible()
   })
 
-  test("pulls in vehicles / ghosts for routes in all open tabs", () => {
-    const mockState = {
-      ...initialState,
+  test("pulls in vehicles / ghosts for routes in all open tabs and views", async () => {
+    const vehicle = vehicleFactory.build({ routeId: "11" })
+    jest.mocked(useVehicles).mockReturnValue({
+      [vehicle.routeId!]: [vehicle],
+    })
+
+    mockUsePanelState({
+      currentView: {
+        selectedVehicleOrGhost: vehicle,
+        vppTabMode: undefined,
+        openView: OpenView.None,
+        previousView: OpenView.None,
+      },
+    })
+
+    const mockState = stateFactory.build({
       routeTabs: [
         routeTabFactory.build({
           ordering: 0,
@@ -101,7 +113,8 @@ describe("App", () => {
         }),
         routeTabFactory.build({ ordering: 1, selectedRouteIds: ["15", "22"] }),
       ],
-    }
+    })
+
     const mockDispatch = jest.fn()
     render(
       <StateDispatchProvider state={mockState} dispatch={mockDispatch}>
@@ -113,6 +126,7 @@ describe("App", () => {
       "1",
       "15",
       "22",
+      "11",
     ])
   })
 
