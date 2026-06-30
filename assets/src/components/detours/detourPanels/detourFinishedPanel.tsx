@@ -77,23 +77,21 @@ export const DetourFinishedPanel = ({
           <TypeDetourForm typedDetour={typedDetour} />
         ) : (
           <>
-            <Directions
-              editForm={
-                <div
-                  className="c-autosized-textarea mb-2"
-                  data-replicated-value={editableDirections}
-                >
-                  <Form.Control
-                    as="textarea"
-                    value={editableDirections}
-                    onChange={({ target: { value } }) =>
-                      onChangeDetourText(value)
-                    }
-                    data-fs-element="Detour Text"
-                  />
-                </div>
-              }
-            />
+            <Directions>
+              <div
+                className="c-autosized-textarea mb-2"
+                data-replicated-value={editableDirections}
+              >
+                <Form.Control
+                  as="textarea"
+                  value={editableDirections}
+                  onChange={({ target: { value } }) =>
+                    onChangeDetourText(value)
+                  }
+                  data-fs-element="Detour Text"
+                />
+              </div>
+            </Directions>
             <ConnectionPoints connectionPoints={connectionPoints} />
             <MissedStops missedStops={missedStops} />
           </>

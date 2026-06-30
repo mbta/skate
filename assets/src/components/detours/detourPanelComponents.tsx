@@ -18,18 +18,17 @@ interface DirectionsProps {
   directions?: DetourDirection[]
   typedDirections?: string
   helperText?: React.ReactElement
-  editForm?: React.ReactElement
+  children?: React.ReactElement
 }
 
 export const Directions = ({
   directions,
   typedDirections,
   helperText,
-  editForm,
+  children,
 }: DirectionsProps) => {
   const Body = () => {
     if (typedDirections) return <p>{typedDirections}</p> // placeholder
-    if (editForm) return editForm
     if (directions)
       return (
         <ListGroup as="ol">
@@ -50,7 +49,7 @@ export const Directions = ({
   return (
     <section className="my-4">
       <h2 className="c-diversion-panel__section-header">Detour Directions</h2>
-      <Body />
+      {children ?? <Body />}
     </section>
   )
 }
