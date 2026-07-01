@@ -298,7 +298,7 @@ export const DetourMap = ({
           setOldMapCenter={setOldMapCenter}
           zoom={zoom}
         />
-        <TextOnlyAlert />
+        {isTextOnly && <TextOnlyAlert />}
         <StreetViewControl
           position="topright"
           streetViewEnabled={streetViewEnabled}

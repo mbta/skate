@@ -27,7 +27,7 @@ export const Directions = ({
   helperText,
   children,
 }: DirectionsProps) => {
-  const Body = () => {
+  const renderBody = () => {
     if (typedDirections) return <p>{typedDirections}</p> // placeholder
     if (directions)
       return (
@@ -49,7 +49,7 @@ export const Directions = ({
   return (
     <section className="my-4">
       <h2 className="c-diversion-panel__section-header">Detour Directions</h2>
-      {children ?? <Body />}
+      {children ?? renderBody()}
     </section>
   )
 }
