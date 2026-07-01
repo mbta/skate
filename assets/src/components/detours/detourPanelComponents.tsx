@@ -168,9 +168,9 @@ export const TypeDetourForm = ({
           <Form.Control
             as="textarea"
             defaultValue={defaultValue(typedDetour.directions)}
-            onChange={({ target: { value } }) => {
+            onChange={({ target: { value } }) =>
               onChangeTypedDetour && onChangeTypedDetour({ directions: value })
-            }}
+            }
             data-fs-element="Direction Text"
             required
             maxLength={5000}
