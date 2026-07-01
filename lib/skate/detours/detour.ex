@@ -14,7 +14,7 @@ defmodule Skate.Detours.Detour do
             route: String.t(),
             direction: String.t(),
             name: String.t(),
-            intersection: String.t(),
+            intersection: String.t() | nil,
             updated_at: integer(),
             author_id: integer(),
             status: :active | :draft | :past,
@@ -59,7 +59,7 @@ defmodule Skate.Detours.Detour do
         )
       end
 
-      simple_detour = extract_from_attributes(db_detour)
+      simple_detour = extract_from_attributes(db_detour) |> dbg()
 
       %__MODULE__{
         simple_detour
@@ -89,8 +89,7 @@ defmodule Skate.Detours.Detour do
            status: status,
            is_text_only: is_text_only
          })
-         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) and
-                not is_nil(nearest_intersection) do
+         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) do
       %__MODULE__{
         id: id,
         route: route_name,

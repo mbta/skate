@@ -35,11 +35,19 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
   // Record snapshots when changed
   useEffect(() => {
     const snapshotSubscription = actorRef.subscribe((snap) => {
+      console.log(JSON.stringify(snap.value["Detour Drawing"]))
+      console.log(snap.context)
       const persistedSnapshot = actorRef.getPersistedSnapshot()
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
       // check for no-save tag before
-      if (snap.hasTag("no-save") || !snap.context.nearestIntersection) {
+      if (snap.hasTag("no-save")) {
+        console.log("no-save")
+        return
+      }
+
+      // do not save if drawn detour has no start point
+      if (!snap.context.isTextOnly && !snap.context.nearestIntersection) {
         return
       }
 

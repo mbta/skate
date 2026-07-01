@@ -18,12 +18,12 @@ export interface SimpleDetour {
   route: string
   direction: string
   name: string
-  intersection: string
   updatedAt: number
+  status: "active" | "draft" | "past"
+  intersection: string | null
   activatedAt: Date | null
   estimatedDuration: string | null
   reason: string | null
-  status: "active" | "draft" | "past"
   isTextOnly: boolean
 }
 
@@ -40,9 +40,9 @@ export const SimpleDetourData = type({
   route: string(),
   direction: string(),
   name: string(),
-  intersection: string(),
   updated_at: number(),
   status: detourStatus,
+  intersection: nullable(string()),
   activated_at: nullable(
     coerce(date(), string(), (dateStr) => new Date(dateStr))
   ),
@@ -56,10 +56,10 @@ export const SimpleActiveDetourData = type({
   route: string(),
   direction: string(),
   name: string(),
-  intersection: string(),
   updated_at: number(),
   status: literal("active"),
   activated_at: coerce(date(), string(), (dateStr) => new Date(dateStr)),
+  intersection: nullable(string()),
   estimated_duration: string(),
   reason: nullable(string()),
   is_text_only: boolean(),

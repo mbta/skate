@@ -303,7 +303,7 @@ const PopulatedDetourRows = ({
             </div>
           </td>
           <td className="align-middle p-3 u-hide-for-mobile">
-            {detour.intersection}
+            {detour.intersection || "—"}
           </td>
           {hasReasonColumn(status) && (
             <td className="align-middle p-3 u-hide-for-mobile">
