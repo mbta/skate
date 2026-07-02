@@ -1,6 +1,8 @@
 defmodule Skate.Repo.Migrations.AddDetourExpirationTasksTable do
   use Ecto.Migration
 
+  # excellent_migrations:safety-assured-for-this-file column_reference_added
+
   def change do
     create table("detour_expiration_tasks") do
       add :expires_at, :utc_datetime_usec, null: false

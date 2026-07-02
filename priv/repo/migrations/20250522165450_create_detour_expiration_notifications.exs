@@ -1,6 +1,8 @@
 defmodule Skate.Repo.Migrations.CreateDetourExpirationNotifications do
   use Ecto.Migration
 
+  # excellent_migrations:safety-assured-for-this-file column_reference_added
+
   def change do
     create table(:detour_expiration_notification) do
       add :estimated_duration, :string, null: false

@@ -1,6 +1,8 @@
 defmodule Skate.Repo.Migrations.CreateDetourNotificationsTable do
   use Ecto.Migration
 
+  # excellent_migrations:safety-assured-for-this-file column_reference_added
+
   def change do
     create table(:detour_notifications) do
       add :detour_id, references(:detours, on_delete: :nothing)
