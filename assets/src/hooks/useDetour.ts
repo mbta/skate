@@ -79,6 +79,8 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     selectedDuration,
     selectedReason,
     editedSelectedDuration,
+    isTextOnly,
+    typedDetour,
   } = snapshot.context
 
   const { result: unfinishedDetour } = useApiCall({
@@ -218,6 +220,18 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     missed: missedStopIds.has(stop.id),
   }))
 
+  const setDefaultTypedDetour = () => {
+    if (!isTextOnly) return undefined
+    if (!typedDetour)
+      return {
+        directions: "",
+        connectionPoints: "",
+        missedStops: "",
+      }
+
+    return typedDetour
+  }
+
   return {
     /** The current state machine snapshot */
     snapshot,
@@ -344,5 +358,9 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
      * Detour duration while editing is in progress
      */
     editedSelectedDuration,
+    /**
+     * Text only detour text object
+     */
+    typedDetour: setDefaultTypedDetour(),
   }
 }

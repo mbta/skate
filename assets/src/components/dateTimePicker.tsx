@@ -49,7 +49,10 @@ export const DateTimePicker = ({
   }, [value])
 
   return (
-    <div className={`input-group-filter ${className || ""}`} ref={inputRef}>
+    <div
+      className={`input-group-filter display-editable ${className || ""}`}
+      ref={inputRef}
+    >
       <input type="text" data-input placeholder="Select date" {...props} />
       <div className="">
         {value.length > 0 && (

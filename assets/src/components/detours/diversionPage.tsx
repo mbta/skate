@@ -20,6 +20,7 @@ import { Snapshot } from "xstate"
 import inTestGroup, { TestGroups } from "../../userInTestGroup"
 import { ActiveDetourPanel } from "./detourPanels/activeDetourPanel"
 import { PastDetourPanel } from "./detourPanels/pastDetourPanel"
+import { TypeDetourPanel } from "./detourPanels/typeDetourPanel"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { timeAgoLabel } from "../../util/dateTime"
 import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
@@ -132,6 +133,7 @@ export const DiversionPage = ({
     selectedReason,
 
     editedSelectedDuration,
+    typedDetour,
   } = useDetour(useDetourProps)
 
   const deleteDetourCallback = useCallback(() => {
@@ -366,6 +368,29 @@ export const DiversionPage = ({
         </DrawDetourPanel>
       )
     } else if (
+      snapshot.matches({ "Detour Drawing": "Type Detour" }) &&
+      typedDetour
+    ) {
+      return (
+        <TypeDetourPanel
+          routeName={routeName ?? "??"}
+          routeDescription={routeDescription ?? "??"}
+          routeOrigin={routeOrigin ?? "??"}
+          routeDirection={routeDirection ?? "??"}
+          typedDetour={typedDetour}
+          onSubmitDetour={() => send({ type: "detour.type.done" })}
+          onDeleteDetour={onDeleteDetour}
+          onBack={() => send({ type: "detour.type.back" })}
+          onChangeTypedDetour={(partialTypedDetour) => {
+            send({
+              type: "detour.type.edit-typed-detour",
+              typedDetour: partialTypedDetour,
+            })
+          }}
+          isActiveDetour={detourStatus === DetourStatus.Active}
+        />
+      )
+    } else if (
       snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
       editDetour
     ) {
@@ -383,6 +408,7 @@ export const DiversionPage = ({
             connectionPoints?.end?.name ?? "N/A",
           ]}
           missedStops={missedStops}
+          typedDetour={typedDetour}
           onChangeDetourText={(detourText: string) =>
             send({ type: "detour.share.edit-directions", detourText })
           }
@@ -738,6 +764,7 @@ export const DiversionPage = ({
             onClear={clear ?? undefined}
             stops={stops}
             editing={snapshot.matches({ "Detour Drawing": "Editing" })}
+            isTextOnly={snapshot.context.isTextOnly}
           />
         </div>
       </article>

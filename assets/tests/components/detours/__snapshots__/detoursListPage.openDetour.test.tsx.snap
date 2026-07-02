@@ -553,7 +553,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   Date
                 </label>
                 <div
-                  class="input-group-filter mt-2"
+                  class="input-group-filter display-editable mt-2"
                 >
                   <input
                     class="flatpickr-input"
@@ -1284,12 +1284,12 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                     </div>
                   </section>
                   <section
-                    class="mt-4"
+                    class="my-4"
                   >
                     <h2
                       class="c-diversion-panel__section-header"
                     >
-                      Directions
+                      Detour Directions
                     </h2>
                     <div
                       class="c-autosized-textarea mb-2"
@@ -1325,6 +1325,15 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                         N/A
                       </div>
                     </ul>
+                  </section>
+                  <section
+                    class="mb-4"
+                  >
+                    <h2
+                      class="c-diversion-panel__section-header"
+                    >
+                      Missed Stops
+                    </h2>
                   </section>
                 </div>
                 <div
@@ -2261,7 +2270,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   Date
                 </label>
                 <div
-                  class="input-group-filter mt-2"
+                  class="input-group-filter display-editable mt-2"
                 >
                   <input
                     class="flatpickr-input"
@@ -2996,12 +3005,12 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   </div>
                 </section>
                 <section
-                  class="mt-4"
+                  class="my-4"
                 >
                   <h2
                     class="c-diversion-panel__section-header"
                   >
-                    Directions
+                    Detour Directions
                   </h2>
                   <div
                     class="c-autosized-textarea mb-2"
@@ -3037,6 +3046,15 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                       N/A
                     </div>
                   </ul>
+                </section>
+                <section
+                  class="mb-4"
+                >
+                  <h2
+                    class="c-diversion-panel__section-header"
+                  >
+                    Missed Stops
+                  </h2>
                 </section>
               </div>
               <div

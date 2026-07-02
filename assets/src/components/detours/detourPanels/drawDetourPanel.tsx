@@ -1,12 +1,13 @@
 import React, { PropsWithChildren } from "react"
 import { DetourShape } from "../../../models/detour"
-import { Button, ListGroup } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
 import { ArrowLeft, CardChecklist, Edit, Trash } from "../../../helpers/bsIcons"
 import {
   AffectedRoute,
   ConnectionPoints,
+  Directions,
   IssueButton,
   MissedStops,
 } from "../detourPanelComponents"
@@ -82,26 +83,10 @@ export const DrawDetourPanel = ({
           routeDirection={routeDirection}
         />
 
-        <section className="my-4">
-          <h2 className="c-diversion-panel__section-header">
-            Detour Directions
-          </h2>
-          {directions ? (
-            <ListGroup as="ol">
-              {directions.map((d) => (
-                <ListGroup.Item key={d.instruction} as="li">
-                  {d.instruction == "Regular Route" ? (
-                    <strong className="fw-medium">{d.instruction}</strong>
-                  ) : (
-                    d.instruction
-                  )}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          ) : (
-            <DirectionsHelpText hasCantDraw={!!onCantDraw} />
-          )}
-        </section>
+        <Directions
+          directions={directions}
+          helperText={<DirectionsHelpText hasCantDraw={!!onCantDraw} />}
+        />
 
         {connectionPoints && (
           <ConnectionPoints connectionPoints={connectionPoints} />

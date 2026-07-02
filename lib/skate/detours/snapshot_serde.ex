@@ -140,7 +140,8 @@ defmodule Skate.Detours.SnapshotSerde do
       "selectedDuration" => selectedduration_from_detour(detour),
       "selectedReason" => selectedreason_from_detour(detour),
       "activatedAt" => activated_at_from_detour(detour),
-      "undoStack" => undostack_from_detour(detour)
+      "undoStack" => undostack_from_detour(detour),
+      "isTextOnly" => istextonly_from_detour(detour)
     })
   end
 
@@ -279,7 +280,7 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp finisheddetour_from_detour(_), do: nil
 
-  # defp editeddirections_from_detour(%Detour{finished_detour: finished_detour}), do: finished_detour
+  # defp editeddirections_from_detour(%Detour{edited_directions: edited_directions}), do: edited_directions
   defp editeddirections_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -293,7 +294,7 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp editeddirections_from_detour(_), do: nil
 
-  # defp undostack_from_detour(%Detour{finished_detour: finished_detour}), do: finished_detour
+  # defp undostack_from_detour(%Detour{undo_stack: undo_stack}), do: undo_stack
   defp undostack_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -306,6 +307,20 @@ defmodule Skate.Detours.SnapshotSerde do
   end
 
   defp undostack_from_detour(_), do: nil
+
+  # defp istextonly_from_detour(%Detour{is_text_only: is_text_only}), do: is_text_only
+  defp istextonly_from_detour(%Detour{
+         state: %{
+           "context" => %{
+             "isTextOnly" => is_text_only
+           }
+         }
+       }) do
+    log_fallback("isTextOnly")
+    is_text_only
+  end
+
+  defp istextonly_from_detour(_), do: nil
 
   # defp selectedduration_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
   defp selectedduration_from_detour(

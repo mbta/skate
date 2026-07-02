@@ -69,3 +69,9 @@ export interface FinishedDetour {
   routeSegments: RouteSegments
   detourShape: DetourShape
 }
+
+export interface TypedDetour {
+  missedStops: string
+  connectionPoints: string
+  directions: string
+}

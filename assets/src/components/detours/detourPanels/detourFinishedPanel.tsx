@@ -5,10 +5,13 @@ import { Panel } from "../diversionPage"
 import {
   ConnectionPoints,
   CopyButton,
+  Directions,
   MissedStops,
   IssueButton,
+  TypeDetourForm,
 } from "../detourPanelComponents"
 import { Stop } from "../../../schedule"
+import { TypedDetour } from "../../../models/detour"
 
 interface DetourFinishedPanelProps extends PropsWithChildren {
   onNavigateBack: () => void
@@ -21,6 +24,7 @@ interface DetourFinishedPanelProps extends PropsWithChildren {
   onDeleteDetour?: () => void
   affectedRoute?: ReactNode
   isActiveDetour: boolean
+  typedDetour?: TypedDetour
 }
 
 export const DetourFinishedPanel = ({
@@ -35,6 +39,7 @@ export const DetourFinishedPanel = ({
   children,
   affectedRoute,
   isActiveDetour,
+  typedDetour,
 }: DetourFinishedPanelProps) => (
   <Panel as="article" className="c-diversion-panel">
     <Panel.Header className={isActiveDetour ? "active-detour" : ""}>
@@ -57,9 +62,7 @@ export const DetourFinishedPanel = ({
 
         {affectedRoute}
 
-        <section className="mt-4">
-          <h2 className="c-diversion-panel__section-header">Directions</h2>
-          {/*
+        {/*
               We need a way to let the form area take up exactly the space of its content
               (to avoid double scrollbars). We used this approach:
               https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas
@@ -70,23 +73,29 @@ export const DetourFinishedPanel = ({
               (e.g., `border`, `padding`, `margin`, `font`) between the `<Form.Control/>`
               and the `.c-autosized-textarea::after` pseudo-element.
           */}
-          <div
-            className="c-autosized-textarea mb-2"
-            data-replicated-value={editableDirections}
-          >
-            <Form.Control
-              as="textarea"
-              value={editableDirections}
-              onChange={({ target: { value } }) => onChangeDetourText(value)}
-              data-fs-element="Detour Text"
-            />
-          </div>
-        </section>
-
-        {connectionPoints && (
-          <ConnectionPoints connectionPoints={connectionPoints} />
+        {typedDetour ? (
+          <TypeDetourForm typedDetour={typedDetour} />
+        ) : (
+          <>
+            <Directions>
+              <div
+                className="c-autosized-textarea mb-2"
+                data-replicated-value={editableDirections}
+              >
+                <Form.Control
+                  as="textarea"
+                  value={editableDirections}
+                  onChange={({ target: { value } }) =>
+                    onChangeDetourText(value)
+                  }
+                  data-fs-element="Detour Text"
+                />
+              </div>
+            </Directions>
+            <ConnectionPoints connectionPoints={connectionPoints} />
+            <MissedStops missedStops={missedStops} />
+          </>
         )}
-        {missedStops && <MissedStops missedStops={missedStops} />}
       </Panel.Body.ScrollArea>
 
       <Panel.Body.Footer className="d-flex flex-column">
