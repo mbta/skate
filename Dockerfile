@@ -49,7 +49,7 @@ ENV SENTRY_RELEASE=${SENTRY_RELEASE}
 
 RUN mix do compile --force, phx.digest, sentry.package_source_code, release
 
-FROM alpine:3.17.5
+FROM alpine:3.18.7
 
 RUN apk upgrade --no-cache --update
 
