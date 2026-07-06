@@ -1,4 +1,4 @@
-FROM hexpm/elixir:1.17.2-erlang-26.1.2-alpine-3.17.9 AS elixir-builder
+FROM hexpm/elixir:1.17.2-erlang-27.0.1-alpine-3.18.7 AS elixir-builder
 
 # elixir expects utf8.
 ENV LANG=C.UTF-8 \
