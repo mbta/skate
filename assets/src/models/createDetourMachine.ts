@@ -268,6 +268,7 @@ export const createDetourMachine = setup({
       finishedDetour: undefined,
       detourShape: undefined,
       nearestIntersection: "",
+      editedDirections: "",
     }),
     "detour.undo.insert": assign({
       undoStack: ({ context, self }, params: ContextPatch) => {
