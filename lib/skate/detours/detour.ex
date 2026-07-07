@@ -59,7 +59,7 @@ defmodule Skate.Detours.Detour do
         )
       end
 
-      simple_detour = extract_from_attributes(db_detour) |> dbg()
+      simple_detour = extract_from_attributes(db_detour)
 
       %__MODULE__{
         simple_detour
