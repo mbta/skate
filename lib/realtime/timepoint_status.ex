@@ -159,7 +159,7 @@ defmodule Realtime.TimepointStatus do
 
     with(
       %{stop_times: stop_times} <- trip,
-      timepoints when is_list(timepoints) and length(timepoints) > 0 <-
+      timepoints when is_list(timepoints) and timepoints != [] <-
         Enum.filter(stop_times, &StopTime.timepoint?/1)
     ) do
       timepoint_status = scheduled_timepoint_status(timepoints, now_time_of_day)
