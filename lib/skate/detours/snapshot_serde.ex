@@ -141,7 +141,8 @@ defmodule Skate.Detours.SnapshotSerde do
       "selectedReason" => selectedreason_from_detour(detour),
       "activatedAt" => activated_at_from_detour(detour),
       "undoStack" => undostack_from_detour(detour),
-      "isTextOnly" => istextonly_from_detour(detour)
+      "isTextOnly" => istextonly_from_detour(detour),
+      "typedDetour" => typeddetour_from_detour(detour)
     })
   end
 
@@ -321,6 +322,19 @@ defmodule Skate.Detours.SnapshotSerde do
   end
 
   defp istextonly_from_detour(_), do: nil
+
+  defp typeddetour_from_detour(%Detour{
+         state: %{
+           "context" => %{
+             "typedDetour" => typed_detour
+           }
+         }
+       }) do
+    log_fallback("typedDetour")
+    typed_detour
+  end
+
+  defp typeddetour_from_detour(_), do: nil
 
   # defp selectedduration_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
   defp selectedduration_from_detour(
