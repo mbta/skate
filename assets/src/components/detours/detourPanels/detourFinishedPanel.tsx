@@ -84,6 +84,7 @@ export const DetourFinishedPanel = ({
               >
                 <Form.Control
                   as="textarea"
+                  className="tall-input"
                   value={editableDirections}
                   onChange={({ target: { value } }) =>
                     onChangeDetourText(value)

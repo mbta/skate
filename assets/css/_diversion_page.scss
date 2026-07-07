@@ -123,8 +123,16 @@
     overflow-y: auto;
   }
 
-  .form-control {
+  .tall-input {
     min-height: 200px;
+  }
+
+  .medium-input {
+    min-height: 110px;
+  }
+
+  .small-input {
+    min-height: 62px;
   }
 
   .time-pill {

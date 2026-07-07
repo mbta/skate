@@ -150,19 +150,26 @@ export const TypeDetourForm = ({
           >
             Directions
           </Form.Label>
-          <Form.Control
-            as="textarea"
-            defaultValue={defaultValue(typedDetour.directions)}
-            onChange={({ target: { value } }) =>
-              onChangeTypedDetour && onChangeTypedDetour({ directions: value })
-            }
-            data-fs-element="Direction Text"
-            required
-            maxLength={5000}
-            id="form-directions"
-            aria-describedby="form-directions-character-count form-directions-feedback"
-            readOnly={isReadOnly}
-          />
+          <div
+            className="c-autosized-textarea"
+            data-replicated-value={typedDetour.directions}
+          >
+            <Form.Control
+              as="textarea"
+              className="medium-input"
+              defaultValue={defaultValue(typedDetour.directions)}
+              onChange={({ target: { value } }) =>
+                onChangeTypedDetour &&
+                onChangeTypedDetour({ directions: value })
+              }
+              data-fs-element="Direction Text"
+              required
+              maxLength={5000}
+              id="form-directions"
+              aria-describedby="form-directions-character-count form-directions-feedback"
+              readOnly={isReadOnly}
+            />
+          </div>
           <Form.Control.Feedback id="form-directions-feedback" type="invalid">
             Directions are required
           </Form.Control.Feedback>
@@ -183,19 +190,25 @@ export const TypeDetourForm = ({
           >
             Connection Points <span className="fw-normal">(optional)</span>
           </Form.Label>
-          <Form.Control
-            as="textarea"
-            defaultValue={defaultValue(typedDetour.connectionPoints)}
-            onChange={({ target: { value } }) =>
-              onChangeTypedDetour &&
-              onChangeTypedDetour({ connectionPoints: value })
-            }
-            data-fs-element="Connection Point Text"
-            maxLength={1000}
-            id="form-connection-points"
-            aria-describedby="form-connection-points-character-count"
-            readOnly={isReadOnly}
-          />
+          <div
+            className="c-autosized-textarea"
+            data-replicated-value={typedDetour.connectionPoints}
+          >
+            <Form.Control
+              as="textarea"
+              className="small-input"
+              defaultValue={defaultValue(typedDetour.connectionPoints)}
+              onChange={({ target: { value } }) =>
+                onChangeTypedDetour &&
+                onChangeTypedDetour({ connectionPoints: value })
+              }
+              data-fs-element="Connection Point Text"
+              maxLength={1000}
+              id="form-connection-points"
+              aria-describedby="form-connection-points-character-count"
+              readOnly={isReadOnly}
+            />
+          </div>
           {!isReadOnly && (
             <Form.Text
               muted
@@ -213,18 +226,25 @@ export const TypeDetourForm = ({
           >
             Missed Stops <span className="fw-normal">(optional)</span>
           </Form.Label>
-          <Form.Control
-            as="textarea"
-            defaultValue={defaultValue(typedDetour.missedStops)}
-            onChange={({ target: { value } }) =>
-              onChangeTypedDetour && onChangeTypedDetour({ missedStops: value })
-            }
-            data-fs-element="Missed Stops Text"
-            maxLength={1000}
-            id="form-missed-stops"
-            aria-describedby="form-missed-stops-character-count"
-            readOnly={isReadOnly}
-          />
+          <div
+            className="c-autosized-textarea"
+            data-replicated-value={typedDetour.missedStops}
+          >
+            <Form.Control
+              as="textarea"
+              className="small-input"
+              defaultValue={defaultValue(typedDetour.missedStops)}
+              onChange={({ target: { value } }) =>
+                onChangeTypedDetour &&
+                onChangeTypedDetour({ missedStops: value })
+              }
+              data-fs-element="Missed Stops Text"
+              maxLength={1000}
+              id="form-missed-stops"
+              aria-describedby="form-missed-stops-character-count"
+              readOnly={isReadOnly}
+            />
+          </div>
           {!isReadOnly && (
             <Form.Text
               muted
