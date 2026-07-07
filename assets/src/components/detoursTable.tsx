@@ -99,7 +99,7 @@ export const DetoursTable = ({
 
     if (debouncedFilter !== "") {
       result = result.filter((detour) =>
-        detour.intersection
+        (detour.intersection || "")
           .toLowerCase()
           .includes(debouncedFilter.toLowerCase())
       )
