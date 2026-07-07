@@ -519,7 +519,7 @@ defmodule Skate.Detours.Detours do
 
     skate_detour_ids =
       Skate.Detours.Db.Detour.Queries.select_detour_list_info()
-      |> where([detour: d], d.status == :active)
+      |> where([detour: d], d.status == :active and d.is_text_only != true)
       |> Repo.all()
       |> Enum.map(fn detour -> detour.id end)
       |> MapSet.new()
