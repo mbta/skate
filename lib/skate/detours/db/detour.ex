@@ -45,6 +45,7 @@ defmodule Skate.Detours.Db.Detour do
     field :headsign, :string
     field :direction, :string
     field :is_text_only, :boolean, default: false
+    field :typed_detour, :map
 
     # Default detour properties
     field :nearest_intersection, :string
@@ -172,6 +173,7 @@ defmodule Skate.Detours.Db.Detour do
     |> put_change_from_state(:route_pattern_name, ["context", "routePattern", "name"])
     |> put_change_from_state(:headsign, ["context", "routePattern", "headsign"])
     |> put_change_from_state(:is_text_only, ["context", "isTextOnly"])
+    |> put_change_from_state(:typed_detour, ["context", "typedDetour"])
     |> populate_coordinates_from_state()
     |> populate_direction_from_state()
   end
