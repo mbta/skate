@@ -24,7 +24,6 @@ export type FinishedDetourData = Infer<typeof FinishedDetourData>
 export const finishedDetourFromData = (
   finishedDetour: FinishedDetourData
 ): FinishedDetour => {
-  console.log("finishedDetourFromData")
   return {
     missedStops: stopsFromData(finishedDetour.missed_stops),
     connectionPoint: {
