@@ -42,7 +42,6 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
       localStorage.setItem("snapshot", serializedSnapshot)
       // check for no-save tag before
       if (snap.hasTag("no-save")) {
-        console.log("no-save")
         return
       }
 

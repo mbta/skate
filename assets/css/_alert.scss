@@ -1,3 +1,5 @@
+@use "./color/tokens_2024" as new_tokens;
+
 .c-alert {
   @include media-breakpoint-up(md) {
     min-width: 400px;
@@ -20,4 +22,16 @@
     height: 1rem;
     width: 1rem;
   }
+}
+
+.c-alert__header {
+  font-size: 1.125rem;
+  font-weight: var(--font-weight-semi);
+}
+
+.c-alert.alert-warning-dark {
+  --bs-alert-color: #{new_tokens.$lemon-800};
+  --bs-alert-link-color: #{new_tokens.$lemon-800};
+  --bs-alert-bg: #fef1e8;
+  --bs-alert-border-color: #c98520;
 }

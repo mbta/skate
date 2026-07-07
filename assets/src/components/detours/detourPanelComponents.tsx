@@ -23,12 +23,10 @@ interface DirectionsProps {
 
 export const Directions = ({
   directions,
-  typedDirections,
   helperText,
   children,
 }: DirectionsProps) => {
   const renderBody = () => {
-    if (typedDirections) return <p>{typedDirections}</p> // placeholder
     if (directions)
       return (
         <ListGroup as="ol">
@@ -56,38 +54,28 @@ export const Directions = ({
 
 interface ConnectionPointsProps {
   connectionPoints?: [string, string]
-  typedConnectionPoints?: string
 }
 
 export const ConnectionPoints = ({
   connectionPoints,
-  typedConnectionPoints,
 }: ConnectionPointsProps) => (
   <section className="mb-4">
     <h2 className="c-diversion-panel__section-header">Connection Points</h2>
 
-    {typedConnectionPoints ? (
-      <p>{typedConnectionPoints}</p> // placeholder
-    ) : (
-      connectionPoints && (
-        <ListGroup as="ul">
-          <ListGroup.Item>{connectionPoints[0]}</ListGroup.Item>
-          <ListGroup.Item>{connectionPoints[1]}</ListGroup.Item>
-        </ListGroup>
-      )
+    {connectionPoints && (
+      <ListGroup as="ul">
+        <ListGroup.Item>{connectionPoints[0]}</ListGroup.Item>
+        <ListGroup.Item>{connectionPoints[1]}</ListGroup.Item>
+      </ListGroup>
     )}
   </section>
 )
 
 interface MissedStopsProps {
   missedStops?: Stop[]
-  typedMissedStops?: string
 }
 
-export const MissedStops = ({
-  missedStops,
-  typedMissedStops,
-}: MissedStopsProps) => (
+export const MissedStops = ({ missedStops }: MissedStopsProps) => (
   <section className="mb-4">
     <h2 className="c-diversion-panel__section-header">
       Missed Stops
@@ -97,18 +85,12 @@ export const MissedStops = ({
         </Badge>
       )}
     </h2>
-    {typedMissedStops ? (
-      <p>{typedMissedStops}</p> // placeholder
-    ) : (
-      missedStops && (
-        <ListGroup as="ul">
-          {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
-            <ListGroup.Item key={missedStop.id}>
-              {missedStop.name}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      )
+    {missedStops && (
+      <ListGroup as="ul">
+        {uniqBy(missedStops, (stop) => stop.id).map((missedStop) => (
+          <ListGroup.Item key={missedStop.id}>{missedStop.name}</ListGroup.Item>
+        ))}
+      </ListGroup>
     )}
   </section>
 )
@@ -153,11 +135,14 @@ export const TypeDetourForm = ({
         validated={validated}
         onSubmit={onSubmit}
       >
-        <p className="fst-italic">
-          Enter detour details below.
-          <br />
-          Directions are required
-        </p>
+        {!isReadOnly && (
+          <p className="fst-italic">
+            Enter detour details below.
+            <br />
+            Directions are required
+          </p>
+        )}
+
         <Form.Group className="my-4">
           <Form.Label
             htmlFor="form-directions"

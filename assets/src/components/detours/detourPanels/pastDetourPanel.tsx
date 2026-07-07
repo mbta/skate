@@ -1,6 +1,6 @@
 import React from "react"
 import { Panel } from "../diversionPage"
-import { DetourDirection } from "../../../models/detour"
+import { DetourDirection, TypedDetour } from "../../../models/detour"
 import { Stop } from "../../../schedule"
 import { ArrowLeft, Copy } from "../../../helpers/bsIcons"
 import { Button } from "react-bootstrap"
@@ -11,6 +11,7 @@ import {
   CopyButton,
   MissedStops,
   IssueButton,
+  TypeDetourForm,
 } from "../detourPanelComponents"
 
 export interface PastDetourPanelProps {
@@ -18,6 +19,7 @@ export interface PastDetourPanelProps {
   directions?: DetourDirection[]
   connectionPoints: [string, string]
   missedStops?: Stop[]
+  typedDetour?: TypedDetour
   routeName: string
   routeDescription: string
   routeOrigin: string
@@ -31,6 +33,7 @@ export const PastDetourPanel = ({
   directions,
   connectionPoints,
   missedStops,
+  typedDetour,
   routeName,
   routeDescription,
   routeOrigin,
@@ -65,9 +68,15 @@ export const PastDetourPanel = ({
           routeDirection={routeDirection}
         />
 
-        <Directions directions={directions} />
-        <ConnectionPoints connectionPoints={connectionPoints} />
-        <MissedStops missedStops={missedStops} />
+        {typedDetour ? (
+          <TypeDetourForm typedDetour={typedDetour} />
+        ) : (
+          <>
+            <Directions directions={directions} />
+            <ConnectionPoints connectionPoints={connectionPoints} />
+            <MissedStops missedStops={missedStops} />
+          </>
+        )}
       </Panel.Body.ScrollArea>
       <Panel.Body.Footer className="d-flex flex-column">
         <IssueButton />

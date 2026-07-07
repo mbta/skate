@@ -252,6 +252,7 @@ export const DiversionPage = ({
       : undefined
 
     if (snapshot.matches({ "Detour Drawing": "Pick Route Pattern" })) {
+      console.log("DetourRouteSelection")
       return (
         <DetourRouteSelectionPanel
           isLoadingRoutePatterns={snapshot.matches({
@@ -305,6 +306,7 @@ export const DiversionPage = ({
       (snapshot.matches({ "Detour Drawing": "Discarding" }) ||
         snapshot.matches({ "Detour Drawing": "Editing" }))
     ) {
+      console.log("DrawDetourPanel")
       return (
         <DrawDetourPanel
           directions={extendedDirections}
@@ -371,6 +373,7 @@ export const DiversionPage = ({
       snapshot.matches({ "Detour Drawing": "Type Detour" }) &&
       typedDetour
     ) {
+      console.log("TypeDetourPanel")
       return (
         <TypeDetourPanel
           routeName={routeName ?? "??"}
@@ -394,6 +397,7 @@ export const DiversionPage = ({
       snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
       editDetour
     ) {
+      console.log("DetourFinishedPanel")
       return (
         <DetourFinishedPanel
           onNavigateBack={editDetour}
@@ -537,6 +541,7 @@ export const DiversionPage = ({
       snapshot.context.selectedDuration !== undefined &&
       snapshot.context.selectedReason !== undefined
     ) {
+      console.log("ActiveDetourPanel")
       return (
         <ActiveDetourPanel
           copyableDetourText={copyableDetourText}
@@ -555,6 +560,7 @@ export const DiversionPage = ({
           routeDescription={routeDescription ?? "??"}
           routeOrigin={routeOrigin ?? "??"}
           routeDirection={routeDirection ?? "??"}
+          typedDetour={typedDetour}
           onNavigateBack={onClose}
           showIssueButton={inTestGroup(TestGroups.DetoursPilot)}
           onEditActiveDetour={
@@ -646,6 +652,7 @@ export const DiversionPage = ({
             connectionPoints?.end?.name ?? "N/A",
           ]}
           missedStops={missedStops}
+          typedDetour={typedDetour}
           routeName={routeName ?? "??"}
           routeDescription={routeDescription ?? "??"}
           routeOrigin={routeOrigin ?? "??"}

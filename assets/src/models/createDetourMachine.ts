@@ -267,6 +267,7 @@ export const createDetourMachine = setup({
       endPoint: undefined,
       finishedDetour: undefined,
       detourShape: undefined,
+      nearestIntersection: undefined,
     }),
     "detour.undo.insert": assign({
       undoStack: ({ context, self }, params: ContextPatch) => {
@@ -444,12 +445,19 @@ export const createDetourMachine = setup({
 
         // on edit, cancel goes to active and close goes onClose
         // on edit, if active edited, cancel opens dialog, then goes active, close, opens dialog, fires onClose
+        // go to type detour state if any attempt is made to edit a textOnly detour
         Editing: {
           initial: "Pick Start Point",
+          always: [
+            {
+              target: "Type Detour",
+              guard: ({ context }) => !!context.isTextOnly,
+            },
+          ],
           on: {
             "detour.route-pattern.open": {
               target: "Pick Route Pattern",
-              actions: "detour.clear",
+              actions: ["detour.clear", assign({ undoStack: [] })],
             },
             "detour.edit.clear-detour": {
               target: ".Pick Start Point",
@@ -520,6 +528,7 @@ export const createDetourMachine = setup({
                 "detour.clear",
                 assign({
                   isTextOnly: true,
+                  undoStack: [],
                 }),
               ],
             },
