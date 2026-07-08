@@ -91,7 +91,9 @@ describe("Detours Page: Open a Detour", () => {
 
     await userEvent.click(await screen.findByText("Headsign Z"))
 
-    await waitFor(() => expect(baseElement).toMatchSnapshot())
+    await screen.findByText("Base Map")
+
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("detour details drawer is collapsible on mobile", async () => {
