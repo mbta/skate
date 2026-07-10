@@ -4,6 +4,7 @@ $max-leaflet-z-index: 1000;
 .leaflet-container {
   width: 100%;
   height: 100%;
+  font-family: $font-family;
 }
 
 .c-vehicle-map-state--street-view-enabled + .leaflet-container {
