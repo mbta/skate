@@ -19,8 +19,7 @@
 .c-detour_map--text-only {
   .c-text-only-alert {
     z-index: 1001; // max leaflet + 1
-    width: 100%;
-    padding-right: 240px; // space for top right form controls
+    width: calc(100% - 240px); // space for top right form controls
     top: 0;
 
     .c-alert {
