@@ -123,6 +123,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
         zoomControl={false}
         center={props.center ?? defaultCenter}
         zoom={props.zoom ?? defaultZoom}
+        minZoom={10}
         ref={mapRef}
         attributionControl={false}
       >

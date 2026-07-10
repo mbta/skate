@@ -29,7 +29,16 @@
 
   .c-detour_map--original-route-shape-core {
     stroke: tokens.$gray-900;
-    stroke-dasharray: 10;
+
+    &.zoom-far {
+      stroke-dasharray: 5 10;
+    }
+    &.zoom-mid {
+      stroke-dasharray: 10;
+    }
+    &.zoom-close {
+      stroke-dasharray: 10 15;
+    }
   }
 }
 

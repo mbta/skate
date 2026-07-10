@@ -371,29 +371,26 @@ export const DetourMap = ({
               onClickOriginalShape(latLngLiteralToShapePoint(e.latlng))
             }}
           />
-        ) : (
-          <OriginalRouteShape
-            positions={originalShape.map(shapePointToLatLngLiteral)}
-            key={`detour-map-original-route-shape-${id}-${
-              startPoint === undefined
-            }`}
-            interactive={canDraw}
-            classNames={
-              startPoint === undefined
-                ? ["c-detour_map--original-route-shape__unstarted"]
-                : ["c-detour_map--original-route-shape__unfinished"]
-            }
-            onClick={(e) => {
-              onClickOriginalShape(latLngLiteralToShapePoint(e.latlng))
-            }}
-          >
-            {!startPoint && <MapTooltip>Click to start detour</MapTooltip>}
-          </OriginalRouteShape>
-        )}
+        ) : null}
 
         <ZoomLevelWrapper>
           {(zoomLevel: number) => (
             <>
+              {!routeSegments && !unfinishedRouteSegments && (
+                <OriginalRouteShape
+                  zoomLevel={zoomLevel}
+                  started={!!startPoint}
+                  positions={originalShape.map(shapePointToLatLngLiteral)}
+                  interactive={canDraw}
+                  onClick={(e) => {
+                    onClickOriginalShape(latLngLiteralToShapePoint(e.latlng))
+                  }}
+                >
+                  {!startPoint && (
+                    <MapTooltip>Click to start detour</MapTooltip>
+                  )}
+                </OriginalRouteShape>
+              )}
               {uniqBy(stops, (stop) => stop.id).map((stop) => (
                 <StopMarkerWithStopCard
                   key={stop.id}
@@ -665,44 +662,55 @@ export const WaypointIcon = () => (
 )
 
 interface OriginalRouteShapeProps extends PropsWithChildren {
+  started: boolean
+  zoomLevel: number
   positions: LatLngLiteral[]
-  classNames: string[]
   onClick: (e: LeafletMouseEvent) => void
   interactive: boolean
 }
 
 const OriginalRouteShape = ({
+  started,
+  zoomLevel,
   positions,
   children,
-  classNames,
   onClick,
   interactive,
-}: OriginalRouteShapeProps) => (
-  <>
-    <Polyline
-      interactive={false}
-      weight={6}
-      positions={positions}
-      className="c-detour_map--original-route-shape-core"
-    />
-    {interactive && (
+}: OriginalRouteShapeProps) => {
+  const zoomClass =
+    zoomLevel < 15 ? "zoom-far" : zoomLevel < 18 ? "zoom-mid" : "zoom-close"
+
+  return (
+    <React.Fragment
+      key={`detour-map-original-route-shape-${started}-${zoomClass}`}
+    >
       <Polyline
+        interactive={false}
+        weight={6}
         positions={positions}
-        weight={16}
-        className={joinClasses([
-          "c-detour_map--original-route-shape",
-          ...classNames,
-        ])}
-        bubblingMouseEvents={false}
-        eventHandlers={{
-          click: onClick,
-        }}
-      >
-        {children}
-      </Polyline>
-    )}
-  </>
-)
+        className={`c-detour_map--original-route-shape-core ${zoomClass}`}
+      />
+      {interactive && (
+        <Polyline
+          positions={positions}
+          weight={16}
+          className={joinClasses([
+            "c-detour_map--original-route-shape",
+            `c-detour_map--original-route-shape__${
+              started ? "unstarted" : "unfinished"
+            }`,
+          ])}
+          bubblingMouseEvents={false}
+          eventHandlers={{
+            click: onClick,
+          }}
+        >
+          {children}
+        </Polyline>
+      )}
+    </React.Fragment>
+  )
+}
 
 interface UnfinishedDiversionRouteShapeProps {
   interactive: boolean
