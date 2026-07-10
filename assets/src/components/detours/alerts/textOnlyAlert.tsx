@@ -3,7 +3,7 @@ import { ExclamationCircle } from "../../../helpers/bsIcons"
 import BaseAlert from "../../alerts/baseAlert"
 
 export const TextOnlyAlert = (): React.ReactElement => (
-  <BaseAlert variant="warning" show={true}>
+  <BaseAlert variant="warning" show={true} className="c-alert__in-sidebar">
     <ExclamationCircle aria-hidden={true} className="c-alert__icon" />
     <span className="d-flex flex-column">
       <strong className="c-alert__header pb-2">Text Only</strong>
