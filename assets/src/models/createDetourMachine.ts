@@ -10,7 +10,7 @@ import {
   fetchRoutePatterns,
   activateDetour,
 } from "../api"
-import { DetourShape, FinishedDetour } from "./detour"
+import { DetourShape, FinishedDetour, TypedDetour } from "./detour"
 import { fullStoryEvent } from "../helpers/fullStory"
 import { type, optional, coerce, date, string } from "superstruct"
 
@@ -73,6 +73,12 @@ export const createDetourMachine = setup({
           position: ShapePoint
         }
       | { type: "detour.edit.undo" }
+      | { type: "detour.type.back" }
+      | { type: "detour.type.done" }
+      | {
+          type: "detour.type.edit-typed-detour"
+          typedDetour: Partial<TypedDetour>
+        }
       | { type: "detour.discard-modal.confirm" }
       | { type: "detour.discard-modal.cancel" }
       | { type: "detour.share.edit-directions"; detourText: string }
@@ -261,6 +267,8 @@ export const createDetourMachine = setup({
       endPoint: undefined,
       finishedDetour: undefined,
       detourShape: undefined,
+      nearestIntersection: "",
+      editedDirections: "",
     }),
     "detour.undo.insert": assign({
       undoStack: ({ context, self }, params: ContextPatch) => {
@@ -314,6 +322,7 @@ export const createDetourMachine = setup({
     finishedDetour: undefined,
     detourShape: undefined,
     undoStack: [],
+    isTextOnly: false,
   }),
   type: "parallel",
   initial: "Detour Drawing",
@@ -437,12 +446,19 @@ export const createDetourMachine = setup({
 
         // on edit, cancel goes to active and close goes onClose
         // on edit, if active edited, cancel opens dialog, then goes active, close, opens dialog, fires onClose
+        // go to type detour state if any attempt is made to edit a textOnly detour
         Editing: {
           initial: "Pick Start Point",
+          always: [
+            {
+              target: "Type Detour",
+              guard: ({ context }) => !!context.isTextOnly,
+            },
+          ],
           on: {
             "detour.route-pattern.open": {
               target: "Pick Route Pattern",
-              actions: "detour.clear",
+              actions: ["detour.clear", assign({ undoStack: [] })],
             },
             "detour.edit.clear-detour": {
               target: ".Pick Start Point",
@@ -508,8 +524,14 @@ export const createDetourMachine = setup({
               }),
             },
             "detour.edit.cant-draw": {
-              target: ".Type Detour",
-              actions: "detour.clear",
+              target: "Type Detour",
+              actions: [
+                "detour.clear",
+                assign({
+                  isTextOnly: true,
+                  undoStack: [],
+                }),
+              ],
             },
           },
           states: {
@@ -808,9 +830,6 @@ export const createDetourMachine = setup({
                 },
               },
             },
-            "Type Detour": {
-              // state for typing directions
-            },
             Deleting: {
               on: {
                 "detour.delete.delete-modal.cancel": {
@@ -845,6 +864,36 @@ export const createDetourMachine = setup({
                 ].join("\n")
               },
             }),
+          },
+        },
+
+        "Type Detour": {
+          tags: "no-save",
+          on: {
+            "detour.type.back": {
+              target: "Editing",
+              actions: assign({ isTextOnly: false, typedDetour: undefined }),
+            },
+            "detour.type.edit-typed-detour": {
+              target: "Type Detour",
+              actions: assign({
+                typedDetour: ({ context: { typedDetour }, event }) => {
+                  const current = typedDetour || {
+                    directions: "",
+                    missedStops: "",
+                    connectionPoints: "",
+                  }
+
+                  return {
+                    ...current,
+                    ...event.typedDetour,
+                  }
+                },
+              }),
+            },
+            "detour.type.done": {
+              target: "Share Detour.Activating",
+            },
           },
         },
 
@@ -1191,6 +1240,7 @@ type MachineContext = {
 
   finishedDetour: FinishedDetour | undefined | null
 
+  typedDetour?: TypedDetour
   editedDirections?: string
 
   selectedDuration?: string | undefined
@@ -1201,6 +1251,7 @@ type MachineContext = {
   editedSelectedDuration?: string
   savedContext?: MachineContext
   closeFunc?: () => void
+  isTextOnly?: boolean
   undoStack?: {
     target: string
     patch: ContextPatch

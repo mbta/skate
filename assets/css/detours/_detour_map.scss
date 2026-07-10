@@ -16,6 +16,24 @@
   opacity: 50%;
 }
 
+.c-detour_map--text-only {
+  .c-text-only-alert {
+    z-index: 1001; // max leaflet + 1
+    width: 100%;
+    padding-right: 240px; // space for top right form controls
+    top: 0;
+
+    .c-alert {
+      min-width: unset;
+    }
+  }
+
+  .c-detour_map--original-route-shape-core {
+    stroke: tokens.$gray-900;
+    stroke-dasharray: 10;
+  }
+}
+
 .c-detour_map--original-route-shape-after-start-point {
   stroke: $color-kiwi-500;
   stroke-dasharray: 10 10;
@@ -126,6 +144,18 @@
     :last-child {
       transform: scale(1.5);
       transform-origin: center;
+    }
+  }
+}
+
+@media screen and (max-width: map-get($breakpoints, "max-mobile-landscape-tablet-portrait-width")) {
+  .c-detour_map--text-only {
+    .c-text-only-alert {
+      width: unset;
+      padding-right: unset;
+      top: unset;
+      bottom: 0;
+      right: 0;
     }
   }
 }

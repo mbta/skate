@@ -400,6 +400,10 @@ defmodule Skate.Detours.Detours do
     end
   end
 
+  defp should_update_swiftly?(detour) do
+    test_group_enabled?() and !Map.get(detour, :is_text_only)
+  end
+
   defp get_adjustment_id(detour, adjustments_response) do
     adjustments_response
     |> Map.get(:adjustments, [])
@@ -412,7 +416,9 @@ defmodule Skate.Detours.Detours do
   end
 
   defp update_swiftly(changeset, detour) do
-    update_swiftly_fn = fn -> update_swiftly(changeset, detour, test_group_enabled?()) end
+    update_swiftly_fn = fn ->
+      update_swiftly(changeset, detour, should_update_swiftly?(detour))
+    end
 
     case update_swiftly_fn.() do
       # retry once on error
@@ -513,7 +519,7 @@ defmodule Skate.Detours.Detours do
 
     skate_detour_ids =
       Skate.Detours.Db.Detour.Queries.select_detour_list_info()
-      |> where([detour: d], d.status == :active)
+      |> where([detour: d], d.status == :active and d.is_text_only != true)
       |> Repo.all()
       |> Enum.map(fn detour -> detour.id end)
       |> MapSet.new()

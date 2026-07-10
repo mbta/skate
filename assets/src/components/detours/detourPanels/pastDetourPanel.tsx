@@ -1,15 +1,17 @@
 import React from "react"
 import { Panel } from "../diversionPage"
-import { DetourDirection } from "../../../models/detour"
+import { DetourDirection, TypedDetour } from "../../../models/detour"
 import { Stop } from "../../../schedule"
 import { ArrowLeft, Copy } from "../../../helpers/bsIcons"
-import { Button, ListGroup } from "react-bootstrap"
+import { Button } from "react-bootstrap"
 import {
+  Directions,
   AffectedRoute,
   ConnectionPoints,
   CopyButton,
   MissedStops,
   IssueButton,
+  TypeDetourForm,
 } from "../detourPanelComponents"
 
 export interface PastDetourPanelProps {
@@ -17,6 +19,7 @@ export interface PastDetourPanelProps {
   directions?: DetourDirection[]
   connectionPoints: [string, string]
   missedStops?: Stop[]
+  typedDetour?: TypedDetour
   routeName: string
   routeDescription: string
   routeOrigin: string
@@ -30,6 +33,7 @@ export const PastDetourPanel = ({
   directions,
   connectionPoints,
   missedStops,
+  typedDetour,
   routeName,
   routeDescription,
   routeOrigin,
@@ -64,30 +68,15 @@ export const PastDetourPanel = ({
           routeDirection={routeDirection}
         />
 
-        <section className="my-4">
-          <h2 className="c-diversion-panel__section-header">
-            Detour Directions
-          </h2>
-          {directions ? (
-            <ListGroup as="ol">
-              {directions.map((d) => (
-                <ListGroup.Item key={d.instruction} as="li">
-                  {d.instruction == "Regular Route" ? (
-                    <strong className="fw-medium">{d.instruction}</strong>
-                  ) : (
-                    d.instruction
-                  )}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          ) : null}
-        </section>
-
-        {connectionPoints && (
-          <ConnectionPoints connectionPoints={connectionPoints} />
+        {typedDetour ? (
+          <TypeDetourForm typedDetour={typedDetour} />
+        ) : (
+          <>
+            <Directions directions={directions} />
+            <ConnectionPoints connectionPoints={connectionPoints} />
+            <MissedStops missedStops={missedStops} />
+          </>
         )}
-
-        {missedStops && <MissedStops missedStops={missedStops} />}
       </Panel.Body.ScrollArea>
       <Panel.Body.Footer className="d-flex flex-column">
         <IssueButton />

@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useId } from "react"
-import { DetourDirection } from "../../../models/detour"
-import { Button, ListGroup } from "react-bootstrap"
+import { DetourDirection, TypedDetour } from "../../../models/detour"
+import { Button } from "react-bootstrap"
 import { Panel } from "../diversionPage"
 import { Stop } from "../../../schedule"
 import {
@@ -14,9 +14,12 @@ import {
   AffectedRoute,
   ConnectionPoints,
   CopyButton,
+  Directions,
   MissedStops,
   IssueButton,
+  TypeDetourForm,
 } from "../detourPanelComponents"
+import { TextOnlyAlert } from "../alerts/textOnlyAlert"
 import {
   formatIfDate,
   isUpdatedAfterActivated,
@@ -31,6 +34,7 @@ export interface ActiveDetourPanelProps extends PropsWithChildren {
   directions?: DetourDirection[]
   connectionPoints?: [string, string]
   missedStops?: Stop[]
+  typedDetour?: TypedDetour
   routeName: string
   routeDescription: string
   routeOrigin: string
@@ -52,6 +56,7 @@ export const ActiveDetourPanel = ({
   directions,
   connectionPoints,
   missedStops,
+  typedDetour,
   routeName,
   routeDescription,
   routeOrigin,
@@ -145,31 +150,18 @@ export const ActiveDetourPanel = ({
               </dd>
             </div>
           </dl>
-
-          <section className="my-4">
-            <h2 className="c-diversion-panel__section-header">
-              Detour Directions
-            </h2>
-            {directions ? (
-              <ListGroup as="ol">
-                {directions.map((d) => (
-                  <ListGroup.Item key={d.instruction} as="li">
-                    {d.instruction == "Regular Route" ? (
-                      <strong className="fw-medium">{d.instruction}</strong>
-                    ) : (
-                      d.instruction
-                    )}
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            ) : null}
-          </section>
-
-          {connectionPoints && (
-            <ConnectionPoints connectionPoints={connectionPoints} />
+          {typedDetour ? (
+            <>
+              <TextOnlyAlert />
+              <TypeDetourForm typedDetour={typedDetour} />
+            </>
+          ) : (
+            <>
+              <Directions directions={directions} />
+              <ConnectionPoints connectionPoints={connectionPoints} />
+              <MissedStops missedStops={missedStops} />
+            </>
           )}
-
-          {missedStops && <MissedStops missedStops={missedStops} />}
         </Panel.Body.ScrollArea>
 
         <Panel.Body.Footer className="d-flex flex-column">

@@ -14,13 +14,14 @@ defmodule Skate.Detours.Detour do
             route: String.t(),
             direction: String.t(),
             name: String.t(),
-            intersection: String.t(),
+            intersection: String.t() | nil,
             updated_at: integer(),
             author_id: integer(),
             status: :active | :draft | :past,
             activated_at: DateTime.t() | nil,
             estimated_duration: String.t() | nil,
-            reason: String.t() | nil
+            reason: String.t() | nil,
+            is_text_only: boolean()
           }
 
     @derive Jason.Encoder
@@ -36,7 +37,8 @@ defmodule Skate.Detours.Detour do
       :status,
       :activated_at,
       :estimated_duration,
-      :reason
+      :reason,
+      :is_text_only
     ]
 
     def from(
@@ -84,10 +86,10 @@ defmodule Skate.Detours.Detour do
            estimated_duration: estimated_duration,
            activated_at: activated_at,
            reason: reason,
-           status: status
+           status: status,
+           is_text_only: is_text_only
          })
-         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) and
-                not is_nil(nearest_intersection) do
+         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) do
       %__MODULE__{
         id: id,
         route: route_name,
@@ -99,7 +101,8 @@ defmodule Skate.Detours.Detour do
         estimated_duration: estimated_duration,
         activated_at: activated_at,
         reason: reason,
-        status: status
+        status: status,
+        is_text_only: is_text_only
       }
     end
 
@@ -118,7 +121,8 @@ defmodule Skate.Detours.Detour do
                  "nearestIntersection" => nearest_intersection
                }
              },
-             updated_at: updated_at
+             updated_at: updated_at,
+             is_text_only: is_text_only
            } = db_detour
          ) do
       direction = Map.get(direction_names, Integer.to_string(direction_id))
@@ -132,7 +136,8 @@ defmodule Skate.Detours.Detour do
         updated_at: timestamp_to_unix(updated_at),
         author_id: db_detour.author_id,
         status: status,
-        reason: db_detour.reason
+        reason: db_detour.reason,
+        is_text_only: is_text_only
       }
     end
 

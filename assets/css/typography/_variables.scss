@@ -2,6 +2,8 @@
 @use "../color/definitions" as semantic;
 
 $font-family-sans-serif: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-monospace: "Courier Prime", monospace;
+
 $body-color: semantic.$dark;
 
 $headings-font-weight: 600;

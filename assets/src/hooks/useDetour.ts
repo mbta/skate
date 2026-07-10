@@ -39,7 +39,12 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
       // check for no-save tag before
-      if (snap.hasTag("no-save") || !snap.context.nearestIntersection) {
+      if (snap.hasTag("no-save")) {
+        return
+      }
+
+      // do not save if drawn detour has no start point
+      if (!snap.context.isTextOnly && !snap.context.nearestIntersection) {
         return
       }
 
@@ -79,6 +84,8 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     selectedDuration,
     selectedReason,
     editedSelectedDuration,
+    isTextOnly,
+    typedDetour,
   } = snapshot.context
 
   const { result: unfinishedDetour } = useApiCall({
@@ -218,6 +225,18 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
     missed: missedStopIds.has(stop.id),
   }))
 
+  const setDefaultTypedDetour = () => {
+    if (!isTextOnly) return undefined
+    if (!typedDetour)
+      return {
+        directions: "",
+        connectionPoints: "",
+        missedStops: "",
+      }
+
+    return typedDetour
+  }
+
   return {
     /** The current state machine snapshot */
     snapshot,
@@ -344,5 +363,9 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
      * Detour duration while editing is in progress
      */
     editedSelectedDuration,
+    /**
+     * Text only detour text object
+     */
+    typedDetour: setDefaultTypedDetour(),
   }
 }

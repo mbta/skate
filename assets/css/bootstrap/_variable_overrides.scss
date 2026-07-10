@@ -22,6 +22,7 @@ $input-border-color: new_tokens.$eggplant-500;
 $form-select-border-color: $input-border-color;
 $input-focus-border-color: new_tokens.$eggplant-400;
 $form-select-focus-border-color: $input-focus-border-color;
+$form-feedback-valid-color: $input-border-color;
 
 // These breakpoints are overridden in order to match with our old set
 // of breakpoints, defined in _skate_ui.scss. Our long-term goal is to

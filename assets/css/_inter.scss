@@ -172,3 +172,14 @@ $font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
     url("https://cdn.mbta.com/skate/fonts/Inter-BlackItalic.woff")
       format("woff");
 }
+
+@font-face {
+  font-family: "Courier Prime";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.mbta.com/skate/fonts/courier-prime-medium.woff2")
+      format("woff2"),
+    url("https://cdn.mbta.com/skate/fonts/courier-prime-medium.woff")
+      format("woff");
+}

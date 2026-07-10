@@ -779,7 +779,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                   Date
                 </label>
                 <div
-                  class="input-group-filter mt-2"
+                  class="input-group-filter display-editable mt-2"
                 >
                   <input
                     class="flatpickr-input"
