@@ -3,7 +3,6 @@ import React, {
   useCallback,
   useContext,
   useEffect,
-  useId,
   useMemo,
   useRef,
   useState,
@@ -182,8 +181,6 @@ export const DetourMap = ({
   editing,
   isTextOnly,
 }: DetourMapProps) => {
-  const id = useId()
-
   const [
     {
       mapLayers: {
