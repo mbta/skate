@@ -92,11 +92,11 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                   >
                     Headsign 7
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -112,7 +112,7 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
               class="align-middle p-3 u-hide-for-mobile"
             >
               <div
-                class="time-pill mb-1"
+                class="c-badge-pill mb-1"
               >
                 18 hours ago
                  - Edited
@@ -142,11 +142,11 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                   >
                     Headsign 6
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -162,7 +162,7 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
               class="align-middle p-3 u-hide-for-mobile"
             >
               <div
-                class="time-pill mb-1"
+                class="c-badge-pill mb-1"
               >
                 Aug 28, 2024
                  - Edited
@@ -192,11 +192,11 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
                   >
                     Headsign 5
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -212,7 +212,7 @@ exports[`DetourListPage orders active detour list by updatedAt value 1`] = `
               class="align-middle p-3 u-hide-for-mobile"
             >
               <div
-                class="time-pill mb-1"
+                class="c-badge-pill mb-1"
               >
                 Aug 28, 2024
                  - Edited
@@ -348,11 +348,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                   >
                     Headsign 1
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -397,11 +397,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                   >
                     Headsign A
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Outbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -869,11 +869,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                   >
                     Headsign Z
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -1467,11 +1467,11 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
                   >
                     Headsign 3
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -1516,11 +1516,11 @@ exports[`DetourListPage renders limited detour list page for non-dispatchers 1`]
                   >
                     Headsign A
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Outbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
