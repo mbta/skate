@@ -694,7 +694,7 @@ const OriginalRouteShape = ({
           className={joinClasses([
             "c-detour_map--original-route-shape",
             `c-detour_map--original-route-shape__${
-              started ? "unstarted" : "unfinished"
+              started ? "unfinished" : "unstarted"
             }`,
           ])}
           bubblingMouseEvents={false}
