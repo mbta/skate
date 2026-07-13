@@ -134,15 +134,6 @@
   .small-input {
     min-height: 62px;
   }
-
-  .time-pill {
-    border-radius: 8px;
-    background-color: tokens.$gray-200;
-    padding: 1px 5px;
-    // Align the text of the pill with the text in the rest of the column
-    margin-left: -5px;
-    width: max-content;
-  }
 }
 
 .c-diversion-panel__origin,
