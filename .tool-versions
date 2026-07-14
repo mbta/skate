@@ -1,4 +1,4 @@
-elixir 1.17.2-otp-27
-erlang 27.0.1
+elixir 1.17.3-otp-27
+erlang 27.3.4.14
 nodejs 24.14.1
 adr-tools 3.0.0
