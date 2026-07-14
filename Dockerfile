@@ -1,4 +1,4 @@
-FROM hexpm/elixir:1.17.2-erlang-27.0.1-alpine-3.18.7 AS elixir-builder
+FROM hexpm/elixir:1.17.3-erlang-27.3.4.14-alpine-3.21.7 AS elixir-builder
 
 # elixir expects utf8.
 ENV LANG=C.UTF-8 \
@@ -49,7 +49,7 @@ ENV SENTRY_RELEASE=${SENTRY_RELEASE}
 
 RUN mix do compile --force, phx.digest, sentry.package_source_code, release
 
-FROM alpine:3.18.7
+FROM alpine:3.21.7
 
 RUN apk upgrade --no-cache --update
 
