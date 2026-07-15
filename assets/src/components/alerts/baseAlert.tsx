@@ -1,20 +1,14 @@
-import React, { PropsWithChildren } from "react"
-import { Alert } from "react-bootstrap"
-import { Variant } from "react-bootstrap/esm/types"
+import React from "react"
+import { Alert, AlertProps } from "react-bootstrap"
+import { joinClasses } from "../../helpers/dom"
 
-const BaseAlert = ({
-  variant: variant,
-  show: show,
-  children,
-}: PropsWithChildren<{
-  variant: Variant
-  show: boolean
-}>): React.ReactElement => {
-  return (
-    <Alert className="c-alert icon-link" variant={variant} show={show}>
-      {children}
-    </Alert>
-  )
-}
+const BaseAlert = ({ className, children, ...props }: AlertProps) => (
+  <Alert
+    className={joinClasses(["c-alert", "icon-link", className || ""])}
+    {...props}
+  >
+    {children}
+  </Alert>
+)
 
 export default BaseAlert

@@ -169,10 +169,10 @@ export const TypeDetourForm = ({
               aria-describedby="form-directions-character-count form-directions-feedback"
               readOnly={isReadOnly}
             />
+            <Form.Control.Feedback id="form-directions-feedback" type="invalid">
+              Directions are required
+            </Form.Control.Feedback>
           </div>
-          <Form.Control.Feedback id="form-directions-feedback" type="invalid">
-            Directions are required
-          </Form.Control.Feedback>
           {!isReadOnly && (
             <Form.Text
               muted

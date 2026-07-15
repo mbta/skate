@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 
 import React from "react"
 
-import { screen, waitFor } from "@testing-library/dom"
+import { screen } from "@testing-library/dom"
 import "@testing-library/jest-dom/jest-globals"
 import { render } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
@@ -67,12 +67,13 @@ describe("Detours Page: Open a Detour", () => {
 
     // Click an arbitrary detour from the list
     await userEvent.click(await screen.findByText("Headsign Z"))
+    await screen.findByText("Base Map")
 
     // Render modal based on mocked value, which is a detour-in-progress
     expect(viewDraftDetourHeading.get()).toBeVisible()
 
     // Finally, check snapshot
-    await waitFor(() => expect(baseElement).toMatchSnapshot())
+    expect(baseElement).toMatchSnapshot()
   })
 
   test("renders detour details in an open drawer on mobile", async () => {

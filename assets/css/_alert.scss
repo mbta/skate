@@ -4,6 +4,13 @@
   @include media-breakpoint-up(md) {
     min-width: 400px;
   }
+
+  &.c-alert__in-sidebar {
+    min-width: unset;
+    width: 100%;
+  }
+
+  font-size: var(--font-size-m);
 }
 
 .c-alert__close-button {
