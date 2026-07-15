@@ -53,7 +53,7 @@ FROM alpine:3.21.7
 
 RUN apk upgrade --no-cache --update
 
-RUN apk add --no-cache --update libssl1.1 libstdc++ \
+RUN apk add --no-cache --update libssl3 libstdc++ \
     libgcc ncurses-libs bash curl dumb-init
 
 # Create non-root user
