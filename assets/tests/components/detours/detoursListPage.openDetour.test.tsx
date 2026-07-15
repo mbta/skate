@@ -68,8 +68,8 @@ describe("Detours Page: Open a Detour", () => {
     // Click an arbitrary detour from the list
     await userEvent.click(await screen.findByText("Headsign Z"))
     await screen.findByText("Base Map")
-    // Render modal based on mocked value, which is a detour-in-progress
 
+    // Render modal based on mocked value, which is a detour-in-progress
     expect(viewDraftDetourHeading.get()).toBeVisible()
 
     // Finally, check snapshot
