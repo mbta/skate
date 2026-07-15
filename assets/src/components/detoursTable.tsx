@@ -296,9 +296,12 @@ const PopulatedDetourRows = ({
               <RoutePill routeName={detour.route} />
               <div className="c-detours-table__route-info-text d-inline-block">
                 <div className="pb-1 fs-4 fw-semibold">{detour.name}</div>
-                <div className="c-detours-table__route-info-direction fs-6">
+                <span className="c-detours-table__route-info-direction fs-6 me-2">
                   {detour.direction}
-                </div>
+                </span>
+                {detour.isTextOnly && (
+                  <span className="c-badge-pill fs-6">Text Only</span>
+                )}
               </div>
             </div>
           </td>
@@ -314,7 +317,7 @@ const PopulatedDetourRows = ({
             {status === DetourStatus.Active && detour.activatedAt ? (
               <>
                 {isUpdatedAfterActivated(detour) && (
-                  <div className="time-pill mb-1">
+                  <div className="c-badge-pill mb-1">
                     {timeAgoLabel(epochNowInSeconds, detour.updatedAt)} - Edited
                   </div>
                 )}

@@ -48,3 +48,13 @@
 :not(.display-editable) > .form-control[readonly] {
   font-family: $font-family-monospace;
 }
+
+.c-badge-pill {
+  border-radius: 8px;
+  background-color: new_tokens.$gray-200;
+  padding: 1px 5px;
+  // Align the text of the pill with the text in the rest of the column
+  margin-left: -5px;
+  width: max-content;
+  white-space: nowrap;
+}

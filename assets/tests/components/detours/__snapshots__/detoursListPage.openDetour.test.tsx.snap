@@ -122,11 +122,11 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   >
                     Headsign 5
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -171,11 +171,11 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   >
                     Headsign A
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Outbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -643,11 +643,11 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   >
                     Headsign Z
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -2038,11 +2038,11 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   >
                     Headsign 3
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -2087,11 +2087,11 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   >
                     Headsign A
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Outbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>
@@ -2559,11 +2559,11 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   >
                     Headsign Z
                   </div>
-                  <div
-                    class="c-detours-table__route-info-direction fs-6"
+                  <span
+                    class="c-detours-table__route-info-direction fs-6 me-2"
                   >
                     Inbound
-                  </div>
+                  </span>
                 </div>
               </div>
             </td>

@@ -130,7 +130,7 @@ export const ActiveDetourPanel = ({
               <dd aria-labelledby={dlActiveSinceId}>
                 {isUpdatedAfterActivated({ activatedAt, updatedAt }) ? (
                   <div className="d-inline-flex flex-column">
-                    <div className="time-pill">
+                    <div className="c-badge-pill">
                       {timeAgoLabel(epochNowInSeconds, updatedAt)} - Edited
                     </div>
                     {timeAgoLabelFromDate(activatedAt, currentTime)}
