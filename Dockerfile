@@ -1,4 +1,4 @@
-FROM hexpm/elixir:1.17.2-erlang-26.1.2-alpine-3.17.9 AS elixir-builder
+FROM hexpm/elixir:1.17.3-erlang-27.3.4.14-alpine-3.21.7 AS elixir-builder
 
 # elixir expects utf8.
 ENV LANG=C.UTF-8 \
@@ -49,11 +49,11 @@ ENV SENTRY_RELEASE=${SENTRY_RELEASE}
 
 RUN mix do compile --force, phx.digest, sentry.package_source_code, release
 
-FROM alpine:3.17.5
+FROM alpine:3.21.7
 
 RUN apk upgrade --no-cache --update
 
-RUN apk add --no-cache --update libssl1.1 libstdc++ \
+RUN apk add --no-cache --update libssl3 libstdc++ \
     libgcc ncurses-libs bash curl dumb-init
 
 # Create non-root user
