@@ -13,6 +13,12 @@ The MBTA Customer Technology Department supports a shared Slack channel that tra
 
 ### Prerequisites
 
+If you're using a package manager like HomeBrew, here are installation recommendations:
+- brew install openssl
+- brew install asdf
+- brew install direnv
+- echo 'eval "$(direnv hook zsh)"' >> ~/.zprofile
+
 Doing development on Skate requires Elixir, Erlang, and node, as described in [.tool-versions](https://github.com/mbta/skate/blob/main/.tool-versions). Most developers use [asdf](https://asdf-vm.com/) to help manage the required versions, but that isn't required.
 
 Skate also requires Postgres. If you don't already have Postgres installed, and you're on a Mac, [Postgres.app](https://postgresapp.com/downloads.html) is an easy way to get started. However, any Postgres instance to which you can connect and in which you have sufficient privileges should work.
@@ -43,7 +49,13 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 First, install the project dependencies:
 
 ```shell
+asdf plugin add elixir
+asdf plugin add erlang
+asdf plugin add nodejs
+asdf plugin add adr-tools
 asdf install
+asdf reshim
+echo 'export PATH=~/.asdf/shims:$PATH' >> ~/.zprofile
 ```
 
 Next, initialize the project: 
