@@ -19,6 +19,7 @@ The MBTA Customer Technology Department supports a shared Slack channel that tra
 > ```shell
 > brew install openssl asdf direnv
 > echo 'eval "$(direnv hook zsh)"' >> ~/.zprofile
+> echo 'export PATH=~/.asdf/shims:$PATH' >> ~/.zprofile
 > ```
 Doing development on Skate requires Elixir, Erlang, and node, as described in [.tool-versions](https://github.com/mbta/skate/blob/main/.tool-versions). Most developers use [asdf](https://asdf-vm.com/) to help manage the required versions, but that isn't required.
 
@@ -50,13 +51,9 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 First, install the project dependencies:
 
 ```shell
-asdf plugin add elixir
-asdf plugin add erlang
-asdf plugin add nodejs
-asdf plugin add adr-tools
+asdf plugin add elixir erlang nodejs adr-tools
 asdf install
 asdf reshim
-echo 'export PATH=~/.asdf/shims:$PATH' >> ~/.zprofile
 ```
 
 Next, initialize the project: 
@@ -100,6 +97,17 @@ mix phx.server
 ```
 
 View the application in your browser at [`https://localhost:4000`](https://localhost:4000).
+
+### Enabling Detours
+
+In order to draw detours on your local environment, you'll need to go to ['https://127.0.0.1:4000/test_groups'](https://127.0.0.1:4000/test_groups) and create the following groups:
+
+```shell
+detours-list
+detours-pilot
+edit-active-detours
+text-only-detours
+```
 
 ### Troubleshooting
 
