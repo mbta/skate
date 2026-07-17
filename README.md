@@ -51,7 +51,10 @@ Here are the values you'll need to be prepared to update to run Skate locally:
 First, install the project dependencies:
 
 ```shell
-asdf plugin add elixir erlang nodejs adr-tools
+asdf plugin add elixir
+asdf plugin add erlang
+asdf plugin add nodejs
+asdf plpugin add adr-tools
 asdf install
 asdf reshim
 ```
