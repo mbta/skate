@@ -550,7 +550,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <label
                   for="date-filter"
                 >
-                  Date
+                  Last Closed
                 </label>
                 <div
                   class="input-group-filter display-editable mt-2"
@@ -597,28 +597,6 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   </div>
                 </div>
               </div>
-            </th>
-          </tr>
-          <tr>
-            <th
-              class="px-3 py-4"
-            >
-              Route and direction
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Starting Intersection
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Reason
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Last used
             </th>
           </tr>
         </thead>
@@ -2466,7 +2444,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 <label
                   for="date-filter"
                 >
-                  Date
+                  Last Closed
                 </label>
                 <div
                   class="input-group-filter display-editable mt-2"
@@ -2513,28 +2491,6 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   </div>
                 </div>
               </div>
-            </th>
-          </tr>
-          <tr>
-            <th
-              class="px-3 py-4"
-            >
-              Route and direction
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Starting Intersection
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Reason
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Last used
             </th>
           </tr>
         </thead>
