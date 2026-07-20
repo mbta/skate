@@ -49,6 +49,10 @@
   font-family: $font-family-monospace;
 }
 
+.c-autosized-textarea:not(.display-editable)::after {
+  font-family: $font-family-monospace;
+}
+
 .c-badge-pill {
   border-radius: 8px;
   background-color: new_tokens.$gray-200;
