@@ -186,7 +186,7 @@ defmodule Swiftly.API.ServiceAdjustments do
       |> Keyword.put_new(:createdBefore, DateTime.utc_now())
       |> Keyword.put_new(
         :createdAfter,
-        DateTime.new!(~D[2025-01-01], ~T[00:00:00], "America/New_York")
+        DateTime.new!(~D[2025-01-01], ~T[00:00:00])
       )
       |> assert_agency_param!()
       |> Keyword.take([
@@ -207,10 +207,7 @@ defmodule Swiftly.API.ServiceAdjustments do
           {key, Jason.encode!(value)}
 
         {key, %DateTime{} = value} when key in [:createdAfter, :createdBefore] ->
-          {key,
-           value
-           |> DateTime.shift_zone!("America/New_York")
-           |> DateTime.to_iso8601()}
+          {key, DateTime.to_iso8601(value)}
 
         keyword ->
           keyword
