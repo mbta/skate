@@ -3,6 +3,7 @@ import { Panel } from "../diversionPage"
 import { DetourDirection, TypedDetour } from "../../../models/detour"
 import { Stop } from "../../../schedule"
 import { ArrowLeft, Copy } from "../../../helpers/bsIcons"
+import { TextOnlyAlert } from "../alerts/textOnlyAlert"
 import { Button } from "react-bootstrap"
 import {
   Directions,
@@ -69,7 +70,10 @@ export const PastDetourPanel = ({
         />
 
         {typedDetour ? (
-          <TypeDetourForm typedDetour={typedDetour} />
+          <div className="mt-3">
+            <TextOnlyAlert />
+            <TypeDetourForm typedDetour={typedDetour} />
+          </div>
         ) : (
           <>
             <Directions directions={directions} />
