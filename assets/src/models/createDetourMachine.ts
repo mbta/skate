@@ -868,7 +868,6 @@ export const createDetourMachine = setup({
         },
 
         "Type Detour": {
-          tags: "no-save",
           on: {
             "detour.type.back": {
               target: "Editing",
