@@ -72,7 +72,7 @@ defmodule Skate.AlertsManager.Detours.ActiveDetour.Test do
   describe "rejects invalid map" do
     for field <- @required_fields do
       @tag field: field
-      test "with missing field '#{field}'", %{field: field} do
+      test "with missing required field '#{field}'", %{field: field} do
         attrs = @attrs
         |> Map.delete(field)
 
@@ -89,7 +89,7 @@ defmodule Skate.AlertsManager.Detours.ActiveDetour.Test do
       end) do
         @tag field: field
         @tag empty: empty
-        test "with empty field '#{field}' (#{
+        test "with empty required field '#{field}' (#{
           case empty do
             nil -> "nil"
             [] -> "[]"
