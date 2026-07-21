@@ -225,7 +225,7 @@ export const DetoursTable = ({
               </th>
               <th className="px-3 py-3 c-detours-table__col-sm">
                 <div>
-                  <label htmlFor="date-filter">Date</label>
+                  <label htmlFor="date-filter">Last Closed</label>
                   <DateTimePicker
                     className="mt-2"
                     value={dates}
@@ -239,21 +239,23 @@ export const DetoursTable = ({
               </th>
             </tr>
           )}
-          <tr>
-            <th className="px-3 py-4">Route and direction</th>
-            <th className="px-3 py-4 u-hide-for-mobile">
-              Starting Intersection
-            </th>
-            {hasReasonColumn(status) && (
-              <th className="px-3 py-4 u-hide-for-mobile">Reason</th>
-            )}
-            <th className="px-3 py-4 u-hide-for-mobile">
-              {timestampLabelFromStatus(status)}
-            </th>
-            {status === DetourStatus.Active && (
-              <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
-            )}
-          </tr>
+          {!hasFilters && (
+            <tr>
+              <th className="px-3 py-4">Route and direction</th>
+              <th className="px-3 py-4 u-hide-for-mobile">
+                Starting Intersection
+              </th>
+              {hasReasonColumn(status) && (
+                <th className="px-3 py-4 u-hide-for-mobile">Reason</th>
+              )}
+              <th className="px-3 py-4 u-hide-for-mobile">
+                {timestampLabelFromStatus(status)}
+              </th>
+              {status === DetourStatus.Active && (
+                <th className="px-3 py-4 u-hide-for-mobile">Est. Duration</th>
+              )}
+            </tr>
+          )}
         </thead>
         <tbody>
           {filteredData.length ? (
