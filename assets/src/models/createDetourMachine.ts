@@ -874,32 +874,35 @@ export const createDetourMachine = setup({
               target: "Editing",
               actions: assign({ isTextOnly: false, typedDetour: undefined }),
             },
-            "detour.type.edit-typed-detour": {
-              target: "Type Detour",
-              actions: assign({
-                typedDetour: ({ context: { typedDetour }, event }) => {
-                  const current = typedDetour || {
-                    directions: "",
-                    missedStops: "",
-                    connectionPoints: "",
-                  }
-
-                  return {
-                    ...current,
-                    ...event.typedDetour,
-                  }
-                },
-              }),
-            },
-            "detour.type.done": {
-              target: "Share Detour.Activating",
-            },
-            "detour.delete.open-delete-modal": {
-              target: ".Deleting",
-            },
           },
           states: {
-            Typing: {},
+            Typing: {
+              on: {
+                "detour.type.edit-typed-detour": {
+                  target: "Typing",
+                  actions: assign({
+                    typedDetour: ({ context: { typedDetour }, event }) => {
+                      const current = typedDetour || {
+                        directions: "",
+                        missedStops: "",
+                        connectionPoints: "",
+                      }
+
+                      return {
+                        ...current,
+                        ...event.typedDetour,
+                      }
+                    },
+                  }),
+                },
+                "detour.delete.open-delete-modal": {
+                  target: "Deleting",
+                },
+                "detour.type.done": {
+                  target: "Done",
+                },
+              },
+            },
             Deleting: {
               on: {
                 "detour.delete.delete-modal.cancel": {
@@ -911,6 +914,12 @@ export const createDetourMachine = setup({
                 },
               },
             },
+            Done: {
+              type: "final",
+            },
+          },
+          onDone: {
+            target: "Share Detour.Activating",
           },
         },
 
