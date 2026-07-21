@@ -94,20 +94,18 @@ defmodule Skate.AlertsManager.Detours.ActiveDetour do
       ],
       empty_values: [nil, ""]
     )
-    |> validate_required(
-      [
-        :id,
-        :route_id,
-        :reason,
-        # :nearest_intersection
-        :estimated_duration,
-        :activated_at,
-        :updated_at,
-        :direction_id,
-        :missed_stops,
-        :connection_points
-      ]
-    )
+    |> validate_required([
+      :id,
+      :route_id,
+      :reason,
+      # :nearest_intersection
+      :estimated_duration,
+      :activated_at,
+      :updated_at,
+      :direction_id,
+      :missed_stops,
+      :connection_points
+    ])
     |> validate_length(:connection_points, min: 1, max: 2)
     |> cast_embed(:route_segments, required: true, with: &RouteSegments.changeset/2)
   end
