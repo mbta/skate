@@ -34,6 +34,20 @@ defmodule Skate.AlertsManager.Detours.ActiveDetour.Test do
     }
   }
 
+  @required_fields [
+    :id,
+    :route_id,
+    :reason,
+    # :nearest_intersection
+    :estimated_duration,
+    :activated_at,
+    :updated_at,
+    :direction_id,
+    :missed_stops,
+    :connection_points,
+    :route_segments
+  ]
+
   describe "casts valid map" do
     test "with all fields" do
       attrs = @attrs
@@ -55,22 +69,10 @@ defmodule Skate.AlertsManager.Detours.ActiveDetour.Test do
     end
   end
 
-  describe "rejects invalid map missing required field" do
-    for field <- [
-      :id,
-      :route_id,
-      :reason,
-      # :nearest_intersection
-      :estimated_duration,
-      :activated_at,
-      :updated_at,
-      :direction_id,
-      :missed_stops,
-      :connection_points,
-      :route_segments
-    ] do
+  describe "rejects invalid map" do
+    for field <- @required_fields do
       @tag field: field
-      test "'#{field}'", %{field: field} do
+      test "with missing field '#{field}'", %{field: field} do
         attrs = @attrs
         |> Map.delete(field)
 
@@ -79,62 +81,29 @@ defmodule Skate.AlertsManager.Detours.ActiveDetour.Test do
 
         refute changeset.valid?
       end
-    end
-  end
 
-  describe "rejects invalid map with nil required field" do
-    for field <- [
-      :id,
-      :route_id,
-      :reason,
-      # :nearest_intersection
-      :estimated_duration,
-      :activated_at,
-      :updated_at,
-      :direction_id,
-      :missed_stops,
-      :connection_points,
-      :route_segments
-    ] do
-      @tag field: field
-      test "'#{field}'", %{field: field} do
-        attrs = @attrs
-        |> Map.replace(field, nil)
+      for empty <- (case field do
+        field when field in [:connection_points] -> [nil, []]
+        field when field in [:route_id, :reason, :estimated_duration] -> [nil, ""]
+        _ -> [nil]
+      end) do
+        @tag field: field
+        @tag empty: empty
+        test "with empty field '#{field}' (#{
+          case empty do
+            nil -> "nil"
+            [] -> "[]"
+            "" -> "''"
+          end
+        })", %{field: field, empty: empty} do
+          attrs = @attrs
+          |> Map.replace(field, empty)
 
-        changeset = %ActiveDetour{}
-        |> ActiveDetour.changeset(attrs)
+          changeset = %ActiveDetour{}
+          |> ActiveDetour.changeset(attrs)
 
-        refute changeset.valid?
-      end
-    end
-  end
-
-  describe "rejects invalid map with empty string required field" do
-    for field <- [:route_id, :reason, :estimated_duration] do
-      @tag field: field
-      test "'#{field}'", %{field: field} do
-        attrs = @attrs
-        |> Map.replace(field, "")
-
-        changeset = %ActiveDetour{}
-        |> ActiveDetour.changeset(attrs)
-
-        refute changeset.valid?
-      end
-    end
-  end
-
-  describe "rejects invalid map with empty array required field" do
-    for field <- [:connection_points] do
-      @tag field: field
-      test "'#{field}'", %{field: field} do
-        attrs = @attrs
-        |> Map.replace(field, [])
-
-        changeset = %ActiveDetour{}
-        |> ActiveDetour.changeset(attrs)
-
-        refute changeset.valid?
+          refute changeset.valid?
+        end
       end
     end
   end
