@@ -868,6 +868,7 @@ export const createDetourMachine = setup({
         },
 
         "Type Detour": {
+          initial: "Typing",
           on: {
             "detour.type.back": {
               target: "Editing",
@@ -892,6 +893,23 @@ export const createDetourMachine = setup({
             },
             "detour.type.done": {
               target: "Share Detour.Activating",
+            },
+            "detour.delete.open-delete-modal": {
+              target: ".Deleting",
+            },
+          },
+          states: {
+            Typing: {},
+            Deleting: {
+              on: {
+                "detour.delete.delete-modal.cancel": {
+                  target: "Typing",
+                },
+                "detour.delete.delete-modal.delete-draft": {
+                  tags: "no-save",
+                  target: "#Deleted",
+                },
+              },
             },
           },
         },
