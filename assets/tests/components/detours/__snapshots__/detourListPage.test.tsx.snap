@@ -599,7 +599,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                 class="form-label"
                 for="route-name"
               >
-                Route
+                Route and direction
               </label>
               <select
                 class="select-filter mt-2 form-select"
