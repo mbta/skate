@@ -868,32 +868,58 @@ export const createDetourMachine = setup({
         },
 
         "Type Detour": {
-          tags: "no-save",
+          initial: "Typing",
           on: {
             "detour.type.back": {
               target: "Editing",
               actions: assign({ isTextOnly: false, typedDetour: undefined }),
             },
-            "detour.type.edit-typed-detour": {
-              target: "Type Detour",
-              actions: assign({
-                typedDetour: ({ context: { typedDetour }, event }) => {
-                  const current = typedDetour || {
-                    directions: "",
-                    missedStops: "",
-                    connectionPoints: "",
-                  }
+          },
+          states: {
+            Typing: {
+              on: {
+                "detour.type.edit-typed-detour": {
+                  target: "Typing",
+                  actions: assign({
+                    typedDetour: ({ context: { typedDetour }, event }) => {
+                      const current = typedDetour || {
+                        directions: "",
+                        missedStops: "",
+                        connectionPoints: "",
+                      }
 
-                  return {
-                    ...current,
-                    ...event.typedDetour,
-                  }
+                      return {
+                        ...current,
+                        ...event.typedDetour,
+                      }
+                    },
+                  }),
                 },
-              }),
+                "detour.delete.open-delete-modal": {
+                  target: "Deleting",
+                },
+                "detour.type.done": {
+                  target: "Done",
+                },
+              },
             },
-            "detour.type.done": {
-              target: "Share Detour.Activating",
+            Deleting: {
+              on: {
+                "detour.delete.delete-modal.cancel": {
+                  target: "Typing",
+                },
+                "detour.delete.delete-modal.delete-draft": {
+                  tags: "no-save",
+                  target: "#Deleted",
+                },
+              },
             },
+            Done: {
+              type: "final",
+            },
+          },
+          onDone: {
+            target: "Share Detour.Activating",
           },
         },
 

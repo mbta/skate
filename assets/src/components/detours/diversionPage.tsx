@@ -388,7 +388,28 @@ export const DiversionPage = ({
             })
           }}
           isActiveDetour={detourStatus === DetourStatus.Active}
-        />
+        >
+          {snapshot.matches({
+            "Detour Drawing": {
+              "Type Detour": "Deleting",
+            },
+          }) ? (
+            <DeleteDetourModal
+              onDelete={deleteDetourCallback}
+              onCancel={() =>
+                send({ type: "detour.delete.delete-modal.cancel" })
+              }
+              affectedRoute={
+                <AffectedRoute
+                  routeName={routeName ?? "??"}
+                  routeDescription={routeDescription ?? "??"}
+                  routeOrigin={routeOrigin ?? "??"}
+                  routeDirection={routeDirection ?? "??"}
+                />
+              }
+            />
+          ) : null}
+        </TypeDetourPanel>
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
