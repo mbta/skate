@@ -215,10 +215,13 @@ defmodule Skate.Detours.Detours do
   def activate_detour(detour_id, user_id, selected_duration, selected_reason) do
     with {:ok, detour} <- fetch_detour_for_activation(detour_id, user_id),
          :ok <- validate_detour_status(detour),
-         changeset <- build_activation_changeset(detour, selected_duration, selected_reason),
-         {:ok, updated_detour} <- Repo.update(changeset) do
-      handle_detour_updated(changeset, updated_detour, user_id)
-
+         {:ok, %{adjustmentId: swiftly_id}} <- update_swiftly(:activation, detour),
+         changeset <-
+           build_activation_changeset(detour, selected_duration, selected_reason, swiftly_id),
+         {:ok, updated_detour} <-
+           Repo.update(changeset) do
+      broadcast_detour(updated_detour, user_id)
+      process_notifications(changeset, updated_detour)
       {:ok, updated_detour}
     end
   end
@@ -240,7 +243,7 @@ defmodule Skate.Detours.Detours do
   defp validate_detour_status(%Detour{status: :draft}), do: :ok
   defp validate_detour_status(_), do: {:error, :invalid_status}
 
-  defp build_activation_changeset(detour, selected_duration, selected_reason) do
+  defp build_activation_changeset(detour, selected_duration, selected_reason, swiftly_id) do
     new_state =
       detour.state
       |> put_in(["context", "selectedDuration"], selected_duration)
@@ -249,7 +252,8 @@ defmodule Skate.Detours.Detours do
 
     Detour.changeset(detour, %{
       state: new_state,
-      activated_at: DateTime.utc_now(:millisecond)
+      activated_at: DateTime.utc_now(:millisecond),
+      swiftly_id: swiftly_id
     })
   end
 
@@ -428,10 +432,7 @@ defmodule Skate.Detours.Detours do
   end
 
   defp update_swiftly(
-         %Ecto.Changeset{
-           data: %Detour{status: :draft},
-           changes: %{status: :active}
-         },
+         :activation,
          %Detour{} = detour,
          true
        ) do
