@@ -54,6 +54,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.6",
     "@babel/preset-env": "^7.19.3",
+    "@babel/preset-typescript": "^7.29.0",
     "@jest/globals": "^29.6.2",
     "@storybook/addon-essentials": "^7.5.3",
     "@storybook/addon-interactions": "^7.5.3",
