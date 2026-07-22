@@ -148,7 +148,7 @@ export const DetoursTable = ({
           {hasFilters && (
             <tr className="search-header">
               <th className="px-3 py-3">
-                <Form.Label htmlFor="route-name">Route</Form.Label>
+                <Form.Label htmlFor="route-name">Route and direction</Form.Label>
                 <Form.Select
                   id="route-name"
                   className="select-filter mt-2"
