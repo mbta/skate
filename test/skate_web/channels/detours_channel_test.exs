@@ -158,6 +158,66 @@ defmodule SkateWeb.DetoursChannelTest do
     end
 
     @tag :authenticated
+    test "paginates active detours with limit and offset", %{socket: socket} do
+      now = DateTime.utc_now()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(1)
+      |> with_route(%{name: "57", id: "57"})
+      |> with_updated_at(DateTime.add(now, -2, :minute))
+      |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(2)
+      |> with_route(%{name: "66", id: "66"})
+      |> with_updated_at(DateTime.add(now, -1, :minute))
+      |> insert()
+
+      :detour
+      |> build()
+      |> activated
+      |> with_id(3)
+      |> with_route(%{name: "SL1", id: "741"})
+      |> with_updated_at(now)
+      |> insert()
+
+      {:ok, _, socket} = subscribe_and_join(socket, DetoursChannel, "detours:active")
+
+      ref = Phoenix.ChannelTest.push(socket, "paginate", %{"limit" => "1", "offset" => "0"})
+      assert_reply(ref, :ok, %{data: [%Skate.Detours.Detour.Simple{id: 3}]})
+    end
+
+    @tag :authenticated
+    test "paginates past detours by route with limit and offset", %{socket: socket} do
+      :detour |> build() |> with_id(1) |> insert()
+
+      :detour
+      |> build()
+      |> deactivated
+      |> with_id(2)
+      |> with_route(%{name: "66", id: "66"})
+      |> with_updated_at(DateTime.utc_now())
+      |> insert()
+
+      :detour
+      |> build()
+      |> deactivated
+      |> with_id(3)
+      |> with_route(%{name: "66", id: "66"})
+      |> with_updated_at(DateTime.add(DateTime.utc_now(), -1, :minute))
+      |> insert()
+
+      {:ok, _, socket} = subscribe_and_join(socket, DetoursChannel, "detours:past:66")
+
+      ref = Phoenix.ChannelTest.push(socket, "paginate", %{"limit" => "1", "offset" => "0"})
+      assert_reply(ref, :ok, %{data: [%Skate.Detours.Detour.Simple{id: 2}]})
+    end
+
+    @tag :authenticated
     test "subscribes to draft detours with initial detours", %{
       conn: conn,
       socket: socket,

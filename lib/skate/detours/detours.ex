@@ -33,18 +33,22 @@ defmodule Skate.Detours.Detours do
     |> Repo.all()
   end
 
-  def detours_for_route("all", status) do
+  def detours_for_route(route_id, status, limit \\ nil, offset \\ nil)
+
+  def detours_for_route("all", status, limit, offset) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
+    |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
   end
 
-  def detours_for_route(route_id, status) do
+  def detours_for_route(route_id, status, limit, offset) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
     |> apply_route_id_filter(route_id)
+    |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
@@ -58,9 +62,26 @@ defmodule Skate.Detours.Detours do
     where(query, [detour: d], d.route_id == ^route_id)
   end
 
-  def detours_for_user(user_id, status) do
+  defp apply_pagination(query, nil, nil), do: query
+
+  defp apply_pagination(query, limit, nil) when is_integer(limit) do
+    limit(query, ^limit)
+  end
+
+  defp apply_pagination(query, nil, offset) when is_integer(offset) do
+    offset(query, ^offset)
+  end
+
+  defp apply_pagination(query, limit, offset) when is_integer(limit) and is_integer(offset) do
+    query
+    |> limit(^limit)
+    |> offset(^offset)
+  end
+
+  def detours_for_user(user_id, status, limit \\ nil, offset \\ nil) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_user_and_status_filter(user_id, status)
+    |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
