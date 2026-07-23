@@ -752,20 +752,26 @@ export const DiversionPage = ({
           )}
         </div>
         <div className="l-diversion-page__map position-relative">
-          {snapshot.context.isTextOnly ? (
-            <TextOnlyMapAlert />
-          ) : snapshot.matches({ "Detour Drawing": "Share Detour" }) ? (
+          {snapshot.context.isTextOnly &&
+            !snapshot.matches({ "Detour Drawing": "Share Detour" }) && (
+              <TextOnlyMapAlert />
+            )}
+
+          {snapshot.matches({ "Detour Drawing": "Share Detour" }) && (
             <DetourDrawingAlert>
               Detour shape is not editable from this screen.
             </DetourDrawingAlert>
-          ) : null}
+          )}
+
           {showFromCopy && <CopiedDetourToast />}
+
           {routingError?.type === "no_route" && (
             <RoutingErrorAlert>
               You can&apos;t route to this location. Please try a different
               point.
             </RoutingErrorAlert>
           )}
+        
           {routingError?.type === "unknown" && <RoutingErrorAlert />}
           <DetourMap
             originalShape={shape?.points ?? []}
