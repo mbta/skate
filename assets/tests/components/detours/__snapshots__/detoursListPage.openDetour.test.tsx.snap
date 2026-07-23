@@ -373,7 +373,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 class="form-label"
                 for="route-name"
               >
-                Route
+                Route and direction
               </label>
               <select
                 class="select-filter mt-2 form-select"
@@ -2267,7 +2267,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 class="form-label"
                 for="route-name"
               >
-                Route
+                Route and direction
               </label>
               <select
                 class="select-filter mt-2 form-select"
