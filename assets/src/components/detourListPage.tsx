@@ -1,14 +1,14 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { DetoursTable, DetourStatus } from "./detoursTable"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
-import { Button, Spinner } from "react-bootstrap"
+import { Button, Pagination, Spinner } from "react-bootstrap"
 import {
   GlobeAmericas,
   LockFill,
   PeopleFill,
   PlusSquare,
-  SvgProps,
 } from "../helpers/bsIcons"
+import type { SvgProps } from "../helpers/bsIcons"
 import RoutesContext from "../contexts/routesContext"
 import { DetourModal } from "./detours/detourModal"
 import { joinClasses } from "../helpers/dom"
@@ -33,10 +33,22 @@ export const DetourListPage = () => {
 
   // Wait for the detour channels to initialize
   const { socket } = useContext(SocketContext)
+  const [pageNumber, setPageNumber] = useState(1)
+  const currentLimit = 5
+
+  // For pagination, reset the page number to 1 when the routeId changes
+  useEffect(() => {
+    setPageNumber(1)
+  }, [routeId])
 
   const activeDetoursMap = useActiveDetours(socket)
   const draftDetoursMap = useDraftDetours(socket)
-  const pastDetoursMap = usePastDetours({ socket: socket, routeId: routeId })
+  const pastDetoursMap = usePastDetours({
+    socket: socket,
+    routeId: routeId,
+    limit: currentLimit,
+    offset: (pageNumber - 1) * currentLimit,
+  })
 
   const activeDetours =
     activeDetoursMap &&
@@ -130,6 +142,21 @@ export const DetourListPage = () => {
                 routes={routes}
                 classNames={["u-hide-for-mobile"]}
               />
+              <div className="d-flex justify-content-end mb-4">
+                <Pagination className="mb-0">
+                  <Pagination.Prev
+                    disabled={pageNumber <= 1}
+                    aria-label="Previous"
+                    onClick={() => setPageNumber((page) => Math.max(1, page - 1))}
+                  />
+                  <Pagination.Item active>{pageNumber}</Pagination.Item>
+                  <Pagination.Next
+                    disabled={!pastDetours || pastDetours.length < currentLimit}
+                    aria-label="Next"
+                    onClick={() => setPageNumber((page) => page + 1)}
+                  />
+                </Pagination>
+              </div>
             </>
           )}
         </>
