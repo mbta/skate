@@ -176,6 +176,74 @@ describe("usePastDetours", () => {
     })
   })
 
+  test("pushes pagination on initial join with the provided limit and offset", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: detours })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    renderHook(() =>
+      usePastDetours({ socket: mockSocket, limit: 5, offset: 10 })
+    )
+
+    expect(mockChannel.push).toHaveBeenCalledWith("paginate", {
+      limit: 5,
+      offset: 10,
+    })
+  })
+
+  test("pushes pagination again when offset changes", () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: detours })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    const { rerender } = renderHook(
+      ({ socket, offset }) => usePastDetours({ socket, limit: 5, offset }),
+      { initialProps: { socket: mockSocket, offset: 0 } }
+    )
+
+    expect(mockChannel.push).toHaveBeenCalledWith("paginate", {
+      limit: 5,
+      offset: 0,
+    })
+
+    rerender({ socket: mockSocket, offset: 5 })
+
+    expect(mockChannel.push).toHaveBeenLastCalledWith("paginate", {
+      limit: 5,
+      offset: 5,
+    })
+  })
+
+  test("switches channels and paginates with offset 0 when route changes", () => {
+    const selectedRoute = parsedDetourA.route
+    const mockSocket = makeMockSocket()
+    const mockChannelA = makeMockChannel("ok", { data: detours })
+    const mockChannelB = makeMockChannel("ok", { data: [detourA] })
+
+    mockSocket.channel.mockImplementationOnce(() => mockChannelA)
+    mockSocket.channel.mockImplementationOnce(() => mockChannelB)
+
+    const { rerender } = renderHook(
+      ({ socket, routeId, offset }) =>
+        usePastDetours({ socket, routeId, limit: 5, offset }),
+      {
+        initialProps: { socket: mockSocket, routeId: "all", offset: 20 },
+      }
+    )
+
+    expect(mockChannelA.push).toHaveBeenCalledWith("paginate", {
+      limit: 5,
+      offset: 20,
+    })
+
+    rerender({ socket: mockSocket, routeId: selectedRoute, offset: 0 })
+
+    expect(mockChannelB.push).toHaveBeenCalledWith("paginate", {
+      limit: 5,
+      offset: 0,
+    })
+  })
+
   test("subscribes to a new channel by route when provided with a route", () => {
     const selectedRoute = parsedDetourA.route
     const mockSocket = makeMockSocket()
