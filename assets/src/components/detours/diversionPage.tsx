@@ -30,6 +30,7 @@ import { DeleteDetourModal } from "./deleteDetourModal"
 import { DiscardChangesModal } from "./discardChangesModal"
 import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
+import { TextOnlyMapAlert } from "./alerts/textOnlyAlert"
 import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
@@ -751,11 +752,13 @@ export const DiversionPage = ({
           )}
         </div>
         <div className="l-diversion-page__map position-relative">
-          {snapshot.matches({ "Detour Drawing": "Share Detour" }) && (
+          {snapshot.context.isTextOnly ? (
+            <TextOnlyMapAlert />
+          ) : snapshot.matches({ "Detour Drawing": "Share Detour" }) ? (
             <DetourDrawingAlert>
               Detour shape is not editable from this screen.
             </DetourDrawingAlert>
-          )}
+          ) : null}
           {showFromCopy && <CopiedDetourToast />}
           {routingError?.type === "no_route" && (
             <RoutingErrorAlert>
