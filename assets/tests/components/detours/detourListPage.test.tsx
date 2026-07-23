@@ -195,4 +195,42 @@ describe("DetourListPage", () => {
       )
     })
   })
+
+  test("disables next when returned page has fewer than limit rows and enables prev only after page increment", async () => {
+    jest.mocked(useDraftDetours).mockReturnValue({})
+    jest.mocked(useActiveDetours).mockReturnValue({})
+    jest.mocked(usePastDetours).mockReturnValue([simpleDetourFactory.build()])
+
+    render(<DetourListPage />)
+
+    const prevButton = await screen.findByRole("button", { name: /Previous/i })
+    const nextButton = await screen.findByRole("button", { name: /Next/i })
+
+    expect(prevButton).toBeDisabled()
+    expect(nextButton).toBeDisabled()
+  })
+
+  test("resets page to 1 when route changes", async () => {
+    const routes = routeFactory.buildList(2)
+    jest.mocked(useDraftDetours).mockReturnValue({})
+    jest.mocked(useActiveDetours).mockReturnValue({})
+
+    const mockPastDetours = [simpleDetourFactory.build(), simpleDetourFactory.build()]
+    jest.mocked(usePastDetours).mockReturnValue(mockPastDetours)
+
+    render(
+      <RoutesProvider routes={routes}>
+        <DetourListPage />
+      </RoutesProvider>
+    )
+
+    const routeSelect = screen.getByLabelText("Route and direction") as HTMLSelectElement
+    const nextButton = await screen.findByRole("button", { name: /Next/i })
+
+    expect(nextButton).toBeDisabled()
+
+    fireEvent.change(routeSelect, { target: { value: routes[0].id } })
+
+    expect(screen.getByText("1")).toBeInTheDocument()
+  })
 })

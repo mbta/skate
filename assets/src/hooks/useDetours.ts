@@ -6,7 +6,7 @@ import {
   simpleDetourFromActiveData,
   simpleDetourFromData,
 } from "../models/detoursList"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { reload } from "../models/browser"
 import { userUuid } from "../util/userUuid"
 import { ByRouteId, RouteId } from "../schedule"
@@ -27,7 +27,8 @@ const subscribe = (
   handleActivated: ((data: SimpleDetour) => void) | undefined,
   handleDeactivated: ((data: SimpleDetour) => void) | undefined,
   handleDeleted: ((detourId: number) => void) | undefined,
-  initialMessageType: typeof SimpleDetourData | typeof SimpleActiveDetourData
+  initialMessageType: typeof SimpleDetourData | typeof SimpleActiveDetourData,
+  onJoined?: (channel: Channel) => void,
 ): Channel => {
   const channel = socket.channel(topic)
 
@@ -75,6 +76,9 @@ const subscribe = (
 
       const detoursMap = Object.fromEntries(data.map((v) => [v.id, v]))
       initializeChannel(detoursMap)
+      if (onJoined) {
+        onJoined(channel)
+      }
     })
 
     .receive("error", ({ reason }) => {
@@ -142,15 +146,25 @@ export const useActiveDetours = (
 export const usePastDetours = ({
   socket,
   routeId = "all",
+  limit = 5,
+  offset = 0,
 }: {
   socket: Socket | undefined
   routeId?: string
+  limit?: number
+  offset?: number
 }) => {
   const topic = routeId === "all" ? "detours:past" : `detours:past:${routeId}`
   const [pastDetours, setPastDetours] = useState<DetoursMap | undefined>()
+  const channelRef = useRef<Channel | undefined>()
+  const joinedRef = useRef(false)
 
   const handleDeactivated = (data: SimpleDetour) => {
     setPastDetours((pastDetours) => ({ ...pastDetours, [data.id]: data }))
+  }
+  const setDetoursFromData = (data: unknown) => {
+    const detours = create(data, array(SimpleDetourData)).map(simpleDetourFromData)
+    setPastDetours(Object.fromEntries(detours.map((v) => [v.id, v])))
   }
 
   useEffect(() => {
@@ -164,7 +178,11 @@ export const usePastDetours = ({
         undefined,
         handleDeactivated,
         undefined,
-        SimpleDetourData
+        SimpleDetourData,
+        (channel) => {
+          channelRef.current = channel
+          joinedRef.current = true
+        }
       )
     }
 
@@ -172,9 +190,19 @@ export const usePastDetours = ({
       if (channel !== undefined) {
         channel.leave()
         channel = undefined
+        channelRef.current = undefined
+        joinedRef.current = false
       }
     }
   }, [socket, topic])
+
+  useEffect(() => {
+    const channel = channelRef.current
+    if (channel && joinedRef.current) {
+      pushPageNumber(channel, topic, limit, offset, setDetoursFromData)
+    }
+  }, [limit, offset])
+
   return pastDetours
 }
 
@@ -327,4 +355,22 @@ export const useActiveDetoursByRoute = (
   }, [socket, currentRouteIds])
 
   return activeDetoursByRoute
+}
+
+const pushPageNumber = (
+  channel: Channel,
+  topic: string,
+  limit: number,
+  offset: number,
+  setDetoursCallback: (data: unknown) => void
+) => {
+  channel
+    .push("paginate", { limit, offset })
+    .receive("ok", ({ data: unknownData }: { data: unknown }) => {
+      setDetoursCallback(unknownData)
+    })
+    .receive("error", ({ reason }) => {
+      // eslint-disable-next-line no-console
+      console.error(`paginate failed for topic ${topic}`, reason)
+    })
 }
