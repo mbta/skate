@@ -8,6 +8,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Detours.Db.Detour
   alias Skate.Detours.SnapshotSerde
   alias Skate.Detours.Detour.Simple, as: SimpleDetour
+  alias Skate.Detours.Detour.ReportDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Notifications
   alias Skate.Settings.{TestGroup, User}
@@ -64,6 +65,13 @@ defmodule Skate.Detours.Detours do
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
+  end
+
+  def detours_for_report() do
+    Skate.Detours.Db.Detour.Queries.select_fields(:all)
+    |> apply_status_filter(:active)
+    |> Repo.all()
+    |> Enum.map(&ReportDetour.from/1)
   end
 
   defp apply_user_and_status_filter(query, user_id, :draft) do
@@ -154,7 +162,7 @@ defmodule Skate.Detours.Detours do
 
     %DetourWithState{
       state: SnapshotSerde.serialize(detour),
-      updated_at: timestamp_to_unix(detour.updated_at),
+      updated_at: Util.Time.timestamp_to_unix(detour.updated_at),
       author: detour.author.email
     }
   end
@@ -743,13 +751,6 @@ defmodule Skate.Detours.Detours do
   """
   def change_detour(%Detour{} = detour, attrs \\ %{}) do
     Detour.changeset(detour, attrs)
-  end
-
-  # Converts the db timestamp to unix
-  defp timestamp_to_unix(db_date) do
-    db_date
-    |> DateTime.from_naive!("Etc/UTC")
-    |> DateTime.to_unix()
   end
 
   def calculate_expiration_timestamp(%{status: :active} = detour, estimated_duration),
