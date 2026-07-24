@@ -19,25 +19,21 @@ defmodule Skate.AlertsManager.Detours.S3Exporter do
     # Extract relevant data
     detours =
       rows
-      |> Enum.map(fn (%Detour{} = row) ->
-        %{
-          id: row.id,
-          route_id: row.route_id,
-          reason: row.reason,
-          nearest_intersection: row.nearest_intersection,
-          estimated_duration: row.estimated_duration,
-          activated_at: row.activated_at,
-          updated_at: row.updated_at,
-        }
-      end)
-      |> Enum.map(fn attrs ->
-        case (
-          %ActiveDetour{}
-          |> ActiveDetour.changeset(attrs)
-          |> Ecto.Changeset.apply_action(:update)
-        ) do
+      |> Enum.map(fn %Detour{} = row ->
+        case %ActiveDetour{}
+             |> ActiveDetour.changeset(%{
+               id: row.id,
+               route_id: row.route_id,
+               reason: row.reason,
+               nearest_intersection: row.nearest_intersection,
+               estimated_duration: row.estimated_duration,
+               activated_at: row.activated_at,
+               updated_at: row.updated_at
+             })
+             |> Ecto.Changeset.apply_action(:update) do
           {:ok, detour} ->
             detour
+
           {:error, _} ->
             nil
         end
@@ -51,6 +47,7 @@ defmodule Skate.AlertsManager.Detours.S3Exporter do
         case Jason.encode(detour) do
           {:ok, json} ->
             json <> "\n"
+
           {:error, _} ->
             nil
         end
@@ -59,16 +56,15 @@ defmodule Skate.AlertsManager.Detours.S3Exporter do
       |> Enum.join("")
 
     # Save to S3
-    case (
-      ExAws.S3.put_object(
-        System.get_env("SKATE_S3_BUCKET"),
-        "detours/active.ndjson",
-        contents
-      )
-      |> ExAws.request()
-    ) do
+    case ExAws.S3.put_object(
+           System.get_env("SKATE_S3_BUCKET"),
+           "detours/active.ndjson",
+           contents
+         )
+         |> ExAws.request() do
       {:ok, :done} ->
         :ok
+
       {:error, reason} ->
         {:error, reason}
     end
