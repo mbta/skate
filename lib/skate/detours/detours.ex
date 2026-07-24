@@ -163,35 +163,36 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    detour_changeset =
+    IO.puts("upsert_from_snapshot")
+
+    partial_changeset =
       Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
-    changed_fields =
-      if detour_changeset.changes != %{}, do: Map.keys(detour_changeset.changes), else: [:state]
+    detour = Ecto.Changeset.apply_changes(partial_changeset)
 
-    detour_db_result =
-      Skate.Repo.insert(
-        detour_changeset,
-        returning: true,
-        conflict_target: [:id],
-        on_conflict: {:replace, changed_fields}
-      )
-
-    case detour_db_result do
-      {:ok, %Detour{} = new_record} ->
-        handle_detour_updated(detour_changeset, new_record, author_id)
-
-      _ ->
-        nil
+    with {:ok, swiftly_response} <- update_swiftly(partial_changeset, detour),
+         changeset <-
+           Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
+         {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset) do
+      handle_detour_updated(changeset, new_record, author_id)
+      {:ok, new_record}
     end
+  end
 
-    detour_db_result
+  defp do_upsert_from_snapshot(changeset) do
+    changed_fields = if changeset.changes != %{}, do: Map.keys(changeset.changes), else: [:state]
+
+    Skate.Repo.insert(
+      changeset,
+      returning: true,
+      conflict_target: [:id],
+      on_conflict: {:replace, changed_fields}
+    )
   end
 
   defp handle_detour_updated(changeset, new_record, author_id) do
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
-    update_swiftly(changeset, new_record)
   end
 
   @spec delete_draft_detour(Detour.t(), DbUser.id()) :: :ok
@@ -212,17 +213,16 @@ defmodule Skate.Detours.Detours do
 
   @spec activate_detour(String.t(), DbUser.id(), String.t(), String.t()) ::
           {:ok, Detour.t()} | {:error, :not_found | :unauthorized | :invalid_status}
-  def activate_detour(detour_id, user_id, selected_duration, selected_reason) do
-    with {:ok, detour} <- fetch_detour_for_activation(detour_id, user_id),
+  def activate_detour(detour_id, author_id, selected_duration, selected_reason) do
+    with {:ok, detour} <- fetch_detour_for_activation(detour_id, author_id),
          :ok <- validate_detour_status(detour),
          {:ok, %{adjustmentId: swiftly_id}} <- update_swiftly(:activation, detour),
          changeset <-
            build_activation_changeset(detour, selected_duration, selected_reason, swiftly_id),
-         {:ok, updated_detour} <-
+         {:ok, new_record} <-
            Repo.update(changeset) do
-      broadcast_detour(updated_detour, user_id)
-      process_notifications(changeset, updated_detour)
-      {:ok, updated_detour}
+      handle_detour_updated(changeset, new_record, author_id)
+      {:ok, new_record}
     end
   end
 
@@ -408,17 +408,6 @@ defmodule Skate.Detours.Detours do
     test_group_enabled?() and !Map.get(detour, :is_text_only)
   end
 
-  defp get_adjustment_id(detour, adjustments_response) do
-    adjustments_response
-    |> Map.get(:adjustments, [])
-    |> Enum.filter(fn adjustment ->
-      Map.get(adjustment, :notes) == Integer.to_string(detour.id) and
-        Map.get(adjustment, :feedId) =~ System.get_env("ENVIRONMENT_NAME", "missing-env")
-    end)
-    |> Enum.map(fn adjustment -> Map.get(adjustment, :id) end)
-    |> Enum.at(0)
-  end
-
   defp update_swiftly(changeset, detour) do
     update_swiftly_fn = fn ->
       update_swiftly(changeset, detour, should_update_swiftly?(detour))
@@ -455,25 +444,17 @@ defmodule Skate.Detours.Detours do
        when is_map_key(changes, :end_point) or
               is_map_key(changes, :start_point) or
               is_map_key(changes, :waypoints) do
-    service_adjustments_module = service_adjustments_module()
+    {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
 
-    case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
-      {:ok, adjustments_response} ->
-        adjustment_id = get_adjustment_id(detour, adjustments_response)
+    case Map.get(detour, :swiftly_id) do
+      nil ->
+        {:error, :not_found}
 
-        if adjustment_id do
-          {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
-
-          service_adjustments_module.create_adjustment_v1(
-            adjustment_request,
-            Keyword.put(build_swiftly_opts(), :adjustment_id, adjustment_id)
-          )
-        else
-          {:error, :not_found}
-        end
-
-      {:error, _} = error ->
-        error
+      adjustment_id ->
+        service_adjustments_module().create_adjustment_v1(
+          adjustment_request,
+          Keyword.put(build_swiftly_opts(), :adjustment_id, adjustment_id)
+        )
     end
   end
 
@@ -485,24 +466,17 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour,
          true
        ) do
-    service_adjustments_module = service_adjustments_module()
+    case Map.get(detour, :swiftly_id) do
+      nil ->
+        {:error, :not_found}
 
-    case service_adjustments_module.get_adjustments_v1(build_swiftly_opts()) do
-      {:ok, adjustments_response} ->
-        adjustment_id = get_adjustment_id(detour, adjustments_response)
-
-        if adjustment_id do
-          service_adjustments_module.delete_adjustment_v1(adjustment_id, build_swiftly_opts())
-        else
-          {:error, :not_found}
-        end
-
-      {:error, _} = error ->
-        error
+      adjustment_id ->
+        service_adjustments_module().delete_adjustment_v1(adjustment_id, build_swiftly_opts())
+        |> dbg()
     end
   end
 
-  defp update_swiftly(_, _, _), do: :ok
+  defp update_swiftly(_, _, _), do: {:ok, nil}
 
   def sync_swiftly_with_skate(
         adjustments_module \\ service_adjustments_module(),
