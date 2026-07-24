@@ -22,6 +22,7 @@ defmodule Skate.Detours.Db.Detour do
 
     # When this detour was activated
     field :activated_at, :utc_datetime_usec
+    field :swiftly_id, :string
 
     timestamps()
 
@@ -56,7 +57,7 @@ defmodule Skate.Detours.Db.Detour do
 
   def changeset(detour, attrs) do
     detour
-    |> cast(attrs, [:state, :activated_at])
+    |> cast(attrs, [:state, :activated_at, :swiftly_id])
     |> validate_activated_at()
     |> add_status()
     |> populate_fields_from_state()
@@ -80,8 +81,16 @@ defmodule Skate.Detours.Db.Detour do
       })
 
     detour
-    |> change(%{activated_at: nil, estimated_duration: nil, reason: nil})
+    |> change(%{activated_at: nil, estimated_duration: nil, reason: nil, swiftly_id: nil})
     |> change(%{state: new_state})
+  end
+
+  def put_change_from_swiftly(%{adjustmentId: swiftly_id}, changeset) do
+    put_change(changeset, :swiftly_id, swiftly_id)
+  end
+
+  def put_change_from_swiftly(_, changeset) do
+    changeset
   end
 
   defp validate_activated_at(changeset) do
