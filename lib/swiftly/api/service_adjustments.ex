@@ -2,14 +2,13 @@ defmodule Swiftly.API.ServiceAdjustments do
   @moduledoc """
   Provides API endpoints related to controller
 
-  https://swiftly-inc.stoplight.io/docs/service-adjustments/a6a0871d5c7a5-swiftly-service-adjustments
   """
   require Logger
 
   @default_client Swiftly.API.Client
 
   @doc """
-  https://swiftly-inc.stoplight.io/docs/service-adjustments/10cf60084522d-create-adjustment
+  https://docs.goswift.ly/docs/swiftly-docs/6zpcgvbu5wbb3-swiftly-api-reference/operations/create-a-adjustment
 
   Create or update adjustment
 
@@ -95,7 +94,7 @@ defmodule Swiftly.API.ServiceAdjustments do
   end
 
   @doc """
-  https://swiftly-inc.stoplight.io/docs/service-adjustments/4e09fdd538867-delete-adjustment
+  https://docs.goswift.ly/docs/swiftly-docs/6zpcgvbu5wbb3-swiftly-api-reference/operations/delete-a-adjustment
 
   Delete adjustment
 
@@ -108,7 +107,7 @@ defmodule Swiftly.API.ServiceAdjustments do
 
   """
   @spec delete_adjustment_v1(Swiftly.Api.ServiceAdjustments.AdjustmentId.t(), keyword) ::
-          :ok | {:error, :bad_request | :not_found | :unknown}
+          {:ok, nil} | {:error, :bad_request | :not_found | :unknown}
   def delete_adjustment_v1(adjustment_id, opts \\ []) do
     client = fetch_client(opts)
 
@@ -137,7 +136,7 @@ defmodule Swiftly.API.ServiceAdjustments do
     |> case do
       {:ok, %HTTPoison.Response{status_code: 204}} ->
         Logger.info("adjustment_deleted_in_swiftly adjustment_id=#{adjustment_id}")
-        :ok
+        {:ok, nil}
 
       {:ok, %HTTPoison.Response{status_code: 400, body: body, request_url: request_url}} ->
         Logger.error("status_code=400 request_url=#{inspect(request_url)} body=#{inspect(body)}")
@@ -154,7 +153,7 @@ defmodule Swiftly.API.ServiceAdjustments do
   end
 
   @doc """
-  https://swiftly-inc.stoplight.io/docs/service-adjustments/ce4a36c183f5f-list-adjustments
+  https://docs.goswift.ly/docs/swiftly-docs/6zpcgvbu5wbb3-swiftly-api-reference/operations/list-adjustments
 
   List adjustments
 
