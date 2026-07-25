@@ -599,7 +599,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                 class="form-label"
                 for="route-name"
               >
-                Route
+                Route and direction
               </label>
               <select
                 class="select-filter mt-2 form-select"
@@ -776,7 +776,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                 <label
                   for="date-filter"
                 >
-                  Date
+                  Last Closed
                 </label>
                 <div
                   class="input-group-filter display-editable mt-2"
@@ -823,28 +823,6 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                   </div>
                 </div>
               </div>
-            </th>
-          </tr>
-          <tr>
-            <th
-              class="px-3 py-4"
-            >
-              Route and direction
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Starting Intersection
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Reason
-            </th>
-            <th
-              class="px-3 py-4 u-hide-for-mobile"
-            >
-              Last used
             </th>
           </tr>
         </thead>

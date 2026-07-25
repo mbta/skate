@@ -23,7 +23,9 @@ $table-border-radius: 0.5rem;
       background: tokens.$eggplant-50;
 
       label {
-        @include filter-label;
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
       }
 
       &.c-detours-table__col-sm {

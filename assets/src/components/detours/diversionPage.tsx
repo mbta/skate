@@ -30,6 +30,7 @@ import { DeleteDetourModal } from "./deleteDetourModal"
 import { DiscardChangesModal } from "./discardChangesModal"
 import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
+import { TextOnlyMapAlert } from "./alerts/textOnlyAlert"
 import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
@@ -388,7 +389,28 @@ export const DiversionPage = ({
             })
           }}
           isActiveDetour={detourStatus === DetourStatus.Active}
-        />
+        >
+          {snapshot.matches({
+            "Detour Drawing": {
+              "Type Detour": "Deleting",
+            },
+          }) ? (
+            <DeleteDetourModal
+              onDelete={deleteDetourCallback}
+              onCancel={() =>
+                send({ type: "detour.delete.delete-modal.cancel" })
+              }
+              affectedRoute={
+                <AffectedRoute
+                  routeName={routeName ?? "??"}
+                  routeDescription={routeDescription ?? "??"}
+                  routeOrigin={routeOrigin ?? "??"}
+                  routeDirection={routeDirection ?? "??"}
+                />
+              }
+            />
+          ) : null}
+        </TypeDetourPanel>
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
@@ -730,18 +752,24 @@ export const DiversionPage = ({
           )}
         </div>
         <div className="l-diversion-page__map position-relative">
-          {snapshot.matches({ "Detour Drawing": "Share Detour" }) && (
-            <DetourDrawingAlert>
-              Detour shape is not editable from this screen.
-            </DetourDrawingAlert>
-          )}
+          {snapshot.context.isTextOnly && <TextOnlyMapAlert />}
+
+          {snapshot.matches({ "Detour Drawing": "Share Detour" }) &&
+            !snapshot.context.isTextOnly && (
+              <DetourDrawingAlert>
+                Detour shape is not editable from this screen.
+              </DetourDrawingAlert>
+            )}
+
           {showFromCopy && <CopiedDetourToast />}
+
           {routingError?.type === "no_route" && (
             <RoutingErrorAlert>
               You can&apos;t route to this location. Please try a different
               point.
             </RoutingErrorAlert>
           )}
+
           {routingError?.type === "unknown" && <RoutingErrorAlert />}
           <DetourMap
             originalShape={shape?.points ?? []}

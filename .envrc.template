@@ -27,6 +27,10 @@ export SECRET_KEY_BASE=$(openssl rand -base64 48)
 ## * Request your personal API key from [MBTA Realtime API](https://api-v3.mbta.com/)
 # export API_KEY=
 
+## Needed for drawing detours: Open Route Service (API URL will usually be https://api.openrouteservice.org/; you can get your API Key from the ORS console once you create an account)
+# export OPEN_ROUTE_SERVICE_API_URL=
+# export OPEN_ROUTE_SERVICE_API_KEY=
+
 ### The following variables are imported by 1Password in `.env.1p.skate`
 
 ## API key from [Swiftly Transitime API](https://swiftly-inc.stoplight.io/docs/realtime-standalone/YXBpOjI4NDM2MDU3-swiftly-api-reference)
@@ -72,10 +76,6 @@ export SECRET_KEY_BASE=$(openssl rand -base64 48)
 ## Credentials for the API that gets drawbridge status
 # export BRIDGE_API_USERNAME
 # export BRIDGE_API_PASSWORD
-
-## Open Route Service (API URL will usually be https://api.openrouteservice.org/; you can your API Key from the ORS console once you create an account)
-# export OPEN_ROUTE_SERVICE_API_URL=
-# export OPEN_ROUTE_SERVICE_API_KEY=
 
 ### The following variables are imported by 1Password in `.env.1p.skate`
 
