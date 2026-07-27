@@ -633,14 +633,13 @@ defmodule Skate.Detours.Detours do
       )
     end
 
-    case Helpers.retry(retry_function, 5) do
-      {:ok, adjustments_response} ->
-        adjustments_response
+    with {:ok, response} <- Helpers.retry(retry_function, 5) do
+      adjustments =
+        response
         |> Map.get(:adjustments, [])
         |> Enum.filter(fn adjustment -> adjustment.feedId == service_adjustments_feed_id() end)
 
-      {:error, _} = error ->
-        error
+      {:ok, adjustments}
     end
   end
 
@@ -648,7 +647,7 @@ defmodule Skate.Detours.Detours do
         detour_id,
         adjustments_module \\ service_adjustments_module()
       ) do
-    swiftly_adjustments = get_swiftly_adjustments(adjustments_module)
+    {:ok, swiftly_adjustments} = get_swiftly_adjustments(adjustments_module)
 
     Enum.find(swiftly_adjustments, fn adjustment ->
       notes = Map.get(adjustment, :notes) || ""

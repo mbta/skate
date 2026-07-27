@@ -49,10 +49,13 @@ defmodule Helpers do
   @doc """
   Run any given function `fun` again up to `n` times on {:error, _}
 
-  iex> Helpers.retry(fn -> async_call() end, 1)
-    #=> {:error, :timeout}
-    #=> {:ok, "Hello World"}
-    {:ok, "Hello World"}
+  iex> fun = fn ->
+  ...>   case Process.get(:retry_n, 0) do
+  ...>     0 -> Process.put(:retry_n, 1); {:error, :interrupt}
+  ...>     1 -> :ok
+  ...>   end
+  ...> end
+  iex> Helpers.retry(fun, 2)
   """
   def retry(fun, n) when n > 0 do
     case fun.() do

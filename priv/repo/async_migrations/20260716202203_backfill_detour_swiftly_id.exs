@@ -25,8 +25,8 @@ defmodule Skate.Repo.Migrations.BackfillDetourSwiftlyId do
   def up do
     swiftly_id_map =
       Skate.Detours.Detours.get_swiftly_adjustments()
-      |> dbg()
-      |> Map.new(fn x -> {String.to_integer(x.notes), x.id} end)
+      |> then(fn {:ok, response} -> response end)
+      |> Map.new(fn response -> {String.to_integer(response.notes), response.id} end)
 
     detour_ids = Map.keys(swiftly_id_map)
 
