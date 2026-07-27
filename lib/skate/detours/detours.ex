@@ -411,7 +411,7 @@ defmodule Skate.Detours.Detours do
       update_swiftly(changeset, detour, should_update_swiftly?(detour))
     end
 
-    Helpers.retry(update_swiftly_fn)
+    Helpers.retry(update_swiftly_fn, 1)
   end
 
   defp update_swiftly(
@@ -495,11 +495,8 @@ defmodule Skate.Detours.Detours do
     Logger.info("event=swiftly_sync skate_active_detours=#{MapSet.size(skate_detour_ids)}")
 
     swiftly_adjustments =
-      case adjustments_module.get_adjustments_v1(
-             Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
-           ) do
-        {:ok, adjustments_response} ->
-          adjustments = Map.get(adjustments_response, :adjustments, [])
+      case get_swiftly_adjustments(adjustments_module) do
+        {:ok, adjustments} ->
           Logger.info("event=swiftly_sync fetched_adjustments=#{length(adjustments)}")
           adjustments
 
@@ -605,16 +602,20 @@ defmodule Skate.Detours.Detours do
   end
 
   def get_swiftly_adjustments(adjustments_module \\ service_adjustments_module()) do
-    case adjustments_module.get_adjustments_v1(
-           Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
-         ) do
+    retry_function = fn ->
+      adjustments_module.get_adjustments_v1(
+        Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
+      )
+    end
+
+    case Helpers.retry(retry_function, 5) do
       {:ok, adjustments_response} ->
         adjustments_response
         |> Map.get(:adjustments, [])
         |> Enum.filter(fn adjustment -> adjustment.feedId == service_adjustments_feed_id() end)
 
-      _ ->
-        []
+      {:error, _} = error ->
+        error
     end
   end
 

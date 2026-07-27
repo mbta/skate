@@ -22,22 +22,9 @@ defmodule Skate.Repo.Migrations.BackfillDetourSwiftlyId do
   @batch_size 5
   @throttle_ms 100
 
-  defp retry(f, n) when n > 0 do
-    case f.() do
-      [] -> retry(f, n - 1)
-      val -> val
-    end
-  end
-
-  defp retry(_f, 0), do: {:error, :unknown}
-
-  defp load_swiftly_ids() do
-    retry(fn -> Skate.Detours.Detours.get_swiftly_adjustments() end, 5)
-  end
-
   def up do
     swiftly_id_map =
-      load_swiftly_ids()
+      Skate.Detours.Detours.get_swiftly_adjustments()
       |> dbg()
       |> Map.new(fn x -> {String.to_integer(x.notes), x.id} end)
 

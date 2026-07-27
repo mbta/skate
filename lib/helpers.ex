@@ -46,9 +46,17 @@ defmodule Helpers do
     |> Map.new()
   end
 
-  def retry(fun, n \\ 1) when n > 0 do
+  @doc """
+  Run any given function `fun` again up to `n` times on {:error, _}
+
+  iex> Helpers.retry(fn -> async_call() end, 1)
+    #=> {:error, :timeout}
+    #=> {:ok, "Hello World"}
+    {:ok, "Hello World"}
+  """
+  def retry(fun, n) when n > 0 do
     case fun.() do
-      {:error, _} -> retry(n - 1)
+      {:error, _} -> retry(fun, n - 1)
       response -> response
     end
   end
