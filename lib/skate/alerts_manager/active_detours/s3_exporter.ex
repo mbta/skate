@@ -115,22 +115,28 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
       |> Enum.reject(&is_nil/1)
       |> Enum.join("")
 
-    # TODO: use s3 instead of local file after bucket is provisioned
-    # case ExAws.S3.put_object(
-    #         System.get_env("SKATE_S3_BUCKET"),
-    #         "detours/active.ndjson",
-    #         content
-    #       )
-    #       |> ExAws.request() do
-    #   {:ok, :done} ->
-    #     :ok
-    #   {:error, reason} ->
-    #     {:error, reason}
-    # end
+    case Application.get_env(:skate, :s3_bucket) do
+      nil ->
+        case File.write(Path.relative_to_cwd("detours.ndjson"), content) do
+          :ok -> {:ok, length(objects)}
+          {:error, reason} -> {:error, reason}
+        end
 
-    case File.write(Path.relative_to_cwd("detours.ndjson"), content) do
-      :ok -> :ok
-      {:error, reason} -> {:error, reason}
+      bucket when is_binary(bucket) ->
+        case ExAws.request(
+               ExAws.S3.put_object(
+                 Application.get_env(:skate, :s3_bucket),
+                 "detours/active.ndjson",
+                 content
+               ),
+               Application.get_env(:ex_aws, :request_config_overrides)
+             ) do
+          {:ok, _} ->
+            {:ok, length(objects)}
+
+          {:error, %{reason: reason}} ->
+            {:error, reason}
+        end
     end
   end
 end
