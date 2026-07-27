@@ -1,4 +1,8 @@
 defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
+  @moduledoc """
+  Save active detour information for Alerts Manager in AWS S3.
+  """
+
   require Logger
 
   use Oban.Worker
@@ -16,8 +20,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
       |> Skate.Repo.all()
 
     objects =
-      detours
-      |> Enum.map(fn %Detour{} = detour ->
+      Enum.map(detours, fn %Detour{} = detour ->
         %{
           id: detour.id,
           route_id: detour.route_id,
