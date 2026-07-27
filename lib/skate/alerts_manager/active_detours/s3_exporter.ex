@@ -146,6 +146,22 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
     end
   end
 
+  def insert_job(args \\ %{}) do
+    case args
+         |> Skate.AlertsManager.ActiveDetours.S3Exporter.new()
+         |> Oban.insert() do
+      {:ok, _} ->
+        nil
+
+      {:error, changeset_or_term} ->
+        :telemetry.execute(
+          [:skate, :alerts_manager, :active_detours, :s3_exporter, :error],
+          %{},
+          %{changeset_or_term: changeset_or_term}
+        )
+    end
+  end
+
   def attach_telemetry(
         label \\ "skate.alerts_manager.active_detours.s3_exporter",
         config \\ []
