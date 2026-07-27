@@ -47,6 +47,7 @@ defmodule SkateWeb.DetoursChannel do
     {:ok, %{data: detours}, socket}
   end
 
+  # Return a certain range of detours, determined by limit and offset
   @impl SkateWeb.AuthenticatedChannel
   def handle_in_authenticated("paginate", %{"limit" => limit, "offset" => offset}, socket) do
     with {:ok, limit} <- parse_integer(limit),
@@ -63,16 +64,21 @@ defmodule SkateWeb.DetoursChannel do
     {:reply, {:error, %{reason: :invalid_pagination}}, socket}
   end
 
-  defp parse_integer(value) when is_integer(value), do: {:ok, value}
+  defp parse_integer(value) do
+    case value do
+      integer when is_integer(value) ->
+        {:ok, integer}
 
-  defp parse_integer(value) when is_binary(value) do
-    case Integer.parse(value) do
-      {parsed, ""} -> {:ok, parsed}
-      _ -> :error
+      string when is_binary(value) ->
+        case Integer.parse(string) do
+          {parsed, _} -> {:ok, parsed}
+          _ -> :error
+        end
+
+      _ ->
+        :error
     end
   end
-
-  defp parse_integer(_), do: :error
 
   defp fetch_paginated_detours(%{topic: "detours:active"} = socket, limit, offset) do
     %{id: user_id} = Guardian.Phoenix.Socket.current_resource(socket)

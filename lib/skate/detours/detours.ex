@@ -62,6 +62,7 @@ defmodule Skate.Detours.Detours do
     where(query, [detour: d], d.route_id == ^route_id)
   end
 
+  # Fetches a certain range of detours, determined by limit and offset
   defp apply_pagination(query, nil, nil), do: query
 
   defp apply_pagination(query, limit, nil) when is_integer(limit) do
@@ -74,8 +75,8 @@ defmodule Skate.Detours.Detours do
 
   defp apply_pagination(query, limit, offset) when is_integer(limit) and is_integer(offset) do
     query
-    |> limit(^limit)
     |> offset(^offset)
+    |> limit(^limit)
   end
 
   def detours_for_user(user_id, status, limit \\ nil, offset \\ nil) do

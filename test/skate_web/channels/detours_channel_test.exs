@@ -195,13 +195,12 @@ defmodule SkateWeb.DetoursChannelTest do
     test "paginates past detours with limit 10 and offset 1", %{socket: socket} do
       now = DateTime.utc_now()
 
-      1..12
-      |> Enum.each(fn id ->
+      Enum.each(1..12, fn i ->
         :detour
         |> build()
         |> deactivated
-        |> with_id(id)
-        |> with_updated_at(DateTime.add(now, -id, :minute))
+        |> with_id(i)
+        |> with_updated_at(DateTime.add(now, -i, :minute))
         |> insert()
       end)
 
@@ -217,13 +216,11 @@ defmodule SkateWeb.DetoursChannelTest do
     test "paginates active detours with limit 10 and offset 10", %{socket: socket} do
       now = DateTime.utc_now()
 
-      1..20
-      |> Enum.each(fn id ->
-        :detour
-        |> build()
+      Enum.each(1..20, fn i ->
+        build(:detour)
         |> activated
-        |> with_id(id)
-        |> with_updated_at(DateTime.add(now, -id, :minute))
+        |> with_id(i)
+        |> with_updated_at(DateTime.add(now, -i, :minute))
         |> insert()
       end)
 
@@ -239,13 +236,11 @@ defmodule SkateWeb.DetoursChannelTest do
     test "returns empty list when offset is beyond available rows", %{socket: socket} do
       now = DateTime.utc_now()
 
-      1..5
-      |> Enum.each(fn id ->
-        :detour
-        |> build()
+      Enum.each(1..5, fn i ->
+        build(:detour)
         |> activated
-        |> with_id(id)
-        |> with_updated_at(DateTime.add(now, -id, :minute))
+        |> with_id(i)
+        |> with_updated_at(DateTime.add(now, -i, :minute))
         |> insert()
       end)
 
@@ -257,8 +252,7 @@ defmodule SkateWeb.DetoursChannelTest do
 
     @tag :authenticated
     test "paginates past detours by route with limit and offset", %{socket: socket} do
-      :detour
-      |> build()
+      build(:detour)
       |> with_id(1)
       |> with_route(%{name: "67", id: "67"})
       |> with_updated_at(DateTime.add(DateTime.utc_now(), +1, :minute))
