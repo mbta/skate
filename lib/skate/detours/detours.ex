@@ -191,6 +191,13 @@ defmodule Skate.Detours.Detours do
   defp handle_detour_updated(changeset, new_record, author_id) do
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
+
+    case Ecto.Changeset.fetch_change(changeset, :status) do
+      :error -> nil
+      {:ok, :draft} -> nil
+      {:ok, _} -> Skate.AlertsManager.ActiveDetours.S3Exporter.insert_job()
+    end
+
     update_swiftly(changeset, new_record)
   end
 
