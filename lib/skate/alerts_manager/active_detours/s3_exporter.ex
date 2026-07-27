@@ -126,11 +126,78 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
                Application.get_env(:ex_aws, :request_config_overrides)
              ) do
           {:ok, _} ->
+            :telemetry.execute(
+              [:skate, :alerts_manager, :active_detours, :s3_exporter, :ok],
+              %{count: length(objects)},
+              %{}
+            )
+
             {:ok, length(objects)}
 
           {:error, %{reason: reason}} ->
+            :telemetry.execute(
+              [:skate, :alerts_manager, :active_detours, :s3_exporter, :error],
+              %{},
+              %{reason: reason}
+            )
+
             {:error, reason}
         end
     end
+  end
+
+  def attach_telemetry(
+        label \\ "skate.alerts_manager.active_detours.s3_exporter",
+        config \\ []
+      ) do
+    events =
+      for event <- [:start, :stop, :exception] do
+        [:oban, :job, event]
+      end ++
+        for event <- [:ok, :error] do
+          [:skate, :alerts_manager, :active_detours, :s3_exporter, event]
+        end
+
+    :telemetry.attach_many(label, events, &handle_telemetry_event/4, config)
+  end
+
+  def handle_telemetry_event(_, _, _, _)
+
+  def handle_telemetry_event(
+        [:skate, :alerts_manager, :active_detours, :s3_exporter, :ok],
+        measurements,
+        _metadata,
+        _
+      ) do
+    Logger.notice(
+      "[skate:alerts_manager:active_detours:s3_exporter] ok: " <>
+        "exported #{measurements.count} detours"
+    )
+  end
+
+  def handle_telemetry_event(
+        [:skate, :alerts_manager, :active_detours, :s3_exporter, :error],
+        _measurements,
+        metadata,
+        _
+      ) do
+    Logger.notice(
+      "[skate:alerts_manager:active_detours:s3_exporter] error: " <>
+        inspect(metadata)
+    )
+  end
+
+  def handle_telemetry_event([:oban, :job, :start], measurements, metadata, _) do
+    Logger.notice(
+      "[oban] start: " <>
+        "worker #{metadata.worker} started at #{measurements.system_time}"
+    )
+  end
+
+  def handle_telemetry_event([:oban, :job, event], measurements, metadata, _) do
+    Logger.notice(
+      "[oban] #{event}: " <>
+        "worker #{metadata.worker} elapsed #{measurements.duration} ms"
+    )
   end
 end
