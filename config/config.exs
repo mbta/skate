@@ -81,7 +81,7 @@ config :skate,
   user_guide_url:
     "https://mbta.sharepoint.com/:b:/s/CTD/EaGzb7ta6GtBjfwSiUiO014B7qVDfSEIkCWMlpqomH7_cA?e=BHOpjY",
   training_url: "https://mbta.csod.com/GlobalSearch/search.aspx?s=&q=Skate",
-  s3_bucket: nil
+  s3_bucket: System.get_env("SKATE_S3_BUCKET")
 
 config :skate, Schedule.CacheFile, cache_filename: nil
 
