@@ -117,10 +117,8 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
 
     case Application.get_env(:skate, :s3_bucket) do
       nil ->
-        case File.write(Path.relative_to_cwd("detours.ndjson"), content) do
-          :ok -> {:ok, length(objects)}
-          {:error, reason} -> {:error, reason}
-        end
+        Logger.info(inspect(objects))
+        {:ok, length(objects)}
 
       bucket when is_binary(bucket) ->
         case ExAws.request(
