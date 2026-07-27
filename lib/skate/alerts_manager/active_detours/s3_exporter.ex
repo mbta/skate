@@ -118,11 +118,13 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
     case Application.get_env(:skate, :s3_bucket) do
       nil ->
         Logger.info(inspect(objects))
+
         :telemetry.execute(
           [:skate, :alerts_manager, :active_detours, :s3_exporter, :ok],
           %{count: length(objects)},
           %{}
         )
+
         {:ok, length(objects)}
 
       bucket when is_binary(bucket) ->
