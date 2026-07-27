@@ -50,8 +50,8 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
               |> activated()
               |> insert()
 
-
             %{state: snapshot} = deactivated(detour)
+
             Skate.Detours.Detours.upsert_from_snapshot(
               detour.author_id,
               with_id(snapshot, detour.id)
