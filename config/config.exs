@@ -80,7 +80,8 @@ config :skate,
     "https://mbta.sharepoint.com/:b:/s/CTD/ER2vUlgzH_xMuNTwKZHsvb0B80yH5XIQFLX7A4e6crycMA?e=GwAHOn",
   user_guide_url:
     "https://mbta.sharepoint.com/:b:/s/CTD/EaGzb7ta6GtBjfwSiUiO014B7qVDfSEIkCWMlpqomH7_cA?e=BHOpjY",
-  training_url: "https://mbta.csod.com/GlobalSearch/search.aspx?s=&q=Skate"
+  training_url: "https://mbta.csod.com/GlobalSearch/search.aspx?s=&q=Skate",
+  s3_bucket: nil
 
 config :skate, Schedule.CacheFile, cache_filename: nil
 
@@ -165,6 +166,9 @@ config :skate, Skate.BridgeStatus,
   # 743 is SL3
   bridge_route_ids: ~w[112 743],
   blackout_period: Duration.new!(second: -120)
+
+config :ex_aws,
+  request_config_overrides: %{}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
