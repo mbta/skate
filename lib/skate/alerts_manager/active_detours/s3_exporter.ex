@@ -211,11 +211,11 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
   end
 
   def handle_telemetry_event(
-    [:oban, :job, :start],
-    measurements,
-    %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = metadata,
-    _
-  ) do
+        [:oban, :job, :start],
+        measurements,
+        %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = metadata,
+        _
+      ) do
     Logger.notice(
       "[oban] start: " <>
         "worker #{metadata.worker} started at #{measurements.system_time}"
@@ -223,11 +223,11 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
   end
 
   def handle_telemetry_event(
-    [:oban, :job, event],
-    measurements,
-    %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = metadata,
-    _
-  ) do
+        [:oban, :job, event],
+        measurements,
+        %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = metadata,
+        _
+      ) do
     Logger.notice(
       "[oban] #{event}: " <>
         "worker #{metadata.worker} elapsed #{measurements.duration} ms"
