@@ -411,11 +411,7 @@ defmodule Skate.Detours.Detours do
       update_swiftly(changeset, detour, should_update_swiftly?(detour))
     end
 
-    case update_swiftly_fn.() do
-      # retry once on error
-      {:error, _} -> update_swiftly_fn.()
-      response -> response
-    end
+    Helpers.retry(update_swiftly_fn)
   end
 
   defp update_swiftly(

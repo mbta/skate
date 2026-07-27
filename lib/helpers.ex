@@ -45,4 +45,13 @@ defmodule Helpers do
     |> Enum.filter(fn {_, v} -> f.(v) end)
     |> Map.new()
   end
+
+  def retry(fun, n \\ 1) when n > 0 do
+    case fun.() do
+      {:error, _} -> retry(n - 1)
+      response -> response
+    end
+  end
+
+  def retry(fun, 0), do: fun.()
 end
