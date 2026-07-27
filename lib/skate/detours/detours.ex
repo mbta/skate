@@ -163,14 +163,12 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    IO.puts("upsert_from_snapshot")
-
     partial_changeset =
       Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
     detour = Ecto.Changeset.apply_changes(partial_changeset)
 
-    with {:ok, swiftly_response} <- update_swiftly(partial_changeset, detour),
+    with swiftly_response <- update_swiftly(partial_changeset, detour),
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
          {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset) do
@@ -472,11 +470,10 @@ defmodule Skate.Detours.Detours do
 
       adjustment_id ->
         service_adjustments_module().delete_adjustment_v1(adjustment_id, build_swiftly_opts())
-        |> dbg()
     end
   end
 
-  defp update_swiftly(_, _, _), do: {:ok, nil}
+  defp update_swiftly(_, _, _), do: :ok
 
   def sync_swiftly_with_skate(
         adjustments_module \\ service_adjustments_module(),
