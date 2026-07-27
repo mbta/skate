@@ -85,11 +85,15 @@ defmodule Skate.Detours.Db.Detour do
     |> change(%{state: new_state})
   end
 
-  def put_change_from_swiftly(%{adjustmentId: swiftly_id}, changeset) do
+  def put_change_from_swiftly({:ok, %{adjustmentId: swiftly_id}}, changeset) do
     put_change(changeset, :swiftly_id, swiftly_id)
   end
 
-  def put_change_from_swiftly(_, changeset) do
+  def put_change_from_swiftly({:ok, nil}, changeset) do
+    put_change(changeset, :swiftly_id, nil)
+  end
+
+  def put_change_from_swiftly(:ok, changeset) do
     changeset
   end
 
