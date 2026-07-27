@@ -124,11 +124,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
 
       bucket when is_binary(bucket) ->
         case ExAws.request(
-               ExAws.S3.put_object(
-                 Application.get_env(:skate, :s3_bucket),
-                 "detours/active.ndjson",
-                 content
-               ),
+               ExAws.S3.put_object(bucket, "detours/active.ndjson", content),
                Application.get_env(:ex_aws, :request_config_overrides)
              ) do
           {:ok, _} ->
