@@ -18,7 +18,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
   end
 
   describe "when job runs" do
-    test "fetches correct number of detours" do
+    test "records correct number of detours" do
       # arrange
       active = 8
       inactive = 2
