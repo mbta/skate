@@ -193,9 +193,20 @@ defmodule Skate.Detours.Detours do
     process_notifications(changeset, new_record)
 
     case Ecto.Changeset.fetch_change(changeset, :status) do
-      :error -> nil
-      {:ok, :draft} -> nil
-      {:ok, _} -> Skate.AlertsManager.ActiveDetours.S3Exporter.insert_job()
+      # status changed to :draft
+      {:ok, :draft} ->
+        nil
+
+      # status changed to :active or :past
+      {:ok, _} ->
+        Skate.AlertsManager.ActiveDetours.S3Exporter.insert_job()
+
+      # status did not change
+      :error ->
+        # only insert job if an active detour changed
+        if new_record.status == :active do
+          Skate.AlertsManager.ActiveDetours.S3Exporter.insert_job()
+        end
     end
 
     update_swiftly(changeset, new_record)
