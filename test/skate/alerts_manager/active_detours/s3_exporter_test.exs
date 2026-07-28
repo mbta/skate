@@ -12,12 +12,9 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
 
   @telemetry_handler_id "skate.alerts_manager.active_detours.s3_exporter.test"
 
-  defp attach_telemetry_handler_oban_job_start_event(
-         pid,
-         handler_id \\ @telemetry_handler_id
-       ) do
+  defp attach_telemetry_handler_oban_job_start_event(pid) do
     :telemetry.attach(
-      handler_id,
+      @telemetry_handler_id,
       [:oban, :job, :start],
       fn name, measurements, metadata, _ ->
         send(pid, {:telemetry_event, name, measurements, metadata})
