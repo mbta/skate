@@ -104,7 +104,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
         }
       end)
 
-    content =
+    serialized =
       objects
       |> Enum.map(fn object ->
         case Jason.encode(object) do
@@ -118,31 +118,33 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
       |> Enum.reject(&is_nil/1)
       |> Enum.join("")
 
+    count = length(objects)
+
     case Application.get_env(:skate, :s3_bucket) do
       nil ->
         Logger.notice(inspect(objects))
 
         :telemetry.execute(
           [:skate, :alerts_manager, :active_detours, :s3_exporter, :ok],
-          %{count: length(objects)},
+          %{count: count},
           %{}
         )
 
-        {:ok, length(objects)}
+        {:ok, count}
 
       bucket when is_binary(bucket) ->
         case ExAws.request(
-               ExAws.S3.put_object(bucket, "detours/active.ndjson", content),
+               ExAws.S3.put_object(bucket, "detours/active.ndjson", serialized),
                Application.get_env(:ex_aws, :request_config_overrides)
              ) do
           {:ok, _} ->
             :telemetry.execute(
               [:skate, :alerts_manager, :active_detours, :s3_exporter, :ok],
-              %{count: length(objects)},
+              %{count: count},
               %{}
             )
 
-            {:ok, length(objects)}
+            {:ok, count}
 
           {:error, %{reason: reason}} ->
             :telemetry.execute(
