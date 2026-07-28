@@ -44,25 +44,21 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
     :ok
   end
 
-  describe "starts job" do
-    for status <- ["activated", "deactivated"] do
+  describe "when detour status changes" do
+    for status <- [:active, :past] do
       @tag status: status
-      test "when detour is #{status}", %{status: status} do
-        this = self()
-        label = "skate.alerts_manager.active_detours.s3_exporter.test"
 
-        :telemetry.attach(
-          label,
-          [:oban, :job, :start],
-          fn name, measurements, metadata, _ ->
-            send(this, {:telemetry_event, name, measurements, metadata})
-          end,
-          []
-        )
+      test "to #{status} the job starts", %{status: status} do
+        # arrange
+        attach_telemetry_handler_oban_job_start_event(self())
 
+        # act
         case status do
-          "activated" ->
-            detour = insert(build(:detour))
+          :active ->
+            detour =
+              :detour
+              |> build()
+              |> insert()
 
             Skate.Detours.Detours.activate_detour(
               detour.id,
@@ -71,9 +67,10 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
               "Construction"
             )
 
-          "deactivated" ->
+          :past ->
             detour =
-              build(:detour)
+              :detour
+              |> build()
               |> activated()
               |> insert()
 
@@ -85,10 +82,9 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
             )
         end
 
+        # assert
         assert_receive {:telemetry_event, name, _, _}
         assert name == [:oban, :job, :start]
-
-        :telemetry.detach(label)
       end
     end
   end
