@@ -11,6 +11,9 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
 
   alias Skate.Detours.Db.Detour
 
+  @telemetry_handler_id "skate.alerts_manager.active_detours.s3_exporter"
+  @telemetry_handler_config []
+
   @impl Oban.Worker
   def perform(%Oban.Job{args: _}) do
     detours =
@@ -169,10 +172,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
     end
   end
 
-  def attach_telemetry(
-        label \\ "skate.alerts_manager.active_detours.s3_exporter",
-        config \\ []
-      ) do
+  def attach_telemetry() do
     events =
       for event <- [:start, :stop, :exception] do
         [:oban, :job, event]
@@ -181,9 +181,15 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
           [:skate, :alerts_manager, :active_detours, :s3_exporter, event]
         end
 
-    :telemetry.attach_many(label, events, &handle_telemetry_event/4, config)
+    :telemetry.attach_many(
+      @telemetry_handler_config,
+      events,
+      &handle_telemetry_event/4,
+      @telemetry_handler_config
+    )
   end
 
+  @spec handle_telemetry_event([...], any(), any(), any()) :: :ok
   def handle_telemetry_event(_, _, _, _)
 
   def handle_telemetry_event(
@@ -193,7 +199,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
         _
       ) do
     Logger.notice(
-      "[skate:alerts_manager:active_detours:s3_exporter] ok: " <>
+      "[#{@telemetry_handler_id}] " <>
         "exported #{measurements.count} detours"
     )
   end
@@ -204,8 +210,8 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
         metadata,
         _
       ) do
-    Logger.notice(
-      "[skate:alerts_manager:active_detours:s3_exporter] error: " <>
+    Logger.error(
+      "[#{@telemetry_handler_id}] error: " <>
         inspect(metadata)
     )
   end
