@@ -114,6 +114,8 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
     end
   end
 
+  describe "when job completes" do
+    test "records correct number of active detours" do
       # arrange
       active = 8
       inactive = 2
@@ -121,23 +123,23 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
 
       # act
       for _ <- 1..active do
-        build(:detour)
+        :detour
+        |> build()
         |> activated()
         |> insert()
       end
 
       for _ <- 1..inactive do
-        insert(build(:detour))
+        :detour
+        |> build()
+        |> insert()
       end
 
       # assert
       assert total == Skate.Repo.aggregate(Detour, :count, :id)
 
       assert {:ok, active} ==
-               perform_job(
-                 Skate.AlertsManager.ActiveDetours.S3Exporter,
-                 %{}
-               )
+               perform_job(Skate.AlertsManager.ActiveDetours.S3Exporter, %{})
     end
   end
 end
