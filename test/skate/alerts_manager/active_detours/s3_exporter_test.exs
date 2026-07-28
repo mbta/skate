@@ -89,8 +89,31 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
     end
   end
 
-  describe "when job runs" do
-    test "records correct number of detours" do
+  describe "when an active detour changes" do
+    test "the job starts" do
+      # arrange
+      attach_telemetry_handler_oban_job_start_event(self())
+
+      # act
+      detour =
+        :detour
+        |> build()
+        |> activated()
+        |> insert()
+
+      %{state: snapshot} = with_updated_at(detour, DateTime.now!("Etc/UTC"))
+
+      Skate.Detours.Detours.upsert_from_snapshot(
+        detour.author_id,
+        with_id(snapshot, detour.id)
+      )
+
+      # assert
+      assert_receive {:telemetry_event, name, _, _}
+      assert name == [:oban, :job, :start]
+    end
+  end
+
       # arrange
       active = 8
       inactive = 2
