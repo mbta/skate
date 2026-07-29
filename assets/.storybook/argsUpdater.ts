@@ -1,7 +1,7 @@
 // argsUpdater.ts
-import { useArgs } from "@storybook/preview-api"
-import type { DecoratorFunction } from "@storybook/types"
-import type { ReactRenderer } from "@storybook/react"
+import { useArgs } from "storybook/preview-api"
+import type { DecoratorFunction } from "storybook/internal/types"
+import type { ReactRenderer } from "@storybook/react-webpack5"
 
 type Fn = (...args: any) => any
 

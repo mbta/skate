@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import SettingsPage from "../../../src/components/settingsPage"
 
 const meta = {

@@ -1,4 +1,4 @@
-import { Decorator } from "@storybook/react"
+import { Decorator } from "@storybook/react-webpack5"
 
 // Currently `layout="fullscreen"` actually means "has zero padding" (https://github.com/storybookjs/storybook/issues/2264#issuecomment-1349251290)
 // To force the story to stretch to the available size of the screen we add

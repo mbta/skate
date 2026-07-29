@@ -14,10 +14,9 @@ const config: StorybookConfig = {
 
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
     "@storybook/addon-onboarding",
-    "@storybook/addon-interactions",
     "@storybook/preset-scss",
+    "@storybook/addon-docs"
   ],
 
   framework: {
@@ -26,8 +25,7 @@ const config: StorybookConfig = {
   },
 
   docs: {
-    autodocs: true,
-    defaultName: "Documentation",
+    defaultName: "Documentation"
   },
 
   webpackFinal(config, _) {

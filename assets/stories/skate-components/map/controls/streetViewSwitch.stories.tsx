@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 
 import { argsUpdater } from "../../../../.storybook/argsUpdater"
 
 import { StreetViewSwitch } from "../../../../src/components/map/controls/StreetViewSwitch"
 
-import { Decorator } from "@storybook/react"
+import { Decorator } from "@storybook/react-webpack5"
 import React from "react"
 
 const inControlDivDecorator: Decorator = (StoryFn) => (

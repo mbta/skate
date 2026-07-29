@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import { DiversionPage } from "../../../src/components/detours/diversionPage"
 import { route39shape } from "../__story-data__/shape"
 import { originalRouteFactory } from "../../../tests/factories/originalRouteFactory"
