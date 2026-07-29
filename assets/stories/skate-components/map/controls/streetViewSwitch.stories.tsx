@@ -29,7 +29,7 @@ const meta = {
           typeof newStreetViewEnabled === "function"
             ? newStreetViewEnabled(streetViewEnabled)
             : newStreetViewEnabled,
-      })
+      }),
     ),
     inControlDivDecorator,
     (StoryFn) => (

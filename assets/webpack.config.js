@@ -37,6 +37,7 @@ module.exports = (env, options) => {
           use: [
             {
               loader: "ts-loader",
+              options: { transpileOnly: true }
             },
           ],
         },
