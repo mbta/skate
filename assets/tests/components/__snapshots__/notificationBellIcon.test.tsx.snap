@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`NotificationBellIcon activated detour notification renders when there are new detour notifications and user is not part of DetoursList 1`] = `
 <body>

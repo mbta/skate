@@ -22,7 +22,7 @@ export type UseDetourInput =
     }
 
 export const useDetour = (useDetourProps: UseDetourInput) => {
-  const input =
+  const detourInput =
     "snapshot" in useDetourProps
       ? {
           input: {},
@@ -31,7 +31,10 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
       : {
           input: useDetourProps.originalRoute,
         }
-  const [snapshot, send, actorRef] = useMachine(createDetourMachine, input)
+  const [snapshot, send, actorRef] = useMachine(
+    createDetourMachine,
+    detourInput
+  )
 
   // Record snapshots when changed
   useEffect(() => {
