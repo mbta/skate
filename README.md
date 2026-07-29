@@ -241,7 +241,7 @@ Use Github Actions to deploy a specific branch to [Skate-Dev-Blue](https://skate
 
 ### 1. Let the team know when you're planning a release
 
-Communicate when you intend to do a release in #skate-product to give the team a chance to review and merge in any work they'd like to be promoted to production.
+Communicate when you intend to do a release in `#skate-product` to give the team a chance to review and merge in any work they'd like to be promoted to production.
 
 If possible limit the release to midday so as to avoid rush hour, and try to not release on Fridays.
 
