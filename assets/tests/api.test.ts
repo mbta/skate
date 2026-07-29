@@ -6,7 +6,6 @@ import {
   beforeEach,
   afterAll,
 } from "@jest/globals"
-import { SpyInstance } from "jest-mock"
 import {
   apiCall,
   checkedApiCall,
@@ -75,7 +74,7 @@ const mockFetch = (status: number, json: any): void => {
 }
 
 describe("apiCall", () => {
-  let browserReloadSpy: SpyInstance
+  let browserReloadSpy: jest.Spied<typeof browser.reload>
 
   beforeEach(() => {
     browserReloadSpy = jest
@@ -140,7 +139,7 @@ describe("apiCall", () => {
 })
 
 describe("checkedApiCall", () => {
-  let browserReloadSpy: SpyInstance
+  let browserReloadSpy: jest.Spied<typeof browser.reload>
 
   beforeEach(() => {
     browserReloadSpy = jest
@@ -237,7 +236,7 @@ describe("checkedApiCall", () => {
 })
 
 describe("apiCallWithError", () => {
-  let browserReloadSpy: SpyInstance
+  let browserReloadSpy: jest.Spied<typeof browser.reload>
 
   beforeEach(() => {
     browserReloadSpy = jest
