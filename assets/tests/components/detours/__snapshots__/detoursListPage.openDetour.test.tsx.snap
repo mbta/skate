@@ -1,9 +1,9 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Detours Page: Open a Detour renders detour details in an open drawer on mobile 1`] = `
 <body
   data-rr-ui-modal-open=""
-  style="padding-right: 2048px;"
+  style="padding-right: 1024px;"
 >
   <div>
     <div
@@ -1125,12 +1125,10 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
     </div>
   </div>
   <div />
-  <div
-    class="c-detour-modal__transition-appear c-detour-modal__transition-appear-active"
-  >
+  <div>
     <div
       aria-modal="true"
-      class="c-detour-modal"
+      class="c-detour-modal c-detour-modal__transition-appear c-detour-modal__transition-appear-active"
       role="dialog"
       tabindex="-1"
     >
@@ -1429,6 +1427,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   class="leaflet-pane leaflet-overlay-pane"
                 >
                   <svg
+                    class="leaflet-zoom-animated"
                     height="0"
                     pointer-events="none"
                     style="left: 0px; top: 0px;"
@@ -3019,12 +3018,10 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
     </div>
   </div>
   <div />
-  <div
-    class="c-detour-modal__transition-appear c-detour-modal__transition-appear-active"
-  >
+  <div>
     <div
       aria-modal="true"
-      class="c-detour-modal"
+      class="c-detour-modal c-detour-modal__transition-appear c-detour-modal__transition-appear-active"
       role="dialog"
       tabindex="-1"
     >
@@ -3323,6 +3320,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   class="leaflet-pane leaflet-overlay-pane"
                 >
                   <svg
+                    class="leaflet-zoom-animated"
                     height="0"
                     pointer-events="none"
                     style="left: 0px; top: 0px;"
@@ -3394,7 +3392,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="leaflet-marker-icon leaflet-zoom-hide"
                     role="button"
-                    style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; left: -413948px; top: -272913px; z-index: -272913; z-index: -272913;"
+                    style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; left: -413948px; top: -272913px; z-index: -272913;"
                     tabindex="0"
                     title="detour start"
                   >
@@ -3430,7 +3428,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="leaflet-marker-icon leaflet-zoom-hide"
                     role="button"
-                    style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; left: -413948px; top: -272913px; z-index: -272913; z-index: -272913;"
+                    style="margin-left: -20px; margin-top: -20px; width: 40px; height: 40px; left: -413948px; top: -272913px; z-index: -272913;"
                     tabindex="0"
                   >
                     <svg
@@ -3491,7 +3489,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="leaflet-marker-icon c-stop-icon-container c-vehicle-map__stop leaflet-zoom-hide leaflet-interactive"
                     role="button"
-                    style="margin-left: -7px; margin-top: -7px; width: 14px; height: 14px; left: -413948px; top: -272913px; z-index: -272913; z-index: -272913;"
+                    style="margin-left: -7px; margin-top: -7px; width: 14px; height: 14px; left: -413948px; top: -272913px; z-index: -272913;"
                     tabindex="0"
                   >
                     <svg

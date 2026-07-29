@@ -6,7 +6,6 @@ import {
   beforeEach,
   afterAll,
 } from "@jest/globals"
-import { SpyInstance } from "jest-mock"
 import {
   apiCall,
   checkedApiCall,
@@ -75,7 +74,7 @@ const mockFetch = (status: number, json: any): void => {
 }
 
 describe("apiCall", () => {
-  let browserReloadSpy: SpyInstance
+  let browserReloadSpy: jest.Spied<typeof browser.reload>
 
   beforeEach(() => {
     browserReloadSpy = jest
@@ -90,7 +89,7 @@ describe("apiCall", () => {
   test("returns parsed data", () => {
     mockFetch(200, { data: "raw" })
 
-    const parse = jest.fn(() => "parsed")
+    const parse = jest.fn((_data) => "parsed")
 
     return apiCall({
       url: "/",
@@ -140,7 +139,7 @@ describe("apiCall", () => {
 })
 
 describe("checkedApiCall", () => {
-  let browserReloadSpy: SpyInstance
+  let browserReloadSpy: jest.Spied<typeof browser.reload>
 
   beforeEach(() => {
     browserReloadSpy = jest
@@ -155,7 +154,7 @@ describe("checkedApiCall", () => {
   test("returns parsed data", () => {
     mockFetch(200, { data: "raw" })
 
-    const parse = jest.fn(() => "parsed")
+    const parse = jest.fn((_data) => "parsed")
 
     return checkedApiCall({
       url: "/",
@@ -237,7 +236,7 @@ describe("checkedApiCall", () => {
 })
 
 describe("apiCallWithError", () => {
-  let browserReloadSpy: SpyInstance
+  let browserReloadSpy: jest.Spied<typeof browser.reload>
 
   beforeEach(() => {
     browserReloadSpy = jest
@@ -252,7 +251,7 @@ describe("apiCallWithError", () => {
   test("returns parsed data", async () => {
     mockFetch(200, { data: "raw" })
 
-    const parse = jest.fn(() => "parsed")
+    const parse = jest.fn((_data) => "parsed")
 
     await expect(
       apiCallWithError({

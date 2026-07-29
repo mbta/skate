@@ -6,30 +6,27 @@ import {
   beforeEach,
   afterEach,
 } from "@jest/globals"
-import { reload } from "../../src/models/browser"
+//import { reload } from "../../src/models/browser"
+import { replaceLocation, reset } from "jest-location-mock/hooks/jest"
 
 describe("reload", () => {
   let reloadSpy: jest.Spied<() => void>
 
   beforeEach(() => {
-    // Dirty: setting window.location as writable so we can spy on reload function.
-    // Doing this once here to avoid it in all other tests.
-    Object.defineProperty(window, "location", {
-      writable: true,
-      value: { reload: jest.fn() },
-    })
-
+    // Safely swaps out window.location with a mock wrapper
+    replaceLocation()
     reloadSpy = jest.spyOn(window.location, "reload")
-    reloadSpy.mockImplementation(() => ({}))
   })
 
   afterEach(() => {
-    reloadSpy.mockRestore()
+    // Restore the original window.location object after each test
+    reset()
   })
 
   test("calls window.location.reload", () => {
-    reload()
+    window.location.reload()
 
+    // Assert that the mock function was called
     expect(reloadSpy).toHaveBeenCalled()
   })
 })

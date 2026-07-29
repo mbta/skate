@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Shuttle Map Page renders 1`] = `
 <DocumentFragment>
@@ -2190,6 +2190,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
             class="leaflet-pane leaflet-overlay-pane"
           >
             <svg
+              class="leaflet-zoom-animated"
               height="0"
               pointer-events="none"
               style="left: 0px; top: 0px;"

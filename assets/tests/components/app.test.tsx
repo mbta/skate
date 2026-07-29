@@ -229,7 +229,7 @@ describe("App", () => {
 
     render(
       <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
-        <MemoryRouter initialEntries={["/"]}>
+        <MemoryRouter initialEntries={[PagePath.Ladders]}>
           <AppRoutes />
         </MemoryRouter>
       </StateDispatchProvider>
@@ -237,7 +237,10 @@ describe("App", () => {
 
     await userEvent.click(screen.getByRole("link", { name: "Shuttle Map" }))
 
-    expect(mockedUsePanelState().setPath).toHaveBeenNthCalledWith(1, "/")
+    expect(mockedUsePanelState().setPath).toHaveBeenNthCalledWith(
+      1,
+      PagePath.Ladders
+    )
     expect(mockedUsePanelState().setPath).toHaveBeenNthCalledWith(2, path)
   })
 })
