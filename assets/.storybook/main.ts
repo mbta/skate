@@ -1,4 +1,8 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
+import { createRequire } from "node:module";
 import type { StorybookConfig } from "@storybook/react-webpack5"
+
+const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
   stories: [
@@ -14,7 +18,6 @@ const config: StorybookConfig = {
 
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-onboarding",
     "@storybook/preset-scss",
     "@storybook/addon-docs"
   ],
