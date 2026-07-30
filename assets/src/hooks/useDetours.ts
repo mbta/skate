@@ -11,25 +11,93 @@ import { reload } from "../models/browser"
 import { userUuid } from "../util/userUuid"
 import { ByRouteId, RouteId } from "../schedule"
 import { equalByElements } from "../helpers/array"
-import { array, create } from "superstruct"
+import { array, create, number, object } from "superstruct"
 
 export interface DetoursMap {
   [key: number]: SimpleDetour
 }
 
-const subscribe = (
-  socket: Socket,
-  topic: string,
-  initializeChannel: React.Dispatch<
-    React.SetStateAction<DetoursMap | undefined>
-  >,
-  handleDrafted: ((data: SimpleDetour) => void) | undefined,
-  handleActivated: ((data: SimpleDetour) => void) | undefined,
-  handleDeactivated: ((data: SimpleDetour) => void) | undefined,
-  handleDeleted: ((detourId: number) => void) | undefined,
-  initialMessageType: typeof SimpleDetourData | typeof SimpleActiveDetourData,
-  onJoined?: (channel: Channel) => void,
-): Channel => {
+export interface DetoursPagination {
+  totalCount: number
+  totalPages: number
+  pageNumber: number
+  pageSize: number
+}
+
+const PaginatedDetoursData = object({
+  data: array(SimpleDetourData),
+  total_count: number(),
+  total_pages: number(),
+  page_number: number(),
+  page_size: number(),
+})
+
+type InitialMessageType = typeof SimpleDetourData | typeof SimpleActiveDetourData
+
+type SubscribeOptions = {
+  socket: Socket
+  topic: string
+  initializeChannel: React.Dispatch<React.SetStateAction<DetoursMap | undefined>>
+  initialMessageType: InitialMessageType
+  onJoined?: (channel: Channel) => void
+  handleDrafted?: (data: SimpleDetour) => void
+  handleActivated?: (data: SimpleDetour) => void
+  handleDeactivated?: (data: SimpleDetour) => void
+  handleDeleted?: (detourId: number) => void
+}
+
+const hasKey = <K extends string>(
+  payload: unknown,
+  key: K
+): payload is Record<K, unknown> => {
+  return typeof payload === "object" && payload !== null && key in payload
+}
+
+const parsePaginatePayload = (payload: unknown): {
+  detours: SimpleDetour[]
+  pagination?: DetoursPagination
+} => {
+  const normalizedPayload = hasKey(payload, "data") && hasKey(payload.data, "total_count")
+    ? payload.data
+    : payload
+
+  if (Array.isArray(normalizedPayload)) {
+    const parsedData = create(normalizedPayload, array(SimpleDetourData))
+    return { detours: parsedData.map(simpleDetourFromData) }
+  }
+
+  if (hasKey(normalizedPayload, "total_count")) {
+    const parsedPagination = create(normalizedPayload, PaginatedDetoursData)
+    return {
+      detours: parsedPagination.data.map(simpleDetourFromData),
+      pagination: {
+        totalCount: parsedPagination.total_count,
+        totalPages: parsedPagination.total_pages,
+        pageNumber: parsedPagination.page_number,
+        pageSize: parsedPagination.page_size,
+      },
+    }
+  }
+
+  if (hasKey(normalizedPayload, "data")) {
+    const parsedData = create(normalizedPayload.data, array(SimpleDetourData))
+    return { detours: parsedData.map(simpleDetourFromData) }
+  }
+
+  return { detours: [] }
+}
+
+const subscribe = ({
+  socket,
+  topic,
+  initializeChannel,
+  handleDrafted,
+  handleActivated,
+  handleDeactivated,
+  handleDeleted,
+  initialMessageType,
+  onJoined,
+}: SubscribeOptions): Channel => {
   const channel = socket.channel(topic)
 
   if (handleDrafted)
@@ -120,16 +188,14 @@ export const useActiveDetours = (
 
     let channel: Channel | undefined
     if (socket) {
-      channel = subscribe(
+      channel = subscribe({
         socket,
         topic,
-        setActiveDetours,
-        undefined,
-        handleActivated,
-        handleDeactivated,
-        undefined,
-        SimpleActiveDetourData
-      )
+        initializeChannel: setActiveDetours,
+        handleActivated: handleActivated,
+        handleDeactivated: handleDeactivated,
+        initialMessageType: SimpleActiveDetourData,
+      })
     }
 
     return () => {
@@ -146,13 +212,15 @@ export const useActiveDetours = (
 export const usePastDetours = ({
   socket,
   routeId = "all",
-  limit = 5,
-  offset = 0,
+  limit = 3,
+  pageNumber = 1,
+  onPaginate,
 }: {
   socket: Socket | undefined
   routeId?: string
   limit?: number
-  offset?: number
+  pageNumber?: number
+  onPaginate?: (pagination: DetoursPagination) => void
 }) => {
   const topic = routeId === "all" ? "detours:past" : `detours:past:${routeId}`
   const [pastDetours, setPastDetours] = useState<DetoursMap | undefined>()
@@ -162,28 +230,29 @@ export const usePastDetours = ({
   const handleDeactivated = (data: SimpleDetour) => {
     setPastDetours((pastDetours) => ({ ...pastDetours, [data.id]: data }))
   }
+
   const setDetoursFromData = (data: unknown) => {
-    const detours = create(data, array(SimpleDetourData)).map(simpleDetourFromData)
+    const { detours, pagination } = parsePaginatePayload(data)
+    if (pagination) {
+      onPaginate?.(pagination)
+    }
     setPastDetours(Object.fromEntries(detours.map((v) => [v.id, v])))
   }
 
   useEffect(() => {
     let channel: Channel | undefined
     if (socket) {
-      channel = subscribe(
+      channel = subscribe({
         socket,
         topic,
-        setPastDetours,
-        undefined,
-        undefined,
-        handleDeactivated,
-        undefined,
-        SimpleDetourData,
-        (channel) => {
+        initializeChannel: setPastDetours,
+        handleDeactivated: handleDeactivated,
+        initialMessageType: SimpleDetourData,
+        onJoined: (channel) => {
           channelRef.current = channel
           joinedRef.current = true
-        }
-      )
+        },
+      })
     }
 
     return () => {
@@ -199,9 +268,9 @@ export const usePastDetours = ({
   useEffect(() => {
     const channel = channelRef.current
     if (channel && joinedRef.current) {
-      pushPageNumber(channel, topic, limit, offset, setDetoursFromData)
+      pushPageNumber(channel, topic, limit, pageNumber, setDetoursFromData)
     }
-  }, [limit, offset])
+  }, [limit, pageNumber, onPaginate, topic])
 
   return pastDetours
 }
@@ -232,16 +301,15 @@ export const useDraftDetours = (socket: Socket | undefined) => {
   useEffect(() => {
     let channel: Channel | undefined
     if (socket) {
-      channel = subscribe(
+      channel = subscribe({
         socket,
         topic,
-        setDraftDetours,
-        handleDrafted,
-        handleActivated,
-        undefined,
-        handleDeleted,
-        SimpleDetourData
-      )
+        initializeChannel: setDraftDetours,
+        handleDrafted: handleDrafted,
+        handleActivated: handleActivated,
+        handleDeleted: handleDeleted,
+        initialMessageType: SimpleDetourData,
+      })
     }
 
     return () => {
@@ -361,13 +429,16 @@ const pushPageNumber = (
   channel: Channel,
   topic: string,
   limit: number,
-  offset: number,
+  pageNumber: number,
   setDetoursCallback: (data: unknown) => void
 ) => {
+  const safePageNumber = Math.max(1, pageNumber)
+  const offset = (safePageNumber - 1) * limit
+
   channel
     .push("paginate", { limit, offset })
-    .receive("ok", ({ data: unknownData }: { data: unknown }) => {
-      setDetoursCallback(unknownData)
+    .receive("ok", (payload: unknown) => {
+      setDetoursCallback(payload)
     })
     .receive("error", ({ reason }) => {
       // eslint-disable-next-line no-console
