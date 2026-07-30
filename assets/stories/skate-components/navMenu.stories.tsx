@@ -8,6 +8,7 @@ const meta = {
   title: "Mobile <NavMenu>",
   args: {
     mobileMenuIsOpen: true,
+    toggleMobileMenu: () => {},
   },
   decorators: [
     (StoryFn) => (

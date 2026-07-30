@@ -18,6 +18,9 @@ const meta = {
     showLayersList: true,
     pullbackLayerEnabled: false,
     tileType: "base",
+    onChangeLayersListVisibility: () => {},
+    onChangeTileType: () => {},
+    onTogglePullbackLayer: () => {},
   },
   argTypes: {
     onChangeTileType: { table: { disable: true } },

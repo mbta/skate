@@ -25,6 +25,7 @@ const meta = {
       zoom: 14,
       center: { lat: 42.33, lng: -71.11 },
     }),
+    onClose: () => {},
   },
   argTypes: {
     originalRoute: { table: { disable: true } },

@@ -17,6 +17,7 @@ const meta = {
   component: StreetViewSwitch,
   args: {
     streetViewEnabled: false,
+    setStreetViewEnabled: () => {},
   },
   argTypes: {
     setStreetViewEnabled: { table: { disable: true } },
@@ -29,7 +30,7 @@ const meta = {
           typeof newStreetViewEnabled === "function"
             ? newStreetViewEnabled(streetViewEnabled)
             : newStreetViewEnabled,
-      }),
+      })
     ),
     inControlDivDecorator,
     (StoryFn) => (
