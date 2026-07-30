@@ -1,8 +1,8 @@
 // This file has been automatically migrated to valid ESM format by Storybook.
-import { createRequire } from "node:module";
+import { createRequire } from "node:module"
 import type { StorybookConfig } from "@storybook/react-webpack5"
 
-const require = createRequire(import.meta.url);
+const require = createRequire(import.meta.url)
 
 const config: StorybookConfig = {
   stories: [
@@ -16,11 +16,7 @@ const config: StorybookConfig = {
     },
   ],
 
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/preset-scss",
-    "@storybook/addon-docs"
-  ],
+  addons: ["@storybook/addon-docs"],
 
   framework: {
     name: "@storybook/react-webpack5",
@@ -28,7 +24,7 @@ const config: StorybookConfig = {
   },
 
   docs: {
-    defaultName: "Documentation"
+    defaultName: "Documentation",
   },
 
   webpackFinal(config, _) {
@@ -45,6 +41,18 @@ const config: StorybookConfig = {
         },
       ],
     })
+
+    config.module?.rules?.push({
+      test: /\.scss$/,
+      use: [
+        "style-loader",
+        "css-loader",
+        {
+          loader: "sass-loader",
+        },
+      ],
+    })
+
     return config
   },
 

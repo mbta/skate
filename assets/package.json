@@ -56,8 +56,6 @@
     "@babel/preset-env": "^7.19.3",
     "@jest/globals": "^29.6.2",
     "@storybook/addon-docs": "10.5.5",
-    "@storybook/addon-links": "10.5.5",
-    "@storybook/preset-scss": "^1.0.3",
     "@storybook/react-webpack5": "10.5.5",
     "@testing-library/dom": "^9.3.3",
     "@testing-library/jest-dom": "^6.9.1",
