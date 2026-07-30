@@ -176,13 +176,13 @@ describe("usePastDetours", () => {
     })
   })
 
-  test("pushes pagination on initial join with the provided limit and offset", () => {
+  test("pushes pagination on initial join with offset derived from page number", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: detours })
     mockSocket.channel.mockImplementation(() => mockChannel)
 
     renderHook(() =>
-      usePastDetours({ socket: mockSocket, limit: 5, offset: 10 })
+      usePastDetours({ socket: mockSocket, limit: 5, pageNumber: 3 })
     )
 
     expect(mockChannel.push).toHaveBeenCalledWith("paginate", {
@@ -191,14 +191,39 @@ describe("usePastDetours", () => {
     })
   })
 
-  test("pushes pagination again when offset changes", () => {
+  test("emits pagination metadata from paginate responses", () => {
+    const onPaginate = jest.fn()
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", {
+      data: detours,
+      total_count: 20,
+      total_pages: 4,
+      page_number: 2,
+      page_size: 5,
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    renderHook(() =>
+      usePastDetours({ socket: mockSocket, limit: 5, pageNumber: 2, onPaginate })
+    )
+
+    expect(onPaginate).toHaveBeenCalledWith({
+      totalCount: 20,
+      totalPages: 4,
+      pageNumber: 2,
+      pageSize: 5,
+    })
+  })
+
+  test("pushes pagination again when pageNumber changes", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: detours })
     mockSocket.channel.mockImplementation(() => mockChannel)
 
     const { rerender } = renderHook(
-      ({ socket, offset }) => usePastDetours({ socket, limit: 5, offset }),
-      { initialProps: { socket: mockSocket, offset: 0 } }
+      ({ socket, pageNumber }) =>
+        usePastDetours({ socket, limit: 5, pageNumber }),
+      { initialProps: { socket: mockSocket, pageNumber: 1 } }
     )
 
     expect(mockChannel.push).toHaveBeenCalledWith("paginate", {
@@ -206,7 +231,7 @@ describe("usePastDetours", () => {
       offset: 0,
     })
 
-    rerender({ socket: mockSocket, offset: 5 })
+    rerender({ socket: mockSocket, pageNumber: 2 })
 
     expect(mockChannel.push).toHaveBeenLastCalledWith("paginate", {
       limit: 5,
@@ -214,7 +239,7 @@ describe("usePastDetours", () => {
     })
   })
 
-  test("switches channels and paginates with offset 0 when route changes", () => {
+  test("switches channels and paginates with page 1 equivalent offset when route changes", () => {
     const selectedRoute = parsedDetourA.route
     const mockSocket = makeMockSocket()
     const mockChannelA = makeMockChannel("ok", { data: detours })
@@ -224,10 +249,10 @@ describe("usePastDetours", () => {
     mockSocket.channel.mockImplementationOnce(() => mockChannelB)
 
     const { rerender } = renderHook(
-      ({ socket, routeId, offset }) =>
-        usePastDetours({ socket, routeId, limit: 5, offset }),
+      ({ socket, routeId, pageNumber }) =>
+        usePastDetours({ socket, routeId, limit: 5, pageNumber }),
       {
-        initialProps: { socket: mockSocket, routeId: "all", offset: 20 },
+        initialProps: { socket: mockSocket, routeId: "all", pageNumber: 5 },
       }
     )
 
@@ -236,7 +261,7 @@ describe("usePastDetours", () => {
       offset: 20,
     })
 
-    rerender({ socket: mockSocket, routeId: selectedRoute, offset: 0 })
+    rerender({ socket: mockSocket, routeId: selectedRoute, pageNumber: 1 })
 
     expect(mockChannelB.push).toHaveBeenCalledWith("paginate", {
       limit: 5,
