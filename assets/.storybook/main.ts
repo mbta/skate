@@ -1,8 +1,4 @@
-// This file has been automatically migrated to valid ESM format by Storybook.
-import { createRequire } from "node:module"
 import type { StorybookConfig } from "@storybook/react-webpack5"
-
-const require = createRequire(import.meta.url)
 
 const config: StorybookConfig = {
   stories: [
@@ -28,30 +24,25 @@ const config: StorybookConfig = {
   },
 
   webpackFinal(config, _) {
-    config.module?.rules?.push({
-      test: /\.svg$/,
-      type: "asset/source",
-    })
-    config.module?.rules?.push({
-      test: /\.tsx?$/,
-      use: [
-        {
-          loader: require.resolve("ts-loader"),
-          options: { transpileOnly: true },
-        },
-      ],
-    })
-
-    config.module?.rules?.push({
-      test: /\.scss$/,
-      use: [
-        "style-loader",
-        "css-loader",
-        {
-          loader: "sass-loader",
-        },
-      ],
-    })
+    config.module?.rules?.push(
+      {
+        test: /\.svg$/,
+        type: "asset/source",
+      },
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: "ts-loader",
+            options: { transpileOnly: true },
+          },
+        ],
+      },
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      }
+    )
 
     return config
   },
