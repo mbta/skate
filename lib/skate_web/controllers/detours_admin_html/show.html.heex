@@ -65,3 +65,16 @@
   <%= extract_pre(@db_detour) %>
   </pre>
 </details>
+
+<details>
+  <summary>Manual Actions</summary>
+  <.form
+    for={@conn}
+    action={~p"/api/detours/#{detour_id}"}
+    method="DELETE"
+  >
+    {submit("Remove from Skate",
+      onclick: "return confirm('Are you sure?')"
+    )}
+  </.form>
+</details>
