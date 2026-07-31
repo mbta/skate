@@ -134,16 +134,15 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
     text =
       objects
       |> Enum.map(fn object ->
-        with {:ok, json} <- Jason.encode(object) do
-          json <> "\n"
-        else
+        case Jason.encode(object) do
+          {:ok, json} -> json <> "\n"
           {:error, _} -> nil
         end
       end)
       |> Enum.reject(&is_nil/1)
       |> Enum.join("")
 
-    with overrides = Application.get_env(:ex_aws, :request_config_overrides, %{}),
+    with overrides <- Application.get_env(:ex_aws, :request_config_overrides, %{}),
          object <- Map.get(job.args, :object, "detours/active.ndjson"),
          {:ok, bucket} <- Application.fetch_env(:skate, :s3_bucket),
          {:ok, _} <-
