@@ -12,15 +12,25 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
 
   @telemetry_handler_id "skate.alerts_manager.active_detours.s3_exporter.test"
 
-  defp attach_telemetry_handler_oban_job_start_event(pid) do
-    :telemetry.attach(
-      @telemetry_handler_id,
-      [:oban, :job, :start],
-      fn name, measurements, metadata, _ ->
-        send(pid, {:telemetry_event, name, measurements, metadata})
-      end,
-      []
-    )
+  defmacrop test_job_starts(do: block) do
+    quote do
+      pid = self()
+
+      :telemetry.attach(
+        @telemetry_handler_id,
+        [:oban, :job, :start],
+        fn name, measurements, metadata, _ ->
+          send(pid, {:telemetry_event, name, measurements, metadata})
+        end,
+        []
+      )
+
+      unquote(block)
+
+      assert_receive {:telemetry_event, name, _, metadata}
+      assert name == [:oban, :job, :start]
+      assert %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = metadata
+    end
   end
 
   setup do
@@ -30,84 +40,54 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
   end
 
   setup do
-    Mox.stub(
+    Mox.expect(
       ExAws.Request.HttpMock,
       :request,
       fn _, _, _, _, _ ->
         {:ok, %{status_code: 200, body: ""}}
       end
     )
+    Mox.verify_on_exit!()
 
     :ok
   end
 
-  describe "when detour status changes" do
-    for status <- [:active, :past] do
-      @tag status: status
+  describe "when detour status changes to :active" do
+    test "the job starts" do
+      test_job_starts do
+        %{id: id, author_id: author_id} =
+          :detour
+          |> build()
+          |> insert()
 
-      test "to #{status} the job starts", %{status: status} do
-        # arrange
-        attach_telemetry_handler_oban_job_start_event(self())
-
-        # act
-        case status do
-          :active ->
-            detour =
-              :detour
-              |> build()
-              |> insert()
-
-            Skate.Detours.Detours.activate_detour(
-              detour.id,
-              detour.author_id,
-              "1 hour",
-              "Construction"
-            )
-
-          :past ->
-            detour =
-              :detour
-              |> build()
-              |> activated()
-              |> insert()
-
-            %{state: snapshot} = deactivated(detour)
-
-            Skate.Detours.Detours.upsert_from_snapshot(
-              detour.author_id,
-              with_id(snapshot, detour.id)
-            )
-        end
-
-        # assert
-        assert_receive {:telemetry_event, name, _, _}
-        assert name == [:oban, :job, :start]
+        Skate.Detours.Detours.activate_detour(id, author_id, "1 hour", "Construction")
       end
+    end
+  end
+
+  describe "when detour status changes to :past" do
+    test "the job starts" do
+      %{id: id, author_id: author_id, state: snapshot} =
+        :detour
+        |> build()
+        |> activated()
+        |> insert()
+        |> deactivated()
+
+      Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
     end
   end
 
   describe "when an active detour changes" do
     test "the job starts" do
-      # arrange
-      attach_telemetry_handler_oban_job_start_event(self())
-
-      # act
-      detour =
+      %{id: id, author_id: author_id, state: snapshot} =
         :detour
         |> build()
         |> activated()
         |> insert()
+        |> with_updated_at(DateTime.now!("Etc/UTC"))
 
-      %{state: snapshot} = with_updated_at(detour, DateTime.now!("Etc/UTC"))
-
-      Skate.Detours.Detours.upsert_from_snapshot(
-        detour.author_id,
-        with_id(snapshot, detour.id)
-      )
-
-      # assert
-      assert_receive {:telemetry_event, name, _, _}
-      assert name == [:oban, :job, :start]
+      Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
     end
   end
 
@@ -120,10 +100,22 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
 
       # act
       for _ <- 1..active do
-        :detour
-        |> build()
-        |> activated()
-        |> insert()
+        detour =
+          :detour
+          |> build()
+          |> activated()
+          |> with_missed_stops(for i <- 1..2, do: Integer.to_string(i))
+
+        # workaround because there's no `with_connection_point(...)`
+        insert(%{
+          detour
+          | state:
+              put_in(
+                detour.state,
+                ["context", "finishedDetour", "connectionPoint"],
+                %{start: %{id: 1}, end: %{id: 2}}
+              )
+        })
       end
 
       for _ <- 1..inactive do
