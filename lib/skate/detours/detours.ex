@@ -245,6 +245,12 @@ defmodule Skate.Detours.Detours do
     end
   end
 
+  def manual_deactivate_detour(detour_id) do
+    get_detour!(detour_id)
+    |> build_deactivation_changeset()
+    |> Repo.update!()
+  end
+
   defp fetch_detour_for_activation(detour_id, user_id) do
     case Repo.get(Detour, detour_id) do
       nil ->
@@ -272,6 +278,17 @@ defmodule Skate.Detours.Detours do
     Detour.changeset(detour, %{
       state: new_state,
       activated_at: DateTime.utc_now(:millisecond)
+    })
+  end
+
+  defp build_deactivation_changeset(detour) do
+    new_state =
+      detour.state
+      |> put_in(["value", "Detour Drawing"], "Past")
+
+    Detour.changeset(detour, %{
+      state: new_state,
+      status: :past
     })
   end
 

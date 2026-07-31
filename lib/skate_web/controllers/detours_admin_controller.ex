@@ -46,6 +46,14 @@ defmodule SkateWeb.DetoursAdminController do
     redirect(conn, to: ~p"/detours_admin")
   end
 
+  @spec manual_deactivate_detour(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def manual_deactivate_detour(conn, %{"id" => id}) do
+    Logger.info("begin manual deactivation for detour detour_id=#{inspect(id)}")
+    Detours.manual_deactivate_detour(id)
+    Logger.info("end manual deactivation for detour detour_id=#{inspect(id)}")
+    redirect(conn, to: ~p"/detours_admin/#{id}")
+  end
+
   @spec sync_swiftly(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def sync_swiftly(conn, _params) do
     Logger.info("begin manual sync detours with swiftly")
