@@ -70,10 +70,10 @@
   <summary>Manual Actions</summary>
   <.form
     for={@conn}
-    action={~p"/api/detours/#{detour_id}"}
-    method="DELETE"
+    action={~p"/detours_admin/#{detour_id}/manual_deactivate_detour"}
+    method="POST"
   >
-    {submit("Remove from Skate",
+    {submit("Deactivate in Skate",
       onclick: "return confirm('Are you sure?')"
     )}
   </.form>

@@ -140,6 +140,10 @@ defmodule SkateWeb.Router do
            DetoursAdminController,
            :manual_remove_swiftly
 
+    post "/detours_admin/:id/manual_deactivate_detour",
+         DetoursAdminController,
+         :manual_deactivate_detour
+
     get "/reports", ReportController, :index
     get "/reports/:short_name", ReportController, :run
     get "/test_groups", TestGroupController, :index
