@@ -143,20 +143,23 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
       |> Enum.reject(&is_nil/1)
       |> Enum.join("")
 
-    with object <- Map.get(job.args, :object, "detours/active.ndjson"),
-         bucket <- Application.get_env(:skate, :s3_bucket, nil),
-         operation when is_binary(bucket) <- ExAws.S3.put_object(bucket, object, text),
-         overrides <- Application.get_env(:ex_aws, :request_config_overrides, %{}),
-         {:ok, _} <- ExAws.request(operation, overrides) do
+    with overrides = Application.get_env(:ex_aws, :request_config_overrides, %{}),
+         object <- Map.get(job.args, :object, "detours/active.ndjson"),
+         {:ok, bucket} <- Application.fetch_env(:skate, :s3_bucket),
+         {:ok, _} <-
+           ExAws.request(
+             ExAws.S3.put_object(bucket, object, text),
+             overrides
+           ) do
       {:ok, length(objects)}
     else
-      # aws s3 operation failed
-      {:error, %{reason: reason}} ->
-        {:error, reason}
-
       # missing required configuration value
-      nil ->
-        {:error, "missing required configuration value"}
+      :error ->
+        {:error, "missing required configuration value for s3 bucket"}
+
+      # aws s3 operation failed
+      {:error, reason} ->
+        {:error, reason}
     end
   end
 end
