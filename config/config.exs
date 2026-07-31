@@ -166,9 +166,6 @@ config :skate, Skate.BridgeStatus,
   bridge_route_ids: ~w[112 743],
   blackout_period: Duration.new!(second: -120)
 
-config :ex_aws,
-  request_config_overrides: %{}
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
