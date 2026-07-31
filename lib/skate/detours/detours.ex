@@ -192,21 +192,26 @@ defmodule Skate.Detours.Detours do
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
 
-    case Ecto.Changeset.fetch_change(changeset, :status) do
-      # status changed to :draft
-      {:ok, :draft} ->
-        nil
+    should_run_s3_export_job =
+      case Ecto.Changeset.fetch_change(changeset, :status) do
+        # status changed to :draft
+        {:ok, :draft} ->
+          false
 
-      # status changed to :active or :past
-      {:ok, _} ->
-        Skate.AlertsManager.ActiveDetours.S3Exporter.insert_job()
+        # status changed to :active or :past
+        {:ok, _} ->
+          true
 
-      # status did not change
-      :error ->
-        # only insert job if an active detour changed
-        if new_record.status == :active do
-          Skate.AlertsManager.ActiveDetours.S3Exporter.insert_job()
-        end
+        # status did not change
+        :error ->
+          # did active detour change?
+          new_record.status == :active
+      end
+
+    if should_run_s3_export_job do
+      %{}
+      |> Skate.AlertsManager.ActiveDetours.S3Exporter.new()
+      |> Oban.insert()
     end
 
     update_swiftly(changeset, new_record)
