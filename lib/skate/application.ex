@@ -16,8 +16,6 @@ defmodule Skate.Application do
 
     Skate.Telemetry.setup_telemetry()
 
-    Skate.AlertsManager.ActiveDetours.S3Exporter.attach_telemetry()
-
     # List all child processes to be supervised
     children =
       [{Skate.Repo, []}] ++

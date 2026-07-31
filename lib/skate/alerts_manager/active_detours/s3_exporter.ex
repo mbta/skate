@@ -11,11 +11,8 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
 
   alias Skate.Detours.Db.Detour
 
-  @telemetry_handler_id "skate.alerts_manager.active_detours.s3_exporter"
-  @telemetry_handler_config []
-
   @impl Oban.Worker
-  def perform(%Oban.Job{args: _}) do
+  def perform(%Oban.Job{} = job) do
     detours =
       Detour
       |> Ecto.Query.where(status: :active)
@@ -23,62 +20,90 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
       |> Skate.Repo.all()
 
     objects =
-      Enum.map(detours, fn %Detour{} = detour ->
+      detours
+      |> Enum.map(fn %Detour{} = detour ->
+        # common attributes
         %{
           id: detour.id,
           route_id: detour.route_id,
+          direction_id: get_in(detour.state, ["context", "routePattern", "directionId"]),
           reason: detour.reason,
           nearest_intersection: detour.nearest_intersection,
-          estimated_duration: detour.estimated_duration,
-          activated_at:
-            case DateTime.from_naive(detour.activated_at, "Etc/UTC") do
-              {:ok, datetime} -> DateTime.to_unix(datetime)
-              _ -> nil
-            end,
-          updated_at:
-            case DateTime.from_naive(detour.updated_at, "Etc/UTC") do
-              {:ok, datetime} -> DateTime.to_unix(datetime)
-              _ -> nil
-            end,
-          direction_id:
-            get_in(
-              detour.state,
-              ["context", "routePattern", "directionId"]
-            ),
-          missed_stops:
-            if detour.is_text_only do
-              get_in(detour.state, ["context", "typedDetour", "missedStops"])
+          estimated_duration: detour.estimated_duration
+        }
+        # timestamp attributes
+        |> Map.merge(
+          for attribute <- [:activated_at, :updated_at], into: %{} do
+            with {:ok, naive_datetime} <- Map.fetch(detour, attribute),
+                 {:ok, datetime} <- DateTime.from_naive(naive_datetime, "Etc/UTC"),
+                 unix <- DateTime.to_unix(datetime) do
+              {attribute, unix}
             else
-              case get_in(detour.state, ["context", "finishedDetour", "missedStops"]) do
-                nil ->
-                  nil
+              # attribute is missing
+              :error ->
+                {:invalid, true}
 
-                missed_stops when is_list(missed_stops) ->
-                  missed_stops
-                  |> Enum.map(fn %{} = missed_stop -> get_in(missed_stop, ["id"]) end)
-                  |> Enum.reject(&is_nil/1)
-              end
-            end,
-          connection_points:
-            if detour.is_text_only do
-              get_in(detour.state, ["context", "typedDetour", "connectionPoints"])
-            else
-              case get_in(detour.state, ["context", "finishedDetour", "connectionPoint"]) do
-                nil ->
-                  []
+              # attribute is invalid
+              {:error, _reason} ->
+                {:invalid, true}
+            end
+          end
+        )
+        # missed stops attribute
+        |> Map.merge(
+          if detour.is_text_only do
+            %{
+              missed_stops_text_only:
+                get_in(detour.state, ["context", "typedDetour", "missedStops"])
+            }
+          else
+            case get_in(detour.state, ["context", "finishedDetour", "missedStops"]) do
+              missed_stops when is_list(missed_stops) ->
+                %{
+                  missed_stops:
+                    missed_stops
+                    |> Enum.map(fn %{} = missed_stop -> get_in(missed_stop, ["id"]) end)
+                    |> Enum.reject(&is_nil/1)
+                }
 
-                connection_points when is_map(connection_points) ->
-                  for point <- ["start", "end"] do
-                    get_in(connection_points, [point, "id"])
-                  end
-                  |> Enum.reject(&is_nil/1)
-              end
-            end,
-          route_segments:
-            if detour.is_text_only do
-              nil
-            else
-              %{
+              _ ->
+                %{invalid: true}
+            end
+          end
+        )
+        # connection points attribute
+        |> Map.merge(
+          if detour.is_text_only do
+            %{
+              connection_points_text_only:
+                get_in(detour.state, ["context", "typedDetour", "connectionPoints"])
+            }
+          else
+            case get_in(
+                   detour.state,
+                   ["context", "finishedDetour", "connectionPoint"]
+                 ) do
+              connection_points when is_map(connection_points) ->
+                %{
+                  connection_points:
+                    for point <- ["start", "end"] do
+                      get_in(connection_points, [point, "id"])
+                    end
+                    |> Enum.reject(&is_nil/1)
+                }
+
+              _ ->
+                %{invalid: true}
+            end
+          end
+        )
+        # route segments attribute
+        |> Map.merge(
+          if detour.is_text_only do
+            %{}
+          else
+            %{
+              route_segments: %{
                 before_detour:
                   get_in(
                     detour.state,
@@ -100,145 +125,38 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
                     ["context", "finishedDetour", "routeSegments", "detour"]
                   )
               }
-            end
-        }
+            }
+          end
+        )
       end)
+      |> Enum.reject(fn %{} = object -> Map.get(object, :invalid, false) end)
 
-    serialized =
+    text =
       objects
       |> Enum.map(fn object ->
-        case Jason.encode(object) do
-          {:ok, json} ->
-            json <> "\n"
-
-          {:error, _} ->
-            nil
+        with {:ok, json} <- Jason.encode(object) do
+          json <> "\n"
+        else
+          {:error, _} -> nil
         end
       end)
       |> Enum.reject(&is_nil/1)
       |> Enum.join("")
 
-    count = length(objects)
+    with object <- Map.get(job.args, :object, "detours/active.ndjson"),
+         bucket <- Application.get_env(:skate, :s3_bucket, nil),
+         operation when is_binary(bucket) <- ExAws.S3.put_object(bucket, object, text),
+         overrides <- Application.get_env(:ex_aws, :request_config_overrides, %{}),
+         {:ok, _} <- ExAws.request(operation, overrides) do
+      {:ok, length(objects)}
+    else
+      # aws s3 operation failed
+      {:error, %{reason: reason}} ->
+        {:error, reason}
 
-    case Application.get_env(:skate, :s3_bucket) do
+      # missing required configuration value
       nil ->
-        Logger.notice(inspect(objects))
-
-        :telemetry.execute(
-          [:skate, :alerts_manager, :active_detours, :s3_exporter, :ok],
-          %{count: count},
-          %{}
-        )
-
-        {:ok, count}
-
-      bucket when is_binary(bucket) ->
-        case ExAws.request(
-               ExAws.S3.put_object(bucket, "detours/active.ndjson", serialized),
-               Application.get_env(:ex_aws, :request_config_overrides)
-             ) do
-          {:ok, _} ->
-            :telemetry.execute(
-              [:skate, :alerts_manager, :active_detours, :s3_exporter, :ok],
-              %{count: count},
-              %{}
-            )
-
-            {:ok, count}
-
-          {:error, %{reason: reason}} ->
-            :telemetry.execute(
-              [:skate, :alerts_manager, :active_detours, :s3_exporter, :error],
-              %{},
-              %{reason: reason}
-            )
-
-            {:error, reason}
-        end
+        {:error, "missing required configuration value"}
     end
-  end
-
-  def insert_job(args \\ %{}) do
-    case args
-         |> Skate.AlertsManager.ActiveDetours.S3Exporter.new()
-         |> Oban.insert() do
-      {:ok, _} ->
-        nil
-
-      {:error, changeset_or_term} ->
-        :telemetry.execute(
-          [:skate, :alerts_manager, :active_detours, :s3_exporter, :error],
-          %{},
-          %{changeset_or_term: changeset_or_term}
-        )
-    end
-  end
-
-  def attach_telemetry() do
-    events =
-      for event <- [:start, :stop, :exception] do
-        [:oban, :job, event]
-      end ++
-        for event <- [:ok, :error] do
-          [:skate, :alerts_manager, :active_detours, :s3_exporter, event]
-        end
-
-    :telemetry.attach_many(
-      @telemetry_handler_config,
-      events,
-      &handle_telemetry_event/4,
-      @telemetry_handler_config
-    )
-  end
-
-  @spec handle_telemetry_event([...], any(), any(), any()) :: :ok
-  def handle_telemetry_event(_, _, _, _)
-
-  def handle_telemetry_event(
-        [:skate, :alerts_manager, :active_detours, :s3_exporter, :ok],
-        measurements,
-        _metadata,
-        _
-      ) do
-    Logger.notice(
-      "[#{@telemetry_handler_id}] " <>
-        "exported #{measurements.count} detours"
-    )
-  end
-
-  def handle_telemetry_event(
-        [:skate, :alerts_manager, :active_detours, :s3_exporter, :error],
-        _measurements,
-        metadata,
-        _
-      ) do
-    Logger.error(
-      "[#{@telemetry_handler_id}] error: " <>
-        inspect(metadata)
-    )
-  end
-
-  def handle_telemetry_event(
-        [:oban, :job, :start],
-        measurements,
-        %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = metadata,
-        _
-      ) do
-    Logger.notice(
-      "[oban] start: " <>
-        "worker #{metadata.worker} started at #{measurements.system_time}"
-    )
-  end
-
-  def handle_telemetry_event(
-        [:oban, :job, event],
-        measurements,
-        %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = metadata,
-        _
-      ) do
-    Logger.notice(
-      "[oban] #{event}: " <>
-        "worker #{metadata.worker} elapsed #{measurements.duration} ms"
-    )
   end
 end
