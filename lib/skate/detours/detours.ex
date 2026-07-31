@@ -281,7 +281,7 @@ defmodule Skate.Detours.Detours do
     })
   end
 
-  defp build_deactivation_changeset(detour) d
+  defp build_deactivation_changeset(detour) do
     Detour.changeset(
       detour,
       %{state: put_in(detour.state, ["value", "Detour Drawing"], "Past"), status: :past}
