@@ -211,6 +211,7 @@ defmodule Skate.Detours.Detours do
               # ...ignore before saving changes...
               nil ->
                 nil
+
               # ...trigger when saving changes
               saved_context when is_map(saved_context) ->
                 "active detour #{new_record.id} changed"
