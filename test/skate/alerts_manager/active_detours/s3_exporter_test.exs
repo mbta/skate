@@ -34,12 +34,6 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
   end
 
   setup do
-    on_exit(fn ->
-      :telemetry.detach(@telemetry_handler_id)
-    end)
-  end
-
-  setup do
     Mox.expect(
       ExAws.Request.HttpMock,
       :request,
@@ -47,7 +41,12 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
         {:ok, %{status_code: 200, body: ""}}
       end
     )
+
     Mox.verify_on_exit!()
+
+    on_exit(fn ->
+      :telemetry.detach(@telemetry_handler_id)
+    end)
 
     :ok
   end
@@ -106,7 +105,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
           |> activated()
           |> with_missed_stops(for i <- 1..2, do: Integer.to_string(i))
 
-        # workaround because there's no `with_connection_point(...)`
+        # workaround because there's no `with_connection_point(...)` factory method
         insert(%{
           detour
           | state:
