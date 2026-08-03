@@ -12,145 +12,45 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
   alias Skate.Detours.Db.Detour
 
   @impl Oban.Worker
-  def perform(%Oban.Job{} = job) do
+  def perform(%Oban.Job{args: args} = _) do
     detours =
       Detour
       |> Ecto.Query.where(status: :active)
       |> Ecto.Query.order_by(desc: :activated_at)
       |> Skate.Repo.all()
 
-    objects =
+    converted =
       detours
       |> Enum.map(fn %Detour{} = detour ->
-        # common attributes
-        %{
-          id: detour.id,
-          route_id: detour.route_id,
-          direction_id: get_in(detour.state, ["context", "routePattern", "directionId"]),
-          reason: detour.reason,
-          nearest_intersection: detour.nearest_intersection,
-          estimated_duration: detour.estimated_duration
-        }
-        # timestamp attributes
-        |> Map.merge(
-          for attribute <- [:activated_at, :updated_at], into: %{} do
-            with {:ok, naive_datetime} <- Map.fetch(detour, attribute),
-                 {:ok, datetime} <- DateTime.from_naive(naive_datetime, "Etc/UTC"),
-                 unix <- DateTime.to_unix(datetime) do
-              {attribute, unix}
-            else
-              # attribute is missing
-              :error ->
-                {:invalid, true}
-
-              # attribute is invalid
-              {:error, _reason} ->
-                {:invalid, true}
-            end
-          end
-        )
-        # missed stops attribute
-        |> Map.merge(
-          if detour.is_text_only do
-            %{
-              missed_stops_text_only:
-                get_in(detour.state, ["context", "typedDetour", "missedStops"])
-            }
-          else
-            case get_in(detour.state, ["context", "finishedDetour", "missedStops"]) do
-              missed_stops when is_list(missed_stops) ->
-                %{
-                  missed_stops:
-                    missed_stops
-                    |> Enum.map(fn %{} = missed_stop -> get_in(missed_stop, ["id"]) end)
-                    |> Enum.reject(&is_nil/1)
-                }
-
-              _ ->
-                %{invalid: true}
-            end
-          end
-        )
-        # connection points attribute
-        |> Map.merge(
-          if detour.is_text_only do
-            %{
-              connection_points_text_only:
-                get_in(detour.state, ["context", "typedDetour", "connectionPoints"])
-            }
-          else
-            case get_in(
-                   detour.state,
-                   ["context", "finishedDetour", "connectionPoint"]
-                 ) do
-              connection_points when is_map(connection_points) ->
-                %{
-                  connection_points:
-                    for point <- ["start", "end"] do
-                      get_in(connection_points, [point, "id"])
-                    end
-                    |> Enum.reject(&is_nil/1)
-                }
-
-              _ ->
-                %{invalid: true}
-            end
-          end
-        )
-        # route segments attribute
-        |> Map.merge(
-          if detour.is_text_only do
-            %{}
-          else
-            %{
-              route_segments: %{
-                before_detour:
-                  get_in(
-                    detour.state,
-                    ["context", "finishedDetour", "routeSegments", "beforeDetour"]
-                  ),
-                after_detour:
-                  get_in(
-                    detour.state,
-                    ["context", "finishedDetour", "routeSegments", "afterDetour"]
-                  ),
-                bypassed_segment:
-                  get_in(
-                    detour.state,
-                    ["context", "finishedDetour", "detourShape", "coordinates"]
-                  ),
-                detour_segment:
-                  get_in(
-                    detour.state,
-                    ["context", "finishedDetour", "routeSegments", "detour"]
-                  )
-              }
-            }
-          end
-        )
+        try do
+          convert!(detour)
+        rescue
+          _ -> nil
+        end
       end)
-      |> Enum.reject(fn %{} = object -> Map.get(object, :invalid, false) end)
+      |> Enum.reject(&is_nil/1)
 
-    text =
-      objects
-      |> Enum.map(fn object ->
-        case Jason.encode(object) do
-          {:ok, json} -> json <> "\n"
-          {:error, _} -> nil
+    content =
+      converted
+      |> Enum.map(fn map ->
+        try do
+          Jason.encode!(map) <> "\n"
+        rescue
+          _ -> nil
         end
       end)
       |> Enum.reject(&is_nil/1)
       |> Enum.join("")
 
-    with overrides <- Application.get_env(:ex_aws, :request_config_overrides, %{}),
-         object <- Map.get(job.args, :object, "detours/active.ndjson"),
+    with object <- Map.get(args, :object, "detours/active.ndjson"),
          {:ok, bucket} <- Application.fetch_env(:skate, :s3_bucket),
          {:ok, _} <-
            ExAws.request(
-             ExAws.S3.put_object(bucket, object, text),
-             overrides
+             ExAws.S3.put_object(bucket, object, content),
+             # pass overrides to allow mocking aws during unit tests
+             Application.get_env(:ex_aws, :request_config_overrides, %{})
            ) do
-      {:ok, length(objects)}
+      {:ok, length(converted)}
     else
       # missing required configuration value
       :error ->
@@ -160,5 +60,107 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  @doc """
+  Convert a detour into a map.
+  """
+  @spec convert!(Detour.t()) :: map()
+  def convert!(%Detour{} = detour) do
+    map =
+      %{}
+      # add common attributes
+      |> Map.merge(%{
+        id: detour.id,
+        route_id: detour.route_id,
+        direction_id: get_in(detour.state, ["context", "routePattern", "directionId"]),
+        reason: detour.reason,
+        nearest_intersection: detour.nearest_intersection,
+        estimated_duration: detour.estimated_duration
+      })
+      # add timestamp attributes
+      |> Map.merge(
+        for attribute <- [:activated_at, :updated_at], into: %{} do
+          timestamp =
+            detour
+            |> Map.fetch!(attribute)
+            |> DateTime.from_naive!("Etc/UTC")
+            |> DateTime.to_unix()
+
+          {attribute, timestamp}
+        end
+      )
+
+    # add remaining attributes in separate clauses
+    convert!(detour, map)
+  end
+
+  @doc false
+  @spec convert!(Detour.t(), map()) :: map()
+  def convert!(detour, map)
+
+  @doc false
+  def convert!(%Detour{is_text_only: true} = detour, map) do
+    Map.merge(
+      map,
+      %{
+        missed_stops_text_only: get_in(detour.state, ["context", "typedDetour", "missedStops"]),
+        connection_points_text_only:
+          get_in(detour.state, ["context", "typedDetour", "connectionPoints"])
+      }
+    )
+  end
+
+  @doc false
+  def convert!(%Detour{is_text_only: false} = detour, map) do
+    Map.merge(
+      map,
+      %{
+        missed_stops:
+          case get_in(detour.state, ["context", "finishedDetour", "missedStops"]) do
+            missed_stops when is_list(missed_stops) ->
+              for %{} = missed_stop <- missed_stops do
+                get_in(missed_stop, ["id"])
+              end
+              |> Enum.reject(&is_nil/1)
+
+            _ ->
+              raise ArgumentError
+          end,
+        connection_points:
+          case get_in(detour.state, ["context", "finishedDetour", "connectionPoint"]) do
+            connection_points when is_map(connection_points) ->
+              for point <- ["start", "end"] do
+                get_in(connection_points, [point, "id"])
+              end
+              |> Enum.reject(&is_nil/1)
+
+            _ ->
+              raise ArgumentError
+          end,
+        route_segments: %{
+          before_detour:
+            get_in(
+              detour.state,
+              ["context", "finishedDetour", "routeSegments", "beforeDetour"]
+            ),
+          after_detour:
+            get_in(
+              detour.state,
+              ["context", "finishedDetour", "routeSegments", "afterDetour"]
+            ),
+          bypassed_segment:
+            get_in(
+              detour.state,
+              ["context", "finishedDetour", "detourShape", "coordinates"]
+            ),
+          detour_segment:
+            get_in(
+              detour.state,
+              ["context", "finishedDetour", "routeSegments", "detour"]
+            )
+        }
+      }
+    )
   end
 end
