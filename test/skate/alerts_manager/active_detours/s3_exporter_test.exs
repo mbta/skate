@@ -92,7 +92,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
         %{author_id: author_id, id: id, state: snapshot} = %{
           detour
           | # the only way to tell when a user has finished editing a detour is by the
-            # existence of the `"savedContext" attribute; this attribute is automatically
+            # existence of the "savedContext" attribute; this attribute is automatically
             # included by the application after the user selects the final confirmation
             # dialog when editing an active detour.
             state: put_in(detour.state, ["context", "savedContext"], detour.state)
