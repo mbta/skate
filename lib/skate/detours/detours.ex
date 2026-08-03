@@ -54,6 +54,19 @@ defmodule Skate.Detours.Detours do
     |> Enum.reject(&is_nil/1)
   end
 
+  def count_detours_for_route("all", status) do
+    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
+    |> apply_status_filter(status)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_detours_for_route(route_id, status) do
+    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
+    |> apply_status_filter(status)
+    |> apply_route_id_filter(route_id)
+    |> Repo.aggregate(:count, :id)
+  end
+
   defp apply_status_filter(query, status) do
     where(query, [detour: d], d.status == ^status)
   end
@@ -86,6 +99,12 @@ defmodule Skate.Detours.Detours do
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
+  end
+
+  def count_detours_for_user(user_id, status) do
+    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
+    |> apply_user_and_status_filter(user_id, status)
+    |> Repo.aggregate(:count, :id)
   end
 
   defp apply_user_and_status_filter(query, user_id, :draft) do
