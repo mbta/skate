@@ -17,8 +17,7 @@ config :skate,
   busloc_url: System.get_env("BUSLOC_URL"),
   busloc_topic: System.get_env("BUSLOC_TOPIC"),
   trip_updates_url: System.get_env("TRIP_UPDATES_URL"),
-  fullstory_org: System.get_env("FULLSTORY_ORG"),
-  s3_bucket: System.get_env("SKATE_S3_BUCKET")
+  fullstory_org: System.get_env("FULLSTORY_ORG")
 
 # MBTA API
 config :skate,
@@ -75,7 +74,8 @@ config :skate, Skate.Repo, pool_size: pool_size
 
 if config_env() == :prod do
   config :skate,
-    geonames_token: System.get_env("GEONAMES_TOKEN")
+    geonames_token: System.get_env("GEONAMES_TOKEN"),
+    s3_bucket: System.get_env("SKATE_S3_BUCKET")
 
   config :skate, SkateWeb.Endpoint,
     url: [host: System.get_env("HOST"), port: 80],
