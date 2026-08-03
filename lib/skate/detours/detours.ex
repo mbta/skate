@@ -207,14 +207,18 @@ defmodule Skate.Detours.Detours do
         :error ->
           # ...but the detour is active...
           if new_record.status == :active do
-            case get_in(new_record.state, ["context", "savedContext"]) do
-              # ...ignore before saving changes...
-              nil ->
-                nil
+            cond do
+              # ...trigger when the estimated duration changed...
+              !is_nil(Ecto.Changeset.get_change(changeset, :estimated_duration)) ->
+                "active detour #{new_record.id} estimated duration changed"
 
-              # ...trigger when saving changes
-              saved_context when is_map(saved_context) ->
+              # ...or when saving changes...
+              is_map(get_in(new_record.state, ["context", "savedContext"])) ->
                 "active detour #{new_record.id} changed"
+
+              # ...ignore otherwise
+              true ->
+                nil
             end
           end
       end
