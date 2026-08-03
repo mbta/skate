@@ -66,6 +66,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
 
   describe "when detour status changes to :past" do
     test "the job starts" do
+      test_job_starts do
       %{id: id, author_id: author_id, state: snapshot} =
         :detour
         |> build()
@@ -74,12 +75,14 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
         |> deactivated()
 
       Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+      end
     end
   end
 
   describe "when an active detour changes" do
     test "the job starts" do
-      %{id: id, author_id: author_id, state: snapshot} =
+      test_job_starts do
+        %{author_id: author_id, id: id, state: snapshot} =
         :detour
         |> build()
         |> activated()
@@ -87,6 +90,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
         |> with_updated_at(DateTime.now!("Etc/UTC"))
 
       Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+      end
     end
   end
 
