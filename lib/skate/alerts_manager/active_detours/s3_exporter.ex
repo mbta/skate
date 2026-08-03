@@ -5,7 +5,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
 
   require Logger
 
-  use Oban.Worker
+  use Oban.Worker, max_attempts: 3
 
   require Ecto.Query
 
