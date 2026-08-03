@@ -6,85 +6,37 @@ import {
   simpleDetourFromActiveData,
   simpleDetourFromData,
 } from "../models/detoursList"
-import { useEffect, useRef, useState } from "react"
+import {
+  type DetoursPagination,
+  parsePaginatePayload,
+} from "../models/detoursPaginationData"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { reload } from "../models/browser"
 import { userUuid } from "../util/userUuid"
 import { ByRouteId, RouteId } from "../schedule"
 import { equalByElements } from "../helpers/array"
-import { array, create, number, object } from "superstruct"
+import { array, create } from "superstruct"
 
 export interface DetoursMap {
   [key: number]: SimpleDetour
 }
 
-export interface DetoursPagination {
-  totalCount: number
-  totalPages: number
-  pageNumber: number
-  pageSize: number
-}
-
-const PaginatedDetoursData = object({
-  data: array(SimpleDetourData),
-  total_count: number(),
-  total_pages: number(),
-  page_number: number(),
-  page_size: number(),
-})
-
-type InitialMessageType = typeof SimpleDetourData | typeof SimpleActiveDetourData
+type InitialMessageType =
+  | typeof SimpleDetourData
+  | typeof SimpleActiveDetourData
 
 type SubscribeOptions = {
   socket: Socket
   topic: string
-  initializeChannel: React.Dispatch<React.SetStateAction<DetoursMap | undefined>>
+  initializeChannel: React.Dispatch<
+    React.SetStateAction<DetoursMap | undefined>
+  >
   initialMessageType: InitialMessageType
   onJoined?: (channel: Channel) => void
   handleDrafted?: (data: SimpleDetour) => void
   handleActivated?: (data: SimpleDetour) => void
   handleDeactivated?: (data: SimpleDetour) => void
   handleDeleted?: (detourId: number) => void
-}
-
-const hasKey = <K extends string>(
-  payload: unknown,
-  key: K
-): payload is Record<K, unknown> => {
-  return typeof payload === "object" && payload !== null && key in payload
-}
-
-const parsePaginatePayload = (payload: unknown): {
-  detours: SimpleDetour[]
-  pagination?: DetoursPagination
-} => {
-  const normalizedPayload = hasKey(payload, "data") && hasKey(payload.data, "total_count")
-    ? payload.data
-    : payload
-
-  if (Array.isArray(normalizedPayload)) {
-    const parsedData = create(normalizedPayload, array(SimpleDetourData))
-    return { detours: parsedData.map(simpleDetourFromData) }
-  }
-
-  if (hasKey(normalizedPayload, "total_count")) {
-    const parsedPagination = create(normalizedPayload, PaginatedDetoursData)
-    return {
-      detours: parsedPagination.data.map(simpleDetourFromData),
-      pagination: {
-        totalCount: parsedPagination.total_count,
-        totalPages: parsedPagination.total_pages,
-        pageNumber: parsedPagination.page_number,
-        pageSize: parsedPagination.page_size,
-      },
-    }
-  }
-
-  if (hasKey(normalizedPayload, "data")) {
-    const parsedData = create(normalizedPayload.data, array(SimpleDetourData))
-    return { detours: parsedData.map(simpleDetourFromData) }
-  }
-
-  return { detours: [] }
 }
 
 const subscribe = ({
@@ -212,32 +164,54 @@ export const useActiveDetours = (
 export const usePastDetours = ({
   socket,
   routeId = "all",
-  limit = 3,
-  pageNumber = 1,
+  limit,
+  pageNumber,
   onPaginate,
 }: {
   socket: Socket | undefined
-  routeId?: string
-  limit?: number
-  pageNumber?: number
+  routeId: string
+  limit: number
+  pageNumber: number
   onPaginate?: (pagination: DetoursPagination) => void
 }) => {
   const topic = routeId === "all" ? "detours:past" : `detours:past:${routeId}`
   const [pastDetours, setPastDetours] = useState<DetoursMap | undefined>()
   const channelRef = useRef<Channel | undefined>()
   const joinedRef = useRef(false)
+  const lastPaginateRequestRef = useRef<string | undefined>()
 
   const handleDeactivated = (data: SimpleDetour) => {
     setPastDetours((pastDetours) => ({ ...pastDetours, [data.id]: data }))
   }
 
-  const setDetoursFromData = (data: unknown) => {
-    const { detours, pagination } = parsePaginatePayload(data)
-    if (pagination) {
-      onPaginate?.(pagination)
-    }
-    setPastDetours(Object.fromEntries(detours.map((v) => [v.id, v])))
-  }
+  const setDetoursFromData = useCallback(
+    (data: unknown) => {
+      const { detours, pagination } = parsePaginatePayload(data)
+      if (pagination) {
+        onPaginate?.(pagination)
+      }
+      setPastDetours(Object.fromEntries(detours.map((v) => [v.id, v])))
+    },
+    [onPaginate]
+  )
+
+  const pushPageNumberOncePerRequest = useCallback(
+    (channel: Channel) => {
+      const requestKey = `${topic}:${limit}:${pageNumber}`
+      if (lastPaginateRequestRef.current === requestKey) {
+        return
+      }
+      lastPaginateRequestRef.current = requestKey
+      pushPageNumber(channel, topic, limit, pageNumber, setDetoursFromData)
+    },
+    [limit, pageNumber, setDetoursFromData, topic]
+  )
+
+  const pushPageNumberOncePerRequestRef = useRef(pushPageNumberOncePerRequest)
+
+  useEffect(() => {
+    pushPageNumberOncePerRequestRef.current = pushPageNumberOncePerRequest
+  }, [pushPageNumberOncePerRequest])
 
   useEffect(() => {
     let channel: Channel | undefined
@@ -251,6 +225,7 @@ export const usePastDetours = ({
         onJoined: (channel) => {
           channelRef.current = channel
           joinedRef.current = true
+          pushPageNumberOncePerRequestRef.current(channel)
         },
       })
     }
@@ -261,6 +236,7 @@ export const usePastDetours = ({
         channel = undefined
         channelRef.current = undefined
         joinedRef.current = false
+        lastPaginateRequestRef.current = undefined
       }
     }
   }, [socket, topic])
@@ -268,9 +244,9 @@ export const usePastDetours = ({
   useEffect(() => {
     const channel = channelRef.current
     if (channel && joinedRef.current) {
-      pushPageNumber(channel, topic, limit, pageNumber, setDetoursFromData)
+      pushPageNumberOncePerRequest(channel)
     }
-  }, [limit, pageNumber, onPaginate, topic])
+  }, [pushPageNumberOncePerRequest])
 
   return pastDetours
 }

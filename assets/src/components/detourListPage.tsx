@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
 import { DetoursTable, DetourStatus } from "./detoursTable"
+import { buildPaginationItems, PaginationBar } from "./nav/paginationBar"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
-import { Button, Pagination, Spinner } from "react-bootstrap"
+import { Button, Spinner } from "react-bootstrap"
 import {
   GlobeAmericas,
   LockFill,
@@ -13,49 +14,13 @@ import RoutesContext from "../contexts/routesContext"
 import { DetourModal } from "./detours/detourModal"
 import { joinClasses } from "../helpers/dom"
 import { useLoadDetour } from "../hooks/useLoadDetour"
+import type { DetoursPagination } from "../models/detoursPaginationData"
 import {
-  type DetoursPagination,
   useActiveDetours,
   useDraftDetours,
   usePastDetours,
 } from "../hooks/useDetours"
 import { SocketContext } from "../contexts/socketContext"
-
-// Determine page numbers in the pagination component, with ellipses if there are too many pages to show
-export const buildPaginationItems = (
-  currentPage: number,
-  totalPages: number
-): Array<number | "ellipsis"> => {
-  if (totalPages <= 7) {
-    return Array.from({ length: totalPages }, (_, index) => index + 1)
-  }
-
-  const clampedCurrent = Math.min(Math.max(currentPage, 1), totalPages)
-  const pages = new Set<number>([1, totalPages])
-
-  // Show the page numbers before and after the current page
-  for (let page = clampedCurrent - 1; page <= clampedCurrent + 1; page += 1) {
-    if (page > 1 && page < totalPages) {
-      pages.add(page)
-    }
-  }
-
-  const orderedPages = Array.from(pages).sort((a, b) => a - b)
-  const items: Array<number | "ellipsis"> = []
-
-  // Add ellipses if there are gaps between the page numbers
-  orderedPages.forEach((page, index) => {
-    if (index > 0) {
-      const previousPage = orderedPages[index - 1]
-      if (page - previousPage > 1) {
-        items.push("ellipsis")
-      }
-    }
-    items.push(page)
-  })
-
-  return items
-}
 
 export const DetourListPage = () => {
   const routes = useContext(RoutesContext)
@@ -88,7 +53,7 @@ export const DetourListPage = () => {
     socket: socket,
     routeId: routeId,
     limit: currentLimit,
-    pageNumber,
+    pageNumber: pageNumber,
     onPaginate: setDetoursPagination,
   })
 
@@ -111,6 +76,7 @@ export const DetourListPage = () => {
     totalPages !== undefined
       ? pageNumber < totalPages
       : Boolean(pastDetours && pastDetours.length >= currentLimit)
+
   // --- End of detour channel initialization
 
   const { detour, isLoading: isLoadingDetour } = useLoadDetour(detourId)
@@ -194,33 +160,16 @@ export const DetourListPage = () => {
                 routes={routes}
                 classNames={["u-hide-for-mobile"]}
               />
-              <div className="d-flex justify-content-end mb-4">
-                <Pagination className="mb-0">
-                  <Pagination.Prev
-                    disabled={pageNumber <= 1}
-                    aria-label="Previous"
-                    onClick={() => setPageNumber((page) => Math.max(1, page - 1))}
-                  />
-                  {pageItems.map((page, index) =>
-                    typeof page === "number" ? (
-                      <Pagination.Item
-                        key={page}
-                        active={pageNumber === page}
-                        onClick={() => setPageNumber(page)}
-                      >
-                        {page}
-                      </Pagination.Item>
-                    ) : (
-                      <Pagination.Ellipsis key={`${page}-${index}`} disabled />
-                    )
-                  )}
-                  <Pagination.Next
-                    disabled={!canGoNext}
-                    aria-label="Next"
-                    onClick={() => setPageNumber((page) => page + 1)}
-                  />
-                </Pagination>
-              </div>
+              <PaginationBar
+                pageNumber={pageNumber}
+                pageItems={pageItems}
+                canGoNext={canGoNext}
+                onPrevious={() =>
+                  setPageNumber((page) => Math.max(1, page - 1))
+                }
+                onNext={() => setPageNumber((page) => page + 1)}
+                onSelectPage={setPageNumber}
+              />
             </>
           )}
         </>

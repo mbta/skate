@@ -2,7 +2,14 @@ import { describe, test, expect, jest, beforeEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { DetourListPage } from "../../../src/components/detourListPage"
-import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { buildPaginationItems } from "../../../src/components/nav/paginationBar"
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react"
 import getTestGroups from "../../../src/userTestGroups"
 import { TestGroups } from "../../../src/userInTestGroup"
 import { byRole } from "testing-library-selector"
@@ -25,22 +32,6 @@ jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/userTestGroups")
 jest.mock("../../../src/helpers/fullStory")
 
-beforeEach(() => {
-  jest.mocked(useActiveDetours).mockReturnValue([
-    simpleActiveDetourFactory.build(),
-    simpleActiveDetourFactory.build({
-      name: "Headsign A",
-      direction: "Outbound",
-    }),
-  ])
-  jest.mocked(useDraftDetours).mockReturnValue([])
-  jest
-    .mocked(usePastDetours)
-    .mockReturnValue([simpleDetourFactory.build({ name: "Headsign Z" })])
-
-  jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
-})
-
 const activeTableHeading = byRole("heading", { name: "Active detours" })
 const draftTableHeading = byRole("heading", { name: "Draft detours" })
 const closedTableHeading = byRole("heading", { name: "Closed detours" })
@@ -51,7 +42,45 @@ const filterIntersectionInput = byRole("textbox", {
   name: "Starting intersection",
 })
 
+describe("buildPaginationItems", () => {
+  test("returns all pages when the total page count is small", () => {
+    expect(buildPaginationItems(3, 7)).toStrictEqual([1, 2, 3, 4, 5, 6, 7])
+  })
+
+  test("builds a centered window with ellipses when there are many pages", () => {
+    expect(buildPaginationItems(5, 10)).toStrictEqual([
+      1,
+      "ellipsis",
+      4,
+      5,
+      6,
+      "ellipsis",
+      10,
+    ])
+  })
+
+  test("clamps the current page when it exceeds bounds", () => {
+    expect(buildPaginationItems(99, 10)).toStrictEqual([1, "ellipsis", 9, 10])
+  })
+})
+
 describe("DetourListPage", () => {
+  beforeEach(() => {
+    jest.mocked(useActiveDetours).mockReturnValue([
+      simpleActiveDetourFactory.build(),
+      simpleActiveDetourFactory.build({
+        name: "Headsign A",
+        direction: "Outbound",
+      }),
+    ])
+    jest.mocked(useDraftDetours).mockReturnValue([])
+    jest
+      .mocked(usePastDetours)
+      .mockReturnValue([simpleDetourFactory.build({ name: "Headsign Z" })])
+
+    jest.mocked(getTestGroups).mockReturnValue([TestGroups.DetoursPilot])
+  })
+
   test("renders detour list page for dispatchers", async () => {
     const routes = routeFactory.buildList(2)
     const { baseElement } = render(
@@ -196,27 +225,56 @@ describe("DetourListPage", () => {
     })
   })
 
-  test("disables next when returned page has fewer than limit rows and enables prev only after page increment", async () => {
-    jest.mocked(useDraftDetours).mockReturnValue({})
-    jest.mocked(useActiveDetours).mockReturnValue({})
-    jest.mocked(usePastDetours).mockReturnValue([simpleDetourFactory.build()])
+  test("disables previous on first page and toggles next on last page", async () => {
+    jest.mocked(usePastDetours).mockImplementation((args) => {
+      if (args.pageNumber === 1) {
+        return simpleDetourFactory.buildList(3)
+      }
+
+      return [
+        simpleDetourFactory.build({ id: args.pageNumber, name: "Closed" }),
+      ]
+    })
 
     render(<DetourListPage />)
 
-    const prevButton = await screen.findByRole("button", { name: /Previous/i })
-    const nextButton = await screen.findByRole("button", { name: /Next/i })
+    const previousButton = screen.getByLabelText("Previous")
+    const nextButton = screen.getByLabelText("Next")
 
-    expect(prevButton).toBeDisabled()
-    expect(nextButton).toBeDisabled()
+    expect(previousButton).toHaveAttribute("aria-disabled", "true")
+    expect(nextButton).not.toHaveAttribute("aria-disabled", "true")
+
+    fireEvent.click(nextButton)
+
+    await waitFor(() => {
+      const pagination = screen.getByLabelText("Previous").closest("ul")
+      expect(
+        within(pagination as HTMLElement)
+          .getByText("2")
+          .closest("li")
+      ).toHaveClass("active")
+      expect(screen.getByLabelText("Previous")).not.toHaveAttribute(
+        "aria-disabled",
+        "true"
+      )
+      expect(screen.getByLabelText("Next")).toHaveAttribute(
+        "aria-disabled",
+        "true"
+      )
+    })
   })
 
-  test("resets page to 1 when route changes", async () => {
+  test("resets page number to 1 when the selected route changes", async () => {
     const routes = routeFactory.buildList(2)
-    jest.mocked(useDraftDetours).mockReturnValue({})
-    jest.mocked(useActiveDetours).mockReturnValue({})
 
-    const mockPastDetours = [simpleDetourFactory.build(), simpleDetourFactory.build()]
-    jest.mocked(usePastDetours).mockReturnValue(mockPastDetours)
+    jest.mocked(usePastDetours).mockImplementation((args) => {
+      return [
+        simpleDetourFactory.build({
+          id: args.pageNumber,
+          name: `Closed ${args.routeId}`,
+        }),
+      ]
+    })
 
     render(
       <RoutesProvider routes={routes}>
@@ -224,13 +282,38 @@ describe("DetourListPage", () => {
       </RoutesProvider>
     )
 
-    const routeSelect = screen.getByLabelText("Route and direction") as HTMLSelectElement
-    const nextButton = await screen.findByRole("button", { name: /Next/i })
+    fireEvent.click(screen.getByLabelText("Next"))
 
-    expect(nextButton).toBeDisabled()
+    await waitFor(() => {
+      const pagination = screen.getByLabelText("Previous").closest("ul")
+      expect(
+        within(pagination as HTMLElement)
+          .getByText("2")
+          .closest("li")
+      ).toHaveClass("active")
+    })
 
-    fireEvent.change(routeSelect, { target: { value: routes[0].id } })
+    fireEvent.change(screen.getByLabelText("Route and direction"), {
+      target: { value: routes[0].id },
+    })
 
-    expect(screen.getByText("1")).toBeInTheDocument()
+    await waitFor(() => {
+      const pagination = screen.getByLabelText("Previous").closest("ul")
+      expect(
+        within(pagination as HTMLElement)
+          .getByText("1")
+          .closest("li")
+      ).toHaveClass("active")
+      expect(screen.getByLabelText("Previous")).toHaveAttribute(
+        "aria-disabled",
+        "true"
+      )
+      expect(jest.mocked(usePastDetours)).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          routeId: routes[0].id,
+          pageNumber: 1,
+        })
+      )
+    })
   })
 })
