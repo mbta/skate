@@ -15,9 +15,9 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
 
   def attach_telemetry_handler(config \\ []) do
     events =
-      (for event <- [:start, :stop, :exception] do
+      for event <- [:start, :stop, :exception] do
         [:oban, :job, event]
-      end)
+      end
 
     :telemetry.attach_many(
       @telemetry_handler_id,
@@ -28,56 +28,62 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
   end
 
   @spec handle_telemetry_event(
-    :telemetry.event_name(),
-    :telemetry.event_measurements(),
-    :telemetry.event_metadata(),
-    :telemetry.handler_config()
-  ) :: any()
+          :telemetry.event_name(),
+          :telemetry.event_measurements(),
+          :telemetry.event_metadata(),
+          :telemetry.handler_config()
+        ) :: any()
   def handle_telemetry_event(_name, _measurements, _metadata, _config)
 
   def handle_telemetry_event(
-    [:oban, :job, :start],
-    %{system_time: system_time} = _measurements,
-    %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = _metadata,
-    _config
-  ) do
+        [:oban, :job, :start],
+        %{system_time: system_time} = _measurements,
+        %{
+          worker: "Skate.AlertsManager.ActiveDetours.S3Exporter",
+          args: %{"trigger" => trigger}
+        } = _metadata,
+        _config
+      ) do
     Logger.notice(
-      "active detour s3 export job: "
-      <> "started at #{system_time}"
+      "active detour s3 export job: " <>
+        "started at #{system_time} " <>
+        "because #{trigger}"
     )
   end
 
   def handle_telemetry_event(
-    [:oban, :job, :stop],
-    %{duration: duration} = _measurements,
-    %{
-      worker: "Skate.AlertsManager.ActiveDetours.S3Exporter",
-      result: {:ok, count}
-    } = _metadata,
-    _config
-  ) do
+        [:oban, :job, :stop],
+        %{duration: duration} = _measurements,
+        %{
+          worker: "Skate.AlertsManager.ActiveDetours.S3Exporter",
+          result: {:ok, count}
+        } = _metadata,
+        _config
+      ) do
     Logger.notice(
-      "active detour s3 export job: "
-      <> "completed in #{duration} ms "
-      <> "and exported #{count} detours"
+      "active detour s3 export job: " <>
+        "completed in #{duration} ms " <>
+        "and exported #{count} detours"
     )
   end
 
   def handle_telemetry_event(
-    [:oban, :job, :exception],
-    %{duration: duration} = _measurements,
-    %{
-      worker: "Skate.AlertsManager.ActiveDetours.S3Exporter",
-      reason: reason
-    } = _metadata,
-    _config
-  ) do
+        [:oban, :job, :exception],
+        %{duration: duration} = _measurements,
+        %{
+          worker: "Skate.AlertsManager.ActiveDetours.S3Exporter",
+          reason: reason
+        } = _metadata,
+        _config
+      ) do
     Logger.error(
-      "active detour s3 export job: "
-      <> "failed in #{duration} ms "
-      <> "with error message #{reason.message}"
+      "active detour s3 export job: " <>
+        "failed in #{duration} ms " <>
+        "with reason message '#{reason.message}'"
     )
   end
+
+  def handle_telemetry_event(_, _, _, _), do: nil
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: args} = _) do
