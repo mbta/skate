@@ -196,7 +196,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
               |> Enum.reject(&is_nil/1)
 
             _ ->
-              Logger.warning("detour state snapshot has invalid missed stops")
+              Logger.warning("detour #{detour.id} has invalid missed stops")
 
               raise ArgumentError
           end,
@@ -209,7 +209,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
               |> Enum.reject(&is_nil/1)
 
             _ ->
-              Logger.warning("detour state snapshot has invalid connection points")
+              Logger.warning("detour #{detour.id} has invalid connection points")
 
               raise ArgumentError
           end,
