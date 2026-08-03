@@ -120,17 +120,10 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
            ) do
       {:ok, length(converted)}
     else
-      # missing required configuration value
-      :error ->
-        Logger.error("missing required configuration value for s3 bucket")
-
-        {:error, :missing_s3_bucket}
-
+      # missing required configuration value for s3 bucket
+      :error -> {:error, :missing_s3_bucket}
       # aws s3 operation failed
-      {:error, reason} ->
-        Logger.error("aws s3 operation failed: #{reason}")
-
-        {:error, reason}
+      {:error, reason} -> {:error, reason}
     end
   end
 
