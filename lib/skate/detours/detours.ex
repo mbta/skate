@@ -192,24 +192,32 @@ defmodule Skate.Detours.Detours do
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
 
-    should_run_s3_export_job =
+    # conditionally trigger s3 export job
+    s3_export_job_trigger =
       case Ecto.Changeset.fetch_change(changeset, :status) do
-        # status changed to :draft
+        # ignore when detour status changes to ':draft'
         {:ok, :draft} ->
-          false
+          nil
 
-        # status changed to :active or :past
-        {:ok, _} ->
-          true
+        # trigger when the detour status changes to either ':active' or ':past'
+        {:ok, new_status} ->
+          "detour status changed to ':#{new_status}'"
 
-        # status did not change
+        # if the detour status did not change...
         :error ->
-          # did active detour change?
-          new_record.status == :active
+          # ...but the detour is active...
+          if new_record.status == :active do
+            case get_in(new_record.state, ["context", "savedContext"]) do
+              # ...ignore before saving changes...
+              nil -> nil
+              # ...trigger when saving changes
+              saved_context when is_map(saved_context) -> "active detour changed"
+            end
+          end
       end
 
-    if should_run_s3_export_job do
-      %{}
+    if !is_nil(s3_export_job_trigger) do
+      %{trigger: s3_export_job_trigger}
       |> Skate.AlertsManager.ActiveDetours.S3Exporter.new()
       |> Oban.insert()
     end
