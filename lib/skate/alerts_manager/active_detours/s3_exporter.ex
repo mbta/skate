@@ -44,7 +44,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
         } = _metadata,
         _config
       ) do
-    Logger.notice(
+    Logger.info(
       "active detour s3 export job: " <>
         "started at #{system_time} " <>
         "because #{trigger}"
@@ -60,7 +60,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
         } = _metadata,
         _config
       ) do
-    Logger.notice(
+    Logger.info(
       "active detour s3 export job: " <>
         "completed in #{duration} ms " <>
         "and exported #{count} detours"
