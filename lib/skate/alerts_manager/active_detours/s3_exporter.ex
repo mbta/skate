@@ -11,6 +11,74 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
 
   alias Skate.Detours.Db.Detour
 
+  @telemetry_handler_id "skate.alerts_manager.active_detour.s3_exporter"
+
+  def attach_telemetry_handler(config \\ []) do
+    events =
+      (for event <- [:start, :stop, :exception] do
+        [:oban, :job, event]
+      end)
+
+    :telemetry.attach_many(
+      @telemetry_handler_id,
+      events,
+      &handle_telemetry_event/4,
+      config
+    )
+  end
+
+  @spec handle_telemetry_event(
+    :telemetry.event_name(),
+    :telemetry.event_measurements(),
+    :telemetry.event_metadata(),
+    :telemetry.handler_config()
+  ) :: any()
+  def handle_telemetry_event(_name, _measurements, _metadata, _config)
+
+  def handle_telemetry_event(
+    [:oban, :job, :start],
+    %{system_time: system_time} = _measurements,
+    %{worker: "Skate.AlertsManager.ActiveDetours.S3Exporter"} = _metadata,
+    _config
+  ) do
+    Logger.notice(
+      "active detour s3 export job: "
+      <> "started at #{system_time}"
+    )
+  end
+
+  def handle_telemetry_event(
+    [:oban, :job, :stop],
+    %{duration: duration} = _measurements,
+    %{
+      worker: "Skate.AlertsManager.ActiveDetours.S3Exporter",
+      result: {:ok, count}
+    } = _metadata,
+    _config
+  ) do
+    Logger.notice(
+      "active detour s3 export job: "
+      <> "completed in #{duration} ms "
+      <> "and exported #{count} detours"
+    )
+  end
+
+  def handle_telemetry_event(
+    [:oban, :job, :exception],
+    %{duration: duration} = _measurements,
+    %{
+      worker: "Skate.AlertsManager.ActiveDetours.S3Exporter",
+      reason: reason
+    } = _metadata,
+    _config
+  ) do
+    Logger.error(
+      "active detour s3 export job: "
+      <> "failed in #{duration} ms "
+      <> "with error message #{reason.message}"
+    )
+  end
+
   @impl Oban.Worker
   def perform(%Oban.Job{args: args} = _) do
     detours =
@@ -25,24 +93,18 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
         try do
           convert!(detour)
         rescue
-          error ->
-            Logger.warning("could not convert detour #{detour.id} #{inspect(error)}")
-
-            nil
+          _ -> nil
         end
       end)
       |> Enum.reject(&is_nil/1)
 
     content =
       converted
-      |> Enum.map(fn %{id: id} = map ->
+      |> Enum.map(fn map ->
         try do
           Jason.encode!(map) <> "\n"
         rescue
-          error ->
-            Logger.warning("could not encode detour #{id} #{inspect(error)}")
-
-            nil
+          _ -> nil
         end
       end)
       |> Enum.reject(&is_nil/1)
@@ -56,11 +118,7 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
              # pass overrides to allow mocking aws during unit tests
              Application.get_env(:ex_aws, :request_config_overrides, %{})
            ) do
-      count = length(converted)
-
-      Logger.info("exported #{count} active detours to s3")
-
-      {:ok, count}
+      {:ok, length(converted)}
     else
       # missing required configuration value
       :error ->
