@@ -25,18 +25,24 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
         try do
           convert!(detour)
         rescue
-          _ -> nil
+          error ->
+            Logger.warning("could not convert detour #{detour.id} #{inspect(error)}")
+
+            nil
         end
       end)
       |> Enum.reject(&is_nil/1)
 
     content =
       converted
-      |> Enum.map(fn map ->
+      |> Enum.map(fn %{id: id} = map ->
         try do
           Jason.encode!(map) <> "\n"
         rescue
-          _ -> nil
+          error ->
+            Logger.warning("could not encode detour #{id} #{inspect(error)}")
+
+            nil
         end
       end)
       |> Enum.reject(&is_nil/1)
@@ -50,14 +56,22 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
              # pass overrides to allow mocking aws during unit tests
              Application.get_env(:ex_aws, :request_config_overrides, %{})
            ) do
-      {:ok, length(converted)}
+      count = length(converted)
+
+      Logger.info("exported #{count} active detours to s3")
+
+      {:ok, count}
     else
       # missing required configuration value
       :error ->
-        {:error, "missing required configuration value for s3 bucket"}
+        Logger.error("missing required configuration value for s3 bucket")
+
+        {:error, :missing_s3_bucket}
 
       # aws s3 operation failed
       {:error, reason} ->
+        Logger.error("aws s3 operation failed: #{reason}")
+
         {:error, reason}
     end
   end
@@ -125,6 +139,8 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
               |> Enum.reject(&is_nil/1)
 
             _ ->
+              Logger.warning("detour state snapshot has invalid missed stops")
+
               raise ArgumentError
           end,
         connection_points:
@@ -136,6 +152,8 @@ defmodule Skate.AlertsManager.ActiveDetours.S3Exporter do
               |> Enum.reject(&is_nil/1)
 
             _ ->
+              Logger.warning("detour state snapshot has invalid connection points")
+
               raise ArgumentError
           end,
         route_segments: %{
