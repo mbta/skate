@@ -67,14 +67,14 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
   describe "when detour status changes to :past" do
     test "the job starts" do
       test_job_starts do
-      %{id: id, author_id: author_id, state: snapshot} =
-        :detour
-        |> build()
-        |> activated()
-        |> insert()
-        |> deactivated()
+        %{id: id, author_id: author_id, state: snapshot} =
+          :detour
+          |> build()
+          |> activated()
+          |> insert()
+          |> deactivated()
 
-      Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+        Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
       end
     end
   end
@@ -82,14 +82,23 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
   describe "when an active detour changes" do
     test "the job starts" do
       test_job_starts do
-        %{author_id: author_id, id: id, state: snapshot} =
-        :detour
-        |> build()
-        |> activated()
-        |> insert()
-        |> with_updated_at(DateTime.now!("Etc/UTC"))
+        detour =
+          :detour
+          |> build()
+          |> activated()
+          |> insert()
 
-      Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+        # workaround because there's no `with_saved_context(...)` factory method
+        %{author_id: author_id, id: id, state: snapshot} = %{
+          detour
+          | # the only way to tell when a user has finished editing a detour is by the
+            # existence of the `"savedContext" attribute; this attribute is automatically
+            # included by the application after the user selects the final confirmation
+            # dialog when editing an active detour.
+            state: put_in(detour.state, ["context", "savedContext"], detour.state)
+        }
+
+        Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
       end
     end
   end
