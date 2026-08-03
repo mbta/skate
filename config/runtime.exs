@@ -17,7 +17,8 @@ config :skate,
   busloc_url: System.get_env("BUSLOC_URL"),
   busloc_topic: System.get_env("BUSLOC_TOPIC"),
   trip_updates_url: System.get_env("TRIP_UPDATES_URL"),
-  fullstory_org: System.get_env("FULLSTORY_ORG")
+  fullstory_org: System.get_env("FULLSTORY_ORG"),
+  s3_bucket: System.get_env("SKATE_S3_BUCKET")
 
 # MBTA API
 config :skate,
