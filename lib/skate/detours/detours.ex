@@ -201,7 +201,7 @@ defmodule Skate.Detours.Detours do
 
         # trigger when the detour status changes to either ':active' or ':past'
         {:ok, new_status} ->
-          "detour status changed to ':#{new_status}'"
+          "detour #{new_record.id} status changed to ':#{new_status}'"
 
         # if the detour status did not change...
         :error ->
@@ -209,9 +209,11 @@ defmodule Skate.Detours.Detours do
           if new_record.status == :active do
             case get_in(new_record.state, ["context", "savedContext"]) do
               # ...ignore before saving changes...
-              nil -> nil
+              nil ->
+                nil
               # ...trigger when saving changes
-              saved_context when is_map(saved_context) -> "active detour changed"
+              saved_context when is_map(saved_context) ->
+                "active detour #{new_record.id} changed"
             end
           end
       end
