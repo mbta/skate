@@ -79,7 +79,27 @@ defmodule Skate.AlertsManager.ActiveDetours.S3ExporterTest do
     end
   end
 
-  describe "when an active detour changes" do
+  describe "when an active detour changes its estimated duration" do
+    test "the job starts" do
+      test_job_starts do
+        detour =
+          :detour
+          |> build()
+          |> activated()
+          |> insert()
+
+        # workaround because there's no `with_estimated_duration(...)` factory method
+        %{author_id: author_id, id: id, state: snapshot} = %{
+          detour
+          | state: put_in(detour.state, ["context", "selectedDuration"], "6 hours")
+        }
+
+        Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+      end
+    end
+  end
+
+  describe "when saving changes on an active detour" do
     test "the job starts" do
       test_job_starts do
         detour =
