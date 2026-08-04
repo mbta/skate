@@ -14,7 +14,7 @@ export const TextOnlyAlert = (): React.ReactElement => (
 )
 
 export const TextOnlyMapAlert = (): React.ReactElement => (
-  <div className="c-text-only-alert position-absolute m-2">
+  <div className="c-text-only-alert position-absolute m-2 z-1">
     <BaseAlert variant="warning-dark" show={true}>
       <ExclamationCircle aria-hidden={true} className="c-alert__icon" />
       Showing regular route - detour shape not available

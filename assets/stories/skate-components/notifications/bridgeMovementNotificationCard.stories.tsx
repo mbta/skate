@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 
 import { BridgeMovementNotificationCard } from "../../../src/components/notificationCards/bridgeMovementNotificationCard"
 import {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import React from "react"
 
 import { argsUpdater } from "../../../../.storybook/argsUpdater"
@@ -18,6 +18,9 @@ const meta = {
     showLayersList: true,
     pullbackLayerEnabled: false,
     tileType: "base",
+    onChangeLayersListVisibility: () => {},
+    onChangeTileType: () => {},
+    onTogglePullbackLayer: () => {},
   },
   argTypes: {
     onChangeTileType: { table: { disable: true } },

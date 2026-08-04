@@ -1,6 +1,6 @@
 import React from "react"
 import { MapTooltip } from "../../../src/components/map/tooltip"
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import { inMapDecorator } from "../../../.storybook/inMapDecorator"
 import { Polyline } from "react-leaflet"
 

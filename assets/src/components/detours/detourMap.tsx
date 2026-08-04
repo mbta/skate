@@ -22,7 +22,6 @@ import {
   shapePointToLatLngLiteral,
 } from "../../util/pointLiterals"
 import { MapTooltip } from "../map/tooltip"
-import { TextOnlyMapAlert } from "./alerts/textOnlyAlert"
 import { joinClasses } from "../../helpers/dom"
 import { RouteSegments, UnfinishedRouteSegments } from "../../models/detour"
 import { MapButton } from "../map/controls/mapButton"
@@ -295,7 +294,6 @@ export const DetourMap = ({
           setOldMapCenter={setOldMapCenter}
           zoom={zoom}
         />
-        {isTextOnly && <TextOnlyMapAlert />}
         <StreetViewControl
           position="topright"
           streetViewEnabled={streetViewEnabled}

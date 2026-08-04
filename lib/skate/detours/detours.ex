@@ -33,21 +33,38 @@ defmodule Skate.Detours.Detours do
     |> Repo.all()
   end
 
-  def detours_for_route("all", status) do
+  def detours_for_route(route_id, status, limit \\ nil, offset \\ nil)
+
+  def detours_for_route("all", status, limit, offset) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
+    |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
   end
 
-  def detours_for_route(route_id, status) do
+  def detours_for_route(route_id, status, limit, offset) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
     |> apply_route_id_filter(route_id)
+    |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
+  end
+
+  def count_detours_for_route("all", status) do
+    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
+    |> apply_status_filter(status)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def count_detours_for_route(route_id, status) do
+    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
+    |> apply_status_filter(status)
+    |> apply_route_id_filter(route_id)
+    |> Repo.aggregate(:count, :id)
   end
 
   defp apply_status_filter(query, status) do
@@ -58,12 +75,36 @@ defmodule Skate.Detours.Detours do
     where(query, [detour: d], d.route_id == ^route_id)
   end
 
-  def detours_for_user(user_id, status) do
+  # Fetches a certain range of detours, determined by limit and offset
+  defp apply_pagination(query, nil, nil), do: query
+
+  defp apply_pagination(query, limit, nil) when is_integer(limit) do
+    limit(query, ^limit)
+  end
+
+  defp apply_pagination(query, nil, offset) when is_integer(offset) do
+    offset(query, ^offset)
+  end
+
+  defp apply_pagination(query, limit, offset) when is_integer(limit) and is_integer(offset) do
+    query
+    |> offset(^offset)
+    |> limit(^limit)
+  end
+
+  def detours_for_user(user_id, status, limit \\ nil, offset \\ nil) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_user_and_status_filter(user_id, status)
+    |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
+  end
+
+  def count_detours_for_user(user_id, status) do
+    Skate.Detours.Db.Detour.Queries.select_detour_list_info()
+    |> apply_user_and_status_filter(user_id, status)
+    |> Repo.aggregate(:count, :id)
   end
 
   defp apply_user_and_status_filter(query, user_id, :draft) do
@@ -226,6 +267,12 @@ defmodule Skate.Detours.Detours do
     end
   end
 
+  def manual_deactivate_detour(detour_id) do
+    get_detour!(detour_id)
+    |> build_deactivation_changeset()
+    |> Repo.update!()
+  end
+
   defp fetch_detour_for_activation(detour_id, user_id) do
     case Repo.get(Detour, detour_id) do
       nil ->
@@ -254,6 +301,13 @@ defmodule Skate.Detours.Detours do
       state: new_state,
       activated_at: DateTime.utc_now(:millisecond)
     })
+  end
+
+  defp build_deactivation_changeset(detour) do
+    Detour.changeset(
+      detour,
+      %{state: put_in(detour.state, ["value", "Detour Drawing"], "Past"), status: :past}
+    )
   end
 
   def copy_to_draft_detour(detour, author_id) do
