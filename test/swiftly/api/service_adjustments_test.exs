@@ -626,9 +626,7 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
           params: params
         } = request
 
-        assert params[:createdBefore] ==
-                 created_before
-                 |> DateTime.to_iso8601()
+        assert params[:createdBefore] == DateTime.to_iso8601(created_before)
       end)
 
       Swiftly.API.ServiceAdjustments.get_adjustments_v1(
