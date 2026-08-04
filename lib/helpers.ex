@@ -51,11 +51,16 @@ defmodule Helpers do
 
   iex> fun = fn ->
   ...>   case Process.get(:retry_n, 0) do
-  ...>     0 -> Process.put(:retry_n, 1); {:error, :interrupt}
-  ...>     1 -> :ok
+  ...>     0 ->
+  ...>       Process.put(:retry_n, 1)
+  ...>       {:error, :interrupt}
+  ...>
+  ...>     1 ->
+  ...>       :ok
   ...>   end
   ...> end
-  iex> Helpers.retry(fun, 2)
+  ...>
+  ...> Helpers.retry(fun, 2)
   """
   def retry(fun, n) when n > 0 do
     case fun.() do
