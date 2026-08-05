@@ -44,14 +44,14 @@ export const parsePaginatePayload = (
   }
 
   if (hasKey(normalizedPayload, "total_count")) {
-    const parsedPagination = create(normalizedPayload, PaginatedDetoursData)
+    const paginatedDetoursData = create(normalizedPayload, PaginatedDetoursData)
     return {
-      detours: parsedPagination.data.map(simpleDetourFromData),
+      detours: paginatedDetoursData.data.map(simpleDetourFromData),
       pagination: {
-        totalCount: parsedPagination.total_count,
-        totalPages: parsedPagination.total_pages,
-        pageNumber: parsedPagination.page_number,
-        pageSize: parsedPagination.page_size,
+        totalCount: paginatedDetoursData.total_count,
+        totalPages: paginatedDetoursData.total_pages,
+        pageNumber: paginatedDetoursData.page_number,
+        pageSize: paginatedDetoursData.page_size,
       },
     }
   }

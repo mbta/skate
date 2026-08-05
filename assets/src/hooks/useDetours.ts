@@ -96,7 +96,7 @@ const subscribe = ({
 
       const detoursMap = Object.fromEntries(data.map((v) => [v.id, v]))
       initializeChannel(detoursMap)
-      if (onJoined) {
+      if (typeof onJoined === "function") {
         onJoined(channel)
       }
     })
@@ -197,7 +197,7 @@ export const usePastDetours = ({
 
   const pushPageNumberOncePerRequest = useCallback(
     (channel: Channel) => {
-      const requestKey = `${topic}:${limit}:${pageNumber}`
+      const requestKey = `${topic}:${pageNumber}:${limit}`
       if (lastPaginateRequestRef.current === requestKey) {
         return
       }

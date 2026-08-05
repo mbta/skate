@@ -44,7 +44,16 @@ const filterIntersectionInput = byRole("textbox", {
 
 describe("buildPaginationItems", () => {
   test("returns all pages when the total page count is small", () => {
-    expect(buildPaginationItems(3, 7)).toStrictEqual([1, 2, 3, 4, 5, 6, 7])
+    // arrange
+    const currentPage = 3
+    const totalPages = 7
+
+    // act
+    const actual = buildPaginationItems(currentPage, totalPages)
+
+    // assert
+    const expected = [1, 2, 3, 4, 5, 6, 7]
+    expect(actual).toStrictEqual(expected)
   })
 
   test("builds a centered window with ellipses when there are many pages", () => {
@@ -227,13 +236,14 @@ describe("DetourListPage", () => {
 
   test("disables previous on first page and toggles next on last page", async () => {
     jest.mocked(usePastDetours).mockImplementation((args) => {
-      if (args.pageNumber === 1) {
+    switch (args.pageNumber) {
+      case 1:
         return simpleDetourFactory.buildList(3)
-      }
-
-      return [
-        simpleDetourFactory.build({ id: args.pageNumber, name: "Closed" }),
-      ]
+      default:
+        return [
+          simpleDetourFactory.build({ id: args.pageNumber, name: "Closed" })
+        ]
+    }
     })
 
     render(<DetourListPage />)
