@@ -269,6 +269,40 @@ describe("usePastDetours", () => {
     })
   })
 
+  test("pushes pagination after an asynchronous join completes", async () => {
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: detours })
+    const joinResult = {
+      receive: jest.fn((message: string, handler: (data?: unknown) => void) => {
+        if (message === "ok") {
+          setTimeout(() => handler({ data: detours }), 0)
+        }
+        return joinResult
+      }),
+    }
+
+    mockChannel.join.mockImplementation(() => joinResult as never)
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    renderHook(() =>
+      usePastDetours({
+        socket: mockSocket,
+        routeId: "all",
+        limit: 5,
+        pageNumber: 1,
+      })
+    )
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 0))
+    })
+
+    expect(mockChannel.push).toHaveBeenCalledWith("paginate", {
+      limit: 5,
+      offset: 0,
+    })
+  })
+
   test("switches channels and paginates with page 1 equivalent offset when route changes", () => {
     const selectedRoute = parsedDetourA.route
     const mockSocket = makeMockSocket()

@@ -1,10 +1,12 @@
 import React from "react"
 import { Pagination } from "react-bootstrap"
 
+type PaginationItem = number | "ellipsis"
+
 export const buildPaginationItems = (
   currentPage: number,
   totalPages: number
-): Array<number | "ellipsis"> => {
+): PaginationItem[] => {
   if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, index) => index + 1)
   }
@@ -20,7 +22,7 @@ export const buildPaginationItems = (
   }
 
   const orderedPages = Array.from(pages).sort((a, b) => a - b)
-  const items: Array<number | "ellipsis"> = []
+  const items: PaginationItem[] = []
 
   // Add ellipses if there are gaps between page numbers.
   orderedPages.forEach((page, index) => {
@@ -38,7 +40,7 @@ export const buildPaginationItems = (
 
 interface PaginationBarProps {
   pageNumber: number
-  pageItems: Array<number | "ellipsis">
+  pageItems: PaginationItem[]
   canGoNext: boolean
   onPrevious: () => void
   onNext: () => void

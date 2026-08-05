@@ -236,14 +236,14 @@ describe("DetourListPage", () => {
 
   test("disables previous on first page and toggles next on last page", async () => {
     jest.mocked(usePastDetours).mockImplementation((args) => {
-    switch (args.pageNumber) {
-      case 1:
-        return simpleDetourFactory.buildList(3)
-      default:
-        return [
-          simpleDetourFactory.build({ id: args.pageNumber, name: "Closed" })
-        ]
-    }
+      switch (args.pageNumber) {
+        case 1:
+          return simpleDetourFactory.buildList(3)
+        default:
+          return [
+            simpleDetourFactory.build({ id: args.pageNumber, name: "Closed" }),
+          ]
+      }
     })
 
     render(<DetourListPage />)

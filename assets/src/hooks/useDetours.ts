@@ -8,7 +8,7 @@ import {
 } from "../models/detoursList"
 import {
   type DetoursPagination,
-  parsePaginatePayload,
+  parsePaginationPayload,
 } from "../models/detoursPaginationData"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { reload } from "../models/browser"
@@ -177,41 +177,12 @@ export const usePastDetours = ({
   const topic = routeId === "all" ? "detours:past" : `detours:past:${routeId}`
   const [pastDetours, setPastDetours] = useState<DetoursMap | undefined>()
   const channelRef = useRef<Channel | undefined>()
-  const joinedRef = useRef(false)
+  const [isJoined, setIsJoined] = useState(false)
   const lastPaginateRequestRef = useRef<string | undefined>()
 
   const handleDeactivated = (data: SimpleDetour) => {
     setPastDetours((pastDetours) => ({ ...pastDetours, [data.id]: data }))
   }
-
-  const setDetoursFromData = useCallback(
-    (data: unknown) => {
-      const { detours, pagination } = parsePaginatePayload(data)
-      if (pagination) {
-        onPaginate?.(pagination)
-      }
-      setPastDetours(Object.fromEntries(detours.map((v) => [v.id, v])))
-    },
-    [onPaginate]
-  )
-
-  const pushPageNumberOncePerRequest = useCallback(
-    (channel: Channel) => {
-      const requestKey = `${topic}:${pageNumber}:${limit}`
-      if (lastPaginateRequestRef.current === requestKey) {
-        return
-      }
-      lastPaginateRequestRef.current = requestKey
-      pushPageNumber(channel, topic, limit, pageNumber, setDetoursFromData)
-    },
-    [limit, pageNumber, setDetoursFromData, topic]
-  )
-
-  const pushPageNumberOncePerRequestRef = useRef(pushPageNumberOncePerRequest)
-
-  useEffect(() => {
-    pushPageNumberOncePerRequestRef.current = pushPageNumberOncePerRequest
-  }, [pushPageNumberOncePerRequest])
 
   useEffect(() => {
     let channel: Channel | undefined
@@ -224,8 +195,7 @@ export const usePastDetours = ({
         initialMessageType: SimpleDetourData,
         onJoined: (channel) => {
           channelRef.current = channel
-          joinedRef.current = true
-          pushPageNumberOncePerRequestRef.current(channel)
+          setIsJoined(true)
         },
       })
     }
@@ -235,18 +205,46 @@ export const usePastDetours = ({
         channel.leave()
         channel = undefined
         channelRef.current = undefined
-        joinedRef.current = false
-        lastPaginateRequestRef.current = undefined
+        setIsJoined(false)
       }
     }
   }, [socket, topic])
 
+  // Cache the callback to set detours from data, so that the function reference doesn't
+  // change on every render. Also call the onPaginate callback to update the pagination
+  // state in the parent component
+  const setDetoursFromData = useCallback(
+    (data: unknown) => {
+      const { detours, pagination } = parsePaginationPayload(data)
+      if (pagination) {
+        onPaginate?.(pagination)
+      }
+      setPastDetours(Object.fromEntries(detours.map((v) => [v.id, v])))
+    },
+    [onPaginate]
+  )
+
+  // Send the pagination request when page number, topic, limit changes
   useEffect(() => {
-    const channel = channelRef.current
-    if (channel && joinedRef.current) {
-      pushPageNumberOncePerRequest(channel)
-    }
-  }, [pushPageNumberOncePerRequest])
+    // If the channel is not joined yet, we cannot push the pagination request
+    if (!isJoined || !channelRef.current) return
+
+    // Deduplication key to prevent multiple requests for the same page number and limit
+    const key = `${topic}:${pageNumber}:${limit}`
+    // If the last paginate request was for the same page number and limit, do not send
+    // another request
+    if (lastPaginateRequestRef.current === key) return
+
+    // Save the current request key
+    lastPaginateRequestRef.current = key
+    pushPagination(
+      channelRef.current,
+      topic,
+      limit,
+      pageNumber,
+      setDetoursFromData
+    )
+  }, [topic, pageNumber, limit, isJoined, setDetoursFromData])
 
   return pastDetours
 }
@@ -401,15 +399,15 @@ export const useActiveDetoursByRoute = (
   return activeDetoursByRoute
 }
 
-const pushPageNumber = (
+const pushPagination = (
   channel: Channel,
   topic: string,
   limit: number,
   pageNumber: number,
   setDetoursCallback: (data: unknown) => void
 ) => {
-  const safePageNumber = Math.max(1, pageNumber)
-  const offset = (safePageNumber - 1) * limit
+  const clampedPageNumber = Math.max(1, pageNumber)
+  const offset = (clampedPageNumber - 1) * limit
 
   channel
     .push("paginate", { limit, offset })

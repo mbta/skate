@@ -75,7 +75,7 @@ export const DetourListPage = () => {
   const canGoNext =
     totalPages !== undefined
       ? pageNumber < totalPages
-      : (pastDetours !== null && pastDetours.length >= currentLimit)
+      : Boolean(pastDetours && pastDetours.length >= currentLimit)
 
   // --- End of detour channel initialization
 

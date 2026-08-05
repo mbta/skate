@@ -27,7 +27,7 @@ const hasKey = <K extends string>(
   return typeof payload === "object" && payload !== null && key in payload
 }
 
-export const parsePaginatePayload = (
+export const parsePaginationPayload = (
   payload: unknown
 ): {
   detours: SimpleDetour[]
@@ -39,8 +39,8 @@ export const parsePaginatePayload = (
       : payload
 
   if (Array.isArray(normalizedPayload)) {
-    const parsedData = create(normalizedPayload, array(SimpleDetourData))
-    return { detours: parsedData.map(simpleDetourFromData) }
+    const simpleDetourData = create(normalizedPayload, array(SimpleDetourData))
+    return { detours: simpleDetourData.map(simpleDetourFromData) }
   }
 
   if (hasKey(normalizedPayload, "total_count")) {
@@ -57,8 +57,11 @@ export const parsePaginatePayload = (
   }
 
   if (hasKey(normalizedPayload, "data")) {
-    const parsedData = create(normalizedPayload.data, array(SimpleDetourData))
-    return { detours: parsedData.map(simpleDetourFromData) }
+    const simpleDetourData = create(
+      normalizedPayload.data,
+      array(SimpleDetourData)
+    )
+    return { detours: simpleDetourData.map(simpleDetourFromData) }
   }
 
   return { detours: [] }
