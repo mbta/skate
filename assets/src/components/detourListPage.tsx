@@ -39,7 +39,7 @@ export const DetourListPage = () => {
   const [detoursPagination, setDetoursPagination] = useState<
     DetoursPagination | undefined
   >()
-  const currentLimit = 3
+  const currentLimit = Number.MAX_SAFE_INTEGER
 
   // For pagination, reset the page number to 1 when the routeId changes
   useEffect(() => {
