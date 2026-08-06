@@ -80,7 +80,7 @@ defmodule SkateWeb.DetoursAdminController do
 
   @spec swiftly_service_adjustments(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def swiftly_service_adjustments(conn, _) do
-    swiftly_adjustments = Detours.get_swiftly_adjustments()
+    {:ok, swiftly_adjustments} = Detours.get_swiftly_adjustments()
 
     detours_map =
       Map.new(get_detours(), fn detour ->

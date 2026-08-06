@@ -355,7 +355,7 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
       )
     end
 
-    test "when API returns `204`, returns :ok" do
+    test "when API returns `204`, returns {:ok, nil}" do
       Mox.expect(@mock_client_module, :request, fn request ->
         {:ok,
          %HTTPoison.Response{
@@ -364,7 +364,7 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
          }}
       end)
 
-      assert :ok ==
+      assert {:ok, nil} ==
                Swiftly.API.ServiceAdjustments.delete_adjustment_v1(
                  "test-adjustment-id",
                  @default_arguments
@@ -626,10 +626,7 @@ defmodule Swiftly.API.ServiceAdjustmentsTest do
           params: params
         } = request
 
-        assert params[:createdBefore] ==
-                 created_before
-                 |> DateTime.shift_zone!("America/New_York")
-                 |> DateTime.to_iso8601()
+        assert params[:createdBefore] == DateTime.to_iso8601(created_before)
       end)
 
       Swiftly.API.ServiceAdjustments.get_adjustments_v1(
