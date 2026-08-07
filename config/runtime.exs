@@ -74,7 +74,8 @@ config :skate, Skate.Repo, pool_size: pool_size
 
 if config_env() == :prod do
   config :skate,
-    geonames_token: System.get_env("GEONAMES_TOKEN")
+    geonames_token: System.get_env("GEONAMES_TOKEN"),
+    s3_bucket: System.get_env("SKATE_S3_BUCKET")
 
   config :skate, SkateWeb.Endpoint,
     url: [host: System.get_env("HOST"), port: 80],

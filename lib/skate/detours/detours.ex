@@ -232,6 +232,7 @@ defmodule Skate.Detours.Detours do
   defp handle_detour_updated(changeset, new_record, author_id) do
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
+    trigger_active_detour_s3_export_job(changeset, new_record)
     update_swiftly(changeset, new_record)
   end
 
@@ -446,6 +447,50 @@ defmodule Skate.Detours.Detours do
   end
 
   defp process_notifications(_, _), do: nil
+
+  @spec trigger_active_detour_s3_export_job(
+          Ecto.Changeset.t(),
+          Detour.t()
+        ) :: {:ok, Oban.Job.t()} | {:ok, nil} | {:error, Oban.Job.changeset() | term()}
+  defp trigger_active_detour_s3_export_job(changeset, detour) do
+    trigger =
+      case Ecto.Changeset.fetch_change(changeset, :status) do
+        # ignore when detour status changes to ':draft'
+        {:ok, :draft} ->
+          nil
+
+        # trigger when the detour status changes to either ':active' or ':past'
+        {:ok, new_status} ->
+          "detour #{detour.id} status changed to ':#{new_status}'"
+
+        # if the detour status did not change...
+        :error ->
+          # ...but the detour is active...
+          if detour.status == :active do
+            cond do
+              # ...trigger when the estimated duration changed...
+              !is_nil(Ecto.Changeset.get_change(changeset, :estimated_duration)) ->
+                "active detour #{detour.id} estimated duration changed"
+
+              # ...or when saving changes...
+              is_map(get_in(detour.state, ["context", "savedContext"])) ->
+                "active detour #{detour.id} changed"
+
+              # ...ignore otherwise
+              true ->
+                nil
+            end
+          end
+      end
+
+    if is_binary(trigger) do
+      %{trigger: trigger}
+      |> Skate.AlertsManager.ActiveDetours.S3Exporter.new()
+      |> Oban.insert()
+    else
+      {:ok, nil}
+    end
+  end
 
   defp test_group_enabled?() do
     case TestGroup.get_by_name("send-detours-to-swiftly-enabled") do

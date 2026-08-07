@@ -1,6 +1,8 @@
 import Config
 
-config :skate, start_data_processes: false
+config :skate,
+  start_data_processes: false,
+  s3_bucket: "test-bucket"
 
 config :skate, Schedule.CacheFile, cache_filename: "test_cache.terms"
 
@@ -39,3 +41,10 @@ config :ueberauth_oidcc,
 config :skate, :swiftly, adjustments_module: Swiftly.API.FakeServiceAdjustments
 
 config :logger, level: :warning
+
+config :ex_aws,
+  request_config_overrides: %{
+    http_client: ExAws.Request.HttpMock,
+    access_key_id: "testkeyid",
+    secret_access_key: "secretaccesskey"
+  }

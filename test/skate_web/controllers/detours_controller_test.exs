@@ -15,6 +15,16 @@ defmodule SkateWeb.DetoursControllerTest do
   alias Skate.Detours.MissedStops
 
   setup do
+    # mock aws because these tests will trigger the
+    # Skate.AlertsManager.ActiveDetours.S3Exporter Oban job
+    Mox.stub(
+      ExAws.Request.HttpMock,
+      :request,
+      fn _, _, _, _, _ ->
+        {:ok, %{status_code: 200, body: ""}}
+      end
+    )
+
     stub(Skate.OpenRouteServiceAPI.MockClient, :get_directions, fn _ ->
       {:ok, build(:ors_directions_json)}
     end)

@@ -32,3 +32,5 @@ Application.put_env(
   :trip_modification_publisher,
   Skate.Detours.MockTripModificationPublisher
 )
+
+Mox.defmock(ExAws.Request.HttpMock, for: ExAws.Request.HttpClient)
