@@ -219,7 +219,7 @@ export const usePastDetours = ({
       if (pagination) {
         onPaginate?.(pagination)
       }
-      setPastDetours(Object.fromEntries(detours.map((v) => [v.id, v])))
+      setPastDetours(Object.fromEntries(detours.map((detour) => [detour.id, detour])))
     },
     [onPaginate]
   )
@@ -230,7 +230,7 @@ export const usePastDetours = ({
     if (!isJoined || !channelRef.current) return
 
     // Deduplication key to prevent multiple requests for the same page number and limit
-    const key = `${topic}:${pageNumber}:${limit}`
+    const key = `${topic}:${limit}:${pageNumber}`
     // If the last paginate request was for the same page number and limit, do not send
     // another request
     if (lastPaginateRequestRef.current === key) return

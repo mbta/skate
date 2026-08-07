@@ -2,8 +2,9 @@ import { describe, test, expect, jest, beforeEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { DetourListPage } from "../../../src/components/detourListPage"
-import { buildPaginationItems } from "../../../src/components/nav/paginationBar"
+import { buildPaginationItems } from "../../../src/models/detoursPaginationData"
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -44,32 +45,43 @@ const filterIntersectionInput = byRole("textbox", {
 
 describe("buildPaginationItems", () => {
   test("returns all pages when the total page count is small", () => {
-    // arrange
     const currentPage = 3
     const totalPages = 7
 
-    // act
     const actual = buildPaginationItems(currentPage, totalPages)
 
-    // assert
     const expected = [1, 2, 3, 4, 5, 6, 7]
     expect(actual).toStrictEqual(expected)
   })
 
   test("builds a centered window with ellipses when there are many pages", () => {
-    expect(buildPaginationItems(5, 10)).toStrictEqual([
-      1,
-      "ellipsis",
-      4,
-      5,
-      6,
-      "ellipsis",
-      10,
-    ])
+    const currentPage = 5
+    const totalPages = 10
+
+    const actual = buildPaginationItems(currentPage, totalPages)
+
+    const expected = [1, "ellipsis", 4, 5, 6, "ellipsis", 10]
+    expect(actual).toStrictEqual(expected)
+  })
+
+  test("builds a window with ellipses when there are many pages", () => {
+    const currentPage = 4
+    const totalPages = 14
+
+    const actual = buildPaginationItems(currentPage, totalPages)
+
+    const expected = [1, "ellipsis", 3, 4, 5, "ellipsis", 14]
+    expect(actual).toStrictEqual(expected)
   })
 
   test("clamps the current page when it exceeds bounds", () => {
-    expect(buildPaginationItems(99, 10)).toStrictEqual([1, "ellipsis", 9, 10])
+    const currentPage = 99
+    const totalPages = 10
+
+    const actual = buildPaginationItems(currentPage, totalPages)
+
+    const expected = [1, "ellipsis", 9, 10]
+    expect(actual).toStrictEqual(expected)
   })
 })
 
@@ -236,14 +248,18 @@ describe("DetourListPage", () => {
 
   test("disables previous on first page and toggles next on last page", async () => {
     jest.mocked(usePastDetours).mockImplementation((args) => {
-      switch (args.pageNumber) {
-        case 1:
-          return simpleDetourFactory.buildList(3)
-        default:
-          return [
-            simpleDetourFactory.build({ id: args.pageNumber, name: "Closed" }),
-          ]
-      }
+      React.useEffect(() => {
+        args.onPaginate?.({
+          totalCount: 2,
+          totalPages: 2,
+          pageNumber: args.pageNumber,
+          pageSize: 1,
+        })
+      }, [args.pageNumber, args.onPaginate])
+
+      return [
+        simpleDetourFactory.build({ id: args.pageNumber, name: "Closed" }),
+      ]
     })
 
     render(<DetourListPage />)
@@ -251,15 +267,20 @@ describe("DetourListPage", () => {
     const previousButton = screen.getByLabelText("Previous")
     const nextButton = screen.getByLabelText("Next")
 
-    expect(previousButton).toHaveAttribute("aria-disabled", "true")
-    expect(nextButton).not.toHaveAttribute("aria-disabled", "true")
+    await waitFor(() => {
+      expect(previousButton).toHaveAttribute("aria-disabled", "true")
+      expect(nextButton).not.toHaveAttribute("aria-disabled", "true")
+    })
 
-    fireEvent.click(nextButton)
+    await act(async () => {
+      fireEvent.click(nextButton)
+    })
 
     await waitFor(() => {
       const pagination = screen.getByLabelText("Previous").closest("ul")
+      expect(pagination).not.toBeNull()
       expect(
-        within(pagination as HTMLElement)
+        within(pagination!)
           .getByText("2")
           .closest("li")
       ).toHaveClass("active")

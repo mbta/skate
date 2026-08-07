@@ -27,6 +27,43 @@ const hasKey = <K extends string>(
   return typeof payload === "object" && payload !== null && key in payload
 }
 
+export type PaginationItem = number | "ellipsis"
+
+export const buildPaginationItems = (
+  currentPage: number,
+  totalPages: number
+): PaginationItem[] => {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1)
+  }
+
+  const clampedCurrent = Math.min(Math.max(currentPage, 1), totalPages)
+  const pages = new Set<number>([1, totalPages])
+
+  // Show the page numbers before and after the current page.
+  for (let page = clampedCurrent - 1; page <= clampedCurrent + 1; page += 1) {
+    if (page > 1 && page < totalPages) {
+      pages.add(page)
+    }
+  }
+
+  const orderedPages = Array.from(pages).sort((a, b) => a - b)
+  const items: PaginationItem[] = []
+
+  // Add ellipses if there are gaps between page numbers.
+  orderedPages.forEach((page, index) => {
+    if (index > 0) {
+      const previousPage = orderedPages[index - 1]
+      if (page - previousPage > 1) {
+        items.push("ellipsis")
+      }
+    }
+    items.push(page)
+  })
+
+  return items
+}
+
 export const parsePaginationPayload = (
   payload: unknown
 ): {
