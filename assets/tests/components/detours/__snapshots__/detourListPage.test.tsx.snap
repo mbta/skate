@@ -871,6 +871,68 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
           </tr>
         </tbody>
       </table>
+      <div
+        class="d-flex justify-content-end mb-4"
+      >
+        <ul
+          class="mb-0 pagination"
+        >
+          <li
+            class="page-item disabled"
+          >
+            <span
+              aria-disabled="true"
+              aria-label="Previous"
+              class="page-link"
+            >
+              <span
+                aria-hidden="true"
+              >
+                ‹
+              </span>
+              <span
+                class="visually-hidden"
+              >
+                Previous
+              </span>
+            </span>
+          </li>
+          <li
+            class="page-item active"
+          >
+            <span
+              class="page-link"
+            >
+              1
+              <span
+                class="visually-hidden"
+              >
+                (current)
+              </span>
+            </span>
+          </li>
+          <li
+            class="page-item disabled"
+          >
+            <span
+              aria-disabled="true"
+              aria-label="Next"
+              class="page-link"
+            >
+              <span
+                aria-hidden="true"
+              >
+                ›
+              </span>
+              <span
+                class="visually-hidden"
+              >
+                Next
+              </span>
+            </span>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div
