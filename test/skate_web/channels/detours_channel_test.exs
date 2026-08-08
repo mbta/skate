@@ -211,6 +211,7 @@ defmodule SkateWeb.DetoursChannelTest do
         |> insert()
       end)
 
+
       {:ok, _, socket} = subscribe_and_join(socket, DetoursChannel, "detours:past")
 
       ref = Phoenix.ChannelTest.push(socket, "paginate", %{"limit" => "10", "offset" => "1"})
@@ -224,6 +225,68 @@ defmodule SkateWeb.DetoursChannelTest do
       })
 
       assert Enum.map(data, & &1.id) == Enum.to_list(2..11)
+    end
+
+    @tag :authenticated
+    test "paginates past detours with intersection reason and updated_at filters", %{socket: socket} do
+      :detour
+      |> build(reason: "Construction")
+      |> deactivated()
+      |> with_id(1)
+      |> with_nearest_intersection("Main St & 1st Ave")
+      |> with_updated_at(~U[2026-08-01 14:00:00Z])
+      |> insert()
+
+      :detour
+      |> build(reason: "Construction")
+      |> deactivated()
+      |> with_id(2)
+      |> with_nearest_intersection("Main St & 2nd Ave")
+      |> with_updated_at(~U[2026-08-05 14:00:00Z])
+      |> insert()
+
+      :detour
+      |> build(reason: "Parade")
+      |> deactivated()
+      |> with_id(3)
+      |> with_nearest_intersection("Main St & 3rd Ave")
+      |> with_updated_at(~U[2026-08-01 14:00:00Z])
+      |> insert()
+
+      {:ok, _, socket} = subscribe_and_join(socket, DetoursChannel, "detours:past")
+
+      ref =
+        Phoenix.ChannelTest.push(socket, "paginate", %{
+          "limit" => "10",
+          "offset" => "0",
+          "intersection" => "Main",
+          "reason" => "Construction",
+          "updated_at" => ["2026-08-01", "2026-08-03"]
+        })
+
+      assert_reply(ref, :ok, %{
+        data: [%Skate.Detours.Detour.Simple{id: 1}],
+        total_count: 1,
+        total_pages: 1,
+        page_number: 1,
+        page_size: 10
+      })
+    end
+
+    @tag :authenticated
+    test "returns invalid_pagination when updated_at date filter is invalid", %{socket: socket} do
+      :detour |> build() |> deactivated() |> with_id(1) |> insert()
+
+      {:ok, _, socket} = subscribe_and_join(socket, DetoursChannel, "detours:past")
+
+      ref =
+        Phoenix.ChannelTest.push(socket, "paginate", %{
+          "limit" => "10",
+          "offset" => "0",
+          "updated_at" => ["not-a-date"]
+        })
+
+      assert_reply(ref, :error, %{reason: :invalid_pagination})
     end
 
     @tag :authenticated
