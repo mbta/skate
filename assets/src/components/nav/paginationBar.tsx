@@ -2,7 +2,6 @@ import React from "react"
 import { Pagination } from "react-bootstrap"
 import { PaginationItem } from "../../models/detoursPaginationData"
 
-
 interface PaginationBarProps {
   pageNumber: number
   pageItems: PaginationItem[]

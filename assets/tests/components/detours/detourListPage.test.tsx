@@ -248,18 +248,18 @@ describe("DetourListPage", () => {
 
   test("disables previous on first page and toggles next on last page", async () => {
     jest.mocked(usePastDetours).mockImplementation((args) => {
+      const { onPaginate, pageNumber } = args
+
       React.useEffect(() => {
-        args.onPaginate?.({
+        onPaginate?.({
           totalCount: 2,
           totalPages: 2,
-          pageNumber: args.pageNumber,
+          pageNumber,
           pageSize: 1,
         })
-      }, [args.pageNumber, args.onPaginate])
+      }, [onPaginate, pageNumber])
 
-      return [
-        simpleDetourFactory.build({ id: args.pageNumber, name: "Closed" }),
-      ]
+      return [simpleDetourFactory.build({ id: pageNumber, name: "Closed" })]
     })
 
     render(<DetourListPage />)
@@ -279,11 +279,9 @@ describe("DetourListPage", () => {
     await waitFor(() => {
       const pagination = screen.getByLabelText("Previous").closest("ul")
       expect(pagination).not.toBeNull()
-      expect(
-        within(pagination!)
-          .getByText("2")
-          .closest("li")
-      ).toHaveClass("active")
+      expect(within(pagination!).getByText("2").closest("li")).toHaveClass(
+        "active"
+      )
       expect(screen.getByLabelText("Previous")).not.toHaveAttribute(
         "aria-disabled",
         "true"
@@ -317,11 +315,10 @@ describe("DetourListPage", () => {
 
     await waitFor(() => {
       const pagination = screen.getByLabelText("Previous").closest("ul")
-      expect(
-        within(pagination as HTMLElement)
-          .getByText("2")
-          .closest("li")
-      ).toHaveClass("active")
+      expect(pagination).not.toBeNull()
+      expect(within(pagination!).getByText("2").closest("li")).toHaveClass(
+        "active"
+      )
     })
 
     fireEvent.change(screen.getByLabelText("Route and direction"), {
@@ -330,11 +327,10 @@ describe("DetourListPage", () => {
 
     await waitFor(() => {
       const pagination = screen.getByLabelText("Previous").closest("ul")
-      expect(
-        within(pagination as HTMLElement)
-          .getByText("1")
-          .closest("li")
-      ).toHaveClass("active")
+      expect(pagination).not.toBeNull()
+      expect(within(pagination!).getByText("1").closest("li")).toHaveClass(
+        "active"
+      )
       expect(screen.getByLabelText("Previous")).toHaveAttribute(
         "aria-disabled",
         "true"

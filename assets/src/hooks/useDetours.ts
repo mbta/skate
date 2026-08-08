@@ -219,7 +219,9 @@ export const usePastDetours = ({
       if (pagination) {
         onPaginate?.(pagination)
       }
-      setPastDetours(Object.fromEntries(detours.map((detour) => [detour.id, detour])))
+      setPastDetours(
+        Object.fromEntries(detours.map((detour) => [detour.id, detour]))
+      )
     },
     [onPaginate]
   )
