@@ -16,6 +16,10 @@ import { userUuid } from "../util/userUuid"
 import { ByRouteId, RouteId } from "../schedule"
 import { equalByElements } from "../helpers/array"
 import { array, create } from "superstruct"
+import {
+  type DetoursFilter,
+  serializeDetoursFilter,
+} from "../models/detoursFilter"
 
 export interface DetoursMap {
   [key: number]: SimpleDetour
@@ -167,12 +171,14 @@ export const usePastDetours = ({
   limit,
   pageNumber,
   onPaginate,
+  detoursFilter = {},
 }: {
   socket: Socket | undefined
   routeId: string
   limit: number
   pageNumber: number
   onPaginate?: (pagination: DetoursPagination) => void
+  detoursFilter?: DetoursFilter
 }) => {
   const topic = routeId === "all" ? "detours:past" : `detours:past:${routeId}`
   const [pastDetours, setPastDetours] = useState<DetoursMap | undefined>()
@@ -226,14 +232,17 @@ export const usePastDetours = ({
     [onPaginate]
   )
 
-  // Send the pagination request when page number, topic, limit changes
+  // Serialize filter for dedup key
+  const serializedFilter = JSON.stringify(serializeDetoursFilter(detoursFilter))
+
+  // Send the pagination request when page number, topic, limit, or filter changes
   useEffect(() => {
     // If the channel is not joined yet, we cannot push the pagination request
     if (!isJoined || !channelRef.current) return
 
-    // Deduplication key to prevent multiple requests for the same page number and limit
-    const key = `${topic}:${limit}:${pageNumber}`
-    // If the last paginate request was for the same page number and limit, do not send
+    // Deduplication key to prevent multiple requests for the same page number, limit, and filter
+    const key = `${topic}:${serializedFilter}:${limit}:${pageNumber}`
+    // If the last paginate request was for the same page number, limit, and filter, do not send
     // another request
     if (lastPaginateRequestRef.current === key) return
 
@@ -244,9 +253,10 @@ export const usePastDetours = ({
       topic,
       limit,
       pageNumber,
+      detoursFilter,
       setDetoursFromData
     )
-  }, [topic, pageNumber, limit, isJoined, setDetoursFromData])
+  }, [topic, pageNumber, limit, serializedFilter, isJoined, setDetoursFromData])
 
   return pastDetours
 }
@@ -406,13 +416,20 @@ const pushPagination = (
   topic: string,
   limit: number,
   pageNumber: number,
+  detoursFilter: DetoursFilter,
   setDetoursCallback: (data: unknown) => void
 ) => {
   const clampedPageNumber = Math.max(1, pageNumber)
   const offset = (clampedPageNumber - 1) * limit
 
+  const payload = {
+    limit,
+    offset,
+    ...serializeDetoursFilter(detoursFilter),
+  }
+
   channel
-    .push("paginate", { limit, offset })
+    .push("paginate", payload)
     .receive("ok", (payload: unknown) => {
       setDetoursCallback(payload)
     })
