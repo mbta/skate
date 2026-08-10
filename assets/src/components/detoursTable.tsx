@@ -110,6 +110,11 @@ export const DetoursTable = ({
   const filteredData = useMemo(() => {
     let result = data
 
+    // Skip front-end filters for closed detours because it happens in the backend
+    if (status != DetourStatus.Closed) {
+      return result
+    }
+
     if (intersectionFilter !== "") {
       result = result.filter((detour) =>
         (detour.intersection || "")
@@ -132,7 +137,7 @@ export const DetoursTable = ({
     }
 
     return result
-  }, [data, intersectionFilter, dates, reason])
+  }, [data, status, intersectionFilter, dates, reason])
 
   return (
     <>

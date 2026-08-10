@@ -42,9 +42,8 @@ export const DetourListPage = () => {
   const [detoursPagination, setDetoursPagination] = useState<
     DetoursPagination | undefined
   >()
-  // Set arbitrarily high to see all detours (without pagination) until the next PR
-  // turns on pagination to a reasonable page limit.
-  const currentLimit = 10000
+
+  const currentLimit = 10
 
   // For pagination, reset the page number to 1 when the routeId or filter changes
   useEffect(() => {
