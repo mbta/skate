@@ -680,14 +680,17 @@ defmodule Skate.Detours.Detours do
     end
   end
 
-  def get_swiftly_adjustments(adjustments_module \\ service_adjustments_module()) do
+  def get_swiftly_adjustments(
+        adjustments_module \\ service_adjustments_module(),
+        retry_count \\ 5
+      ) do
     retry_function = fn ->
       adjustments_module.get_adjustments_v1(
         Keyword.put(build_swiftly_opts(), :adjustmentTypes, "DETOUR_V0")
       )
     end
 
-    with {:ok, response} <- Helpers.retry(retry_function, 5) do
+    with {:ok, response} <- Helpers.retry(retry_function, retry_count) do
       adjustments =
         response
         |> Map.get(:adjustments, [])
