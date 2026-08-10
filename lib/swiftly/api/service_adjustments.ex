@@ -185,7 +185,7 @@ defmodule Swiftly.API.ServiceAdjustments do
       |> Keyword.put_new(:createdBefore, DateTime.utc_now())
       |> Keyword.put_new(
         :createdAfter,
-        DateTime.new!(~D[2027-01-01], ~T[00:00:00])
+        DateTime.new!(~D[2026-01-01], ~T[00:00:00])
       )
       |> assert_agency_param!()
       |> Keyword.take([

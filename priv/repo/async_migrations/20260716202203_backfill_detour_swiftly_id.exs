@@ -6,7 +6,6 @@ defmodule Skate.Repo.Migrations.BackfillDetourSwiftlyId.MigratingSchema do
   use Skate.Schema
 
   typed_schema "detours" do
-    # field :id, :integer, null: false
     field :swiftly_id, :string, null: true
   end
 end

@@ -22,7 +22,6 @@ defmodule Skate.Detours.Db.Detour do
 
     # When this detour was activated
     field :activated_at, :utc_datetime_usec
-    field :swiftly_id, :string
 
     timestamps()
 
@@ -30,6 +29,7 @@ defmodule Skate.Detours.Db.Detour do
     # Activated properties
     field :estimated_duration, :string
     field :reason, :string
+    field :swiftly_id, :string
 
     # -------------------------------------------------------
     # Map point properties
@@ -85,14 +85,17 @@ defmodule Skate.Detours.Db.Detour do
     |> change(%{state: new_state})
   end
 
+  # Add or update swiftly_id
   def put_change_from_swiftly({:ok, %{adjustmentId: swiftly_id}}, changeset) do
     put_change(changeset, :swiftly_id, swiftly_id)
   end
 
+  # Remove swiftly_id on deactivation
   def put_change_from_swiftly({:ok, nil}, changeset) do
     put_change(changeset, :swiftly_id, nil)
   end
 
+  # Make no change
   def put_change_from_swiftly(:ok, changeset) do
     changeset
   end

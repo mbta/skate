@@ -505,7 +505,7 @@ defmodule Skate.Detours.Detours do
          %Detour{},
          true
        )
-       when swiftly_id != nil do
+       when is_binary(swiftly_id) do
     service_adjustments_module().delete_adjustment_v1(swiftly_id, build_swiftly_opts())
   end
 
@@ -518,7 +518,7 @@ defmodule Skate.Detours.Detours do
          %Detour{},
          true
        )
-       when swiftly_id != nil do
+       when is_binary(swiftly_id) do
     service_adjustments_module().delete_adjustment_v1(swiftly_id, build_swiftly_opts())
   end
 
