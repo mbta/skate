@@ -7,6 +7,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Repo
   alias Skate.Detours.Db.Detour
   alias Skate.Detours.SnapshotSerde
+  alias Skate.Detours.S3Exporter
   alias Skate.Detours.Detour.Simple, as: SimpleDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Notifications
@@ -399,7 +400,7 @@ defmodule Skate.Detours.Detours do
           Detour.t()
         ) :: {:ok, Oban.Job.t()} | {:ok, nil} | {:error, Oban.Job.changeset() | term()}
   defp trigger_active_detour_s3_export_job(changeset, detour) do
-    trigger =
+    reason =
       case Ecto.Changeset.fetch_change(changeset, :status) do
         # ignore when detour status changes to ':draft'
         {:ok, :draft} ->
@@ -429,9 +430,9 @@ defmodule Skate.Detours.Detours do
           end
       end
 
-    if is_binary(trigger) do
-      %{trigger: trigger}
-      |> Skate.AlertsManager.ActiveDetours.S3Exporter.new()
+    if is_binary(reason) do
+      %{filter: %{"status" => "active"}, reason: reason}
+      |> S3Exporter.new()
       |> Oban.insert()
     else
       {:ok, nil}
