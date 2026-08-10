@@ -32,17 +32,34 @@ jobs:
           path: ~/.asdf
           key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
         id: asdf-cache
+      - name: Log ASDF cache result
+        run: |
+          echo "ASDF cache hit: ${{ steps.asdf-cache.outputs.cache-hit }}"
+          if [ "${{ steps.asdf-cache.outputs.cache-hit }}" = "true" ]; then
+            echo "Skipping ASDF installation because the cache was restored."
+          else
+            echo "ASDF cache miss. Starting ASDF installation."
+          fi
       # only run `asdf install` if we didn't hit the cache
-      - if: steps.asdf-cache.outputs.cache-hit != 'true'
+      - name: Install ASDF
+        if: steps.asdf-cache.outputs.cache-hit != 'true'
         # Git ref points to release tag 'v4'
         uses: asdf-vm/actions/install@156187456fbe441e7badfe93ec1fa4dda646b27e
       - name: Setup ASDF environment
         run: |
           ASDF_DIR=$HOME/.asdf
+          echo "Preparing ASDF environment from $ASDF_DIR"
           echo "ASDF_DIR=$ASDF_DIR" >> $GITHUB_ENV
           echo "ASDF_DATA_DIR=$ASDF_DIR" >> $GITHUB_ENV
           echo "$ASDF_DIR/bin" >> $GITHUB_PATH
           echo "$ASDF_DIR/shims" >> $GITHUB_PATH
+          if [ ! -x "$ASDF_DIR/bin/asdf" ]; then
+            echo "ASDF installation is missing: $ASDF_DIR/bin/asdf"
+            ls -la "$ASDF_DIR" || true
+            ls -la "$ASDF_DIR/bin" || true
+            exit 1
+          fi
+          "$ASDF_DIR/bin/asdf" --version
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
@@ -105,13 +122,33 @@ jobs:
           path: ~/.asdf
           key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
         id: asdf-cache
+      - name: Log ASDF cache result
+        run: |
+          echo "ASDF cache hit: ${{ steps.asdf-cache.outputs.cache-hit }}"
+          if [ "${{ steps.asdf-cache.outputs.cache-hit }}" = "true" ]; then
+            echo "Skipping ASDF installation because the cache was restored."
+          else
+            echo "ASDF cache miss. Starting ASDF installation."
+          fi
+      - name: Install ASDF
+        if: steps.asdf-cache.outputs.cache-hit != 'true'
+        # Git ref points to release tag 'v4'
+        uses: asdf-vm/actions/install@156187456fbe441e7badfe93ec1fa4dda646b27e
       - name: Setup ASDF environment
         run: |
           ASDF_DIR=$HOME/.asdf
+          echo "Preparing ASDF environment from $ASDF_DIR"
           echo "ASDF_DIR=$ASDF_DIR" >> $GITHUB_ENV
           echo "ASDF_DATA_DIR=$ASDF_DIR" >> $GITHUB_ENV
           echo "$ASDF_DIR/bin" >> $GITHUB_PATH
           echo "$ASDF_DIR/shims" >> $GITHUB_PATH
+          if [ ! -x "$ASDF_DIR/bin/asdf" ]; then
+            echo "ASDF installation is missing: $ASDF_DIR/bin/asdf"
+            ls -la "$ASDF_DIR" || true
+            ls -la "$ASDF_DIR/bin" || true
+            exit 1
+          fi
+          "$ASDF_DIR/bin/asdf" --version
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
@@ -162,13 +199,33 @@ jobs:
           path: ~/.asdf
           key: ${{ runner.os }}-asdf-${{ hashFiles('.tool-versions') }}
         id: asdf-cache
+      - name: Log ASDF cache result
+        run: |
+          echo "ASDF cache hit: ${{ steps.asdf-cache.outputs.cache-hit }}"
+          if [ "${{ steps.asdf-cache.outputs.cache-hit }}" = "true" ]; then
+            echo "Skipping ASDF installation because the cache was restored."
+          else
+            echo "ASDF cache miss. Starting ASDF installation."
+          fi
+      - name: Install ASDF
+        if: steps.asdf-cache.outputs.cache-hit != 'true'
+        # Git ref points to release tag 'v4'
+        uses: asdf-vm/actions/install@156187456fbe441e7badfe93ec1fa4dda646b27e
       - name: Setup ASDF environment
         run: |
           ASDF_DIR=$HOME/.asdf
+          echo "Preparing ASDF environment from $ASDF_DIR"
           echo "ASDF_DIR=$ASDF_DIR" >> $GITHUB_ENV
           echo "ASDF_DATA_DIR=$ASDF_DIR" >> $GITHUB_ENV
           echo "$ASDF_DIR/bin" >> $GITHUB_PATH
           echo "$ASDF_DIR/shims" >> $GITHUB_PATH
+          if [ ! -x "$ASDF_DIR/bin/asdf" ]; then
+            echo "ASDF installation is missing: $ASDF_DIR/bin/asdf"
+            ls -la "$ASDF_DIR" || true
+            ls -la "$ASDF_DIR/bin" || true
+            exit 1
+          fi
+          "$ASDF_DIR/bin/asdf" --version
           $ASDF_DIR/bin/asdf reshim
       - name: Restore dependencies cache
         id: deps-cache
