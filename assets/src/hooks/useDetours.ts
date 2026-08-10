@@ -256,7 +256,15 @@ export const usePastDetours = ({
       detoursFilter,
       setDetoursFromData
     )
-  }, [topic, pageNumber, limit, serializedFilter, isJoined, setDetoursFromData])
+  }, [
+    topic,
+    pageNumber,
+    limit,
+    detoursFilter,
+    serializedFilter,
+    isJoined,
+    setDetoursFromData,
+  ])
 
   return pastDetours
 }

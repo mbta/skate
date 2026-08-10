@@ -232,7 +232,9 @@ describe("DetoursTable - Active/Draft status with local filtering", () => {
       screen.queryByLabelText("Starting intersection")
     ).not.toBeInTheDocument()
     expect(screen.queryByLabelText("Reason")).not.toBeInTheDocument()
-    expect(screen.queryByRole("button", { name: "Clear" })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole("button", { name: "Clear" })
+    ).not.toBeInTheDocument()
   })
 
   test("does not show filter inputs for Draft status", () => {
@@ -249,6 +251,8 @@ describe("DetoursTable - Active/Draft status with local filtering", () => {
       screen.queryByLabelText("Starting intersection")
     ).not.toBeInTheDocument()
     expect(screen.queryByLabelText("Reason")).not.toBeInTheDocument()
-    expect(screen.queryByRole("button", { name: "Clear" })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole("button", { name: "Clear" })
+    ).not.toBeInTheDocument()
   })
 })

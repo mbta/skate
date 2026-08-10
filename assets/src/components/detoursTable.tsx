@@ -206,7 +206,10 @@ export const DetoursTable = ({
                     {intersectionFilter.length > 0 && (
                       <button
                         onClick={() =>
-                          normalizeAndSetFilter({ ...detoursFilter, intersection: "" })
+                          normalizeAndSetFilter({
+                            ...detoursFilter,
+                            intersection: "",
+                          })
                         }
                         title="Clear"
                       >
@@ -219,7 +222,10 @@ export const DetoursTable = ({
                       type="submit"
                       title="Submit"
                       onClick={() =>
-                        normalizeAndSetFilter({ ...detoursFilter, intersection: intersectionFilter })
+                        normalizeAndSetFilter({
+                          ...detoursFilter,
+                          intersection: intersectionFilter,
+                        })
                       }
                       disabled={intersectionFilter.length === 0}
                     >
@@ -237,7 +243,10 @@ export const DetoursTable = ({
                   className="select-filter mt-2"
                   value={reason}
                   onChange={(e) => {
-                    normalizeAndSetFilter({ ...detoursFilter, reason: e.target.value })
+                    normalizeAndSetFilter({
+                      ...detoursFilter,
+                      reason: e.target.value,
+                    })
                   }}
                 >
                   <option key="" value="all">
