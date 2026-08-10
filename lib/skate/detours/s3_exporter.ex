@@ -1,0 +1,270 @@
+defmodule Skate.Detours.S3Exporter do
+  @moduledoc """
+  Export detour information to S3.
+  """
+
+  require Logger
+
+  use Oban.Worker, max_attempts: 3
+
+  require Ecto.Query
+
+  alias Skate.Detours.Db.Detour
+
+  @impl Oban.Worker
+  def perform(%Oban.Job{args: args} = _) do
+    case Map.fetch(args, "filter") do
+      {:ok, %{"status" => status} = filter} ->
+        # Hack b/c Oban serializes everything to strings, but Ecto stores enums as atoms
+        if status in Enum.map(Ecto.Enum.values(Detour, :status), &to_string/1) do
+          export(filter)
+        else
+          {:error, :invalid_filter_value_detour_status}
+        end
+
+      {:ok, _} ->
+        {:error, :invalid_filter}
+
+      :error ->
+        {:error, :missing_argument_filter}
+    end
+  end
+
+  @spec export(map(), keyword()) :: {:ok, integer()} | {:error, any()}
+  def export(%{"status" => status} = _, order_by \\ [desc: :updated_at]) do
+    selected =
+      Detour
+      |> Ecto.Query.where(status: ^status)
+      |> Ecto.Query.order_by(^order_by)
+      |> Skate.Repo.all()
+
+    converted =
+      selected
+      |> Enum.map(fn %Detour{} = detour ->
+        try do
+          convert!(detour)
+        rescue
+          _ -> nil
+        end
+      end)
+      |> Enum.reject(&is_nil/1)
+
+    serialized =
+      converted
+      |> Enum.map(fn map ->
+        try do
+          Jason.encode!(map) <> "\n"
+        rescue
+          _ -> nil
+        end
+      end)
+      |> Enum.reject(&is_nil/1)
+      |> Enum.join("")
+
+    with {:ok, bucket} <- Application.fetch_env(:skate, :s3_bucket),
+         {:ok, _} <-
+           ExAws.request(
+             ExAws.S3.put_object(bucket, "detours/#{status}.ndjson", serialized),
+             # pass overrides to allow mocking aws during unit tests
+             Application.get_env(:ex_aws, :request_config_overrides, %{})
+           ) do
+      {:ok, length(converted)}
+    else
+      # missing required configuration value for s3 bucket
+      :error -> {:error, :missing_s3_bucket}
+      # aws s3 operation failed
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc """
+  Convert a detour into a map.
+  """
+  @spec convert!(Detour.t()) :: map()
+  def convert!(%Detour{} = detour) do
+    map =
+      %{}
+      # add common attributes
+      |> Map.merge(%{
+        id: detour.id,
+        route_id: detour.route_id,
+        direction_id: get_in(detour.state, ["context", "routePattern", "directionId"]),
+        reason: detour.reason,
+        nearest_intersection: detour.nearest_intersection,
+        estimated_duration: detour.estimated_duration
+      })
+      # add timestamp attributes
+      |> Map.merge(
+        for attribute <- [:activated_at, :updated_at], into: %{} do
+          timestamp =
+            detour
+            |> Map.fetch!(attribute)
+            |> DateTime.from_naive!("Etc/UTC")
+            |> DateTime.to_unix()
+
+          {attribute, timestamp}
+        end
+      )
+
+    # add remaining attributes in separate clauses
+    convert!(detour, map)
+  end
+
+  @doc false
+  @spec convert!(Detour.t(), map()) :: map()
+  def convert!(detour, map)
+
+  def convert!(%Detour{is_text_only: true} = detour, map) do
+    Map.merge(
+      map,
+      %{
+        missed_stops_text_only: get_in(detour.state, ["context", "typedDetour", "missedStops"]),
+        connection_points_text_only:
+          get_in(detour.state, ["context", "typedDetour", "connectionPoints"])
+      }
+    )
+  end
+
+  def convert!(%Detour{is_text_only: false} = detour, map) do
+    Map.merge(
+      map,
+      %{
+        missed_stops:
+          case get_in(detour.state, ["context", "finishedDetour", "missedStops"]) do
+            missed_stops when is_list(missed_stops) ->
+              for %{} = missed_stop <- missed_stops do
+                get_in(missed_stop, ["id"])
+              end
+              |> Enum.reject(&is_nil/1)
+
+            _ ->
+              Logger.warning("detour #{detour.id} has invalid missed stops")
+
+              raise ArgumentError
+          end,
+        connection_points:
+          case get_in(detour.state, ["context", "finishedDetour", "connectionPoint"]) do
+            connection_points when is_map(connection_points) ->
+              for point <- ["start", "end"] do
+                get_in(connection_points, [point, "id"])
+              end
+              |> Enum.reject(&is_nil/1)
+
+            _ ->
+              Logger.warning("detour #{detour.id} has invalid connection points")
+
+              raise ArgumentError
+          end,
+        route_segments: %{
+          before_detour:
+            get_in(
+              detour.state,
+              ["context", "finishedDetour", "routeSegments", "beforeDetour"]
+            ),
+          after_detour:
+            get_in(
+              detour.state,
+              ["context", "finishedDetour", "routeSegments", "afterDetour"]
+            ),
+          bypassed_segment:
+            get_in(
+              detour.state,
+              ["context", "finishedDetour", "detourShape", "coordinates"]
+            ),
+          detour_segment:
+            get_in(
+              detour.state,
+              ["context", "finishedDetour", "routeSegments", "detour"]
+            )
+        }
+      }
+    )
+  end
+
+  defmodule Telemetry do
+    @moduledoc """
+    Provides methods for configuring telemetry.
+    """
+
+    @default_handler_id "skate.detours.s3_exporter"
+    @default_handler_config []
+
+    @doc """
+    Attach a handler that subscribes to the Oban job start, stop, and exception events.
+    """
+    def attach_handler(id \\ @default_handler_id, config \\ @default_handler_config) do
+      # https://oban.hexdocs.pm/Oban.Telemetry.html#module-job-events
+      events =
+        for event <- [:start, :stop, :exception] do
+          [:oban, :job, event]
+        end
+
+      :telemetry.attach_many(id, events, &handle_event/4, config)
+    end
+
+    @doc false
+    @spec handle_event(
+            :telemetry.event_name(),
+            :telemetry.event_measurements(),
+            :telemetry.event_metadata(),
+            :telemetry.handler_config()
+          ) :: any()
+    def handle_event(_name, _measurements, _metadata, _config)
+
+    def handle_event(
+          [:oban, :job, :start],
+          %{system_time: system_time} = _measurements,
+          %{
+            worker: "Skate.Detours.S3Exporter",
+            args: %{
+              "filter" => filter,
+              "reason" => reason
+            }
+          } = _metadata,
+          _config
+        ) do
+      Logger.info(
+        "detour s3 export job: " <>
+          "started at #{system_time} " <>
+          "because #{reason} " <>
+          "with filter #{inspect(filter)}"
+      )
+    end
+
+    def handle_event(
+          [:oban, :job, :stop],
+          %{duration: duration} = _measurements,
+          %{
+            worker: "Skate.Detours.S3Exporter",
+            args: %{"filter" => filter},
+            result: {:ok, count}
+          } = _metadata,
+          _config
+        ) do
+      Logger.info(
+        "detour s3 export job: " <>
+          "completed in #{duration} ms " <>
+          "and exported #{count} detours " <>
+          "with filter #{inspect(filter)}"
+      )
+    end
+
+    def handle_event(
+          [:oban, :job, :exception],
+          %{duration: duration} = _measurements,
+          %{
+            worker: "Skate.Detours.S3Exporter",
+            reason: reason
+          } = _metadata,
+          _config
+        ) do
+      Logger.error(
+        "detour s3 export job: " <>
+          "failed in #{duration} ms " <>
+          "with reason message '#{reason.message}'"
+      )
+    end
+
+    def handle_event(_, _, _, _), do: nil
+  end
+end
