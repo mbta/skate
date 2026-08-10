@@ -47,7 +47,7 @@ defmodule Helpers do
   end
 
   @doc """
-  Run any given function `fun` again up to `n` times on {:error, _}
+  Retry the function `fun` up to `n` times when `fun` returns `{:error, _}`
 
   iex> fun = fn ->
   ...>   case Process.get(:retry_n, 0) do
