@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { DetoursTable, DetourStatus } from "./detoursTable"
+import { PaginationBar } from "./nav/paginationBar"
 import userInTestGroup, { TestGroups } from "../userInTestGroup"
 import { Button, Spinner } from "react-bootstrap"
 import {
@@ -7,12 +8,14 @@ import {
   LockFill,
   PeopleFill,
   PlusSquare,
-  SvgProps,
 } from "../helpers/bsIcons"
+import type { SvgProps } from "../helpers/bsIcons"
 import RoutesContext from "../contexts/routesContext"
 import { DetourModal } from "./detours/detourModal"
 import { joinClasses } from "../helpers/dom"
 import { useLoadDetour } from "../hooks/useLoadDetour"
+import type { DetoursPagination } from "../models/detoursPaginationData"
+import { buildPaginationItems } from "../models/detoursPaginationData"
 import {
   useActiveDetours,
   useDraftDetours,
@@ -33,10 +36,29 @@ export const DetourListPage = () => {
 
   // Wait for the detour channels to initialize
   const { socket } = useContext(SocketContext)
+  const [pageNumber, setPageNumber] = useState(1)
+  const [detoursPagination, setDetoursPagination] = useState<
+    DetoursPagination | undefined
+  >()
+  // Set arbitrarily high to see all detours (without pagination) until the next PR
+  // turns on pagination to a reasonable page limit.
+  const currentLimit = 10000
+
+  // For pagination, reset the page number to 1 when the routeId changes
+  useEffect(() => {
+    setPageNumber(1)
+    setDetoursPagination(undefined)
+  }, [routeId])
 
   const activeDetoursMap = useActiveDetours(socket)
   const draftDetoursMap = useDraftDetours(socket)
-  const pastDetoursMap = usePastDetours({ socket: socket, routeId: routeId })
+  const pastDetoursMap = usePastDetours({
+    socket: socket,
+    routeId: routeId,
+    limit: currentLimit,
+    pageNumber: pageNumber,
+    onPaginate: setDetoursPagination,
+  })
 
   const activeDetours =
     activeDetoursMap &&
@@ -47,6 +69,17 @@ export const DetourListPage = () => {
   const pastDetours =
     pastDetoursMap &&
     Object.values(pastDetoursMap).sort((a, b) => b.updatedAt - a.updatedAt)
+
+  const totalPages = detoursPagination?.totalPages
+  const pageItems =
+    totalPages !== undefined
+      ? buildPaginationItems(pageNumber, totalPages)
+      : [pageNumber]
+  const canGoNext =
+    totalPages !== undefined
+      ? pageNumber < totalPages
+      : Boolean(pastDetours && pastDetours.length >= currentLimit)
+
   // --- End of detour channel initialization
 
   const { detour, isLoading: isLoadingDetour } = useLoadDetour(detourId)
@@ -129,6 +162,16 @@ export const DetourListPage = () => {
                 setRouteId={setRouteId}
                 routes={routes}
                 classNames={["u-hide-for-mobile"]}
+              />
+              <PaginationBar
+                pageNumber={pageNumber}
+                pageItems={pageItems}
+                canGoNext={canGoNext}
+                onPrevious={() =>
+                  setPageNumber((page) => Math.max(1, page - 1))
+                }
+                onNext={() => setPageNumber((page) => page + 1)}
+                onSelectPage={setPageNumber}
               />
             </>
           )}

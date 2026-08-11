@@ -25,6 +25,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
   const detourInput =
     "snapshot" in useDetourProps
       ? {
+          input: {},
           snapshot: useDetourProps.snapshot,
           // XState ignores `input` when `snapshot` is provided, but the type requires it
           input: undefined as unknown as CreateDetourMachineInput,
