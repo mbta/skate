@@ -22,21 +22,16 @@ export type UseDetourInput =
     }
 
 export const useDetour = (useDetourProps: UseDetourInput) => {
-  const detourInput =
+  const input =
     "snapshot" in useDetourProps
       ? {
           input: {},
           snapshot: useDetourProps.snapshot,
-          // XState ignores `input` when `snapshot` is provided, but the type requires it
-          input: undefined as unknown as CreateDetourMachineInput,
         }
       : {
           input: useDetourProps.originalRoute,
         }
-  const [snapshot, send, actorRef] = useMachine(
-    createDetourMachine,
-    detourInput
-  )
+  const [snapshot, send, actorRef] = useMachine(createDetourMachine, input)
 
   // Record snapshots when changed
   useEffect(() => {
