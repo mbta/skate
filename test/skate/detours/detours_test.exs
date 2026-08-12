@@ -161,6 +161,90 @@ defmodule Skate.Detours.DetoursTest do
     end
   end
 
+  describe "detour list filtering" do
+    test "filters past detours by route, intersection, reason, and updated_at dates" do
+      :detour
+      |> build(reason: "Construction")
+      |> deactivated()
+      |> with_id(101)
+      |> with_route(%{name: "66", id: "66"})
+      |> with_nearest_intersection("Main St & 1st Ave")
+      |> with_updated_at(~U[2026-08-01 14:00:00Z])
+      |> insert()
+
+      :detour
+      |> build(reason: "Parade")
+      |> deactivated()
+      |> with_id(102)
+      |> with_route(%{name: "66", id: "66"})
+      |> with_nearest_intersection("Broadway & 2nd Ave")
+      |> with_updated_at(~U[2026-08-03 14:00:00Z])
+      |> insert()
+
+      :detour
+      |> build(reason: "Construction")
+      |> deactivated()
+      |> with_id(103)
+      |> with_route(%{name: "66", id: "66"})
+      |> with_nearest_intersection("Main St & 3rd Ave")
+      |> with_updated_at(~U[2026-08-05 14:00:00Z])
+      |> insert()
+
+      :detour
+      |> build(reason: "Construction")
+      |> activated()
+      |> with_id(104)
+      |> with_route(%{name: "66", id: "66"})
+      |> with_nearest_intersection("Main St & 4th Ave")
+      |> with_updated_at(~U[2026-08-01 14:00:00Z])
+      |> insert()
+
+      filters = %{
+        intersection: "Main",
+        reason: "Construction",
+        updated_at: [~D[2026-08-01], ~D[2026-08-03]]
+      }
+
+      detours = Detours.detours_for_route("66", :past, nil, nil, filters)
+
+      assert Enum.map(detours, & &1.id) == [101]
+      assert Detours.count_detours_for_route("66", :past, filters) == 1
+    end
+
+    test "filters draft detours by user and intersection" do
+      author = insert(:user)
+      other_author = insert(:user)
+
+      :detour
+      |> build(author: author)
+      |> with_id(201)
+      |> with_nearest_intersection("Main St & 1st Ave")
+      |> with_updated_at(~U[2026-08-01 12:00:00Z])
+      |> insert()
+
+      :detour
+      |> build(author: author)
+      |> with_id(202)
+      |> with_nearest_intersection("Broadway & 2nd Ave")
+      |> with_updated_at(~U[2026-08-01 12:01:00Z])
+      |> insert()
+
+      :detour
+      |> build(author: other_author)
+      |> with_id(203)
+      |> with_nearest_intersection("Main St & 3rd Ave")
+      |> with_updated_at(~U[2026-08-01 12:02:00Z])
+      |> insert()
+
+      filters = %{intersection: "Main"}
+
+      detours = Detours.detours_for_user(author.id, :draft, nil, nil, filters)
+
+      assert Enum.map(detours, & &1.id) == [201]
+      assert Detours.count_detours_for_user(author.id, :draft, filters) == 1
+    end
+  end
+
   describe "calculate_expiration_timestamp" do
     @activated_at ~U[2026-01-05 15:00:00.000000Z]
 

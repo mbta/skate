@@ -33,37 +33,43 @@ defmodule Skate.Detours.Detours do
     |> Repo.all()
   end
 
-  def detours_for_route(route_id, status, limit \\ nil, offset \\ nil)
+  def detours_for_route(route_id, status, limit \\ nil, offset \\ nil, filters \\ %{})
 
-  def detours_for_route("all", status, limit, offset) do
+  def detours_for_route("all", status, limit, offset, filters) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
+    |> apply_filters(filters)
     |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
   end
 
-  def detours_for_route(route_id, status, limit, offset) do
+  def detours_for_route(route_id, status, limit, offset, filters) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
     |> apply_route_id_filter(route_id)
+    |> apply_filters(filters)
     |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
   end
 
-  def count_detours_for_route("all", status) do
+  def count_detours_for_route(route_id, status, filters \\ %{})
+
+  def count_detours_for_route("all", status, filters) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
+    |> apply_filters(filters)
     |> Repo.aggregate(:count, :id)
   end
 
-  def count_detours_for_route(route_id, status) do
+  def count_detours_for_route(route_id, status, filters) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_status_filter(status)
     |> apply_route_id_filter(route_id)
+    |> apply_filters(filters)
     |> Repo.aggregate(:count, :id)
   end
 
@@ -73,6 +79,33 @@ defmodule Skate.Detours.Detours do
 
   defp apply_route_id_filter(query, route_id) do
     where(query, [detour: d], d.route_id == ^route_id)
+  end
+
+  defp apply_filters(query, filters) when is_map(filters) do
+    query
+    |> apply_intersection_filter(Map.get(filters, :intersection))
+    |> apply_reason_filter(Map.get(filters, :reason))
+    |> apply_updated_at_filter(Map.get(filters, :updated_at))
+  end
+
+  defp apply_filters(query, _), do: query
+
+  defp apply_intersection_filter(query, nil), do: query
+  defp apply_intersection_filter(query, ""), do: query
+
+  defp apply_intersection_filter(query, text) do
+    where(query, [detour: d], ilike(d.nearest_intersection, ^"%#{text}%"))
+  end
+
+  defp apply_reason_filter(query, nil), do: query
+  defp apply_reason_filter(query, ""), do: query
+  defp apply_reason_filter(query, reason), do: where(query, [detour: d], d.reason == ^reason)
+
+  defp apply_updated_at_filter(query, nil), do: query
+  defp apply_updated_at_filter(query, []), do: query
+
+  defp apply_updated_at_filter(query, dates) when is_list(dates) do
+    where(query, [detour: d], fragment("?::date", d.updated_at) in ^dates)
   end
 
   # Fetches a certain range of detours, determined by limit and offset
@@ -92,18 +125,20 @@ defmodule Skate.Detours.Detours do
     |> limit(^limit)
   end
 
-  def detours_for_user(user_id, status, limit \\ nil, offset \\ nil) do
+  def detours_for_user(user_id, status, limit \\ nil, offset \\ nil, filters \\ %{}) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_user_and_status_filter(user_id, status)
+    |> apply_filters(filters)
     |> apply_pagination(limit, offset)
     |> Repo.all()
     |> Enum.map(&db_detour_to_detour/1)
     |> Enum.reject(&is_nil/1)
   end
 
-  def count_detours_for_user(user_id, status) do
+  def count_detours_for_user(user_id, status, filters \\ %{}) do
     Skate.Detours.Db.Detour.Queries.select_detour_list_info()
     |> apply_user_and_status_filter(user_id, status)
+    |> apply_filters(filters)
     |> Repo.aggregate(:count, :id)
   end
 
