@@ -45,4 +45,29 @@ defmodule Helpers do
     |> Enum.filter(fn {_, v} -> f.(v) end)
     |> Map.new()
   end
+
+  @doc """
+  Retry the function `fun` up to `n` times when `fun` returns `{:error, _}`
+
+  iex> fun = fn ->
+  ...>   case Process.get(:retry_n, 0) do
+  ...>     0 ->
+  ...>       Process.put(:retry_n, 1)
+  ...>       {:error, :interrupt}
+  ...>
+  ...>     1 ->
+  ...>       :ok
+  ...>   end
+  ...> end
+  ...>
+  ...> Helpers.retry(fun, 2)
+  """
+  def retry(fun, n) when n > 0 do
+    case fun.() do
+      {:error, _} -> retry(fun, n - 1)
+      response -> response
+    end
+  end
+
+  def retry(fun, 0), do: fun.()
 end
