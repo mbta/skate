@@ -51,7 +51,6 @@ const columnCount = (status: DetourStatus) => {
   return count
 }
 
-
 export const timestampLabelFromStatus = (status: DetourStatus) => {
   switch (status) {
     case DetourStatus.Draft:
@@ -80,7 +79,10 @@ export const DetoursTable = ({
   const hasFilters = routes && status === DetourStatus.Closed
 
   const intersectionFilter = detoursFilter.intersection || ""
-  const dates = detoursFilter.updatedAt || new Array<Date>()
+  const dates = useMemo(
+    () => detoursFilter.updatedAt || ([] as Date[]),
+    [detoursFilter.updatedAt]
+  )
   const reason = detoursFilter.reason || "all"
 
   const normalizeAndSetFilter = (nextFilter: DetoursFilter) => {

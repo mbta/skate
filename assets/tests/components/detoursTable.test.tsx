@@ -17,9 +17,7 @@ jest.mock("../../src/components/dateTimePicker", () => ({
   }) => (
     <button
       aria-label="Mock date picker"
-      onClick={() =>
-        options.onChange?.([GLOBAL_DATE])
-      }
+      onClick={() => options.onChange?.([GLOBAL_DATE])}
     >
       Pick date
     </button>
@@ -142,7 +140,9 @@ describe("DetoursTable - Closed", () => {
 
     renderClosedTable({ detoursFilter: filter, setDetoursFilter: jest.fn() })
 
-    const intersectionInput = screen.getByLabelText<HTMLInputElement>("Starting intersection")!
+    const intersectionInput = screen.getByLabelText<HTMLInputElement>(
+      "Starting intersection"
+    )!
     const reasonSelect = screen.getByLabelText("Reason") as HTMLSelectElement
 
     expect(intersectionInput.value).toBe("Main St")
