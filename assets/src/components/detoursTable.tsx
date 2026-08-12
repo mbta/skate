@@ -81,7 +81,7 @@ export const DetoursTable = ({
   const hasFilters = routes && status === DetourStatus.Closed
 
   const intersectionFilter = detoursFilter.intersection || ""
-  const dates = detoursFilter.updatedAt || EMPTY_DATES
+  const dates = detoursFilter.updatedAt || new Array<Date>()
   const reason = detoursFilter.reason || "all"
 
   const normalizeAndSetFilter = (nextFilter: DetoursFilter) => {

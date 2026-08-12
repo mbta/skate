@@ -173,9 +173,7 @@ describe("DetoursTable - Closed status with lifted filter", () => {
       />
     )
 
-    const intersectionInput = screen.getByLabelText(
-      "Starting intersection"
-    ) as HTMLInputElement
+    const intersectionInput = screen.getByLabelText<HTMLInputElement>("Starting intersection")!
     const reasonSelect = screen.getByLabelText("Reason") as HTMLSelectElement
 
     expect(intersectionInput.value).toBe("Main St")
