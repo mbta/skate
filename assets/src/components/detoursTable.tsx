@@ -51,7 +51,6 @@ const columnCount = (status: DetourStatus) => {
   return count
 }
 
-const EMPTY_DATES: Date[] = []
 
 export const timestampLabelFromStatus = (status: DetourStatus) => {
   switch (status) {

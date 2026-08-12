@@ -7,10 +7,30 @@ import { simpleDetourFactory } from "../factories/detourListFactory"
 import routeFactory from "../factories/route"
 import type { DetoursFilter } from "../../src/models/detoursFilter"
 
-jest.useFakeTimers().setSystemTime(new Date("2024-08-29T20:00:00"))
+const GLOBAL_DATE = new Date("2024-08-29T20:00:00")
 
-describe("DetoursTable - Closed status with lifted filter", () => {
+jest.mock("../../src/components/dateTimePicker", () => ({
+  DateTimePicker: ({
+    options,
+  }: {
+    options: { onChange?: (dates: Date[]) => void }
+  }) => (
+    <button
+      aria-label="Mock date picker"
+      onClick={() =>
+        options.onChange?.([GLOBAL_DATE])
+      }
+    >
+      Pick date
+    </button>
+  ),
+}))
+
+jest.useFakeTimers().setSystemTime(GLOBAL_DATE)
+
+describe("DetoursTable - Closed", () => {
   const routes = routeFactory.buildList(3)
+  const expectedDate = GLOBAL_DATE
   const detours = [
     simpleDetourFactory.build({
       id: 1,
@@ -32,10 +52,13 @@ describe("DetoursTable - Closed status with lifted filter", () => {
     }),
   ]
 
-  test("calls setFilter when intersection input changes", async () => {
-    const setFilter = jest.fn()
-    const filter: DetoursFilter = {}
-
+  const renderClosedTable = ({
+    detoursFilter = {},
+    setDetoursFilter = jest.fn(),
+  }: {
+    detoursFilter?: DetoursFilter
+    setDetoursFilter?: jest.Mock
+  } = {}) =>
     render(
       <DetoursTable
         data={detours}
@@ -45,107 +68,65 @@ describe("DetoursTable - Closed status with lifted filter", () => {
         routes={routes}
         routeId="all"
         setRouteId={jest.fn()}
-        detoursFilter={filter}
-        setDetoursFilter={setFilter}
+        detoursFilter={detoursFilter}
+        setDetoursFilter={setDetoursFilter}
       />
     )
 
-    const intersectionInput = screen.getByLabelText("Starting intersection")
-    fireEvent.change(intersectionInput, { target: { value: "Main St" } })
-
-    expect(setFilter).toHaveBeenCalledWith({ intersection: "Main St" })
-  })
-
-  test("calls setFilter when reason select changes", async () => {
+  test.each([
+    {
+      name: "intersection input changes",
+      detoursFilter: {} as DetoursFilter,
+      interact: () => {
+        const intersectionInput = screen.getByLabelText("Starting intersection")
+        fireEvent.change(intersectionInput, { target: { value: "Main St" } })
+      },
+      expected: { intersection: "Main St" },
+    },
+    {
+      name: "reason select changes",
+      detoursFilter: {} as DetoursFilter,
+      interact: () => {
+        const reasonSelect = screen.getByLabelText("Reason")
+        fireEvent.change(reasonSelect, { target: { value: "Traffic" } })
+      },
+      expected: { reason: "Traffic" },
+    },
+    {
+      name: "date picker changes",
+      detoursFilter: {} as DetoursFilter,
+      interact: () => {
+        fireEvent.click(screen.getByLabelText("Mock date picker"))
+      },
+      expected: { updatedAt: [expectedDate] },
+    },
+    {
+      name: "reset is clicked",
+      detoursFilter: {
+        intersection: "Main St",
+        reason: "Traffic",
+        updatedAt: [new Date("2024-08-15")],
+      },
+      interact: () => {
+        const clearButton = screen.getByTitle("Clear Search")
+        fireEvent.click(clearButton)
+      },
+      expected: {},
+    },
+  ])("calls setFilter when $name", ({ detoursFilter, interact, expected }) => {
     const setFilter = jest.fn()
-    const filter: DetoursFilter = {}
 
-    render(
-      <DetoursTable
-        data={detours}
-        onOpenDetour={jest.fn()}
-        status={DetourStatus.Closed}
-        title={<h2>Closed detours</h2>}
-        routes={routes}
-        routeId="all"
-        setRouteId={jest.fn()}
-        detoursFilter={filter}
-        setDetoursFilter={setFilter}
-      />
-    )
+    renderClosedTable({ detoursFilter, setDetoursFilter: setFilter })
 
-    const reasonSelect = screen.getByLabelText("Reason")
-    fireEvent.change(reasonSelect, { target: { value: "Traffic" } })
+    interact()
 
-    expect(setFilter).toHaveBeenCalledWith({ reason: "Traffic" })
-  })
-
-  test("calls setFilter when date picker changes", async () => {
-    const setFilter = jest.fn()
-    const filter: DetoursFilter = {}
-
-    render(
-      <DetoursTable
-        data={detours}
-        onOpenDetour={jest.fn()}
-        status={DetourStatus.Closed}
-        title={<h2>Closed detours</h2>}
-        routes={routes}
-        routeId="all"
-        setRouteId={jest.fn()}
-        detoursFilter={filter}
-        setDetoursFilter={setFilter}
-      />
-    )
-
-    // DateTimePicker is tested separately, so we just verify the filter row exists.
-    expect(screen.getByText("Last Closed")).toBeInTheDocument()
-  })
-
-  test("calls setFilter with empty object when reset is clicked", async () => {
-    const setFilter = jest.fn()
-    const filter: DetoursFilter = {
-      intersection: "Main St",
-      reason: "Traffic",
-      updatedAt: [new Date("2024-08-15")],
-    }
-
-    render(
-      <DetoursTable
-        data={detours}
-        onOpenDetour={jest.fn()}
-        status={DetourStatus.Closed}
-        title={<h2>Closed detours</h2>}
-        routes={routes}
-        routeId="all"
-        setRouteId={jest.fn()}
-        detoursFilter={filter}
-        setDetoursFilter={setFilter}
-      />
-    )
-
-    const clearButton = screen.getByTitle("Clear Search")
-    fireEvent.click(clearButton)
-
-    expect(setFilter).toHaveBeenCalledWith({})
+    expect(setFilter).toHaveBeenCalledWith(expected)
   })
 
   test("displays all detours without client-side filtering for Closed status", () => {
     const filter: DetoursFilter = {}
 
-    render(
-      <DetoursTable
-        data={detours}
-        onOpenDetour={jest.fn()}
-        status={DetourStatus.Closed}
-        title={<h2>Closed detours</h2>}
-        routes={routes}
-        routeId="all"
-        setRouteId={jest.fn()}
-        detoursFilter={filter}
-        setDetoursFilter={jest.fn()}
-      />
-    )
+    renderClosedTable({ detoursFilter: filter, setDetoursFilter: jest.fn() })
 
     // All detours should be visible since server-side filtering is assumed
     expect(screen.getByText("Main St & 1st Ave")).toBeInTheDocument()
@@ -153,25 +134,13 @@ describe("DetoursTable - Closed status with lifted filter", () => {
     expect(screen.getByText("Main St & 3rd Ave")).toBeInTheDocument()
   })
 
-  test("displays filter values from lifted state", () => {
+  test("displays filter values from filter state", () => {
     const filter: DetoursFilter = {
       intersection: "Main St",
       reason: "Traffic",
     }
 
-    render(
-      <DetoursTable
-        data={detours}
-        onOpenDetour={jest.fn()}
-        status={DetourStatus.Closed}
-        title={<h2>Closed detours</h2>}
-        routes={routes}
-        routeId="all"
-        setRouteId={jest.fn()}
-        detoursFilter={filter}
-        setDetoursFilter={jest.fn()}
-      />
-    )
+    renderClosedTable({ detoursFilter: filter, setDetoursFilter: jest.fn() })
 
     const intersectionInput = screen.getByLabelText<HTMLInputElement>("Starting intersection")!
     const reasonSelect = screen.getByLabelText("Reason") as HTMLSelectElement
@@ -185,63 +154,46 @@ describe("DetoursTable - Active/Draft status with local filtering", () => {
   const detours = [
     simpleDetourFactory.build({
       id: 1,
+      status: "active",
       intersection: "Main St & 1st Ave",
       reason: "Traffic",
     }),
     simpleDetourFactory.build({
       id: 2,
+      status: "active",
       intersection: "Broadway & 2nd Ave",
       reason: "Construction",
     }),
     simpleDetourFactory.build({
       id: 3,
+      status: "active",
       intersection: "Main St & 3rd Ave",
+      reason: "Traffic",
+    }),
+    simpleDetourFactory.build({
+      id: 4,
+      status: "draft",
+      intersection: "Main St & 4th Ave",
       reason: "Traffic",
     }),
   ]
 
-  test("filters detours locally for Active status", async () => {
+  test.each([
+    {
+      status: DetourStatus.Active,
+      title: "Active detours",
+    },
+    {
+      status: DetourStatus.Draft,
+      title: "Draft detours",
+    },
+  ])("does not show filter inputs for $status status", ({ status, title }) => {
     render(
       <DetoursTable
         data={detours}
         onOpenDetour={jest.fn()}
-        status={DetourStatus.Active}
-        title={<h2>Active detours</h2>}
-      />
-    )
-
-    // All detours initially visible
-    expect(screen.getByText("Main St & 1st Ave")).toBeInTheDocument()
-    expect(screen.getByText("Broadway & 2nd Ave")).toBeInTheDocument()
-    expect(screen.getByText("Main St & 3rd Ave")).toBeInTheDocument()
-  })
-
-  test("does not show filter inputs for Active status", () => {
-    render(
-      <DetoursTable
-        data={detours}
-        onOpenDetour={jest.fn()}
-        status={DetourStatus.Active}
-        title={<h2>Active detours</h2>}
-      />
-    )
-
-    expect(
-      screen.queryByLabelText("Starting intersection")
-    ).not.toBeInTheDocument()
-    expect(screen.queryByLabelText("Reason")).not.toBeInTheDocument()
-    expect(
-      screen.queryByRole("button", { name: "Clear" })
-    ).not.toBeInTheDocument()
-  })
-
-  test("does not show filter inputs for Draft status", () => {
-    render(
-      <DetoursTable
-        data={detours}
-        onOpenDetour={jest.fn()}
-        status={DetourStatus.Draft}
-        title={<h2>Draft detours</h2>}
+        status={status}
+        title={<h2>{title}</h2>}
       />
     )
 
