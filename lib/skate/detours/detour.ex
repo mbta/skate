@@ -225,6 +225,7 @@ defmodule Skate.Detours.Detour do
       :route_segments
     ]
 
+    @spec from!(Detour.t()) :: t()
     def from!(%Detour{is_text_only: true} = detour) do
       %{
         base_report(detour)
@@ -251,7 +252,7 @@ defmodule Skate.Detours.Detour do
         reason: detour.reason,
         nearest_intersection: detour.nearest_intersection,
         estimated_duration: detour.estimated_duration,
-        activated_at: naive_to_unix!(detour.activated_at),
+        activated_at: detour.activated_at,
         updated_at: naive_to_unix!(detour.updated_at)
       }
     end
