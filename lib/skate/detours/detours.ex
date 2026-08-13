@@ -431,9 +431,18 @@ defmodule Skate.Detours.Detours do
       end
 
     if is_binary(reason) do
-      %{filter: %{"status" => "active"}, reason: reason}
-      |> S3Exporter.new()
-      |> Oban.insert()
+      case Application.fetch_env(:skate, :s3_bucket) do
+        {:ok, s3_bucket} ->
+          %{
+            reason: reason,
+            filter: %{"status" => "active"},
+            bucket: s3_bucket,
+          }
+          |> S3Exporter.new()
+          |> Oban.insert()
+        :error ->
+          {:ok, nil}
+      end
     else
       {:ok, nil}
     end

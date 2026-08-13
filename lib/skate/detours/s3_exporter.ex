@@ -13,25 +13,26 @@ defmodule Skate.Detours.S3Exporter do
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: args} = _) do
-    case Map.fetch(args, "filter") do
-      {:ok, %{"status" => status} = filter} ->
+    with {:ok, %{"status" => status} = filter} <- Map.fetch(args, "filter"),
+      {:ok, bucket} when is_binary(bucket) <- Map.fetch(args, "bucket") do
         # Hack b/c Oban serializes everything to strings, but Ecto stores enums as atoms
         if status in Enum.map(Ecto.Enum.values(Detour, :status), &to_string/1) do
-          export(filter)
+          export(filter, bucket)
         else
-          {:error, :invalid_filter_value_detour_status}
+          {:error, :invalid_job_arg_filter_value_detour_status}
         end
-
-      {:ok, _} ->
-        {:error, :invalid_filter}
-
-      :error ->
-        {:error, :missing_argument_filter}
-    end
+      else
+        _ ->
+          {:error, :invalid_job_args}
+      end
   end
 
-  @spec export(map(), keyword()) :: {:ok, integer()} | {:error, any()}
-  def export(%{"status" => status} = _, order_by \\ [desc: :updated_at]) do
+  def perform(%Oban.Job{} = _job) do
+    {:error, :missing_job_args}
+  end
+
+  @spec export(map(), binary(), keyword()) :: {:ok, integer()} | {:error, any()}
+  def export(%{"status" => status} = _, bucket, order_by \\ [desc: :updated_at]) do
     selected =
       Detour
       |> Ecto.Query.where(status: ^status)
@@ -61,18 +62,12 @@ defmodule Skate.Detours.S3Exporter do
       |> Enum.reject(&is_nil/1)
       |> Enum.join("")
 
-    with {:ok, bucket} <- Application.fetch_env(:skate, :s3_bucket),
-         {:ok, _} <-
-           ExAws.request(
-             ExAws.S3.put_object(bucket, "detours/#{status}.ndjson", serialized),
-             # pass overrides to allow mocking aws during unit tests
-             Application.get_env(:ex_aws, :request_config_overrides, %{})
-           ) do
-      {:ok, length(converted)}
-    else
-      # missing required configuration value for s3 bucket
-      :error -> {:error, :missing_s3_bucket}
-      # aws s3 operation failed
+    case ExAws.request(
+        ExAws.S3.put_object(bucket, "detours/#{status}.ndjson", serialized),
+        # pass overrides to allow mocking aws during unit tests
+        Application.get_env(:ex_aws, :request_config_overrides, %{})
+      ) do
+      {:ok, _} -> {:ok, length(converted)}
       {:error, reason} -> {:error, reason}
     end
   end
