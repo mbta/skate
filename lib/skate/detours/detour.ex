@@ -252,7 +252,7 @@ defmodule Skate.Detours.Detour do
         reason: detour.reason,
         nearest_intersection: detour.nearest_intersection,
         estimated_duration: detour.estimated_duration,
-        activated_at: detour.activated_at,
+        activated_at: DateTime.to_unix(detour.activated_at),
         updated_at: naive_to_unix!(detour.updated_at)
       }
     end
