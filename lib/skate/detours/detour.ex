@@ -225,7 +225,6 @@ defmodule Skate.Detours.Detour do
       :route_segments
     ]
 
-    @spec from!(Detour.t()) :: t()
     def from!(%Detour{is_text_only: true} = detour) do
       %{
         base_report(detour)
