@@ -436,10 +436,11 @@ defmodule Skate.Detours.Detours do
           %{
             reason: reason,
             filter: %{"status" => "active"},
-            bucket: s3_bucket,
+            bucket: s3_bucket
           }
           |> S3Exporter.new()
           |> Oban.insert()
+
         :error ->
           {:ok, nil}
       end
