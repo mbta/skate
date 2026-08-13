@@ -148,10 +148,18 @@ defmodule Skate.Detours.S3ExporterTest do
         insert(%{
           detour
           | state:
-              put_in(
-                detour.state,
+              detour.state
+              |> put_in(
                 ["context", "finishedDetour", "connectionPoint"],
                 %{start: %{id: 1}, end: %{id: 2}}
+              )
+              |> put_in(
+                ["context", "finishedDetour", "routeSegments"],
+                %{"beforeDetour" => [], "afterDetour" => [], "detour" => []}
+              )
+              |> put_in(
+                ["context", "finishedDetour", "detourShape"],
+                %{"coordinates" => []}
               )
         })
       end
@@ -170,6 +178,7 @@ defmodule Skate.Detours.S3ExporterTest do
                  Skate.Detours.S3Exporter,
                  %{
                    filter: %{"status" => :active},
+                   bucket: "test-bucket",
                    reason: "testing"
                  }
                )
