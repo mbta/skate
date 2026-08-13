@@ -841,9 +841,19 @@ export const createDetourMachine = setup({
             },
             Deleting: {
               on: {
-                "detour.delete.delete-modal.cancel": {
-                  target: "Place Waypoint",
-                },
+                "detour.delete.delete-modal.cancel": [
+                  {
+                    target: "Pick Start Point",
+                    guard: ({ context: { startPoint } }) => !startPoint,
+                  },
+                  {
+                    target: "Place Waypoint",
+                    guard: ({ context: { endPoint } }) => !endPoint,
+                  },
+                  {
+                    target: "Finished Drawing",
+                  },
+                ],
                 "detour.delete.delete-modal.delete-draft": {
                   tags: "no-save",
                   target: "#Deleted",
