@@ -10,21 +10,22 @@ defmodule Skate.Detours.S3Exporter do
   require Ecto.Query
 
   alias Skate.Detours.Db.Detour
+  alias Skate.Detours.Detour.Report
 
   @impl Oban.Worker
   def perform(%Oban.Job{args: args} = _) do
     with {:ok, %{"status" => status} = filter} <- Map.fetch(args, "filter"),
-      {:ok, bucket} when is_binary(bucket) <- Map.fetch(args, "bucket") do
-        # Hack b/c Oban serializes everything to strings, but Ecto stores enums as atoms
-        if status in Enum.map(Ecto.Enum.values(Detour, :status), &to_string/1) do
-          export(filter, bucket)
-        else
-          {:error, :invalid_job_arg_filter_value_detour_status}
-        end
+         {:ok, bucket} when is_binary(bucket) <- Map.fetch(args, "bucket") do
+      # Hack b/c Oban serializes everything to strings, but Ecto stores enums as atoms
+      if status in Enum.map(Ecto.Enum.values(Detour, :status), &to_string/1) do
+        export(filter, bucket)
       else
-        _ ->
-          {:error, :invalid_job_args}
+        {:error, :invalid_job_arg_filter_value_detour_status}
       end
+    else
+      _ ->
+        {:error, :invalid_job_args}
+    end
   end
 
   def perform(%Oban.Job{} = _job) do
@@ -43,7 +44,7 @@ defmodule Skate.Detours.S3Exporter do
       selected
       |> Enum.map(fn %Detour{} = detour ->
         try do
-          convert!(detour)
+          Report.from!(detour)
         rescue
           _ -> nil
         end
@@ -63,117 +64,13 @@ defmodule Skate.Detours.S3Exporter do
       |> Enum.join("")
 
     case ExAws.request(
-        ExAws.S3.put_object(bucket, "detours/#{status}.ndjson", serialized),
-        # pass overrides to allow mocking aws during unit tests
-        Application.get_env(:ex_aws, :request_config_overrides, %{})
-      ) do
+           ExAws.S3.put_object(bucket, "detours/#{status}.ndjson", serialized),
+           # pass overrides to allow mocking aws during unit tests
+           Application.get_env(:ex_aws, :request_config_overrides, %{})
+         ) do
       {:ok, _} -> {:ok, length(converted)}
       {:error, reason} -> {:error, reason}
     end
-  end
-
-  @doc """
-  Convert a detour into a map.
-  """
-  @spec convert!(Detour.t()) :: map()
-  def convert!(%Detour{} = detour) do
-    map =
-      %{}
-      # add common attributes
-      |> Map.merge(%{
-        id: detour.id,
-        route_id: detour.route_id,
-        direction_id: get_in(detour.state, ["context", "routePattern", "directionId"]),
-        reason: detour.reason,
-        nearest_intersection: detour.nearest_intersection,
-        estimated_duration: detour.estimated_duration
-      })
-      # add timestamp attributes
-      |> Map.merge(
-        for attribute <- [:activated_at, :updated_at], into: %{} do
-          timestamp =
-            detour
-            |> Map.fetch!(attribute)
-            |> DateTime.from_naive!("Etc/UTC")
-            |> DateTime.to_unix()
-
-          {attribute, timestamp}
-        end
-      )
-
-    # add remaining attributes in separate clauses
-    convert!(detour, map)
-  end
-
-  @doc false
-  @spec convert!(Detour.t(), map()) :: map()
-  def convert!(detour, map)
-
-  def convert!(%Detour{is_text_only: true} = detour, map) do
-    Map.merge(
-      map,
-      %{
-        missed_stops_text_only: get_in(detour.state, ["context", "typedDetour", "missedStops"]),
-        connection_points_text_only:
-          get_in(detour.state, ["context", "typedDetour", "connectionPoints"])
-      }
-    )
-  end
-
-  def convert!(%Detour{is_text_only: false} = detour, map) do
-    Map.merge(
-      map,
-      %{
-        missed_stops:
-          case get_in(detour.state, ["context", "finishedDetour", "missedStops"]) do
-            missed_stops when is_list(missed_stops) ->
-              for %{} = missed_stop <- missed_stops do
-                get_in(missed_stop, ["id"])
-              end
-              |> Enum.reject(&is_nil/1)
-
-            _ ->
-              Logger.warning("detour #{detour.id} has invalid missed stops")
-
-              raise ArgumentError
-          end,
-        connection_points:
-          case get_in(detour.state, ["context", "finishedDetour", "connectionPoint"]) do
-            connection_points when is_map(connection_points) ->
-              for point <- ["start", "end"] do
-                get_in(connection_points, [point, "id"])
-              end
-              |> Enum.reject(&is_nil/1)
-
-            _ ->
-              Logger.warning("detour #{detour.id} has invalid connection points")
-
-              raise ArgumentError
-          end,
-        route_segments: %{
-          before_detour:
-            get_in(
-              detour.state,
-              ["context", "finishedDetour", "routeSegments", "beforeDetour"]
-            ),
-          after_detour:
-            get_in(
-              detour.state,
-              ["context", "finishedDetour", "routeSegments", "afterDetour"]
-            ),
-          bypassed_segment:
-            get_in(
-              detour.state,
-              ["context", "finishedDetour", "detourShape", "coordinates"]
-            ),
-          detour_segment:
-            get_in(
-              detour.state,
-              ["context", "finishedDetour", "routeSegments", "detour"]
-            )
-        }
-      }
-    )
   end
 
   defmodule Telemetry do
