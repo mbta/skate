@@ -1,6 +1,8 @@
 import Config
 
-config :skate, start_data_processes: false
+config :skate,
+  start_data_processes: false,
+  s3_bucket: "test-bucket"
 
 config :skate, Schedule.CacheFile, cache_filename: "test_cache.terms"
 
