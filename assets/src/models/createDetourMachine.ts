@@ -50,6 +50,8 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.clear-detour" }
       | { type: "detour.edit.cancel" }
       | { type: "detour.edit.cant-draw" }
+      | { type: "detour.edit.cant-draw.confirm" }
+      | { type: "detour.edit.cant-draw.cancel" }
       | { type: "detour.edit.close"; closeFunc?: () => void }
       | { type: "detour.edit.place-waypoint-on-route"; location: ShapePoint }
       | { type: "detour.edit.place-waypoint"; location: ShapePoint }
@@ -523,16 +525,23 @@ export const createDetourMachine = setup({
                 closeFunc: ({ event }) => event.closeFunc,
               }),
             },
-            "detour.edit.cant-draw": {
-              target: "Type Detour",
-              actions: [
-                "detour.clear",
-                assign({
-                  isTextOnly: true,
-                  undoStack: [],
-                }),
-              ],
-            },
+            "detour.edit.cant-draw": [
+              {
+                guard: ({ context: { startPoint } }) => !!startPoint,
+                target: ".Confirm Cant Draw",
+              },
+              {
+                guard: ({ context: { startPoint } }) => !startPoint,
+                target: "Type Detour",
+                actions: [
+                  "detour.clear",
+                  assign({
+                    isTextOnly: true,
+                    undoStack: [],
+                  }),
+                ],
+              },
+            ],
           },
           states: {
             "Pick Start Point": {
@@ -839,6 +848,29 @@ export const createDetourMachine = setup({
                   tags: "no-save",
                   target: "#Deleted",
                 },
+              },
+            },
+            "Confirm Cant Draw": {
+              on: {
+                "detour.edit.cant-draw.confirm": {
+                  target: "..Type Detour",
+                  actions: [
+                    "detour.clear",
+                    assign({
+                      isTextOnly: true,
+                      undoStack: [],
+                    }),
+                  ],
+                },
+                "detour.edit.cant-draw.cancel": [
+                  {
+                    target: "Finished Drawing",
+                    guard: ({ context: { endPoint } }) => !!endPoint,
+                  },
+                  {
+                    target: "Place Waypoint",
+                  },
+                ],
               },
             },
             Done: {
