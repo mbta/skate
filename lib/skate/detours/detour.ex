@@ -175,4 +175,140 @@ defmodule Skate.Detours.Detour do
       :updated_at
     ]
   end
+
+  defmodule Report do
+    @moduledoc """
+    Report-shaped detour for export to external services.
+    """
+
+    require Logger
+
+    alias Skate.Detours.Db.Detour
+
+    @type t :: %__MODULE__{
+            id: integer(),
+            route_id: String.t(),
+            reason: String.t(),
+            nearest_intersection: String.t() | nil,
+            estimated_duration: String.t(),
+            activated_at: integer(),
+            updated_at: integer(),
+            direction_id: integer(),
+            missed_stops: [String.t()] | nil,
+            connection_points: [String.t()] | nil,
+            missed_stops_text_only: String.t() | nil,
+            connection_points_text_only: String.t() | nil,
+            route_segments:
+              %{
+                before_detour: [map()],
+                after_detour: [map()],
+                bypassed_segment: [map()],
+                detour_segment: [map()]
+              }
+              | nil
+          }
+
+    @derive Jason.Encoder
+    defstruct [
+      :id,
+      :route_id,
+      :reason,
+      :nearest_intersection,
+      :estimated_duration,
+      :activated_at,
+      :updated_at,
+      :direction_id,
+      :missed_stops,
+      :connection_points,
+      :missed_stops_text_only,
+      :connection_points_text_only,
+      :route_segments
+    ]
+
+    @spec from!(Detour.t()) :: t()
+    def from!(%Detour{is_text_only: true} = detour) do
+      %{
+        base_report(detour)
+        | missed_stops_text_only: get_in(detour.state, ["context", "typedDetour", "missedStops"]),
+          connection_points_text_only:
+            get_in(detour.state, ["context", "typedDetour", "connectionPoints"])
+      }
+    end
+
+    def from!(%Detour{is_text_only: false} = detour) do
+      %{
+        base_report(detour)
+        | missed_stops: missed_stops!(detour),
+          connection_points: connection_points!(detour),
+          route_segments: route_segments(detour)
+      }
+    end
+
+    defp base_report(%Detour{} = detour) do
+      %__MODULE__{
+        id: detour.id,
+        route_id: detour.route_id,
+        direction_id: get_in(detour.state, ["context", "routePattern", "directionId"]),
+        reason: detour.reason,
+        nearest_intersection: detour.nearest_intersection,
+        estimated_duration: detour.estimated_duration,
+        activated_at: DateTime.to_unix(detour.activated_at),
+        updated_at: naive_to_unix!(detour.updated_at)
+      }
+    end
+
+    defp naive_to_unix!(naive_dt) do
+      naive_dt
+      |> DateTime.from_naive!("Etc/UTC")
+      |> DateTime.to_unix()
+    end
+
+    defp missed_stops!(%Detour{} = detour) do
+      case get_in(detour.state, ["context", "finishedDetour", "missedStops"]) do
+        missed_stops when is_list(missed_stops) ->
+          missed_stops
+          |> Enum.map(&get_in(&1, ["id"]))
+          |> Enum.reject(&is_nil/1)
+
+        _ ->
+          Logger.warning("detour #{detour.id} has invalid missed stops")
+          raise ArgumentError
+      end
+    end
+
+    defp connection_points!(%Detour{} = detour) do
+      case get_in(detour.state, ["context", "finishedDetour", "connectionPoint"]) do
+        connection_points when is_map(connection_points) ->
+          ["start", "end"]
+          |> Enum.map(&get_in(connection_points, [&1, "id"]))
+          |> Enum.reject(&is_nil/1)
+
+        _ ->
+          Logger.warning("detour #{detour.id} has invalid connection points")
+          raise ArgumentError
+      end
+    end
+
+    defp route_segments(%Detour{
+           state: %{
+             "context" => %{
+               "finishedDetour" => %{
+                 "routeSegments" => %{
+                   "beforeDetour" => before_detour,
+                   "afterDetour" => after_detour,
+                   "detour" => detour_segment
+                 },
+                 "detourShape" => %{"coordinates" => bypassed_segment}
+               }
+             }
+           }
+         }) do
+      %{
+        before_detour: before_detour,
+        after_detour: after_detour,
+        bypassed_segment: bypassed_segment,
+        detour_segment: detour_segment
+      }
+    end
+  end
 end
