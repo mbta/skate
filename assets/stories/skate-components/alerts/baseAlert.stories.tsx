@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import BaseAlert from "../../../src/components/alerts/baseAlert"
 
 const variants = ["primary", "secondary", "success", "danger", "warning"]

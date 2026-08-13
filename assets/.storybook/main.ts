@@ -1,4 +1,4 @@
-import { StorybookConfig } from "@storybook/react-webpack5"
+import type { StorybookConfig } from "@storybook/react-webpack5"
 
 const config: StorybookConfig = {
   stories: [
@@ -12,27 +12,43 @@ const config: StorybookConfig = {
     },
   ],
 
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-onboarding",
-    "@storybook/addon-interactions",
-    "@storybook/preset-scss",
-  ],
+  addons: ["@storybook/addon-docs"],
+
   framework: {
     name: "@storybook/react-webpack5",
     options: {},
   },
+
   docs: {
-    autodocs: true,
     defaultName: "Documentation",
   },
+
   webpackFinal(config, _) {
-    config.module?.rules?.push({
-      test: /\.svg$/,
-      type: "asset/source",
-    })
+    config.module?.rules?.push(
+      {
+        test: /\.svg$/,
+        type: "asset/source",
+      },
+      {
+        test: /\.tsx?$/,
+        use: [
+          {
+            loader: "ts-loader",
+            options: { transpileOnly: true },
+          },
+        ],
+      },
+      {
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      }
+    )
+
     return config
+  },
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript",
   },
 }
 export default config

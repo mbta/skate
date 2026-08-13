@@ -1,4 +1,4 @@
-import { Preview } from "@storybook/react"
+import { Preview } from "@storybook/react-webpack5"
 
 import "../css/app.scss"
 import "../css/storybook_app.scss"
@@ -19,7 +19,9 @@ const preview: Preview = {
       },
     },
   },
+
   decorators: [stretchParameterDecorator],
+  tags: ["autodocs"],
 }
 
 export default preview

@@ -25,6 +25,7 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
   const input =
     "snapshot" in useDetourProps
       ? {
+          input: {},
           snapshot: useDetourProps.snapshot,
         }
       : {

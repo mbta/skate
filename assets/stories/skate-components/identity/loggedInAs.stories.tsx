@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import { LoggedInAs } from "../../../src/components/loggedInAs"
 
 const meta = {

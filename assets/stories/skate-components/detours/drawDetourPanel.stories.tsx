@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 
 import { DrawDetourPanel } from "../../../src/components/detours/detourPanels/drawDetourPanel"
 import { stopFactory } from "../../../tests/factories/stop"

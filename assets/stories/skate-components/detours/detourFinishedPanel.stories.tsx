@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from "@storybook/react-webpack5"
 
 import { DetourFinishedPanel } from "../../../src/components/detours/detourPanels/detourFinishedPanel"
 import React from "react"
@@ -53,6 +53,8 @@ const meta = {
       </>
     ),
     isActiveDetour: false,
+    onNavigateBack: () => {},
+    onChangeDetourText: () => {},
   },
   // The bootstrap CSS reset is supposed to set box-sizing: border-box by
   // default, we should be able to remove this after that is added

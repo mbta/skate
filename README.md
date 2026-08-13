@@ -239,19 +239,25 @@ Use Github Actions to deploy a specific branch to [Skate-Dev-Blue](https://skate
 
 ## Production Deploys
 
-### 1. Check that dev is in a good state
+### 1. Let the team know when you're planning a release
+
+Communicate when you intend to do a release in `#skate-product` to give the team a chance to review and merge in any work they'd like to be promoted to production.
+
+If possible limit the release to midday so as to avoid rush hour, and try to not release on Fridays.
+
+### 2. Check that dev is in a good state
 
 Check [skate-dev](https://skate-dev.mbtace.com) to ensure that it's in a good state. Also check the Sentry [skate-backend](https://mbtace.sentry.io/issues/?environment=dev&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?environment=dev&project=5303927&statsPeriod=14d) projects' `dev` environments to make sure there are no surprising errors.
 
 If there are, remedy those before deploying.
 
-### 2. Check Splunk and Sentry to get a baseline for production
+### 3. Check Splunk and Sentry to get a baseline for production
 
 For Splunk, start by loading [this search](https://mbta.splunkcloud.com/en-US/app/search/search?q=search%20index%3D%22skate-prod-application%22%20%22%5Berror%5D%22%20OR%20%22%5Bexit%5D%22%20OR%20%22%5Bwarning%5D%22&display.page.search.mode=smart&dispatch.sample_ratio=1&workload_pool=&earliest=-30m%40m&latest=now), and then exclude terms related to errors or warnings that seem to happen a lot (`Geonames` is a common culprit to ignore) until you see no results. This is your baseline search query.
 
 For Sentry, check both the [skate-backend](https://mbtace.sentry.io/issues/?environment=production&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?environment=production&project=5303927&statsPeriod=14d) projects.
 
-### 3. Actually perform the deploy
+### 4. Actually perform the deploy
 
 The simplest way to deploy is as follows:
 
@@ -265,7 +271,7 @@ The simplest way to deploy is as follows:
    - Check your email for an email about a release needing approval. Click the link in that email and approve the deploy from the GitHub page that it brings you to.
 1. Watch it go! (This will take a while, so make sure you have a nice cup of coffee or beverage of your choice.)
 
-### 4. Monitor the new version
+### 5. Monitor the new version
 
 Click around in [Skate](https://skate.mbta.com) and double-check that things still look like they're working, especially any pages or components that were updated.
 

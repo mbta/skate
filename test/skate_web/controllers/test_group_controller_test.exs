@@ -218,7 +218,7 @@ defmodule SkateWeb.TestGroupControllerTest do
 
       conn =
         post(conn, ~p"/test_groups/#{test_group.id}/add_user", %{
-          "user_id" => 123
+          "user_id" => 0
         })
 
       assert response(conn, 400) =~ "no user found"
