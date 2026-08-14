@@ -85,7 +85,7 @@ describe("useChannel", () => {
   })
 
   test("returns data from the initial join", () => {
-    const parser = jest.fn(() => "parsed")
+    const parser = jest.fn((_data) => "parsed")
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: "raw" })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -105,7 +105,7 @@ describe("useChannel", () => {
   })
 
   test("returns data pushed to the channel", async () => {
-    const parser = jest.fn(() => "parsed")
+    const parser = jest.fn((_data) => "parsed")
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -356,7 +356,7 @@ describe("useChannel", () => {
   })
 
   test("returns data from the initial join with closeAfterFirstRead, leaves", () => {
-    const parser = jest.fn(() => "parsed")
+    const parser = jest.fn((_data) => "parsed")
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: "raw" })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -452,7 +452,7 @@ describe("useCheckedChannel", () => {
   })
 
   test("returns data from the initial join", () => {
-    const parser = jest.fn(() => "parsed")
+    const parser = jest.fn((_data) => "parsed")
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: "raw" })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -474,7 +474,7 @@ describe("useCheckedChannel", () => {
   })
 
   test("handles malformed data from the initial join", () => {
-    const parser = jest.fn(() => "parsed")
+    const parser = jest.fn((_data) => "parsed")
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: 12 })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -495,7 +495,7 @@ describe("useCheckedChannel", () => {
   })
 
   test("returns data pushed to the channel", async () => {
-    const parser = jest.fn(() => "parsed")
+    const parser = jest.fn((_data) => "parsed")
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -525,7 +525,7 @@ describe("useCheckedChannel", () => {
   })
 
   test("handles malformed data pushed to the channel", async () => {
-    const parser = jest.fn(() => "parsed")
+    const parser = jest.fn((_data) => "parsed")
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
@@ -795,7 +795,7 @@ describe("useCheckedChannel", () => {
   })
 
   test("returns data from the initial join with closeAfterFirstRead, leaves", () => {
-    const parser = jest.fn(() => "parsed")
+    const parser = jest.fn((_data) => "parsed")
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel("ok", { data: "raw" })
     mockSocket.channel.mockImplementationOnce(() => mockChannel)
