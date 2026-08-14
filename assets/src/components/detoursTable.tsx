@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react"
+import React, { useMemo } from "react"
 import { Table, Form, Button } from "react-bootstrap"
 import { XSquare } from "../helpers/bsIcons"
 import { RoutePill } from "./routePill"
@@ -13,6 +13,7 @@ import {
   isUpdatedAfterActivated,
 } from "../util/dateTime"
 import { SimpleDetour } from "../models/detoursList"
+import type { DetoursFilter } from "../models/detoursFilter"
 import { EmptyDetourTableIcon } from "../helpers/skateIcons"
 import { joinClasses } from "../helpers/dom"
 import { Route } from "../schedule"
@@ -30,6 +31,8 @@ interface DetoursTableProps {
   routeId?: string
   setRouteId?: (routeId: string) => void
   classNames?: string[]
+  detoursFilter?: DetoursFilter
+  setDetoursFilter?: (filter: DetoursFilter) => void
 }
 
 export enum DetourStatus {
@@ -70,38 +73,54 @@ export const DetoursTable = ({
   routeId,
   setRouteId = () => {},
   classNames = [],
+  detoursFilter = {},
+  setDetoursFilter = () => {},
 }: DetoursTableProps) => {
-  const [filter, setFilter] = useState("")
-  const [debouncedFilter, setDebouncedFilter] = useState(filter)
-  const [dates, setDates] = useState<Date[]>([])
-  const [reason, setReason] = useState<string>("all")
   const hasFilters = routes && status === DetourStatus.Closed
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedFilter(filter)
-    }, 300)
+  const intersectionFilter = detoursFilter.intersection || ""
+  const dates = useMemo(
+    () => detoursFilter.updatedAt || ([] as Date[]),
+    [detoursFilter.updatedAt]
+  )
+  const reason = detoursFilter.reason || "all"
 
-    return () => {
-      clearTimeout(handler)
+  const normalizeAndSetFilter = (nextFilter: DetoursFilter) => {
+    const normalizedFilter: DetoursFilter = {}
+
+    if (nextFilter.intersection && nextFilter.intersection !== "") {
+      normalizedFilter.intersection = nextFilter.intersection
     }
-  }, [filter])
+
+    if (nextFilter.reason && nextFilter.reason !== "all") {
+      normalizedFilter.reason = nextFilter.reason
+    }
+
+    if (nextFilter.updatedAt && nextFilter.updatedAt.length > 0) {
+      normalizedFilter.updatedAt = nextFilter.updatedAt
+    }
+
+    setDetoursFilter(normalizedFilter)
+  }
 
   const resetInputs = () => {
     setRouteId("all")
-    setFilter("")
-    setDates([])
-    setReason("all")
+    setDetoursFilter({})
   }
 
   const filteredData = useMemo(() => {
     let result = data
 
-    if (debouncedFilter !== "") {
+    // Skip front-end filters for closed detours because it happens in the backend
+    if (status != DetourStatus.Closed) {
+      return result
+    }
+
+    if (intersectionFilter !== "") {
       result = result.filter((detour) =>
         (detour.intersection || "")
           .toLowerCase()
-          .includes(debouncedFilter.toLowerCase())
+          .includes(intersectionFilter.toLowerCase())
       )
     }
 
@@ -119,7 +138,7 @@ export const DetoursTable = ({
     }
 
     return result
-  }, [data, debouncedFilter, dates, reason])
+  }, [data, status, intersectionFilter, dates, reason])
 
   return (
     <>
@@ -178,15 +197,28 @@ export const DetoursTable = ({
                     id="intersection-filter"
                     type="text"
                     placeholder="Search..."
-                    value={filter}
+                    value={intersectionFilter}
                     onBlur={() =>
                       fullStoryEvent("Detour Intersection Filter Used", {})
                     }
-                    onChange={(e) => setFilter(e.target.value)}
+                    onChange={(e) =>
+                      normalizeAndSetFilter({
+                        ...detoursFilter,
+                        intersection: e.target.value,
+                      })
+                    }
                   />
                   <div>
-                    {filter.length > 0 && (
-                      <button onClick={() => setFilter("")} title="Clear">
+                    {intersectionFilter.length > 0 && (
+                      <button
+                        onClick={() =>
+                          normalizeAndSetFilter({
+                            ...detoursFilter,
+                            intersection: "",
+                          })
+                        }
+                        title="Clear"
+                      >
                         <span>
                           <CircleXIcon />
                         </span>
@@ -195,8 +227,13 @@ export const DetoursTable = ({
                     <button
                       type="submit"
                       title="Submit"
-                      onClick={setDebouncedFilter.bind(null, filter)}
-                      disabled={filter.length === 0}
+                      onClick={() =>
+                        normalizeAndSetFilter({
+                          ...detoursFilter,
+                          intersection: intersectionFilter,
+                        })
+                      }
+                      disabled={intersectionFilter.length === 0}
                     >
                       <span>
                         <SearchIcon />
@@ -212,7 +249,10 @@ export const DetoursTable = ({
                   className="select-filter mt-2"
                   value={reason}
                   onChange={(e) => {
-                    setReason(e.target.value)
+                    normalizeAndSetFilter({
+                      ...detoursFilter,
+                      reason: e.target.value,
+                    })
                   }}
                 >
                   <option key="" value="all">
@@ -233,7 +273,8 @@ export const DetoursTable = ({
                     value={dates}
                     options={{
                       maxDate: "today",
-                      onChange: setDates,
+                      onChange: (updatedAt) =>
+                        normalizeAndSetFilter({ ...detoursFilter, updatedAt }),
                       mode: "multiple",
                     }}
                   />

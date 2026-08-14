@@ -343,4 +343,70 @@ describe("DetourListPage", () => {
       )
     })
   })
+
+  test("passes filter to usePastDetours", async () => {
+    const routes = routeFactory.buildList(2)
+    jest.mocked(usePastDetours).mockReturnValue([])
+
+    render(
+      <RoutesProvider routes={routes}>
+        <DetourListPage />
+      </RoutesProvider>
+    )
+
+    await waitFor(() => {
+      expect(jest.mocked(usePastDetours)).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detoursFilter: {},
+        })
+      )
+    })
+  })
+
+  test("resets page number to 1 when filter changes", async () => {
+    const routes = routeFactory.buildList(2)
+
+    jest.mocked(usePastDetours).mockImplementation((args) => {
+      return [
+        simpleDetourFactory.build({
+          id: args.pageNumber,
+          name: `Closed ${args.detoursFilter?.intersection || "all"}`,
+        }),
+      ]
+    })
+
+    render(
+      <RoutesProvider routes={routes}>
+        <DetourListPage />
+      </RoutesProvider>
+    )
+
+    // Navigate to page 2
+    fireEvent.click(screen.getByLabelText("Next"))
+
+    await waitFor(() => {
+      const pagination = screen.getByLabelText("Previous").closest("ul")
+      expect(pagination).not.toBeNull()
+      expect(within(pagination!).getByText("2").closest("li")).toHaveClass(
+        "active"
+      )
+    })
+
+    // Change filter - should reset to page 1
+    fireEvent.change(filterIntersectionInput.get(), {
+      target: { value: "Main St" },
+    })
+
+    await waitFor(() => {
+      const pagination = screen.getByLabelText("Previous").closest("ul")
+      expect(pagination).not.toBeNull()
+      expect(within(pagination!).getByText("1").closest("li")).toHaveClass(
+        "active"
+      )
+      expect(screen.getByLabelText("Previous")).toHaveAttribute(
+        "aria-disabled",
+        "true"
+      )
+    })
+  })
 })

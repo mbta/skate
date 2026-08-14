@@ -22,6 +22,7 @@ import {
   usePastDetours,
 } from "../hooks/useDetours"
 import { SocketContext } from "../contexts/socketContext"
+import type { DetoursFilter } from "../models/detoursFilter"
 
 export const DetourListPage = () => {
   const routes = useContext(RoutesContext)
@@ -33,6 +34,7 @@ export const DetourListPage = () => {
 
   const { show: showDetourModal, fromCopy: showFromCopy } = showDetourModalProps
   const [routeId, setRouteId] = useState<string>("all")
+  const [detoursFilter, setDetoursFilter] = useState<DetoursFilter>({})
 
   // Wait for the detour channels to initialize
   const { socket } = useContext(SocketContext)
@@ -40,15 +42,14 @@ export const DetourListPage = () => {
   const [detoursPagination, setDetoursPagination] = useState<
     DetoursPagination | undefined
   >()
-  // Set arbitrarily high to see all detours (without pagination) until the next PR
-  // turns on pagination to a reasonable page limit.
-  const currentLimit = 10000
 
-  // For pagination, reset the page number to 1 when the routeId changes
+  const currentLimit = 10
+
+  // For pagination, reset the page number to 1 when the routeId or filter changes
   useEffect(() => {
     setPageNumber(1)
     setDetoursPagination(undefined)
-  }, [routeId])
+  }, [routeId, detoursFilter])
 
   const activeDetoursMap = useActiveDetours(socket)
   const draftDetoursMap = useDraftDetours(socket)
@@ -58,6 +59,7 @@ export const DetourListPage = () => {
     limit: currentLimit,
     pageNumber: pageNumber,
     onPaginate: setDetoursPagination,
+    detoursFilter: detoursFilter,
   })
 
   const activeDetours =
@@ -162,6 +164,8 @@ export const DetourListPage = () => {
                 setRouteId={setRouteId}
                 routes={routes}
                 classNames={["u-hide-for-mobile"]}
+                detoursFilter={detoursFilter}
+                setDetoursFilter={setDetoursFilter}
               />
               <PaginationBar
                 pageNumber={pageNumber}
