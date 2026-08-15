@@ -28,6 +28,7 @@ import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
 import { DeleteDetourModal } from "./deleteDetourModal"
 import { DiscardChangesModal } from "./discardChangesModal"
+import { ConfirmCantDrawModal } from "./confirmCantDrawModal"
 import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
 import { TextOnlyMapAlert } from "./alerts/textOnlyAlert"
@@ -364,6 +365,14 @@ export const DiversionPage = ({
                   displayTitle={false}
                 />
               }
+            />
+          )}
+          {snapshot.matches({
+            "Detour Drawing": { Editing: "Confirm Cant Draw" },
+          }) && (
+            <ConfirmCantDrawModal
+              onConfirm={() => send({ type: "detour.edit.cant-draw.confirm" })}
+              onCancel={() => send({ type: "detour.edit.cant-draw.cancel" })}
             />
           )}
         </DrawDetourPanel>
