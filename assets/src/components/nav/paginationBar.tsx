@@ -20,8 +20,8 @@ export const PaginationBar = ({
   onSelectPage,
 }: PaginationBarProps) => {
   const paginationStyle = {
-    "--bs-pagination-active-bg": "var(--bs-link-color)",
-    "--bs-pagination-active-border-color": "var(--bs-link-color);",
+    "--bs-pagination-active-bg": "var(--bs-primary)",
+    "--bs-pagination-active-border-color": "var(--bs-primary);",
   } as React.CSSProperties
   return (
     <div className="d-flex justify-content-end mb-4">
