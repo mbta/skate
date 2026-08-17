@@ -876,6 +876,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
       >
         <ul
           class="mb-0 pagination"
+          style="--bs-pagination-active-bg: var(--bs-link-color); --bs-pagination-active-border-color: var(--bs-link-color);;"
         >
           <li
             class="page-item disabled"

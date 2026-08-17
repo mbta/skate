@@ -19,9 +19,13 @@ export const PaginationBar = ({
   onNext,
   onSelectPage,
 }: PaginationBarProps) => {
+  const paginationStyle = {
+    "--bs-pagination-active-bg": "var(--bs-link-color)",
+    "--bs-pagination-active-border-color": "var(--bs-link-color);",
+  } as React.CSSProperties
   return (
     <div className="d-flex justify-content-end mb-4">
-      <Pagination className="mb-0">
+      <Pagination className="mb-0" style={paginationStyle}>
         <Pagination.Prev
           disabled={pageNumber <= 1}
           aria-disabled={pageNumber <= 1}

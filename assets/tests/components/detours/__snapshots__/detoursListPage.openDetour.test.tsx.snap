@@ -650,6 +650,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
       >
         <ul
           class="mb-0 pagination"
+          style="--bs-pagination-active-bg: var(--bs-link-color); --bs-pagination-active-border-color: var(--bs-link-color);;"
         >
           <li
             class="page-item disabled"
@@ -2605,6 +2606,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
       >
         <ul
           class="mb-0 pagination"
+          style="--bs-pagination-active-bg: var(--bs-link-color); --bs-pagination-active-border-color: var(--bs-link-color);;"
         >
           <li
             class="page-item disabled"
