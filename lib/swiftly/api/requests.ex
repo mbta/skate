@@ -59,6 +59,12 @@ defmodule Swiftly.API.Requests do
   end
 
   defp map_skipped_stops(%Detour{
+         missed_stops: [_ | _] = missed_stops
+       }) do
+    Enum.map(missed_stops, fn missed_stop -> Map.get(missed_stop, "id") end)
+  end
+
+  defp map_skipped_stops(%Detour{
          state: %{"context" => %{"finishedDetour" => %{"missedStops" => [_ | _] = missed_stops}}}
        }) do
     Enum.map(missed_stops, fn missed_stop -> Map.get(missed_stop, "id") end)

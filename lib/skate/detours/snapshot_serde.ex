@@ -173,10 +173,10 @@ defmodule Skate.Detours.SnapshotSerde do
          direction_names: direction_names
        }) do
     %{
-      id: route_id,
-      name: route_name,
-      garages: garages,
-      direction_names: direction_names
+      "id" => route_id,
+      "name" => route_name,
+      "garages" => garages,
+      "directionNames" => direction_names
     }
   end
 
@@ -193,12 +193,7 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp route_from_detour(_), do: nil
 
-  defp routepattern_from_detour(%Detour{
-         route_patterns: route_patterns,
-         route_pattern_id: route_pattern_id
-       }) do
-    Enum.find(route_patterns, fn route_pattern -> route_pattern.id == route_pattern_id end)
-  end
+  defp routepattern_from_detour(%Detour{route_pattern: route_pattern}), do: route_pattern
 
   defp routepattern_from_detour(%Detour{
          state: %{
@@ -298,10 +293,10 @@ defmodule Skate.Detours.SnapshotSerde do
          route_segments: route_segments
        }) do
     %{
-      detourShape: detour_shape,
-      connectionPoint: connection_points,
-      missedStops: missed_stops,
-      routeSegments: route_segments
+      "detourShape" => detour_shape,
+      "connectionPoint" => connection_points,
+      "missedStops" => missed_stops,
+      "routeSegments" => route_segments
     }
   end
 

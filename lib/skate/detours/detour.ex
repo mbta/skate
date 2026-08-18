@@ -239,7 +239,7 @@ defmodule Skate.Detours.Detour do
         base_report(detour)
         | missed_stops: detour.missed_stops,
           connection_points: detour.connection_points,
-          route_segments: detour.route_segments
+          route_segments: route_segments(detour)
       }
     end
 
@@ -263,12 +263,12 @@ defmodule Skate.Detours.Detour do
     end
 
     defp route_segments(%Detour{
-           routeSegments: %{
+           route_segments: %{
              "beforeDetour" => before_detour,
              "afterDetour" => after_detour,
              "detour" => detour_segment
            },
-           detourShape: {"ok", %{"coordinates" => bypassed_segment}}
+           detour_shape: {"ok", %{"coordinates" => bypassed_segment}}
          }) do
       %{
         before_detour: before_detour,
