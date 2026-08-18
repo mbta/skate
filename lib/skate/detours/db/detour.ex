@@ -46,6 +46,8 @@ defmodule Skate.Detours.Db.Detour do
     field :route_pattern_name, :string
     field :headsign, :string
     field :direction, :string
+    field :direction_id, :integer, virtual: true
+    field :route_pattern, :map, virtual: true
 
     # Detour shape properties
     field :nearest_intersection, :string
@@ -71,6 +73,7 @@ defmodule Skate.Detours.Db.Detour do
     |> foreign_key_constraint(:author_id)
   end
 
+  # TODO use db fields
   def update_copied_detour_state_changeset(detour) do
     new_state =
       detour.state
@@ -288,6 +291,25 @@ defmodule Skate.Detours.Db.Detour do
       )
     end
 
+    def with_virtual_fields(query \\ base()) do
+      query
+      |> select_route_pattern()
+      |> select_direction_id()
+    end
+
+    defp select_route_pattern(query \\ base()) do
+      select_merge(query, [detour: d], %{
+        :route_pattern =>
+          Enum.find(d.route_patterns, fn routePattern -> routePattern.id == d.route_pattern_id end)
+      })
+    end
+
+    defp select_direction_id(query \\ base()) do
+      select_merge(query, [detour: d], %{
+        :direction_id => get_in(d.route_pattern, ["directionId"])
+      })
+    end
+
     def select_detour_list_info(query \\ from(Skate.Detours.Db.Detour, as: :detour)) do
       query
       |> with_author()
@@ -300,8 +322,8 @@ defmodule Skate.Detours.Db.Detour do
         estimated_duration: d.estimated_duration,
         reason: d.reason,
         nearest_intersection: d.nearest_intersection,
-        route_id: fragment("?->>?", d.route, "id"),
-        route_name: fragment("?->>?", d.route, "name"),
+        route_id: d.route_id,
+        route_name: d.route_name,
         route_pattern_id: d.route_pattern_id,
         route_pattern_name: d.route_pattern_name,
         headsign: d.headsign,
