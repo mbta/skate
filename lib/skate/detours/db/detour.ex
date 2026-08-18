@@ -73,26 +73,51 @@ defmodule Skate.Detours.Db.Detour do
     |> foreign_key_constraint(:author_id)
   end
 
-  # TODO use db fields
-  def update_copied_detour_state_changeset(detour) do
-    dbg(detour)
-
-    new_state =
-      detour.state
-      |> Map.put(
-        "context",
-        detour.state["context"]
-        |> Map.merge(%{"uuid" => detour.id, "status" => "draft"})
-        |> Map.drop(["selectedReason", "selectedDuration", "activatedAt"])
-      )
-      |> Map.put("value", %{
-        SaveState: "Saved",
-        "Detour Drawing": "Share Detour"
+  def copy_to_draft_changeset(new_detour, source) do
+    copied_fields =
+      source
+      |> Map.from_struct()
+      |> Map.drop([
+        # clear detour specific properties
+        :__meta__,
+        :id,
+        :inserted_at,
+        :updated_at,
+        :copied_from,
+        :copied_from_id,
+        :author,
+        :author_id,
+        :detour_status_notifications,
+        :detour_expiration_notifications,
+        # "deactivate" detour
+        :activated_at,
+        :estimated_duration,
+        :reason,
+        :swiftly_id
+      ])
+      |> Map.merge(%{
+        status: :draft,
+        state: copy_to_draft_state(source.state),
+        state_value: %{SaveState: "Saved", "Detour Drawing": "Share Detour"}
       })
 
-    detour
-    |> change(%{activated_at: nil, estimated_duration: nil, reason: nil, swiftly_id: nil})
-    |> change(%{state: new_state})
+    change(new_detour, copied_fields)
+  end
+
+  defp copy_to_draft_state(state) do
+    state
+    |> Map.put(
+      "context",
+      state["context"]
+      |> Map.merge(%{"status" => "draft"})
+      |> Map.drop(["selectedReason", "selectedDuration", "activatedAt"])
+    )
+    |> Map.put("value", %{SaveState: "Saved", "Detour Drawing": "Share Detour"})
+  end
+
+  def set_state_uuid_changeset(detour) do
+    new_state = put_in(detour.state, ["context", "uuid"], detour.id)
+    change(detour, %{state: new_state})
   end
 
   # Add or update swiftly_id
