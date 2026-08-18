@@ -75,6 +75,8 @@ defmodule Skate.Detours.Db.Detour do
 
   # TODO use db fields
   def update_copied_detour_state_changeset(detour) do
+    dbg(detour)
+
     new_state =
       detour.state
       |> Map.put(
@@ -230,6 +232,24 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
+  def with_virtual_fields(detour) do
+    detour
+    |> put_route_pattern()
+    |> put_direction_id()
+  end
+
+  defp put_route_pattern(%{route_patterns: route_patterns, route_pattern_id: id} = detour) do
+    route_pattern =
+      Enum.find(route_patterns, &(&1["id"] == id))
+
+    %{detour | route_pattern: route_pattern}
+  end
+
+  defp put_direction_id(%{route_pattern: route_pattern} = detour) do
+    direction_id = route_pattern["directionId"]
+    %{detour | direction_id: direction_id}
+  end
+
   defmodule Queries do
     @moduledoc """
     Defines composable queries for retrieving `Skate.Detours.Db.Detour`
@@ -289,25 +309,6 @@ defmodule Skate.Detours.Db.Detour do
       from([detour: d] in query,
         join: a in assoc(d, :author)
       )
-    end
-
-    def with_virtual_fields(query \\ base()) do
-      query
-      |> select_route_pattern()
-      |> select_direction_id()
-    end
-
-    defp select_route_pattern(query \\ base()) do
-      select_merge(query, [detour: d], %{
-        :route_pattern =>
-          Enum.find(d.route_patterns, fn routePattern -> routePattern.id == d.route_pattern_id end)
-      })
-    end
-
-    defp select_direction_id(query \\ base()) do
-      select_merge(query, [detour: d], %{
-        :direction_id => get_in(d.route_pattern, ["directionId"])
-      })
     end
 
     def select_detour_list_info(query \\ from(Skate.Detours.Db.Detour, as: :detour)) do

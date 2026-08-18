@@ -228,6 +228,7 @@ defmodule Skate.Detours.Detours do
       (detour in Skate.Detours.Db.Detour)
       |> from(where: detour.id == ^id, preload: [:author])
       |> Repo.one!()
+      |> Skate.Detours.Db.Detour.with_virtual_fields()
 
     %DetourWithState{
       state: SnapshotSerde.serialize(detour),
@@ -327,6 +328,7 @@ defmodule Skate.Detours.Detours do
   defp validate_detour_status(%Detour{status: :draft}), do: :ok
   defp validate_detour_status(_), do: {:error, :invalid_status}
 
+  # TODO manipulate fields?
   defp build_activation_changeset(detour, selected_duration, selected_reason) do
     new_state =
       detour.state
@@ -340,6 +342,7 @@ defmodule Skate.Detours.Detours do
     })
   end
 
+  # TODO manipulate fields?
   defp build_deactivation_changeset(detour) do
     Detour.changeset(
       detour,
@@ -457,6 +460,7 @@ defmodule Skate.Detours.Detours do
     Skate.Detours.NotificationScheduler.detour_deactivated(detour)
   end
 
+  # TODO uses context
   defp process_notifications(
          %Ecto.Changeset{
            changes:
@@ -487,6 +491,7 @@ defmodule Skate.Detours.Detours do
 
   defp process_notifications(_, _), do: nil
 
+  # TODO references context
   @spec trigger_active_detour_s3_export_job(
           Ecto.Changeset.t(),
           Detour.t()
