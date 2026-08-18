@@ -12,26 +12,24 @@ defmodule Skate.Detours.Db.Detour do
   @type status :: :active | :draft | :past
 
   typed_schema "detours" do
-    field :state, :map
-
-    field(:status, Ecto.Enum, values: [:draft, :active, :past]) :: status()
-
     belongs_to :author, User
-
     belongs_to :copied_from, __MODULE__, foreign_key: :copied_from_id
 
-    # When this detour was activated
+    # State properties
+    field :state, :map
+    field(:status, Ecto.Enum, values: [:draft, :active, :past]) :: status()
     field :activated_at, :utc_datetime_usec
-
     timestamps()
+    field :is_text_only, :boolean, default: false
+    field :undo_stack, {:array, :map}
+    field :snapshot_children, :map
+    field :state_value, :map
 
-    # -------------------------------------------------------
-    # Activated properties
+    # Activation properties
     field :estimated_duration, :string
     field :reason, :string
     field :swiftly_id, :string
 
-    # -------------------------------------------------------
     # Map point properties
     field :start_point, :map
     field :end_point, :map
@@ -41,15 +39,22 @@ defmodule Skate.Detours.Db.Detour do
     # Route properties
     field :route_id, :string
     field :route_name, :string
+    field :garages, {:array, :string}
+    field :direction_names, :map
+    field :route_patterns, {:array, :map}
     field :route_pattern_id, :string
     field :route_pattern_name, :string
     field :headsign, :string
     field :direction, :string
-    field :is_text_only, :boolean, default: false
-    field :typed_detour, :map
 
-    # Default detour properties
+    # Detour shape properties
     field :nearest_intersection, :string
+    field :missed_stops, {:array, :map}
+    field :connection_points, :map
+    field :route_segments, :map
+    field :typed_detour, :map
+    field :detour_shape, :map
+    field :edited_directions, :string
 
     has_many :detour_status_notifications, Notifications.Db.Detour
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
@@ -295,8 +300,8 @@ defmodule Skate.Detours.Db.Detour do
         estimated_duration: d.estimated_duration,
         reason: d.reason,
         nearest_intersection: d.nearest_intersection,
-        route_id: d.route_id,
-        route_name: d.route_name,
+        route_id: fragment("?->>?", d.route, "id"),
+        route_name: fragment("?->>?", d.route, "name"),
         route_pattern_id: d.route_pattern_id,
         route_pattern_name: d.route_pattern_name,
         headsign: d.headsign,
