@@ -9,7 +9,13 @@ interface PaginationBarProps {
   onPrevious: () => void
   onNext: () => void
   onSelectPage: (page: number) => void
+  style?: React.CSSProperties
 }
+
+const DEFAULT_PAGINATION_STYLE = {
+    "--bs-pagination-active-bg": "var(--bs-primary)",
+    "--bs-pagination-active-border-color": "var(--bs-primary);",
+} as React.CSSProperties
 
 export const PaginationBar = ({
   pageNumber,
@@ -18,11 +24,9 @@ export const PaginationBar = ({
   onPrevious,
   onNext,
   onSelectPage,
+  style,
 }: PaginationBarProps) => {
-  const paginationStyle = {
-    "--bs-pagination-active-bg": "var(--bs-primary)",
-    "--bs-pagination-active-border-color": "var(--bs-primary);",
-  } as React.CSSProperties
+  const paginationStyle = { ...(style ?? DEFAULT_PAGINATION_STYLE) }
   return (
     <div className="d-flex justify-content-end mb-4">
       <Pagination className="mb-0" style={paginationStyle}>
