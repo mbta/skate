@@ -21,7 +21,7 @@ export const PaginationBar = ({
 }: PaginationBarProps) => {
   return (
     <div className="d-flex justify-content-end mb-4">
-      <Pagination className="mb-0">
+      <Pagination className="mb-0 pagination-primary">
         <Pagination.Prev
           disabled={pageNumber <= 1}
           aria-disabled={pageNumber <= 1}

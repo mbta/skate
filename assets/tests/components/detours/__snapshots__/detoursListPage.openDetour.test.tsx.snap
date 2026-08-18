@@ -649,7 +649,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
         class="d-flex justify-content-end mb-4"
       >
         <ul
-          class="mb-0 pagination"
+          class="mb-0 pagination-primary pagination"
         >
           <li
             class="page-item disabled"
@@ -2604,7 +2604,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
         class="d-flex justify-content-end mb-4"
       >
         <ul
-          class="mb-0 pagination"
+          class="mb-0 pagination-primary pagination"
         >
           <li
             class="page-item disabled"
