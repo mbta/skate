@@ -8,10 +8,11 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot.MigratingSchema do
   typed_schema "detours" do
     field :state, :map, null: true
     field :state_value, :map, null: false
-    field :state_children, :map, null: true
+    field :snapshot_children, :map, null: true
     field :undo_stack, {:array, :map}, default: [], null: false
     field :route_patterns, {:array, :map}, null: false
-    field :route, :map, null: false
+    field :garages, {:array, :string}
+    field :direction_names, :map
     field :edited_directions, :string, null: true
     field :detour_shape, :map, null: true
     field :route_segments, :map, null: true
@@ -74,10 +75,11 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
   defp map_fields(state) do
     %{
       state_value: get_in(state, ["value"]),
-      state_children: get_in(state, ["children"]),
+      snapshot_children: get_in(state, ["children"]),
       undo_stack: get_in(state, ["context", "undoStack"]),
       route_patterns: get_in(state, ["context", "routePatterns"]),
-      route: get_in(state, ["context", "route"]),
+      garages: get_in(state, ["context", "route", "garages"]),
+      direction_names: get_in(state, ["context", "route", "directionNames"]),
       edited_directions: get_in(state, ["context", "editedDirections"]),
       detour_shape: get_in(state, ["context", "detourShape"]),
       route_segments: get_in(state, ["context", "finishedDetour", "routeSegments"]),

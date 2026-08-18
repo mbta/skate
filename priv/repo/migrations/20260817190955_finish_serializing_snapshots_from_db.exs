@@ -5,15 +5,13 @@ defmodule Skate.Repo.Migrations.FinishSerializingSnapshotsFromDb do
     alter table(:detours) do
       # missing snapshot values
       add :state_value, :map
-      add :state_children, :map, null: true
+      add :snapshot_children, :map, null: true
       add :undo_stack, {:array, :map}, default: [], null: false
 
       # missing route information
       add :route_patterns, {:array, :map}
-      # store route object rather than two parts
-      add :route, :map
-      remove :route_id, :string, null: true
-      remove :route_name, :string, null: true
+      add :garages, {:array, :string}
+      add :direction_names, :map
 
       # missing detour information
       add :edited_directions, :text, null: true
