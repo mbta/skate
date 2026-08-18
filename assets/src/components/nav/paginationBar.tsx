@@ -9,7 +9,6 @@ interface PaginationBarProps {
   onPrevious: () => void
   onNext: () => void
   onSelectPage: (page: number) => void
-  style?: React.CSSProperties
 }
 
 export const PaginationBar = ({
