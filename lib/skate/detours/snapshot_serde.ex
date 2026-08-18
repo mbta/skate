@@ -166,7 +166,20 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp uuid_from_detour(%Detour{id: id}), do: id
 
-  # defp route_from_detour(%Detour{route: route}), do: route
+  defp route_from_detour(%Detour{
+         route_id: route_id,
+         route_name: route_name,
+         garages: garages,
+         direction_names: direction_names
+       }) do
+    %{
+      id: route_id,
+      name: route_name,
+      garages: garages,
+      direction_names: direction_names
+    }
+  end
+
   defp route_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -180,7 +193,13 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp route_from_detour(_), do: nil
 
-  # defp routepattern_from_detour(%Detour{route_pattern: route_pattern}), do: route_pattern
+  defp routepattern_from_detour(%Detour{
+         route_patterns: route_patterns,
+         route_pattern_id: route_pattern_id
+       }) do
+    Enum.find(route_patterns, fn route_pattern -> route_pattern.id == route_pattern_id end)
+  end
+
   defp routepattern_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -194,7 +213,8 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp routepattern_from_detour(_), do: nil
 
-  # defp routepatterns_from_detour(%Detour{route_patterns: route_patterns}), do: route_patterns
+  defp routepatterns_from_detour(%Detour{route_patterns: route_patterns}), do: route_patterns
+
   defp routepatterns_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -208,7 +228,8 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp routepatterns_from_detour(_), do: nil
 
-  # defp startpoint_from_detour(%Detour{start_point: start_point}), do: start_point
+  defp startpoint_from_detour(%Detour{start_point: start_point}), do: start_point
+
   defp startpoint_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -222,7 +243,8 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp startpoint_from_detour(_), do: nil
 
-  # defp endpoint_from_detour(%Detour{end_point: end_point}), do: end_point
+  defp endpoint_from_detour(%Detour{end_point: end_point}), do: end_point
+
   defp endpoint_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -236,7 +258,8 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp endpoint_from_detour(_), do: nil
 
-  # defp waypoints_from_detour(%Detour{waypoints: waypoints}), do: waypoints
+  defp waypoints_from_detour(%Detour{waypoints: waypoints}), do: waypoints
+
   defp waypoints_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -253,7 +276,8 @@ defmodule Skate.Detours.SnapshotSerde do
   defp nearestintersection_from_detour(%Detour{nearest_intersection: nearest_intersection}),
     do: nearest_intersection
 
-  # defp detourshape_from_detour(%Detour{detour_shape: detour_shape}), do: detour_shape
+  defp detourshape_from_detour(%Detour{detour_shape: detour_shape}), do: detour_shape
+
   defp detourshape_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -267,7 +291,20 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp detourshape_from_detour(_), do: nil
 
-  # defp finisheddetour_from_detour(%Detour{finished_detour: finished_detour}), do: finished_detour
+  defp finisheddetour_from_detour(%Detour{
+         detour_shape: %{ok: detour_shape},
+         connection_points: connection_points,
+         missed_stops: missed_stops,
+         route_segments: route_segments
+       }) do
+    %{
+      detourShape: detour_shape,
+      connectionPoint: connection_points,
+      missedStops: missed_stops,
+      routeSegments: route_segments
+    }
+  end
+
   defp finisheddetour_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -281,7 +318,9 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp finisheddetour_from_detour(_), do: nil
 
-  # defp editeddirections_from_detour(%Detour{edited_directions: edited_directions}), do: edited_directions
+  defp editeddirections_from_detour(%Detour{edited_directions: edited_directions}),
+    do: edited_directions
+
   defp editeddirections_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -295,7 +334,8 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp editeddirections_from_detour(_), do: nil
 
-  # defp undostack_from_detour(%Detour{undo_stack: undo_stack}), do: undo_stack
+  defp undostack_from_detour(%Detour{undo_stack: undo_stack}), do: undo_stack
+
   defp undostack_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -309,7 +349,8 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp undostack_from_detour(_), do: nil
 
-  # defp istextonly_from_detour(%Detour{is_text_only: is_text_only}), do: is_text_only
+  defp istextonly_from_detour(%Detour{is_text_only: is_text_only}), do: is_text_only
+
   defp istextonly_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -322,6 +363,8 @@ defmodule Skate.Detours.SnapshotSerde do
   end
 
   defp istextonly_from_detour(_), do: nil
+
+  defp typeddetour_from_detour(%Detour{typed_detour: typed_detour}), do: typed_detour
 
   defp typeddetour_from_detour(%Detour{
          state: %{
@@ -336,7 +379,9 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp typeddetour_from_detour(_), do: nil
 
-  # defp selectedduration_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
+  defp selectedduration_from_detour(%Detour{estimated_duration: estimated_duration}),
+    do: estimated_duration
+
   defp selectedduration_from_detour(
          %Detour{
            state: state
@@ -358,7 +403,8 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp selectedduration_from_detour(_), do: nil
 
-  # defp selectedreason_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
+  defp selectedreason_from_detour(%Detour{reason: reason}), do: reason
+
   defp selectedreason_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -391,7 +437,9 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp activated_at_from_detour(%Detour{activated_at: nil}), do: nil
 
-  # defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
+  defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children}),
+    do: snapshot_children
+
   defp snapshot_children_from_detour(%Detour{
          state: %{
            "children" => snapshot_children
