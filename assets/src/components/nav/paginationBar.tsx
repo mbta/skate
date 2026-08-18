@@ -12,10 +12,10 @@ interface PaginationBarProps {
   style?: React.CSSProperties
 }
 
-const DEFAULT_PAGINATION_STYLE = {
-    "--bs-pagination-active-bg": "var(--bs-primary)",
-    "--bs-pagination-active-border-color": "var(--bs-primary);",
-} as React.CSSProperties
+const DEFAULT_PAGINATION_STYLE: React.CSSProperties & Record<string, string> = {
+  "--bs-pagination-active-bg": "var(--bs-primary)",
+  "--bs-pagination-active-border-color": "var(--bs-primary)",
+}
 
 export const PaginationBar = ({
   pageNumber,
