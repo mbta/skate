@@ -269,7 +269,6 @@ defmodule Skate.Detours.Detours do
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
     trigger_active_detour_s3_export_job(changeset, new_record)
-    update_swiftly(changeset, new_record)
   end
 
   @spec delete_draft_detour(Detour.t(), DbUser.id()) :: :ok
