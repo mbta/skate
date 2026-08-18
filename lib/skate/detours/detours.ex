@@ -350,30 +350,21 @@ defmodule Skate.Detours.Detours do
     )
   end
 
-  def copy_to_draft_detour(detour, author_id) do
-    if detour.status == :past do
-      new_detour_attrs =
-        detour
-        |> Map.from_struct()
-        |> Map.take([:state])
-        |> Map.put(:status, :draft)
-
-      {:ok, new_draft_detour} =
-        %Detour{author_id: author_id, copied_from: detour}
-        |> Detour.changeset(new_detour_attrs)
-        |> Repo.insert()
-
-      {:ok, updated_state_detour} =
-        new_draft_detour
-        |> Detour.update_copied_detour_state_changeset()
-        |> Repo.update()
-
+  def copy_to_draft_detour(%{status: :past} = detour, author_id) do
+    with {:ok, new_draft_detour} <-
+           %Detour{author_id: author_id, copied_from: detour}
+           |> Detour.copy_to_draft_changeset(detour)
+           |> Repo.insert(),
+         {:ok, updated_state_detour} <-
+           new_draft_detour
+           |> Detour.set_state_uuid_changeset()
+           |> Repo.update() do
       broadcast_detour(updated_state_detour, author_id)
       {:ok, updated_state_detour}
-    else
-      {:error, :not_a_past_detour}
     end
   end
+
+  def copy_to_draft_detour(_detour, _author_id), do: {:error, :not_a_past_detour}
 
   @spec broadcast_detour(Detour.t(), DbUser.id()) :: :ok
   defp broadcast_detour(%Detour{status: :draft} = detour, author_id) do
