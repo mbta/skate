@@ -327,15 +327,17 @@ defmodule Skate.Detours.Detours do
   defp validate_detour_status(_), do: {:error, :invalid_status}
 
   defp build_activation_changeset(detour, selected_duration, selected_reason) do
+    state_value = %{"SaveState" => "Saved", "Detour Drawing" => %{"Active" => "Reviewing"}}
+
     new_state =
       detour.state
       |> put_in(["context", "selectedDuration"], selected_duration)
       |> put_in(["context", "selectedReason"], selected_reason)
-      |> put_in(["value"], %{"Detour Drawing" => %{"Active" => "Reviewing"}})
+      |> put_in(["value"], state_value)
 
     Detour.changeset(detour, %{
       state: new_state,
-      state_value: %{"Detour Drawing" => %{"Active" => "Reviewing"}},
+      state_value: state_value,
       estimated_duration: selected_duration,
       reason: selected_reason,
       activated_at: DateTime.utc_now(:millisecond)
@@ -343,11 +345,12 @@ defmodule Skate.Detours.Detours do
   end
 
   defp build_deactivation_changeset(detour) do
-    new_state = put_in(detour.state, ["value"], %{"Detour Drawing" => "Past"})
+    state_value = %{"SaveState" => "Saved", "Detour Drawing" => "Past"}
+    new_state = put_in(detour.state, ["value"], state_value)
 
     Detour.changeset(
       detour,
-      %{state: new_state, state_value: %{"Detour Drawing" => "Past"}, status: :past}
+      %{state: new_state, state_value: state_value, status: :past}
     )
   end
 
