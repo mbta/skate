@@ -143,11 +143,11 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp add_status(changeset) do
-    case {fetch_field(changeset, :status), fetch_change(changeset, :state_value)} do
-      {{:data, :active}, {:ok, %{"Detour Drawing" => "Past"}}} ->
+    case {fetch_field(changeset, :status), fetch_change(changeset, :state)} do
+      {{:data, :active}, {:ok, %{"value" => %{"Detour Drawing" => "Past"}}}} ->
         put_change(changeset, :status, :past)
 
-      {{:data, :draft}, {:ok, %{"Detour Drawing" => %{"Active" => _}}}} ->
+      {{:data, :draft}, {:ok, %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}} ->
         put_change(changeset, :status, :active)
 
       {{:data, nil}, {:ok, _state}} ->
@@ -224,7 +224,7 @@ defmodule Skate.Detours.Db.Detour do
     |> put_change_from_state(:edited_directions, ["context", "editedDirections"])
     |> put_change_from_state(:detour_shape, ["context", "detourShape"])
     |> put_change_from_state(:route_segments, ["context", "finishedDetour", "routeSegments"])
-    |> put_change_from_state(:connection_points, ["context", "finishedDetour", "connectionPoints"])
+    |> put_change_from_state(:connection_points, ["context", "finishedDetour", "connectionPoint"])
     |> put_change_from_state(:missed_stops, ["context", "finishedDetour", "missedStops"])
     |> put_change_from_state(:start_point, ["context", "startPoint"])
     |> put_change_from_state(:end_point, ["context", "endPoint"])

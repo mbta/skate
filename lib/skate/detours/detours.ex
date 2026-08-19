@@ -264,6 +264,7 @@ defmodule Skate.Detours.Detours do
       conflict_target: [:id],
       on_conflict: {:replace, changed_fields}
     )
+    |> dbg()
   end
 
   defp handle_detour_updated(changeset, new_record, author_id) do
@@ -316,12 +317,11 @@ defmodule Skate.Detours.Detours do
       nil ->
         {:error, :not_found}
 
-      detour ->
-        if detour.author_id == user_id do
-          {:ok, detour}
-        else
-          {:error, :unauthorized}
-        end
+      %Detour{author_id: ^user_id} = detour ->
+        {:ok, Detour.with_virtual_fields(detour)}
+
+      %Detour{} ->
+        {:error, :unauthorized}
     end
   end
 
@@ -484,6 +484,8 @@ defmodule Skate.Detours.Detours do
     maybe_notify_detour_updated(changes, detour)
   end
 
+  defp process_notifications(_, _), do: nil
+
   defp maybe_notify_detour_updated(changes, detour) do
     if is_map_key(changes, :end_point) or
          is_map_key(changes, :start_point) or
@@ -491,8 +493,6 @@ defmodule Skate.Detours.Detours do
       Notifications.Notification.create_updated_detour_notification_from_detour(detour)
     end
   end
-
-  defp process_notifications(_, _), do: nil
 
   @spec trigger_active_detour_s3_export_job(
           Ecto.Changeset.t(),
