@@ -116,6 +116,7 @@ defmodule Skate.DetourFactory do
           detour
           | state: activated(detour.state, activated_at, estimated_duration),
             activated_at: activated_at,
+            updated_at: activated_at,
             status: :active,
             estimated_duration: estimated_duration
         }
