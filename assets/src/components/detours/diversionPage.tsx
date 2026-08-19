@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
 } from "react"
+import { captureException } from "@sentry/react"
 import { DrawDetourPanel } from "./detourPanels/drawDetourPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
@@ -28,7 +29,6 @@ import { ActivateDetour } from "./activateDetourModal"
 import { DeactivateDetourModal } from "./deactivateDetourModal"
 import { DeleteDetourModal } from "./deleteDetourModal"
 import { DiscardChangesModal } from "./discardChangesModal"
-import { ConfirmCantDrawModal } from "./confirmCantDrawModal"
 import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
 import { TextOnlyMapAlert } from "./alerts/textOnlyAlert"
@@ -367,14 +367,6 @@ export const DiversionPage = ({
               }
             />
           )}
-          {snapshot.matches({
-            "Detour Drawing": { Editing: "Confirm Cant Draw" },
-          }) && (
-            <ConfirmCantDrawModal
-              onConfirm={() => send({ type: "detour.edit.cant-draw.confirm" })}
-              onCancel={() => send({ type: "detour.edit.cant-draw.cancel" })}
-            />
-          )}
         </DrawDetourPanel>
       )
     } else if (
@@ -564,9 +556,7 @@ export const DiversionPage = ({
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Active" }) &&
-      snapshot.context.activatedAt &&
-      snapshot.context.selectedDuration !== undefined &&
-      snapshot.context.selectedReason !== undefined
+      snapshot.context.activatedAt
     ) {
       return (
         <ActiveDetourPanel
@@ -610,8 +600,8 @@ export const DiversionPage = ({
           updatedAt={
             "updatedAt" in useDetourProps ? useDetourProps.updatedAt : 0
           }
-          detourDuration={snapshot.context.selectedDuration}
-          detourReason={snapshot.context.selectedReason}
+          detourDuration={snapshot.context.selectedDuration || "??"}
+          detourReason={snapshot.context.selectedReason || "??"}
         >
           {snapshot.matches({
             "Detour Drawing": { Active: "Deactivating" },
@@ -688,6 +678,7 @@ export const DiversionPage = ({
         />
       )
     } else {
+      captureException(new Error("Unexpected detour state"))
       return <></>
     }
   }
