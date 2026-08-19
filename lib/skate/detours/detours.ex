@@ -516,8 +516,8 @@ defmodule Skate.Detours.Detours do
               !is_nil(Ecto.Changeset.get_change(changeset, :estimated_duration)) ->
                 "active detour #{detour.id} estimated duration changed"
 
-              # ...or when saving changes...
-              !is_nil(Ecto.Changeset.get_change(changeset, :activated_at)) ->
+              # ...or when saving active detour edits (via updated_at changes)...
+              !is_nil(Ecto.Changeset.get_change(changeset, :updated_at)) ->
                 "active detour #{detour.id} changed"
 
               # ...ignore otherwise
