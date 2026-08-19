@@ -23,8 +23,8 @@ defmodule Swiftly.API.Requests do
          beginTime: parse_begin_time(detour),
          detourRouteDirectionDetails: [
            %DetourRouteDirectionCreationDetails{
-             routeShortName: detour.state["context"]["route"]["name"],
-             direction: Integer.to_string(detour.state["context"]["routePattern"]["directionId"]),
+             routeShortName: detour.route_name,
+             direction: Integer.to_string(detour.direction_id),
              shape: parse_shape(detour),
              skippedStops: map_skipped_stops(detour)
            }

@@ -268,7 +268,7 @@ defmodule Skate.Detours.Detour do
              "afterDetour" => after_detour,
              "detour" => detour_segment
            },
-           detour_shape: {"ok", %{"coordinates" => bypassed_segment}}
+           detour_shape: %{"ok" => %{"coordinates" => bypassed_segment}}
          }) do
       %{
         before_detour: before_detour,

@@ -287,7 +287,7 @@ defmodule Skate.Detours.SnapshotSerde do
   defp detourshape_from_detour(_), do: nil
 
   defp finisheddetour_from_detour(%Detour{
-         detour_shape: %{ok: detour_shape},
+         detour_shape: %{"ok" => detour_shape},
          connection_points: connection_points,
          missed_stops: missed_stops,
          route_segments: route_segments

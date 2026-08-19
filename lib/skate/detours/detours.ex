@@ -494,7 +494,6 @@ defmodule Skate.Detours.Detours do
 
   defp process_notifications(_, _), do: nil
 
-  # TODO references context
   @spec trigger_active_detour_s3_export_job(
           Ecto.Changeset.t(),
           Detour.t()
@@ -520,7 +519,7 @@ defmodule Skate.Detours.Detours do
                 "active detour #{detour.id} estimated duration changed"
 
               # ...or when saving changes...
-              is_map(get_in(detour.state, ["context", "savedContext"])) ->
+              !is_nil(Ecto.Changeset.get_change(changeset, :activated_at)) ->
                 "active detour #{detour.id} changed"
 
               # ...ignore otherwise

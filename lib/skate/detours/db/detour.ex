@@ -98,7 +98,7 @@ defmodule Skate.Detours.Db.Detour do
       |> Map.merge(%{
         status: :draft,
         state: copy_to_draft_state(source.state),
-        state_value: %{SaveState: "Saved", "Detour Drawing": "Share Detour"}
+        state_value: %{"SaveState" => "Saved", "Detour Drawing" => "Share Detour"}
       })
 
     change(new_detour, copied_fields)
@@ -143,11 +143,11 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp add_status(changeset) do
-    case {fetch_field(changeset, :status), fetch_change(changeset, :state)} do
-      {{:data, :active}, {:ok, %{"value" => %{"Detour Drawing" => "Past"}}}} ->
+    case {fetch_field(changeset, :status), fetch_change(changeset, :state_value)} do
+      {{:data, :active}, {:ok, %{"Detour Drawing" => "Past"}}} ->
         put_change(changeset, :status, :past)
 
-      {{:data, :draft}, {:ok, %{"value" => %{"Detour Drawing" => %{"Active" => _}}}}} ->
+      {{:data, :draft}, {:ok, %{"Detour Drawing" => %{"Active" => _}}}} ->
         put_change(changeset, :status, :active)
 
       {{:data, nil}, {:ok, _state}} ->
@@ -281,10 +281,14 @@ defmodule Skate.Detours.Db.Detour do
     %{detour | route_pattern: route_pattern}
   end
 
+  defp put_route_pattern(detour), do: detour
+
   defp put_direction_id(%{route_pattern: route_pattern} = detour) do
     direction_id = route_pattern["directionId"]
     %{detour | direction_id: direction_id}
   end
+
+  defp put_direction_id(detour), do: detour
 
   defmodule Queries do
     @moduledoc """
