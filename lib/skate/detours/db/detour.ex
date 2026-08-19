@@ -212,9 +212,20 @@ defmodule Skate.Detours.Db.Detour do
 
   defp populate_fields_from_state(changeset) do
     changeset
+    |> put_change_from_state(:state_value, ["value"])
+    |> put_change_from_state(:snapshot_children, ["children"])
+    |> put_change_from_state(:undo_stack, ["context", "undoStack"])
     |> put_change_from_state(:estimated_duration, ["context", "selectedDuration"])
     |> put_change_from_state(:reason, ["context", "selectedReason"])
     |> put_change_from_state(:nearest_intersection, ["context", "nearestIntersection"])
+    |> put_change_from_state(:route_patterns, ["context", "routePatterns"])
+    |> put_change_from_state(:garages, ["context", "route", "garages"])
+    |> put_change_from_state(:direction_names, ["context", "route", "directionNames"])
+    |> put_change_from_state(:edited_directions, ["context", "editedDirections"])
+    |> put_change_from_state(:detour_shape, ["context", "detourShape"])
+    |> put_change_from_state(:route_segments, ["context", "finishedDetour", "routeSegments"])
+    |> put_change_from_state(:connection_points, ["context", "finishedDetour", "connectionPoints"])
+    |> put_change_from_state(:missed_stops, ["context", "finishedDetour", "missedStops"])
     |> put_change_from_state(:start_point, ["context", "startPoint"])
     |> put_change_from_state(:end_point, ["context", "endPoint"])
     |> put_change_from_state(:waypoints, ["context", "waypoints"])
