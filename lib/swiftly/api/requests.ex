@@ -24,7 +24,7 @@ defmodule Swiftly.API.Requests do
          detourRouteDirectionDetails: [
            %DetourRouteDirectionCreationDetails{
              routeShortName: detour.route_name,
-             direction: Integer.to_string(detour.direction_id),
+             direction: parse_direction(detour),
              shape: parse_shape(detour),
              skippedStops: map_skipped_stops(detour)
            }
@@ -40,6 +40,17 @@ defmodule Swiftly.API.Requests do
   end
 
   defp parse_begin_time(_), do: nil
+
+  defp parse_direction(%Detour{direction_id: direction_id}) when is_integer(direction_id) do
+    Integer.to_string(direction_id)
+  end
+
+  defp parse_direction(%Detour{
+         state: %{"context" => %{"routePattern" => %{"directionId" => direction_id}}}
+       })
+       when is_integer(direction_id) do
+    Integer.to_string(direction_id)
+  end
 
   defp parse_shape(%Detour{coordinates: coordinates}) when not is_nil(coordinates) do
     map_coordinates(coordinates)

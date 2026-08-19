@@ -273,7 +273,8 @@ defmodule Skate.Detours.Db.Detour do
     |> put_direction_id()
   end
 
-  defp put_route_pattern(%{route_patterns: route_patterns, route_pattern_id: id} = detour) do
+  defp put_route_pattern(%{route_patterns: route_patterns, route_pattern_id: id} = detour)
+       when is_list(route_patterns) do
     route_pattern =
       Enum.find(route_patterns, &(&1["id"] == id))
 
@@ -282,7 +283,7 @@ defmodule Skate.Detours.Db.Detour do
 
   defp put_route_pattern(detour), do: detour
 
-  defp put_direction_id(%{route_pattern: route_pattern} = detour) do
+  defp put_direction_id(%{route_pattern: route_pattern} = detour) when is_map(route_pattern) do
     direction_id = route_pattern["directionId"]
     %{detour | direction_id: direction_id}
   end

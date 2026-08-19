@@ -264,7 +264,6 @@ defmodule Skate.Detours.Detours do
       conflict_target: [:id],
       on_conflict: {:replace, changed_fields}
     )
-    |> dbg()
   end
 
   defp handle_detour_updated(changeset, new_record, author_id) do

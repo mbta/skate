@@ -171,7 +171,9 @@ defmodule Skate.Detours.SnapshotSerde do
          route_name: route_name,
          garages: garages,
          direction_names: direction_names
-       }) do
+       })
+       when not is_nil(route_id) and not is_nil(route_name) and not is_nil(garages) and
+              not is_nil(direction_names) do
     %{
       "id" => route_id,
       "name" => route_name,
