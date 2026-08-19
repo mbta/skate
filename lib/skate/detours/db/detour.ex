@@ -194,61 +194,60 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  defp put_change_from_state(changeset, field, path) do
-    case {fetch_field(changeset, field), fetch_change(changeset, :state)} do
-      {{:data, table_value}, {:ok, state}} ->
-        context_value = get_in(state, path)
+  @state_fields %{
+    state_value: ["value"],
+    snapshot_children: ["children"],
+    undo_stack: ["context", "undoStack"],
+    estimated_duration: ["context", "selectedDuration"],
+    route_patterns: ["context", "routePatterns"],
+    garages: ["context", "route", "garages"],
+    reason: ["context", "selectedReason"],
+    direction_names: ["context", "route", "directionNames"],
+    edited_directions: ["context", "editedDirections"],
+    detour_shape: ["context", "detourShape"],
+    route_name: ["context", "route", "name"],
+    route_pattern_id: ["context", "routePattern", "id"],
+    route_pattern_name: ["context", "routePattern", "name"],
+    headsign: ["context", "routePattern", "headsign"],
+    is_text_only: ["context", "isTextOnly"],
+    route_id: ["context", "route", "id"]
+  }
 
-        if table_value != context_value and not is_nil(context_value) do
-          put_change(changeset, field, context_value)
-        else
-          changeset
-        end
+  @nullable_state_fields %{
+    nearest_intersection: ["context", "nearestIntersection"],
+    route_segments: ["context", "finishedDetour", "routeSegments"],
+    connection_points: ["context", "finishedDetour", "connectionPoint"],
+    missed_stops: ["context", "finishedDetour", "missedStops"],
+    start_point: ["context", "startPoint"],
+    end_point: ["context", "endPoint"],
+    waypoints: ["context", "waypoints"],
+    typed_detour: ["context", "typedDetour"],
+    coordinates: ["context", "detourShape", "ok", "coordinates"]
+  }
 
-      _ ->
-        changeset
+  defp put_change_from_state(changeset, field, path, allow_nil?) do
+    with {:data, table_value} <- fetch_field(changeset, field),
+         {:ok, state} <- fetch_change(changeset, :state),
+         context_value <- get_in(state, path),
+         true <- table_value != context_value,
+         true <- allow_nil? or not is_nil(context_value) do
+      put_change(changeset, field, context_value)
+    else
+      _ -> changeset
     end
+  end
+
+  defp put_changes_from_state(changeset, fields, allow_nil?) do
+    Enum.reduce(fields, changeset, fn {field, path}, acc ->
+      put_change_from_state(acc, field, path, allow_nil?)
+    end)
   end
 
   defp populate_fields_from_state(changeset) do
     changeset
-    |> put_change_from_state(:state_value, ["value"])
-    |> put_change_from_state(:snapshot_children, ["children"])
-    |> put_change_from_state(:undo_stack, ["context", "undoStack"])
-    |> put_change_from_state(:estimated_duration, ["context", "selectedDuration"])
-    |> put_change_from_state(:reason, ["context", "selectedReason"])
-    |> put_change_from_state(:nearest_intersection, ["context", "nearestIntersection"])
-    |> put_change_from_state(:route_patterns, ["context", "routePatterns"])
-    |> put_change_from_state(:garages, ["context", "route", "garages"])
-    |> put_change_from_state(:direction_names, ["context", "route", "directionNames"])
-    |> put_change_from_state(:edited_directions, ["context", "editedDirections"])
-    |> put_change_from_state(:detour_shape, ["context", "detourShape"])
-    |> put_change_from_state(:route_segments, ["context", "finishedDetour", "routeSegments"])
-    |> put_change_from_state(:connection_points, ["context", "finishedDetour", "connectionPoint"])
-    |> put_change_from_state(:missed_stops, ["context", "finishedDetour", "missedStops"])
-    |> put_change_from_state(:start_point, ["context", "startPoint"])
-    |> put_change_from_state(:end_point, ["context", "endPoint"])
-    |> put_change_from_state(:waypoints, ["context", "waypoints"])
-    |> put_change_from_state(:route_id, ["context", "route", "id"])
-    |> put_change_from_state(:route_name, ["context", "route", "name"])
-    |> put_change_from_state(:route_pattern_id, ["context", "routePattern", "id"])
-    |> put_change_from_state(:route_pattern_name, ["context", "routePattern", "name"])
-    |> put_change_from_state(:headsign, ["context", "routePattern", "headsign"])
-    |> put_change_from_state(:is_text_only, ["context", "isTextOnly"])
-    |> put_change_from_state(:typed_detour, ["context", "typedDetour"])
-    |> populate_coordinates_from_state()
+    |> put_changes_from_state(@state_fields, false)
+    |> put_changes_from_state(@nullable_state_fields, true)
     |> populate_direction_from_state()
-  end
-
-  defp populate_coordinates_from_state(changeset) do
-    case {fetch_field(changeset, :coordinates), fetch_change(changeset, :state)} do
-      {{:data, _},
-       {:ok, %{"context" => %{"detourShape" => %{"ok" => %{"coordinates" => coordinates}}}}}} ->
-        put_change(changeset, :coordinates, coordinates)
-
-      _ ->
-        changeset
-    end
   end
 
   defp populate_direction_from_state(changeset) do
