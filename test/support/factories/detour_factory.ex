@@ -155,16 +155,11 @@ defmodule Skate.DetourFactory do
             %Skate.Detours.Db.Detour{} = detour,
             %{name: route_name, id: route_id} = route
           ) do
-        detour
-        |> Map.put(:route_name, route_name)
-        |> Map.put(:route_id, route_id)
-        |> Map.put(:state, with_route(detour.state, route))
+        detour |> with_route_id(route_id) |> with_route_name(route_name)
       end
 
       def with_route(%{"context" => %{"route" => _}} = state, %{name: route_name, id: route_id}) do
-        state
-        |> put_in(["context", "route", "id"], route_id)
-        |> put_in(["context", "route", "name"], route_name)
+        state |> with_route_id(route_id) |> with_route_name(route_name)
       end
 
       def with_route_name(%Skate.Detours.Db.Detour{} = detour, name) do
