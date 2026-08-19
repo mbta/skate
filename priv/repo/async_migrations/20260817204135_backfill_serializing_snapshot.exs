@@ -83,7 +83,7 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
       edited_directions: get_in(state, ["context", "editedDirections"]),
       detour_shape: get_in(state, ["context", "detourShape"]),
       route_segments: get_in(state, ["context", "finishedDetour", "routeSegments"]),
-      connection_points: get_in(state, ["context", "finishedDetour", "connectionPoints"]),
+      connection_points: get_in(state, ["context", "finishedDetour", "connectionPoint"]),
       missed_stops: get_in(state, ["context", "finishedDetour", "missedStops"])
     }
     |> Enum.reject(fn {_field, value} -> is_nil(value) end)
