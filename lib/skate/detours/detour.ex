@@ -88,7 +88,8 @@ defmodule Skate.Detours.Detour do
            reason: reason,
            status: status,
            is_text_only: is_text_only
-         }) do
+         })
+         when not is_nil(route_name) and not is_nil(headsign) and not is_nil(direction) do
       %__MODULE__{
         id: id,
         route: route_name,
