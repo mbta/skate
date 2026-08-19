@@ -39,7 +39,6 @@ defmodule Skate.Detours.S3Exporter do
       |> Ecto.Query.where(status: ^status)
       |> Ecto.Query.order_by(^order_by)
       |> Skate.Repo.all()
-      |> Enum.map(&Skate.Detours.Db.Detour.with_virtual_fields/1)
 
     converted =
       selected

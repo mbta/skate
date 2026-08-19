@@ -12,6 +12,7 @@ defmodule Skate.Repo.Migrations.FinishSerializingSnapshotsFromDb do
       add :route_patterns, {:array, :map}
       add :garages, {:array, :string}
       add :direction_names, :map
+      add :direction_id, :integer
 
       # missing detour information
       add :edited_directions, :text, null: true
