@@ -46,8 +46,7 @@ defmodule Skate.Detours.Db.Detour do
     field :route_pattern_name, :string
     field :headsign, :string
     field :direction, :string
-    field :direction_id, :integer, virtual: true
-    field :route_pattern, :map, virtual: true
+    field :direction_id, :integer
 
     # Detour shape properties
     field :nearest_intersection, :string
@@ -203,6 +202,7 @@ defmodule Skate.Detours.Db.Detour do
     garages: ["context", "route", "garages"],
     reason: ["context", "selectedReason"],
     direction_names: ["context", "route", "directionNames"],
+    direction_id: ["context", "routePattern", "directionId"],
     edited_directions: ["context", "editedDirections"],
     detour_shape: ["context", "detourShape"],
     route_name: ["context", "route", "name"],
@@ -266,29 +266,6 @@ defmodule Skate.Detours.Db.Detour do
         changeset
     end
   end
-
-  def with_virtual_fields(detour) do
-    detour
-    |> put_route_pattern()
-    |> put_direction_id()
-  end
-
-  defp put_route_pattern(%{route_patterns: route_patterns, route_pattern_id: id} = detour)
-       when is_list(route_patterns) do
-    route_pattern =
-      Enum.find(route_patterns, &(&1["id"] == id))
-
-    %{detour | route_pattern: route_pattern}
-  end
-
-  defp put_route_pattern(detour), do: detour
-
-  defp put_direction_id(%{route_pattern: route_pattern} = detour) when is_map(route_pattern) do
-    direction_id = route_pattern["directionId"]
-    %{detour | direction_id: direction_id}
-  end
-
-  defp put_direction_id(detour), do: detour
 
   defmodule Queries do
     @moduledoc """

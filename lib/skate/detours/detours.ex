@@ -228,7 +228,6 @@ defmodule Skate.Detours.Detours do
       (detour in Skate.Detours.Db.Detour)
       |> from(where: detour.id == ^id, preload: [:author])
       |> Repo.one!()
-      |> Skate.Detours.Db.Detour.with_virtual_fields()
 
     %DetourWithState{
       state: SnapshotSerde.serialize(detour),
@@ -317,7 +316,7 @@ defmodule Skate.Detours.Detours do
         {:error, :not_found}
 
       %Detour{author_id: ^user_id} = detour ->
-        {:ok, Detour.with_virtual_fields(detour)}
+        {:ok, detour}
 
       %Detour{} ->
         {:error, :unauthorized}
