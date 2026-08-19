@@ -111,7 +111,7 @@ defmodule Skate.Detours.S3ExporterTest do
         detour =
           :detour
           |> build()
-          |> activated()
+          |> activated(~U[2026-01-05 15:00:00.000000Z])
           |> insert()
 
         # workaround because there's no `with_saved_context(...)` factory method
@@ -119,9 +119,6 @@ defmodule Skate.Detours.S3ExporterTest do
           detour
           | state: put_in(detour.state, ["context", "endPoint"], %{"id" => "start"})
         }
-
-        # `updated_at` is truncated to seconds, so ensure the save occurs in a later second.
-        Process.sleep(1_100)
 
         Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
       end
