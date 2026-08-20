@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
 } from "react"
+import { captureException } from "@sentry/react"
 import { DrawDetourPanel } from "./detourPanels/drawDetourPanel"
 import { DetourMap } from "./detourMap"
 import { useDetour } from "../../hooks/useDetour"
@@ -564,9 +565,7 @@ export const DiversionPage = ({
       )
     } else if (
       snapshot.matches({ "Detour Drawing": "Active" }) &&
-      snapshot.context.activatedAt &&
-      snapshot.context.selectedDuration !== undefined &&
-      snapshot.context.selectedReason !== undefined
+      snapshot.context.activatedAt
     ) {
       return (
         <ActiveDetourPanel
@@ -610,8 +609,8 @@ export const DiversionPage = ({
           updatedAt={
             "updatedAt" in useDetourProps ? useDetourProps.updatedAt : 0
           }
-          detourDuration={snapshot.context.selectedDuration}
-          detourReason={snapshot.context.selectedReason}
+          detourDuration={snapshot.context.selectedDuration || "??"}
+          detourReason={snapshot.context.selectedReason || "??"}
         >
           {snapshot.matches({
             "Detour Drawing": { Active: "Deactivating" },
@@ -688,6 +687,7 @@ export const DiversionPage = ({
         />
       )
     } else {
+      captureException(new Error("Unexpected detour state"))
       return <></>
     }
   }
