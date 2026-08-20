@@ -42,9 +42,11 @@ defmodule SkateWeb.DetoursControllerTest do
   describe "update_snapshot/2" do
     @tag :authenticated
     test "adds new detour to database", %{conn: conn} do
+      snapshot = build(:detour_snapshot)
+
       conn =
         put(conn, "/api/detours/update_snapshot", %{
-          "snapshot" => %{"context" => %{}}
+          "snapshot" => snapshot
         })
 
       assert %{"data" => number} = json_response(conn, 200)
@@ -68,23 +70,14 @@ defmodule SkateWeb.DetoursControllerTest do
 
     @tag :authenticated
     test "updates detour in database if detour uuid provided", %{conn: conn} do
+      snapshot =
+        :detour_snapshot
+        |> build()
+        |> with_id(8)
+
       conn =
         put(conn, "/api/detours/update_snapshot", %{
-          "snapshot" => %{
-            "context" => %{
-              "nearestIntersection" => "Street A & Avenue B",
-              "route" => %{
-                "directionNames" => %{"0" => "Outbound", "1" => "Inbound"},
-                "name" => "23"
-              },
-              "routePattern" => %{
-                "directionId" => 0,
-                "headsign" => "Headsign",
-                "id" => "23-1-0"
-              },
-              "uuid" => 8
-            }
-          }
+          "snapshot" => snapshot
         })
 
       assert %{"data" => 8} = json_response(conn, 200)
@@ -336,6 +329,9 @@ defmodule SkateWeb.DetoursControllerTest do
         |> build()
         |> with_id(detour_id)
 
+      serialized_detour_snapshot =
+        put_in(detour_snapshot["value"]["SaveState"], "Saved")
+
       put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
 
       {conn, log} =
@@ -346,7 +342,7 @@ defmodule SkateWeb.DetoursControllerTest do
       refute log =~
                "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{detour_id}"
 
-      assert detour_snapshot == json_response(conn, 200)["data"]["state"]
+      assert serialized_detour_snapshot == json_response(conn, 200)["data"]["state"]
     end
 
     @tag :authenticated
