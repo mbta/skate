@@ -38,6 +38,8 @@ defmodule SkateWeb.Endpoint do
 
   plug Plug.RequestId
 
+  plug SkateWeb.Plugs.LogsterProbePathFilter
+
   plug Logster.Plugs.Logger
 
   plug Plug.Parsers,
