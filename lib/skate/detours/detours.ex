@@ -533,7 +533,7 @@ defmodule Skate.Detours.Detours do
           |> S3Exporter.new()
           |> Oban.insert()
 
-        :error ->
+        _ ->
           {:ok, nil}
       end
     else
