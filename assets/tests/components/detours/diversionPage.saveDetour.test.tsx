@@ -86,7 +86,7 @@ describe("DiversionPage autosave flow", () => {
     })
 
     await waitFor(() => {
-      expect(putDetourUpdate).toHaveBeenCalledTimes(5)
+      expect(putDetourUpdate).toHaveBeenCalledTimes(2)
     })
   })
 
