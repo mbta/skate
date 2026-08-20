@@ -38,38 +38,26 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
 
   // Record snapshots when changed
   useEffect(() => {
+    let wasSaving = false // prevent simultaneous saves
     const snapshotSubscription = actorRef.subscribe((snap) => {
       const persistedSnapshot = actorRef.getPersistedSnapshot()
       const serializedSnapshot = JSON.stringify(persistedSnapshot)
       localStorage.setItem("snapshot", serializedSnapshot)
-      // check for no-save tag before
-      if (snap.hasTag("no-save")) {
-        return
+
+      const isSaving = snap.matches({ SaveState: "Saving" })
+      if (!wasSaving && isSaving) {
+        putDetourUpdate(persistedSnapshot).then((uuid) => {
+          if (
+            isOk(uuid) &&
+            actorRef
+              .getSnapshot()
+              .can({ type: "detour.save.set-uuid", uuid: uuid.ok })
+          ) {
+            actorRef.send({ type: "detour.save.set-uuid", uuid: uuid.ok })
+          }
+        })
       }
-
-      // do not save if drawn detour has no start point
-      if (!snap.context.isTextOnly && !snap.context.nearestIntersection) {
-        return
-      }
-
-      // if detour already activated, do not save, unless overridden
-      if (snap.context.activatedAt && !snap.hasTag("save-activated")) {
-        return
-      }
-
-      if (actorRef.getSnapshot().can({ type: "detour.save.begin-save" }))
-        actorRef.send({ type: "detour.save.begin-save" })
-
-      putDetourUpdate(persistedSnapshot).then((uuid) => {
-        if (
-          isOk(uuid) &&
-          actorRef
-            .getSnapshot()
-            .can({ type: "detour.save.set-uuid", uuid: uuid.ok })
-        ) {
-          actorRef.send({ type: "detour.save.set-uuid", uuid: uuid.ok })
-        }
-      })
+      wasSaving = isSaving
     })
 
     return () => {
