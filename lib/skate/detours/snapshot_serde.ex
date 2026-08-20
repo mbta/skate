@@ -152,7 +152,8 @@ defmodule Skate.Detours.SnapshotSerde do
     end
   end
 
-  # defp state_from_detour(%Detour{detour_state: state}), do: state
+  defp state_from_detour(%Detour{state_value: state}), do: state
+
   defp state_from_detour(%Detour{
          state: %{
            "value" => state
