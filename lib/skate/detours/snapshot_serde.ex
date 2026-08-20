@@ -12,7 +12,10 @@ defmodule Skate.Detours.SnapshotSerde do
   Converts a XState JSON Snapshot to Detours Database Changeset
   """
   def deserialize(user_id, %{} = snapshot) do
-    {activated_at, snapshot} = pop_in(snapshot, ["context", "activatedAt"])
+    {activated_at, snapshot} =
+      snapshot
+      |> put_in(["value", "SaveState"], "Saved")
+      |> pop_in(["context", "activatedAt"])
 
     id = id_from_snapshot(snapshot)
 
