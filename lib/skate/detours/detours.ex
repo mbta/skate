@@ -524,7 +524,7 @@ defmodule Skate.Detours.Detours do
 
     if is_binary(reason) do
       case Application.fetch_env(:skate, :s3_bucket) do
-        {:ok, s3_bucket} ->
+        {:ok, s3_bucket} when is_binary(s3_bucket) ->
           %{
             reason: reason,
             filter: %{"status" => "active"},
