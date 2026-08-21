@@ -15,15 +15,25 @@ defmodule SkateWeb.Plugs.LogsterProbePathFilter do
                       "/login/.git/config"
                     ])
 
+  @probe_path_prefixes [
+    "/cms/vendor/phpunit/phpunit/src/Util/PHP/",
+    "/vendor/phpunit/phpunit/src/Util/PHP/"
+  ]
+
   @impl Plug
   def init(opts), do: opts
 
   @impl Plug
   def call(conn, _opts) do
-    if MapSet.member?(@exact_probe_paths, conn.request_path) do
+    if probe_path?(conn.request_path) do
       put_private(conn, :logster_log_level, :info)
     else
       conn
     end
+  end
+
+  defp probe_path?(request_path) do
+    MapSet.member?(@exact_probe_paths, request_path) ||
+      String.starts_with?(request_path, @probe_path_prefixes)
   end
 end
