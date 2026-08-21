@@ -9,7 +9,7 @@ defmodule Skate.Oban.CleanUpNotifications do
     queue: :default,
     unique: [
       period: :infinity,
-      states: [:scheduled, :available, :executing, :retryable]
+      states: [:scheduled, :available, :executing, :retryable, :suspended]
     ]
 
   import Ecto.Query
