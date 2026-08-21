@@ -45,6 +45,9 @@ defmodule Skate.DetourFactory do
           route_pattern_id: state["context"]["routePattern"]["id"],
           route_pattern_name: state["context"]["routePattern"]["name"],
           headsign: state["context"]["routePattern"]["headsign"],
+          direction_id: state["context"]["routePattern"]["directionId"],
+          undo_stack: state["context"]["undoStack"],
+          is_text_only: state["context"]["isTextOnly"],
           direction:
             Map.get(
               state["context"]["route"]["directionNames"],
@@ -74,7 +77,9 @@ defmodule Skate.DetourFactory do
               "id" =>
                 sequence("detour_route_pattern_id:") <> "-_-" <> Integer.to_string(direction_id)
             },
-            "nearestIntersection" => sequence("detour_nearest_intersection:")
+            "nearestIntersection" => sequence("detour_nearest_intersection:"),
+            "isTextOnly" => false,
+            "undoStack" => []
           },
           "value" => %{},
           "children" => %{},
@@ -83,11 +88,11 @@ defmodule Skate.DetourFactory do
       end
 
       def with_id(%Skate.Detours.Db.Detour{} = detour, id) do
-        %{
-          detour
-          | id: id,
-            state: with_id(detour.state, id)
-        }
+        state = put_in(detour.state, ["context", "uuid"], id)
+
+        detour
+        |> Map.put(:id, id)
+        |> Map.put(:state, state)
       end
 
       def with_id(%{"context" => %{"uuid" => _}} = snapshot, id) do
@@ -111,6 +116,7 @@ defmodule Skate.DetourFactory do
           detour
           | state: activated(detour.state, activated_at, estimated_duration),
             activated_at: activated_at,
+            updated_at: activated_at,
             status: :active,
             estimated_duration: estimated_duration
         }
@@ -150,162 +156,137 @@ defmodule Skate.DetourFactory do
             %Skate.Detours.Db.Detour{} = detour,
             %{name: route_name, id: route_id} = route
           ) do
-        %{
-          detour
-          | state: with_route(detour.state, route),
-            route_name: route_name,
-            route_id: route_id
-        }
+        detour |> with_route_id(route_id) |> with_route_name(route_name)
       end
 
-      def with_route(
-            %{"context" => %{"route" => %{}}} = state,
-            %{name: route_name, id: route_id}
-          ) do
-        state
-        |> with_route_id(route_id)
-        |> with_route_name(route_name)
+      def with_route(%{"context" => %{"route" => _}} = state, %{name: route_name, id: route_id}) do
+        state |> with_route_id(route_id) |> with_route_name(route_name)
       end
 
       def with_route_name(%Skate.Detours.Db.Detour{} = detour, name) do
-        %{detour | state: with_route_name(detour.state, name), route_name: name}
+        detour
+        |> Map.put(:route_name, name)
+        |> Map.put(:state, with_route_name(detour.state, name))
       end
 
-      def with_route_name(
-            %{"context" => %{"route" => %{"name" => _}}} = state,
-            name
-          ) do
-        put_in(state["context"]["route"]["name"], name)
+      def with_route_name(%{"context" => %{"route" => _}} = state, name) do
+        put_in(state, ["context", "route", "name"], name)
       end
 
       def with_route_id(%Skate.Detours.Db.Detour{} = detour, id) do
-        %{detour | state: with_route_id(detour.state, id)}
+        detour
+        |> Map.put(:route_id, id)
+        |> Map.put(:state, with_route_id(detour.state, id))
       end
 
-      def with_route_id(
-            %{"context" => %{"route" => %{"id" => _}}} = state,
-            id
-          ) do
-        put_in(state["context"]["route"]["id"], id)
+      def with_route_id(%{"context" => %{"route" => _}} = state, id) do
+        put_in(state, ["context", "route", "id"], id)
       end
 
       def with_direction(%Skate.Detours.Db.Detour{} = detour, direction) do
-        direction_str =
+        {direction_str, direction_id} =
           case direction do
-            :inbound -> "Inbound"
-            :outbound -> "Outbound"
+            :inbound -> {"Inbound", 1}
+            :outbound -> {"Outbound", 0}
           end
 
-        %{
-          detour
-          | state: with_direction(detour.state, direction),
-            direction: direction_str
-        }
+        detour
+        |> Map.put(:direction, direction_str)
+        |> Map.put(:direction_id, direction_id)
+        |> Map.put(:state, with_direction(detour.state, direction))
       end
 
-      def with_direction(
-            %{"context" => %{"routePattern" => %{"directionId" => _}}} = state,
-            :inbound
-          ) do
-        put_in(state["context"]["routePattern"]["directionId"], 1)
-      end
+      def with_direction(%{"context" => %{"routePattern" => _}} = state, direction) do
+        direction_id =
+          case direction do
+            :inbound -> 1
+            :outbound -> 0
+          end
 
-      def with_direction(
-            %{"context" => %{"routePattern" => %{"directionId" => _}}} = state,
-            :outbound
-          ) do
-        put_in(state["context"]["routePattern"]["directionId"], 0)
+        put_in(state, ["context", "routePattern", "directionId"], direction_id)
       end
 
       def with_route_pattern_id(%Skate.Detours.Db.Detour{} = detour, id) do
-        %{detour | state: with_route_pattern_id(detour.state, id)}
+        detour
+        |> Map.put(:route_pattern_id, id)
+        |> Map.put(:state, with_route_pattern_id(detour.state, id))
       end
 
-      def with_route_pattern_id(
-            %{"context" => %{"routePattern" => %{"id" => _}}} = state,
-            id
-          ) do
-        put_in(state["context"]["routePattern"]["id"], id)
+      def with_route_pattern_id(%{"context" => %{"routePattern" => _}} = state, id) do
+        put_in(state, ["context", "routePattern", "id"], id)
       end
 
       def with_headsign(%Skate.Detours.Db.Detour{} = detour, headsign) do
-        %{detour | state: with_headsign(detour.state, headsign), headsign: headsign}
+        detour
+        |> Map.put(:headsign, headsign)
+        |> Map.put(:state, with_headsign(detour.state, headsign))
       end
 
-      def with_headsign(
-            %{"context" => %{"routePattern" => %{"headsign" => _}}} = state,
-            id
-          ) do
-        put_in(state["context"]["routePattern"]["headsign"], id)
+      def with_headsign(%{"context" => %{"routePattern" => _}} = state, headsign) do
+        put_in(state, ["context", "routePattern", "headsign"], headsign)
       end
 
       def with_nearest_intersection(%Skate.Detours.Db.Detour{} = detour, value) do
-        %{
-          detour
-          | state: with_nearest_intersection(detour.state, value),
-            nearest_intersection: value
-        }
+        detour
+        |> Map.put(:nearest_intersection, value)
+        |> Map.put(:state, with_nearest_intersection(detour.state, value))
       end
 
-      def with_nearest_intersection(
-            %{"context" => %{"nearestIntersection" => _}} = state,
-            headsign
-          ) do
-        put_in(state["context"]["nearestIntersection"], headsign)
+      def with_nearest_intersection(%{"context" => %{"nearestIntersection" => _}} = state, value) do
+        put_in(state, ["context", "nearestIntersection"], value)
       end
 
       def with_coordinates(
-            detour,
+            update_arg,
             coordinates \\ [
-              %{
-                lat: 42.337949,
-                lon: -71.074936
-              },
-              %{
-                lat: 42.338488,
-                lon: -71.066487
-              },
-              %{
-                lat: 42.339672,
-                lon: -71.067018
-              },
-              %{
-                lat: 42.339848,
-                lon: -71.067554
-              },
-              %{
-                lat: 42.340134,
-                lon: -71.068427
-              },
-              %{
-                lat: 42.340216,
-                lon: -71.068579
-              }
+              %{lat: 42.337949, lon: -71.074936},
+              %{lat: 42.338488, lon: -71.066487},
+              %{lat: 42.339672, lon: -71.067018},
+              %{lat: 42.339848, lon: -71.067554},
+              %{lat: 42.340134, lon: -71.068427},
+              %{lat: 42.340216, lon: -71.068579}
             ]
           )
 
-      def with_coordinates(
-            %Skate.Detours.Db.Detour{} = detour,
-            coordinates
-          ) do
-        %{detour | state: with_coordinates(detour.state, coordinates)}
+      def with_coordinates(%Skate.Detours.Db.Detour{} = detour, coordinates) do
+        detour_shape = %{"ok" => %{"coordinates" => coordinates}}
+
+        detour
+        |> Map.put(:coordinates, coordinates)
+        |> Map.put(:detour_shape, detour_shape)
+        |> Map.put(:state, with_coordinates(detour.state, coordinates))
       end
 
-      def with_coordinates(state, coordinates) do
-        put_in(state["context"]["detourShape"], %{"ok" => %{"coordinates" => coordinates}})
+      def with_coordinates(%{"context" => %{}} = state, coordinates) do
+        put_in(state, ["context", "detourShape"], %{
+          "ok" => %{"coordinates" => coordinates}
+        })
       end
 
       def with_missed_stops(%Skate.Detours.Db.Detour{} = detour, stops) do
-        %{detour | state: with_missed_stops(detour.state, stops)}
+        missed_stops = Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
+
+        route_segments =
+          detour.route_segments || %{"beforeDetour" => [], "afterDetour" => [], "detour" => []}
+
+        detour_shape = detour.detour_shape || %{"ok" => %{"coordinates" => []}}
+
+        detour
+        |> Map.put(:missed_stops, missed_stops)
+        |> Map.put(:route_segments, route_segments)
+        |> Map.put(:detour_shape, detour_shape)
+        |> Map.put(:state, with_missed_stops(detour.state, stops))
       end
 
-      def with_missed_stops(state, stops) do
-        missed_stops = Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
-        put_in(state["context"]["finishedDetour"], %{"missedStops" => missed_stops})
+      def with_missed_stops(%{"context" => _} = state, stops) do
+        missed_stops = Enum.map(stops, &%{"id" => &1})
+        finished_detour = %{"finishedDetour" => %{"missedStops" => missed_stops}}
+
+        put_in(state, ["context", "finishedDetour"], finished_detour)
       end
 
       def with_author(%Skate.Detours.Db.Detour{} = detour, user) do
-        %{detour | author: user}
+        Map.put(detour, :author, user)
       end
     end
   end
