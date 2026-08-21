@@ -7,7 +7,9 @@ defmodule SkateWeb.Plugs.LogsterProbePathFilterTest do
     for path <- [
           "/apple-touch-icon-precomposed.png",
           "/apple-touch-icon.png",
-          "/login/.git/config"
+          "/login/.git/config",
+          "/cms/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php",
+          "/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php"
         ] do
       conn =
         :get
