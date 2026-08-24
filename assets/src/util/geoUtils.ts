@@ -1,4 +1,4 @@
-import { LatLngLiteral } from "leaflet"
+import Leaflet, { LatLngLiteral } from "leaflet"
 import { shapePointToLatLngLiteral } from "./pointLiterals"
 
 interface LatLng {
@@ -25,4 +25,17 @@ export const calculateGeographicCenter = (
   const centerLon = sumLon / coordinates.length
 
   return shapePointToLatLngLiteral({ lat: centerLat, lon: centerLon })
+}
+
+// calculates the point up to $buffer meters away from p1 in the direction of p2
+export const closestWithBuffer = (
+  p1: Leaflet.LatLng,
+  p2: Leaflet.LatLng,
+  buffer: number
+) => {
+  const d = p1.distanceTo(p2)
+  const ratio = Math.min(1, buffer / d)
+  const lat = p1.lat + (p2.lat - p1.lat) * ratio
+  const lng = p1.lng + (p2.lng - p1.lng) * ratio
+  return { lat, lng }
 }

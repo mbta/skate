@@ -26,6 +26,7 @@ import { joinClasses } from "../../helpers/dom"
 import { RouteSegments, UnfinishedRouteSegments } from "../../models/detour"
 import { MapButton } from "../map/controls/mapButton"
 import { ArrowLeftSquare, XSquare } from "../../helpers/bsIcons"
+import { closestWithBuffer } from "../../util/geoUtils"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import { StopMarkerWithStopCard } from "../map/markers/stopMarker"
 import {
@@ -188,10 +189,10 @@ export const DetourMap = ({
     },
     dispatch,
   ] = useContext(StateDispatchContext)
-
   const [streetViewEnabled, setStreetViewEnabled] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
 
-  const onClickMap = streetViewEnabled ? undefined : onAddWaypoint
+  const onClickMap = streetViewEnabled || isDragging ? undefined : onAddWaypoint
 
   const canDraw = !streetViewEnabled && editing
 
@@ -217,7 +218,7 @@ export const DetourMap = ({
   )
 
   const start_point = useMemo(() => {
-    if (!startPoint) return null
+    if (!startPoint || !onMoveStartPoint) return null
 
     const segment = routeSegments
       ? routeSegments.beforeDetour.concat(routeSegments.detour)
@@ -227,6 +228,7 @@ export const DetourMap = ({
         place="start"
         position={shapePointToLatLngLiteral(startPoint)}
         snapLine={segment.map(shapePointToLatLngLiteral)}
+        onDragStart={() => setIsDragging(true)}
         onDragEnd={onMoveStartPoint}
       />
     )
@@ -243,6 +245,7 @@ export const DetourMap = ({
         place="end"
         position={shapePointToLatLngLiteral(endPoint)}
         snapLine={segment.map(shapePointToLatLngLiteral)}
+        onDragStart={() => setIsDragging(true)}
         onDragEnd={onMoveEndPoint}
       />
     )
@@ -340,6 +343,10 @@ export const DetourMap = ({
 
         <MapEvents
           click={(e) => {
+            if (isDragging) {
+              setIsDragging(false)
+              return
+            }
             onClickMap?.(latLngLiteralToShapePoint(e.latlng))
           }}
         />
@@ -513,11 +520,13 @@ const StartOrEndMarker = ({
   place,
   position,
   snapLine,
+  onDragStart,
   onDragEnd,
 }: {
   place: "start" | "end"
   position: LatLngLiteral
   snapLine: LatLngLiteral[]
+  onDragStart: () => void,
   onDragEnd?: (position: ShapePoint) => void
 }) => {
   const map = useMap()
@@ -550,6 +559,7 @@ const StartOrEndMarker = ({
         eventHandlers={
           (isInteractive || undefined) && {
             dragstart: () => {
+              onDragStart()
               const line = lineRef.current
               if (!line) return
 
@@ -560,9 +570,18 @@ const StartOrEndMarker = ({
               const line = lineRef.current
               if (!marker || !line) return
 
-              const layerPoint = map.latLngToLayerPoint(marker.getLatLng())
-              const closestPoint = line.closestLayerPoint(layerPoint)
-              marker.setLatLng(map.layerPointToLatLng(closestPoint))
+              const markerLatLgn = marker.getLatLng()
+              const markerPoint = map.latLngToLayerPoint(marker.getLatLng())
+
+              const closestLinePoint = line.closestLayerPoint(markerPoint)
+              const closestLineLatLng = map.layerPointToLatLng(closestLinePoint)
+
+              const bufferedPoint = closestWithBuffer(
+                closestLineLatLng,
+                markerLatLgn,
+                10
+              )
+              marker.setLatLng(bufferedPoint)
             },
             dragend: () => {
               const marker = markerRef.current
@@ -597,6 +616,7 @@ const StartOrEndIcon = ({ classSuffix }: { classSuffix: string }) => (
       <circle cx={20} cy={20} r={7.5} opacity={0.5} />
       <circle cx={20} cy={20} r={6} stroke="white" strokeWidth={2} />
     </g>
+    {/* <circle className="c-cursor-block" cx={20} cy={20} r={20} /> */}
   </svg>
 )
 
