@@ -442,7 +442,9 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp activated_at_from_detour(%Detour{activated_at: nil}), do: nil
 
-  defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children}) when not is_nil(snapshot_children), do: snapshot_children
+  defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children})
+       when not is_nil(snapshot_children),
+       do: snapshot_children
 
   defp snapshot_children_from_detour(%Detour{
          state: %{
