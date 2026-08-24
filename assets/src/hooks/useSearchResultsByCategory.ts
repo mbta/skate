@@ -10,14 +10,10 @@ import { LocationSearchResult } from "../models/locationSearchResult"
 import { Vehicle, Ghost } from "../realtime"
 
 export type VehicleResultType =
-  | Ok<LimitedSearchResults<Vehicle | Ghost>>
-  | Loading
-  | null
+  Ok<LimitedSearchResults<Vehicle | Ghost>> | Loading | null
 
 type LocationResultsType =
-  | Ok<LimitedSearchResults<LocationSearchResult>>
-  | Loading
-  | null
+  Ok<LimitedSearchResults<LocationSearchResult>> | Loading | null
 
 export type SearchResultsByCategory = {
   vehicle: VehicleResultType

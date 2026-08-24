@@ -392,11 +392,11 @@ export const createDetourMachine = setup({
                         ? // Return the current route pattern
                           context.routePattern
                         : // Otherwise: Find the first pattern that's "Inbound"
-                          event.output.find(
+                          (event.output.find(
                             (pattern) => pattern.directionId === 1
                           ) ??
                           // Otherwise fallback to the first pattern in the list (which _could_ be empty)
-                          event.output.at(0),
+                          event.output.at(0)),
                   }),
                 },
               },

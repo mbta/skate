@@ -4,7 +4,7 @@ import { Socket, PushStatus, Channel } from "phoenix"
 export const makeMockSocket = (): Socket & { channel: jest.Mock } =>
   ({
     channel: jest.fn(),
-  } as Socket & { channel: jest.Mock })
+  }) as Socket & { channel: jest.Mock }
 
 export const makeMockChannel = (
   expectedReceiveMessage?: PushStatus | (() => PushStatus),

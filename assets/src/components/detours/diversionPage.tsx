@@ -85,8 +85,7 @@ interface DiversionPageFromSnapshot {
 }
 
 export type DiversionPageStateProps =
-  | DiversionPageFromInput
-  | DiversionPageFromSnapshot
+  DiversionPageFromInput | DiversionPageFromSnapshot
 
 export type DiversionPageProps = DiversionPageStateProps &
   DiversionPageFunctions
@@ -190,7 +189,7 @@ export const DiversionPage = ({
     "Turn-by-Turn Directions:",
     ...(editedDirections
       ? [editedDirections]
-      : extendedDirections?.map((v) => v.instruction) ?? []),
+      : (extendedDirections?.map((v) => v.instruction) ?? [])),
     ,
     "Connection Points:",
     connectionPoints?.start?.name ?? "N/A",
@@ -247,8 +246,8 @@ export const DiversionPage = ({
         ? () => send({ type: "detour.share.activate-modal.update" })
         : undefined
       : snapshot.can({ type: "detour.share.activate-modal.activate" })
-      ? () => send({ type: "detour.share.activate-modal.activate" })
-      : undefined
+        ? () => send({ type: "detour.share.activate-modal.activate" })
+        : undefined
 
     const onCantDraw = inTestGroup(TestGroups.TextOnlyDetours)
       ? () => send({ type: "detour.edit.cant-draw" })

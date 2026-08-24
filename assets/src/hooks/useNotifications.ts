@@ -21,9 +21,7 @@ export type InitialNotifications = { type: "initial"; payload: Notification[] }
 export type NewNotification = { type: "new"; payload: Notification }
 
 export type ReceivedNotifications =
-  | NewNotification
-  | InitialNotifications
-  | null
+  NewNotification | InitialNotifications | null
 
 const parseNotifications = (
   notificationData: NotificationData | InitialNotificationData

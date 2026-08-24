@@ -16,7 +16,7 @@ export function argsUpdater<
   TArgs extends { [name: string]: any },
   TArgName extends keyof {
     [K in keyof TArgs as Fn extends TArgs[K] ? K : never]: TArgs[K]
-  }
+  },
 >(
   argName: TArgName,
   updater: (

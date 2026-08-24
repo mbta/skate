@@ -64,8 +64,7 @@ const ScheduleAdherenceMetric = ({
   </output>
 )
 
-export interface ScheduleAdherenceProps
-  extends ComponentPropsWithoutRef<"output"> {
+export interface ScheduleAdherenceProps extends ComponentPropsWithoutRef<"output"> {
   vehicle: Vehicle | Ghost
   title?: string
   includePullbackInformation?: boolean

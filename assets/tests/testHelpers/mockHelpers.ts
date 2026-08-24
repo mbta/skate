@@ -16,7 +16,7 @@ import { TileType, tilesetUrlForType } from "../../src/tilesetUrls"
  * @deprecated use {@linkcode Promise.resolve}
  */
 export const instantPromise = <T>(value: T): Promise<T> =>
-  ({ then: (onfulfilled: (v: T) => any) => onfulfilled(value) } as Promise<T>)
+  ({ then: (onfulfilled: (v: T) => any) => onfulfilled(value) }) as Promise<T>
 
 /**
  * A promise that never resolves.

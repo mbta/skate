@@ -18,8 +18,7 @@ $table-variants: $theme-colors;
 
 $utilities: (
   // Shorthand for specifying utility classes `top-0 start-0 bottom-0 end-0`
-  "inset":
-    (
+  "inset": (
       property: inset,
       values: (
         0: 0,

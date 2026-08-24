@@ -111,8 +111,8 @@ export const VehicleMarker = ({
         ? 40
         : 30
       : isPrimary
-      ? 62
-      : 40
+        ? 62
+        : 40
 
   // https://leafletjs.com/reference.html#marker-zindexoffset
   // > By default, marker images zIndex is set automatically based on its latitude

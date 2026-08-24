@@ -26,8 +26,7 @@ export interface DetoursMap {
 }
 
 type InitialMessageType =
-  | typeof SimpleDetourData
-  | typeof SimpleActiveDetourData
+  typeof SimpleDetourData | typeof SimpleActiveDetourData
 
 type SubscribeOptions = {
   socket: Socket

@@ -56,8 +56,8 @@ export const vehicleProperties = (
             value: vehicle.isShuttle
               ? formattedRunNumber(vehicle)
               : vehicle.isOverload && !!vehicle.runId
-              ? `ADDED ${runId}`
-              : runId || "Not Available",
+                ? `ADDED ${runId}`
+                : runId || "Not Available",
           },
         ]),
     {
