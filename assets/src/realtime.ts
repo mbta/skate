@@ -81,8 +81,7 @@ export function isDetourExpirationNotification(
 }
 
 export type DetourNotifications =
-  | DetourNotification
-  | DetourExpirationNotification
+  DetourNotification | DetourExpirationNotification
 export function isADetourNotification(
   notification: Notification
 ): notification is Notification<DetourNotifications> {
@@ -104,8 +103,7 @@ export interface BridgeRaisedNotification {
 }
 
 export type BridgeNotification =
-  | BridgeLoweredNotification
-  | BridgeRaisedNotification
+  BridgeLoweredNotification | BridgeRaisedNotification
 
 export function isBridgeNotification(
   notification: Notification
@@ -164,7 +162,7 @@ export type NotificationContentTypes =
   | DetourExpirationNotification
 
 export interface Notification<
-  TNotification extends NotificationContentTypes = NotificationContentTypes
+  TNotification extends NotificationContentTypes = NotificationContentTypes,
 > {
   id: NotificationId
   createdAt: Date

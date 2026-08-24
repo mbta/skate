@@ -1,12 +1,7 @@
 module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
-  plugins: [
-    "@typescript-eslint",
-    "react",
-    "jsx-a11y",
-    "jest"
-  ],
+  plugins: ["@typescript-eslint", "react", "jsx-a11y", "jest"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -15,20 +10,20 @@ module.exports = {
     "plugin:jsx-a11y/recommended",
     "prettier",
     "plugin:storybook/recommended",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
   ],
-  "settings": {
-    "react": {
-      "version": "detect",
+  settings: {
+    react: {
+      version: "detect",
     },
   },
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true,
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
   },
-  "reportUnusedDisableDirectives": true,
-  "rules": {
+  reportUnusedDisableDirectives: true,
+  rules: {
     "no-console": "error",
     "prefer-rest-params": "off",
     "no-sparse-arrays": "off",
@@ -37,42 +32,39 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
-        "argsIgnorePattern": "^_.*",
-        "varsIgnorePattern": "^_.*",
-        "destructuredArrayIgnorePattern": "^_.*",
-      }
+        argsIgnorePattern: "^_.*",
+        varsIgnorePattern: "^_.*",
+        destructuredArrayIgnorePattern: "^_.*",
+      },
     ],
     "react/display-name": "off",
     "react/function-component-definition": [
       "error",
       {
-        "namedComponents": "arrow-function",
-        "unnamedComponents": "arrow-function",
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function",
       },
     ],
     "react/hook-use-state": "error",
     "react/no-danger": "error",
   },
-  "overrides": [
+  overrides: [
     {
-      "files": [
+      files: [
         "tests/setup.tsx",
         "tests/testHelpers/touchEventHelpers.ts",
         "*.test.ts",
         "*.test.tsx",
       ],
-      "rules": {
+      rules: {
         "@typescript-eslint/ban-ts-comment": "off",
       },
     },
     {
-      "files": [
-        "*.test.ts",
-        "*.test.tsx",
-      ],
-      "rules": {
+      files: ["*.test.ts", "*.test.tsx"],
+      rules: {
         "@typescript-eslint/no-non-null-assertion": "off",
       },
     },
   ],
-};
+}

@@ -16,11 +16,7 @@ export type OnTimeStatus = "on-time" | "early" | "late"
  * taking into account the vehicle's state and the settings
  */
 export type DrawnStatus =
-  | OnTimeStatus
-  | "off-course"
-  | "ghost"
-  | "plain"
-  | "logged-out"
+  OnTimeStatus | "off-course" | "ghost" | "plain" | "logged-out"
 
 export const onTimeStatus = (scheduleAdherenceSecs: number): OnTimeStatus => {
   const oneMinuteInSeconds = 60
@@ -67,8 +63,8 @@ export const humanReadableScheduleAdherence = (
   includePullbackInformation && isActivelyPullingBack(vehicle)
     ? "Logged In"
     : vehicle.isOffCourse || vehicle.scheduleAdherenceSecs === null
-    ? "Invalid"
-    : humanReadableOnTimeStatus(onTimeStatus(vehicle.scheduleAdherenceSecs))
+      ? "Invalid"
+      : humanReadableOnTimeStatus(onTimeStatus(vehicle.scheduleAdherenceSecs))
 
 export const humanReadableOnTimeStatus = (status: OnTimeStatus): string => {
   switch (status) {

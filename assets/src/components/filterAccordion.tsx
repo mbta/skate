@@ -112,8 +112,10 @@ export const FilterAccordionToggleFilter = (
   )
 }
 
-export interface FilterAccordionWithExpansionStateProps
-  extends Omit<FilterAccordionProps, "showFilters" | "setShowFilters"> {
+export interface FilterAccordionWithExpansionStateProps extends Omit<
+  FilterAccordionProps,
+  "showFilters" | "setShowFilters"
+> {
   initialActiveState?: boolean
 }
 
@@ -140,8 +142,10 @@ export const FilterAccordionWithExpansionState = ({
   )
 }
 
-export interface FilterAccordionFilterWithStateProps
-  extends Omit<FilterAccordionToggleProps, "active"> {
+export interface FilterAccordionFilterWithStateProps extends Omit<
+  FilterAccordionToggleProps,
+  "active"
+> {
   initialActiveState?: boolean
 }
 

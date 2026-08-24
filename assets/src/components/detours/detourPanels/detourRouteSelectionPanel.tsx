@@ -24,8 +24,7 @@ interface SelectedRouteInfoWithoutRoutePatterns {
 }
 
 type SelectedRouteInfo =
-  | SelectedRouteInfoWithRoutePatterns
-  | SelectedRouteInfoWithoutRoutePatterns
+  SelectedRouteInfoWithRoutePatterns | SelectedRouteInfoWithoutRoutePatterns
 
 interface DetourRouteSelectionPanelProps {
   allRoutes: Route[]

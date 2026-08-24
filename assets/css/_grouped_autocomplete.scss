@@ -86,7 +86,9 @@
   &:focus,
   &:active {
     border: 1px solid $color-eggplant-500;
-    box-shadow: 0 5px 5px $color-gray-400, 0 0 0 2px #aa4ef22b;
+    box-shadow:
+      0 5px 5px $color-gray-400,
+      0 0 0 2px #aa4ef22b;
   }
 }
 

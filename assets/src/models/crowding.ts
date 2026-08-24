@@ -1,11 +1,7 @@
 import { VehicleInScheduledService } from "../realtime"
 
 export type OccupancyStatus =
-  | "NO_DATA"
-  | "EMPTY"
-  | "MANY_SEATS_AVAILABLE"
-  | "FEW_SEATS_AVAILABLE"
-  | "FULL"
+  "NO_DATA" | "EMPTY" | "MANY_SEATS_AVAILABLE" | "FEW_SEATS_AVAILABLE" | "FULL"
 
 export interface Crowding {
   load: number | null

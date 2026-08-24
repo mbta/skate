@@ -62,9 +62,7 @@ const removeRoute = (routeId: RouteId): RemoveRouteAction => ({
 })
 
 type Action =
-  | SetChannelForRouteAction
-  | SetTrainVehiclesForRouteAction
-  | RemoveRouteAction
+  SetChannelForRouteAction | SetTrainVehiclesForRouteAction | RemoveRouteAction
 
 type Dispatch = ReactDispatch<Action>
 

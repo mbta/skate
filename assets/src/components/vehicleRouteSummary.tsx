@@ -70,10 +70,10 @@ export const VehicleRouteDirection = ({
       {isVehicle(vehicle) && isLoggedOut(vehicle)
         ? "No direction available"
         : includePullbackInformation &&
-          isVehicle(vehicle) &&
-          isActivelyPullingBack(vehicle)
-        ? "Pulling back"
-        : directionName(vehicle, route)}
+            isVehicle(vehicle) &&
+            isActivelyPullingBack(vehicle)
+          ? "Pulling back"
+          : directionName(vehicle, route)}
     </output>
   )
 }

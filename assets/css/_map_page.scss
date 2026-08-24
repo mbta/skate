@@ -49,7 +49,7 @@ $z-map-page-context: (
   width: Min(
     $map-page-search-panel-width,
     /* Panel + Drawer(2rem) should have 100% viewport width - 10px to match leaflet margin */
-      calc((100vw - 2rem) - 10px)
+    calc((100vw - 2rem) - 10px)
   );
 
   height: 100%;
@@ -175,7 +175,9 @@ $map-page-search-stub-size: 10px;
 
 .c-map-page__search_results_header {
   color: $color-gray-900;
-  font-feature-settings: "clig" off, "liga" off;
+  font-feature-settings:
+    "clig" off,
+    "liga" off;
   font-size: var(--font-size-l);
   font-weight: var(--font-weight-reg);
   line-height: 1;

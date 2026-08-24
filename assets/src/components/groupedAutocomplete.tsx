@@ -341,8 +341,7 @@ export interface GroupedAutocompleteControls {
 /**
  * General configuration props for the {@link GroupedAutocomplete} control.
  */
-export interface GroupedAutocompleteProps
-  extends GroupedAutocompleteControlRefProps {
+export interface GroupedAutocompleteProps extends GroupedAutocompleteControlRefProps {
   /**
    * The ID of the `listbox` control.
    *
@@ -461,17 +460,14 @@ export const GroupedAutocomplete = ({
   const { cursorLocation, updateCursorLocation, setCursorLocation } =
     useCursorLocationFromGroups(optionGroups, onCursor)
 
-  useImperativeHandle(
-    controllerRef,
-    (): GroupedAutocompleteControls => ({
-      focusCursorToFirstOption() {
-        updateCursorLocation(CursorLocationAction.MoveToStart)
-      },
-      forgetCursor() {
-        updateCursorLocation(CursorLocationAction.DeleteCursor)
-      },
-    })
-  )
+  useImperativeHandle(controllerRef, (): GroupedAutocompleteControls => ({
+    focusCursorToFirstOption() {
+      updateCursorLocation(CursorLocationAction.MoveToStart)
+    },
+    forgetCursor() {
+      updateCursorLocation(CursorLocationAction.DeleteCursor)
+    },
+  }))
 
   return (
     <div className="c-autocomplete">
@@ -640,7 +636,8 @@ const GroupOptionList = (props: LabelledListProps) => (
  * {@link GroupedAutocompleteFromSearchTextResults} Props
  */
 interface GroupedAutocompleteFromSearchTextResultsProps
-  extends GroupedAutocompleteControlRefProps,
+  extends
+    GroupedAutocompleteControlRefProps,
     Omit<GroupedAutocompleteProps, "optionGroups">,
     GroupedAutocompleteFromSearchTextEventProps {
   /**

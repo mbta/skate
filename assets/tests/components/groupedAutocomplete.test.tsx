@@ -640,11 +640,11 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
             operator: [operatorVehicle],
             run: [runVehicle],
           },
-        }[text] || {
+        })[text] || {
           vehicle: [],
           operator: [],
           run: [],
-        })
+        }
     )
     jest
       .mocked(useLocationSearchSuggestions)
@@ -698,11 +698,11 @@ describe("<GroupedAutocompleteFromSearchTextResults/>", () => {
             operator: [],
             run: [],
           },
-        }[text] || {
+        })[text] || {
           vehicle: [],
           operator: [],
           run: [],
-        })
+        }
     )
     jest
       .mocked(useLocationSearchSuggestions)

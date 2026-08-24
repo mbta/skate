@@ -703,9 +703,9 @@ const MasterCheckbox = ({
     selectedAttachedIds.length === 0
       ? "none"
       : selectedAttachedIds.length + hiddenAttachedIds.length ===
-        attachedIds.length
-      ? "all"
-      : "some"
+          attachedIds.length
+        ? "all"
+        : "some"
 
   const toggleRows =
     selectionState === "all"

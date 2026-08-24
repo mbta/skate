@@ -72,10 +72,7 @@ interface OverwritePresetModal {
 }
 
 export type OpenInputModal =
-  | CreatePresetModal
-  | SavePresetModal
-  | DeletePresetModal
-  | OverwritePresetModal
+  CreatePresetModal | SavePresetModal | DeletePresetModal | OverwritePresetModal
 
 export interface State {
   pickerContainerIsVisible: boolean

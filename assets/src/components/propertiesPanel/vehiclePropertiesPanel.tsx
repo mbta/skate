@@ -59,8 +59,8 @@ const useRouteVehicles = (
   const vehiclesByRouteId = useContext(VehiclesByRouteIdContext)
 
   const existingVehiclesAndGhosts:
-    | (VehicleInScheduledService | Ghost)[]
-    | undefined = routeId === null ? undefined : vehiclesByRouteId[routeId]
+    (VehicleInScheduledService | Ghost)[] | undefined =
+    routeId === null ? undefined : vehiclesByRouteId[routeId]
 
   return (existingVehiclesAndGhosts || [])
     .filter(isVehicleInScheduledService)
