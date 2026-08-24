@@ -27,7 +27,7 @@ export const calculateGeographicCenter = (
   return shapePointToLatLngLiteral({ lat: centerLat, lon: centerLon })
 }
 
-// calculates the point up to $buffer meters away from p1 in the direction of p2
+// calculates the point up to _buffer_ meters away from p1 in the direction of p2
 export const closestWithBuffer = (
   p1: Leaflet.LatLng,
   p2: Leaflet.LatLng,

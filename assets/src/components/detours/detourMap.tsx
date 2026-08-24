@@ -218,7 +218,7 @@ export const DetourMap = ({
   )
 
   const start_point = useMemo(() => {
-    if (!startPoint || !onMoveStartPoint) return null
+    if (!startPoint) return null
 
     const segment = routeSegments
       ? routeSegments.beforeDetour.concat(routeSegments.detour)
@@ -228,7 +228,7 @@ export const DetourMap = ({
         place="start"
         position={shapePointToLatLngLiteral(startPoint)}
         snapLine={segment.map(shapePointToLatLngLiteral)}
-        onDragStart={() => setIsDragging(true)}
+        toggleDraggingState={() => setIsDragging(isDragging => !isDragging)}
         onDragEnd={onMoveStartPoint}
       />
     )
@@ -245,7 +245,7 @@ export const DetourMap = ({
         place="end"
         position={shapePointToLatLngLiteral(endPoint)}
         snapLine={segment.map(shapePointToLatLngLiteral)}
-        onDragStart={() => setIsDragging(true)}
+        toggleDraggingState={() => setIsDragging(isDragging => !isDragging)}
         onDragEnd={onMoveEndPoint}
       />
     )
@@ -343,10 +343,6 @@ export const DetourMap = ({
 
         <MapEvents
           click={(e) => {
-            if (isDragging) {
-              setIsDragging(false)
-              return
-            }
             onClickMap?.(latLngLiteralToShapePoint(e.latlng))
           }}
         />
@@ -520,13 +516,13 @@ const StartOrEndMarker = ({
   place,
   position,
   snapLine,
-  onDragStart,
+  toggleDraggingState,
   onDragEnd,
 }: {
   place: "start" | "end"
   position: LatLngLiteral
   snapLine: LatLngLiteral[]
-  onDragStart: () => void
+  toggleDraggingState: () => void
   onDragEnd?: (position: ShapePoint) => void
 }) => {
   const map = useMap()
@@ -559,7 +555,7 @@ const StartOrEndMarker = ({
         eventHandlers={
           (isInteractive || undefined) && {
             dragstart: () => {
-              onDragStart()
+              toggleDraggingState()
               const line = lineRef.current
               if (!line) return
 
@@ -579,7 +575,7 @@ const StartOrEndMarker = ({
               const bufferedPoint = closestWithBuffer(
                 closestLineLatLng,
                 markerLatLgn,
-                10
+                7
               )
               marker.setLatLng(bufferedPoint)
             },
@@ -590,7 +586,8 @@ const StartOrEndMarker = ({
 
               line?.setStyle({ opacity: 0 })
               onDragEnd?.(latLngLiteralToShapePoint(marker.getLatLng()))
-            },
+              setTimeout(() => toggleDraggingState(), 0)
+            }
           }
         }
         icon={place === "start" ? <StartIcon /> : <EndIcon />}
@@ -616,7 +613,6 @@ const StartOrEndIcon = ({ classSuffix }: { classSuffix: string }) => (
       <circle cx={20} cy={20} r={7.5} opacity={0.5} />
       <circle cx={20} cy={20} r={6} stroke="white" strokeWidth={2} />
     </g>
-    {/* <circle className="c-cursor-block" cx={20} cy={20} r={20} /> */}
   </svg>
 )
 
