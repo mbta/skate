@@ -215,7 +215,9 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp routepattern_from_detour(_), do: nil
 
-  defp routepatterns_from_detour(%Detour{route_patterns: route_patterns}), do: route_patterns
+  defp routepatterns_from_detour(%Detour{route_patterns: route_patterns})
+       when not is_nil(route_patterns),
+       do: route_patterns
 
   defp routepatterns_from_detour(%Detour{
          state: %{
@@ -278,7 +280,8 @@ defmodule Skate.Detours.SnapshotSerde do
   defp nearestintersection_from_detour(%Detour{nearest_intersection: nearest_intersection}),
     do: nearest_intersection
 
-  defp detourshape_from_detour(%Detour{detour_shape: detour_shape}), do: detour_shape
+  defp detourshape_from_detour(%Detour{detour_shape: detour_shape}) when not is_nil(detour_shape),
+    do: detour_shape
 
   defp detourshape_from_detour(%Detour{
          state: %{
@@ -439,8 +442,7 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp activated_at_from_detour(%Detour{activated_at: nil}), do: nil
 
-  defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children}),
-    do: snapshot_children
+  defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children}) when not is_nil(snapshot_children), do: snapshot_children
 
   defp snapshot_children_from_detour(%Detour{
          state: %{
