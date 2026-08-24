@@ -228,7 +228,7 @@ export const DetourMap = ({
         place="start"
         position={shapePointToLatLngLiteral(startPoint)}
         snapLine={segment.map(shapePointToLatLngLiteral)}
-        toggleDraggingState={() => setIsDragging(isDragging => !isDragging)}
+        toggleDraggingState={() => setIsDragging((isDragging) => !isDragging)}
         onDragEnd={onMoveStartPoint}
       />
     )
@@ -245,7 +245,7 @@ export const DetourMap = ({
         place="end"
         position={shapePointToLatLngLiteral(endPoint)}
         snapLine={segment.map(shapePointToLatLngLiteral)}
-        toggleDraggingState={() => setIsDragging(isDragging => !isDragging)}
+        toggleDraggingState={() => setIsDragging((isDragging) => !isDragging)}
         onDragEnd={onMoveEndPoint}
       />
     )
@@ -587,7 +587,7 @@ const StartOrEndMarker = ({
               line?.setStyle({ opacity: 0 })
               onDragEnd?.(latLngLiteralToShapePoint(marker.getLatLng()))
               setTimeout(() => toggleDraggingState(), 0)
-            }
+            },
           }
         }
         icon={place === "start" ? <StartIcon /> : <EndIcon />}
