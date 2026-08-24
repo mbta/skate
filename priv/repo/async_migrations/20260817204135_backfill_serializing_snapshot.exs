@@ -26,6 +26,7 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
   # https://fly.io/phoenix-files/backfilling-data/
 
   import Ecto.Query
+  require Logger
   use Ecto.Migration
 
   @disable_ddl_transaction true
@@ -60,12 +61,16 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
                      id: id,
                      state: state
                    } = detour ->
-      detour
-      |> Ecto.Changeset.change(map_fields(state))
-      |> repo().update()
-      |> case do
-        {:error, _changeset} -> raise "#{id} was not updated"
-        {:ok, %{id: changed_id}} -> changed_id
+      with changeset <- Ecto.Changeset.change(detour, map_fields(state)),
+           {:ok, valid_changeset} <- validate_changeset(changeset),
+           {:ok, %{id: changed_id}} <-
+             repo().update(valid_changeset) do
+        changed_id
+      else
+        {:error, reason} ->
+          Logger.warning(
+            "backfill_migration: Row was not updated detour_id=#{id} reason=#{inspect(reason)}"
+          )
       end
     end)
     |> (fn changed -> {:ok, changed} end).()
@@ -92,6 +97,14 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
     |> Map.new()
   end
 
+  defp validate_changeset(
+         %Ecto.Changeset{changes: %{state_value: _, route_patterns: _}} = changeset
+       ) do
+    {:ok, changeset}
+  end
+
+  defp validate_changeset(_), do: {:error, :missing_required_fields}
+
   defp throttle_change_in_batches(query_fun, change_fun, last_pos \\ 0)
   defp throttle_change_in_batches(_query_fun, _change_fun, nil), do: :ok
 
@@ -107,8 +120,8 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
             Process.sleep(@throttle_ms)
             throttle_change_in_batches(query_fun, change_fun, next_page)
 
-          error ->
-            raise error
+          {:error, reason} ->
+            Logger.warning("backfill_migration: Batch update failed reason=#{inspect(reason)}")
         end
     end
   end
