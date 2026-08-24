@@ -71,6 +71,8 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
           Logger.warning(
             "backfill_migration: Row was not updated detour_id=#{id} reason=#{inspect(reason)}"
           )
+
+          id
       end
     end)
     |> (fn changed -> {:ok, changed} end).()
