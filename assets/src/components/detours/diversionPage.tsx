@@ -226,6 +226,7 @@ export const DiversionPage = ({
     deleteDetourCallback: () => void
     copyToDraftDetourCallback: () => void
   }) => React.JSX.Element = () => {
+    console.log(JSON.stringify(snapshot.value, null, 2))
     const isActiveDetour = detourStatus === DetourStatus.Active
     const isDraftDetour = detourStatus === DetourStatus.Draft
     const onDeleteDetour =
@@ -685,6 +686,8 @@ export const DiversionPage = ({
           onCopyToDraftDetour={copyToDraftDetourCallback}
         />
       )
+    } else if (snapshot.matches({"Detour Drawing": "Deleted"})) {
+      return <></>
     } else {
       captureException(new Error("Unexpected detour state"))
       return <></>
