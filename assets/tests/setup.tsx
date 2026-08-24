@@ -3,6 +3,7 @@
 import failOnConsole from "jest-fail-on-console"
 import React from "react"
 import { randomUUID } from "node:crypto"
+import { TextEncoder, TextDecoder } from "node:util"
 
 const ignoreList = [/.*components\/app\.test\.tsx/]
 const ignoreNameList = []
@@ -63,6 +64,14 @@ Object.defineProperty(global, "crypto", {
     randomUUID: randomUUID,
   },
 })
+
+if (!global.TextEncoder) {
+  global.TextEncoder = TextEncoder
+}
+
+if (!global.TextDecoder) {
+  global.TextDecoder = TextDecoder
+}
 
 beforeEach(() => {
   // eslint-disable-next-line jest/no-standalone-expect

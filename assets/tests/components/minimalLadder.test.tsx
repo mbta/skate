@@ -6,7 +6,7 @@ import { Route as RouteType, TimepointsByRouteId } from "../../src/schedule.d"
 import useTimepoints from "../../src/hooks/useTimepoints"
 import { RoutesProvider } from "../../src/contexts/routesContext"
 import routeTabFactory from "../factories/routeTab"
-import { MemoryRouter, Route, Routes } from "react-router-dom"
+import { MemoryRouter, Route, Routes } from "react-router"
 import { StateDispatchProvider } from "../../src/contexts/stateDispatchContext"
 import { MinimalLadder } from "../../src/components/minimalLadder"
 import stateFactory from "../factories/applicationState"
@@ -66,10 +66,7 @@ describe("MinimalLadders", () => {
     const { asFragment } = render(
       <StateDispatchProvider state={initialState} dispatch={jest.fn()}>
         <RoutesProvider routes={routes}>
-          <MemoryRouter
-            future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-            initialEntries={[`/minimal/abcdef`]}
-          >
+          <MemoryRouter initialEntries={[`/minimal/abcdef`]}>
             <Routes>
               <Route
                 path="/minimal/:id"

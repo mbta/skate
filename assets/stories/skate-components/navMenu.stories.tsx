@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import NavMenu from "../../src/components/nav/navMenu"
-import { MemoryRouter } from "react-router-dom"
+import { MemoryRouter } from "react-router"
 import React from "react"
 
 const meta = {

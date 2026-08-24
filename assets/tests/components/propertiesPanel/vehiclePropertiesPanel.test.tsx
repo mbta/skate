@@ -27,7 +27,7 @@ import {
 import { useTripShape } from "../../../src/hooks/useShapes"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
 import { closeButton } from "../../testHelpers/selectors/components/closeButton"
-import { MemoryRouter } from "react-router-dom"
+import { MemoryRouter } from "react-router"
 import { loading } from "../../../src/util/fetchResult"
 
 // Avoid Halloween for off-course vehicles
@@ -130,12 +130,7 @@ const vehicle: VehicleInScheduledService = vehicleFactory.build({
 })
 
 const MemoryRouterWrapper = ({ children }: { children: ReactNode }) => (
-  <MemoryRouter
-    future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-    initialEntries={["/"]}
-  >
-    {children}
-  </MemoryRouter>
+  <MemoryRouter initialEntries={["/"]}>{children}</MemoryRouter>
 )
 
 describe("VehiclePropertiesPanel", () => {

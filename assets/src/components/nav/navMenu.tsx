@@ -1,5 +1,5 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { Nav } from "react-bootstrap"
 import { LogoIcon } from "../../helpers/icon"
 import CloseButton from "../closeButton"

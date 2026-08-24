@@ -89,7 +89,7 @@ defmodule Skate.Detours.Detour do
            status: status,
            is_text_only: is_text_only
          })
-         when not is_nil(headsign) and not is_nil(direction) and not is_nil(route_name) do
+         when not is_nil(route_name) and not is_nil(headsign) and not is_nil(direction) do
       %__MODULE__{
         id: id,
         route: route_name,
@@ -126,6 +126,7 @@ defmodule Skate.Detours.Detour do
            } = db_detour
          ) do
       direction = Map.get(direction_names, Integer.to_string(direction_id))
+      Logger.warning("detour_missing_info using_context id=#{db_detour.id}")
 
       %__MODULE__{
         id: id,
@@ -229,17 +230,16 @@ defmodule Skate.Detours.Detour do
     def from!(%Detour{is_text_only: true} = detour) do
       %{
         base_report(detour)
-        | missed_stops_text_only: get_in(detour.state, ["context", "typedDetour", "missedStops"]),
-          connection_points_text_only:
-            get_in(detour.state, ["context", "typedDetour", "connectionPoints"])
+        | missed_stops_text_only: detour.typed_detour["missedStops"],
+          connection_points_text_only: detour.typed_detour["connectionPoints"]
       }
     end
 
     def from!(%Detour{is_text_only: false} = detour) do
       %{
         base_report(detour)
-        | missed_stops: missed_stops!(detour),
-          connection_points: connection_points!(detour),
+        | missed_stops: detour.missed_stops,
+          connection_points: detour.connection_points,
           route_segments: route_segments(detour)
       }
     end
@@ -248,7 +248,7 @@ defmodule Skate.Detours.Detour do
       %__MODULE__{
         id: detour.id,
         route_id: detour.route_id,
-        direction_id: get_in(detour.state, ["context", "routePattern", "directionId"]),
+        direction_id: detour.direction_id,
         reason: detour.reason,
         nearest_intersection: detour.nearest_intersection,
         estimated_duration: detour.estimated_duration,
@@ -263,45 +263,13 @@ defmodule Skate.Detours.Detour do
       |> DateTime.to_unix()
     end
 
-    defp missed_stops!(%Detour{} = detour) do
-      case get_in(detour.state, ["context", "finishedDetour", "missedStops"]) do
-        missed_stops when is_list(missed_stops) ->
-          missed_stops
-          |> Enum.map(&get_in(&1, ["id"]))
-          |> Enum.reject(&is_nil/1)
-
-        _ ->
-          Logger.warning("detour #{detour.id} has invalid missed stops")
-          raise ArgumentError
-      end
-    end
-
-    defp connection_points!(%Detour{} = detour) do
-      case get_in(detour.state, ["context", "finishedDetour", "connectionPoint"]) do
-        connection_points when is_map(connection_points) ->
-          ["start", "end"]
-          |> Enum.map(&get_in(connection_points, [&1, "id"]))
-          |> Enum.reject(&is_nil/1)
-
-        _ ->
-          Logger.warning("detour #{detour.id} has invalid connection points")
-          raise ArgumentError
-      end
-    end
-
     defp route_segments(%Detour{
-           state: %{
-             "context" => %{
-               "finishedDetour" => %{
-                 "routeSegments" => %{
-                   "beforeDetour" => before_detour,
-                   "afterDetour" => after_detour,
-                   "detour" => detour_segment
-                 },
-                 "detourShape" => %{"coordinates" => bypassed_segment}
-               }
-             }
-           }
+           route_segments: %{
+             "beforeDetour" => before_detour,
+             "afterDetour" => after_detour,
+             "detour" => detour_segment
+           },
+           detour_shape: %{"ok" => %{"coordinates" => bypassed_segment}}
          }) do
       %{
         before_detour: before_detour,

@@ -6,7 +6,7 @@ import {
   SwingIcon,
 } from "../../helpers/icon"
 import { DetourNavIcon } from "../../helpers/navIcons"
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router"
 import { tagManagerEvent } from "../../helpers/googleTagManager"
 import { fullStoryEvent } from "../../helpers/fullStory"
 import { ButtonData, LinkData } from "../../navLinkData"

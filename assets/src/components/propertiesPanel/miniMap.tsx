@@ -1,6 +1,6 @@
 import { DomEvent } from "leaflet"
 import React, { useCallback, useContext } from "react"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { StateDispatchContext } from "../../contexts/stateDispatchContext"
 import { useStations } from "../../hooks/useStations"
 import { VehicleInScheduledService, VehicleId, Vehicle } from "../../realtime"
