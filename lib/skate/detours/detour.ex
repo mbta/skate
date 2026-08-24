@@ -230,8 +230,8 @@ defmodule Skate.Detours.Detour do
     def from!(%Detour{is_text_only: true} = detour) do
       %{
         base_report(detour)
-        | missed_stops_text_only: get_in(detour, ["typedDetour", "missedStops"]),
-          connection_points_text_only: get_in(detour, ["typedDetour", "connectionPoints"])
+        | missed_stops_text_only: detour.typed_detour["missedStops"],
+          connection_points_text_only: detour.typed_detour["connectionPoints"]
       }
     end
 
