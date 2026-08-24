@@ -10,12 +10,14 @@ exports[`MinimalLadderPage renders the preset selection page 1`] = `
     </h3>
     <a
       class="btn btn-primary c-minimal-ladder-page__button"
+      data-discover="true"
       href="/minimal/abcdef"
     >
       Preset 1
     </a>
     <a
       class="btn btn-primary c-minimal-ladder-page__button"
+      data-discover="true"
       href="/minimal/ghijkl"
     >
       Preset 2

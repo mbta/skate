@@ -19,7 +19,7 @@ const mockLocation = {
   search: "",
   state: "",
 }
-jest.mock("react-router-dom", () => ({
+jest.mock("react-router", () => ({
   useLocation: jest.fn().mockImplementation(() => mockLocation),
 }))
 
