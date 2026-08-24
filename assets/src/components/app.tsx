@@ -6,7 +6,7 @@ import {
   useLocation,
   Route,
   Outlet,
-} from "react-router-dom"
+} from "react-router"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import { SocketContext } from "../contexts/socketContext"

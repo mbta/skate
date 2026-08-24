@@ -1,5 +1,5 @@
 import React from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation } from "react-router"
 import { HamburgerIcon } from "../../helpers/icon"
 import NotificationBellIcon from "../notificationBellIcon"
 import { currentTabName, RouteTab } from "../../models/routeTab"

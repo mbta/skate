@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 import { LogoIcon, RefreshIcon } from "../../helpers/icon"
 import * as BsIcon from "../../helpers/bsIcons"
 import { reload } from "../../models/browser"
