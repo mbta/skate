@@ -181,9 +181,7 @@ const RouteElement = ({
 
 const App = (): ReactElement<HTMLDivElement> => {
   return (
-    <BrowserRouter
-      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-    >
+    <BrowserRouter>
       <AppRoutes />
     </BrowserRouter>
   )
