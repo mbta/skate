@@ -526,7 +526,7 @@ const StartOrEndMarker = ({
   place: "start" | "end"
   position: LatLngLiteral
   snapLine: LatLngLiteral[]
-  onDragStart: () => void,
+  onDragStart: () => void
   onDragEnd?: (position: ShapePoint) => void
 }) => {
   const map = useMap()
