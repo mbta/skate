@@ -685,7 +685,7 @@ export const DiversionPage = ({
           onCopyToDraftDetour={copyToDraftDetourCallback}
         />
       )
-    } else if (snapshot.matches({"Detour Drawing": "Deleted"})) {
+    } else if (snapshot.matches({ "Detour Drawing": "Deleted" })) {
       return <></>
     } else {
       captureException(new Error("Unexpected detour state"))
