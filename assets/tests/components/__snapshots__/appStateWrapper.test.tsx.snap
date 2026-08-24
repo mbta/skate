@@ -22,6 +22,7 @@ exports[`renders 1`] = `
           >
             <a
               class="c-top-nav__logo"
+              data-discover="true"
               href="/"
               title="Skate"
             >
@@ -96,6 +97,7 @@ exports[`renders 1`] = `
                   <a
                     aria-current="page"
                     class="c-left-nav__link c-left-nav__link--active"
+                    data-discover="true"
                     href="/"
                     title="Route Ladders"
                   >
@@ -140,6 +142,7 @@ exports[`renders 1`] = `
                 <li>
                   <a
                     class="c-left-nav__link"
+                    data-discover="true"
                     href="/shuttle-map"
                     title="Shuttle Map"
                   >
@@ -154,6 +157,7 @@ exports[`renders 1`] = `
                 <li>
                   <a
                     class="c-left-nav__link"
+                    data-discover="true"
                     href="/map"
                     title="Search Map"
                   >
@@ -223,6 +227,7 @@ exports[`renders 1`] = `
                 <li>
                   <a
                     class="c-left-nav__link"
+                    data-discover="true"
                     href="/settings"
                     title="Settings"
                   >

@@ -7,7 +7,7 @@ import {
   flipLadderInTab,
   toggleLadderCrowdingInTab,
 } from "../state"
-import { useNavigate, useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router"
 
 export const MinimalLadder = ({ id }: { id: string }) => {
   const [{ routeTabs }, dispatch] = useContext(StateDispatchContext)

@@ -24,7 +24,7 @@ import useVehicleForId from "../../src/hooks/useVehicleForId"
 import { TabMode } from "../../src/components/propertiesPanel/tabPanels"
 import userEvent from "@testing-library/user-event"
 import { closeButton } from "../testHelpers/selectors/components/closeButton"
-import { MemoryRouter } from "react-router-dom"
+import { MemoryRouter } from "react-router"
 import { useNearestIntersectionFetchResult } from "../../src/hooks/useNearestIntersection"
 import { loading } from "../../src/util/fetchResult"
 
@@ -169,10 +169,7 @@ describe("PropertiesPanel", () => {
     jest.mocked(useVehicleForId).mockImplementationOnce(() => vehicle)
 
     const result = render(
-      <MemoryRouter
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-        initialEntries={["/"]}
-      >
+      <MemoryRouter initialEntries={["/"]}>
         <PropertiesPanelWrapper vehicleOrGhost={vehicle} />
       </MemoryRouter>
     )
@@ -233,10 +230,7 @@ describe("PropertiesPanel", () => {
     jest.mocked(useVehicleForId).mockReturnValue(vehicle)
 
     render(
-      <MemoryRouter
-        future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-        initialEntries={["/"]}
-      >
+      <MemoryRouter initialEntries={["/"]}>
         <PropertiesPanelWrapper
           vehicleOrGhost={vehicle}
           closePanel={mockClosePanel}

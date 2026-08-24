@@ -6,7 +6,7 @@ import {
   useLocation,
   Route,
   Outlet,
-} from "react-router-dom"
+} from "react-router"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
 import { VehiclesByRouteIdProvider } from "../contexts/vehiclesByRouteIdContext"
 import { SocketContext } from "../contexts/socketContext"
@@ -181,9 +181,7 @@ const RouteElement = ({
 
 const App = (): ReactElement<HTMLDivElement> => {
   return (
-    <BrowserRouter
-      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-    >
+    <BrowserRouter>
       <AppRoutes />
     </BrowserRouter>
   )

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import React from "react"
-import { MemoryRouter } from "react-router-dom"
+import { MemoryRouter } from "react-router"
 
 import { AppRoutes } from "../../../src/components/app"
 import { AppStateProvider } from "../../../src/components/appStateWrapper"

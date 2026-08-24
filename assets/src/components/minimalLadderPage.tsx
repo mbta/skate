@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { isPreset } from "../models/routeTab"
 import { StateDispatchContext } from "../contexts/stateDispatchContext"
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router"
 
 export const MinimalLadderPage = () => {
   const [{ routeTabs }] = useContext(StateDispatchContext)
