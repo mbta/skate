@@ -111,7 +111,7 @@ defmodule Skate.Detours.Db.Detour do
       |> Map.merge(%{"status" => "draft"})
       |> Map.drop(["selectedReason", "selectedDuration", "activatedAt"])
     )
-    |> Map.put("value", %{SaveState: "Saved", "Detour Drawing": "Share Detour"})
+    |> Map.put("value", %{"SaveState" => "Saved", "Detour Drawing" => "Share Detour"})
   end
 
   def set_state_uuid_changeset(detour) do
