@@ -26,6 +26,7 @@ import { joinClasses } from "../../helpers/dom"
 import { RouteSegments, UnfinishedRouteSegments } from "../../models/detour"
 import { MapButton } from "../map/controls/mapButton"
 import { ArrowLeftSquare, XSquare } from "../../helpers/bsIcons"
+import { closestWithBuffer } from "../../util/geoUtils"
 import ZoomLevelWrapper from "../ZoomLevelWrapper"
 import { StopMarkerWithStopCard } from "../map/markers/stopMarker"
 import {
@@ -188,10 +189,10 @@ export const DetourMap = ({
     },
     dispatch,
   ] = useContext(StateDispatchContext)
-
   const [streetViewEnabled, setStreetViewEnabled] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
 
-  const onClickMap = streetViewEnabled ? undefined : onAddWaypoint
+  const onClickMap = streetViewEnabled || isDragging ? undefined : onAddWaypoint
 
   const canDraw = !streetViewEnabled && editing
 
@@ -227,6 +228,7 @@ export const DetourMap = ({
         place="start"
         position={shapePointToLatLngLiteral(startPoint)}
         snapLine={segment.map(shapePointToLatLngLiteral)}
+        toggleDraggingState={() => setIsDragging((isDragging) => !isDragging)}
         onDragEnd={onMoveStartPoint}
       />
     )
@@ -243,6 +245,7 @@ export const DetourMap = ({
         place="end"
         position={shapePointToLatLngLiteral(endPoint)}
         snapLine={segment.map(shapePointToLatLngLiteral)}
+        toggleDraggingState={() => setIsDragging((isDragging) => !isDragging)}
         onDragEnd={onMoveEndPoint}
       />
     )
@@ -513,11 +516,13 @@ const StartOrEndMarker = ({
   place,
   position,
   snapLine,
+  toggleDraggingState,
   onDragEnd,
 }: {
   place: "start" | "end"
   position: LatLngLiteral
   snapLine: LatLngLiteral[]
+  toggleDraggingState: () => void
   onDragEnd?: (position: ShapePoint) => void
 }) => {
   const map = useMap()
@@ -550,6 +555,7 @@ const StartOrEndMarker = ({
         eventHandlers={
           (isInteractive || undefined) && {
             dragstart: () => {
+              toggleDraggingState()
               const line = lineRef.current
               if (!line) return
 
@@ -560,9 +566,18 @@ const StartOrEndMarker = ({
               const line = lineRef.current
               if (!marker || !line) return
 
-              const layerPoint = map.latLngToLayerPoint(marker.getLatLng())
-              const closestPoint = line.closestLayerPoint(layerPoint)
-              marker.setLatLng(map.layerPointToLatLng(closestPoint))
+              const markerLatLng = marker.getLatLng()
+              const markerPoint = map.latLngToLayerPoint(markerLatLng)
+
+              const closestLinePoint = line.closestLayerPoint(markerPoint)
+              const closestLineLatLng = map.layerPointToLatLng(closestLinePoint)
+
+              const bufferedPoint = closestWithBuffer(
+                closestLineLatLng,
+                markerLatLng,
+                7
+              )
+              marker.setLatLng(bufferedPoint)
             },
             dragend: () => {
               const marker = markerRef.current
@@ -571,6 +586,9 @@ const StartOrEndMarker = ({
 
               line?.setStyle({ opacity: 0 })
               onDragEnd?.(latLngLiteralToShapePoint(marker.getLatLng()))
+
+              // defer until after the Leaflet click event that fires synchronously after dragend
+              setTimeout(() => toggleDraggingState(), 0)
             },
           }
         }
