@@ -566,7 +566,7 @@ const StartOrEndMarker = ({
               const line = lineRef.current
               if (!marker || !line) return
 
-              const markerLatLgn = marker.getLatLng()
+              const markerLatLng = marker.getLatLng()
               const markerPoint = map.latLngToLayerPoint(marker.getLatLng())
 
               const closestLinePoint = line.closestLayerPoint(markerPoint)
@@ -574,7 +574,7 @@ const StartOrEndMarker = ({
 
               const bufferedPoint = closestWithBuffer(
                 closestLineLatLng,
-                markerLatLgn,
+                markerLatLng,
                 7
               )
               marker.setLatLng(bufferedPoint)
@@ -586,6 +586,8 @@ const StartOrEndMarker = ({
 
               line?.setStyle({ opacity: 0 })
               onDragEnd?.(latLngLiteralToShapePoint(marker.getLatLng()))
+
+              // defer until after the Leaflet click event that fires synchronously after dragend
               setTimeout(() => toggleDraggingState(), 0)
             },
           }
