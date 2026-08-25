@@ -13,7 +13,7 @@ describe("closestWithBuffer", () => {
     expect(p1.distanceTo(new LatLng(result.lat, result.lng))).toBeCloseTo(7, 0)
   })
 
-  // No buffer ratio is used when the second point is within the buffer
+  // In both cases ratio = 1 — either d < buffer, or d = 0 makes buffer/d = Infinity.
   test.each([
     {
       label: "marker is within the buffer distance",
