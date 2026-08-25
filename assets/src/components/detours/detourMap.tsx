@@ -567,7 +567,7 @@ const StartOrEndMarker = ({
               if (!marker || !line) return
 
               const markerLatLng = marker.getLatLng()
-              const markerPoint = map.latLngToLayerPoint(marker.getLatLng())
+              const markerPoint = map.latLngToLayerPoint(markerLatLng)
 
               const closestLinePoint = line.closestLayerPoint(markerPoint)
               const closestLineLatLng = map.layerPointToLatLng(closestLinePoint)
