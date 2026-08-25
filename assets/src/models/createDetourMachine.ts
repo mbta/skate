@@ -1,4 +1,11 @@
-import { setup, assign, fromPromise, ActorLogicFrom, InputFrom } from "xstate"
+import {
+  setup,
+  assign,
+  fromPromise,
+  ActorLogicFrom,
+  InputFrom,
+  raise,
+} from "xstate"
 import { RoutePatternId, ShapePoint } from "../schedule"
 import { Route, RouteId, RoutePattern } from "../schedule"
 import { isOk, Ok, Result } from "../util/result"
@@ -113,22 +120,13 @@ export const createDetourMachine = setup({
       | { type: "detour.active.edit.resume" }
       | { type: "detour.active.edit.done" }
       | { type: "detour.active.edit.cancel" }
+      | { type: "detour.save.begin-save-inactive" }
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: number }
+      | { type: "detour.save.save-failed" }
       | { type: "detour.delete.open-delete-modal" }
       | { type: "detour.delete.delete-modal.cancel" }
       | { type: "detour.delete.delete-modal.delete-draft" },
-
-    // We're making an assumption that we'll never want to save detour edits to the database when in particular stages
-    // of detour drafting:
-    // -- when starting a detour, before any user input
-    // -- when the route id / route pattern is getting selected
-    // -- right after the route pattern is finalized, before any waypoints are added
-    // That leads to the following interface: if the user begins drafting a detour, adds waypoints, and then changes the route,
-    // the database will reflect the old route and old waypoints up until the point where a new waypoint is added,
-    // unless they are editing an already activated detour, when it will only be saved upon re-activation
-    // If that UX assumption isn't the right one, we can iterate in the future!
-    tags: {} as "no-save" | "save-activated",
   },
   actors: {
     "fetch-route-patterns": fromPromise<
@@ -334,7 +332,6 @@ export const createDetourMachine = setup({
 
       states: {
         Begin: {
-          tags: "no-save",
           always: [
             {
               guard: ({ context }) =>
@@ -348,7 +345,6 @@ export const createDetourMachine = setup({
 
         "Pick Route Pattern": {
           initial: "Pick Route ID",
-          tags: "no-save",
           on: {
             "detour.route-pattern.select-route": {
               target: ".Pick Route ID",
@@ -545,7 +541,6 @@ export const createDetourMachine = setup({
           },
           states: {
             "Pick Start Point": {
-              tags: "no-save",
               on: {
                 "detour.edit.place-waypoint-on-route": {
                   target: "Place Waypoint",
@@ -572,6 +567,7 @@ export const createDetourMachine = setup({
               },
             },
             "Place Waypoint": {
+              entry: raise({ type: "detour.save.begin-save-inactive" }),
               invoke: [
                 {
                   src: "fetch-nearest-intersection",
@@ -720,6 +716,7 @@ export const createDetourMachine = setup({
               },
             },
             "Finished Drawing": {
+              entry: raise({ type: "detour.save.begin-save-inactive" }),
               invoke: {
                 src: "fetch-finished-detour",
                 input: ({
@@ -855,7 +852,6 @@ export const createDetourMachine = setup({
                   },
                 ],
                 "detour.delete.delete-modal.delete-draft": {
-                  tags: "no-save",
                   target: "#Deleted",
                 },
               },
@@ -922,20 +918,23 @@ export const createDetourMachine = setup({
               on: {
                 "detour.type.edit-typed-detour": {
                   target: "Typing",
-                  actions: assign({
-                    typedDetour: ({ context: { typedDetour }, event }) => {
-                      const current = typedDetour || {
-                        directions: "",
-                        missedStops: "",
-                        connectionPoints: "",
-                      }
+                  actions: [
+                    assign({
+                      typedDetour: ({ context: { typedDetour }, event }) => {
+                        const current = typedDetour || {
+                          directions: "",
+                          missedStops: "",
+                          connectionPoints: "",
+                        }
 
-                      return {
-                        ...current,
-                        ...event.typedDetour,
-                      }
-                    },
-                  }),
+                        return {
+                          ...current,
+                          ...event.typedDetour,
+                        }
+                      },
+                    }),
+                    raise({ type: "detour.save.begin-save-inactive" }),
+                  ],
                 },
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
@@ -951,7 +950,6 @@ export const createDetourMachine = setup({
                   target: "Typing",
                 },
                 "detour.delete.delete-modal.delete-draft": {
-                  tags: "no-save",
                   target: "#Deleted",
                 },
               },
@@ -991,6 +989,7 @@ export const createDetourMachine = setup({
 
         "Share Detour": {
           initial: "Reviewing",
+          entry: raise({ type: "detour.save.begin-save-inactive" }),
           on: {
             "detour.edit.resume": {
               target: "Editing.Finished Drawing",
@@ -1016,9 +1015,12 @@ export const createDetourMachine = setup({
                 },
                 "detour.share.edit-directions": {
                   target: "Reviewing",
-                  actions: assign({
-                    editedDirections: ({ event }) => event.detourText,
-                  }),
+                  actions: [
+                    assign({
+                      editedDirections: ({ event }) => event.detourText,
+                    }),
+                    raise({ type: "detour.save.begin-save-inactive" }),
+                  ],
                 },
                 "detour.delete.open-delete-modal": {
                   target: "Deleting",
@@ -1069,6 +1071,7 @@ export const createDetourMachine = setup({
                   },
                   onDone: {
                     target: "Selecting Reason",
+                    actions: raise({ type: "detour.save.begin-save-inactive" }),
                   },
                 },
                 "Selecting Reason": {
@@ -1109,6 +1112,7 @@ export const createDetourMachine = setup({
                   },
                   onDone: {
                     target: "Confirming",
+                    actions: raise({ type: "detour.save.begin-save-inactive" }),
                   },
                 },
                 Confirming: {
@@ -1125,7 +1129,6 @@ export const createDetourMachine = setup({
                   },
                 },
                 "Activating Server": {
-                  tags: "no-save",
                   invoke: {
                     id: "activate-detour",
                     src: "activate-detour",
@@ -1156,7 +1159,6 @@ export const createDetourMachine = setup({
                 },
                 Done: {
                   type: "final",
-                  tags: "no-save",
                 },
               },
               onDone: {
@@ -1170,7 +1172,6 @@ export const createDetourMachine = setup({
                   target: "Reviewing",
                 },
                 "detour.delete.delete-modal.delete-draft": {
-                  tags: "no-save",
                   target: "#Deleted",
                 },
               },
@@ -1184,6 +1185,7 @@ export const createDetourMachine = setup({
 
         Active: {
           initial: "Reviewing",
+          entry: raise({ type: "detour.save.begin-save" }),
           states: {
             Reviewing: {
               on: {
@@ -1220,11 +1222,14 @@ export const createDetourMachine = setup({
                 },
                 "detour.active.change-duration-modal.done": {
                   target: "Reviewing",
-                  actions: assign({
-                    selectedDuration: ({
-                      context: { editedSelectedDuration },
-                    }) => editedSelectedDuration,
-                  }),
+                  actions: [
+                    assign({
+                      selectedDuration: ({
+                        context: { editedSelectedDuration },
+                      }) => editedSelectedDuration,
+                    }),
+                    raise({ type: "detour.save.begin-save" }),
+                  ],
                   guard: ({ context: { editedSelectedDuration } }) =>
                     editedSelectedDuration !== undefined,
                 },
@@ -1249,33 +1254,42 @@ export const createDetourMachine = setup({
           onDone: {
             target: "Past",
           },
-          tags: "save-activated",
         },
 
         Past: {
-          tags: "save-activated",
+          entry: raise({ type: "detour.save.begin-save" }),
         },
 
         Deleted: {
           id: "Deleted",
-          tags: "no-save",
           type: "final",
         },
       },
     },
 
+    // We do not want to save detour edits when:
+    // -- when starting a detour, before any user input
+    // -- when the route id / route pattern is getting selected
+    // -- right after the route pattern is finalized, before any waypoints are added
+    // -- while editing an active detour
+    // That leads to the following interface: if the user begins drafting a detour, adds waypoints, and then changes the route,
+    // the database will reflect the old route and old waypoints up until the point where a new waypoint is added,
+    // unless they are editing an already activated detour, when it will only be saved upon re-activation
     SaveState: {
       initial: "Unsaved",
       states: {
         Unsaved: {
           on: {
+            "detour.save.begin-save-inactive": {
+              target: "Saving",
+              guard: ({ context }) => context.activatedAt === undefined,
+            },
             "detour.save.begin-save": {
               target: "Saving",
             },
           },
         },
         Saving: {
-          tags: "no-save",
           on: {
             "detour.save.set-uuid": {
               target: "Saved",
@@ -1283,9 +1297,22 @@ export const createDetourMachine = setup({
                 uuid: ({ event }) => event.uuid,
               }),
             },
+            "detour.save.save-failed": {
+              target: "Unsaved",
+            },
           },
         },
-        Saved: {},
+        Saved: {
+          on: {
+            "detour.save.begin-save-inactive": {
+              target: "Saving",
+              guard: ({ context }) => context.activatedAt === undefined,
+            },
+            "detour.save.begin-save": {
+              target: "Saving",
+            },
+          },
+        },
       },
     },
   },
