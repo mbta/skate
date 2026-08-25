@@ -54,6 +54,8 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
               .can({ type: "detour.save.set-uuid", uuid: uuid.ok })
           ) {
             actorRef.send({ type: "detour.save.set-uuid", uuid: uuid.ok })
+          } else if (!isOk(uuid)) {
+            actorRef.send({ type: "detour.save.save-failed" })
           }
         })
       }

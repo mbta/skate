@@ -123,6 +123,7 @@ export const createDetourMachine = setup({
       | { type: "detour.save.begin-save-inactive" }
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: number }
+      | { type: "detour.save.save-failed" }
       | { type: "detour.delete.open-delete-modal" }
       | { type: "detour.delete.delete-modal.cancel" }
       | { type: "detour.delete.delete-modal.delete-draft" },
@@ -1295,6 +1296,9 @@ export const createDetourMachine = setup({
               actions: assign({
                 uuid: ({ event }) => event.uuid,
               }),
+            },
+            "detour.save.save-failed": {
+              target: "Unsaved",
             },
           },
         },
