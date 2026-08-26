@@ -172,6 +172,14 @@ defmodule Skate.Detours.Db.Detour do
           NaiveDateTime.truncate(DateTime.to_naive(activated_at), :second)
         )
 
+      # set updated_at time for deactivated detours
+      {{:changes, :past}, _} ->
+        put_change(
+          changeset,
+          :updated_at,
+          NaiveDateTime.truncate(NaiveDateTime.utc_now(), :second)
+        )
+
       # Relies on snapshots being suppressed for changes to active detours
       {{:data, :active}, _} ->
         put_change(
