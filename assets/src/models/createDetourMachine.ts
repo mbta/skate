@@ -54,6 +54,7 @@ export const createDetourMachine = setup({
       | { type: "detour.edit.done" }
       | { type: "detour.edit.resume" }
       | { type: "detour.edit.reenter" }
+      | { type: "detour.edit._refetch" }
       | { type: "detour.edit.clear-detour" }
       | { type: "detour.edit.cancel" }
       | { type: "detour.edit.cant-draw" }
@@ -543,6 +544,70 @@ export const createDetourMachine = setup({
                 ],
               },
             ],
+            "detour.edit.reenter": {
+              guard: ({ context: { detourShape } }) =>
+                !!(
+                  detourShape &&
+                  isOk(detourShape) &&
+                  !detourShape.ok.waypoint_indexes
+                ),
+              actions: raise({ type: "detour.edit._refetch" }),
+            },
+            "detour.edit.move-start-point": {
+              actions: [
+                {
+                  type: "detour.undo.insert",
+                  params: ({ context: { startPoint } }) => ({ startPoint }),
+                },
+                assign({ startPoint: ({ event }) => event.position }),
+                raise({ type: "detour.edit._refetch" }),
+              ],
+            },
+            "detour.edit.delete-waypoint": {
+              actions: [
+                {
+                  type: "detour.undo.insert",
+                  params: ({ context: { waypoints } }) => ({ waypoints }),
+                },
+                {
+                  type: "detour.delete-waypoint",
+                  params: ({ event }) => event,
+                },
+                raise({ type: "detour.edit._refetch" }),
+              ],
+            },
+            "detour.edit.move-waypoint": {
+              actions: [
+                {
+                  type: "detour.undo.insert",
+                  params: ({ context: { waypoints } }) => ({ waypoints }),
+                },
+                assign({
+                  waypoints: ({ context, event }) => {
+                    const waypoints = [...context.waypoints]
+                    waypoints[event.index] = event.position
+                    return waypoints
+                  },
+                }),
+                raise({ type: "detour.edit._refetch" }),
+              ],
+            },
+            "detour.edit.insert-waypoint": {
+              actions: [
+                {
+                  type: "detour.undo.insert",
+                  params: ({ context: { waypoints } }) => ({ waypoints }),
+                },
+                {
+                  type: "detour.insert-waypoint",
+                  params: ({ event }) => event,
+                },
+                raise({ type: "detour.edit._refetch" }),
+              ],
+            },
+            "detour.delete.open-delete-modal": {
+              target: ".Deleting",
+            },
           },
           states: {
             "Pick Start Point": {
@@ -564,9 +629,6 @@ export const createDetourMachine = setup({
                       fullStoryEvent("Placed Detour Start Point", {})
                     },
                   ],
-                },
-                "detour.delete.open-delete-modal": {
-                  target: "Deleting",
                 },
               },
             },
@@ -640,14 +702,8 @@ export const createDetourMachine = setup({
                 },
               },
               on: {
-                "detour.edit.reenter": {
+                "detour.edit._refetch": {
                   target: ".Fetching",
-                  guard: ({ context: { detourShape } }) =>
-                    !!(
-                      detourShape &&
-                      isOk(detourShape) &&
-                      !detourShape.ok.waypoint_indexes
-                    ),
                 },
                 "detour.edit.place-waypoint": {
                   target: ".Fetching",
@@ -687,61 +743,6 @@ export const createDetourMachine = setup({
                       fullStoryEvent("Placed Detour End Point", {})
                     },
                   ],
-                },
-                "detour.edit.move-start-point": {
-                  target: ".Fetching",
-                  actions: [
-                    {
-                      type: "detour.undo.insert",
-                      params: ({ context: { startPoint } }) => ({ startPoint }),
-                    },
-                    assign({ startPoint: ({ event }) => event.position }),
-                  ],
-                },
-                "detour.edit.delete-waypoint": {
-                  target: ".Fetching",
-                  actions: [
-                    {
-                      type: "detour.undo.insert",
-                      params: ({ context: { waypoints } }) => ({ waypoints }),
-                    },
-                    {
-                      type: "detour.delete-waypoint",
-                      params: ({ event }) => event,
-                    },
-                  ],
-                },
-                "detour.edit.move-waypoint": {
-                  target: ".Fetching",
-                  actions: [
-                    {
-                      type: "detour.undo.insert",
-                      params: ({ context: { waypoints } }) => ({ waypoints }),
-                    },
-                    assign({
-                      waypoints: ({ context, event }) => {
-                        const waypoints = [...context.waypoints]
-                        waypoints[event.index] = event.position
-                        return waypoints
-                      },
-                    }),
-                  ],
-                },
-                "detour.edit.insert-waypoint": {
-                  target: ".Fetching",
-                  actions: [
-                    {
-                      type: "detour.undo.insert",
-                      params: ({ context: { waypoints } }) => ({ waypoints }),
-                    },
-                    {
-                      type: "detour.insert-waypoint",
-                      params: ({ event }) => event,
-                    },
-                  ],
-                },
-                "detour.delete.open-delete-modal": {
-                  target: "Deleting",
                 },
               },
             },
@@ -832,14 +833,8 @@ export const createDetourMachine = setup({
                 },
               },
               on: {
-                "detour.edit.reenter": {
+                "detour.edit._refetch": {
                   target: ".Fetching",
-                  guard: ({ context: { detourShape } }) =>
-                    !!(
-                      detourShape &&
-                      isOk(detourShape) &&
-                      !detourShape.ok.waypoint_indexes
-                    ),
                 },
                 "detour.edit.done": {
                   target: "Done",
@@ -847,70 +842,15 @@ export const createDetourMachine = setup({
                     !activatedAt ||
                     (undoStack !== undefined && undoStack.length > 0),
                 },
-                "detour.edit.move-start-point": {
-                  target: ".Fetching",
-                  actions: [
-                    {
-                      type: "detour.undo.insert",
-                      params: ({ context: { startPoint } }) => ({ startPoint }),
-                    },
-                    assign({ startPoint: ({ event }) => event.position }),
-                  ],
-                },
                 "detour.edit.move-end-point": {
-                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
                       params: ({ context: { endPoint } }) => ({ endPoint }),
                     },
                     assign({ endPoint: ({ event }) => event.position }),
+                    raise({ type: "detour.edit._refetch" }),
                   ],
-                },
-                "detour.edit.delete-waypoint": {
-                  target: ".Fetching",
-                  actions: [
-                    {
-                      type: "detour.undo.insert",
-                      params: ({ context: { waypoints } }) => ({ waypoints }),
-                    },
-                    {
-                      type: "detour.delete-waypoint",
-                      params: ({ event }) => event,
-                    },
-                  ],
-                },
-                "detour.edit.move-waypoint": {
-                  target: ".Fetching",
-                  actions: [
-                    {
-                      type: "detour.undo.insert",
-                      params: ({ context: { waypoints } }) => ({ waypoints }),
-                    },
-                    assign({
-                      waypoints: ({ context, event }) => {
-                        const waypoints = [...context.waypoints]
-                        waypoints[event.index] = event.position
-                        return waypoints
-                      },
-                    }),
-                  ],
-                },
-                "detour.edit.insert-waypoint": {
-                  target: ".Fetching",
-                  actions: [
-                    {
-                      type: "detour.undo.insert",
-                      params: ({ context: { waypoints } }) => ({ waypoints }),
-                    },
-                    {
-                      type: "detour.insert-waypoint",
-                      params: ({ event }) => event,
-                    },
-                  ],
-                },
-                "detour.delete.open-delete-modal": {
-                  target: "Deleting",
                 },
               },
             },
