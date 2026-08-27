@@ -484,18 +484,16 @@ export const createDetourMachine = setup({
                 reenter: true,
               },
               {
-                target: ".Place Waypoint",
+                target: ".Place Waypoint.Fetching",
                 guard: ({ context }) =>
                   context?.undoStack?.[0]?.target === "Place Waypoint",
                 actions: "detour.undo.apply",
-                reenter: true,
               },
               {
-                target: ".Finished Drawing",
+                target: ".Finished Drawing.Fetching",
                 guard: ({ context }) =>
                   context?.undoStack?.[0]?.target === "Finished Drawing",
                 actions: "detour.undo.apply",
-                reenter: true,
               },
             ],
             "detour.edit.cancel": [
@@ -543,7 +541,7 @@ export const createDetourMachine = setup({
             "Pick Start Point": {
               on: {
                 "detour.edit.place-waypoint-on-route": {
-                  target: "Place Waypoint",
+                  target: "Place Waypoint.Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -567,46 +565,77 @@ export const createDetourMachine = setup({
               },
             },
             "Place Waypoint": {
-              entry: raise({ type: "detour.save.begin-save-inactive" }),
-              invoke: [
-                {
-                  src: "fetch-nearest-intersection",
-                  input: ({ context: { startPoint } }) => ({
-                    startPoint,
-                  }),
+              initial: "Idle",
+              states: {
+                Idle: {},
+                Fetching: {
+                  type: "parallel",
+                  states: {
+                    Intersection: {
+                      initial: "Fetching",
+                      states: {
+                        Fetching: {
+                          invoke: {
+                            src: "fetch-nearest-intersection",
+                            input: ({ context: { startPoint } }) => ({
+                              startPoint,
+                            }),
 
-                  onDone: {
-                    actions: assign({
-                      nearestIntersection: ({ event }) => event.output,
-                    }),
-                  },
+                            onDone: {
+                              target: "Done",
+                              actions: assign({
+                                nearestIntersection: ({ event }) => event.output,
+                              }),
+                            },
 
-                  onError: {
-                    // fallback to an em-dash on error
-                    actions: "set.nearest-intersection-fallback",
+                            onError: {
+                              target: "Done",
+                              // fallback to an em-dash on error
+                              actions: "set.nearest-intersection-fallback",
+                            },
+                          },
+                        },
+                        Done: { type: "final" },
+                      },
+                    },
+                    Directions: {
+                      initial: "Fetching",
+                      states: {
+                        Fetching: {
+                          invoke: {
+                            src: "fetch-detour-directions",
+                            input: ({
+                              context: { startPoint, waypoints },
+                            }) => ({
+                              points: (startPoint ? [startPoint] : []).concat(
+                                waypoints || []
+                              ),
+                            }),
+
+                            onDone: {
+                              target: "Done",
+                              actions: assign({
+                                detourShape: ({ event }) => event.output,
+                              }),
+                            },
+
+                            onError: { target: "Done" },
+                          },
+                        },
+                        Done: { type: "final" },
+                      },
+                    },
                   },
+                  onDone: { target: "Fetched" },
                 },
-                {
-                  src: "fetch-detour-directions",
-                  input: ({ context: { startPoint, waypoints } }) => ({
-                    points: (startPoint ? [startPoint] : []).concat(
-                      waypoints || []
-                    ),
-                  }),
-
-                  onDone: {
-                    actions: assign({
-                      detourShape: ({ event }) => event.output,
-                    }),
-                  },
-
-                  onError: {},
+                Fetched: {
+                  entry: raise({ type: "detour.save.begin-save-inactive" }),
+                  always: { target: "Idle" },
                 },
-              ],
+              },
               on: {
                 "detour.edit.reenter": {
-                  target: "Place Waypoint",
-                  reenter: true,
+                  target: ".Fetching",
                   guard: ({ context: { detourShape } }) =>
                     !!(
                       detourShape &&
@@ -615,8 +644,7 @@ export const createDetourMachine = setup({
                     ),
                 },
                 "detour.edit.place-waypoint": {
-                  target: "Place Waypoint",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -634,7 +662,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.place-waypoint-on-route": {
-                  target: "Finished Drawing",
+                  target: "Finished Drawing.Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -655,8 +683,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.move-start-point": {
-                  target: "Place Waypoint",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -666,8 +693,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.delete-waypoint": {
-                  target: "Place Waypoint",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -680,8 +706,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.move-waypoint": {
-                  target: "Place Waypoint",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -697,8 +722,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.insert-waypoint": {
-                  target: "Place Waypoint",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -716,41 +740,48 @@ export const createDetourMachine = setup({
               },
             },
             "Finished Drawing": {
-              entry: raise({ type: "detour.save.begin-save-inactive" }),
-              invoke: {
-                src: "fetch-finished-detour",
-                input: ({
-                  context: { routePattern, startPoint, waypoints, endPoint },
-                }) => ({
-                  routePatternId: routePattern?.id,
-                  startPoint,
-                  waypoints,
-                  endPoint,
-                }),
+              initial: "Idle",
+              states: {
+                Idle: {},
+                Fetching: {
+                  invoke: {
+                    src: "fetch-finished-detour",
+                    input: ({
+                      context: { routePattern, startPoint, waypoints, endPoint },
+                    }) => ({
+                      routePatternId: routePattern?.id,
+                      startPoint,
+                      waypoints,
+                      endPoint,
+                    }),
 
-                onDone: {
-                  actions: assign({
-                    finishedDetour: ({ event }) => event.output,
-                    detourShape: ({ event }) =>
-                      event.output?.detourShape &&
-                      Ok({
-                        ...event.output.detourShape,
-                        directions: event.output.detourShape.directions?.concat(
-                          {
-                            instruction: "Regular Route",
-                          }
-                        ),
+                    onDone: {
+                      target: "Fetched",
+                      actions: assign({
+                        finishedDetour: ({ event }) => event.output,
+                        detourShape: ({ event }) =>
+                          event.output?.detourShape &&
+                          Ok({
+                            ...event.output.detourShape,
+                            directions:
+                              event.output.detourShape.directions?.concat({
+                                instruction: "Regular Route",
+                              }),
+                          }),
                       }),
-                  }),
+                    },
+
+                    onError: { target: "Fetched" },
+                  },
                 },
-
-                onError: {},
+                Fetched: {
+                  entry: raise({ type: "detour.save.begin-save-inactive" }),
+                  always: { target: "Idle" },
+                },
               },
-
               on: {
                 "detour.edit.reenter": {
-                  target: "Finished Drawing",
-                  reenter: true,
+                  target: ".Fetching",
                   guard: ({ context: { detourShape } }) =>
                     !!(
                       detourShape &&
@@ -765,8 +796,7 @@ export const createDetourMachine = setup({
                     (undoStack !== undefined && undoStack.length > 0),
                 },
                 "detour.edit.move-start-point": {
-                  target: "Finished Drawing",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -776,8 +806,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.move-end-point": {
-                  target: "Finished Drawing",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -787,8 +816,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.delete-waypoint": {
-                  target: "Finished Drawing",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -801,8 +829,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.move-waypoint": {
-                  target: "Finished Drawing",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
@@ -818,8 +845,7 @@ export const createDetourMachine = setup({
                   ],
                 },
                 "detour.edit.insert-waypoint": {
-                  target: "Finished Drawing",
-                  reenter: true,
+                  target: ".Fetching",
                   actions: [
                     {
                       type: "detour.undo.insert",
