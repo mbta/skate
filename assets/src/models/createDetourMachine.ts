@@ -584,7 +584,8 @@ export const createDetourMachine = setup({
                             onDone: {
                               target: "Done",
                               actions: assign({
-                                nearestIntersection: ({ event }) => event.output,
+                                nearestIntersection: ({ event }) =>
+                                  event.output,
                               }),
                             },
 
@@ -747,7 +748,12 @@ export const createDetourMachine = setup({
                   invoke: {
                     src: "fetch-finished-detour",
                     input: ({
-                      context: { routePattern, startPoint, waypoints, endPoint },
+                      context: {
+                        routePattern,
+                        startPoint,
+                        waypoints,
+                        endPoint,
+                      },
                     }) => ({
                       routePatternId: routePattern?.id,
                       startPoint,

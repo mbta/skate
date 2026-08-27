@@ -41,8 +41,12 @@ jest.mock("../../../src/userTestGroups")
 beforeEach(() => {
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
   jest.mocked(getTestGroups).mockReturnValue([])
-  jest.mocked(fetchNearestIntersection).mockResolvedValue("Sesame St & Broadway")
-  jest.mocked(fetchDetourDirections).mockResolvedValue(Ok({ coordinates: [], directions: undefined }))
+  jest
+    .mocked(fetchNearestIntersection)
+    .mockResolvedValue("Sesame St & Broadway")
+  jest
+    .mocked(fetchDetourDirections)
+    .mockResolvedValue(Ok({ coordinates: [], directions: undefined }))
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
   jest
     .mocked(activateDetour)
