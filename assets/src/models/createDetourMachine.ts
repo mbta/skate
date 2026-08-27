@@ -150,17 +150,27 @@ export const createDetourMachine = setup({
       }
     >(async ({ input: { startPoint } }) => {
       if (!startPoint) {
-        throw "Missing nearest intersection inputs"
+        return "-"
       }
 
-      const intersection = await fetchNearestIntersection(
-        startPoint.lat,
-        startPoint.lon
-      )
-      if (intersection === null) {
-        throw new Error("Retrieving Intersection Failed")
+      try {
+        const intersection = await fetchNearestIntersection(
+          startPoint.lat,
+          startPoint.lon
+        )
+
+        if (
+          intersection !== null &&
+          intersection !== undefined &&
+          intersection.trim() !== ""
+        ) {
+          return intersection
+        }
+      } catch {
+        // return fallback below
       }
-      return intersection
+
+      return "-"
     }),
 
     "fetch-detour-directions": fromPromise<
@@ -305,9 +315,6 @@ export const createDetourMachine = setup({
         ...patch,
         undoStack: context.undoStack?.slice(1),
       }
-    }),
-    "set.nearest-intersection-fallback": assign({
-      nearestIntersection: "—",
     }),
   },
 }).createMachine({
@@ -556,7 +563,6 @@ export const createDetourMachine = setup({
                     () => {
                       fullStoryEvent("Placed Detour Start Point", {})
                     },
-                    "set.nearest-intersection-fallback",
                   ],
                 },
                 "detour.delete.open-delete-modal": {
@@ -591,8 +597,7 @@ export const createDetourMachine = setup({
 
                             onError: {
                               target: "Done",
-                              // fallback to an em-dash on error
-                              actions: "set.nearest-intersection-fallback",
+                              actions: assign({ nearestIntersection: "-" }),
                             },
                           },
                         },
@@ -745,40 +750,81 @@ export const createDetourMachine = setup({
               states: {
                 Idle: {},
                 Fetching: {
-                  invoke: {
-                    src: "fetch-finished-detour",
-                    input: ({
-                      context: {
-                        routePattern,
-                        startPoint,
-                        waypoints,
-                        endPoint,
-                      },
-                    }) => ({
-                      routePatternId: routePattern?.id,
-                      startPoint,
-                      waypoints,
-                      endPoint,
-                    }),
+                  type: "parallel",
+                  states: {
+                    Intersection: {
+                      initial: "Fetching",
+                      states: {
+                        Fetching: {
+                          invoke: {
+                            src: "fetch-nearest-intersection",
+                            input: ({ context: { startPoint } }) => ({
+                              startPoint,
+                            }),
 
-                    onDone: {
-                      target: "Fetched",
-                      actions: assign({
-                        finishedDetour: ({ event }) => event.output,
-                        detourShape: ({ event }) =>
-                          event.output?.detourShape &&
-                          Ok({
-                            ...event.output.detourShape,
-                            directions:
-                              event.output.detourShape.directions?.concat({
-                                instruction: "Regular Route",
+                            onDone: {
+                              target: "Done",
+                              actions: assign({
+                                nearestIntersection: ({ event }) =>
+                                  event.output,
                               }),
-                          }),
-                      }),
-                    },
+                            },
 
-                    onError: { target: "Fetched" },
+                            onError: {
+                              target: "Done",
+                              actions: assign({ nearestIntersection: "-" }),
+                            },
+                          },
+                        },
+                        Done: { type: "final" },
+                      },
+                    },
+                    "Finished Detour": {
+                      initial: "Fetching",
+                      states: {
+                        Fetching: {
+                          invoke: {
+                            src: "fetch-finished-detour",
+                            input: ({
+                              context: {
+                                routePattern,
+                                startPoint,
+                                waypoints,
+                                endPoint,
+                              },
+                            }) => ({
+                              routePatternId: routePattern?.id,
+                              startPoint,
+                              waypoints,
+                              endPoint,
+                            }),
+
+                            onDone: {
+                              target: "Done",
+                              actions: assign({
+                                finishedDetour: ({ event }) => event.output,
+                                detourShape: ({ event }) =>
+                                  event.output?.detourShape &&
+                                  Ok({
+                                    ...event.output.detourShape,
+                                    directions:
+                                      event.output.detourShape.directions?.concat(
+                                        {
+                                          instruction: "Regular Route",
+                                        }
+                                      ),
+                                  }),
+                              }),
+                            },
+
+                            onError: { target: "Done" },
+                          },
+                        },
+                        Done: { type: "final" },
+                      },
+                    },
                   },
+                  onDone: { target: "Fetched" },
                 },
                 Fetched: {
                   entry: raise({ type: "detour.save.begin-save-inactive" }),
