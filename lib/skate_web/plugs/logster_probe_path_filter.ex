@@ -10,10 +10,10 @@ defmodule SkateWeb.Plugs.LogsterProbePathFilter do
   import Plug.Conn, only: [put_private: 3]
 
   @exact_probe_paths MapSet.new([
-                      "/apple-touch-icon-precomposed.png",
-                      "/apple-touch-icon.png",
-                      "/login/.git/config"
-                    ])
+                       "/apple-touch-icon-precomposed.png",
+                       "/apple-touch-icon.png",
+                       "/login/.git/config"
+                     ])
 
   @probe_path_prefixes [
     "/cms/vendor/phpunit/phpunit/src/Util/PHP/",
