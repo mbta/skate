@@ -569,7 +569,7 @@ export const createDetourMachine = setup({
               },
             },
             "Place Waypoint": {
-              entry: raise({ type: "detour.save.prepare-start-point" }), // inactive
+              entry: raise({ type: "detour.save.prepare-start-point" }),
               on: {
                 "detour.edit.reenter": {
                   target: "Place Waypoint",
