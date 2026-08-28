@@ -557,10 +557,10 @@ export const createDetourMachine = setup({
                         location,
                       }),
                     },
+                    raise({ type: "detour.save.prepare-start-point" }),
                     () => {
                       fullStoryEvent("Placed Detour Start Point", {})
                     },
-                    "set.nearest-intersection-fallback",
                   ],
                 },
                 "detour.delete.open-delete-modal": {
@@ -569,7 +569,6 @@ export const createDetourMachine = setup({
               },
             },
             "Place Waypoint": {
-              entry: raise({ type: "detour.save.prepare-start-point" }),
               on: {
                 "detour.edit.reenter": {
                   target: "Place Waypoint",
@@ -595,6 +594,7 @@ export const createDetourMachine = setup({
                         location,
                       }),
                     },
+                    raise({ type: "detour.save.prepare-route" }),
                     () => {
                       fullStoryEvent("Placed Detour Way-Point", {})
                     },
@@ -616,6 +616,7 @@ export const createDetourMachine = setup({
                         location,
                       }),
                     },
+                    raise({ type: "detour.save.prepare-route" }),
                     () => {
                       fullStoryEvent("Placed Detour End Point", {})
                     },
@@ -630,6 +631,7 @@ export const createDetourMachine = setup({
                       params: ({ context: { startPoint } }) => ({ startPoint }),
                     },
                     assign({ startPoint: ({ event }) => event.position }),
+                    raise({ type: "detour.save.prepare-start-point" }),
                   ],
                 },
                 "detour.edit.delete-waypoint": {
@@ -644,6 +646,7 @@ export const createDetourMachine = setup({
                       type: "detour.delete-waypoint",
                       params: ({ event }) => event,
                     },
+                    raise({ type: "detour.save.prepare-route" }),
                   ],
                 },
                 "detour.edit.move-waypoint": {
@@ -661,6 +664,7 @@ export const createDetourMachine = setup({
                         return waypoints
                       },
                     }),
+                    raise({ type: "detour.save.prepare-route" }),
                   ],
                 },
                 "detour.edit.insert-waypoint": {
@@ -675,6 +679,7 @@ export const createDetourMachine = setup({
                       type: "detour.insert-waypoint",
                       params: ({ event }) => event,
                     },
+                    raise({ type: "detour.save.prepare-route" }),
                   ],
                 },
                 "detour.delete.open-delete-modal": {
@@ -683,8 +688,6 @@ export const createDetourMachine = setup({
               },
             },
             "Finished Drawing": {
-              entry: raise({ type: "detour.save.prepare-route" }), // inactive
-
               on: {
                 "detour.edit.reenter": {
                   target: "Finished Drawing",
@@ -711,6 +714,7 @@ export const createDetourMachine = setup({
                       params: ({ context: { startPoint } }) => ({ startPoint }),
                     },
                     assign({ startPoint: ({ event }) => event.position }),
+                    raise({ type: "detour.save.prepare-start-point" }),
                   ],
                 },
                 "detour.edit.move-end-point": {
@@ -722,6 +726,7 @@ export const createDetourMachine = setup({
                       params: ({ context: { endPoint } }) => ({ endPoint }),
                     },
                     assign({ endPoint: ({ event }) => event.position }),
+                    raise({ type: "detour.save.prepare-route" }),
                   ],
                 },
                 "detour.edit.delete-waypoint": {
@@ -736,6 +741,7 @@ export const createDetourMachine = setup({
                       type: "detour.delete-waypoint",
                       params: ({ event }) => event,
                     },
+                    raise({ type: "detour.save.prepare-route" }),
                   ],
                 },
                 "detour.edit.move-waypoint": {
@@ -753,6 +759,7 @@ export const createDetourMachine = setup({
                         return waypoints
                       },
                     }),
+                    raise({ type: "detour.save.prepare-route" }),
                   ],
                 },
                 "detour.edit.insert-waypoint": {
@@ -767,6 +774,7 @@ export const createDetourMachine = setup({
                       type: "detour.insert-waypoint",
                       params: ({ event }) => event,
                     },
+                    raise({ type: "detour.save.prepare-route" }),
                   ],
                 },
                 "detour.delete.open-delete-modal": {
