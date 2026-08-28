@@ -38,9 +38,9 @@ defmodule SkateWeb.Endpoint do
 
   plug Plug.RequestId
 
-  plug SkateWeb.Plugs.LogsterProbePathFilter
-
   plug Logster.Plugs.Logger
+
+  plug SkateWeb.Plugs.LogsterProbePathFilter
 
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
