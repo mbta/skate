@@ -1214,10 +1214,10 @@ export const createDetourMachine = setup({
     // the database will reflect the old route and old waypoints up until the point where a new waypoint is added,
     // unless they are editing an already activated detour, when it will only be saved upon re-activation
     SaveState: {
-      initial: "Idle",
+      initial: "Unsaved",
 
       states: {
-        Idle: {
+        Unsaved: {
           on: {
             "detour.save.prepare-start-point": {
               target: "Preparing.NearestIntersection",
@@ -1337,7 +1337,7 @@ export const createDetourMachine = setup({
               target: "Saving",
               guard: ({ context }) => context.activatedAt === undefined,
             },
-            { target: "Idle" },
+            { target: "Unsaved" },
           ],
         },
 
@@ -1345,12 +1345,27 @@ export const createDetourMachine = setup({
           id: "Saving",
           on: {
             "detour.save.set-uuid": {
-              target: "Idle",
+              target: "Saved",
               actions: assign({
                 uuid: ({ event }) => event.uuid,
               }),
             },
-            "detour.save.save-failed": "Idle",
+            "detour.save.save-failed": "Unsaved",
+          },
+        },
+        Saved: {
+          on: {
+            "detour.save.prepare-start-point": {
+              target: "Preparing.NearestIntersection",
+            },
+            "detour.save.prepare-route": {
+              target: "Preparing.RecalculateDetour",
+            },
+            "detour.save.begin-save": { target: "Saving" },
+            "detour.save.begin-save-inactive": {
+              target: "Saving",
+              guard: ({ context }) => context.activatedAt === undefined,
+            },
           },
         },
       },
