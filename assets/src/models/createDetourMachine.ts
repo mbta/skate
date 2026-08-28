@@ -121,6 +121,8 @@ export const createDetourMachine = setup({
       | { type: "detour.active.edit.done" }
       | { type: "detour.active.edit.cancel" }
       | { type: "detour.save.begin-save-inactive" }
+      | { type: "detour.save.prepare-start-point" }
+      | { type: "detour.save.prepare-route" }
       | { type: "detour.save.begin-save" }
       | { type: "detour.save.set-uuid"; uuid: number }
       | { type: "detour.save.save-failed" }
@@ -567,42 +569,7 @@ export const createDetourMachine = setup({
               },
             },
             "Place Waypoint": {
-              entry: raise({ type: "detour.save.begin-save-inactive" }),
-              invoke: [
-                {
-                  src: "fetch-nearest-intersection",
-                  input: ({ context: { startPoint } }) => ({
-                    startPoint,
-                  }),
-
-                  onDone: {
-                    actions: assign({
-                      nearestIntersection: ({ event }) => event.output,
-                    }),
-                  },
-
-                  onError: {
-                    // fallback to an em-dash on error
-                    actions: "set.nearest-intersection-fallback",
-                  },
-                },
-                {
-                  src: "fetch-detour-directions",
-                  input: ({ context: { startPoint, waypoints } }) => ({
-                    points: (startPoint ? [startPoint] : []).concat(
-                      waypoints || []
-                    ),
-                  }),
-
-                  onDone: {
-                    actions: assign({
-                      detourShape: ({ event }) => event.output,
-                    }),
-                  },
-
-                  onError: {},
-                },
-              ],
+              entry: raise({ type: "detour.save.prepare-start-point" }), // inactive
               on: {
                 "detour.edit.reenter": {
                   target: "Place Waypoint",
@@ -716,36 +683,7 @@ export const createDetourMachine = setup({
               },
             },
             "Finished Drawing": {
-              entry: raise({ type: "detour.save.begin-save-inactive" }),
-              invoke: {
-                src: "fetch-finished-detour",
-                input: ({
-                  context: { routePattern, startPoint, waypoints, endPoint },
-                }) => ({
-                  routePatternId: routePattern?.id,
-                  startPoint,
-                  waypoints,
-                  endPoint,
-                }),
-
-                onDone: {
-                  actions: assign({
-                    finishedDetour: ({ event }) => event.output,
-                    detourShape: ({ event }) =>
-                      event.output?.detourShape &&
-                      Ok({
-                        ...event.output.detourShape,
-                        directions: event.output.detourShape.directions?.concat(
-                          {
-                            instruction: "Regular Route",
-                          }
-                        ),
-                      }),
-                  }),
-                },
-
-                onError: {},
-              },
+              entry: raise({ type: "detour.save.prepare-route" }), // inactive
 
               on: {
                 "detour.edit.reenter": {
@@ -1277,19 +1215,134 @@ export const createDetourMachine = setup({
     // unless they are editing an already activated detour, when it will only be saved upon re-activation
     SaveState: {
       initial: "Idle",
+
       states: {
         Idle: {
           on: {
+            "detour.save.prepare-start-point": {
+              target: "Preparing.NearestIntersection",
+            },
+            "detour.save.prepare-route": {
+              target: "Preparing.RecalculateDetour",
+            },
+            "detour.save.begin-save": { target: "Saving" },
             "detour.save.begin-save-inactive": {
               target: "Saving",
               guard: ({ context }) => context.activatedAt === undefined,
             },
-            "detour.save.begin-save": {
-              target: "Saving",
-            },
           },
         },
+
+        Preparing: {
+          initial: "NearestIntersection",
+          states: {
+            NearestIntersection: {
+              invoke: {
+                src: "fetch-nearest-intersection",
+                input: ({ context }) => ({
+                  startPoint: context.startPoint,
+                }),
+                onDone: {
+                  target: "RecalculateDetour",
+                  actions: assign({
+                    nearestIntersection: ({ event }) => event.output,
+                  }),
+                },
+                onError: {
+                  target: "RecalculateDetour",
+                  actions: "set.nearest-intersection-fallback",
+                },
+              },
+            },
+
+            RecalculateDetour: {
+              initial: "Choose",
+              states: {
+                Choose: {
+                  always: [
+                    {
+                      guard: ({ context }) => !!context.endPoint,
+                      target: "Finished Detour",
+                    },
+                    { target: "Directions" },
+                  ],
+                },
+                "Finished Detour": {
+                  invoke: {
+                    src: "fetch-finished-detour",
+                    input: ({
+                      context: {
+                        routePattern,
+                        startPoint,
+                        waypoints,
+                        endPoint,
+                      },
+                    }) => ({
+                      routePatternId: routePattern?.id,
+                      startPoint,
+                      waypoints,
+                      endPoint,
+                    }),
+
+                    onDone: {
+                      target: "Done",
+                      actions: assign({
+                        finishedDetour: ({ event }) => event.output,
+                        detourShape: ({ event }) =>
+                          event.output?.detourShape &&
+                          Ok({
+                            ...event.output.detourShape,
+                            directions:
+                              event.output.detourShape.directions?.concat({
+                                instruction: "Regular Route",
+                              }),
+                          }),
+                      }),
+                    },
+
+                    onError: {
+                      target: "Done",
+                    },
+                  },
+                },
+                Directions: {
+                  invoke: {
+                    src: "fetch-detour-directions",
+                    input: ({ context: { startPoint, waypoints } }) => ({
+                      points: (startPoint ? [startPoint] : []).concat(
+                        waypoints || []
+                      ),
+                    }),
+
+                    onDone: {
+                      target: "Done",
+                      actions: assign({
+                        detourShape: ({ event }) => event.output,
+                      }),
+                    },
+
+                    onError: {
+                      target: "Done",
+                    },
+                  },
+                },
+                Done: { type: "final" },
+              },
+              onDone: "Done",
+            },
+            Done: { type: "final" },
+          },
+          onDone: [
+            {
+              target: "Saving",
+              guard: ({ context }) => context.activatedAt === undefined,
+            },
+            { target: "Idle" },
+          ],
+        },
+
         Saving: {
+          id: "Saving",
           on: {
             "detour.save.set-uuid": {
               target: "Idle",
@@ -1297,9 +1350,7 @@ export const createDetourMachine = setup({
                 uuid: ({ event }) => event.uuid,
               }),
             },
-            "detour.save.save-failed": {
-              target: "Idle",
-            },
+            "detour.save.save-failed": "Idle",
           },
         },
       },
