@@ -14,7 +14,7 @@ defmodule Skate.Detours.SnapshotSerde do
   def deserialize(user_id, %{} = snapshot) do
     {activated_at, snapshot} =
       snapshot
-      |> put_in(["value", "SaveState"], "Idle")
+      |> put_in(["value", "SaveState"], "Saved")
       |> pop_in(["context", "activatedAt"])
 
     id = id_from_snapshot(snapshot)
@@ -299,8 +299,6 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp detourshape_from_detour(_), do: nil
 
-  # TODO maybe should return nil if any values are nil
-  # or if detour_shape is not OK does that mean nil?
   defp finisheddetour_from_detour(%Detour{
          detour_shape: %{"ok" => detour_shape},
          connection_points: connection_points,

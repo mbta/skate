@@ -330,7 +330,7 @@ defmodule SkateWeb.DetoursControllerTest do
         |> with_id(detour_id)
 
       serialized_detour_snapshot =
-        put_in(detour_snapshot["value"]["SaveState"], "Idle")
+        put_in(detour_snapshot["value"]["SaveState"], "Saved")
 
       put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
 
