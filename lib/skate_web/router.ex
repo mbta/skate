@@ -38,7 +38,6 @@ defmodule SkateWeb.Router do
   pipeline :browser do
     plug :fetch_session
     plug :fetch_flash
-    plug SkateWeb.Plugs.CSRFProtectionLogger
     plug :put_secure_browser_headers
   end
 
