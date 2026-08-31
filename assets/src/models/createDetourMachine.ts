@@ -1228,10 +1228,10 @@ export const createDetourMachine = setup({
         Unsaved: {
           on: {
             "detour.save.prepare-start-point": {
-              target: "Preparing.NearestIntersection",
+              target: "Preparing.Fetch Intersection",
             },
             "detour.save.prepare-route": {
-              target: "Preparing.RecalculateDetour",
+              target: "Preparing.Fetch Detour",
             },
             "detour.save.begin-save": { target: "Saving" },
             "detour.save.begin-save-inactive": {
@@ -1242,28 +1242,28 @@ export const createDetourMachine = setup({
         },
 
         Preparing: {
-          initial: "NearestIntersection",
+          initial: "Fetch Intersection",
           states: {
-            NearestIntersection: {
+            "Fetch Intersection": {
               invoke: {
                 src: "fetch-nearest-intersection",
                 input: ({ context }) => ({
                   startPoint: context.startPoint,
                 }),
                 onDone: {
-                  target: "RecalculateDetour",
+                  target: "Fetch Detour",
                   actions: assign({
                     nearestIntersection: ({ event }) => event.output,
                   }),
                 },
                 onError: {
-                  target: "RecalculateDetour",
+                  target: "Fetch Detour",
                   actions: "set.nearest-intersection-fallback",
                 },
               },
             },
 
-            RecalculateDetour: {
+            "Fetch Detour": {
               initial: "Choose",
               states: {
                 Choose: {
@@ -1364,10 +1364,10 @@ export const createDetourMachine = setup({
         Saved: {
           on: {
             "detour.save.prepare-start-point": {
-              target: "Preparing.NearestIntersection",
+              target: "Preparing.Fetch Intersection",
             },
             "detour.save.prepare-route": {
-              target: "Preparing.RecalculateDetour",
+              target: "Preparing.Fetch Detour",
             },
             "detour.save.begin-save": { target: "Saving" },
             "detour.save.begin-save-inactive": {
