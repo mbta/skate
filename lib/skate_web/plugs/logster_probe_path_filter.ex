@@ -13,7 +13,8 @@ defmodule SkateWeb.Plugs.LogsterProbePathFilter do
   @exact_probe_paths MapSet.new([
                        "/apple-touch-icon-precomposed.png",
                        "/apple-touch-icon.png",
-                       "/login/.git/config"
+                       "/login/.git/config",
+                       "/.well-known/assetlinks.json"
                      ])
 
   @known_exploit_prefixes [
