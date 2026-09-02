@@ -38,6 +38,9 @@ defmodule SkateWeb.Endpoint do
 
   plug Plug.RequestId
 
+  # Reject common bot/scanner probes (LFI/RFI, WordPress paths, etc.)
+  plug SkateWeb.Plugs.BlockScannerRequests
+
   plug Logster.Plugs.Logger
 
   plug Plug.Parsers,
