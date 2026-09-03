@@ -39,7 +39,9 @@ export const RttDetailsPanel = ({
   ])
 
   const routeDisplay = (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}>
+    <div
+      style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
+    >
       <RoutePill routeName={call.routeName || call.routeId} />
       <span>
         {call.direction ? `${call.direction}` : ""}

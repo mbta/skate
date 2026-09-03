@@ -5,10 +5,15 @@ import { RttDetailsPanel } from "./detailsPanel"
 import { ActiveRttBanner } from "./activeBanner"
 
 export interface RttQueueProps {
+  defaultIncomingCalls?: RttCall[]
   incomingCalls?: RttCall[]
+  defaultPastCalls?: RttCall[]
   pastCalls?: RttCall[]
+  defaultSelectedCallId?: string | null
   selectedCallId?: string | null
+  defaultActiveCallId?: string | null
   activeCallId?: string | null
+  defaultTab?: RttTab
   currentTab?: RttTab
   newIncomingCount?: number
   currentDispatcherName?: string
@@ -19,10 +24,15 @@ export interface RttQueueProps {
 }
 
 export const RttQueue = ({
+  defaultIncomingCalls,
   incomingCalls: incomingCallsProp,
+  defaultPastCalls,
   pastCalls: pastCallsProp,
+  defaultSelectedCallId,
   selectedCallId: selectedCallIdProp,
+  defaultActiveCallId,
   activeCallId: activeCallIdProp,
+  defaultTab,
   currentTab: currentTabProp,
   newIncomingCount: newIncomingCountProp,
   currentDispatcherName = "Current Dispatcher",
@@ -31,28 +41,30 @@ export const RttQueue = ({
   onMarkDoneCall,
   onTabChange,
 }: RttQueueProps): JSX.Element => {
-  // Local state for uncontrolled or interactive usage
-  const [internalTab, setInternalTab] = useState<RttTab>("incoming")
+  const [internalTab, setInternalTab] = useState<RttTab>(
+    currentTabProp ?? defaultTab ?? "incoming"
+  )
   const [internalIncomingCalls, setInternalIncomingCalls] = useState<RttCall[]>(
-    incomingCallsProp ?? []
+    incomingCallsProp ?? defaultIncomingCalls ?? []
   )
   const [internalPastCalls, setInternalPastCalls] = useState<RttCall[]>(
-    pastCallsProp ?? []
+    pastCallsProp ?? defaultPastCalls ?? []
   )
   const [internalSelectedCallId, setInternalSelectedCallId] = useState<
     string | null
-  >(selectedCallIdProp ?? null)
+  >(selectedCallIdProp ?? defaultSelectedCallId ?? null)
   const [internalActiveCallId, setInternalActiveCallId] = useState<
     string | null
-  >(activeCallIdProp ?? null)
+  >(activeCallIdProp ?? defaultActiveCallId ?? null)
   const [internalNewIncomingCount, setInternalNewIncomingCount] = useState(
     newIncomingCountProp ?? 0
   )
 
-  const isControlled = incomingCallsProp !== undefined
   const tab = currentTabProp !== undefined ? currentTabProp : internalTab
-  const incomingCalls = isControlled ? incomingCallsProp : internalIncomingCalls
-  const pastCalls = pastCallsProp !== undefined ? pastCallsProp : internalPastCalls
+  const incomingCalls =
+    incomingCallsProp !== undefined ? incomingCallsProp : internalIncomingCalls
+  const pastCalls =
+    pastCallsProp !== undefined ? pastCallsProp : internalPastCalls
   const selectedCallId =
     selectedCallIdProp !== undefined
       ? selectedCallIdProp
@@ -78,7 +90,8 @@ export const RttQueue = ({
     [pastCalls]
   )
 
-  const activeCallsList = tab === "incoming" ? sortedIncomingCalls : sortedPastCalls
+  const activeCallsList =
+    tab === "incoming" ? sortedIncomingCalls : sortedPastCalls
 
   // Currently selected call
   const selectedCall = useMemo(() => {
@@ -92,7 +105,7 @@ export const RttQueue = ({
   }, [incomingCalls, activeCallId])
 
   const handleTabClick = (newTab: RttTab) => {
-    if (!isControlled) {
+    if (currentTabProp === undefined) {
       setInternalTab(newTab)
       if (newTab === "incoming") {
         setInternalNewIncomingCount(0)
@@ -102,84 +115,77 @@ export const RttQueue = ({
   }
 
   const handleSelectCall = (call: RttCall) => {
-    if (!isControlled) {
+    if (selectedCallIdProp === undefined) {
       setInternalSelectedCallId(call.id)
     }
     onSelectCall?.(call)
   }
 
   const handleRespondCall = (call: RttCall) => {
-    if (!isControlled) {
-      // 1. If user already had an active call, mark that prior call as done
-      let updatedIncoming = [...internalIncomingCalls]
-      let updatedPast = [...internalPastCalls]
+    const now = new Date()
+    const activeId =
+      activeCallIdProp !== undefined ? activeCallIdProp : internalActiveCallId
 
-      if (internalActiveCallId) {
-        const priorActiveIndex = updatedIncoming.findIndex(
-          (c) => c.id === internalActiveCallId
-        )
-        if (priorActiveIndex !== -1) {
-          const priorActive = updatedIncoming[priorActiveIndex]
-          const completedPrior: RttCall = {
-            ...priorActive,
-            status: "done",
-            markedDoneAt: new Date(),
+    setInternalIncomingCalls((prevIncoming) => {
+      return prevIncoming
+        .filter((c) => !(activeId && c.id === activeId && c.id !== call.id))
+        .map((c) => {
+          if (c.id === call.id) {
+            return {
+              ...c,
+              status: "active",
+              respondedBy: currentDispatcherName,
+              answeredAt: now,
+            }
           }
-          updatedIncoming.splice(priorActiveIndex, 1)
-          updatedPast = [completedPrior, ...updatedPast]
-        }
-      }
+          return c
+        })
+    })
 
-      // 2. Mark this call as active
-      const now = new Date()
-      const respondedCallIndex = updatedIncoming.findIndex(
-        (c) => c.id === call.id
-      )
-      if (respondedCallIndex !== -1) {
-        const respondedCall: RttCall = {
-          ...updatedIncoming[respondedCallIndex],
-          status: "active",
-          respondedBy: currentDispatcherName,
-          answeredAt: now,
+    if (activeId && activeId !== call.id) {
+      const priorCall = internalIncomingCalls.find((c) => c.id === activeId)
+      if (priorCall) {
+        const completed: RttCall = {
+          ...priorCall,
+          status: "done",
+          markedDoneAt: now,
         }
-        updatedIncoming[respondedCallIndex] = respondedCall
-        setInternalActiveCallId(call.id)
-        setInternalSelectedCallId(call.id)
+        setInternalPastCalls((prevPast) => [completed, ...prevPast])
       }
+    }
 
-      setInternalIncomingCalls(updatedIncoming)
-      setInternalPastCalls(updatedPast)
+    if (activeCallIdProp === undefined) {
+      setInternalActiveCallId(call.id)
+    }
+    if (selectedCallIdProp === undefined) {
+      setInternalSelectedCallId(call.id)
     }
 
     onRespondCall?.(call)
   }
 
   const handleMarkDoneCall = (call: RttCall) => {
-    if (!isControlled) {
-      const now = new Date()
-      const callIndex = internalIncomingCalls.findIndex((c) => c.id === call.id)
+    const now = new Date()
 
-      if (callIndex !== -1) {
-        const completedCall: RttCall = {
-          ...internalIncomingCalls[callIndex],
-          status: "done",
-          markedDoneAt: now,
-        }
-        const updatedIncoming = internalIncomingCalls.filter(
-          (c) => c.id !== call.id
-        )
-        const updatedPast = [completedCall, ...internalPastCalls]
+    setInternalIncomingCalls((prevIncoming) =>
+      prevIncoming.filter((c) => c.id !== call.id)
+    )
 
-        setInternalIncomingCalls(updatedIncoming)
-        setInternalPastCalls(updatedPast)
+    const completedCall: RttCall = {
+      ...call,
+      status: "done",
+      markedDoneAt: now,
+    }
+    setInternalPastCalls((prevPast) => [completedCall, ...prevPast])
 
-        if (internalActiveCallId === call.id) {
-          setInternalActiveCallId(null)
-        }
-        if (internalSelectedCallId === call.id) {
-          setInternalSelectedCallId(completedCall.id)
-        }
-      }
+    if (activeCallIdProp === undefined && internalActiveCallId === call.id) {
+      setInternalActiveCallId(null)
+    }
+    if (
+      selectedCallIdProp === undefined &&
+      internalSelectedCallId === call.id
+    ) {
+      setInternalSelectedCallId(completedCall.id)
     }
 
     onMarkDoneCall?.(call)

@@ -25,7 +25,7 @@ export const rttCallFactory = Factory.define<RttCall>(
     ]
 
     return {
-      id: `rtt-${sequence}`,
+      id: params.id ?? `rtt-${sequence}`,
       callType,
       talkGroup: params.talkGroup ?? `TG-${100 + (sequence % 5)}`,
       routeId: params.routeId ?? `${((sequence * 7) % 100) + 1}`,
@@ -41,8 +41,7 @@ export const rttCallFactory = Factory.define<RttCall>(
       operatorName: params.operatorName ?? `Operator ${sequence}`,
       runNumber: params.runNumber ?? `R-${100 + sequence}`,
       respondedBy:
-        params.respondedBy ??
-        (status === "active" ? "Dispatcher Smith" : null),
+        params.respondedBy ?? (status === "active" ? "Dispatcher Smith" : null),
       answeredAt:
         params.answeredAt ??
         (status === "active"
