@@ -5,14 +5,7 @@ import { originalRouteFactory } from "./originalRouteFactory"
 import { shapePointFactory } from "./shapePointFactory"
 import { DetourWithState } from "../../src/models/detour"
 
-const withNearestIntersectionFallback = (snapshot: any) => ({
-  ...snapshot,
-  context: {
-    ...snapshot.context,
-    nearestIntersection: snapshot.context?.nearestIntersection ?? "—",
-  },
-})
-
+// These factories are synchronous and will not include mocked calculated data
 export const detourInProgressFactory = Factory.define<DetourWithState>(() => {
   // Stub out a detour machine, and start a detour-in-progress
   const machine = createActor(createDetourMachine, {
@@ -38,7 +31,7 @@ export const detourInProgressFactory = Factory.define<DetourWithState>(() => {
   return {
     updatedAt: 1724866392,
     author: "fake@email.com",
-    state: withNearestIntersectionFallback(snapshot),
+    state: snapshot,
   }
 })
 
@@ -98,7 +91,7 @@ export const activeDetourFactory = Factory.define<
   return {
     updatedAt: 1724866392,
     author: "fake@email.com",
-    state: withNearestIntersectionFallback(snapshotWithActivatedAt),
+    state: snapshotWithActivatedAt,
   }
 })
 
@@ -120,7 +113,7 @@ export const minimumDraftDetourFactory = Factory.define<DetourWithState>(() => {
   return {
     updatedAt: 1724866392,
     author: "fake@email.com",
-    state: withNearestIntersectionFallback(snapshot),
+    state: snapshot,
   }
 })
 
@@ -152,7 +145,7 @@ export const finishedDraftDetourFactory = Factory.define<DetourWithState>(
     return {
       updatedAt: 1724866392,
       author: "fake@email.com",
-      state: withNearestIntersectionFallback(snapshot),
+      state: snapshot,
     }
   }
 )
@@ -207,6 +200,6 @@ export const pastDetourFactory = Factory.define<DetourWithState>(() => {
   return {
     updatedAt: 1724866392,
     author: "fake@email.com",
-    state: withNearestIntersectionFallback(snapshotWithActivatedAt),
+    state: snapshotWithActivatedAt,
   }
 })
