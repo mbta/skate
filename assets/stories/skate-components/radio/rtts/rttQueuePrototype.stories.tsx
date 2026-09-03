@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import React, { useState } from "react"
 import { RttQueue } from "../../../../src/components/radio/rtts/queue"
-import { RttCall, RttTab, RttCallType } from "../../../../src/components/radio/rtts/types"
 import {
-  mockIncomingCalls,
-  mockPastCalls,
-} from "./__story-data__/rttQueueData"
+  RttCall,
+  RttTab,
+  RttCallType,
+} from "../../../../src/components/radio/rtts/types"
+import { mockIncomingCalls, mockPastCalls } from "./__story-data__/rttQueueData"
 import { rttCallFactory } from "../../../../tests/factories/radio/rtt"
 
 const InteractivePrototypeWrapper = ({
@@ -13,7 +14,8 @@ const InteractivePrototypeWrapper = ({
 }: {
   dispatcherName?: string
 }) => {
-  const [incomingCalls, setIncomingCalls] = useState<RttCall[]>(mockIncomingCalls)
+  const [incomingCalls, setIncomingCalls] =
+    useState<RttCall[]>(mockIncomingCalls)
   const [pastCalls, setPastCalls] = useState<RttCall[]>(mockPastCalls)
   const [currentTab, setCurrentTab] = useState<RttTab>("incoming")
   const [selectedCallId, setSelectedCallId] = useState<string | null>(
@@ -28,7 +30,7 @@ const InteractivePrototypeWrapper = ({
   }
 
   const handleRespondCall = (call: RttCall) => {
-    let updatedIncoming = [...incomingCalls]
+    const updatedIncoming = [...incomingCalls]
     let updatedPast = [...pastCalls]
 
     // 1. If user already had an active call, auto-complete that prior call
@@ -147,7 +149,9 @@ const InteractivePrototypeWrapper = ({
       >
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <strong>Prototype Simulator:</strong>
-          <span>Logged in as: <em>{dispatcherName}</em></span>
+          <span>
+            Logged in as: <em>{dispatcherName}</em>
+          </span>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>

@@ -21,7 +21,6 @@ export const RttQueueItem = ({
 }: RttQueueItemProps): JSX.Element => {
   const isEmergency = call.callType === "Emergency"
   const isPrtt = call.callType === "PRTT"
-  const isRtt = call.callType === "RTT"
   const isActive = call.status === "active"
 
   const typeClass = isEmergency
@@ -58,19 +57,7 @@ export const RttQueueItem = ({
       : formattedTime(call.receivedAt)
 
   return (
-    <div
-      className={classes}
-      onClick={handleRowClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault()
-          handleRowClick()
-        }
-      }}
-      aria-selected={isSelected}
-    >
+    <div className={classes} aria-selected={isSelected}>
       {tab === "incoming" && (
         <div className="c-rtt-queue-item__action">
           {call.status === "active" && call.respondedBy ? (
@@ -93,7 +80,18 @@ export const RttQueueItem = ({
         </div>
       )}
 
-      <div className="c-rtt-queue-item__content">
+      <div
+        className="c-rtt-queue-item__content"
+        role="button"
+        tabIndex={0}
+        onClick={handleRowClick}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            handleRowClick()
+          }
+        }}
+      >
         <span className={joinClasses(["c-rtt-queue-item__type", typeClass])}>
           {call.callType}
         </span>

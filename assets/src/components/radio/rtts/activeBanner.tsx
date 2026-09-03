@@ -18,14 +18,29 @@ export const ActiveRttBanner = ({
       role="region"
       aria-label="Active Call Banner"
     >
-      <div
-        className="c-active-rtt-banner__content"
-        style={{ cursor: onSelectActive ? "pointer" : "default" }}
-        onClick={() => onSelectActive?.(activeCall)}
-      >
-        <span className="c-active-rtt-banner__text">
-          Active {activeCall.callType} vehicle #{activeCall.vehicleId}
-        </span>
+      <div className="c-active-rtt-banner__content">
+        {onSelectActive ? (
+          <button
+            type="button"
+            className="c-active-rtt-banner__text"
+            style={{
+              background: "none",
+              border: "none",
+              color: "inherit",
+              padding: 0,
+              font: "inherit",
+              cursor: "pointer",
+              textAlign: "left",
+            }}
+            onClick={() => onSelectActive(activeCall)}
+          >
+            Active {activeCall.callType} vehicle #{activeCall.vehicleId}
+          </button>
+        ) : (
+          <span className="c-active-rtt-banner__text">
+            Active {activeCall.callType} vehicle #{activeCall.vehicleId}
+          </span>
+        )}
       </div>
 
       <button

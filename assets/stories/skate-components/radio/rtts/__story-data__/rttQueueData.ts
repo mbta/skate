@@ -1,4 +1,4 @@
-import { RttCall } from "../../../../src/components/radio/rtts/types"
+import { RttCall } from "../../../../../src/components/radio/rtts/types"
 
 const now = new Date()
 
