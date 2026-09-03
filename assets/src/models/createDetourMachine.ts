@@ -475,6 +475,7 @@ export const createDetourMachine = setup({
                   }),
                 },
                 "detour.clear",
+                raise({ type: "detour.save.begin-save-inactive" }),
               ],
             },
             "detour.edit.undo": [
@@ -482,21 +483,30 @@ export const createDetourMachine = setup({
                 target: ".Pick Start Point",
                 guard: ({ context }) =>
                   context?.undoStack?.[0]?.target === "Pick Start Point",
-                actions: "detour.undo.apply",
+                actions: [
+                  "detour.undo.apply",
+                  raise({ type: "detour.save.begin-save-inactive" }),
+                ],
                 reenter: true,
               },
               {
                 target: ".Place Waypoint",
                 guard: ({ context }) =>
                   context?.undoStack?.[0]?.target === "Place Waypoint",
-                actions: "detour.undo.apply",
+                actions: [
+                  "detour.undo.apply",
+                  raise({ type: "detour.save.prepare-route" }),
+                ],
                 reenter: true,
               },
               {
                 target: ".Finished Drawing",
                 guard: ({ context }) =>
                   context?.undoStack?.[0]?.target === "Finished Drawing",
-                actions: "detour.undo.apply",
+                actions: [
+                  "detour.undo.apply",
+                  raise({ type: "detour.save.prepare-route" }),
+                ],
                 reenter: true,
               },
             ],
