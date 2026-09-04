@@ -663,12 +663,14 @@ defmodule Skate.Detours.Detours do
     minutes_active = DateTime.diff(DateTime.utc_now(), activated_at, :minute)
 
     Logger.metadata(
-      update_action: "deactivate",
-      activated_at: activated_at,
-      estimated_duration: estimated_duration,
-      minutes_active: minutes_active,
-      copied_from_id: copied_from_id,
-      reason: reason
+      event_context: %{
+        update_action: "deactivate",
+        activated_at: activated_at,
+        estimated_duration: estimated_duration,
+        minutes_active: minutes_active,
+        copied_from_id: copied_from_id,
+        reason: reason
+      }
     )
   end
 

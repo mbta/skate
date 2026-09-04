@@ -40,7 +40,7 @@ config :logger, level: :info
 
 config :logger, :console,
   format: "$time [$level] node=$node $metadata$message\n",
-  metadata: [:mfa, :request_id]
+  metadata: [:mfa, :request_id, :event_context]
 
 # Configure Ueberauth to use Keycloak
 config :ueberauth, Ueberauth,
