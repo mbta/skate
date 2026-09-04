@@ -138,7 +138,7 @@ config :logger, :console,
   metadata: [:mfa, :request_id]
 
 log_filter_params =
-  ~w(password token guardian_default_claims guardian_default_resource guardian_default_token)
+  ~w(password token guardian_default_claims guardian_default_resource guardian_default_token snapshot)
 
 config :logster, :filter_parameters, log_filter_params
 
