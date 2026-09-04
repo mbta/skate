@@ -1,6 +1,6 @@
 // argsUpdater.ts
-import { useArgs } from "storybook/preview-api"
-import type { DecoratorFunction } from "storybook/internal/types"
+import { useArgs } from "@storybook/preview-api"
+import type { DecoratorFunction } from "@storybook/types"
 import type { ReactRenderer } from "@storybook/react-webpack5"
 
 type Fn = (...args: any) => any
@@ -16,7 +16,7 @@ export function argsUpdater<
   TArgs extends { [name: string]: any },
   TArgName extends keyof {
     [K in keyof TArgs as Fn extends TArgs[K] ? K : never]: TArgs[K]
-  },
+  }
 >(
   argName: TArgName,
   updater: (
