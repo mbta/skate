@@ -269,6 +269,7 @@ defmodule Skate.Detours.Detours do
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
     trigger_active_detour_s3_export_job(changeset, new_record)
+    add_logger_metadata(changeset)
   end
 
   @spec delete_draft_detour(Detour.t(), DbUser.id()) :: :ok
@@ -648,6 +649,30 @@ defmodule Skate.Detours.Detours do
   end
 
   defp update_swiftly(_, _, _), do: :ok
+
+  defp add_logger_metadata(%Ecto.Changeset{
+         changes: %{status: :past},
+         data: %{
+           status: :active,
+           copied_from_id: copied_from_id,
+           activated_at: activated_at,
+           estimated_duration: estimated_duration,
+           reason: reason
+         }
+       }) do
+    minutes_active = DateTime.diff(DateTime.utc_now(), activated_at, :minute)
+
+    Logger.metadata(
+      update_action: "deactivate",
+      activated_at: activated_at,
+      estimated_duration: estimated_duration,
+      minutes_active: minutes_active,
+      copied_from_id: copied_from_id,
+      reason: reason
+    )
+  end
+
+  defp add_logger_metadata(_), do: nil
 
   def sync_swiftly_with_skate(
         adjustments_module \\ service_adjustments_module(),
