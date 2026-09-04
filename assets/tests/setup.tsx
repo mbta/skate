@@ -4,6 +4,7 @@ import failOnConsole from "jest-fail-on-console"
 import React from "react"
 import { randomUUID } from "node:crypto"
 import { TextEncoder, TextDecoder } from "node:util"
+import { config } from "react-transition-group"
 
 const ignoreList = [/.*components\/app\.test\.tsx/]
 const ignoreNameList = []
@@ -72,6 +73,9 @@ if (!global.TextEncoder) {
 if (!global.TextDecoder) {
   global.TextDecoder = TextDecoder
 }
+
+// disable react-bootstrap transitions for snapshot testing
+config.disabled = true
 
 beforeEach(() => {
   // eslint-disable-next-line jest/no-standalone-expect

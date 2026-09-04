@@ -32,7 +32,7 @@ import { loading } from "../../../src/util/fetchResult"
 
 // Avoid Halloween for off-course vehicles
 jest
-  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .useFakeTimers({ doNotFake: ["nextTick", "setTimeout"] })
   .setSystemTime(new Date("2018-08-15T17:41:21.000Z"))
 
 jest.spyOn(Date, "now").mockImplementation(() => 234000)

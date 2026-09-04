@@ -29,8 +29,8 @@ beforeEach(() => {
     .mocked(fetchFinishedDetour)
     .mockResolvedValue(finishedDetourFactory.build())
   jest.mocked(fetchUnfinishedDetour).mockReturnValue(neverPromise())
-  jest.mocked(fetchNearestIntersection).mockReturnValue(new Promise(() => {}))
-  jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
+  jest.mocked(fetchNearestIntersection).mockResolvedValue("—")
+  jest.mocked(putDetourUpdate).mockResolvedValue(Ok(123))
 })
 
 const renderDetourHook = () =>
@@ -58,8 +58,8 @@ describe("useDetour", () => {
 
     const { result } = renderDetourHook()
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(end))
+    await act(async () => result.current.addConnectionPoint?.(start))
+    await act(async () => result.current.addWaypoint?.(end))
 
     expect(result.current.startPoint).toBe(start)
 
@@ -84,8 +84,8 @@ describe("useDetour", () => {
 
     const { result } = renderDetourHook()
 
-    act(() => result.current.addConnectionPoint?.(start))
-    act(() => result.current.addWaypoint?.(end))
+    await act(async () => result.current.addConnectionPoint?.(start))
+    await act(async () => result.current.addWaypoint?.(end))
 
     await waitFor(() => {
       expect(result.current.detourShape).toStrictEqual([])
@@ -100,16 +100,22 @@ describe("useDetour", () => {
 
     const { result } = renderDetourHook()
 
-    act(() => result.current.addConnectionPoint?.(shapePointFactory.build()))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
-    act(() => result.current.addWaypoint?.(shapePointFactory.build()))
+    await act(async () =>
+      result.current.addConnectionPoint?.(shapePointFactory.build())
+    )
+    await act(async () =>
+      result.current.addWaypoint?.(shapePointFactory.build())
+    )
+    await act(async () =>
+      result.current.addWaypoint?.(shapePointFactory.build())
+    )
 
     await waitFor(() => {
       expect(result.current.detourShape).not.toHaveLength(0)
     })
 
-    act(() => result.current.undo?.())
-    act(() => result.current.undo?.())
+    await act(async () => result.current.undo?.())
+    await act(async () => result.current.undo?.())
 
     await waitFor(() => {
       expect(result.current.detourShape).toHaveLength(0)

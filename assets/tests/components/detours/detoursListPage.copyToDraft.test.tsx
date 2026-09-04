@@ -28,7 +28,7 @@ import { pastDetourFactory } from "../../factories/detourStateMachineFactory"
 import { fullStoryEvent } from "../../../src/helpers/fullStory"
 
 jest
-  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .useFakeTimers({ doNotFake: ["nextTick", "setTimeout"] })
   .setSystemTime(new Date("2024-08-29T20:00:00"))
 
 jest.mock("../../../src/userTestGroups")
