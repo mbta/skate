@@ -135,7 +135,7 @@ config :logger,
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time [$level] $metadata$message\n",
-  metadata: [:mfa, :request_id, :event_context]
+  metadata: [:mfa, :request_id]
 
 log_filter_params =
   ~w(password token guardian_default_claims guardian_default_resource guardian_default_token snapshot)
