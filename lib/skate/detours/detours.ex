@@ -653,6 +653,7 @@ defmodule Skate.Detours.Detours do
   defp add_logger_metadata(%Ecto.Changeset{
          changes: %{status: :past},
          data: %{
+           id: id,
            status: :active,
            copied_from_id: copied_from_id,
            activated_at: activated_at,
@@ -662,15 +663,8 @@ defmodule Skate.Detours.Detours do
        }) do
     minutes_active = DateTime.diff(DateTime.utc_now(), activated_at, :minute)
 
-    Logger.metadata(
-      event_context: %{
-        update_action: "deactivate",
-        activated_at: activated_at,
-        estimated_duration: estimated_duration,
-        minutes_active: minutes_active,
-        copied_from_id: copied_from_id,
-        reason: reason
-      }
+    Logger.info(
+      "deactivate_detour id=#{id} activated_at=#{DateTime.to_iso8601(activated_at)} estimated_duration=#{String.replace(" ", "_", estimated_duration)} minutes_active=#{minutes_active} copied_from_id=#{copied_from_id} reason=#{String.replace(" ", "_", reason)}"
     )
   end
 
