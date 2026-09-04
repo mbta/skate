@@ -40,6 +40,8 @@ defmodule SkateWeb.Endpoint do
 
   plug Logster.Plugs.Logger
 
+  plug SkateWeb.Plugs.LogsterProbePathFilter
+
   plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
