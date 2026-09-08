@@ -1,5 +1,6 @@
 import React from "react"
-import { RttCall, formatTimeWithSeconds } from "./types"
+import { RttCall } from "./types"
+import { formatTimeWithSeconds } from "../../../util/dateTime"
 import { joinClasses } from "../../../helpers/dom"
 
 export interface RttDetailsPanelProps {

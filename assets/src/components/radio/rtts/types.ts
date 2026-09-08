@@ -26,8 +26,6 @@ export interface RttCall {
   status: RttStatus
 }
 
-export { formatTimeWithSeconds } from "../../../util/dateTime"
-
 export const CALL_TYPE_PRIORITY: Record<RttCallType, number> = {
   Emergency: 1,
   PRTT: 2,
