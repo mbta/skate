@@ -1,0 +1,57 @@
+@use "../color/tokens_2024" as tokens;
+
+/* ==========================================================================
+   Active RTT Top Banner
+   ========================================================================== */
+
+.c-active-rtt-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1.25rem;
+  background-color: tokens.$kiwi-600;
+  color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.c-active-rtt-banner__content {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.c-active-rtt-banner__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.c-active-rtt-banner__text {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.c-active-rtt-banner__mark-done-btn {
+  background-color: #fff;
+  color: tokens.$kiwi-800;
+  border: none;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.3125rem 0.8125rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: tokens.$kiwi-100;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+}
