@@ -83,6 +83,7 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
                 key={call.id}
                 call={call}
                 tab={tab}
+                currentDispatcherName={props.currentDispatcherName}
                 isSelected={selectedCallId === call.id}
                 onSelect={handleSelectCall}
                 onRespond={handleRespondCall}
