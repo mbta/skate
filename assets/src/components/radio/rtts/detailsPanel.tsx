@@ -1,19 +1,11 @@
 import React from "react"
-import { RttCall } from "./types"
-import { RoutePill } from "../../routePill"
-import { formattedTime } from "../../../util/dateTime"
+import { RttCall, formatTimeWithSeconds } from "./types"
 import { joinClasses } from "../../../helpers/dom"
 
 export interface RttDetailsPanelProps {
   call?: RttCall | null
   isLive?: boolean
   onMarkDone?: (call: RttCall) => void
-}
-
-const formatDateTimeValue = (val?: Date | string | null): string => {
-  if (!val) return "N/A"
-  const date = typeof val === "string" ? new Date(val) : val
-  return formattedTime(date)
 }
 
 export const RttDetailsPanel = ({
@@ -38,18 +30,6 @@ export const RttDetailsPanel = ({
     live ? "c-rtt-details-panel--live" : "",
   ])
 
-  const routeDisplay = (
-    <div
-      style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem" }}
-    >
-      <RoutePill routeName={call.routeName || call.routeId} />
-      <span>
-        {call.direction ? `${call.direction}` : ""}
-        {call.variant ? ` • ${call.variant}` : ""}
-      </span>
-    </div>
-  )
-
   const operatorDisplay =
     call.operatorBadge || call.operatorName
       ? `${call.operatorBadge ? `#${call.operatorBadge} ` : ""}${
@@ -57,12 +37,23 @@ export const RttDetailsPanel = ({
         }`
       : "N/A"
 
+  const headsignDisplay =
+    call.variant ||
+    `${call.routeName || call.routeId}${
+      call.direction ? ` ${call.direction}` : ""
+    }`
+
   return (
     <aside className={classes}>
       <div className="c-rtt-details-panel__header">
         <div className="c-rtt-details-panel__header-info">
           <h2 className="c-rtt-details-panel__title">
-            {call.callType} — Vehicle #{call.vehicleId}
+            <span className="c-rtt-details-panel__call-type">
+              {call.callType}
+            </span>
+            <span className="c-rtt-details-panel__call-time">
+              {formatTimeWithSeconds(call.receivedAt)}
+            </span>
           </h2>
           {live && (
             <div className="c-rtt-details-panel__live-tag">
@@ -72,99 +63,113 @@ export const RttDetailsPanel = ({
           )}
         </div>
 
-        {live && onMarkDone && (
-          <button
-            type="button"
-            className="c-rtt-details-panel__mark-done-btn"
-            onClick={() => onMarkDone(call)}
-          >
-            Mark done
-          </button>
-        )}
+        <div className="c-rtt-details-panel__header-actions">
+          <div className="c-rtt-details-panel__timestamps">
+            {call.answeredAt && (
+              <div className="c-rtt-details-panel__timestamp-row">
+                <span className="c-rtt-details-panel__timestamp-label">
+                  ANSWERED
+                </span>
+                <span className="c-rtt-details-panel__timestamp-val">
+                  {formatTimeWithSeconds(call.answeredAt)}
+                </span>
+              </div>
+            )}
+            {call.markedDoneAt && (
+              <div className="c-rtt-details-panel__timestamp-row">
+                <span className="c-rtt-details-panel__timestamp-label">
+                  MARKED DONE
+                </span>
+                <span className="c-rtt-details-panel__timestamp-val">
+                  {formatTimeWithSeconds(call.markedDoneAt)}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {live && onMarkDone && (
+            <button
+              type="button"
+              className="c-rtt-details-panel__mark-done-btn"
+              onClick={() => onMarkDone(call)}
+            >
+              MARK DONE
+            </button>
+          )}
+        </div>
       </div>
 
-      <div className="c-rtt-details-panel__fields">
-        <div className="c-rtt-details-panel__field">
-          <span className="c-rtt-details-panel__label">Call Type</span>
-          <span className="c-rtt-details-panel__value">{call.callType}</span>
-        </div>
-
-        <div className="c-rtt-details-panel__field">
-          <span className="c-rtt-details-panel__label">Time Received</span>
-          <span className="c-rtt-details-panel__value">
-            {formatDateTimeValue(call.receivedAt)}
-          </span>
-        </div>
-
-        <div className="c-rtt-details-panel__field">
-          <span className="c-rtt-details-panel__label">Vehicle Number</span>
-          <span className="c-rtt-details-panel__value">#{call.vehicleId}</span>
-        </div>
-
-        <div className="c-rtt-details-panel__field">
-          <span className="c-rtt-details-panel__label">
-            Route, Direction & Variant
-          </span>
-          <div className="c-rtt-details-panel__value">{routeDisplay}</div>
-        </div>
-
-        <div className="c-rtt-details-panel__field">
-          <span className="c-rtt-details-panel__label">Current Location</span>
-          <span className="c-rtt-details-panel__value">
-            {call.currentLocation || "Unknown"}
-          </span>
-        </div>
-
-        <div className="c-rtt-details-panel__field">
-          <span className="c-rtt-details-panel__label">
-            Operator Badge & Name
-          </span>
-          <span className="c-rtt-details-panel__value">{operatorDisplay}</span>
-        </div>
-
-        <div className="c-rtt-details-panel__field">
-          <span className="c-rtt-details-panel__label">Run Number</span>
-          <span className="c-rtt-details-panel__value">
-            {call.runNumber || "N/A"}
-          </span>
-        </div>
-
-        {call.garage && (
-          <div className="c-rtt-details-panel__field">
-            <span className="c-rtt-details-panel__label">Garage</span>
-            <span className="c-rtt-details-panel__value">{call.garage}</span>
-          </div>
-        )}
-
-        {call.talkGroup && (
-          <div className="c-rtt-details-panel__field">
-            <span className="c-rtt-details-panel__label">Talk Group</span>
-            <span className="c-rtt-details-panel__value">{call.talkGroup}</span>
-          </div>
-        )}
-
-        {call.answeredAt && (
-          <div className="c-rtt-details-panel__field">
-            <span className="c-rtt-details-panel__label">
-              Call Answered Time
+      <div className="c-rtt-details-panel__body">
+        <div className="c-rtt-details-panel__hero">
+          <div className="c-rtt-details-panel__vehicle-badge">
+            <svg
+              className="c-rtt-details-panel__vehicle-triangle"
+              viewBox="0 0 24 24"
+              width="28"
+              height="28"
+              fill="#269c95"
+              aria-hidden="true"
+            >
+              <path d="M12 2L2 22h20L12 2z" />
+            </svg>
+            <span className="c-rtt-details-panel__vehicle-id">
+              {call.vehicleId}
             </span>
+          </div>
+
+          <div className="c-rtt-details-panel__hero-route">
+            <div className="c-rtt-details-panel__direction">
+              {call.direction?.toUpperCase() || "OUTBOUND"}
+            </div>
+            <div className="c-rtt-details-panel__headsign">
+              {headsignDisplay.toUpperCase()}
+            </div>
+            {call.adherence && (
+              <div className="c-rtt-details-panel__adherence">
+                {call.adherence.toUpperCase()}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="c-rtt-details-panel__fields">
+          <div className="c-rtt-details-panel__field">
+            <span className="c-rtt-details-panel__label">Current Location</span>
             <span className="c-rtt-details-panel__value">
-              {formatDateTimeValue(call.answeredAt)}
-              {call.respondedBy ? ` (by ${call.respondedBy})` : ""}
+              {call.currentLocation || "Unknown"}
             </span>
           </div>
-        )}
 
-        {call.markedDoneAt && (
           <div className="c-rtt-details-panel__field">
-            <span className="c-rtt-details-panel__label">
-              Call Marked Done Time
-            </span>
+            <span className="c-rtt-details-panel__label">Operator</span>
             <span className="c-rtt-details-panel__value">
-              {formatDateTimeValue(call.markedDoneAt)}
+              {operatorDisplay}
             </span>
           </div>
-        )}
+
+          <div className="c-rtt-details-panel__field">
+            <span className="c-rtt-details-panel__label">Run</span>
+            <span className="c-rtt-details-panel__value">
+              {call.runNumber || "N/A"}
+            </span>
+          </div>
+
+          {call.garage && (
+            <div className="c-rtt-details-panel__field">
+              <span className="c-rtt-details-panel__label">Garage</span>
+              <span className="c-rtt-details-panel__value">{call.garage}</span>
+            </div>
+          )}
+
+          {call.talkGroup && (
+            <div className="c-rtt-details-panel__field">
+              <span className="c-rtt-details-panel__label">Talk Group</span>
+              <span className="c-rtt-details-panel__value">
+                {call.talkGroup}
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     </aside>
   )
