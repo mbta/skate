@@ -1,10 +1,12 @@
-import { useReducer, useMemo } from "react"
+import { useReducer, useMemo, useCallback } from "react"
 import { RttCall, RttTab, sortRttCalls } from "./types"
 import {
   rttQueueReducer,
   createInitialRttQueueState,
   type RttQueueState,
 } from "./rttQueueReducer"
+import { useRttSelection } from "./useRttSelection"
+import { useRttQueueTabs } from "./useRttQueueTabs"
 
 export interface UseRttQueueOptions {
   defaultIncomingCalls?: RttCall[]
@@ -70,6 +72,31 @@ export const useRttQueue = ({
       ? newIncomingCountProp
       : state.newIncomingCount
 
+  const dispatchTabChange = useCallback((newTab: RttTab) => {
+    dispatch({ type: "CHANGE_TAB", tab: newTab })
+  }, [])
+
+  const { handleTabClick } = useRttQueueTabs({
+    tab,
+    newIncomingCount,
+    onTabChange,
+    dispatchTabChange,
+  })
+
+  const dispatchSelectCall = useCallback((callId: string) => {
+    dispatch({ type: "SELECT_CALL", callId })
+  }, [])
+
+  const { selectedCall, activeCall, isSelectedLive, handleSelectCall } =
+    useRttSelection({
+      selectedCallId,
+      activeCallId,
+      incomingCalls,
+      pastCalls,
+      onSelectCall,
+      dispatchSelectCall,
+    })
+
   const sortedIncomingCalls = useMemo(
     () => sortRttCalls(incomingCalls),
     [incomingCalls]
@@ -86,50 +113,33 @@ export const useRttQueue = ({
   const activeCallsList =
     tab === "incoming" ? sortedIncomingCalls : sortedPastCalls
 
-  const selectedCall = useMemo(() => {
-    const allCalls = [...incomingCalls, ...pastCalls]
-    return allCalls.find((c) => c.id === selectedCallId) || null
-  }, [incomingCalls, pastCalls, selectedCallId])
+  const handleRespondCall = useCallback(
+    (call: RttCall) => {
+      dispatch({
+        type: "RESPOND_CALL",
+        call,
+        currentDispatcherName,
+      })
+      onRespondCall?.(call)
+    },
+    [currentDispatcherName, onRespondCall]
+  )
 
-  const activeCall = useMemo(() => {
-    return incomingCalls.find((c) => c.id === activeCallId) || null
-  }, [incomingCalls, activeCallId])
+  const handleMarkDoneCall = useCallback(
+    (call: RttCall) => {
+      dispatch({ type: "MARK_DONE_CALL", call })
+      onMarkDoneCall?.(call)
+    },
+    [onMarkDoneCall]
+  )
 
-  const handleTabClick = (newTab: RttTab) => {
-    dispatch({ type: "CHANGE_TAB", tab: newTab })
-    onTabChange?.(newTab)
-  }
-
-  const handleSelectCall = (call: RttCall) => {
-    dispatch({ type: "SELECT_CALL", callId: call.id })
-    onSelectCall?.(call)
-  }
-
-  const handleRespondCall = (call: RttCall) => {
-    dispatch({
-      type: "RESPOND_CALL",
-      call,
-      currentDispatcherName,
-    })
-    onRespondCall?.(call)
-  }
-
-  const handleMarkDoneCall = (call: RttCall) => {
-    dispatch({ type: "MARK_DONE_CALL", call })
-    onMarkDoneCall?.(call)
-  }
-
-  const handleReceiveCall = (call: RttCall) => {
+  const handleReceiveCall = useCallback((call: RttCall) => {
     dispatch({ type: "RECEIVE_CALL", call })
-  }
+  }, [])
 
-  const handleReset = (payload?: Partial<RttQueueState>) => {
+  const handleReset = useCallback((payload?: Partial<RttQueueState>) => {
     dispatch({ type: "RESET", payload })
-  }
-
-  const isSelectedLive =
-    Boolean(selectedCall && selectedCall.id === activeCallId) ||
-    Boolean(selectedCall && selectedCall.status === "active")
+  }, [])
 
   return {
     state,
