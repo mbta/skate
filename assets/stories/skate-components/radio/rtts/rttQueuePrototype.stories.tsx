@@ -7,6 +7,7 @@ import {
   RttCallType,
 } from "../../../../src/components/radio/rtts/types"
 import { mockIncomingCalls, mockPastCalls } from "./__story-data__/rttQueueData"
+import { RttSimulatorToolbar } from "./__story-data__/rttSimulatorToolbar"
 import { rttCallFactory } from "../../../../tests/factories/radio/rtt"
 
 const InteractivePrototypeWrapper = ({
@@ -30,10 +31,10 @@ const InteractivePrototypeWrapper = ({
   }
 
   const handleRespondCall = (call: RttCall) => {
+    const now = new Date()
     const updatedIncoming = [...incomingCalls]
     let updatedPast = [...pastCalls]
 
-    // 1. If user already had an active call, auto-complete that prior call
     if (activeCallId && activeCallId !== call.id) {
       const priorIndex = updatedIncoming.findIndex((c) => c.id === activeCallId)
       if (priorIndex !== -1) {
@@ -41,21 +42,20 @@ const InteractivePrototypeWrapper = ({
         const doneCall: RttCall = {
           ...priorCall,
           status: "done",
-          markedDoneAt: new Date(),
+          markedDoneAt: now,
         }
         updatedIncoming.splice(priorIndex, 1)
         updatedPast = [doneCall, ...updatedPast]
       }
     }
 
-    // 2. Mark target call active
     const targetIndex = updatedIncoming.findIndex((c) => c.id === call.id)
     if (targetIndex !== -1) {
       const updatedCall: RttCall = {
         ...updatedIncoming[targetIndex],
         status: "active",
         respondedBy: dispatcherName,
-        answeredAt: new Date(),
+        answeredAt: now,
       }
       updatedIncoming[targetIndex] = updatedCall
       setActiveCallId(call.id)
@@ -133,65 +133,12 @@ const InteractivePrototypeWrapper = ({
         gap: "0.75rem",
       }}
     >
-      {/* Simulation Toolbar for Storybook Prototype */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "0.5rem 1rem",
-          backgroundColor: "#fff",
-          border: "1px solid #d4d7db",
-          borderRadius: "0.375rem",
-          fontSize: "0.8125rem",
-          flexShrink: 0,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <strong>Prototype Simulator:</strong>
-          <span>
-            Logged in as: <em>{dispatcherName}</em>
-          </span>
-        </div>
+      <RttSimulatorToolbar
+        dispatcherName={dispatcherName}
+        onSimulateNewCall={handleSimulateNewCall}
+        onReset={handleResetData}
+      />
 
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span>Trigger New Call:</span>
-          <button
-            type="button"
-            className="c-rtt-queue-item__respond-btn"
-            style={{ backgroundColor: "#9c074d", padding: "0.25rem 0.5rem" }}
-            onClick={() => handleSimulateNewCall("Emergency")}
-          >
-            + Emergency
-          </button>
-          <button
-            type="button"
-            className="c-rtt-queue-item__respond-btn"
-            style={{ backgroundColor: "#d97706", padding: "0.25rem 0.5rem" }}
-            onClick={() => handleSimulateNewCall("PRTT")}
-          >
-            + PRTT
-          </button>
-          <button
-            type="button"
-            className="c-rtt-queue-item__respond-btn"
-            style={{ backgroundColor: "#572e8a", padding: "0.25rem 0.5rem" }}
-            onClick={() => handleSimulateNewCall("RTT")}
-          >
-            + RTT
-          </button>
-          <button
-            type="button"
-            className="c-rtt-details-panel__mark-done-btn"
-            style={{ padding: "0.25rem 0.5rem" }}
-            onClick={handleResetData}
-          >
-            Reset
-          </button>
-        </div>
-      </div>
-
-      {/* Main RTT Queue Component */}
       <div style={{ flex: "1 1 auto", minHeight: 0 }}>
         <RttQueue
           incomingCalls={incomingCalls}
