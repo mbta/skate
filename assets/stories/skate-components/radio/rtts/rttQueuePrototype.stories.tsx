@@ -159,7 +159,7 @@ const InteractivePrototypeWrapper = ({
 }
 
 const meta = {
-  title: "Skate/Radio/RTTs/Interactive Prototype",
+  title: "radio/rtts/Interactive Prototype",
   component: InteractivePrototypeWrapper,
   parameters: {
     layout: "fullscreen",
