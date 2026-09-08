@@ -1,5 +1,10 @@
-import { useState, useMemo } from "react"
+import { useReducer, useMemo } from "react"
 import { RttCall, RttTab, sortRttCalls } from "./types"
+import {
+  rttQueueReducer,
+  createInitialRttQueueState,
+  type RttQueueState,
+} from "./rttQueueReducer"
 
 export interface UseRttQueueOptions {
   defaultIncomingCalls?: RttCall[]
@@ -38,40 +43,32 @@ export const useRttQueue = ({
   onMarkDoneCall,
   onTabChange,
 }: UseRttQueueOptions) => {
-  const [internalTab, setInternalTab] = useState<RttTab>(
-    currentTabProp ?? defaultTab ?? "incoming"
-  )
-  const [internalIncomingCalls, setInternalIncomingCalls] = useState<RttCall[]>(
-    incomingCallsProp ?? defaultIncomingCalls ?? []
-  )
-  const [internalPastCalls, setInternalPastCalls] = useState<RttCall[]>(
-    pastCallsProp ?? defaultPastCalls ?? []
-  )
-  const [internalSelectedCallId, setInternalSelectedCallId] = useState<
-    string | null
-  >(selectedCallIdProp ?? defaultSelectedCallId ?? null)
-  const [internalActiveCallId, setInternalActiveCallId] = useState<
-    string | null
-  >(activeCallIdProp ?? defaultActiveCallId ?? null)
-  const [internalNewIncomingCount, setInternalNewIncomingCount] = useState(
-    newIncomingCountProp ?? 0
+  const [state, dispatch] = useReducer(
+    rttQueueReducer,
+    {
+      incomingCalls: incomingCallsProp ?? defaultIncomingCalls ?? [],
+      pastCalls: pastCallsProp ?? defaultPastCalls ?? [],
+      selectedCallId: selectedCallIdProp ?? defaultSelectedCallId ?? null,
+      activeCallId: activeCallIdProp ?? defaultActiveCallId ?? null,
+      tab: currentTabProp ?? defaultTab ?? "incoming",
+      newIncomingCount: newIncomingCountProp ?? 0,
+    },
+    createInitialRttQueueState
   )
 
-  const tab = currentTabProp !== undefined ? currentTabProp : internalTab
+  const tab = currentTabProp !== undefined ? currentTabProp : state.tab
   const incomingCalls =
-    incomingCallsProp !== undefined ? incomingCallsProp : internalIncomingCalls
+    incomingCallsProp !== undefined ? incomingCallsProp : state.incomingCalls
   const pastCalls =
-    pastCallsProp !== undefined ? pastCallsProp : internalPastCalls
+    pastCallsProp !== undefined ? pastCallsProp : state.pastCalls
   const selectedCallId =
-    selectedCallIdProp !== undefined
-      ? selectedCallIdProp
-      : internalSelectedCallId
+    selectedCallIdProp !== undefined ? selectedCallIdProp : state.selectedCallId
   const activeCallId =
-    activeCallIdProp !== undefined ? activeCallIdProp : internalActiveCallId
+    activeCallIdProp !== undefined ? activeCallIdProp : state.activeCallId
   const newIncomingCount =
     newIncomingCountProp !== undefined
       ? newIncomingCountProp
-      : internalNewIncomingCount
+      : state.newIncomingCount
 
   const sortedIncomingCalls = useMemo(
     () => sortRttCalls(incomingCalls),
@@ -99,90 +96,35 @@ export const useRttQueue = ({
   }, [incomingCalls, activeCallId])
 
   const handleTabClick = (newTab: RttTab) => {
-    if (currentTabProp === undefined) {
-      setInternalTab(newTab)
-      if (newTab === "incoming") {
-        setInternalNewIncomingCount(0)
-      }
-    }
+    dispatch({ type: "CHANGE_TAB", tab: newTab })
     onTabChange?.(newTab)
   }
 
   const handleSelectCall = (call: RttCall) => {
-    if (selectedCallIdProp === undefined) {
-      setInternalSelectedCallId(call.id)
-    }
+    dispatch({ type: "SELECT_CALL", callId: call.id })
     onSelectCall?.(call)
   }
 
   const handleRespondCall = (call: RttCall) => {
-    const now = new Date()
-    const activeId =
-      activeCallIdProp !== undefined ? activeCallIdProp : internalActiveCallId
-
-    setInternalIncomingCalls((prevIncoming) => {
-      return prevIncoming
-        .filter((c) => !(activeId && c.id === activeId && c.id !== call.id))
-        .map((c) => {
-          if (c.id === call.id) {
-            return {
-              ...c,
-              status: "active",
-              respondedBy: currentDispatcherName,
-              answeredAt: now,
-            }
-          }
-          return c
-        })
+    dispatch({
+      type: "RESPOND_CALL",
+      call,
+      currentDispatcherName,
     })
-
-    if (activeId && activeId !== call.id) {
-      const priorCall = incomingCalls.find((c) => c.id === activeId)
-      if (priorCall) {
-        const completed: RttCall = {
-          ...priorCall,
-          status: "done",
-          markedDoneAt: now,
-        }
-        setInternalPastCalls((prevPast) => [completed, ...prevPast])
-      }
-    }
-
-    if (activeCallIdProp === undefined) {
-      setInternalActiveCallId(call.id)
-    }
-    if (selectedCallIdProp === undefined) {
-      setInternalSelectedCallId(call.id)
-    }
-
     onRespondCall?.(call)
   }
 
   const handleMarkDoneCall = (call: RttCall) => {
-    const now = new Date()
-
-    setInternalIncomingCalls((prevIncoming) =>
-      prevIncoming.filter((c) => c.id !== call.id)
-    )
-
-    const completedCall: RttCall = {
-      ...call,
-      status: "done",
-      markedDoneAt: now,
-    }
-    setInternalPastCalls((prevPast) => [completedCall, ...prevPast])
-
-    if (activeCallIdProp === undefined && internalActiveCallId === call.id) {
-      setInternalActiveCallId(null)
-    }
-    if (
-      selectedCallIdProp === undefined &&
-      internalSelectedCallId === call.id
-    ) {
-      setInternalSelectedCallId(completedCall.id)
-    }
-
+    dispatch({ type: "MARK_DONE_CALL", call })
     onMarkDoneCall?.(call)
+  }
+
+  const handleReceiveCall = (call: RttCall) => {
+    dispatch({ type: "RECEIVE_CALL", call })
+  }
+
+  const handleReset = (payload?: Partial<RttQueueState>) => {
+    dispatch({ type: "RESET", payload })
   }
 
   const isSelectedLive =
@@ -190,10 +132,14 @@ export const useRttQueue = ({
     Boolean(selectedCall && selectedCall.status === "active")
 
   return {
+    state,
+    dispatch,
     tab,
     selectedCallId,
     activeCallId,
     newIncomingCount,
+    incomingCalls,
+    pastCalls,
     activeCallsList,
     selectedCall,
     activeCall,
@@ -202,5 +148,7 @@ export const useRttQueue = ({
     handleSelectCall,
     handleRespondCall,
     handleMarkDoneCall,
+    handleReceiveCall,
+    handleReset,
   }
 }
