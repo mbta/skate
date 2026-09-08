@@ -34,9 +34,13 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
       <header className="c-rtt-queue__header">
         <h1 className="c-rtt-queue__title">📻 Radio RTT Queue</h1>
 
-        <nav className="c-rtt-queue__tabs" aria-label="RTT Queue Views">
+        <div className="c-rtt-queue__tabs" role="tablist" aria-label="RTT Queue Views">
           <button
             type="button"
+            role="tab"
+            id="rtt-tab-incoming"
+            aria-selected={tab === "incoming"}
+            aria-controls="rtt-panel-incoming"
             className={`c-rtt-queue__tab ${
               tab === "incoming" ? "c-rtt-queue__tab--active" : ""
             }`}
@@ -51,6 +55,10 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
           </button>
           <button
             type="button"
+            role="tab"
+            id="rtt-tab-past"
+            aria-selected={tab === "past"}
+            aria-controls="rtt-panel-past"
             className={`c-rtt-queue__tab ${
               tab === "past" ? "c-rtt-queue__tab--active" : ""
             }`}
@@ -58,11 +66,16 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
           >
             Past
           </button>
-        </nav>
+        </div>
       </header>
 
       <div className="c-rtt-queue__body">
-        <section className="c-rtt-queue__list-pane" aria-label="Calls list">
+        <section
+          className="c-rtt-queue__list-pane"
+          role="tabpanel"
+          id={`rtt-panel-${tab}`}
+          aria-labelledby={`rtt-tab-${tab}`}
+        >
           {activeCallsList.length === 0 ? (
             <div className="c-rtt-queue__empty">
               <div className="c-rtt-queue__empty-icon">📻</div>
@@ -78,17 +91,24 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
               </p>
             </div>
           ) : (
-            activeCallsList.map((call) => (
-              <RttQueueItem
-                key={call.id}
-                call={call}
-                tab={tab}
-                currentDispatcherName={props.currentDispatcherName}
-                isSelected={selectedCallId === call.id}
-                onSelect={handleSelectCall}
-                onRespond={handleRespondCall}
-              />
-            ))
+            <div
+              role="list"
+              aria-label={
+                tab === "incoming" ? "Incoming RTT Calls" : "Past RTT Calls"
+              }
+            >
+              {activeCallsList.map((call) => (
+                <RttQueueItem
+                  key={call.id}
+                  call={call}
+                  tab={tab}
+                  currentDispatcherName={props.currentDispatcherName}
+                  isSelected={selectedCallId === call.id}
+                  onSelect={handleSelectCall}
+                  onRespond={handleRespondCall}
+                />
+              ))}
+            </div>
           )}
         </section>
 

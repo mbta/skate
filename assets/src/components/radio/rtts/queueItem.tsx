@@ -71,11 +71,13 @@ export const RttQueueItem = ({
       : formattedTime(call.receivedAt)
 
   return (
-    <div className={classes} aria-selected={isSelected}>
+    <div className={classes} role="listitem">
       <div
         className="c-rtt-queue-item__columns"
         role="button"
         tabIndex={0}
+        aria-pressed={isSelected}
+        aria-label={`Select ${call.callType} call for vehicle ${call.vehicleId}`}
         onClick={handleRowClick}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {

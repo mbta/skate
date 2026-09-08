@@ -166,7 +166,7 @@ describe("RttQueue Component", () => {
     fireEvent.click(secondRespondBtn)
 
     // Check Past tab to verify call1 was archived as done
-    fireEvent.click(view.getByRole("button", { name: /^past$/i }))
+    fireEvent.click(view.getByRole("tab", { name: /^past$/i }))
     expect(view.getByText("3001")).toBeInTheDocument()
   })
 
@@ -192,7 +192,7 @@ describe("RttQueue Component", () => {
     fireEvent.click(respondBtn)
 
     // Switch to Past tab
-    const pastTabBtn = view.getByRole("button", { name: /^past$/i })
+    const pastTabBtn = view.getByRole("tab", { name: /^past$/i })
     fireEvent.click(pastTabBtn)
 
     // Active banner should appear at top
@@ -228,7 +228,7 @@ describe("RttQueue Component", () => {
     expect(view.getByText("No Incoming RTT Calls")).toBeInTheDocument()
 
     // Switch to Past tab and verify it's there
-    fireEvent.click(view.getByRole("button", { name: /^past$/i }))
+    fireEvent.click(view.getByRole("tab", { name: /^past$/i }))
     expect(view.getAllByText(`${call1.vehicleId}`)[0]).toBeInTheDocument()
   })
 })
