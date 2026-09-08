@@ -26,7 +26,9 @@ export interface RttCall {
   status: RttStatus
 }
 
-export const formatTimeWithSeconds = (dateOrStr?: Date | string | null): string => {
+export const formatTimeWithSeconds = (
+  dateOrStr?: Date | string | null
+): string => {
   if (!dateOrStr) return ""
   const d = typeof dateOrStr === "string" ? new Date(dateOrStr) : dateOrStr
   if (isNaN(d.getTime())) return ""

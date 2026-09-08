@@ -71,16 +71,12 @@ export const RttQueueItem = ({
       : formattedTime(call.receivedAt)
 
   return (
-    <div
-      className={classes}
-      onClick={handleRowClick}
-      aria-selected={isSelected}
-      role="row"
-    >
+    <div className={classes} aria-selected={isSelected}>
       <div
         className="c-rtt-queue-item__columns"
         role="button"
         tabIndex={0}
+        onClick={handleRowClick}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault()
