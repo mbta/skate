@@ -40,6 +40,9 @@ export const rttCallFactory = Factory.define<RttCall>(
       operatorBadge: params.operatorBadge ?? `${50000 + sequence}`,
       operatorName: params.operatorName ?? `Operator ${sequence}`,
       runNumber: params.runNumber ?? `R-${100 + sequence}`,
+      adherence:
+        params.adherence ??
+        (sequence % 3 === 0 ? "23 min late" : sequence % 2 === 0 ? "7 min late" : "On time"),
       respondedBy:
         params.respondedBy ?? (status === "active" ? "Dispatcher Smith" : null),
       answeredAt:

@@ -92,11 +92,11 @@ describe("RttQueue Component", () => {
 
     // Verify incoming tab content
     expect(view.getByText("📻 Radio RTT Queue")).toBeInTheDocument()
-    expect(view.getByText("#2104")).toBeInTheDocument()
-    expect(view.getByText("#1845")).toBeInTheDocument()
+    expect(view.getByText("2104")).toBeInTheDocument()
+    expect(view.getByText("1845")).toBeInTheDocument()
 
     // Click emergency row
-    fireEvent.click(view.getByText("#2104"))
+    fireEvent.click(view.getByText("2104"))
 
     // Details panel should populate
     expect(view.getByText("Harvard Ave @ Commonwealth Ave")).toBeInTheDocument()
@@ -161,7 +161,7 @@ describe("RttQueue Component", () => {
 
     // Active banner should appear at top
     expect(
-      view.getByText(`Active Emergency vehicle #${call1.vehicleId}`)
+      view.getByText(`ACTIVE CALL VEHICLE ${call1.vehicleId}`)
     ).toBeInTheDocument()
   })
 
@@ -193,6 +193,6 @@ describe("RttQueue Component", () => {
 
     // Switch to Past tab and verify it's there
     fireEvent.click(view.getByRole("button", { name: /^past$/i }))
-    expect(view.getAllByText(`#${call1.vehicleId}`)[0]).toBeInTheDocument()
+    expect(view.getAllByText(`${call1.vehicleId}`)[0]).toBeInTheDocument()
   })
 })

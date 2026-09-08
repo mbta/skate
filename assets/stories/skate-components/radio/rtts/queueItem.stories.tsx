@@ -56,6 +56,17 @@ export const RespondedByOtherDispatcher: Story = {
   },
 }
 
+export const RespondedByCurrentUser: Story = {
+  args: {
+    call: {
+      ...mockEmergencyCall,
+      status: "active",
+      respondedBy: "Dispatcher Alex",
+    },
+    currentDispatcherName: "Dispatcher Alex",
+  },
+}
+
 export const PastTabRow: Story = {
   args: {
     call: mockPastCall1,
