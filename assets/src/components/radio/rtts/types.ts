@@ -32,6 +32,11 @@ export const CALL_TYPE_PRIORITY: Record<RttCallType, number> = {
   RTT: 3,
 }
 
+export const getCallTimestamp = (dateOrStr: Date | string): number =>
+  typeof dateOrStr === "string"
+    ? new Date(dateOrStr).getTime()
+    : dateOrStr.getTime()
+
 /**
  * Sorts RTT calls by:
  * 1. Priority: Emergency > PRTT > RTT
@@ -44,8 +49,15 @@ export const sortRttCalls = (calls: RttCall[]): RttCall[] => {
     if (priorityDiff !== 0) {
       return priorityDiff
     }
-    const timeA = new Date(a.receivedAt).getTime()
-    const timeB = new Date(b.receivedAt).getTime()
-    return timeB - timeA
+    return getCallTimestamp(b.receivedAt) - getCallTimestamp(a.receivedAt)
   })
+}
+
+/**
+ * Sorts past calls in reverse chronological order (newest first).
+ */
+export const sortPastRttCalls = (calls: RttCall[]): RttCall[] => {
+  return [...calls].sort(
+    (a, b) => getCallTimestamp(b.receivedAt) - getCallTimestamp(a.receivedAt)
+  )
 }

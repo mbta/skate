@@ -1,5 +1,5 @@
 import { useReducer, useMemo, useCallback } from "react"
-import { RttCall, RttTab, sortRttCalls } from "./types"
+import { RttCall, RttTab, sortRttCalls, sortPastRttCalls } from "./types"
 import {
   rttQueueReducer,
   createInitialRttQueueState,
@@ -102,11 +102,7 @@ export const useRttQueue = ({
     [incomingCalls]
   )
   const sortedPastCalls = useMemo(
-    () =>
-      [...pastCalls].sort(
-        (a, b) =>
-          new Date(b.receivedAt).getTime() - new Date(a.receivedAt).getTime()
-      ),
+    () => sortPastRttCalls(pastCalls),
     [pastCalls]
   )
 

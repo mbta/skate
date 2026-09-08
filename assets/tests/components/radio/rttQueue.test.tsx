@@ -3,7 +3,11 @@ import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { render, fireEvent, cleanup, within } from "@testing-library/react"
 import { RttQueue } from "../../../src/components/radio/rtts/queue"
-import { sortRttCalls } from "../../../src/components/radio/rtts/types"
+import {
+  sortRttCalls,
+  sortPastRttCalls,
+  getCallTimestamp,
+} from "../../../src/components/radio/rtts/types"
 import { rttCallFactory } from "../../factories/radio/rtt"
 
 describe("RTT Domain & Sorting", () => {
@@ -57,6 +61,27 @@ describe("RTT Domain & Sorting", () => {
       `RTT-${new Date(rttNew.receivedAt).toISOString()}`,
       `RTT-${new Date(rttOld.receivedAt).toISOString()}`,
     ])
+  })
+
+  test("sortPastRttCalls sorts calls by timestamp descending (newest first)", () => {
+    const callOld = rttCallFactory.build({
+      id: "old",
+      receivedAt: "2026-09-08T10:00:00Z",
+    })
+    const callNew = rttCallFactory.build({
+      id: "new",
+      receivedAt: new Date("2026-09-08T10:10:00Z"),
+    })
+
+    expect(getCallTimestamp(callOld.receivedAt)).toBe(
+      new Date("2026-09-08T10:00:00Z").getTime()
+    )
+    expect(getCallTimestamp(callNew.receivedAt)).toBe(
+      new Date("2026-09-08T10:10:00Z").getTime()
+    )
+
+    const sorted = sortPastRttCalls([callOld, callNew])
+    expect(sorted.map((c) => c.id)).toEqual(["new", "old"])
   })
 })
 
