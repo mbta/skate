@@ -5,7 +5,7 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: #fff;
+  background-color: tokens.$white;
   border: 1px solid tokens.$gray-300;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -18,7 +18,7 @@
   justify-content: space-between;
   padding: 0.5rem 1rem 0;
   border-bottom: 1px solid tokens.$gray-400;
-  background-color: #fff;
+  background-color: tokens.$white;
   flex-shrink: 0;
 }
 
@@ -64,9 +64,9 @@
 
   &--active {
     color: tokens.$gray-900;
-    background-color: #fff;
+    background-color: tokens.$white;
     border-color: tokens.$gray-400;
-    border-bottom-color: #fff;
+    border-bottom-color: tokens.$white;
     z-index: 1;
   }
 }
@@ -80,9 +80,9 @@
   font-size: 0.6875rem;
   font-weight: 800;
   line-height: 1;
-  color: #0b4e6d;
-  background-color: #d2eff7;
-  border: 1px solid #a4e1f0;
+  color: tokens.$kiwi-800;
+  background-color: tokens.$kiwi-100;
+  border: 1px solid tokens.$kiwi-300;
   border-radius: 9999px;
   text-transform: uppercase;
 }

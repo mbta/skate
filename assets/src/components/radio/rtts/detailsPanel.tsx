@@ -107,7 +107,6 @@ export const RttDetailsPanel = ({
               viewBox="0 0 24 24"
               width="28"
               height="28"
-              fill="#269c95"
               aria-hidden="true"
             >
               <path d="M12 2L2 22h20L12 2z" />

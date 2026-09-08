@@ -9,9 +9,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1.25rem;
-  background-color: #d8f3e5;
-  color: #0b6b47;
-  border-bottom: 1px solid #a3e6c5;
+  background-color: tokens.$kiwi-200;
+  color: tokens.$kiwi-800;
+  border-bottom: 1px solid tokens.$kiwi-300;
   flex-shrink: 0;
   z-index: 10;
 }
@@ -26,7 +26,7 @@
   width: 0.625rem;
   height: 0.625rem;
   border-radius: 50%;
-  background-color: #1b7979;
+  background-color: tokens.$kiwi-600;
   flex-shrink: 0;
 }
 
@@ -35,7 +35,7 @@
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #0b6b47;
+  color: tokens.$kiwi-800;
   background: none;
   border: none;
   padding: 0;
@@ -50,7 +50,7 @@
 
 .c-active-rtt-banner__mark-done-btn {
   background-color: tokens.$gray-800;
-  color: #fff;
+  color: tokens.$white;
   border: 1px solid tokens.$gray-800;
   font-size: 0.75rem;
   font-weight: 700;
