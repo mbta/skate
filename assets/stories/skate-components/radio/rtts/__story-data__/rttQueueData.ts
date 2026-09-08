@@ -1,8 +1,9 @@
 import { RttCall } from "../../../../../src/components/radio/rtts/types"
+import { rttCallFactory } from "../../../../../tests/factories/radio/rtt"
 
 const now = new Date()
 
-export const mockEmergencyCall: RttCall = {
+export const mockEmergencyCall: RttCall = rttCallFactory.build({
   id: "rtt-call-001",
   callType: "Emergency",
   talkGroup: "TG-102",
@@ -10,20 +11,19 @@ export const mockEmergencyCall: RttCall = {
   routeName: "66",
   vehicleId: "2104",
   garage: "Cabot",
-  receivedAt: new Date(now.getTime() - 2 * 60 * 1000), // 2 mins ago
+  receivedAt: new Date(now.getTime() - 2 * 60 * 1000),
   direction: "Outbound",
   variant: "Harvard via Allston",
   currentLocation: "Harvard Ave @ Commonwealth Ave",
   operatorBadge: "54321",
   operatorName: "J. Doe",
   runNumber: "R-104",
+  status: "unassigned",
   respondedBy: null,
   answeredAt: null,
-  markedDoneAt: null,
-  status: "unassigned",
-}
+})
 
-export const mockPrttCall: RttCall = {
+export const mockPrttCall: RttCall = rttCallFactory.build({
   id: "rtt-call-002",
   callType: "PRTT",
   talkGroup: "TG-105",
@@ -31,20 +31,19 @@ export const mockPrttCall: RttCall = {
   routeName: "39",
   vehicleId: "1845",
   garage: "Southampton",
-  receivedAt: new Date(now.getTime() - 5 * 60 * 1000), // 5 mins ago
+  receivedAt: new Date(now.getTime() - 5 * 60 * 1000),
   direction: "Inbound",
   variant: "Forest Hills - Back Bay Station",
   currentLocation: "Huntington Ave @ Longwood Ave",
   operatorBadge: "48291",
   operatorName: "M. Garcia",
   runNumber: "R-039",
+  status: "unassigned",
   respondedBy: null,
   answeredAt: null,
-  markedDoneAt: null,
-  status: "unassigned",
-}
+})
 
-export const mockActivePrttCallByOther: RttCall = {
+export const mockActivePrttCallByOther: RttCall = rttCallFactory.build({
   id: "rtt-call-003",
   callType: "PRTT",
   talkGroup: "TG-101",
@@ -52,20 +51,19 @@ export const mockActivePrttCallByOther: RttCall = {
   routeName: "1",
   vehicleId: "1290",
   garage: "Southampton",
-  receivedAt: new Date(now.getTime() - 7 * 60 * 1000), // 7 mins ago
+  receivedAt: new Date(now.getTime() - 7 * 60 * 1000),
   direction: "Outbound",
   variant: "Harvard - Nubian Station",
   currentLocation: "Mass Ave @ Beacon St",
   operatorBadge: "50122",
   operatorName: "T. Vance",
   runNumber: "R-001",
+  status: "active",
   respondedBy: "Sarah Connor",
   answeredAt: new Date(now.getTime() - 4 * 60 * 1000),
-  markedDoneAt: null,
-  status: "active",
-}
+})
 
-export const mockStandardRttCall1: RttCall = {
+export const mockStandardRttCall1: RttCall = rttCallFactory.build({
   id: "rtt-call-004",
   callType: "RTT",
   talkGroup: "TG-104",
@@ -73,20 +71,19 @@ export const mockStandardRttCall1: RttCall = {
   routeName: "57",
   vehicleId: "1932",
   garage: "Cabot",
-  receivedAt: new Date(now.getTime() - 10 * 60 * 1000), // 10 mins ago
+  receivedAt: new Date(now.getTime() - 10 * 60 * 1000),
   direction: "Inbound",
   variant: "Watertown Yard - Kenmore",
   currentLocation: "Commonwealth Ave @ Warren St",
   operatorBadge: "39481",
   operatorName: "K. Patel",
   runNumber: "R-057",
+  status: "unassigned",
   respondedBy: null,
   answeredAt: null,
-  markedDoneAt: null,
-  status: "unassigned",
-}
+})
 
-export const mockStandardRttCall2: RttCall = {
+export const mockStandardRttCall2: RttCall = rttCallFactory.build({
   id: "rtt-call-005",
   callType: "RTT",
   talkGroup: "TG-108",
@@ -94,18 +91,17 @@ export const mockStandardRttCall2: RttCall = {
   routeName: "111",
   vehicleId: "2055",
   garage: "Charlestown",
-  receivedAt: new Date(now.getTime() - 12 * 60 * 1000), // 12 mins ago
+  receivedAt: new Date(now.getTime() - 12 * 60 * 1000),
   direction: "Outbound",
   variant: "Woodlawn - Haymarket",
   currentLocation: "Broadway @ Chelsea St",
   operatorBadge: "41902",
   operatorName: "L. Martinez",
   runNumber: "R-111",
+  status: "unassigned",
   respondedBy: null,
   answeredAt: null,
-  markedDoneAt: null,
-  status: "unassigned",
-}
+})
 
 export const mockIncomingCalls: RttCall[] = [
   mockEmergencyCall,
@@ -115,7 +111,7 @@ export const mockIncomingCalls: RttCall[] = [
   mockStandardRttCall2,
 ]
 
-export const mockPastCall1: RttCall = {
+export const mockPastCall1: RttCall = rttCallFactory.build({
   id: "rtt-past-001",
   callType: "RTT",
   talkGroup: "TG-102",
@@ -130,13 +126,13 @@ export const mockPastCall1: RttCall = {
   operatorBadge: "52199",
   operatorName: "A. Jackson",
   runNumber: "R-028",
+  status: "done",
   respondedBy: "Dispatcher Smith",
   answeredAt: new Date(now.getTime() - 43 * 60 * 1000),
   markedDoneAt: new Date(now.getTime() - 38 * 60 * 1000),
-  status: "done",
-}
+})
 
-export const mockPastCall2: RttCall = {
+export const mockPastCall2: RttCall = rttCallFactory.build({
   id: "rtt-past-002",
   callType: "PRTT",
   talkGroup: "TG-104",
@@ -151,13 +147,13 @@ export const mockPastCall2: RttCall = {
   operatorBadge: "49001",
   operatorName: "B. Nguyen",
   runNumber: "R-077",
+  status: "done",
   respondedBy: "Dispatcher Jones",
   answeredAt: new Date(now.getTime() - 83 * 60 * 1000),
   markedDoneAt: new Date(now.getTime() - 75 * 60 * 1000),
-  status: "done",
-}
+})
 
-export const mockPastCall3: RttCall = {
+export const mockPastCall3: RttCall = rttCallFactory.build({
   id: "rtt-past-003",
   callType: "Emergency",
   talkGroup: "TG-101",
@@ -172,11 +168,11 @@ export const mockPastCall3: RttCall = {
   operatorBadge: "53210",
   operatorName: "D. Miller",
   runNumber: "R-009",
+  status: "done",
   respondedBy: "Dispatcher Smith",
   answeredAt: new Date(now.getTime() - 119 * 60 * 1000),
   markedDoneAt: new Date(now.getTime() - 105 * 60 * 1000),
-  status: "done",
-}
+})
 
 export const mockPastCalls: RttCall[] = [
   mockPastCall1,
