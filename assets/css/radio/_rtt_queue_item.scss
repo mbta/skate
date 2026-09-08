@@ -75,16 +75,17 @@
   align-items: center;
 
   &--type {
-    width: 80px;
+    width: 100px;
     flex-shrink: 0;
   }
 
   &--time {
-    width: 85px;
+    width: 75px;
     flex-shrink: 0;
     font-size: 0.8125rem;
     font-weight: 600;
     color: tokens.$gray-700;
+    white-space: nowrap;
   }
 
   &--garage {
