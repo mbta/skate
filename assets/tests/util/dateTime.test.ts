@@ -9,6 +9,7 @@ import {
   formattedScheduledTime,
   serviceDaySeconds,
   formattedDate,
+  formatTimeWithSeconds,
 } from "../../src/util/dateTime"
 
 describe("now", () => {
@@ -174,5 +175,29 @@ describe("formattedHoursMinutes", () => {
 
   test("zero pads short minutes, but not hours", () => {
     expect(formattedHoursMinutes(5, 5)).toEqual("5:05 AM")
+  })
+})
+
+describe("formatTimeWithSeconds", () => {
+  test("returns empty string when null, undefined, or empty", () => {
+    expect(formatTimeWithSeconds(null)).toEqual("")
+    expect(formatTimeWithSeconds(undefined)).toEqual("")
+    expect(formatTimeWithSeconds("")).toEqual("")
+  })
+
+  test("returns empty string when date is invalid", () => {
+    expect(formatTimeWithSeconds("invalid-date")).toEqual("")
+  })
+
+  test("formats Date with hours, minutes, seconds and AM/PM", () => {
+    const d = new Date(2026, 8, 8, 9, 5, 7)
+    expect(formatTimeWithSeconds(d)).toEqual("9:05:07 AM")
+  })
+
+  test("formats string date correctly", () => {
+    const d = new Date(2026, 8, 8, 14, 30, 45)
+    expect(formatTimeWithSeconds(d.toISOString())).toEqual(
+      formatTimeWithSeconds(d)
+    )
   })
 })
