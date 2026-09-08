@@ -12,6 +12,8 @@ export const ActiveRttBanner = ({
   onMarkDone,
   onSelectActive,
 }: ActiveRttBannerProps): JSX.Element => {
+  const bannerText = `ACTIVE CALL VEHICLE ${activeCall.vehicleId}`
+
   return (
     <div
       className="c-active-rtt-banner"
@@ -19,27 +21,17 @@ export const ActiveRttBanner = ({
       aria-label="Active Call Banner"
     >
       <div className="c-active-rtt-banner__content">
+        <span className="c-active-rtt-banner__dot" />
         {onSelectActive ? (
           <button
             type="button"
             className="c-active-rtt-banner__text"
-            style={{
-              background: "none",
-              border: "none",
-              color: "inherit",
-              padding: 0,
-              font: "inherit",
-              cursor: "pointer",
-              textAlign: "left",
-            }}
             onClick={() => onSelectActive(activeCall)}
           >
-            Active {activeCall.callType} vehicle #{activeCall.vehicleId}
+            {bannerText}
           </button>
         ) : (
-          <span className="c-active-rtt-banner__text">
-            Active {activeCall.callType} vehicle #{activeCall.vehicleId}
-          </span>
+          <span className="c-active-rtt-banner__text">{bannerText}</span>
         )}
       </div>
 
@@ -48,7 +40,7 @@ export const ActiveRttBanner = ({
         className="c-active-rtt-banner__mark-done-btn"
         onClick={() => onMarkDone(activeCall)}
       >
-        Mark done
+        MARK DONE
       </button>
     </div>
   )
