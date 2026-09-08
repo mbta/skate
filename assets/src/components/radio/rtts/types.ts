@@ -19,10 +19,23 @@ export interface RttCall {
   operatorBadge?: string
   operatorName?: string
   runNumber?: string
+  adherence?: string
   respondedBy?: string | null
   answeredAt?: Date | string | null
   markedDoneAt?: Date | string | null
   status: RttStatus
+}
+
+export const formatTimeWithSeconds = (dateOrStr?: Date | string | null): string => {
+  if (!dateOrStr) return ""
+  const d = typeof dateOrStr === "string" ? new Date(dateOrStr) : dateOrStr
+  if (isNaN(d.getTime())) return ""
+  const hours24 = d.getHours()
+  const hours12 = hours24 % 12 || 12
+  const mins = d.getMinutes().toString().padStart(2, "0")
+  const secs = d.getSeconds().toString().padStart(2, "0")
+  const ampm = hours24 >= 12 ? "PM" : "AM"
+  return `${hours12}:${mins}:${secs} ${ampm}`
 }
 
 export const CALL_TYPE_PRIORITY: Record<RttCallType, number> = {

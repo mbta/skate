@@ -4,10 +4,17 @@ import { RoutePill } from "../../routePill"
 import { formattedTime } from "../../../util/dateTime"
 import { joinClasses } from "../../../helpers/dom"
 
+import React from "react"
+import { RttCall, RttTab } from "./types"
+import { RoutePill } from "../../routePill"
+import { formattedTime } from "../../../util/dateTime"
+import { joinClasses } from "../../../helpers/dom"
+
 export interface RttQueueItemProps {
   call: RttCall
   isSelected?: boolean
   tab?: RttTab
+  currentDispatcherName?: string
   onSelect?: (call: RttCall) => void
   onRespond?: (call: RttCall) => void
 }
@@ -16,12 +23,24 @@ export const RttQueueItem = ({
   call,
   isSelected = false,
   tab = "incoming",
+  currentDispatcherName = "Current Dispatcher",
   onSelect,
   onRespond,
 }: RttQueueItemProps): JSX.Element => {
   const isEmergency = call.callType === "Emergency"
   const isPrtt = call.callType === "PRTT"
   const isActive = call.status === "active"
+
+  const isRespondedByCurrentUser =
+    isActive &&
+    (call.respondedBy === currentDispatcherName ||
+      call.respondedBy === "YOU" ||
+      call.respondedBy === "You" ||
+      !call.respondedBy)
+
+  const responderDisplayName = isRespondedByCurrentUser
+    ? "YOU"
+    : call.respondedBy || "ACTIVE"
 
   const typeClass = isEmergency
     ? "c-rtt-queue-item__type--emergency"
@@ -39,7 +58,8 @@ export const RttQueueItem = ({
     "c-rtt-queue-item",
     priorityBorderClass,
     isSelected ? "c-rtt-queue-item--selected" : "",
-    isActive ? "c-rtt-queue-item--live" : "",
+    isRespondedByCurrentUser ? "c-rtt-queue-item--live" : "",
+    tab === "past" ? "c-rtt-queue-item--past" : "",
   ])
 
   const handleRowClick = () => {
@@ -57,34 +77,16 @@ export const RttQueueItem = ({
       : formattedTime(call.receivedAt)
 
   return (
-    <div className={classes} aria-selected={isSelected}>
-      {tab === "incoming" && (
-        <div className="c-rtt-queue-item__action">
-          {call.status === "active" && call.respondedBy ? (
-            <span
-              className="c-rtt-queue-item__status-pill"
-              title={`Responded by ${call.respondedBy}`}
-            >
-              <span className="c-rtt-queue-item__status-dot" />
-              {call.respondedBy}
-            </span>
-          ) : (
-            <button
-              type="button"
-              className="c-rtt-queue-item__respond-btn"
-              onClick={handleRespondClick}
-            >
-              Respond
-            </button>
-          )}
-        </div>
-      )}
-
+    <div
+      className={classes}
+      onClick={handleRowClick}
+      aria-selected={isSelected}
+      role="row"
+    >
       <div
-        className="c-rtt-queue-item__content"
+        className="c-rtt-queue-item__columns"
         role="button"
         tabIndex={0}
-        onClick={handleRowClick}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault()
@@ -92,17 +94,52 @@ export const RttQueueItem = ({
           }
         }}
       >
-        <span className={joinClasses(["c-rtt-queue-item__type", typeClass])}>
-          {call.callType}
-        </span>
-        <span className="c-rtt-queue-item__talkgroup">{call.talkGroup}</span>
-        <div className="c-rtt-queue-item__route">
+        <div className="c-rtt-queue-item__col c-rtt-queue-item__col--type">
+          <span className={joinClasses(["c-rtt-queue-item__type", typeClass])}>
+            {call.callType}
+          </span>
+        </div>
+
+        <div className="c-rtt-queue-item__col c-rtt-queue-item__col--time">
+          {timeDisplay}
+        </div>
+
+        <div className="c-rtt-queue-item__col c-rtt-queue-item__col--garage">
+          {call.garage || call.talkGroup}
+        </div>
+
+        <div className="c-rtt-queue-item__col c-rtt-queue-item__col--route">
           <RoutePill routeName={call.routeName || call.routeId} />
         </div>
-        <span className="c-rtt-queue-item__vehicle">#{call.vehicleId}</span>
+
+        <div className="c-rtt-queue-item__col c-rtt-queue-item__col--vehicle">
+          {call.vehicleId}
+        </div>
       </div>
 
-      <div className="c-rtt-queue-item__time">{timeDisplay}</div>
+      {tab === "incoming" && (
+        <div className="c-rtt-queue-item__action">
+          {isActive ? (
+            <div
+              className="c-rtt-queue-item__status-cell"
+              title={`Responded by ${call.respondedBy || "Dispatcher"}`}
+            >
+              <span className="c-rtt-queue-item__status-dot" />
+              <span className="c-rtt-queue-item__status-name">
+                {responderDisplayName}
+              </span>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="c-rtt-queue-item__respond-btn"
+              onClick={handleRespondClick}
+            >
+              RESPOND
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
