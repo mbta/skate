@@ -4,12 +4,6 @@ import { RoutePill } from "../../routePill"
 import { formattedTime } from "../../../util/dateTime"
 import { joinClasses } from "../../../helpers/dom"
 
-import React from "react"
-import { RttCall, RttTab } from "./types"
-import { RoutePill } from "../../routePill"
-import { formattedTime } from "../../../util/dateTime"
-import { joinClasses } from "../../../helpers/dom"
-
 export interface RttQueueItemProps {
   call: RttCall
   isSelected?: boolean
