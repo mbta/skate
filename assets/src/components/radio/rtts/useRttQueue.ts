@@ -137,7 +137,7 @@ export const useRttQueue = ({
     })
 
     if (activeId && activeId !== call.id) {
-      const priorCall = internalIncomingCalls.find((c) => c.id === activeId)
+      const priorCall = incomingCalls.find((c) => c.id === activeId)
       if (priorCall) {
         const completed: RttCall = {
           ...priorCall,

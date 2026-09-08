@@ -134,6 +134,42 @@ describe("RttQueue Component", () => {
     expect(view.getByRole("button", { name: /mark done/i })).toBeInTheDocument()
   })
 
+  test("responding to a second call moves previous active call to past calls", () => {
+    const call1 = rttCallFactory.build({
+      id: "call-seq-1",
+      vehicleId: "3001",
+      callType: "Emergency",
+      status: "unassigned",
+    })
+    const call2 = rttCallFactory.build({
+      id: "call-seq-2",
+      vehicleId: "3002",
+      callType: "PRTT",
+      status: "unassigned",
+    })
+
+    const { container } = render(
+      <RttQueue
+        defaultIncomingCalls={[call1, call2]}
+        defaultPastCalls={[]}
+        defaultTab="incoming"
+      />
+    )
+    const view = within(container)
+
+    // Respond to call 1 (Emergency)
+    const respondButtons = view.getAllByRole("button", { name: /respond/i })
+    fireEvent.click(respondButtons[0])
+
+    // Now respond to call 2 (PRTT)
+    const secondRespondBtn = view.getByRole("button", { name: /respond/i })
+    fireEvent.click(secondRespondBtn)
+
+    // Check Past tab to verify call1 was archived as done
+    fireEvent.click(view.getByRole("button", { name: /^past$/i }))
+    expect(view.getByText("3001")).toBeInTheDocument()
+  })
+
   test("displays active call banner when switching to Past tab during an active call", () => {
     const call1 = rttCallFactory.build({
       id: "call-banner-1",
