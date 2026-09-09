@@ -269,6 +269,7 @@ defmodule Skate.Detours.Detours do
     broadcast_detour(new_record, author_id)
     process_notifications(changeset, new_record)
     trigger_active_detour_s3_export_job(changeset, new_record)
+    log_metadata(changeset, new_record)
   end
 
   @spec delete_draft_detour(Detour.t(), DbUser.id()) :: :ok
@@ -648,6 +649,55 @@ defmodule Skate.Detours.Detours do
   end
 
   defp update_swiftly(_, _, _), do: :ok
+
+  defp log_metadata(
+         %Ecto.Changeset{
+           changes: %{status: :past},
+           data: %{status: :active}
+         },
+         %Detour{} = detour
+       ) do
+    now = DateTime.utc_now()
+
+    minutes_active =
+      if detour.activated_at,
+        do: DateTime.diff(now, detour.activated_at, :minute),
+        else: "unknown"
+
+    Logger.info(
+      "deactivate_detour id=#{detour.id} " <>
+        "activated_at=#{format_datetime(detour.activated_at)} " <>
+        "deactivated_at=#{format_datetime(now)} " <>
+        "minutes_active=#{minutes_active} " <>
+        "estimated_duration=#{format_str(detour.estimated_duration)} " <>
+        "copied_from_id=#{detour.copied_from_id || "none"} " <>
+        "reason=#{format_str(detour.reason)}"
+    )
+  end
+
+  defp log_metadata(
+         %Ecto.Changeset{
+           changes: %{status: :active},
+           data: %{status: :draft}
+         },
+         %Detour{} = detour
+       ) do
+    Logger.info(
+      "activate_detour id=#{detour.id} " <>
+        "activated_at=#{format_datetime(detour.activated_at)} " <>
+        "estimated_duration=#{format_str(detour.estimated_duration)} " <>
+        "copied_from_id=#{detour.copied_from_id || "none"} " <>
+        "reason=#{format_str(detour.reason)}"
+    )
+  end
+
+  defp log_metadata(_, _), do: nil
+
+  defp format_datetime(%DateTime{} = dt), do: DateTime.to_iso8601(dt)
+  defp format_datetime(_), do: "none"
+
+  defp format_str(str) when is_binary(str), do: String.replace(str, " ", "_")
+  defp format_str(_), do: "none"
 
   def sync_swiftly_with_skate(
         adjustments_module \\ service_adjustments_module(),
