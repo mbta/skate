@@ -30,11 +30,11 @@ const InteractivePrototypeWrapper = ({
       status: "unassigned",
       receivedAt: new Date(),
     })
-    queue.handleReceiveCall(newCall)
+    queue.actions.receiveCall(newCall)
   }
 
   const handleResetData = () => {
-    queue.handleReset({
+    queue.actions.reset({
       incomingCalls: mockIncomingCalls,
       pastCalls: mockPastCalls,
       tab: "incoming",
@@ -64,17 +64,17 @@ const InteractivePrototypeWrapper = ({
 
       <div style={{ flex: "1 1 auto", minHeight: 0 }}>
         <RttQueue
-          incomingCalls={queue.incomingCalls}
-          pastCalls={queue.pastCalls}
-          currentTab={queue.tab}
-          selectedCallId={queue.selectedCallId}
-          activeCallId={queue.activeCallId}
-          newIncomingCount={queue.newIncomingCount}
+          incomingCalls={queue.calls.incoming}
+          pastCalls={queue.calls.past}
+          currentTab={queue.tabs.current}
+          selectedCallId={queue.calls.selectedId}
+          activeCallId={queue.calls.activeId}
+          newIncomingCount={queue.tabs.newIncomingCount}
           currentDispatcherName={dispatcherName}
-          onSelectCall={queue.handleSelectCall}
-          onRespondCall={queue.handleRespondCall}
-          onMarkDoneCall={queue.handleMarkDoneCall}
-          onTabChange={queue.handleTabClick}
+          onSelectCall={queue.actions.selectCall}
+          onRespondCall={queue.actions.respondCall}
+          onMarkDoneCall={queue.actions.markDoneCall}
+          onTabChange={queue.actions.changeTab}
         />
       </div>
     </div>

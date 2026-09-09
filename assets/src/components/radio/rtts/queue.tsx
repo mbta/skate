@@ -7,27 +7,15 @@ import { useRttQueue, UseRttQueueOptions } from "./useRttQueue"
 export type RttQueueProps = UseRttQueueOptions
 
 export const RttQueue = (props: RttQueueProps): JSX.Element => {
-  const {
-    tab,
-    selectedCallId,
-    newIncomingCount,
-    activeCallsList,
-    selectedCall,
-    activeCall,
-    isSelectedLive,
-    handleTabClick,
-    handleSelectCall,
-    handleRespondCall,
-    handleMarkDoneCall,
-  } = useRttQueue(props)
+  const { calls, tabs, actions } = useRttQueue(props)
 
   return (
     <div className="c-rtt-queue">
-      {tab === "past" && activeCall && (
+      {tabs.current === "past" && calls.active && (
         <ActiveRttBanner
-          activeCall={activeCall}
-          onMarkDone={handleMarkDoneCall}
-          onSelectActive={handleSelectCall}
+          activeCall={calls.active}
+          onMarkDone={actions.markDoneCall}
+          onSelectActive={actions.selectCall}
         />
       )}
 
@@ -43,17 +31,17 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
             type="button"
             role="tab"
             id="rtt-tab-incoming"
-            aria-selected={tab === "incoming"}
+            aria-selected={tabs.current === "incoming"}
             aria-controls="rtt-panel-incoming"
             className={`c-rtt-queue__tab ${
-              tab === "incoming" ? "c-rtt-queue__tab--active" : ""
+              tabs.current === "incoming" ? "c-rtt-queue__tab--active" : ""
             }`}
-            onClick={() => handleTabClick("incoming")}
+            onClick={() => actions.changeTab("incoming")}
           >
             Incoming
-            {tab === "past" && newIncomingCount > 0 && (
+            {tabs.current === "past" && tabs.newIncomingCount > 0 && (
               <span className="c-rtt-queue__tab-badge">
-                {newIncomingCount} new
+                {tabs.newIncomingCount} new
               </span>
             )}
           </button>
@@ -61,12 +49,12 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
             type="button"
             role="tab"
             id="rtt-tab-past"
-            aria-selected={tab === "past"}
+            aria-selected={tabs.current === "past"}
             aria-controls="rtt-panel-past"
             className={`c-rtt-queue__tab ${
-              tab === "past" ? "c-rtt-queue__tab--active" : ""
+              tabs.current === "past" ? "c-rtt-queue__tab--active" : ""
             }`}
-            onClick={() => handleTabClick("past")}
+            onClick={() => actions.changeTab("past")}
           >
             Past
           </button>
@@ -77,19 +65,19 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
         <section
           className="c-rtt-queue__list-pane"
           role="tabpanel"
-          id={`rtt-panel-${tab}`}
-          aria-labelledby={`rtt-tab-${tab}`}
+          id={`rtt-panel-${tabs.current}`}
+          aria-labelledby={`rtt-tab-${tabs.current}`}
         >
-          {activeCallsList.length === 0 ? (
+          {calls.activeList.length === 0 ? (
             <div className="c-rtt-queue__empty">
               <div className="c-rtt-queue__empty-icon">📻</div>
               <div className="c-rtt-queue__empty-title">
-                {tab === "incoming"
+                {tabs.current === "incoming"
                   ? "No Incoming RTT Calls"
                   : "No Past RTT Calls"}
               </div>
               <p className="c-rtt-queue__empty-desc">
-                {tab === "incoming"
+                {tabs.current === "incoming"
                   ? "Incoming and active driver requests to talk will appear here."
                   : "Completed calls marked as done will appear here."}
               </p>
@@ -98,18 +86,20 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
             <div
               role="list"
               aria-label={
-                tab === "incoming" ? "Incoming RTT Calls" : "Past RTT Calls"
+                tabs.current === "incoming"
+                  ? "Incoming RTT Calls"
+                  : "Past RTT Calls"
               }
             >
-              {activeCallsList.map((call) => (
+              {calls.activeList.map((call) => (
                 <RttQueueItem
                   key={call.id}
                   call={call}
-                  tab={tab}
+                  tab={tabs.current}
                   currentDispatcherName={props.currentDispatcherName}
-                  isSelected={selectedCallId === call.id}
-                  onSelect={handleSelectCall}
-                  onRespond={handleRespondCall}
+                  isSelected={calls.selectedId === call.id}
+                  onSelect={actions.selectCall}
+                  onRespond={actions.respondCall}
                 />
               ))}
             </div>
@@ -121,9 +111,9 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
           aria-label="Call details"
         >
           <RttDetailsPanel
-            call={selectedCall}
-            isLive={isSelectedLive}
-            onMarkDone={handleMarkDoneCall}
+            call={calls.selected}
+            isLive={calls.isSelectedLive}
+            onMarkDone={actions.markDoneCall}
           />
         </section>
       </div>
