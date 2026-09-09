@@ -199,6 +199,7 @@ defmodule Skate.Detours.DetoursTest do
       assert log =~ "deactivate_detour id=#{id}"
     end
   end
+
   describe "detour list filtering" do
     test "filters past detours by route, intersection, reason, and updated_at dates" do
       :detour
