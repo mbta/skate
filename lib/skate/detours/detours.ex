@@ -668,7 +668,7 @@ defmodule Skate.Detours.Detours do
       "deactivate_detour id=#{detour.id} " <>
         "activated_at=#{format_datetime(detour.activated_at)} " <>
         "deactivated_at=#{format_datetime(now)} " <>
-        "minutes_active=#{minutes_active}" <>
+        "minutes_active=#{minutes_active} " <>
         "estimated_duration=#{format_str(detour.estimated_duration)} " <>
         "copied_from_id=#{detour.copied_from_id || "none"} " <>
         "reason=#{format_str(detour.reason)} "
