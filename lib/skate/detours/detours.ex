@@ -664,7 +664,7 @@ defmodule Skate.Detours.Detours do
     minutes_active = DateTime.diff(DateTime.utc_now(), activated_at, :minute)
 
     Logger.info(
-      "deactivate_detour id=#{id} activated_at=#{DateTime.to_iso8601(activated_at)} estimated_duration=#{String.replace(" ", "_", estimated_duration)} copied_from_id=#{copied_from_id} reason=#{String.replace(" ", "_", reason)} minutes_active=#{minutes_active}"
+      "deactivate_detour id=#{id} activated_at=#{DateTime.to_iso8601(activated_at)} estimated_duration=#{String.replace(estimated_duration, " ", "_")} copied_from_id=#{copied_from_id} reason=#{String.replace(reason, " ", "_")} minutes_active=#{minutes_active}"
     )
   end
 
@@ -674,13 +674,12 @@ defmodule Skate.Detours.Detours do
            id: id,
            status: :draft,
            copied_from_id: copied_from_id,
-           activated_at: activated_at,
            estimated_duration: estimated_duration,
            reason: reason
          }
        }) do
     Logger.info(
-      "activate_detour id=#{id} activated_at=#{DateTime.to_iso8601(activated_at)} estimated_duration=#{String.replace(" ", "_", estimated_duration)} copied_from_id=#{copied_from_id} reason=#{String.replace(" ", "_", reason)}"
+      "activate_detour id=#{id} estimated_duration=#{String.replace(estimated_duration, " ", "_")} copied_from_id=#{copied_from_id} reason=#{String.replace(reason, " ", "_")}"
     )
   end
 
