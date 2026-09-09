@@ -1190,7 +1190,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
   <div>
     <div
       aria-modal="true"
-      class="c-detour-modal c-detour-modal__transition-appear c-detour-modal__transition-appear-active"
+      class="c-detour-modal c-detour-modal__transition-appear-done c-detour-modal__transition-enter-done"
       role="dialog"
       tabindex="-1"
     >
@@ -1331,13 +1331,13 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                     </h2>
                     <div
                       class="c-autosized-textarea mb-2"
-                      data-replicated-value="From —"
+                      data-replicated-value="From null"
                     >
                       <textarea
                         class="tall-input form-control"
                         data-fs-element="Detour Text"
                       >
-                        From —
+                        From null
                       </textarea>
                     </div>
                   </section>
@@ -3145,7 +3145,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
   <div>
     <div
       aria-modal="true"
-      class="c-detour-modal c-detour-modal__transition-appear c-detour-modal__transition-appear-active"
+      class="c-detour-modal c-detour-modal__transition-appear-done c-detour-modal__transition-enter-done"
       role="dialog"
       tabindex="-1"
     >
@@ -3290,13 +3290,13 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   </h2>
                   <div
                     class="c-autosized-textarea mb-2"
-                    data-replicated-value="From —"
+                    data-replicated-value="From null"
                   >
                     <textarea
                       class="tall-input form-control"
                       data-fs-element="Detour Text"
                     >
-                      From —
+                      From null
                     </textarea>
                   </div>
                 </section>

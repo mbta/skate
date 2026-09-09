@@ -27,6 +27,7 @@ import {
 import { neverPromise } from "../../testHelpers/mockHelpers"
 import { byRole } from "testing-library-selector"
 import { Ok } from "../../../src/util/result"
+import { finishedDetourFactory } from "../../factories/detourFactory"
 
 beforeEach(() => {
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
@@ -47,8 +48,10 @@ jest.mock("../../../src/userTestGroups")
 beforeEach(() => {
   jest.mocked(fetchDetourDirections).mockReturnValue(neverPromise())
   jest.mocked(fetchUnfinishedDetour).mockReturnValue(neverPromise())
-  jest.mocked(fetchFinishedDetour).mockReturnValue(neverPromise())
-  jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
+  jest
+    .mocked(fetchFinishedDetour)
+    .mockResolvedValue(finishedDetourFactory.build())
+  jest.mocked(fetchNearestIntersection).mockResolvedValue("—")
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
   jest.mocked(putDetourUpdate).mockResolvedValue(Ok(42))
   jest
@@ -64,12 +67,12 @@ const diversionPageOnActiveDetourScreen = async (
   props?: Partial<DiversionPageProps>
 ) => {
   const { container } = render(<DiversionPage {...props} />)
-  const user = userEvent.setup({ delay: 100 })
+  const user = userEvent.setup()
 
-  act(() => {
+  await act(async () => {
     fireEvent.click(originalRouteShape.get(container))
   })
-  act(() => {
+  await act(async () => {
     fireEvent.click(originalRouteShape.get(container))
   })
   await user.click(reviewDetourButton.get())

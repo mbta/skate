@@ -29,7 +29,7 @@ import { useLoadDetour } from "../../src/hooks/useLoadDetour"
 
 // Avoid Halloween
 jest
-  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .useFakeTimers({ doNotFake: ["nextTick", "setTimeout"] })
   .setSystemTime(new Date("2018-08-15T17:41:21.000Z"))
 
 jest.mock("../../src/hooks/useDataStatus", () => ({

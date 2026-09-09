@@ -56,9 +56,11 @@ export const originalRouteShape = {
   },
 
   get(container: HTMLElement): Element {
-    const maybeShape = container.querySelector(
-      ".c-detour_map--original-route-shape"
-    )
+    const maybeShape =
+      container.querySelector(".c-detour_map--original-route-shape") ??
+      container.querySelector(
+        ".c-detour_map--original-route-shape-after-start-point--interactive"
+      )
     // eslint-disable-next-line jest/no-standalone-expect
     expect(maybeShape).not.toBeNull()
     return maybeShape as Element

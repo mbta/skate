@@ -25,7 +25,7 @@ import { RoutesProvider } from "../../../src/contexts/routesContext"
 import routeFactory from "../../factories/route"
 
 jest
-  .useFakeTimers({ doNotFake: ["setTimeout"] })
+  .useFakeTimers({ doNotFake: ["nextTick", "setTimeout"] })
   .setSystemTime(new Date("2024-08-29T20:00:00"))
 
 jest.mock("../../../src/userTestGroups")

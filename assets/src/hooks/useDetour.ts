@@ -84,12 +84,12 @@ export const useDetour = (useDetourProps: UseDetourInput) => {
 
   const { result: unfinishedDetour } = useApiCall({
     apiCall: useCallback(async () => {
-      if (startPoint && routePattern?.id) {
+      if (startPoint && routePattern?.id && !endPoint) {
         return fetchUnfinishedDetour(routePattern.id, startPoint)
       } else {
         return null
       }
-    }, [startPoint, routePattern]),
+    }, [startPoint, routePattern, endPoint]),
   })
 
   const coordinates =

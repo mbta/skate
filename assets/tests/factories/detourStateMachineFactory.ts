@@ -5,6 +5,7 @@ import { originalRouteFactory } from "./originalRouteFactory"
 import { shapePointFactory } from "./shapePointFactory"
 import { DetourWithState } from "../../src/models/detour"
 
+// These factories are synchronous and will not include mocked calculated data
 export const detourInProgressFactory = Factory.define<DetourWithState>(() => {
   // Stub out a detour machine, and start a detour-in-progress
   const machine = createActor(createDetourMachine, {
@@ -46,6 +47,8 @@ export const activeDetourFactory = Factory.define<
   const machine = createActor(createDetourMachine, {
     input: originalRouteFactory.build(),
   }).start()
+  machine.send({ type: "detour.save.begin-save" })
+  machine.send({ type: "detour.save.set-uuid", uuid: 123 })
   machine.send({
     type: "detour.edit.place-waypoint-on-route",
     location: shapePointFactory.build(),
@@ -59,9 +62,6 @@ export const activeDetourFactory = Factory.define<
     location: shapePointFactory.build(),
   })
   machine.send({ type: "detour.edit.done" })
-
-  machine.send({ type: "detour.save.begin-save" })
-  machine.send({ type: "detour.save.set-uuid", uuid: 123 })
   machine.send({ type: "detour.share.open-activate-modal" })
   machine.send({
     type: "detour.share.activate-modal.select-duration",
@@ -100,12 +100,12 @@ export const minimumDraftDetourFactory = Factory.define<DetourWithState>(() => {
   const machine = createActor(createDetourMachine, {
     input: originalRouteFactory.build(),
   }).start()
+  machine.send({ type: "detour.save.begin-save" })
+  machine.send({ type: "detour.save.set-uuid", uuid: 123 })
   machine.send({
     type: "detour.edit.place-waypoint-on-route",
     location: shapePointFactory.build(),
   })
-  machine.send({ type: "detour.save.begin-save" })
-  machine.send({ type: "detour.save.set-uuid", uuid: 123 })
 
   const snapshot = machine.getPersistedSnapshot()
   machine.stop()
@@ -123,12 +123,12 @@ export const finishedDraftDetourFactory = Factory.define<DetourWithState>(
     const machine = createActor(createDetourMachine, {
       input: originalRouteFactory.build(),
     }).start()
+    machine.send({ type: "detour.save.begin-save" })
+    machine.send({ type: "detour.save.set-uuid", uuid: 123 })
     machine.send({
       type: "detour.edit.place-waypoint-on-route",
       location: shapePointFactory.build(),
     })
-    machine.send({ type: "detour.save.begin-save" })
-    machine.send({ type: "detour.save.set-uuid", uuid: 123 })
     machine.send({
       type: "detour.edit.place-waypoint",
       location: shapePointFactory.build(),
@@ -155,12 +155,12 @@ export const pastDetourFactory = Factory.define<DetourWithState>(() => {
   const machine = createActor(createDetourMachine, {
     input: originalRouteFactory.build(),
   }).start()
+  machine.send({ type: "detour.save.begin-save" })
+  machine.send({ type: "detour.save.set-uuid", uuid: 123 })
   machine.send({
     type: "detour.edit.place-waypoint-on-route",
     location: shapePointFactory.build(),
   })
-  machine.send({ type: "detour.save.begin-save" })
-  machine.send({ type: "detour.save.set-uuid", uuid: 123 })
   machine.send({
     type: "detour.edit.place-waypoint",
     location: shapePointFactory.build(),

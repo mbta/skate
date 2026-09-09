@@ -4,6 +4,8 @@ import React, { act } from "react"
 import "@testing-library/jest-dom/jest-globals"
 import {
   activateDetour,
+  fetchDetourDirections,
+  fetchFinishedDetour,
   fetchNearestIntersection,
   fetchRoutePatterns,
   putDetourUpdate,
@@ -22,6 +24,8 @@ import getTestGroups from "../../../src/userTestGroups"
 import { routePatternFactory } from "../../factories/routePattern"
 import { RoutesProvider } from "../../../src/contexts/routesContext"
 import routeFactory from "../../factories/route"
+import { detourShapeFactory } from "../../factories/detourShapeFactory"
+import { finishedDetourFactory } from "../../factories/detourFactory"
 
 const DiversionPage = (props: Partial<DiversionPageProps>) => {
   return (
@@ -40,7 +44,13 @@ jest.mock("../../../src/userTestGroups")
 beforeEach(() => {
   jest.mocked(fetchRoutePatterns).mockReturnValue(neverPromise())
   jest.mocked(getTestGroups).mockReturnValue([])
-  jest.mocked(fetchNearestIntersection).mockReturnValue(neverPromise())
+  jest.mocked(fetchNearestIntersection).mockResolvedValue("—")
+  jest
+    .mocked(fetchDetourDirections)
+    .mockResolvedValue(Ok(detourShapeFactory.build()))
+  jest
+    .mocked(fetchFinishedDetour)
+    .mockResolvedValue(finishedDetourFactory.build())
   jest.mocked(putDetourUpdate).mockReturnValue(neverPromise())
   jest
     .mocked(activateDetour)
