@@ -162,18 +162,14 @@ defmodule Skate.Detours.DetoursTest do
     end
   end
 
-  describe "activate detour" do
-    test "logs metadata" do
+  describe "detour lifecycle logging" do
+    setup do
       set_log_level(:info)
+      reassign_env(:skate, :s3_bucket, nil)
+      :ok
+    end
 
-      Mox.expect(
-        ExAws.Request.HttpMock,
-        :request,
-        fn _, _, _, _, _ ->
-          {:ok, %{status_code: 200, body: ""}}
-        end
-      )
-
+    test "logs metadata when activating a detour" do
       %{id: id, author_id: author_id} =
         :detour
         |> build()
@@ -186,20 +182,8 @@ defmodule Skate.Detours.DetoursTest do
 
       assert log =~ "activate_detour id=#{id}"
     end
-  end
 
-  describe "deactivate detour" do
-    test "logs metadata" do
-      set_log_level(:info)
-
-      Mox.expect(
-        ExAws.Request.HttpMock,
-        :request,
-        fn _, _, _, _, _ ->
-          {:ok, %{status_code: 200, body: ""}}
-        end
-      )
-
+    test "logs metadata when deactivating a detour" do
       %{id: id, author_id: author_id, state: snapshot} =
         :detour
         |> build()
@@ -215,7 +199,6 @@ defmodule Skate.Detours.DetoursTest do
       assert log =~ "deactivate_detour id=#{id}"
     end
   end
-
   describe "detour list filtering" do
     test "filters past detours by route, intersection, reason, and updated_at dates" do
       :detour
