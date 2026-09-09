@@ -2,6 +2,7 @@ defmodule Skate.Detours.DetoursTest do
   use Skate.DataCase
   import Skate.Factory
   import ExUnit.CaptureLog
+  import Test.Support.Helpers
   alias Skate.Detours.Detours
 
   defmodule MockedSwiftlyAdjustmentsModule do
@@ -158,6 +159,60 @@ defmodule Skate.Detours.DetoursTest do
       assert draft_detour.copied_from_id == detour.id
       assert draft_detour.estimated_duration == nil
       assert draft_detour.reason == nil
+    end
+  end
+
+  describe "activate detour" do
+    test "logs metadata" do
+      set_log_level(:info)
+
+      Mox.expect(
+        ExAws.Request.HttpMock,
+        :request,
+        fn _, _, _, _, _ ->
+          {:ok, %{status_code: 200, body: ""}}
+        end
+      )
+
+      %{id: id, author_id: author_id} =
+        :detour
+        |> build()
+        |> insert()
+
+      log =
+        capture_log(fn ->
+          Detours.activate_detour(id, author_id, "1 hour", "Construction")
+        end)
+
+      assert log =~ "activate_detour id=#{id}"
+    end
+  end
+
+  describe "deactivate detour" do
+    test "logs metadata" do
+      set_log_level(:info)
+
+      Mox.expect(
+        ExAws.Request.HttpMock,
+        :request,
+        fn _, _, _, _, _ ->
+          {:ok, %{status_code: 200, body: ""}}
+        end
+      )
+
+      %{id: id, author_id: author_id, state: snapshot} =
+        :detour
+        |> build()
+        |> activated()
+        |> insert()
+        |> deactivated()
+
+      log =
+        capture_log(fn ->
+          Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+        end)
+
+      assert log =~ "deactivate_detour id=#{id}"
     end
   end
 
