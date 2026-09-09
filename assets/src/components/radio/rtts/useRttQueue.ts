@@ -4,9 +4,47 @@ import {
   rttQueueReducer,
   createInitialRttQueueState,
   type RttQueueState,
+  type RttQueueAction,
 } from "./rttQueueReducer"
 import { useRttSelection } from "./useRttSelection"
 import { useRttQueueTabs } from "./useRttQueueTabs"
+
+export interface RttCallsState {
+  incoming: RttCall[]
+  past: RttCall[]
+  activeList: RttCall[]
+  selectedId: string | null
+  selected: RttCall | null
+  activeId: string | null
+  active: RttCall | null
+  isSelectedLive: boolean
+}
+
+export interface RttTabsState {
+  current: RttTab
+  newIncomingCount: number
+}
+
+export interface RttQueueActions {
+  selectCall: (call: RttCall) => void
+  respondCall: (call: RttCall) => void
+  markDoneCall: (call: RttCall) => void
+  receiveCall: (call: RttCall) => void
+  changeTab: (tab: RttTab) => void
+  reset: (payload?: Partial<RttQueueState>) => void
+}
+
+export interface RttQueueRaw {
+  state: RttQueueState
+  dispatch: React.Dispatch<RttQueueAction>
+}
+
+export interface UseRttQueueResult {
+  calls: RttCallsState
+  tabs: RttTabsState
+  actions: RttQueueActions
+  raw: RttQueueRaw
+}
 
 export interface UseRttQueueOptions {
   defaultIncomingCalls?: RttCall[]
@@ -137,24 +175,68 @@ export const useRttQueue = ({
     dispatch({ type: "RESET", payload })
   }, [])
 
+  const calls: RttCallsState = useMemo(
+    () => ({
+      incoming: incomingCalls,
+      past: pastCalls,
+      activeList: activeCallsList,
+      selectedId: selectedCallId,
+      selected: selectedCall,
+      activeId: activeCallId,
+      active: activeCall,
+      isSelectedLive,
+    }),
+    [
+      incomingCalls,
+      pastCalls,
+      activeCallsList,
+      selectedCallId,
+      selectedCall,
+      activeCallId,
+      activeCall,
+      isSelectedLive,
+    ]
+  )
+
+  const tabs: RttTabsState = useMemo(
+    () => ({
+      current: tab,
+      newIncomingCount,
+    }),
+    [tab, newIncomingCount]
+  )
+
+  const actions: RttQueueActions = useMemo(
+    () => ({
+      selectCall: handleSelectCall,
+      respondCall: handleRespondCall,
+      markDoneCall: handleMarkDoneCall,
+      receiveCall: handleReceiveCall,
+      changeTab: handleTabClick,
+      reset: handleReset,
+    }),
+    [
+      handleSelectCall,
+      handleRespondCall,
+      handleMarkDoneCall,
+      handleReceiveCall,
+      handleTabClick,
+      handleReset,
+    ]
+  )
+
+  const raw: RttQueueRaw = useMemo(
+    () => ({
+      state,
+      dispatch,
+    }),
+    [state, dispatch]
+  )
+
   return {
-    state,
-    dispatch,
-    tab,
-    selectedCallId,
-    activeCallId,
-    newIncomingCount,
-    incomingCalls,
-    pastCalls,
-    activeCallsList,
-    selectedCall,
-    activeCall,
-    isSelectedLive,
-    handleTabClick,
-    handleSelectCall,
-    handleRespondCall,
-    handleMarkDoneCall,
-    handleReceiveCall,
-    handleReset,
+    calls,
+    tabs,
+    actions,
+    raw,
   }
 }
