@@ -145,6 +145,7 @@ defmodule SkateWeb.Router do
          :manual_deactivate_detour
 
     get "/reports", ReportController, :index
+        get "/reports/detours/:status", ReportController, :detours
     get "/reports/:short_name", ReportController, :run
     get "/test_groups", TestGroupController, :index
     post "/test_groups/create", TestGroupController, :post
