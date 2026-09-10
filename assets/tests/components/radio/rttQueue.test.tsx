@@ -155,7 +155,7 @@ describe("RttQueue Component", () => {
   })
 
   test("marking done moves call from incoming to past", () => {
-    const call1 = rttCallFactory.build({
+    const call = rttCallFactory.build({
       id: "call-done-1",
       vehicleId: "5001",
       callType: "Emergency",
@@ -165,7 +165,7 @@ describe("RttQueue Component", () => {
     const { container } = render(
       <RttQueue
         initialState={{
-          incomingCalls: [call1],
+          incomingCalls: [call],
           pastCalls: [],
           tab: "incoming",
         }}
@@ -182,9 +182,9 @@ describe("RttQueue Component", () => {
     // Empty state should be visible on incoming tab
     expect(view.getByText("No Incoming RTT Calls")).toBeInTheDocument()
 
-    // Switch to Past tab and verify it's there
+    // Switch to Past tab and verify it's rendered as a list item
     fireEvent.click(view.getByRole("tab", { name: /^past$/i }))
-    expect(view.getAllByText(`${call1.vehicleId}`)[0]).toBeInTheDocument()
+    expect(view.getByRole("listitem")).toHaveTextContent("5001")
   })
 
   test.each([
