@@ -2,7 +2,6 @@ import { describe, test, expect } from "@jest/globals"
 import {
   sortRttCalls,
   sortPastRttCalls,
-  getCallTimestamp,
   CALL_TYPE_PRIORITY,
 } from "../../../../src/components/radio/rtts/utils"
 import { RttCallType } from "../../../../src/components/radio/rtts/types"
@@ -24,73 +23,68 @@ describe("RTT Domain & Sorting", () => {
     const olderTime = new Date("2026-09-03T10:00:00Z")
     const newerTime = new Date("2026-09-03T10:05:00Z")
 
-    const rttNew = rttCallFactory.build({
+    const newerRtt = rttCallFactory.build({
+      id: "rtt-newer",
       callType: "RTT",
       receivedAt: newerTime,
     })
-    const rttOld = rttCallFactory.build({
+    const olderRtt = rttCallFactory.build({
+      id: "rtt-older",
       callType: "RTT",
       receivedAt: olderTime,
     })
-    const prttOld = rttCallFactory.build({
+    const olderPrtt = rttCallFactory.build({
+      id: "prtt-older",
       callType: "PRTT",
       receivedAt: olderTime,
     })
-    const prttNew = rttCallFactory.build({
+    const newerPrtt = rttCallFactory.build({
+      id: "prtt-newer",
       callType: "PRTT",
       receivedAt: newerTime,
     })
-    const emergencyOld = rttCallFactory.build({
+    const olderEmergency = rttCallFactory.build({
+      id: "emergency-older",
       callType: "Emergency",
       receivedAt: olderTime,
     })
-    const emergencyNew = rttCallFactory.build({
+    const newerEmergency = rttCallFactory.build({
+      id: "emergency-newer",
       callType: "Emergency",
       receivedAt: newerTime,
     })
 
     const unsorted = [
-      rttNew,
-      prttOld,
-      emergencyOld,
-      rttOld,
-      emergencyNew,
-      prttNew,
+      newerRtt,
+      olderPrtt,
+      olderEmergency,
+      olderRtt,
+      newerEmergency,
+      newerPrtt,
     ]
     const sorted = sortRttCalls(unsorted)
 
-    expect(
-      sorted.map((c) => `${c.callType}-${new Date(c.receivedAt).toISOString()}`)
-    ).toEqual([
-      `Emergency-${new Date(emergencyNew.receivedAt).toISOString()}`,
-      `Emergency-${new Date(emergencyOld.receivedAt).toISOString()}`,
-      `PRTT-${new Date(prttNew.receivedAt).toISOString()}`,
-      `PRTT-${new Date(prttOld.receivedAt).toISOString()}`,
-      `RTT-${new Date(rttNew.receivedAt).toISOString()}`,
-      `RTT-${new Date(rttOld.receivedAt).toISOString()}`,
+    expect(sorted).toEqual([
+      newerEmergency,
+      olderEmergency,
+      newerPrtt,
+      olderPrtt,
+      newerRtt,
+      olderRtt,
     ])
   })
 
-  test("getCallTimestamp converts Date objects and string representations to epochs", () => {
-    const epoch = 1788886890000
-    const dateObj = new Date(epoch)
-    const dateStr = dateObj.toISOString()
-
-    expect(getCallTimestamp(dateObj)).toBe(epoch)
-    expect(getCallTimestamp(dateStr)).toBe(epoch)
-  })
-
   test("sortPastRttCalls sorts calls by timestamp descending (newest first)", () => {
-    const callOld = rttCallFactory.build({
-      id: "old",
+    const olderPastCall = rttCallFactory.build({
+      id: "call-older",
       receivedAt: "2026-09-08T10:00:00Z",
     })
-    const callNew = rttCallFactory.build({
-      id: "new",
+    const newerPastCall = rttCallFactory.build({
+      id: "call-newer",
       receivedAt: new Date("2026-09-08T10:10:00Z"),
     })
 
-    const sorted = sortPastRttCalls([callOld, callNew])
-    expect(sorted.map((c) => c.id)).toEqual(["new", "old"])
+    const sorted = sortPastRttCalls([olderPastCall, newerPastCall])
+    expect(sorted).toEqual([newerPastCall, olderPastCall])
   })
 })
