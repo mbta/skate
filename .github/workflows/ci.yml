@@ -121,8 +121,6 @@ jobs:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
-      - name: Ensure Hex is installed
-        run: mix local.hex --force
       - name: Compile (warnings as errors)
         run: mix compile --force --warnings-as-errors
       - name: Check formatting
