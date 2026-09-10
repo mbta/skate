@@ -25,7 +25,9 @@ defmodule SkateWeb.AuthController do
     if suspicious_keycloak_request?(conn) do
       Logger.info("keycloak direct-ip probe blocked host=#{conn.host}")
     else
-      Logger.warning("keycloak request failure=#{Kernel.inspect(conn.assigns[:ueberauth_failure])}")
+      Logger.warning(
+        "keycloak request failure=#{Kernel.inspect(conn.assigns[:ueberauth_failure])}"
+      )
     end
 
     send_resp(conn, :bad_request, "invalid keycloak request")
