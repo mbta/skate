@@ -4,8 +4,8 @@ import {
   sortPastRttCalls,
   getCallTimestamp,
   CALL_TYPE_PRIORITY,
-  RttCallType,
-} from "../../../src/components/radio/rtts/types"
+} from "../../../src/components/radio/rtts/utils"
+import { RttCallType } from "../../../src/components/radio/rtts/types"
 import { rttCallFactory } from "../../factories/radio/rtt"
 
 describe("RTT Domain & Sorting", () => {
