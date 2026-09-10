@@ -96,7 +96,7 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   # Make no change
-  def put_change_from_swiftly(:ok, changeset) do
+  def put_change_from_swiftly(_, changeset) do
     changeset
   end
 
