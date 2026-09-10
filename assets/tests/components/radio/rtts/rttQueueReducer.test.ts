@@ -22,16 +22,17 @@ describe("rttQueueReducer", () => {
   })
 
   test("SELECT_CALL updates selectedCallId", () => {
+    const selectedCallId = "call-123"
     const initialState = createInitialRttQueueState({
       selectedCallId: null,
     })
 
     const nextState = rttQueueReducer(initialState, {
       type: "SELECT_CALL",
-      callId: "call-123",
+      callId: selectedCallId,
     })
 
-    expect(nextState.selectedCallId).toBe("call-123")
+    expect(nextState.selectedCallId).toBe(selectedCallId)
   })
 
   test("RESPOND_CALL activates target call and sets responder and timestamps with fallback defaults", () => {
@@ -48,11 +49,11 @@ describe("rttQueueReducer", () => {
       call: targetCall,
     })
 
-    expect(nextState.activeCallId).toBe("call-1")
-    expect(nextState.selectedCallId).toBe("call-1")
+    expect(nextState.activeCallId).toBe(targetCall.id)
+    expect(nextState.selectedCallId).toBe(targetCall.id)
     expect(nextState.incomingCalls[0]).toEqual(
       expect.objectContaining({
-        id: "call-1",
+        id: targetCall.id,
         status: "active",
         respondedBy: "Current Dispatcher",
         answeredAt: expect.any(Date),
@@ -75,7 +76,7 @@ describe("rttQueueReducer", () => {
     })
     const initialState = createInitialRttQueueState({
       incomingCalls: [priorActiveCall, targetCall, remainingCall],
-      activeCallId: "call-1",
+      activeCallId: priorActiveCall.id,
       pastCalls: [],
     })
 
@@ -86,14 +87,14 @@ describe("rttQueueReducer", () => {
       answeredAt,
     })
 
-    expect(nextState.activeCallId).toBe("call-2")
+    expect(nextState.activeCallId).toBe(targetCall.id)
     expect(nextState.incomingCalls.map((c) => c.id)).toEqual([
-      "call-2",
-      "call-3",
+      targetCall.id,
+      remainingCall.id,
     ])
     expect(nextState.pastCalls).toEqual([
       expect.objectContaining({
-        id: "call-1",
+        id: priorActiveCall.id,
         status: "done",
         markedDoneAt: answeredAt,
       }),
@@ -104,8 +105,8 @@ describe("rttQueueReducer", () => {
     const activeCall = rttCallFactory.build({ id: "call-1", status: "active" })
     const initialState = createInitialRttQueueState({
       incomingCalls: [activeCall],
-      activeCallId: "call-1",
-      selectedCallId: "call-1",
+      activeCallId: activeCall.id,
+      selectedCallId: activeCall.id,
       pastCalls: [],
     })
 
@@ -120,7 +121,7 @@ describe("rttQueueReducer", () => {
     expect(nextState.incomingCalls).toEqual([])
     expect(nextState.pastCalls).toEqual([
       expect.objectContaining({
-        id: "call-1",
+        id: activeCall.id,
         status: "done",
         markedDoneAt,
       }),
@@ -138,8 +139,8 @@ describe("rttQueueReducer", () => {
     })
     const initialState = createInitialRttQueueState({
       incomingCalls: [activeCall, otherCall],
-      activeCallId: "call-active",
-      selectedCallId: "call-active",
+      activeCallId: activeCall.id,
+      selectedCallId: activeCall.id,
       pastCalls: [],
     })
 
@@ -148,11 +149,11 @@ describe("rttQueueReducer", () => {
       call: otherCall,
     })
 
-    expect(nextState.activeCallId).toBe("call-active")
-    expect(nextState.incomingCalls.map((c) => c.id)).toEqual(["call-active"])
+    expect(nextState.activeCallId).toBe(activeCall.id)
+    expect(nextState.incomingCalls).toEqual([activeCall])
     expect(nextState.pastCalls).toEqual([
       expect.objectContaining({
-        id: "call-other",
+        id: otherCall.id,
         status: "done",
         markedDoneAt: expect.any(Date),
       }),
@@ -186,9 +187,7 @@ describe("rttQueueReducer", () => {
       call: newCall,
     })
 
-    expect(nextState.incomingCalls).toHaveLength(2)
-    expect(nextState.incomingCalls[0].id).toBe("call-new")
-    expect(nextState.incomingCalls[1].id).toBe("call-existing")
+    expect(nextState.incomingCalls).toEqual([newCall, existingCall])
     expect(nextState.newIncomingCount).toBe(expectedBadge)
   })
 
@@ -196,7 +195,7 @@ describe("rttQueueReducer", () => {
     const initialState = createInitialRttQueueState({
       tab: "incoming",
       newIncomingCount: 0,
-      activeCallId: "call-1",
+      activeCallId: "active-call",
     })
 
     const nextState = rttQueueReducer(initialState, {
