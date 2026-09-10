@@ -15,9 +15,11 @@ const InteractivePrototypeWrapper = ({
   const [simulatedSeq, setSimulatedSeq] = useState<number>(10)
 
   const queue = useRttQueue({
-    defaultIncomingCalls: mockIncomingCalls,
-    defaultPastCalls: mockPastCalls,
-    defaultSelectedCallId: mockIncomingCalls[0]?.id || null,
+    initialState: {
+      incomingCalls: mockIncomingCalls,
+      pastCalls: mockPastCalls,
+      selectedCallId: mockIncomingCalls[0]?.id || null,
+    },
     currentDispatcherName: dispatcherName,
   })
 

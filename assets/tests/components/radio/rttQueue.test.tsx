@@ -108,9 +108,11 @@ describe("RttQueue Component", () => {
 
     const { container } = render(
       <RttQueue
-        defaultIncomingCalls={[call1, call2]}
-        defaultPastCalls={[]}
-        defaultTab="incoming"
+        initialState={{
+          incomingCalls: [call1, call2],
+          pastCalls: [],
+          tab: "incoming",
+        }}
       />
     )
     const view = within(container)
@@ -144,9 +146,11 @@ describe("RttQueue Component", () => {
 
     const { container } = render(
       <RttQueue
-        defaultIncomingCalls={[call1, call2]}
-        defaultPastCalls={[]}
-        defaultTab="incoming"
+        initialState={{
+          incomingCalls: [call1, call2],
+          pastCalls: [],
+          tab: "incoming",
+        }}
       />
     )
     const view = within(container)
@@ -175,9 +179,11 @@ describe("RttQueue Component", () => {
 
     const { container } = render(
       <RttQueue
-        defaultIncomingCalls={[call1, call2]}
-        defaultPastCalls={[]}
-        defaultTab="incoming"
+        initialState={{
+          incomingCalls: [call1, call2],
+          pastCalls: [],
+          tab: "incoming",
+        }}
       />
     )
     const view = within(container)
@@ -205,9 +211,11 @@ describe("RttQueue Component", () => {
 
     const { container } = render(
       <RttQueue
-        defaultIncomingCalls={[call1]}
-        defaultPastCalls={[]}
-        defaultTab="incoming"
+        initialState={{
+          incomingCalls: [call1],
+          pastCalls: [],
+          tab: "incoming",
+        }}
       />
     )
     const view = within(container)
@@ -236,9 +244,11 @@ describe("RttQueue Component", () => {
 
     const { container } = render(
       <RttQueue
-        defaultIncomingCalls={[call1]}
-        defaultPastCalls={[]}
-        defaultTab="incoming"
+        initialState={{
+          incomingCalls: [call1],
+          pastCalls: [],
+          tab: "incoming",
+        }}
       />
     )
     const view = within(container)

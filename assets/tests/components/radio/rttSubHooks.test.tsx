@@ -116,10 +116,12 @@ describe("useRttQueue", () => {
 
     const { result } = renderHook(() =>
       useRttQueue({
-        defaultIncomingCalls: [call1],
-        defaultPastCalls: [call2],
-        defaultSelectedCallId: "call-1",
-        defaultTab: "incoming",
+        initialState: {
+          incomingCalls: [call1],
+          pastCalls: [call2],
+          selectedCallId: "call-1",
+          tab: "incoming",
+        },
       })
     )
 
@@ -156,7 +158,9 @@ describe("useRttQueue", () => {
     const { result, rerender } = renderHook(
       (props) =>
         useRttQueue({
-          defaultIncomingCalls: [call1],
+          initialState: {
+            incomingCalls: [call1],
+          },
           currentDispatcherName: props.dispatcher,
         }),
       {
@@ -177,8 +181,10 @@ describe("useRttQueue", () => {
 
     const { result } = renderHook(() =>
       useRttQueue({
-        defaultIncomingCalls: [call1, call2],
-        defaultPastCalls: [],
+        initialState: {
+          incomingCalls: [call1, call2],
+          pastCalls: [],
+        },
       })
     )
 

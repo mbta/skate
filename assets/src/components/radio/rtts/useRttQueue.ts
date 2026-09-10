@@ -5,6 +5,7 @@ import {
   createInitialRttQueueState,
   type RttQueueState,
   type RttQueueAction,
+  type InitialRttQueueStateOptions,
 } from "./rttQueueReducer"
 import { useRttSelection } from "./useRttSelection"
 import { useRttQueueTabs } from "./useRttQueueTabs"
@@ -46,35 +47,30 @@ export interface UseRttQueueResult {
   raw: RttQueueRaw
 }
 
-export interface UseRttQueueOptions {
-  defaultIncomingCalls?: RttCall[]
-  incomingCalls?: RttCall[]
-  defaultPastCalls?: RttCall[]
-  pastCalls?: RttCall[]
-  defaultSelectedCallId?: string | null
-  selectedCallId?: string | null
-  defaultActiveCallId?: string | null
-  activeCallId?: string | null
-  defaultTab?: RttTab
-  currentTab?: RttTab
-  newIncomingCount?: number
-  currentDispatcherName?: string
+export interface RttQueueCallbacks {
   onSelectCall?: (call: RttCall) => void
   onRespondCall?: (call: RttCall) => void
   onMarkDoneCall?: (call: RttCall) => void
   onTabChange?: (tab: RttTab) => void
 }
 
+export interface UseRttQueueOptions extends RttQueueCallbacks {
+  initialState?: InitialRttQueueStateOptions
+  incomingCalls?: RttCall[]
+  pastCalls?: RttCall[]
+  selectedCallId?: string | null
+  activeCallId?: string | null
+  currentTab?: RttTab
+  newIncomingCount?: number
+  currentDispatcherName?: string
+}
+
 export const useRttQueue = ({
-  defaultIncomingCalls,
+  initialState,
   incomingCalls: incomingCallsProp,
-  defaultPastCalls,
   pastCalls: pastCallsProp,
-  defaultSelectedCallId,
   selectedCallId: selectedCallIdProp,
-  defaultActiveCallId,
   activeCallId: activeCallIdProp,
-  defaultTab,
   currentTab: currentTabProp,
   newIncomingCount: newIncomingCountProp,
   currentDispatcherName = "Current Dispatcher",
@@ -82,16 +78,16 @@ export const useRttQueue = ({
   onRespondCall,
   onMarkDoneCall,
   onTabChange,
-}: UseRttQueueOptions) => {
+}: UseRttQueueOptions = {}) => {
   const [state, dispatch] = useReducer(
     rttQueueReducer,
     {
-      incomingCalls: incomingCallsProp ?? defaultIncomingCalls ?? [],
-      pastCalls: pastCallsProp ?? defaultPastCalls ?? [],
-      selectedCallId: selectedCallIdProp ?? defaultSelectedCallId ?? null,
-      activeCallId: activeCallIdProp ?? defaultActiveCallId ?? null,
-      tab: currentTabProp ?? defaultTab ?? "incoming",
-      newIncomingCount: newIncomingCountProp ?? 0,
+      tab: currentTabProp ?? initialState?.tab,
+      incomingCalls: incomingCallsProp ?? initialState?.incomingCalls,
+      pastCalls: pastCallsProp ?? initialState?.pastCalls,
+      selectedCallId: selectedCallIdProp ?? initialState?.selectedCallId,
+      activeCallId: activeCallIdProp ?? initialState?.activeCallId,
+      newIncomingCount: newIncomingCountProp ?? initialState?.newIncomingCount,
     },
     createInitialRttQueueState
   )
