@@ -35,10 +35,10 @@ jobs:
       - if: steps.asdf-cache.outputs.cache-hit != 'true'
         # Git ref points to release tag 'v4'
         uses: asdf-vm/actions/install@156187456fbe441e7badfe93ec1fa4dda646b27e
-      - if: steps.asdf-cache.outputs.cache-hit != 'true'
-        uses: |
+      - run: |
           mix local.rebar --force
           mix local.hex --force
+        if: steps.asdf-cache.outputs.cache-hit != 'true'
       - name: Setup ASDF environment
         run: |
           ASDF_DIR=$HOME/.asdf
