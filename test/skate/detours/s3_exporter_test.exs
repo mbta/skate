@@ -111,13 +111,17 @@ defmodule Skate.Detours.S3ExporterTest do
         detour =
           :detour
           |> build()
-          |> activated(~U[2026-01-05 15:00:00.000000Z])
+          |> activated()
           |> insert()
 
         # workaround because there's no `with_saved_context(...)` factory method
         %{author_id: author_id, id: id, state: snapshot} = %{
           detour
-          | state: put_in(detour.state, ["context", "endPoint"], %{"id" => "start"})
+          | # the only way to tell when a user has finished editing a detour is by the
+            # existence of the "savedContext" attribute; this attribute is automatically
+            # included by the application after the user selects the final confirmation
+            # dialog when editing an active detour.
+            state: put_in(detour.state, ["context", "savedContext"], detour.state)
         }
 
         Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
