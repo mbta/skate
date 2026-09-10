@@ -8,6 +8,10 @@ defmodule Skate.Detours.SnapshotSerde do
 
   alias Skate.Detours.Db.Detour
 
+  # Process dictionary key used to batch `log_fallback/1` warnings emitted
+  # while serializing a single detour into one aggregated log line.
+  @fallback_fields_key :snapshot_serde_fallback_fields
+
   @doc """
   Converts a XState JSON Snapshot to Detours Database Changeset
   """
@@ -78,13 +82,21 @@ defmodule Skate.Detours.SnapshotSerde do
     MapDiff.diff(cleaned_state, cleaned_serialized_snapshot)
   end
 
-  defp serialize_snapshot(detour) do
-    %{
+  defp serialize_snapshot(%Detour{id: id, author_id: author_id} = detour) do
+    # Fallback warnings from `log_fallback/1` accumulate per-process during this
+    # call; flush them as a single aggregated warning instead of one per field.
+    Process.delete(@fallback_fields_key)
+
+    snapshot = %{
       "value" => state_from_detour(detour),
       "status" => "active",
       "context" => context_from_detour(detour),
       "children" => snapshot_children_from_detour(detour)
     }
+
+    log_fallback_summary(id, author_id)
+
+    snapshot
   end
 
   defp validate_serialized_snapshot(%Detour{id: id} = detour) do
@@ -151,7 +163,23 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defmacrop log_fallback(field) do
     quote do
-      Logger.warning("Unexpected detour structure. Using snapshot for field: #{unquote(field)}")
+      Process.put(
+        @fallback_fields_key,
+        [unquote(field) | Process.get(@fallback_fields_key, [])]
+      )
+    end
+  end
+
+  defp log_fallback_summary(detour_id, author_id) do
+    case Process.delete(@fallback_fields_key) do
+      fields when is_list(fields) and fields != [] ->
+        Logger.warning(
+          "Unexpected detour structure for detour_id=#{detour_id} author_id=#{author_id}. " <>
+            "Using snapshot for fields: #{fields |> Enum.reverse() |> Enum.join(", ")}"
+        )
+
+      _ ->
+        :ok
     end
   end
 
