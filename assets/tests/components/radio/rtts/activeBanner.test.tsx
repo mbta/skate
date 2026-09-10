@@ -2,8 +2,8 @@ import { describe, test, expect, afterEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { render, fireEvent, cleanup, within } from "@testing-library/react"
-import { ActiveRttBanner } from "../../../src/components/radio/rtts/activeBanner"
-import { rttCallFactory } from "../../factories/radio/rtt"
+import { ActiveRttBanner } from "../../../../src/components/radio/rtts/activeBanner"
+import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("ActiveRttBanner", () => {
   afterEach(cleanup)

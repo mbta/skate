@@ -2,9 +2,9 @@ import { describe, test, expect, afterEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { render, fireEvent, cleanup, within } from "@testing-library/react"
-import { RttQueueItem } from "../../../src/components/radio/rtts/queueItem"
-import { rttCallFactory } from "../../factories/radio/rtt"
-import { RttCallType } from "../../../src/components/radio/rtts/types"
+import { RttQueueItem } from "../../../../src/components/radio/rtts/queueItem"
+import { rttCallFactory } from "../../../factories/radio/rtt"
+import { RttCallType } from "../../../../src/components/radio/rtts/types"
 
 describe("RttQueueItem", () => {
   afterEach(cleanup)

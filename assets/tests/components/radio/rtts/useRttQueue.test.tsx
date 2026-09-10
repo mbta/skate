@@ -1,7 +1,7 @@
 import { describe, test, expect } from "@jest/globals"
 import { renderHook, act } from "@testing-library/react"
-import { useRttQueue } from "../../../src/components/radio/rtts/useRttQueue"
-import { rttCallFactory } from "../../factories/radio/rtt"
+import { useRttQueue } from "../../../../src/components/radio/rtts/useRttQueue"
+import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("useRttQueue", () => {
   test("maintains referential stability of actions across re-renders when callback deps are unchanged, and updates when deps change", () => {

@@ -2,8 +2,8 @@ import { describe, test, expect } from "@jest/globals"
 import {
   rttQueueReducer,
   createInitialRttQueueState,
-} from "../../../src/components/radio/rtts/rttQueueReducer"
-import { rttCallFactory } from "../../factories/radio/rtt"
+} from "../../../../src/components/radio/rtts/rttQueueReducer"
+import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("rttQueueReducer", () => {
   test("CHANGE_TAB updates tab and clears newIncomingCount when moving to incoming", () => {

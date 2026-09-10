@@ -2,8 +2,8 @@ import { describe, test, expect, afterEach } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { render, fireEvent, cleanup, within } from "@testing-library/react"
-import { RttDetailsPanel } from "../../../src/components/radio/rtts/detailsPanel"
-import { rttCallFactory } from "../../factories/radio/rtt"
+import { RttDetailsPanel } from "../../../../src/components/radio/rtts/detailsPanel"
+import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("RttDetailsPanel", () => {
   afterEach(cleanup)

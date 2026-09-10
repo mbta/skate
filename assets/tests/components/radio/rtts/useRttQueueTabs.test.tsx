@@ -1,6 +1,6 @@
 import { describe, test, expect } from "@jest/globals"
 import { renderHook, act } from "@testing-library/react"
-import { useRttQueueTabs } from "../../../src/components/radio/rtts/useRttQueueTabs"
+import { useRttQueueTabs } from "../../../../src/components/radio/rtts/useRttQueueTabs"
 
 describe("useRttQueueTabs", () => {
   test("handleTabClick dispatches action and invokes onTabChange", () => {

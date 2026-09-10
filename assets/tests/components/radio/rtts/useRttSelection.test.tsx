@@ -1,7 +1,7 @@
 import { describe, test, expect } from "@jest/globals"
 import { renderHook, act } from "@testing-library/react"
-import { useRttSelection } from "../../../src/components/radio/rtts/useRttSelection"
-import { rttCallFactory } from "../../factories/radio/rtt"
+import { useRttSelection } from "../../../../src/components/radio/rtts/useRttSelection"
+import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("useRttSelection", () => {
   test("resolves selectedCall from incomingCalls or pastCalls without creating combined arrays", () => {
