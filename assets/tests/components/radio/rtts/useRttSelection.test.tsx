@@ -5,41 +5,41 @@ import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("useRttSelection", () => {
   test("resolves selectedCall from incomingCalls or pastCalls without creating combined arrays", () => {
-    const call1 = rttCallFactory.build({ id: "call-1" })
-    const call2 = rttCallFactory.build({ id: "call-2" })
+    const incomingCall = rttCallFactory.build({ id: "call-incoming" })
+    const pastCall = rttCallFactory.build({ id: "call-past" })
 
     const { result, rerender } = renderHook(
       (props) =>
         useRttSelection({
           selectedCallId: props.selectedCallId,
           activeCallId: props.activeCallId,
-          incomingCalls: [call1],
-          pastCalls: [call2],
+          incomingCalls: [incomingCall],
+          pastCalls: [pastCall],
         }),
       {
         initialProps: {
-          selectedCallId: "call-1",
+          selectedCallId: incomingCall.id,
           activeCallId: null as string | null,
         },
       }
     )
 
-    expect(result.current.selectedCall?.id).toBe("call-1")
+    expect(result.current.selectedCall).toEqual(incomingCall)
     expect(result.current.isSelectedLive).toBe(false)
 
     // Select call from pastCalls
-    rerender({ selectedCallId: "call-2", activeCallId: null })
-    expect(result.current.selectedCall?.id).toBe("call-2")
+    rerender({ selectedCallId: pastCall.id, activeCallId: null })
+    expect(result.current.selectedCall).toEqual(pastCall)
   })
 
   test("returns null selectedCall and false isSelectedLive when selectedCallId does not exist", () => {
-    const call1 = rttCallFactory.build({ id: "call-1" })
+    const call = rttCallFactory.build({ id: "call-1" })
 
     const { result } = renderHook(() =>
       useRttSelection({
         selectedCallId: "non-existent-id",
         activeCallId: null,
-        incomingCalls: [call1],
+        incomingCalls: [call],
         pastCalls: [],
       })
     )
@@ -76,16 +76,16 @@ describe("useRttSelection", () => {
   ])(
     "determines isSelectedLive ($desc)",
     ({ callStatus, activeCallId, expectedLive }) => {
-      const call = rttCallFactory.build({
+      const targetCall = rttCallFactory.build({
         id: "call-target",
         status: callStatus,
       })
 
       const { result } = renderHook(() =>
         useRttSelection({
-          selectedCallId: "call-target",
+          selectedCallId: targetCall.id,
           activeCallId,
-          incomingCalls: [call],
+          incomingCalls: [targetCall],
           pastCalls: [],
         })
       )
@@ -95,15 +95,15 @@ describe("useRttSelection", () => {
   )
 
   test("handleSelectCall dispatches action and invokes onSelectCall", () => {
-    const call1 = rttCallFactory.build({ id: "call-select" })
+    const targetCall = rttCallFactory.build({ id: "call-select" })
     let dispatchedId: string | null = null
-    let callbackCalledWith: typeof call1 | null = null
+    let callbackCalledWith: typeof targetCall | null = null
 
     const { result } = renderHook(() =>
       useRttSelection({
         selectedCallId: null,
         activeCallId: null,
-        incomingCalls: [call1],
+        incomingCalls: [targetCall],
         pastCalls: [],
         dispatchSelectCall: (id) => {
           dispatchedId = id
@@ -115,10 +115,10 @@ describe("useRttSelection", () => {
     )
 
     act(() => {
-      result.current.handleSelectCall(call1)
+      result.current.handleSelectCall(targetCall)
     })
 
-    expect(dispatchedId).toBe("call-select")
-    expect(callbackCalledWith).toEqual(call1)
+    expect(dispatchedId).toBe(targetCall.id)
+    expect(callbackCalledWith).toEqual(targetCall)
   })
 })

@@ -50,15 +50,15 @@ describe("useRttQueue", () => {
         initialState: {
           incomingCalls: [firstCall, secondCall],
           pastCalls: [],
-          selectedCallId: "call-1",
+          selectedCallId: firstCall.id,
           tab: "incoming",
         },
       })
     )
 
     // Verify initial state projection
-    expect(result.current.calls.selectedId).toBe("call-1")
-    expect(result.current.calls.selected?.id).toBe("call-1")
+    expect(result.current.calls.selectedId).toBe(firstCall.id)
+    expect(result.current.calls.selected?.id).toBe(firstCall.id)
     expect(result.current.calls.isSelectedLive).toBe(false)
 
     // Receive a third call dynamically
@@ -66,17 +66,17 @@ describe("useRttQueue", () => {
       result.current.actions.receiveCall(incomingCall)
     })
     expect(result.current.calls.incoming.map((c) => c.id)).toEqual([
-      "call-3",
-      "call-1",
-      "call-2",
+      incomingCall.id,
+      firstCall.id,
+      secondCall.id,
     ])
 
     // Respond to firstCall
     act(() => {
       result.current.actions.respondCall(firstCall)
     })
-    expect(result.current.calls.activeId).toBe("call-1")
-    expect(result.current.calls.selectedId).toBe("call-1")
+    expect(result.current.calls.activeId).toBe(firstCall.id)
+    expect(result.current.calls.selectedId).toBe(firstCall.id)
     expect(result.current.calls.isSelectedLive).toBe(true)
     expect(result.current.calls.active?.status).toBe("active")
 
@@ -92,10 +92,10 @@ describe("useRttQueue", () => {
     })
     expect(result.current.calls.activeId).toBeNull()
     expect(result.current.calls.incoming.map((c) => c.id)).toEqual([
-      "call-3",
-      "call-2",
+      incomingCall.id,
+      secondCall.id,
     ])
-    expect(result.current.calls.past.map((c) => c.id)).toEqual(["call-1"])
+    expect(result.current.calls.past.map((c) => c.id)).toEqual([firstCall.id])
 
     // Reset queue
     act(() => {
@@ -106,7 +106,9 @@ describe("useRttQueue", () => {
         selectedCallId: null,
       })
     })
-    expect(result.current.calls.incoming.map((c) => c.id)).toEqual(["call-2"])
+    expect(result.current.calls.incoming.map((c) => c.id)).toEqual([
+      secondCall.id,
+    ])
     expect(result.current.calls.past).toEqual([])
     expect(result.current.tabs.current).toBe("incoming")
     expect(result.current.calls.selectedId).toBeNull()
