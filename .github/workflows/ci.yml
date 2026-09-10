@@ -3,8 +3,7 @@ name: Elixir and TypeScript CI
 on: [push, pull_request]
 
 # - https://docs.zizmor.sh/audits/#excessive-permissions
-permissions:
-  {} # Deliberately assign no default permissions
+permissions: {} # Deliberately assign no default permissions
 
 # Concurrency control is defined at the job level.
 # - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#concurrency
@@ -52,6 +51,8 @@ jobs:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
+      - name: Ensure Hex is installed
+        run: mix local.hex --force
       - name: Install dependencies
         if: steps.deps-cache.outputs.cache-hit != 'true'
         run: |
@@ -179,7 +180,7 @@ jobs:
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
       - name: Install dependencies
-        run: npm --prefix=assets ci 
+        run: npm --prefix=assets ci
       - name: Check types / linting / formatting
         run: npm --prefix=assets run check
       - name: Run tests
