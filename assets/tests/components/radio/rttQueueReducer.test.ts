@@ -34,32 +34,37 @@ describe("rttQueueReducer", () => {
     expect(nextState.selectedCallId).toBe("call-123")
   })
 
-  test("RESPOND_CALL activates target call and sets responder and timestamps", () => {
+  test("RESPOND_CALL activates target call and sets responder and timestamps with fallback defaults", () => {
     const call1 = rttCallFactory.build({ id: "call-1", status: "unassigned" })
     const initialState = createInitialRttQueueState({
       incomingCalls: [call1],
     })
 
-    const answeredAt = new Date("2026-09-08T12:00:00Z")
+    const before = Date.now()
     const nextState = rttQueueReducer(initialState, {
       type: "RESPOND_CALL",
       call: call1,
-      currentDispatcherName: "Dispatcher Sam",
-      answeredAt,
     })
+    const after = Date.now()
 
     expect(nextState.activeCallId).toBe("call-1")
     expect(nextState.selectedCallId).toBe("call-1")
     expect(nextState.incomingCalls[0].status).toBe("active")
-    expect(nextState.incomingCalls[0].respondedBy).toBe("Dispatcher Sam")
-    expect(nextState.incomingCalls[0].answeredAt).toEqual(answeredAt)
+    expect(nextState.incomingCalls[0].respondedBy).toBe("Current Dispatcher")
+    expect(nextState.incomingCalls[0].answeredAt).toBeDefined()
+    const answeredTime = new Date(
+      nextState.incomingCalls[0].answeredAt!
+    ).getTime()
+    expect(answeredTime).toBeGreaterThanOrEqual(before)
+    expect(answeredTime).toBeLessThanOrEqual(after)
   })
 
-  test("RESPOND_CALL completes and moves prior active call to pastCalls", () => {
+  test("RESPOND_CALL completes and moves prior active call to pastCalls while preserving other calls", () => {
     const call1 = rttCallFactory.build({ id: "call-1", status: "active" })
     const call2 = rttCallFactory.build({ id: "call-2", status: "unassigned" })
+    const call3 = rttCallFactory.build({ id: "call-3", status: "unassigned" })
     const initialState = createInitialRttQueueState({
-      incomingCalls: [call1, call2],
+      incomingCalls: [call1, call2, call3],
       activeCallId: "call-1",
       pastCalls: [],
     })
@@ -72,7 +77,13 @@ describe("rttQueueReducer", () => {
     })
 
     expect(nextState.activeCallId).toBe("call-2")
-    expect(nextState.incomingCalls.find((c) => c.id === "call-1")).toBeUndefined()
+    expect(
+      nextState.incomingCalls.find((c) => c.id === "call-1")
+    ).toBeUndefined()
+    expect(nextState.incomingCalls.map((c) => c.id)).toEqual([
+      "call-2",
+      "call-3",
+    ])
     expect(nextState.pastCalls).toHaveLength(1)
     expect(nextState.pastCalls[0].id).toBe("call-1")
     expect(nextState.pastCalls[0].status).toBe("done")
@@ -102,13 +113,59 @@ describe("rttQueueReducer", () => {
     expect(nextState.pastCalls[0].markedDoneAt).toEqual(markedDoneAt)
   })
 
-  test("RECEIVE_CALL prepends call and increments newIncomingCount when on past tab", () => {
-    const call1 = rttCallFactory.build({ id: "call-1" })
-    const newCall = rttCallFactory.build({ id: "call-2" })
+  test("MARK_DONE_CALL on non-active call preserves current activeCallId and generates default timestamp", () => {
+    const activeCall = rttCallFactory.build({
+      id: "call-active",
+      status: "active",
+    })
+    const otherCall = rttCallFactory.build({
+      id: "call-other",
+      status: "unassigned",
+    })
     const initialState = createInitialRttQueueState({
-      incomingCalls: [call1],
-      tab: "past",
-      newIncomingCount: 1,
+      incomingCalls: [activeCall, otherCall],
+      activeCallId: "call-active",
+      selectedCallId: "call-active",
+      pastCalls: [],
+    })
+
+    const before = Date.now()
+    const nextState = rttQueueReducer(initialState, {
+      type: "MARK_DONE_CALL",
+      call: otherCall,
+    })
+    const after = Date.now()
+
+    expect(nextState.activeCallId).toBe("call-active")
+    expect(nextState.incomingCalls.map((c) => c.id)).toEqual(["call-active"])
+    expect(nextState.pastCalls).toHaveLength(1)
+    expect(nextState.pastCalls[0].id).toBe("call-other")
+    expect(nextState.pastCalls[0].status).toBe("done")
+    const doneTime = new Date(nextState.pastCalls[0].markedDoneAt!).getTime()
+    expect(doneTime).toBeGreaterThanOrEqual(before)
+    expect(doneTime).toBeLessThanOrEqual(after)
+  })
+
+  test.each([
+    {
+      tab: "past" as const,
+      initialBadge: 1,
+      expectedBadge: 2,
+      desc: "increments newIncomingCount on past tab",
+    },
+    {
+      tab: "incoming" as const,
+      initialBadge: 0,
+      expectedBadge: 0,
+      desc: "does not increment newIncomingCount on incoming tab",
+    },
+  ])("RECEIVE_CALL $desc", ({ tab, initialBadge, expectedBadge }) => {
+    const existingCall = rttCallFactory.build({ id: "call-existing" })
+    const newCall = rttCallFactory.build({ id: "call-new" })
+    const initialState = createInitialRttQueueState({
+      incomingCalls: [existingCall],
+      tab,
+      newIncomingCount: initialBadge,
     })
 
     const nextState = rttQueueReducer(initialState, {
@@ -117,7 +174,29 @@ describe("rttQueueReducer", () => {
     })
 
     expect(nextState.incomingCalls).toHaveLength(2)
-    expect(nextState.incomingCalls[0].id).toBe("call-2")
-    expect(nextState.newIncomingCount).toBe(2)
+    expect(nextState.incomingCalls[0].id).toBe("call-new")
+    expect(nextState.incomingCalls[1].id).toBe("call-existing")
+    expect(nextState.newIncomingCount).toBe(expectedBadge)
+  })
+
+  test("RESET applies payload overrides to state", () => {
+    const initialState = createInitialRttQueueState({
+      tab: "incoming",
+      newIncomingCount: 0,
+      activeCallId: "call-1",
+    })
+
+    const nextState = rttQueueReducer(initialState, {
+      type: "RESET",
+      payload: {
+        tab: "past",
+        newIncomingCount: 4,
+        activeCallId: null,
+      },
+    })
+
+    expect(nextState.tab).toBe("past")
+    expect(nextState.newIncomingCount).toBe(4)
+    expect(nextState.activeCallId).toBeNull()
   })
 })
