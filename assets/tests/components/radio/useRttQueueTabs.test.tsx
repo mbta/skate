@@ -30,4 +30,19 @@ describe("useRttQueueTabs", () => {
     expect(dispatchedTab).toBe("past")
     expect(callbackTab).toBe("past")
   })
+
+  test("handleTabClick safely no-ops without error when callbacks are omitted", () => {
+    const { result } = renderHook(() =>
+      useRttQueueTabs({
+        tab: "incoming",
+        newIncomingCount: 0,
+      })
+    )
+
+    expect(() => {
+      act(() => {
+        result.current.handleTabClick("past")
+      })
+    }).not.toThrow()
+  })
 })

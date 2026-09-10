@@ -32,21 +32,67 @@ describe("useRttSelection", () => {
     expect(result.current.selectedCall?.id).toBe("call-2")
   })
 
-  test("determines isSelectedLive when selectedCall is activeCall or status is active", () => {
-    const call1 = rttCallFactory.build({ id: "call-live", status: "active" })
+  test("returns null selectedCall and false isSelectedLive when selectedCallId does not exist", () => {
+    const call1 = rttCallFactory.build({ id: "call-1" })
 
     const { result } = renderHook(() =>
       useRttSelection({
-        selectedCallId: "call-live",
-        activeCallId: "call-live",
+        selectedCallId: "non-existent-id",
+        activeCallId: null,
         incomingCalls: [call1],
         pastCalls: [],
       })
     )
 
-    expect(result.current.isSelectedLive).toBe(true)
-    expect(result.current.activeCall?.id).toBe("call-live")
+    expect(result.current.selectedCall).toBeNull()
+    expect(result.current.isSelectedLive).toBe(false)
   })
+
+  test.each([
+    {
+      desc: "active by matching activeCallId even if status is unassigned",
+      callStatus: "unassigned" as const,
+      activeCallId: "call-target",
+      expectedLive: true,
+    },
+    {
+      desc: "active by call status active even if activeCallId is null",
+      callStatus: "active" as const,
+      activeCallId: null,
+      expectedLive: true,
+    },
+    {
+      desc: "inactive when status is unassigned and activeCallId is null",
+      callStatus: "unassigned" as const,
+      activeCallId: null,
+      expectedLive: false,
+    },
+    {
+      desc: "inactive when status is unassigned and activeCallId belongs to another call",
+      callStatus: "unassigned" as const,
+      activeCallId: "different-call",
+      expectedLive: false,
+    },
+  ])(
+    "determines isSelectedLive ($desc)",
+    ({ callStatus, activeCallId, expectedLive }) => {
+      const call = rttCallFactory.build({
+        id: "call-target",
+        status: callStatus,
+      })
+
+      const { result } = renderHook(() =>
+        useRttSelection({
+          selectedCallId: "call-target",
+          activeCallId,
+          incomingCalls: [call],
+          pastCalls: [],
+        })
+      )
+
+      expect(result.current.isSelectedLive).toBe(expectedLive)
+    }
+  )
 
   test("handleSelectCall dispatches action and invokes onSelectCall", () => {
     const call1 = rttCallFactory.build({ id: "call-select" })
