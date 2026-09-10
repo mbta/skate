@@ -35,6 +35,7 @@ jobs:
       - if: steps.asdf-cache.outputs.cache-hit != 'true'
         # Git ref points to release tag 'v4'
         uses: asdf-vm/actions/install@156187456fbe441e7badfe93ec1fa4dda646b27e
+      # hex and rebar are stored with the asdf cache
       - run: |
           mix local.rebar --force
           mix local.hex --force
