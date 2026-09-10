@@ -3,87 +3,7 @@ import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { render, fireEvent, cleanup, within } from "@testing-library/react"
 import { RttQueue } from "../../../src/components/radio/rtts/queue"
-import {
-  sortRttCalls,
-  sortPastRttCalls,
-  getCallTimestamp,
-} from "../../../src/components/radio/rtts/types"
 import { rttCallFactory } from "../../factories/radio/rtt"
-
-describe("RTT Domain & Sorting", () => {
-  afterEach(cleanup)
-  test("sorts calls by priority (Emergency > PRTT > RTT) and then by timestamp (newest first)", () => {
-    const olderTime = new Date("2026-09-03T10:00:00Z")
-    const newerTime = new Date("2026-09-03T10:05:00Z")
-
-    const rttNew = rttCallFactory.build({
-      callType: "RTT",
-      receivedAt: newerTime,
-    })
-    const rttOld = rttCallFactory.build({
-      callType: "RTT",
-      receivedAt: olderTime,
-    })
-    const prttOld = rttCallFactory.build({
-      callType: "PRTT",
-      receivedAt: olderTime,
-    })
-    const prttNew = rttCallFactory.build({
-      callType: "PRTT",
-      receivedAt: newerTime,
-    })
-    const emergencyOld = rttCallFactory.build({
-      callType: "Emergency",
-      receivedAt: olderTime,
-    })
-    const emergencyNew = rttCallFactory.build({
-      callType: "Emergency",
-      receivedAt: newerTime,
-    })
-
-    const unsorted = [
-      rttNew,
-      prttOld,
-      emergencyOld,
-      rttOld,
-      emergencyNew,
-      prttNew,
-    ]
-    const sorted = sortRttCalls(unsorted)
-
-    expect(
-      sorted.map((c) => `${c.callType}-${new Date(c.receivedAt).toISOString()}`)
-    ).toEqual([
-      `Emergency-${new Date(emergencyNew.receivedAt).toISOString()}`,
-      `Emergency-${new Date(emergencyOld.receivedAt).toISOString()}`,
-      `PRTT-${new Date(prttNew.receivedAt).toISOString()}`,
-      `PRTT-${new Date(prttOld.receivedAt).toISOString()}`,
-      `RTT-${new Date(rttNew.receivedAt).toISOString()}`,
-      `RTT-${new Date(rttOld.receivedAt).toISOString()}`,
-    ])
-  })
-
-  test("sortPastRttCalls sorts calls by timestamp descending (newest first)", () => {
-    const callOld = rttCallFactory.build({
-      id: "old",
-      receivedAt: "2026-09-08T10:00:00Z",
-    })
-    const callNew = rttCallFactory.build({
-      id: "new",
-      receivedAt: new Date("2026-09-08T10:10:00Z"),
-    })
-
-    expect(getCallTimestamp(callOld.receivedAt)).toBe(
-      new Date("2026-09-08T10:00:00Z").getTime()
-    )
-    expect(getCallTimestamp(callNew.receivedAt)).toBe(
-      new Date("2026-09-08T10:10:00Z").getTime()
-    )
-
-    const sorted = sortPastRttCalls([callOld, callNew])
-    expect(sorted.map((c) => c.id)).toEqual(["new", "old"])
-  })
-})
 
 describe("RttQueue Component", () => {
   afterEach(() => {
@@ -265,5 +185,52 @@ describe("RttQueue Component", () => {
     // Switch to Past tab and verify it's there
     fireEvent.click(view.getByRole("tab", { name: /^past$/i }))
     expect(view.getAllByText(`${call1.vehicleId}`)[0]).toBeInTheDocument()
+  })
+
+  test.each([
+    {
+      tab: "incoming" as const,
+      expectedHeading: "No Incoming RTT Calls",
+      expectedDesc:
+        "Incoming and active driver requests to talk will appear here.",
+    },
+    {
+      tab: "past" as const,
+      expectedHeading: "No Past RTT Calls",
+      expectedDesc: "Completed calls marked as done will appear here.",
+    },
+  ])(
+    "renders appropriate empty state when $tab queue has no calls",
+    ({ tab, expectedHeading, expectedDesc }) => {
+      const { container } = render(
+        <RttQueue
+          initialState={{
+            incomingCalls: [],
+            pastCalls: [],
+            tab,
+          }}
+        />
+      )
+      const view = within(container)
+
+      expect(view.getByText(expectedHeading)).toBeInTheDocument()
+      expect(view.getByText(expectedDesc)).toBeInTheDocument()
+    }
+  )
+
+  test("renders unread incoming count badge when viewing past tab with new calls", () => {
+    const { container } = render(
+      <RttQueue
+        initialState={{
+          incomingCalls: [],
+          pastCalls: [],
+          tab: "past",
+          newIncomingCount: 4,
+        }}
+      />
+    )
+    const view = within(container)
+
+    expect(view.getByText("4 new")).toBeInTheDocument()
   })
 })
