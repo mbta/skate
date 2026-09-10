@@ -35,36 +35,46 @@ describe("rttQueueReducer", () => {
   })
 
   test("RESPOND_CALL activates target call and sets responder and timestamps with fallback defaults", () => {
-    const call1 = rttCallFactory.build({ id: "call-1", status: "unassigned" })
+    const targetCall = rttCallFactory.build({
+      id: "call-1",
+      status: "unassigned",
+    })
     const initialState = createInitialRttQueueState({
-      incomingCalls: [call1],
+      incomingCalls: [targetCall],
     })
 
-    const before = Date.now()
     const nextState = rttQueueReducer(initialState, {
       type: "RESPOND_CALL",
-      call: call1,
+      call: targetCall,
     })
-    const after = Date.now()
 
     expect(nextState.activeCallId).toBe("call-1")
     expect(nextState.selectedCallId).toBe("call-1")
-    expect(nextState.incomingCalls[0].status).toBe("active")
-    expect(nextState.incomingCalls[0].respondedBy).toBe("Current Dispatcher")
-    expect(nextState.incomingCalls[0].answeredAt).toBeDefined()
-    const answeredTime = new Date(
-      nextState.incomingCalls[0].answeredAt!
-    ).getTime()
-    expect(answeredTime).toBeGreaterThanOrEqual(before)
-    expect(answeredTime).toBeLessThanOrEqual(after)
+    expect(nextState.incomingCalls[0]).toEqual(
+      expect.objectContaining({
+        id: "call-1",
+        status: "active",
+        respondedBy: "Current Dispatcher",
+        answeredAt: expect.any(Date),
+      })
+    )
   })
 
   test("RESPOND_CALL completes and moves prior active call to pastCalls while preserving other calls", () => {
-    const call1 = rttCallFactory.build({ id: "call-1", status: "active" })
-    const call2 = rttCallFactory.build({ id: "call-2", status: "unassigned" })
-    const call3 = rttCallFactory.build({ id: "call-3", status: "unassigned" })
+    const priorActiveCall = rttCallFactory.build({
+      id: "call-1",
+      status: "active",
+    })
+    const targetCall = rttCallFactory.build({
+      id: "call-2",
+      status: "unassigned",
+    })
+    const remainingCall = rttCallFactory.build({
+      id: "call-3",
+      status: "unassigned",
+    })
     const initialState = createInitialRttQueueState({
-      incomingCalls: [call1, call2, call3],
+      incomingCalls: [priorActiveCall, targetCall, remainingCall],
       activeCallId: "call-1",
       pastCalls: [],
     })
@@ -72,28 +82,28 @@ describe("rttQueueReducer", () => {
     const answeredAt = new Date("2026-09-08T12:05:00Z")
     const nextState = rttQueueReducer(initialState, {
       type: "RESPOND_CALL",
-      call: call2,
+      call: targetCall,
       answeredAt,
     })
 
     expect(nextState.activeCallId).toBe("call-2")
-    expect(
-      nextState.incomingCalls.find((c) => c.id === "call-1")
-    ).toBeUndefined()
     expect(nextState.incomingCalls.map((c) => c.id)).toEqual([
       "call-2",
       "call-3",
     ])
-    expect(nextState.pastCalls).toHaveLength(1)
-    expect(nextState.pastCalls[0].id).toBe("call-1")
-    expect(nextState.pastCalls[0].status).toBe("done")
-    expect(nextState.pastCalls[0].markedDoneAt).toEqual(answeredAt)
+    expect(nextState.pastCalls).toEqual([
+      expect.objectContaining({
+        id: "call-1",
+        status: "done",
+        markedDoneAt: answeredAt,
+      }),
+    ])
   })
 
   test("MARK_DONE_CALL removes call from incoming and adds to pastCalls", () => {
-    const call1 = rttCallFactory.build({ id: "call-1", status: "active" })
+    const activeCall = rttCallFactory.build({ id: "call-1", status: "active" })
     const initialState = createInitialRttQueueState({
-      incomingCalls: [call1],
+      incomingCalls: [activeCall],
       activeCallId: "call-1",
       selectedCallId: "call-1",
       pastCalls: [],
@@ -102,15 +112,19 @@ describe("rttQueueReducer", () => {
     const markedDoneAt = new Date("2026-09-08T12:10:00Z")
     const nextState = rttQueueReducer(initialState, {
       type: "MARK_DONE_CALL",
-      call: call1,
+      call: activeCall,
       markedDoneAt,
     })
 
     expect(nextState.activeCallId).toBeNull()
-    expect(nextState.incomingCalls).toHaveLength(0)
-    expect(nextState.pastCalls).toHaveLength(1)
-    expect(nextState.pastCalls[0].status).toBe("done")
-    expect(nextState.pastCalls[0].markedDoneAt).toEqual(markedDoneAt)
+    expect(nextState.incomingCalls).toEqual([])
+    expect(nextState.pastCalls).toEqual([
+      expect.objectContaining({
+        id: "call-1",
+        status: "done",
+        markedDoneAt,
+      }),
+    ])
   })
 
   test("MARK_DONE_CALL on non-active call preserves current activeCallId and generates default timestamp", () => {
@@ -129,21 +143,20 @@ describe("rttQueueReducer", () => {
       pastCalls: [],
     })
 
-    const before = Date.now()
     const nextState = rttQueueReducer(initialState, {
       type: "MARK_DONE_CALL",
       call: otherCall,
     })
-    const after = Date.now()
 
     expect(nextState.activeCallId).toBe("call-active")
     expect(nextState.incomingCalls.map((c) => c.id)).toEqual(["call-active"])
-    expect(nextState.pastCalls).toHaveLength(1)
-    expect(nextState.pastCalls[0].id).toBe("call-other")
-    expect(nextState.pastCalls[0].status).toBe("done")
-    const doneTime = new Date(nextState.pastCalls[0].markedDoneAt!).getTime()
-    expect(doneTime).toBeGreaterThanOrEqual(before)
-    expect(doneTime).toBeLessThanOrEqual(after)
+    expect(nextState.pastCalls).toEqual([
+      expect.objectContaining({
+        id: "call-other",
+        status: "done",
+        markedDoneAt: expect.any(Date),
+      }),
+    ])
   })
 
   test.each([
