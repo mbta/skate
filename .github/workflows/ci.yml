@@ -35,6 +35,10 @@ jobs:
       - if: steps.asdf-cache.outputs.cache-hit != 'true'
         # Git ref points to release tag 'v4'
         uses: asdf-vm/actions/install@156187456fbe441e7badfe93ec1fa4dda646b27e
+      - if: steps.asdf-cache.outputs.cache-hit != 'true'
+        uses: |
+          mix local.rebar --force
+          mix local.hex --force
       - name: Setup ASDF environment
         run: |
           ASDF_DIR=$HOME/.asdf
@@ -51,14 +55,9 @@ jobs:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
-      - name: Ensure Hex is installed
-        run: mix local.hex --force
       - name: Install dependencies
         if: steps.deps-cache.outputs.cache-hit != 'true'
-        run: |
-          mix local.rebar --force
-          mix local.hex --force
-          mix deps.get
+        run: mix deps.get
 
   build_elixir:
     permissions:
@@ -122,6 +121,8 @@ jobs:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
           restore-keys: ${{ runner.os }}-mix-
+      - name: Ensure Hex is installed
+        run: mix local.hex --force
       - name: Compile (warnings as errors)
         run: mix compile --force --warnings-as-errors
       - name: Check formatting
