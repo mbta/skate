@@ -25,24 +25,17 @@ export type RttQueueAction =
       payload?: Partial<RttQueueState>
     }
 
-export interface InitialRttQueueStateOptions {
-  tab?: RttTab
-  incomingCalls?: RttCall[]
-  pastCalls?: RttCall[]
-  selectedCallId?: string | null
-  activeCallId?: string | null
-  newIncomingCount?: number
-}
+export type InitialRttQueueState = Partial<RttQueueState>
 
 export const createInitialRttQueueState = (
-  options: InitialRttQueueStateOptions = {}
+  initialState: InitialRttQueueState = {}
 ): RttQueueState => ({
-  tab: options.tab ?? "incoming",
-  incomingCalls: options.incomingCalls ?? [],
-  pastCalls: options.pastCalls ?? [],
-  selectedCallId: options.selectedCallId ?? null,
-  activeCallId: options.activeCallId ?? null,
-  newIncomingCount: options.newIncomingCount ?? 0,
+  tab: initialState.tab ?? "incoming",
+  incomingCalls: initialState.incomingCalls ?? [],
+  pastCalls: initialState.pastCalls ?? [],
+  selectedCallId: initialState.selectedCallId ?? null,
+  activeCallId: initialState.activeCallId ?? null,
+  newIncomingCount: initialState.newIncomingCount ?? 0,
 })
 
 export const rttQueueReducer = (
