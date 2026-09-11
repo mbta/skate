@@ -18,6 +18,17 @@ const meta = {
     isSelected: false,
     tab: "incoming",
   },
+  argTypes: {
+    tab: {
+      control: "radio",
+      options: ["incoming", "past"],
+      description: "Active queue tab view",
+    },
+    isSelected: {
+      control: "boolean",
+      description: "Whether the row is selected",
+    },
+  },
 } satisfies Meta<typeof RttQueueItem>
 
 export default meta

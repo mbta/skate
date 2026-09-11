@@ -19,6 +19,13 @@ const meta = {
     currentTab: "incoming",
     currentDispatcherName: "Dispatcher Alex",
   },
+  argTypes: {
+    currentTab: {
+      control: "radio",
+      options: ["incoming", "past"],
+      description: "Active queue tab view",
+    },
+  },
   decorators: [
     (StoryFn) => (
       <div
