@@ -14,7 +14,9 @@
   border: 1px solid tokens.$gray-300;
   background-color: tokens.$white;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease,
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
     box-shadow 0.15s ease;
   user-select: none;
 

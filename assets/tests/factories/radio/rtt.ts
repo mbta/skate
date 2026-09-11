@@ -45,8 +45,8 @@ export const rttCallFactory = Factory.define<RttCall>(
         (sequence % 3 === 0
           ? "23 min late"
           : sequence % 2 === 0
-          ? "7 min late"
-          : "On time"),
+            ? "7 min late"
+            : "On time"),
       respondedBy:
         params.respondedBy ?? (status === "active" ? "Dispatcher Smith" : null),
       answeredAt:
