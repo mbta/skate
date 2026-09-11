@@ -9,6 +9,7 @@ import {
   formattedScheduledTime,
   serviceDaySeconds,
   formattedDate,
+  formattedTimeWithSeconds,
 } from "../../src/util/dateTime"
 
 describe("now", () => {
@@ -174,5 +175,34 @@ describe("formattedHoursMinutes", () => {
 
   test("zero pads short minutes, but not hours", () => {
     expect(formattedHoursMinutes(5, 5)).toEqual("5:05 AM")
+  })
+})
+
+describe("formattedTimeWithSeconds", () => {
+  const morningDate = new Date(2026, 8, 8, 9, 5, 7)
+  const afternoonDate = new Date(2026, 8, 8, 14, 30, 45)
+
+  test.each([
+    { input: null, expected: "", desc: "null" },
+    { input: undefined, expected: "", desc: "undefined" },
+    { input: "", expected: "", desc: "empty string" },
+    { input: "invalid-date", expected: "", desc: "invalid date string" },
+    {
+      input: morningDate,
+      expected: "9:05:07 AM",
+      desc: "morning Date with 12-hour AM conversion",
+    },
+    {
+      input: afternoonDate,
+      expected: "2:30:45 PM",
+      desc: "afternoon Date with 12-hour PM conversion",
+    },
+    {
+      input: afternoonDate.toISOString(),
+      expected: formattedTimeWithSeconds(afternoonDate),
+      desc: "ISO timestamp string matching Date equivalent",
+    },
+  ])("returns '$expected' when given $desc", ({ input, expected }) => {
+    expect(formattedTimeWithSeconds(input)).toEqual(expected)
   })
 })

@@ -7,3 +7,4 @@ package-lock.json
 tsconfig.json
 tsconfig.test.json
 coverage/
+storybook-static/
