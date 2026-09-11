@@ -1,14 +1,12 @@
-import { describe, test, expect, afterEach } from "@jest/globals"
+import { describe, test, expect, jest } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
-import { render, fireEvent, cleanup, within } from "@testing-library/react"
+import { render, fireEvent, screen } from "@testing-library/react"
 import { RttQueueItem } from "../../../../src/components/radio/rtts/queueItem"
 import { rttCallFactory } from "../../../factories/radio/rtt"
 import { RttCallType } from "../../../../src/components/radio/rtts/types"
 
 describe("RttQueueItem", () => {
-  afterEach(cleanup)
-
   test.each([
     {
       callType: "Emergency" as RttCallType,
@@ -29,14 +27,13 @@ describe("RttQueueItem", () => {
     "applies correct style classes for $callType call",
     ({ callType, expectedBorderClass, expectedTypeClass }) => {
       const call = rttCallFactory.build({ callType })
-      const { container } = render(<RttQueueItem call={call} />)
+      render(<RttQueueItem call={call} />)
 
-      const item = container.querySelector(".c-rtt-queue-item")
+      const item = screen.getByRole("listitem")
       expect(item).toHaveClass(expectedBorderClass)
 
-      const badge = container.querySelector(".c-rtt-queue-item__type")
+      const badge = screen.getByText(callType)
       expect(badge).toHaveClass(expectedTypeClass)
-      expect(badge).toHaveTextContent(callType)
     }
   )
 
@@ -73,78 +70,117 @@ describe("RttQueueItem", () => {
         respondedBy,
       })
 
-      const { container } = render(
+      render(
         <RttQueueItem
           call={call}
           tab="incoming"
           currentDispatcherName={currentDispatcherName}
         />
       )
-      const view = within(container)
 
-      expect(view.getByText(expectedName)).toBeInTheDocument()
+      expect(screen.getByText(expectedName)).toBeInTheDocument()
       expect(
-        view.queryByRole("button", { name: /respond/i })
+        screen.queryByRole("button", { name: /respond/i })
       ).not.toBeInTheDocument()
     }
   )
 
-  test("hides action button on past tab", () => {
+  test("hides action button and applies past modifier on past tab", () => {
     const call = rttCallFactory.build({ status: "done" })
-    const { container } = render(<RttQueueItem call={call} tab="past" />)
-    const view = within(container)
+    render(<RttQueueItem call={call} tab="past" />)
 
     expect(
-      view.queryByRole("button", { name: /respond/i })
+      screen.queryByRole("button", { name: /respond/i })
     ).not.toBeInTheDocument()
-    expect(container.querySelector(".c-rtt-queue-item")).toHaveClass(
-      "c-rtt-queue-item--past"
-    )
+    expect(screen.getByRole("listitem")).toHaveClass("c-rtt-queue-item--past")
   })
 
-  test("triggers onSelect on click or keyboard Enter/Space", () => {
-    const call = rttCallFactory.build({ id: "call-kb", vehicleId: "1234" })
-    let selectedCall: typeof call | null = null
+  test.each([
+    { isSelected: true, expectedPressed: "true", hasSelectedClass: true },
+    { isSelected: false, expectedPressed: "false", hasSelectedClass: false },
+  ])(
+    "reflects selection state (isSelected=$isSelected) in aria-pressed and css class",
+    ({ isSelected, expectedPressed, hasSelectedClass }) => {
+      const call = rttCallFactory.build({
+        callType: "Emergency",
+        vehicleId: "1234",
+      })
 
-    const { container } = render(
-      <RttQueueItem call={call} onSelect={(c) => (selectedCall = c)} />
-    )
-    const clickableColumns = container.querySelector(
-      ".c-rtt-queue-item__columns"
-    )!
+      render(<RttQueueItem call={call} isSelected={isSelected} />)
 
-    // Click
-    fireEvent.click(clickableColumns)
-    expect(selectedCall).toEqual(call)
+      const rowButton = screen.getByRole("button", {
+        name: "Select Emergency call for vehicle 1234",
+      })
+      expect(rowButton).toHaveAttribute("aria-pressed", expectedPressed)
 
-    selectedCall = null
-    // Enter key
-    fireEvent.keyDown(clickableColumns, { key: "Enter" })
-    expect(selectedCall).toEqual(call)
+      const item = screen.getByRole("listitem")
+      if (hasSelectedClass) {
+        expect(item).toHaveClass("c-rtt-queue-item--selected")
+      } else {
+        expect(item).not.toHaveClass("c-rtt-queue-item--selected")
+      }
+    }
+  )
 
-    selectedCall = null
-    // Space key
-    fireEvent.keyDown(clickableColumns, { key: " " })
-    expect(selectedCall).toEqual(call)
+  test("triggers onSelect with call when clicking the row", () => {
+    const call = rttCallFactory.build({
+      id: "call-click",
+      vehicleId: "1234",
+      callType: "Emergency",
+    })
+    const onSelect = jest.fn()
+
+    render(<RttQueueItem call={call} onSelect={onSelect} />)
+
+    const rowButton = screen.getByRole("button", {
+      name: "Select Emergency call for vehicle 1234",
+    })
+    fireEvent.click(rowButton)
+
+    expect(onSelect).toHaveBeenCalledTimes(1)
+    expect(onSelect).toHaveBeenCalledWith(call)
   })
+
+  test.each(["Enter", " "])(
+    "triggers onSelect with call on keyboard %s key",
+    (key) => {
+      const call = rttCallFactory.build({
+        id: `call-kb-${key}`,
+        vehicleId: "1234",
+        callType: "PRTT",
+      })
+      const onSelect = jest.fn()
+
+      render(<RttQueueItem call={call} onSelect={onSelect} />)
+
+      const rowButton = screen.getByRole("button", {
+        name: "Select PRTT call for vehicle 1234",
+      })
+      fireEvent.keyDown(rowButton, { key })
+
+      expect(onSelect).toHaveBeenCalledTimes(1)
+      expect(onSelect).toHaveBeenCalledWith(call)
+    }
+  )
 
   test("triggers onRespond when clicking the respond button without firing onSelect", () => {
     const call = rttCallFactory.build({ id: "call-resp", status: "unassigned" })
-    let selectCalled = false
-    let respondCalled = false
+    const onSelect = jest.fn()
+    const onRespond = jest.fn()
 
-    const { container } = render(
+    render(
       <RttQueueItem
         call={call}
         tab="incoming"
-        onSelect={() => (selectCalled = true)}
-        onRespond={() => (respondCalled = true)}
+        onSelect={onSelect}
+        onRespond={onRespond}
       />
     )
-    const view = within(container)
 
-    fireEvent.click(view.getByRole("button", { name: /respond/i }))
-    expect(respondCalled).toBe(true)
-    expect(selectCalled).toBe(false)
+    fireEvent.click(screen.getByRole("button", { name: /respond/i }))
+
+    expect(onRespond).toHaveBeenCalledTimes(1)
+    expect(onRespond).toHaveBeenCalledWith(call)
+    expect(onSelect).not.toHaveBeenCalled()
   })
 })
