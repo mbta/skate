@@ -1,7 +1,7 @@
 import { describe, test, expect } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
-import { render, fireEvent, screen } from "@testing-library/react"
+import { render, fireEvent, screen, within } from "@testing-library/react"
 import { RttQueue } from "../../../../src/components/radio/rtts/queue"
 import { rttCallFactory } from "../../../factories/radio/rtt"
 
@@ -31,10 +31,17 @@ describe("RttQueue Component", () => {
       />
     )
 
-    // Verify incoming tab content
     expect(screen.getByText("📻 Radio RTT Queue")).toBeInTheDocument()
-    expect(screen.getByText("2104")).toBeInTheDocument()
-    expect(screen.getByText("1845")).toBeInTheDocument()
+    expect(
+      screen.getByRole("button", {
+        name: "Select Emergency call for vehicle 2104",
+      })
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole("button", {
+        name: "Select PRTT call for vehicle 1845",
+      })
+    ).toBeInTheDocument()
 
     // Click emergency row button
     const emergencyRow = screen.getByRole("button", {
@@ -73,8 +80,15 @@ describe("RttQueue Component", () => {
       />
     )
 
-    const respondButtons = screen.getAllByRole("button", { name: /respond/i })
-    fireEvent.click(respondButtons[0])
+    const emergencyItem = screen
+      .getByRole("button", {
+        name: "Select Emergency call for vehicle 3001",
+      })
+      .closest<HTMLElement>('[role="listitem"]')!
+    const respondButton = within(emergencyItem).getByRole("button", {
+      name: /respond/i,
+    })
+    fireEvent.click(respondButton)
 
     // Should now display Live Call in details panel and Mark done button
     expect(screen.getByText("Live Call")).toBeInTheDocument()
@@ -108,12 +122,22 @@ describe("RttQueue Component", () => {
     )
 
     // Respond to call 1 (Emergency)
-    const respondButtons = screen.getAllByRole("button", { name: /respond/i })
-    fireEvent.click(respondButtons[0])
+    const emergencyItem = screen
+      .getByRole("button", {
+        name: "Select Emergency call for vehicle 3001",
+      })
+      .closest<HTMLElement>('[role="listitem"]')!
+    fireEvent.click(
+      within(emergencyItem).getByRole("button", { name: /respond/i })
+    )
 
     // Now respond to call 2 (PRTT)
-    const secondRespondBtn = screen.getByRole("button", { name: /respond/i })
-    fireEvent.click(secondRespondBtn)
+    const prttItem = screen
+      .getByRole("button", {
+        name: "Select PRTT call for vehicle 3002",
+      })
+      .closest<HTMLElement>('[role="listitem"]')!
+    fireEvent.click(within(prttItem).getByRole("button", { name: /respond/i }))
 
     // Check Past tab to verify call1 was archived as done
     fireEvent.click(screen.getByRole("tab", { name: /^past$/i }))
