@@ -1,16 +1,11 @@
-import { describe, test, expect, afterEach } from "@jest/globals"
+import { describe, test, expect } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
-import { render, fireEvent, cleanup, within } from "@testing-library/react"
+import { render, fireEvent, screen } from "@testing-library/react"
 import { RttQueue } from "../../../../src/components/radio/rtts/queue"
 import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("RttQueue Component", () => {
-  afterEach(() => {
-    cleanup()
-    document.body.innerHTML = ""
-  })
-
   test("renders incoming calls and displays call details when row is clicked", () => {
     const call1 = rttCallFactory.build({
       id: "call-1",
@@ -26,7 +21,7 @@ describe("RttQueue Component", () => {
       callType: "PRTT",
     })
 
-    const { container } = render(
+    render(
       <RttQueue
         initialState={{
           incomingCalls: [call1, call2],
@@ -35,19 +30,23 @@ describe("RttQueue Component", () => {
         }}
       />
     )
-    const view = within(container)
 
     // Verify incoming tab content
-    expect(view.getByText("📻 Radio RTT Queue")).toBeInTheDocument()
-    expect(view.getByText("2104")).toBeInTheDocument()
-    expect(view.getByText("1845")).toBeInTheDocument()
+    expect(screen.getByText("📻 Radio RTT Queue")).toBeInTheDocument()
+    expect(screen.getByText("2104")).toBeInTheDocument()
+    expect(screen.getByText("1845")).toBeInTheDocument()
 
-    // Click emergency row
-    fireEvent.click(view.getByText("2104"))
+    // Click emergency row button
+    const emergencyRow = screen.getByRole("button", {
+      name: "Select Emergency call for vehicle 2104",
+    })
+    fireEvent.click(emergencyRow)
 
     // Details panel should populate
-    expect(view.getByText("Harvard Ave @ Commonwealth Ave")).toBeInTheDocument()
-    expect(view.getByText("#54321 J. Doe")).toBeInTheDocument()
+    expect(
+      screen.getByText("Harvard Ave @ Commonwealth Ave")
+    ).toBeInTheDocument()
+    expect(screen.getByText("#54321 J. Doe")).toBeInTheDocument()
   })
 
   test("responding to an incoming call transitions it to live mode with Mark Done action", () => {
@@ -64,7 +63,7 @@ describe("RttQueue Component", () => {
       status: "unassigned",
     })
 
-    const { container } = render(
+    render(
       <RttQueue
         initialState={{
           incomingCalls: [call1, call2],
@@ -73,14 +72,15 @@ describe("RttQueue Component", () => {
         }}
       />
     )
-    const view = within(container)
 
-    const respondButtons = view.getAllByRole("button", { name: /respond/i })
+    const respondButtons = screen.getAllByRole("button", { name: /respond/i })
     fireEvent.click(respondButtons[0])
 
     // Should now display Live Call in details panel and Mark done button
-    expect(view.getByText("Live Call")).toBeInTheDocument()
-    expect(view.getByRole("button", { name: /mark done/i })).toBeInTheDocument()
+    expect(screen.getByText("Live Call")).toBeInTheDocument()
+    expect(
+      screen.getByRole("button", { name: /mark done/i })
+    ).toBeInTheDocument()
   })
 
   test("responding to a second call moves previous active call to past calls", () => {
@@ -97,7 +97,7 @@ describe("RttQueue Component", () => {
       status: "unassigned",
     })
 
-    const { container } = render(
+    render(
       <RttQueue
         initialState={{
           incomingCalls: [call1, call2],
@@ -106,22 +106,21 @@ describe("RttQueue Component", () => {
         }}
       />
     )
-    const view = within(container)
 
     // Respond to call 1 (Emergency)
-    const respondButtons = view.getAllByRole("button", { name: /respond/i })
+    const respondButtons = screen.getAllByRole("button", { name: /respond/i })
     fireEvent.click(respondButtons[0])
 
     // Now respond to call 2 (PRTT)
-    const secondRespondBtn = view.getByRole("button", { name: /respond/i })
+    const secondRespondBtn = screen.getByRole("button", { name: /respond/i })
     fireEvent.click(secondRespondBtn)
 
     // Check Past tab to verify call1 was archived as done
-    fireEvent.click(view.getByRole("tab", { name: /^past$/i }))
-    expect(view.getByText("3001")).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("tab", { name: /^past$/i }))
+    expect(screen.getByText("3001")).toBeInTheDocument()
   })
 
-  test("displays active call banner when switching to Past tab during an active call", () => {
+  test("displays active call banner on Past tab and selects active call when clicked", () => {
     const call1 = rttCallFactory.build({
       id: "call-banner-1",
       vehicleId: "4001",
@@ -129,7 +128,7 @@ describe("RttQueue Component", () => {
       status: "unassigned",
     })
 
-    const { container } = render(
+    render(
       <RttQueue
         initialState={{
           incomingCalls: [call1],
@@ -138,20 +137,24 @@ describe("RttQueue Component", () => {
         }}
       />
     )
-    const view = within(container)
 
     // Respond to the emergency call
-    const respondBtn = view.getByRole("button", { name: /respond/i })
+    const respondBtn = screen.getByRole("button", { name: /respond/i })
     fireEvent.click(respondBtn)
 
     // Switch to Past tab
-    const pastTabBtn = view.getByRole("tab", { name: /^past$/i })
+    const pastTabBtn = screen.getByRole("tab", { name: /^past$/i })
     fireEvent.click(pastTabBtn)
 
-    // Active banner should appear at top
-    expect(
-      view.getByText(`ACTIVE CALL VEHICLE ${call1.vehicleId}`)
-    ).toBeInTheDocument()
+    // Active banner button should appear at top
+    const bannerButton = screen.getByRole("button", {
+      name: `ACTIVE CALL VEHICLE ${call1.vehicleId}`,
+    })
+    expect(bannerButton).toBeInTheDocument()
+
+    // Clicking banner button selects the active call in details panel
+    fireEvent.click(bannerButton)
+    expect(screen.getByText("Live Call")).toBeInTheDocument()
   })
 
   test("marking done moves call from incoming to past", () => {
@@ -162,7 +165,7 @@ describe("RttQueue Component", () => {
       status: "unassigned",
     })
 
-    const { container } = render(
+    render(
       <RttQueue
         initialState={{
           incomingCalls: [call],
@@ -171,20 +174,19 @@ describe("RttQueue Component", () => {
         }}
       />
     )
-    const view = within(container)
 
     // Respond to the call
-    fireEvent.click(view.getByRole("button", { name: /respond/i }))
+    fireEvent.click(screen.getByRole("button", { name: /respond/i }))
 
     // Click Mark done
-    fireEvent.click(view.getByRole("button", { name: /mark done/i }))
+    fireEvent.click(screen.getByRole("button", { name: /mark done/i }))
 
     // Empty state should be visible on incoming tab
-    expect(view.getByText("No Incoming RTT Calls")).toBeInTheDocument()
+    expect(screen.getByText("No Incoming RTT Calls")).toBeInTheDocument()
 
     // Switch to Past tab and verify it's rendered as a list item
-    fireEvent.click(view.getByRole("tab", { name: /^past$/i }))
-    expect(view.getByRole("listitem")).toHaveTextContent("5001")
+    fireEvent.click(screen.getByRole("tab", { name: /^past$/i }))
+    expect(screen.getByRole("listitem")).toHaveTextContent("5001")
   })
 
   test.each([
@@ -202,7 +204,7 @@ describe("RttQueue Component", () => {
   ])(
     "renders appropriate empty state when $tab queue has no calls",
     ({ tab, expectedHeading, expectedDesc }) => {
-      const { container } = render(
+      render(
         <RttQueue
           initialState={{
             incomingCalls: [],
@@ -211,15 +213,14 @@ describe("RttQueue Component", () => {
           }}
         />
       )
-      const view = within(container)
 
-      expect(view.getByText(expectedHeading)).toBeInTheDocument()
-      expect(view.getByText(expectedDesc)).toBeInTheDocument()
+      expect(screen.getByText(expectedHeading)).toBeInTheDocument()
+      expect(screen.getByText(expectedDesc)).toBeInTheDocument()
     }
   )
 
   test("renders unread incoming count badge when viewing past tab with new calls", () => {
-    const { container } = render(
+    render(
       <RttQueue
         initialState={{
           incomingCalls: [],
@@ -229,8 +230,7 @@ describe("RttQueue Component", () => {
         }}
       />
     )
-    const view = within(container)
 
-    expect(view.getByText("4 new")).toBeInTheDocument()
+    expect(screen.getByText("4 new")).toBeInTheDocument()
   })
 })
