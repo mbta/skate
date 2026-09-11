@@ -1,19 +1,19 @@
-import { describe, test, expect, afterEach } from "@jest/globals"
+import { describe, test, expect, jest } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
-import { render, fireEvent, cleanup, within } from "@testing-library/react"
+import { render, fireEvent, screen } from "@testing-library/react"
 import { RttDetailsPanel } from "../../../../src/components/radio/rtts/detailsPanel"
 import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("RttDetailsPanel", () => {
-  afterEach(cleanup)
-
-  test("renders placeholder message when call is null or undefined", () => {
-    const { container } = render(<RttDetailsPanel call={null} />)
-    const view = within(container)
+  test.each([
+    { call: null, desc: "null" },
+    { call: undefined, desc: "undefined" },
+  ])("renders placeholder message when call is $desc", ({ call }) => {
+    render(<RttDetailsPanel call={call} />)
 
     expect(
-      view.getByText("Select a call from the queue to view details")
+      screen.getByText("Select a call from the queue to view details")
     ).toBeInTheDocument()
   })
 
@@ -50,10 +50,9 @@ describe("RttDetailsPanel", () => {
         operatorName,
       })
 
-      const { container } = render(<RttDetailsPanel call={call} />)
-      const view = within(container)
+      render(<RttDetailsPanel call={call} />)
 
-      expect(view.getByText(expectedText)).toBeInTheDocument()
+      expect(screen.getByText(expectedText)).toBeInTheDocument()
     }
   )
 
@@ -81,14 +80,45 @@ describe("RttDetailsPanel", () => {
         direction,
       })
 
-      const { container } = render(<RttDetailsPanel call={call} />)
-      const view = within(container)
+      render(<RttDetailsPanel call={call} />)
 
-      expect(view.getByText(expectedHeadsign)).toBeInTheDocument()
+      expect(screen.getByText(expectedHeadsign)).toBeInTheDocument()
     }
   )
 
-  test("displays live call tag, answered/markedDone timestamps, and triggers onMarkDone", () => {
+  test("renders detail key-value fields and omits optional empty fields", () => {
+    const callWithAllFields = rttCallFactory.build({
+      currentLocation: "Forest Hills Station",
+      runNumber: "101",
+      garage: "Southampton",
+      talkGroup: "OPS-1",
+    })
+
+    const { unmount } = render(<RttDetailsPanel call={callWithAllFields} />)
+
+    expect(screen.getByText("Forest Hills Station")).toBeInTheDocument()
+    expect(screen.getByText("101")).toBeInTheDocument()
+    expect(screen.getByText("Southampton")).toBeInTheDocument()
+    expect(screen.getByText("OPS-1")).toBeInTheDocument()
+
+    unmount()
+
+    const callWithoutOptionals = rttCallFactory.build({
+      currentLocation: undefined,
+      runNumber: undefined,
+      garage: undefined,
+      talkGroup: undefined,
+    })
+
+    render(<RttDetailsPanel call={callWithoutOptionals} />)
+
+    expect(screen.getByText("Unknown")).toBeInTheDocument()
+    expect(screen.getByText("N/A")).toBeInTheDocument()
+    expect(screen.queryByText("Garage")).not.toBeInTheDocument()
+    expect(screen.queryByText("Talk Group")).not.toBeInTheDocument()
+  })
+
+  test("displays live call tag, answered/markedDone timestamps, and triggers onMarkDone with call", () => {
     const answeredAt = new Date("2026-09-08T14:30:15Z")
     const markedDoneAt = new Date("2026-09-08T14:35:45Z")
     const call = rttCallFactory.build({
@@ -96,19 +126,18 @@ describe("RttDetailsPanel", () => {
       answeredAt,
       markedDoneAt,
     })
-    let markDoneCalled = false
+    const onMarkDone = jest.fn()
 
-    const { container } = render(
-      <RttDetailsPanel call={call} onMarkDone={() => (markDoneCalled = true)} />
-    )
-    const view = within(container)
+    render(<RttDetailsPanel call={call} onMarkDone={onMarkDone} />)
 
-    expect(view.getByText("Live Call")).toBeInTheDocument()
-    expect(view.getByText("ANSWERED")).toBeInTheDocument()
-    expect(view.getByText("MARKED DONE")).toBeInTheDocument()
+    expect(screen.getByText("Live Call")).toBeInTheDocument()
+    expect(screen.getByText("ANSWERED")).toBeInTheDocument()
+    expect(screen.getByText("MARKED DONE")).toBeInTheDocument()
 
-    const markDoneBtn = view.getByRole("button", { name: /mark done/i })
+    const markDoneBtn = screen.getByRole("button", { name: /mark done/i })
     fireEvent.click(markDoneBtn)
-    expect(markDoneCalled).toBe(true)
+
+    expect(onMarkDone).toHaveBeenCalledTimes(1)
+    expect(onMarkDone).toHaveBeenCalledWith(call)
   })
 })
