@@ -7,6 +7,17 @@ export interface RttSimulatorToolbarProps {
   onReset: () => void
 }
 
+interface SimulateButtonConfig {
+  type: RttCallType
+  color: string
+}
+
+const SIMULATE_BUTTONS: readonly SimulateButtonConfig[] = [
+  { type: "Emergency", color: "#9c074d" },
+  { type: "PRTT", color: "#d97706" },
+  { type: "RTT", color: "#572e8a" },
+]
+
 export const RttSimulatorToolbar = ({
   dispatcherName,
   onSimulateNewCall,
@@ -34,30 +45,17 @@ export const RttSimulatorToolbar = ({
 
     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
       <span>Trigger New Call:</span>
-      <button
-        type="button"
-        className="c-rtt-queue-item__respond-btn"
-        style={{ backgroundColor: "#9c074d", padding: "0.25rem 0.5rem" }}
-        onClick={() => onSimulateNewCall("Emergency")}
-      >
-        + Emergency
-      </button>
-      <button
-        type="button"
-        className="c-rtt-queue-item__respond-btn"
-        style={{ backgroundColor: "#d97706", padding: "0.25rem 0.5rem" }}
-        onClick={() => onSimulateNewCall("PRTT")}
-      >
-        + PRTT
-      </button>
-      <button
-        type="button"
-        className="c-rtt-queue-item__respond-btn"
-        style={{ backgroundColor: "#572e8a", padding: "0.25rem 0.5rem" }}
-        onClick={() => onSimulateNewCall("RTT")}
-      >
-        + RTT
-      </button>
+      {SIMULATE_BUTTONS.map(({ type, color }) => (
+        <button
+          key={type}
+          type="button"
+          className="c-rtt-queue-item__respond-btn"
+          style={{ backgroundColor: color, padding: "0.25rem 0.5rem" }}
+          onClick={() => onSimulateNewCall(type)}
+        >
+          + {type}
+        </button>
+      ))}
       <button
         type="button"
         className="c-rtt-details-panel__mark-done-btn"

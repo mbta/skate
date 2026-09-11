@@ -21,7 +21,7 @@ export const ActiveRttBanner = ({
       aria-label="Active Call Banner"
     >
       <div className="c-active-rtt-banner__content">
-        <span className="c-active-rtt-banner__dot" />
+        <span className="c-active-rtt-banner__dot" aria-hidden="true" />
         {onSelectActive ? (
           <button
             type="button"
