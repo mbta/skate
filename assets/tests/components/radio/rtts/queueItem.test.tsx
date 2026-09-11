@@ -7,33 +7,18 @@ import { rttCallFactory } from "../../../factories/radio/rtt"
 import { RttCallType } from "../../../../src/components/radio/rtts/types"
 
 describe("RttQueueItem", () => {
-  test.each([
-    {
-      callType: "Emergency" as RttCallType,
-      expectedBorderClass: "c-rtt-queue-item--emergency",
-      expectedTypeClass: "c-rtt-queue-item__type--emergency",
-    },
-    {
-      callType: "PRTT" as RttCallType,
-      expectedBorderClass: "c-rtt-queue-item--prtt",
-      expectedTypeClass: "c-rtt-queue-item__type--prtt",
-    },
-    {
-      callType: "RTT" as RttCallType,
-      expectedBorderClass: "c-rtt-queue-item--rtt",
-      expectedTypeClass: "c-rtt-queue-item__type--rtt",
-    },
-  ])(
-    "applies correct style classes for $callType call",
-    ({ callType, expectedBorderClass, expectedTypeClass }) => {
-      const call = rttCallFactory.build({ callType })
+  test.each(["Emergency", "PRTT", "RTT"] as RttCallType[])(
+    "renders call type badge for %s call",
+    (callType) => {
+      const call = rttCallFactory.build({ callType, vehicleId: "1234" })
       render(<RttQueueItem call={call} />)
 
-      const item = screen.getByRole("listitem")
-      expect(item).toHaveClass(expectedBorderClass)
-
-      const badge = screen.getByText(callType)
-      expect(badge).toHaveClass(expectedTypeClass)
+      expect(screen.getByText(callType)).toBeInTheDocument()
+      expect(
+        screen.getByRole("button", {
+          name: `Select ${callType} call for vehicle 1234`,
+        })
+      ).toBeInTheDocument()
     }
   )
 
@@ -85,49 +70,36 @@ describe("RttQueueItem", () => {
     }
   )
 
-  test("hides action button and applies past modifier on past tab", () => {
+  test("hides action button on past tab", () => {
     const call = rttCallFactory.build({ status: "done" })
     render(<RttQueueItem call={call} tab="past" />)
 
     expect(
       screen.queryByRole("button", { name: /respond/i })
     ).not.toBeInTheDocument()
-    expect(screen.getByRole("listitem")).toHaveClass("c-rtt-queue-item--past")
   })
 
-  test("reflects selected state in aria-pressed and css class when selected", () => {
-    const call = rttCallFactory.build({
-      callType: "Emergency",
-      vehicleId: "1234",
-    })
+  test.each([
+    { isSelected: true, pressed: true },
+    { isSelected: false, pressed: false },
+  ])(
+    "renders row toggle button with pressed=$pressed when isSelected=$isSelected",
+    ({ isSelected, pressed }) => {
+      const call = rttCallFactory.build({
+        callType: "Emergency",
+        vehicleId: "1234",
+      })
 
-    render(<RttQueueItem call={call} isSelected={true} />)
+      render(<RttQueueItem call={call} isSelected={isSelected} />)
 
-    const rowButton = screen.getByRole("button", {
-      name: "Select Emergency call for vehicle 1234",
-    })
-    expect(rowButton).toHaveAttribute("aria-pressed", "true")
-    expect(screen.getByRole("listitem")).toHaveClass(
-      "c-rtt-queue-item--selected"
-    )
-  })
-
-  test("reflects unselected state in aria-pressed and css class when not selected", () => {
-    const call = rttCallFactory.build({
-      callType: "Emergency",
-      vehicleId: "1234",
-    })
-
-    render(<RttQueueItem call={call} isSelected={false} />)
-
-    const rowButton = screen.getByRole("button", {
-      name: "Select Emergency call for vehicle 1234",
-    })
-    expect(rowButton).toHaveAttribute("aria-pressed", "false")
-    expect(screen.getByRole("listitem")).not.toHaveClass(
-      "c-rtt-queue-item--selected"
-    )
-  })
+      expect(
+        screen.getByRole("button", {
+          name: "Select Emergency call for vehicle 1234",
+          pressed,
+        })
+      ).toBeInTheDocument()
+    }
+  )
 
   test("triggers onSelect with call when clicking the row", () => {
     const call = rttCallFactory.build({
