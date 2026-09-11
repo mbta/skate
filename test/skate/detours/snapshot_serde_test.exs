@@ -132,30 +132,29 @@ defmodule Skate.Detours.SnapshotSerdeTest do
     end
 
     @tag :capture_log
-    test "logs nothing when no fields fall back to the snapshot" do
-      %{id: id, state: snapshot} =
+    test "does not include optional fields that are absent from the snapshot" do
+      # `state`, `route`, `routePattern`, and `children` don't have dedicated db
+      # columns yet, so they always fall back to the snapshot. Optional fields
+      # like `routePatterns` and `selectedDuration` only fall back when present
+      # in the snapshot, so a bare build+insert (whose snapshot omits them)
+      # shouldn't mention them in the aggregated warning.
+      %{id: id, author_id: author_id} =
         detour =
         :detour
         |> build()
         |> insert()
-
-      snapshot =
-        snapshot
-        |> with_id(id)
-        |> put_in(["context", "route", "garages"], ["garage-a"])
-        |> put_in(["context", "routePatterns"], [])
-
-      detour =
-        detour
-        |> Skate.Detours.Detours.change_detour(%{state: snapshot})
-        |> Skate.Repo.update!()
 
       log =
         capture_log(fn ->
           SnapshotSerde.compare_snapshots(detour)
         end)
 
-      refute log =~ "Unexpected detour structure"
+      assert log =~
+               "Unexpected detour structure for detour_id=#{id} author_id=#{author_id}. " <>
+                 "Using snapshot for fields: state, route, routePattern, children"
+
+      refute log =~ "route_patterns"
+      refute log =~ "selectedDuration"
     end
   end
 end

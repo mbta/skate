@@ -367,14 +367,17 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp typeddetour_from_detour(_), do: nil
 
-  # defp selectedduration_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
+  # defp selectedduration_from_detour(%Detour{estimated_duration: estimated_duration}), do: estimated_duration
   defp selectedduration_from_detour(
          %Detour{
-           state: state
+           state: %{
+             "context" => %{
+               "selectedDuration" => selected_duration
+             }
+           }
          } = detour
        ) do
     log_fallback("selectedDuration")
-    selected_duration = state["context"]["selectedDuration"]
 
     if detour.status == :active and selected_duration == nil do
       Logger.warning(
