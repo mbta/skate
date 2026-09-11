@@ -126,8 +126,14 @@ export const InteractiveQueueLifecycle: Story = {
         name: /select emergency call/i,
       })
       await userEvent.click(emergencyRow)
-      await expect(canvas.getByText("Emergency")).toBeInTheDocument()
-      await expect(canvas.getByText(/Shania Twain/i)).toBeInTheDocument()
+
+      const detailsPane = canvas.getByRole("region", { name: "Call details" })
+      const details = within(detailsPane)
+
+      await expect(
+        details.getByRole("heading", { level: 2, name: /emergency/i })
+      ).toBeInTheDocument()
+      await expect(details.getByText(/Shania Twain/i)).toBeInTheDocument()
     })
 
     await step(
@@ -138,10 +144,13 @@ export const InteractiveQueueLifecycle: Story = {
         })
         await userEvent.click(respondButtons[0])
 
-        // Verify live call banner / tag appears and mark done button is active
-        await expect(canvas.getByText("Live Call")).toBeInTheDocument()
+        // Verify live call banner / tag appears and mark done button is active in details panel
+        const detailsPane = canvas.getByRole("region", { name: "Call details" })
+        const details = within(detailsPane)
+
+        await expect(details.getByText("Live Call")).toBeInTheDocument()
         await expect(
-          canvas.getByRole("button", { name: /mark done/i })
+          details.getByRole("button", { name: /mark done/i })
         ).toBeInTheDocument()
       }
     )
@@ -161,7 +170,10 @@ export const InteractiveQueueLifecycle: Story = {
     )
 
     await step("Mark active call done from the top banner", async () => {
-      const markDoneBtn = canvas.getByRole("button", { name: /mark done/i })
+      const banner = canvas.getByRole("region", { name: "Active Call Banner" })
+      const markDoneBtn = within(banner).getByRole("button", {
+        name: /mark done/i,
+      })
       await userEvent.click(markDoneBtn)
 
       // Active banner should disappear once marked done
