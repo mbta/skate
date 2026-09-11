@@ -48,7 +48,7 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
       )}
 
       <header className="c-rtt-queue__header">
-        <h1 className="c-rtt-queue__title">📻 Radio RTT Queue</h1>
+        <h2 className="c-rtt-queue__title">📻 Radio RTT Queue</h2>
 
         <div
           className="c-rtt-queue__tabs"
