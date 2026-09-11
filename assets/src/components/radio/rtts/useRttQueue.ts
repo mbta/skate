@@ -1,6 +1,6 @@
 import { useReducer, useMemo, useCallback } from "react"
 import { RttCall, RttTab } from "./types"
-import { sortRttCalls } from "./utils"
+import { sortRttCalls } from "./sorting"
 import {
   rttQueueReducer,
   createInitialRttQueueState,

@@ -2,11 +2,11 @@ import { describe, test, expect } from "@jest/globals"
 import {
   sortRttCalls,
   CALL_TYPE_PRIORITY,
-} from "../../../../src/components/radio/rtts/utils"
+} from "../../../../src/components/radio/rtts/sorting"
 import { RttCallType } from "../../../../src/components/radio/rtts/types"
 import { rttCallFactory } from "../../../factories/radio/rtt"
 
-describe("RTT Domain & Sorting", () => {
+describe("RTT Sorting", () => {
   test.each([
     { callType: "Emergency" as RttCallType, expectedPriority: 1 },
     { callType: "PRTT" as RttCallType, expectedPriority: 2 },
