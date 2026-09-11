@@ -48,7 +48,7 @@ export interface RttQueueCallbacks {
   onTabChange?: (tab: RttTab) => void
 }
 
-export interface UseRttQueueOptions extends RttQueueCallbacks {
+export interface UseRttQueueProps extends RttQueueCallbacks {
   initialState?: InitialRttQueueState
   incomingCalls?: RttCall[]
   pastCalls?: RttCall[]
@@ -59,46 +59,46 @@ export interface UseRttQueueOptions extends RttQueueCallbacks {
   currentDispatcherName?: string
 }
 
-export const useRttQueue = ({
-  initialState,
-  incomingCalls: incomingCallsProp,
-  pastCalls: pastCallsProp,
-  selectedCallId: selectedCallIdProp,
-  activeCallId: activeCallIdProp,
-  currentTab: currentTabProp,
-  newIncomingCount: newIncomingCountProp,
-  currentDispatcherName = "Current Dispatcher",
-  onSelectCall,
-  onRespondCall,
-  onMarkDoneCall,
-  onTabChange,
-}: UseRttQueueOptions = {}) => {
+export const useRttQueue = (props: UseRttQueueProps = {}) => {
+  const {
+    initialState,
+    currentDispatcherName = "Current Dispatcher",
+    onSelectCall,
+    onRespondCall,
+    onMarkDoneCall,
+    onTabChange,
+  } = props
+
   const [state, dispatch] = useReducer(
     rttQueueReducer,
     {
-      tab: currentTabProp ?? initialState?.tab,
-      incomingCalls: incomingCallsProp ?? initialState?.incomingCalls,
-      pastCalls: pastCallsProp ?? initialState?.pastCalls,
-      selectedCallId: selectedCallIdProp ?? initialState?.selectedCallId,
-      activeCallId: activeCallIdProp ?? initialState?.activeCallId,
-      newIncomingCount: newIncomingCountProp ?? initialState?.newIncomingCount,
+      tab: props.currentTab ?? initialState?.tab,
+      incomingCalls: props.incomingCalls ?? initialState?.incomingCalls,
+      pastCalls: props.pastCalls ?? initialState?.pastCalls,
+      selectedCallId:
+        props.selectedCallId !== undefined
+          ? props.selectedCallId
+          : initialState?.selectedCallId,
+      activeCallId:
+        props.activeCallId !== undefined
+          ? props.activeCallId
+          : initialState?.activeCallId,
+      newIncomingCount:
+        props.newIncomingCount ?? initialState?.newIncomingCount,
     },
     createInitialRttQueueState
   )
 
-  const tab = currentTabProp !== undefined ? currentTabProp : state.tab
-  const incomingCalls =
-    incomingCallsProp !== undefined ? incomingCallsProp : state.incomingCalls
-  const pastCalls =
-    pastCallsProp !== undefined ? pastCallsProp : state.pastCalls
+  const tab = props.currentTab ?? state.tab
+  const incomingCalls = props.incomingCalls ?? state.incomingCalls
+  const pastCalls = props.pastCalls ?? state.pastCalls
   const selectedCallId =
-    selectedCallIdProp !== undefined ? selectedCallIdProp : state.selectedCallId
+    props.selectedCallId !== undefined
+      ? props.selectedCallId
+      : state.selectedCallId
   const activeCallId =
-    activeCallIdProp !== undefined ? activeCallIdProp : state.activeCallId
-  const newIncomingCount =
-    newIncomingCountProp !== undefined
-      ? newIncomingCountProp
-      : state.newIncomingCount
+    props.activeCallId !== undefined ? props.activeCallId : state.activeCallId
+  const newIncomingCount = props.newIncomingCount ?? state.newIncomingCount
 
   const dispatchTabChange = useCallback((newTab: RttTab) => {
     dispatch({ type: "CHANGE_TAB", tab: newTab })
