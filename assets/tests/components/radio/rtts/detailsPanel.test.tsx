@@ -86,6 +86,21 @@ describe("RttDetailsPanel", () => {
     }
   )
 
+  test("renders direction when present and omits direction container when absent", () => {
+    const callWithDirection = rttCallFactory.build({
+      direction: "Inbound",
+    })
+    const { unmount } = render(<RttDetailsPanel call={callWithDirection} />)
+    expect(screen.getByText("INBOUND")).toBeInTheDocument()
+    unmount()
+
+    const callWithoutDirection = rttCallFactory.build({
+      direction: undefined,
+    })
+    render(<RttDetailsPanel call={callWithoutDirection} />)
+    expect(screen.queryByText("OUTBOUND")).not.toBeInTheDocument()
+  })
+
   test("renders all detail key-value fields when present", () => {
     const call = rttCallFactory.build({
       currentLocation: "Forest Hills Station",

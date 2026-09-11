@@ -132,9 +132,11 @@ export const RttDetailsPanel = ({
           </div>
 
           <div className="c-rtt-details-panel__hero-route">
-            <div className="c-rtt-details-panel__direction">
-              {call.direction?.toUpperCase() || "OUTBOUND"}
-            </div>
+            {call.direction && (
+              <div className="c-rtt-details-panel__direction">
+                {call.direction.toUpperCase()}
+              </div>
+            )}
             <div className="c-rtt-details-panel__headsign">
               {headsignDisplay.toUpperCase()}
             </div>
