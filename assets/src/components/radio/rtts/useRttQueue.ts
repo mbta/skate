@@ -5,7 +5,7 @@ import {
   rttQueueReducer,
   createInitialRttQueueState,
   type RttQueueState,
-  type InitialRttQueueStateOptions,
+  type InitialRttQueueState,
 } from "./rttQueueReducer"
 import { useRttSelection } from "./useRttSelection"
 import { useRttQueueTabs } from "./useRttQueueTabs"
@@ -49,7 +49,7 @@ export interface RttQueueCallbacks {
 }
 
 export interface UseRttQueueOptions extends RttQueueCallbacks {
-  initialState?: InitialRttQueueStateOptions
+  initialState?: InitialRttQueueState
   incomingCalls?: RttCall[]
   pastCalls?: RttCall[]
   selectedCallId?: string | null
