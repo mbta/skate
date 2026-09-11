@@ -1,49 +1,59 @@
-import { describe, test, expect, afterEach } from "@jest/globals"
+import { describe, test, expect, jest } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
-import { render, fireEvent, cleanup, within } from "@testing-library/react"
+import { render, fireEvent, screen } from "@testing-library/react"
 import { ActiveRttBanner } from "../../../../src/components/radio/rtts/activeBanner"
 import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("ActiveRttBanner", () => {
-  afterEach(cleanup)
-
-  test("renders vehicle banner text and fires onMarkDone when button clicked", () => {
+  test("renders vehicle banner text and fires onMarkDone with call when button clicked", () => {
     const call = rttCallFactory.build({ vehicleId: "9876" })
-    let markDoneCalled = false
+    const onMarkDone = jest.fn()
 
-    const { container } = render(
-      <ActiveRttBanner
-        activeCall={call}
-        onMarkDone={() => (markDoneCalled = true)}
-      />
-    )
-    const view = within(container)
+    render(<ActiveRttBanner activeCall={call} onMarkDone={onMarkDone} />)
 
-    expect(view.getByText("ACTIVE CALL VEHICLE 9876")).toBeInTheDocument()
+    expect(
+      screen.getByText("ACTIVE CALL VEHICLE 9876")
+    ).toBeInTheDocument()
 
-    const markDoneBtn = view.getByRole("button", { name: /mark done/i })
+    const markDoneBtn = screen.getByRole("button", { name: /mark done/i })
     fireEvent.click(markDoneBtn)
-    expect(markDoneCalled).toBe(true)
+
+    expect(onMarkDone).toHaveBeenCalledTimes(1)
+    expect(onMarkDone).toHaveBeenCalledWith(call)
   })
 
-  test("makes banner text a clickable button when onSelectActive is provided", () => {
-    const call = rttCallFactory.build({ vehicleId: "5432" })
-    let selectedCall: typeof call | null = null
+  test("renders banner text as static text when onSelectActive is not provided", () => {
+    const call = rttCallFactory.build({ vehicleId: "9876" })
 
-    const { container } = render(
+    render(<ActiveRttBanner activeCall={call} onMarkDone={jest.fn()} />)
+
+    expect(
+      screen.queryByRole("button", { name: "ACTIVE CALL VEHICLE 9876" })
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByText("ACTIVE CALL VEHICLE 9876")
+    ).toBeInTheDocument()
+  })
+
+  test("makes banner text a clickable button and fires onSelectActive with call when provided", () => {
+    const call = rttCallFactory.build({ vehicleId: "5432" })
+    const onSelectActive = jest.fn()
+
+    render(
       <ActiveRttBanner
         activeCall={call}
-        onMarkDone={() => {}}
-        onSelectActive={(c) => (selectedCall = c)}
+        onMarkDone={jest.fn()}
+        onSelectActive={onSelectActive}
       />
     )
-    const view = within(container)
 
-    const selectBtn = view.getByRole("button", {
+    const selectBtn = screen.getByRole("button", {
       name: "ACTIVE CALL VEHICLE 5432",
     })
     fireEvent.click(selectBtn)
-    expect(selectedCall).toEqual(call)
+
+    expect(onSelectActive).toHaveBeenCalledTimes(1)
+    expect(onSelectActive).toHaveBeenCalledWith(call)
   })
 })
