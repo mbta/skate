@@ -1,6 +1,8 @@
 defmodule SkateWeb.UserSocket do
   require Logger
-  use Phoenix.Socket
+
+  use Phoenix.Socket,
+    max_channels_per_transport: 500
 
   ## Channels
   channel("data_status", SkateWeb.DataStatusChannel)
