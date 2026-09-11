@@ -95,32 +95,39 @@ describe("RttQueueItem", () => {
     expect(screen.getByRole("listitem")).toHaveClass("c-rtt-queue-item--past")
   })
 
-  test.each([
-    { isSelected: true, expectedPressed: "true", hasSelectedClass: true },
-    { isSelected: false, expectedPressed: "false", hasSelectedClass: false },
-  ])(
-    "reflects selection state (isSelected=$isSelected) in aria-pressed and css class",
-    ({ isSelected, expectedPressed, hasSelectedClass }) => {
-      const call = rttCallFactory.build({
-        callType: "Emergency",
-        vehicleId: "1234",
-      })
+  test("reflects selected state in aria-pressed and css class when selected", () => {
+    const call = rttCallFactory.build({
+      callType: "Emergency",
+      vehicleId: "1234",
+    })
 
-      render(<RttQueueItem call={call} isSelected={isSelected} />)
+    render(<RttQueueItem call={call} isSelected={true} />)
 
-      const rowButton = screen.getByRole("button", {
-        name: "Select Emergency call for vehicle 1234",
-      })
-      expect(rowButton).toHaveAttribute("aria-pressed", expectedPressed)
+    const rowButton = screen.getByRole("button", {
+      name: "Select Emergency call for vehicle 1234",
+    })
+    expect(rowButton).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("listitem")).toHaveClass(
+      "c-rtt-queue-item--selected"
+    )
+  })
 
-      const item = screen.getByRole("listitem")
-      if (hasSelectedClass) {
-        expect(item).toHaveClass("c-rtt-queue-item--selected")
-      } else {
-        expect(item).not.toHaveClass("c-rtt-queue-item--selected")
-      }
-    }
-  )
+  test("reflects unselected state in aria-pressed and css class when not selected", () => {
+    const call = rttCallFactory.build({
+      callType: "Emergency",
+      vehicleId: "1234",
+    })
+
+    render(<RttQueueItem call={call} isSelected={false} />)
+
+    const rowButton = screen.getByRole("button", {
+      name: "Select Emergency call for vehicle 1234",
+    })
+    expect(rowButton).toHaveAttribute("aria-pressed", "false")
+    expect(screen.getByRole("listitem")).not.toHaveClass(
+      "c-rtt-queue-item--selected"
+    )
+  })
 
   test("triggers onSelect with call when clicking the row", () => {
     const call = rttCallFactory.build({

@@ -12,9 +12,7 @@ describe("ActiveRttBanner", () => {
 
     render(<ActiveRttBanner activeCall={call} onMarkDone={onMarkDone} />)
 
-    expect(
-      screen.getByText("ACTIVE CALL VEHICLE 9876")
-    ).toBeInTheDocument()
+    expect(screen.getByText("ACTIVE CALL VEHICLE 9876")).toBeInTheDocument()
 
     const markDoneBtn = screen.getByRole("button", { name: /mark done/i })
     fireEvent.click(markDoneBtn)
@@ -31,9 +29,7 @@ describe("ActiveRttBanner", () => {
     expect(
       screen.queryByRole("button", { name: "ACTIVE CALL VEHICLE 9876" })
     ).not.toBeInTheDocument()
-    expect(
-      screen.getByText("ACTIVE CALL VEHICLE 9876")
-    ).toBeInTheDocument()
+    expect(screen.getByText("ACTIVE CALL VEHICLE 9876")).toBeInTheDocument()
   })
 
   test("makes banner text a clickable button and fires onSelectActive with call when provided", () => {
