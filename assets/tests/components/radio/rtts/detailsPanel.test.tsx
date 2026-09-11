@@ -86,31 +86,31 @@ describe("RttDetailsPanel", () => {
     }
   )
 
-  test("renders detail key-value fields and omits optional empty fields", () => {
-    const callWithAllFields = rttCallFactory.build({
+  test("renders all detail key-value fields when present", () => {
+    const call = rttCallFactory.build({
       currentLocation: "Forest Hills Station",
       runNumber: "101",
       garage: "Southampton",
       talkGroup: "OPS-1",
     })
 
-    const { unmount } = render(<RttDetailsPanel call={callWithAllFields} />)
+    render(<RttDetailsPanel call={call} />)
 
     expect(screen.getByText("Forest Hills Station")).toBeInTheDocument()
     expect(screen.getByText("101")).toBeInTheDocument()
     expect(screen.getByText("Southampton")).toBeInTheDocument()
     expect(screen.getByText("OPS-1")).toBeInTheDocument()
+  })
 
-    unmount()
-
-    const callWithoutOptionals = rttCallFactory.build({
+  test("falls back to default labels and omits optional fields when absent", () => {
+    const call = rttCallFactory.build({
       currentLocation: undefined,
       runNumber: undefined,
       garage: undefined,
       talkGroup: undefined,
     })
 
-    render(<RttDetailsPanel call={callWithoutOptionals} />)
+    render(<RttDetailsPanel call={call} />)
 
     expect(screen.getByText("Unknown")).toBeInTheDocument()
     expect(screen.getByText("N/A")).toBeInTheDocument()
@@ -118,7 +118,7 @@ describe("RttDetailsPanel", () => {
     expect(screen.queryByText("Talk Group")).not.toBeInTheDocument()
   })
 
-  test("displays live call tag, answered/markedDone timestamps, and triggers onMarkDone with call", () => {
+  test("renders live indicator and formatted timestamps for an active call", () => {
     const answeredAt = new Date("2026-09-08T14:30:15Z")
     const markedDoneAt = new Date("2026-09-08T14:35:45Z")
     const call = rttCallFactory.build({
@@ -126,13 +126,19 @@ describe("RttDetailsPanel", () => {
       answeredAt,
       markedDoneAt,
     })
-    const onMarkDone = jest.fn()
 
-    render(<RttDetailsPanel call={call} onMarkDone={onMarkDone} />)
+    render(<RttDetailsPanel call={call} />)
 
     expect(screen.getByText("Live Call")).toBeInTheDocument()
     expect(screen.getByText("ANSWERED")).toBeInTheDocument()
     expect(screen.getByText("MARKED DONE")).toBeInTheDocument()
+  })
+
+  test("fires onMarkDone with call when mark done button is clicked", () => {
+    const call = rttCallFactory.build({ status: "active" })
+    const onMarkDone = jest.fn()
+
+    render(<RttDetailsPanel call={call} onMarkDone={onMarkDone} />)
 
     const markDoneBtn = screen.getByRole("button", { name: /mark done/i })
     fireEvent.click(markDoneBtn)
