@@ -3,7 +3,7 @@ import { RttTab } from "./types"
 import { RttQueueItem } from "./queueItem"
 import { RttDetailsPanel } from "./detailsPanel"
 import { ActiveRttBanner } from "./activeBanner"
-import { useRttQueue, UseRttQueueProps } from "./useRttQueue"
+import { useRttQueue, UseRttQueueOptions } from "./useRttQueue"
 import { joinClasses } from "../../../helpers/dom"
 
 interface TabConfig {
@@ -31,7 +31,7 @@ const EMPTY_STATE_CONTENT: Record<
   },
 }
 
-export type RttQueueProps = UseRttQueueProps
+export type RttQueueProps = UseRttQueueOptions
 
 export const RttQueue = (props: RttQueueProps): JSX.Element => {
   const { calls, tabs, actions } = useRttQueue(props)
