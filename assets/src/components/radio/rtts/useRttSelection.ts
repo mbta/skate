@@ -34,7 +34,7 @@ export const useRttSelection = ({
 
   const isSelectedLive = Boolean(
     selectedCall &&
-      (selectedCall.id === activeCallId || selectedCall.status === "active")
+    (selectedCall.id === activeCallId || selectedCall.status === "active")
   )
 
   const handleSelectCall = useCallback(
