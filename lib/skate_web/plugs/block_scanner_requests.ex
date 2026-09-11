@@ -30,14 +30,18 @@ defmodule SkateWeb.Plugs.BlockScannerRequests do
   end
 
   defp scanner_request?(conn) do
-    request = conn.request_path <> if(conn.query_string == "", do: "", else: "?#{conn.query_string}")
+    request =
+      conn.request_path <> if(conn.query_string == "", do: "", else: "?#{conn.query_string}")
 
-    Enum.any?([
-      @unsupported_stack_regex,
-      @traversal_regex,
-      @null_byte_regex,
-      @sensitive_file_regex,
-      @file_fetch_regex
-    ], &String.match?(request, &1))
+    Enum.any?(
+      [
+        @unsupported_stack_regex,
+        @traversal_regex,
+        @null_byte_regex,
+        @sensitive_file_regex,
+        @file_fetch_regex
+      ],
+      &String.match?(request, &1)
+    )
   end
 end
