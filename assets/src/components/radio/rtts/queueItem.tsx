@@ -1,8 +1,14 @@
 import React from "react"
-import { RttCall, RttTab } from "./types"
+import { RttCall, RttCallType, RttTab } from "./types"
 import { RoutePill } from "../../routePill"
 import { formattedTime } from "../../../util/dateTime"
 import { joinClasses } from "../../../helpers/dom"
+
+const CALL_TYPE_MODIFIERS: Record<RttCallType, string> = {
+  Emergency: "emergency",
+  PRTT: "prtt",
+  RTT: "rtt",
+}
 
 export interface RttQueueItemProps {
   call: RttCall
@@ -21,8 +27,6 @@ export const RttQueueItem = ({
   onSelect,
   onRespond,
 }: RttQueueItemProps): JSX.Element => {
-  const isEmergency = call.callType === "Emergency"
-  const isPrtt = call.callType === "PRTT"
   const isActive = call.status === "active"
 
   const isRespondedByCurrentUser =
@@ -36,24 +40,16 @@ export const RttQueueItem = ({
     ? "YOU"
     : call.respondedBy || "ACTIVE"
 
-  const typeClass = isEmergency
-    ? "c-rtt-queue-item__type--emergency"
-    : isPrtt
-    ? "c-rtt-queue-item__type--prtt"
-    : "c-rtt-queue-item__type--rtt"
-
-  const priorityBorderClass = isEmergency
-    ? "c-rtt-queue-item--emergency"
-    : isPrtt
-    ? "c-rtt-queue-item--prtt"
-    : "c-rtt-queue-item--rtt"
+  const modifier = CALL_TYPE_MODIFIERS[call.callType] ?? "rtt"
+  const typeClass = `c-rtt-queue-item__type--${modifier}`
+  const priorityBorderClass = `c-rtt-queue-item--${modifier}`
 
   const classes = joinClasses([
     "c-rtt-queue-item",
     priorityBorderClass,
-    isSelected ? "c-rtt-queue-item--selected" : "",
-    isRespondedByCurrentUser ? "c-rtt-queue-item--live" : "",
-    tab === "past" ? "c-rtt-queue-item--past" : "",
+    isSelected && "c-rtt-queue-item--selected",
+    isRespondedByCurrentUser && "c-rtt-queue-item--live",
+    tab === "past" && "c-rtt-queue-item--past",
   ])
 
   const handleRowClick = () => {
@@ -87,7 +83,7 @@ export const RttQueueItem = ({
         }}
       >
         <div className="c-rtt-queue-item__col c-rtt-queue-item__col--type">
-          <span className={joinClasses(["c-rtt-queue-item__type", typeClass])}>
+          <span className={`c-rtt-queue-item__type ${typeClass}`}>
             {call.callType}
           </span>
         </div>
@@ -116,7 +112,10 @@ export const RttQueueItem = ({
               className="c-rtt-queue-item__status-cell"
               title={`Responded by ${call.respondedBy || "Dispatcher"}`}
             >
-              <span className="c-rtt-queue-item__status-dot" />
+              <span
+                className="c-rtt-queue-item__status-dot"
+                aria-hidden="true"
+              />
               <span className="c-rtt-queue-item__status-name">
                 {responderDisplayName}
               </span>
