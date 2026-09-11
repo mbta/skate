@@ -58,8 +58,8 @@ export const RttDetailsPanel = ({
     { label: "Run", value: call.runNumber || "N/A" },
     { label: "Garage", value: call.garage },
     { label: "Talk Group", value: call.talkGroup },
-  ].filter(
-    (field): field is { label: string; value: string } => Boolean(field.value)
+  ].filter((field): field is { label: string; value: string } =>
+    Boolean(field.value)
   )
 
   return (

@@ -95,9 +95,7 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
           {calls.activeList.length === 0 ? (
             <div className="c-rtt-queue__empty">
               <div className="c-rtt-queue__empty-icon">📻</div>
-              <div className="c-rtt-queue__empty-title">
-                {emptyState.title}
-              </div>
+              <div className="c-rtt-queue__empty-title">{emptyState.title}</div>
               <p className="c-rtt-queue__empty-desc">
                 {emptyState.description}
               </p>
