@@ -28,7 +28,7 @@ export const RttDetailsPanel = ({
 
   const classes = joinClasses([
     "c-rtt-details-panel",
-    live ? "c-rtt-details-panel--live" : "",
+    live && "c-rtt-details-panel--live",
   ])
 
   const operatorDisplay =
@@ -44,6 +44,24 @@ export const RttDetailsPanel = ({
       call.direction ? ` ${call.direction}` : ""
     }`
 
+  const timestampRows = [
+    { label: "ANSWERED", time: call.answeredAt },
+    { label: "MARKED DONE", time: call.markedDoneAt },
+  ].filter(
+    (item): item is { label: string; time: NonNullable<typeof item.time> } =>
+      Boolean(item.time)
+  )
+
+  const detailFields = [
+    { label: "Current Location", value: call.currentLocation || "Unknown" },
+    { label: "Operator", value: operatorDisplay },
+    { label: "Run", value: call.runNumber || "N/A" },
+    { label: "Garage", value: call.garage },
+    { label: "Talk Group", value: call.talkGroup },
+  ].filter(
+    (field): field is { label: string; value: string } => Boolean(field.value)
+  )
+
   return (
     <aside className={classes}>
       <div className="c-rtt-details-panel__header">
@@ -58,7 +76,10 @@ export const RttDetailsPanel = ({
           </h2>
           {live && (
             <div className="c-rtt-details-panel__live-tag">
-              <span className="c-rtt-details-panel__live-dot" />
+              <span
+                className="c-rtt-details-panel__live-dot"
+                aria-hidden="true"
+              />
               Live Call
             </div>
           )}
@@ -66,26 +87,16 @@ export const RttDetailsPanel = ({
 
         <div className="c-rtt-details-panel__header-actions">
           <div className="c-rtt-details-panel__timestamps">
-            {call.answeredAt && (
-              <div className="c-rtt-details-panel__timestamp-row">
+            {timestampRows.map(({ label, time }) => (
+              <div key={label} className="c-rtt-details-panel__timestamp-row">
                 <span className="c-rtt-details-panel__timestamp-label">
-                  ANSWERED
+                  {label}
                 </span>
                 <span className="c-rtt-details-panel__timestamp-val">
-                  {formattedTimeWithSeconds(call.answeredAt)}
+                  {formattedTimeWithSeconds(time)}
                 </span>
               </div>
-            )}
-            {call.markedDoneAt && (
-              <div className="c-rtt-details-panel__timestamp-row">
-                <span className="c-rtt-details-panel__timestamp-label">
-                  MARKED DONE
-                </span>
-                <span className="c-rtt-details-panel__timestamp-val">
-                  {formattedTimeWithSeconds(call.markedDoneAt)}
-                </span>
-              </div>
-            )}
+            ))}
           </div>
 
           {live && onMarkDone && (
@@ -102,7 +113,10 @@ export const RttDetailsPanel = ({
 
       <div className="c-rtt-details-panel__body">
         <div className="c-rtt-details-panel__hero">
-          <div className="c-rtt-details-panel__vehicle-badge">
+          <div
+            className="c-rtt-details-panel__vehicle-badge"
+            aria-label={`Vehicle ${call.vehicleId}`}
+          >
             <svg
               className="c-rtt-details-panel__vehicle-triangle"
               viewBox="0 0 24 24"
@@ -133,42 +147,12 @@ export const RttDetailsPanel = ({
         </div>
 
         <div className="c-rtt-details-panel__fields">
-          <div className="c-rtt-details-panel__field">
-            <span className="c-rtt-details-panel__label">Current Location</span>
-            <span className="c-rtt-details-panel__value">
-              {call.currentLocation || "Unknown"}
-            </span>
-          </div>
-
-          <div className="c-rtt-details-panel__field">
-            <span className="c-rtt-details-panel__label">Operator</span>
-            <span className="c-rtt-details-panel__value">
-              {operatorDisplay}
-            </span>
-          </div>
-
-          <div className="c-rtt-details-panel__field">
-            <span className="c-rtt-details-panel__label">Run</span>
-            <span className="c-rtt-details-panel__value">
-              {call.runNumber || "N/A"}
-            </span>
-          </div>
-
-          {call.garage && (
-            <div className="c-rtt-details-panel__field">
-              <span className="c-rtt-details-panel__label">Garage</span>
-              <span className="c-rtt-details-panel__value">{call.garage}</span>
+          {detailFields.map(({ label, value }) => (
+            <div key={label} className="c-rtt-details-panel__field">
+              <span className="c-rtt-details-panel__label">{label}</span>
+              <span className="c-rtt-details-panel__value">{value}</span>
             </div>
-          )}
-
-          {call.talkGroup && (
-            <div className="c-rtt-details-panel__field">
-              <span className="c-rtt-details-panel__label">Talk Group</span>
-              <span className="c-rtt-details-panel__value">
-                {call.talkGroup}
-              </span>
-            </div>
-          )}
+          ))}
         </div>
       </div>
     </aside>
