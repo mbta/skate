@@ -31,7 +31,7 @@ export const formattedTime = (date: Date): string => {
   return formattedHoursMinutes(date.getHours(), date.getMinutes())
 }
 
-export const formatTimeWithSeconds = (
+export const formattedTimeWithSeconds = (
   dateOrStr?: Date | string | null
 ): string => {
   if (!dateOrStr) return ""

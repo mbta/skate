@@ -1,6 +1,6 @@
 import React from "react"
 import { RttCall } from "./types"
-import { formatTimeWithSeconds } from "../../../util/dateTime"
+import { formattedTimeWithSeconds } from "../../../util/dateTime"
 import { joinClasses } from "../../../helpers/dom"
 
 export interface RttDetailsPanelProps {
@@ -53,7 +53,7 @@ export const RttDetailsPanel = ({
               {call.callType}
             </span>
             <span className="c-rtt-details-panel__call-time">
-              {formatTimeWithSeconds(call.receivedAt)}
+              {formattedTimeWithSeconds(call.receivedAt)}
             </span>
           </h2>
           {live && (
@@ -72,7 +72,7 @@ export const RttDetailsPanel = ({
                   ANSWERED
                 </span>
                 <span className="c-rtt-details-panel__timestamp-val">
-                  {formatTimeWithSeconds(call.answeredAt)}
+                  {formattedTimeWithSeconds(call.answeredAt)}
                 </span>
               </div>
             )}
@@ -82,7 +82,7 @@ export const RttDetailsPanel = ({
                   MARKED DONE
                 </span>
                 <span className="c-rtt-details-panel__timestamp-val">
-                  {formatTimeWithSeconds(call.markedDoneAt)}
+                  {formattedTimeWithSeconds(call.markedDoneAt)}
                 </span>
               </div>
             )}

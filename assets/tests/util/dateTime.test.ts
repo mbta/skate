@@ -9,7 +9,7 @@ import {
   formattedScheduledTime,
   serviceDaySeconds,
   formattedDate,
-  formatTimeWithSeconds,
+  formattedTimeWithSeconds,
 } from "../../src/util/dateTime"
 
 describe("now", () => {
@@ -178,26 +178,31 @@ describe("formattedHoursMinutes", () => {
   })
 })
 
-describe("formatTimeWithSeconds", () => {
-  test("returns empty string when null, undefined, or empty", () => {
-    expect(formatTimeWithSeconds(null)).toEqual("")
-    expect(formatTimeWithSeconds(undefined)).toEqual("")
-    expect(formatTimeWithSeconds("")).toEqual("")
-  })
+describe("formattedTimeWithSeconds", () => {
+  const morningDate = new Date(2026, 8, 8, 9, 5, 7)
+  const afternoonDate = new Date(2026, 8, 8, 14, 30, 45)
 
-  test("returns empty string when date is invalid", () => {
-    expect(formatTimeWithSeconds("invalid-date")).toEqual("")
-  })
-
-  test("formats Date with hours, minutes, seconds and AM/PM", () => {
-    const d = new Date(2026, 8, 8, 9, 5, 7)
-    expect(formatTimeWithSeconds(d)).toEqual("9:05:07 AM")
-  })
-
-  test("formats string date correctly", () => {
-    const d = new Date(2026, 8, 8, 14, 30, 45)
-    expect(formatTimeWithSeconds(d.toISOString())).toEqual(
-      formatTimeWithSeconds(d)
-    )
+  test.each([
+    { input: null, expected: "", desc: "null" },
+    { input: undefined, expected: "", desc: "undefined" },
+    { input: "", expected: "", desc: "empty string" },
+    { input: "invalid-date", expected: "", desc: "invalid date string" },
+    {
+      input: morningDate,
+      expected: "9:05:07 AM",
+      desc: "morning Date with 12-hour AM conversion",
+    },
+    {
+      input: afternoonDate,
+      expected: "2:30:45 PM",
+      desc: "afternoon Date with 12-hour PM conversion",
+    },
+    {
+      input: afternoonDate.toISOString(),
+      expected: formattedTimeWithSeconds(afternoonDate),
+      desc: "ISO timestamp string matching Date equivalent",
+    },
+  ])("returns '$expected' when given $desc", ({ input, expected }) => {
+    expect(formattedTimeWithSeconds(input)).toEqual(expected)
   })
 })
