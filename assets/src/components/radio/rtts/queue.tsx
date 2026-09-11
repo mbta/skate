@@ -1,13 +1,41 @@
 import React from "react"
+import { RttTab } from "./types"
 import { RttQueueItem } from "./queueItem"
 import { RttDetailsPanel } from "./detailsPanel"
 import { ActiveRttBanner } from "./activeBanner"
 import { useRttQueue, UseRttQueueOptions } from "./useRttQueue"
+import { joinClasses } from "../../../helpers/dom"
+
+interface TabConfig {
+  id: RttTab
+  label: string
+}
+
+const QUEUE_TABS: readonly TabConfig[] = [
+  { id: "incoming", label: "Incoming" },
+  { id: "past", label: "Past" },
+]
+
+const EMPTY_STATE_CONTENT: Record<
+  RttTab,
+  { title: string; description: string }
+> = {
+  incoming: {
+    title: "No Incoming RTT Calls",
+    description:
+      "Incoming and active driver requests to talk will appear here.",
+  },
+  past: {
+    title: "No Past RTT Calls",
+    description: "Completed calls marked as done will appear here.",
+  },
+}
 
 export type RttQueueProps = UseRttQueueOptions
 
 export const RttQueue = (props: RttQueueProps): JSX.Element => {
   const { calls, tabs, actions } = useRttQueue(props)
+  const emptyState = EMPTY_STATE_CONTENT[tabs.current]
 
   return (
     <div className="c-rtt-queue">
@@ -27,37 +55,33 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
           role="tablist"
           aria-label="RTT Queue Views"
         >
-          <button
-            type="button"
-            role="tab"
-            id="rtt-tab-incoming"
-            aria-selected={tabs.current === "incoming"}
-            aria-controls="rtt-panel-incoming"
-            className={`c-rtt-queue__tab ${
-              tabs.current === "incoming" ? "c-rtt-queue__tab--active" : ""
-            }`}
-            onClick={() => actions.changeTab("incoming")}
-          >
-            Incoming
-            {tabs.current === "past" && tabs.newIncomingCount > 0 && (
-              <span className="c-rtt-queue__tab-badge">
-                {tabs.newIncomingCount} new
-              </span>
-            )}
-          </button>
-          <button
-            type="button"
-            role="tab"
-            id="rtt-tab-past"
-            aria-selected={tabs.current === "past"}
-            aria-controls="rtt-panel-past"
-            className={`c-rtt-queue__tab ${
-              tabs.current === "past" ? "c-rtt-queue__tab--active" : ""
-            }`}
-            onClick={() => actions.changeTab("past")}
-          >
-            Past
-          </button>
+          {QUEUE_TABS.map(({ id, label }) => {
+            const isActive = tabs.current === id
+            return (
+              <button
+                key={id}
+                type="button"
+                role="tab"
+                id={`rtt-tab-${id}`}
+                aria-selected={isActive}
+                aria-controls={`rtt-panel-${id}`}
+                className={joinClasses([
+                  "c-rtt-queue__tab",
+                  isActive && "c-rtt-queue__tab--active",
+                ])}
+                onClick={() => actions.changeTab(id)}
+              >
+                {label}
+                {id === "incoming" &&
+                  tabs.current === "past" &&
+                  tabs.newIncomingCount > 0 && (
+                    <span className="c-rtt-queue__tab-badge">
+                      {tabs.newIncomingCount} new
+                    </span>
+                  )}
+              </button>
+            )
+          })}
         </div>
       </header>
 
@@ -72,14 +96,10 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
             <div className="c-rtt-queue__empty">
               <div className="c-rtt-queue__empty-icon">📻</div>
               <div className="c-rtt-queue__empty-title">
-                {tabs.current === "incoming"
-                  ? "No Incoming RTT Calls"
-                  : "No Past RTT Calls"}
+                {emptyState.title}
               </div>
               <p className="c-rtt-queue__empty-desc">
-                {tabs.current === "incoming"
-                  ? "Incoming and active driver requests to talk will appear here."
-                  : "Completed calls marked as done will appear here."}
+                {emptyState.description}
               </p>
             </div>
           ) : (
