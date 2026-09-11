@@ -1,7 +1,6 @@
 import { describe, test, expect } from "@jest/globals"
 import {
   sortRttCalls,
-  sortPastRttCalls,
   CALL_TYPE_PRIORITY,
 } from "../../../../src/components/radio/rtts/utils"
 import { RttCallType } from "../../../../src/components/radio/rtts/types"
@@ -74,7 +73,7 @@ describe("RTT Domain & Sorting", () => {
     ])
   })
 
-  test("sortPastRttCalls sorts calls by timestamp descending (newest first)", () => {
+  test("sorts calls by timestamp descending when byPriority is false", () => {
     const olderPastCall = rttCallFactory.build({
       id: "call-older",
       receivedAt: "2026-09-08T10:00:00Z",
@@ -84,7 +83,9 @@ describe("RTT Domain & Sorting", () => {
       receivedAt: new Date("2026-09-08T10:10:00Z"),
     })
 
-    const sorted = sortPastRttCalls([olderPastCall, newerPastCall])
+    const sorted = sortRttCalls([olderPastCall, newerPastCall], {
+      byPriority: false,
+    })
     expect(sorted).toEqual([newerPastCall, olderPastCall])
   })
 })

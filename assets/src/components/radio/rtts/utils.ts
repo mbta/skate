@@ -11,27 +11,27 @@ export const getCallTimestamp = (dateOrStr: Date | string): number =>
     ? new Date(dateOrStr).getTime()
     : dateOrStr.getTime()
 
-/**
- * Sorts RTT calls by:
- * 1. Priority: Emergency > PRTT > RTT
- * 2. Received timestamp: Newest to oldest (chronological order)
- */
-export const sortRttCalls = (calls: RttCall[]): RttCall[] => {
-  return [...calls].sort((a, b) => {
-    const priorityDiff =
-      CALL_TYPE_PRIORITY[a.callType] - CALL_TYPE_PRIORITY[b.callType]
-    if (priorityDiff !== 0) {
-      return priorityDiff
-    }
-    return getCallTimestamp(b.receivedAt) - getCallTimestamp(a.receivedAt)
-  })
+export interface SortRttCallsOptions {
+  byPriority?: boolean
 }
 
 /**
- * Sorts past calls in reverse chronological order (newest first).
+ * Sorts RTT calls in reverse chronological order (newest first).
+ * When `byPriority` is true (default), calls are sorted first by call type priority
+ * (Emergency > PRTT > RTT), and then by received timestamp.
  */
-export const sortPastRttCalls = (calls: RttCall[]): RttCall[] => {
-  return [...calls].sort(
-    (a, b) => getCallTimestamp(b.receivedAt) - getCallTimestamp(a.receivedAt)
-  )
+export const sortRttCalls = (
+  calls: RttCall[],
+  { byPriority = true }: SortRttCallsOptions = {}
+): RttCall[] => {
+  return [...calls].sort((a, b) => {
+    if (byPriority) {
+      const priorityDiff =
+        CALL_TYPE_PRIORITY[a.callType] - CALL_TYPE_PRIORITY[b.callType]
+      if (priorityDiff !== 0) {
+        return priorityDiff
+      }
+    }
+    return getCallTimestamp(b.receivedAt) - getCallTimestamp(a.receivedAt)
+  })
 }
