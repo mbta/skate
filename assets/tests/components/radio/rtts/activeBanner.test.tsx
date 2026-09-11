@@ -6,12 +6,15 @@ import { ActiveRttBanner } from "../../../../src/components/radio/rtts/activeBan
 import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("ActiveRttBanner", () => {
-  test("renders vehicle banner text and fires onMarkDone with call when button clicked", () => {
+  test("renders active banner region and fires onMarkDone with call when button clicked", () => {
     const call = rttCallFactory.build({ vehicleId: "9876" })
     const onMarkDone = jest.fn()
 
     render(<ActiveRttBanner activeCall={call} onMarkDone={onMarkDone} />)
 
+    expect(
+      screen.getByRole("region", { name: "Active Call Banner" })
+    ).toBeInTheDocument()
     expect(screen.getByText("ACTIVE CALL VEHICLE 9876")).toBeInTheDocument()
 
     const markDoneBtn = screen.getByRole("button", { name: /mark done/i })
