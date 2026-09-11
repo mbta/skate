@@ -255,6 +255,6 @@ describe("RttQueue Component", () => {
       />
     )
 
-    expect(screen.getByText("4 new")).toBeInTheDocument()
+    expect(screen.getByText("4 NEW")).toBeInTheDocument()
   })
 })

@@ -76,7 +76,7 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
                   tabs.current === "past" &&
                   tabs.newIncomingCount > 0 && (
                     <span className="c-rtt-queue__tab-badge">
-                      {tabs.newIncomingCount} new
+                      {tabs.newIncomingCount} NEW
                     </span>
                   )}
               </button>
