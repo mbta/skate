@@ -7,6 +7,16 @@ import { mockIncomingCalls, mockPastCalls } from "./__story-data__/rttQueueData"
 import { RttSimulatorToolbar } from "./__story-data__/rttSimulatorToolbar"
 import { rttCallFactory } from "../../../../tests/factories/radio/rtt"
 
+const layoutStyles: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  height: "100vh",
+  padding: "1rem",
+  boxSizing: "border-box",
+  backgroundColor: "#f2f3f5",
+  gap: "0.75rem",
+}
+
 const InteractivePrototypeWrapper = ({
   dispatcherName = "Dispatcher Alex",
 }: {
@@ -47,17 +57,7 @@ const InteractivePrototypeWrapper = ({
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh",
-        padding: "1rem",
-        boxSizing: "border-box",
-        backgroundColor: "#f2f3f5",
-        gap: "0.75rem",
-      }}
-    >
+    <div style={layoutStyles}>
       <RttSimulatorToolbar
         dispatcherName={dispatcherName}
         onSimulateNewCall={handleSimulateNewCall}

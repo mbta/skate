@@ -18,32 +18,38 @@ const SIMULATE_BUTTONS: readonly SimulateButtonConfig[] = [
   { type: "RTT", color: "#572e8a" },
 ]
 
+const toolbarStyles: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "0.5rem 1rem",
+  backgroundColor: "#fff",
+  border: "1px solid #d4d7db",
+  borderRadius: "0.375rem",
+  fontSize: "0.8125rem",
+  flexShrink: 0,
+}
+
+const sectionStyles: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+}
+
 export const RttSimulatorToolbar = ({
   dispatcherName,
   onSimulateNewCall,
   onReset,
 }: RttSimulatorToolbarProps): JSX.Element => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      padding: "0.5rem 1rem",
-      backgroundColor: "#fff",
-      border: "1px solid #d4d7db",
-      borderRadius: "0.375rem",
-      fontSize: "0.8125rem",
-      flexShrink: 0,
-    }}
-  >
-    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+  <div style={toolbarStyles}>
+    <div style={sectionStyles}>
       <strong>Prototype Simulator:</strong>
       <span>
         Logged in as: <em>{dispatcherName}</em>
       </span>
     </div>
 
-    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+    <div style={sectionStyles}>
       <span>Trigger New Call:</span>
       {SIMULATE_BUTTONS.map(({ type, color }) => (
         <button
