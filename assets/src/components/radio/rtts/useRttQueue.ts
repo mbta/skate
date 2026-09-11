@@ -5,7 +5,6 @@ import {
   rttQueueReducer,
   createInitialRttQueueState,
   type RttQueueState,
-  type RttQueueAction,
   type InitialRttQueueStateOptions,
 } from "./rttQueueReducer"
 import { useRttSelection } from "./useRttSelection"
@@ -36,16 +35,10 @@ export interface RttQueueActions {
   reset: (payload?: Partial<RttQueueState>) => void
 }
 
-export interface RttQueueRaw {
-  state: RttQueueState
-  dispatch: React.Dispatch<RttQueueAction>
-}
-
 export interface UseRttQueueResult {
   calls: RttCallsState
   tabs: RttTabsState
   actions: RttQueueActions
-  raw: RttQueueRaw
 }
 
 export interface RttQueueCallbacks {
@@ -222,18 +215,9 @@ export const useRttQueue = ({
     ]
   )
 
-  const raw: RttQueueRaw = useMemo(
-    () => ({
-      state,
-      dispatch,
-    }),
-    [state, dispatch]
-  )
-
   return {
     calls,
     tabs,
     actions,
-    raw,
   }
 }
