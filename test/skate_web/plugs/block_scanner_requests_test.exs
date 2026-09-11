@@ -31,6 +31,39 @@ defmodule SkateWeb.Plugs.BlockScannerRequestsTest do
     assert conn.status == 404
   end
 
+  test "halts and returns 404 for null-byte probes" do
+    conn = call_with_path("/index.php", "page=../../../../../../../../../../../etc/passwd\\u0000")
+
+    assert conn.halted
+    assert conn.status == 404
+  end
+
+  test "halts and returns 404 for exposed metadata and credential file probes" do
+    for path <- [
+          "/.git/config",
+          "/login/.git/config",
+          "/.env",
+          "/.env.production",
+          "/.env.local",
+          "/.aws/credentials.backup",
+          "/terraform.tfstate.orig",
+          "/.continue/config.json",
+          "/config/anthropic.json"
+        ] do
+      conn = call_with_path(path)
+
+      assert conn.halted, "expected #{path} to halt"
+      assert conn.status == 404
+    end
+  end
+
+  test "halts and returns 404 for file fetch probes" do
+    conn = call_with_path("/fetch", "url=file:///root/.azure/credentials")
+
+    assert conn.halted
+    assert conn.status == 404
+  end
+
   test "passes through normal requests" do
     conn = call_with_path("/")
 
