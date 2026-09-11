@@ -7,7 +7,10 @@ import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("ActiveRttBanner", () => {
   test("renders active banner region and fires onMarkDone with call when button clicked", () => {
-    const call = rttCallFactory.build({ vehicleId: "9876" })
+    const call = rttCallFactory.build({
+      vehicleId: "9876",
+      callType: "Emergency",
+    })
     const onMarkDone = jest.fn()
 
     render(<ActiveRttBanner activeCall={call} onMarkDone={onMarkDone} />)
@@ -15,7 +18,9 @@ describe("ActiveRttBanner", () => {
     expect(
       screen.getByRole("region", { name: "Active Call Banner" })
     ).toBeInTheDocument()
-    expect(screen.getByText("ACTIVE CALL VEHICLE 9876")).toBeInTheDocument()
+    expect(
+      screen.getByText("ACTIVE EMERGENCY VEHICLE 9876")
+    ).toBeInTheDocument()
 
     const markDoneBtn = screen.getByRole("button", { name: /mark done/i })
     fireEvent.click(markDoneBtn)
@@ -25,18 +30,24 @@ describe("ActiveRttBanner", () => {
   })
 
   test("renders banner text as static text when onSelectActive is not provided", () => {
-    const call = rttCallFactory.build({ vehicleId: "9876" })
+    const call = rttCallFactory.build({
+      vehicleId: "9876",
+      callType: "RTT",
+    })
 
     render(<ActiveRttBanner activeCall={call} onMarkDone={jest.fn()} />)
 
     expect(
-      screen.queryByRole("button", { name: "ACTIVE CALL VEHICLE 9876" })
+      screen.queryByRole("button", { name: "ACTIVE RTT VEHICLE 9876" })
     ).not.toBeInTheDocument()
-    expect(screen.getByText("ACTIVE CALL VEHICLE 9876")).toBeInTheDocument()
+    expect(screen.getByText("ACTIVE RTT VEHICLE 9876")).toBeInTheDocument()
   })
 
   test("makes banner text a clickable button and fires onSelectActive with call when provided", () => {
-    const call = rttCallFactory.build({ vehicleId: "5432" })
+    const call = rttCallFactory.build({
+      vehicleId: "5432",
+      callType: "PRTT",
+    })
     const onSelectActive = jest.fn()
 
     render(
@@ -48,7 +59,7 @@ describe("ActiveRttBanner", () => {
     )
 
     const selectBtn = screen.getByRole("button", {
-      name: "ACTIVE CALL VEHICLE 5432",
+      name: "ACTIVE PRTT VEHICLE 5432",
     })
     fireEvent.click(selectBtn)
 

@@ -172,7 +172,7 @@ describe("RttQueue Component", () => {
 
     // Active banner button should appear at top
     const bannerButton = screen.getByRole("button", {
-      name: `ACTIVE CALL VEHICLE ${call1.vehicleId}`,
+      name: `ACTIVE EMERGENCY VEHICLE ${call1.vehicleId}`,
     })
     expect(bannerButton).toBeInTheDocument()
 

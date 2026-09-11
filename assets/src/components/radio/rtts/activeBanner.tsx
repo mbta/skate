@@ -12,7 +12,7 @@ export const ActiveRttBanner = ({
   onMarkDone,
   onSelectActive,
 }: ActiveRttBannerProps): JSX.Element => {
-  const bannerText = `ACTIVE CALL VEHICLE ${activeCall.vehicleId}`
+  const bannerText = `ACTIVE ${activeCall.callType.toUpperCase()} VEHICLE ${activeCall.vehicleId}`
 
   return (
     <div
