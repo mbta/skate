@@ -36,10 +36,3 @@ export const StandardRttActive: Story = {
     activeCall: mockStandardRttCall1,
   },
 }
-
-export const StaticNonClickableBanner: Story = {
-  args: {
-    activeCall: mockEmergencyCall,
-    onSelectActive: undefined,
-  },
-}
