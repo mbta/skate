@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import React from "react"
 import { RttQueue } from "../../../../src/components/radio/rtts/queue"
+import { useRttQueue } from "../../../../src/components/radio/rtts/useRttQueue"
 import {
   mockIncomingCalls,
   mockPastCalls,
@@ -85,5 +86,35 @@ export const EmptyPastQueue: Story = {
     incomingCalls: mockIncomingCalls,
     pastCalls: [],
     currentTab: "past",
+  },
+}
+
+export const InteractiveQueueLifecycle: Story = {
+  render: function InteractiveStory(args) {
+    const queue = useRttQueue({
+      initialState: {
+        incomingCalls: args.incomingCalls,
+        pastCalls: args.pastCalls,
+        selectedCallId: args.incomingCalls?.[0]?.id || null,
+        tab: args.currentTab,
+      },
+      currentDispatcherName: args.currentDispatcherName,
+    })
+
+    return (
+      <RttQueue
+        incomingCalls={queue.calls.incoming}
+        pastCalls={queue.calls.past}
+        currentTab={queue.tabs.current}
+        selectedCallId={queue.calls.selectedId}
+        activeCallId={queue.calls.activeId}
+        newIncomingCount={queue.tabs.newIncomingCount}
+        currentDispatcherName={args.currentDispatcherName}
+        onSelectCall={queue.actions.selectCall}
+        onRespondCall={queue.actions.respondCall}
+        onMarkDoneCall={queue.actions.markDoneCall}
+        onTabChange={queue.actions.changeTab}
+      />
+    )
   },
 }
