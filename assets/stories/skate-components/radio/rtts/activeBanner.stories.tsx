@@ -13,8 +13,6 @@ const meta = {
   },
   args: {
     activeCall: mockEmergencyCall,
-    onMarkDone: () => {},
-    onSelectActive: () => {},
   },
 } satisfies Meta<typeof ActiveRttBanner>
 
@@ -36,5 +34,12 @@ export const PrttActive: Story = {
 export const StandardRttActive: Story = {
   args: {
     activeCall: mockStandardRttCall1,
+  },
+}
+
+export const StaticNonClickableBanner: Story = {
+  args: {
+    activeCall: mockEmergencyCall,
+    onSelectActive: undefined,
   },
 }

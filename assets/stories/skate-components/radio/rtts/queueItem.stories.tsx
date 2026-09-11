@@ -17,8 +17,6 @@ const meta = {
     call: mockStandardRttCall1,
     isSelected: false,
     tab: "incoming",
-    onSelect: () => {},
-    onRespond: () => {},
   },
 } satisfies Meta<typeof RttQueueItem>
 

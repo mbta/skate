@@ -15,7 +15,6 @@ const meta = {
   args: {
     call: mockEmergencyCall,
     isLive: false,
-    onMarkDone: () => {},
   },
 } satisfies Meta<typeof RttDetailsPanel>
 
