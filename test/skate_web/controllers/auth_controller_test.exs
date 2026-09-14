@@ -11,6 +11,25 @@ defmodule SkateWeb.AuthControllerTest do
 
       assert redirected_to(conn) == ~p"/auth/keycloak/callback"
     end
+
+    test "returns bad request on a malformed keycloak authorization request", %{conn: conn} do
+      failure = %Ueberauth.Failure{
+        provider: :keycloak,
+        errors: [
+          %Ueberauth.Failure.Error{
+            message_key: "invalid_request",
+            message: "Invalid parameter: redirect_uri"
+          }
+        ]
+      }
+
+      conn =
+        conn
+        |> assign(:ueberauth_failure, failure)
+        |> SkateWeb.AuthController.request(%{})
+
+      assert response(conn, :bad_request) == "invalid keycloak request"
+    end
   end
 
   describe "GET /auth/keycloak/callback" do

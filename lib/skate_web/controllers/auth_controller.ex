@@ -9,6 +9,46 @@ defmodule SkateWeb.AuthController do
   alias SkateWeb.AuthManager
   alias SkateWeb.Plugs.CaptureAuthReturnPath
 
+  def request(%{assigns: %{ueberauth_failure: %{provider: :keycloak} = failure}} = conn, _params) do
+    if suspicious_keycloak_request?(conn) do
+      Logger.info(
+        "keycloak direct-ip probe blocked host=#{conn.host} failure=#{Kernel.inspect(failure)}"
+      )
+    else
+      Logger.warning("keycloak request failure=#{Kernel.inspect(failure)}")
+    end
+
+    send_resp(conn, :bad_request, "invalid keycloak request")
+  end
+
+  def request(conn, _params) do
+    if suspicious_keycloak_request?(conn) do
+      Logger.info("keycloak direct-ip probe blocked host=#{conn.host}")
+    else
+      Logger.warning(
+        "keycloak request failure=#{Kernel.inspect(conn.assigns[:ueberauth_failure])}"
+      )
+    end
+
+    send_resp(conn, :bad_request, "invalid keycloak request")
+  end
+
+  defp suspicious_keycloak_request?(conn) do
+    case endpoint_host() do
+      nil ->
+        false
+
+      expected_host ->
+        conn.host != expected_host and conn.host not in ["localhost", "127.0.0.1", "0.0.0.0"]
+    end
+  end
+
+  defp endpoint_host do
+    SkateWeb.Endpoint
+    |> Application.get_env(:url, [])
+    |> Keyword.get(:host)
+  end
+
   def callback(%{assigns: %{ueberauth_auth: %{provider: :keycloak} = auth}} = conn, _params) do
     username = auth.uid
     email = auth.info.email
