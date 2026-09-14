@@ -72,8 +72,15 @@ defmodule Skate.Detours.SnapshotSerde do
   # check as the prop level value should always be the source of truth. This function removes the now prop-level
   # keys and only compares the data currently stored within the :state prop.
   defp diff_snapshots(scoped_state, serialized_snapshot) do
-    {_, cleaned_state} = pop_in(scoped_state, ["context", "activatedAt"])
-    {_, cleaned_serialized_snapshot} = pop_in(serialized_snapshot, ["context", "activatedAt"])
+    cleaned_state =
+      scoped_state
+      |> Map.drop(["context", "activatedAt"])
+      |> Map.drop(["context", "finishedDetour", "detourShape"])
+
+    cleaned_serialized_snapshot =
+      serialized_snapshot
+      |> Map.drop(["context", "activatedAt"])
+      |> Map.drop(["context", "finishedDetour", "detourShape"])
 
     MapDiff.diff(cleaned_state, cleaned_serialized_snapshot)
   end
