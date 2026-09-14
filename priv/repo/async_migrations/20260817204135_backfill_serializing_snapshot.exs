@@ -35,6 +35,7 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
   @throttle_ms 100
 
   def up do
+    Logger.info("running_backfill_serializing_snapshot")
     throttle_change_in_batches(&page_query/1, &do_change/1)
   end
 
