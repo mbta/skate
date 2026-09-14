@@ -197,12 +197,9 @@ defmodule Skate.Detours.SnapshotSerde do
     route
   end
 
-  defp routepattern_from_detour(%Detour{
-         route_patterns: route_patterns,
-         route_pattern_id: route_pattern_id
-       })
-       when is_list(route_patterns) do
-    Enum.find(route_patterns, &(&1["id"] == route_pattern_id))
+  defp routepattern_from_detour(%Detour{route_pattern: route_pattern})
+       when not is_nil(route_pattern) do
+    route_pattern
   end
 
   defp routepattern_from_detour(%Detour{
@@ -218,10 +215,6 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp routepattern_from_detour(_), do: nil
 
-  defp routepatterns_from_detour(%Detour{route_patterns: route_patterns})
-       when not is_nil(route_patterns),
-       do: route_patterns
-
   defp routepatterns_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -229,7 +222,8 @@ defmodule Skate.Detours.SnapshotSerde do
            }
          }
        }) do
-    log_fallback("route_patterns")
+    # storing route_patterns is not strictly necessary and is bulky
+    # consider removing routePatterns from context once the serialization comparison is no longer needed
     route_patterns
   end
 

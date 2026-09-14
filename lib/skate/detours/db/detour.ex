@@ -41,9 +41,7 @@ defmodule Skate.Detours.Db.Detour do
     field :route_name, :string
     field :garages, {:array, :string}
     field :direction_names, :map
-    field :route_patterns, {:array, :map}
-    field :route_pattern_id, :string
-    field :route_pattern_name, :string
+    field :route_pattern, :map
     field :headsign, :string
     field :direction, :string
     field :direction_id, :integer
@@ -206,7 +204,7 @@ defmodule Skate.Detours.Db.Detour do
     snapshot_children: ["children"],
     undo_stack: ["context", "undoStack"],
     estimated_duration: ["context", "selectedDuration"],
-    route_patterns: ["context", "routePatterns"],
+    route_pattern: ["context", "routePattern"],
     garages: ["context", "route", "garages"],
     reason: ["context", "selectedReason"],
     direction_names: ["context", "route", "directionNames"],
@@ -214,8 +212,6 @@ defmodule Skate.Detours.Db.Detour do
     edited_directions: ["context", "editedDirections"],
     detour_shape: ["context", "detourShape"],
     route_name: ["context", "route", "name"],
-    route_pattern_id: ["context", "routePattern", "id"],
-    route_pattern_name: ["context", "routePattern", "name"],
     headsign: ["context", "routePattern", "headsign"],
     is_text_only: ["context", "isTextOnly"],
     route_id: ["context", "route", "id"]
@@ -350,8 +346,8 @@ defmodule Skate.Detours.Db.Detour do
         nearest_intersection: d.nearest_intersection,
         route_id: d.route_id,
         route_name: d.route_name,
-        route_pattern_id: d.route_pattern_id,
-        route_pattern_name: d.route_pattern_name,
+        route_pattern_id: d.route_pattern["id"],
+        route_pattern_name: d.route_pattern["name"],
         headsign: d.headsign,
         direction: d.direction,
         is_text_only: d.is_text_only,

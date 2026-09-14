@@ -1,4 +1,4 @@
-defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot.MigratingSchema do
+defmodule Skate.Repo.Migrations.RetryBackfillSerializingSnapshot.MigratingSchema do
   @moduledoc """
   Detours database table schema frozen at this point in time.
   """
@@ -10,7 +10,7 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot.MigratingSchema do
     field :state_value, :map, null: false
     field :snapshot_children, :map, null: true
     field :undo_stack, {:array, :map}, default: [], null: false
-    field :route_patterns, {:array, :map}, null: false
+    field :route_pattern, :map, null: false
     field :garages, {:array, :string}
     field :direction_names, :map
     field :direction_id, :integer
@@ -22,7 +22,7 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot.MigratingSchema do
   end
 end
 
-defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
+defmodule Skate.Repo.Migrations.RetryBackfillSerializingSnapshot do
   # https://fly.io/phoenix-files/backfilling-data/
 
   import Ecto.Query
@@ -43,7 +43,7 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
 
   defp page_query(last_id) do
     from(
-      r in Skate.Repo.Migrations.BackfillSerializingSnapshot.MigratingSchema,
+      r in Skate.Repo.Migrations.RetryBackfillSerializingSnapshot.MigratingSchema,
       select: r.id,
       where: r.id > ^last_id,
       order_by: [asc: r.id],
@@ -53,19 +53,18 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
 
   defp do_change(batch_of_ids) do
     from(
-      r in Skate.Repo.Migrations.BackfillSerializingSnapshot.MigratingSchema,
+      r in Skate.Repo.Migrations.RetryBackfillSerializingSnapshot.MigratingSchema,
       select: [:id, :state],
       where: r.id in ^batch_of_ids
     )
     |> repo().all(log: :info)
-    |> Enum.map(fn %Skate.Repo.Migrations.BackfillSerializingSnapshot.MigratingSchema{
+    |> Enum.map(fn %Skate.Repo.Migrations.RetryBackfillSerializingSnapshot.MigratingSchema{
                      id: id,
                      state: state
                    } = detour ->
       with changeset <- Ecto.Changeset.change(detour, map_fields(state)),
-           {:ok, valid_changeset} <- validate_changeset(changeset),
            {:ok, %{id: changed_id}} <-
-             repo().update(valid_changeset) do
+             repo().update(changeset) do
         changed_id
       else
         {:error, reason} ->
@@ -86,7 +85,7 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
       state_value: get_in(state, ["value"]),
       snapshot_children: get_in(state, ["children"]),
       undo_stack: get_in(state, ["context", "undoStack"]),
-      route_patterns: get_in(state, ["context", "routePatterns"]),
+      route_pattern: get_in(state, ["context", "routePattern"]),
       garages: get_in(state, ["context", "route", "garages"]),
       direction_names: get_in(state, ["context", "route", "directionNames"]),
       direction_id: get_in(state, ["context", "routePattern", "directionId"]),
@@ -99,14 +98,6 @@ defmodule Skate.Repo.Migrations.BackfillSerializingSnapshot do
     |> Enum.reject(fn {_field, value} -> is_nil(value) end)
     |> Map.new()
   end
-
-  defp validate_changeset(
-         %Ecto.Changeset{changes: %{state_value: _, route_patterns: _}} = changeset
-       ) do
-    {:ok, changeset}
-  end
-
-  defp validate_changeset(_), do: {:error, :missing_required_fields}
 
   defp throttle_change_in_batches(query_fun, change_fun, last_pos \\ 0)
   defp throttle_change_in_batches(_query_fun, _change_fun, nil), do: :ok
