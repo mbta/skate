@@ -4,9 +4,11 @@ defmodule Skate.Repo.Migrations.ReplaceRoutePatternsField do
   def change do
     alter table(:detours) do
       add :route_pattern, :map
-      remove :route_patterns, {:array, :map}
-      remove :route_pattern_id, :string
-      remove :route_pattern_name, :string
+
+      # the following fields are no longer used and can be removed in an upcoming release
+      # remove :route_patterns, {:array, :map}
+      # remove :route_pattern_id, :string
+      # remove :route_pattern_name, :string
     end
   end
 end
