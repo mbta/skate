@@ -316,11 +316,12 @@ defmodule Skate.Detours.Detours do
       nil ->
         {:error, :not_found}
 
-      %Detour{author_id: ^user_id} = detour ->
-        {:ok, detour}
-
-      %Detour{} ->
-        {:error, :unauthorized}
+      detour ->
+        if detour.author_id == user_id do
+          {:ok, detour}
+        else
+          {:error, :unauthorized}
+        end
     end
   end
 
@@ -328,48 +329,49 @@ defmodule Skate.Detours.Detours do
   defp validate_detour_status(_), do: {:error, :invalid_status}
 
   defp build_activation_changeset(detour, selected_duration, selected_reason) do
-    state_value = %{"SaveState" => "Saved", "Detour Drawing" => %{"Active" => "Reviewing"}}
-
     new_state =
       detour.state
       |> put_in(["context", "selectedDuration"], selected_duration)
       |> put_in(["context", "selectedReason"], selected_reason)
-      |> put_in(["value"], state_value)
+      |> put_in(["value", "Detour Drawing"], %{"Active" => "Reviewing"})
 
     Detour.changeset(detour, %{
       state: new_state,
-      state_value: state_value,
-      estimated_duration: selected_duration,
-      reason: selected_reason,
       activated_at: DateTime.utc_now(:millisecond)
     })
   end
 
   defp build_deactivation_changeset(detour) do
-    state_value = %{"SaveState" => "Saved", "Detour Drawing" => "Past"}
-    new_state = put_in(detour.state, ["value"], state_value)
-
     Detour.changeset(
       detour,
-      %{state: new_state, state_value: state_value, status: :past}
+      %{state: put_in(detour.state, ["value", "Detour Drawing"], "Past"), status: :past}
     )
   end
 
-  def copy_to_draft_detour(%{status: :past} = detour, author_id) do
-    with {:ok, new_draft_detour} <-
-           %Detour{author_id: author_id, copied_from: detour}
-           |> Detour.copy_to_draft_changeset(detour)
-           |> Repo.insert(),
-         {:ok, updated_state_detour} <-
-           new_draft_detour
-           |> Detour.set_state_uuid_changeset()
-           |> Repo.update() do
+  def copy_to_draft_detour(detour, author_id) do
+    if detour.status == :past do
+      new_detour_attrs =
+        detour
+        |> Map.from_struct()
+        |> Map.take([:state])
+        |> Map.put(:status, :draft)
+
+      {:ok, new_draft_detour} =
+        %Detour{author_id: author_id, copied_from: detour}
+        |> Detour.changeset(new_detour_attrs)
+        |> Repo.insert()
+
+      {:ok, updated_state_detour} =
+        new_draft_detour
+        |> Detour.update_copied_detour_state_changeset()
+        |> Repo.update()
+
       broadcast_detour(updated_state_detour, author_id)
       {:ok, updated_state_detour}
+    else
+      {:error, :not_a_past_detour}
     end
   end
-
-  def copy_to_draft_detour(_detour, _author_id), do: {:error, :not_a_past_detour}
 
   @spec broadcast_detour(Detour.t(), DbUser.id()) :: :ok
   defp broadcast_detour(%Detour{status: :draft} = detour, author_id) do
@@ -458,15 +460,23 @@ defmodule Skate.Detours.Detours do
 
   defp process_notifications(
          %Ecto.Changeset{
-           changes: %{estimated_duration: selected_duration} = changes,
+           changes:
+             %{
+               updated_at: _,
+               state: %{"context" => %{"selectedDuration" => selected_duration}}
+             } = changes,
            data: %Detour{
              status: :active,
-             estimated_duration: previous_duration
+             state: %{"context" => %{"selectedDuration" => previous_duration}}
            }
          },
          %Detour{} = detour
        ) do
-    maybe_notify_detour_updated(changes, detour)
+    if is_map_key(changes, :end_point) or
+         is_map_key(changes, :start_point) or
+         is_map_key(changes, :waypoints) do
+      Notifications.Notification.create_updated_detour_notification_from_detour(detour)
+    end
 
     if previous_duration != selected_duration do
       %SimpleDetour{estimated_duration: estimated_duration} = db_detour_to_detour(detour)
@@ -476,25 +486,7 @@ defmodule Skate.Detours.Detours do
     end
   end
 
-  defp process_notifications(
-         %Ecto.Changeset{
-           changes: changes,
-           data: %Detour{status: :active}
-         },
-         %Detour{} = detour
-       ) do
-    maybe_notify_detour_updated(changes, detour)
-  end
-
   defp process_notifications(_, _), do: nil
-
-  defp maybe_notify_detour_updated(changes, detour) do
-    if is_map_key(changes, :end_point) or
-         is_map_key(changes, :start_point) or
-         is_map_key(changes, :waypoints) do
-      Notifications.Notification.create_updated_detour_notification_from_detour(detour)
-    end
-  end
 
   @spec trigger_active_detour_s3_export_job(
           Ecto.Changeset.t(),
@@ -520,8 +512,8 @@ defmodule Skate.Detours.Detours do
               !is_nil(Ecto.Changeset.get_change(changeset, :estimated_duration)) ->
                 "active detour #{detour.id} estimated duration changed"
 
-              # ...or when saving active detour edits (via updated_at changes)...
-              !is_nil(Ecto.Changeset.get_change(changeset, :updated_at)) ->
+              # ...or when saving changes...
+              is_map(get_in(detour.state, ["context", "savedContext"])) ->
                 "active detour #{detour.id} changed"
 
               # ...ignore otherwise
