@@ -258,7 +258,7 @@ defmodule Skate.Notifications.Notification do
   end
 
   def create_detour_expiration_notification(%Skate.Detours.Db.Detour{} = detour, params) do
-    params = Map.put_new(params, :route_id, detour.state["context"]["route"]["id"])
+    params = Map.put_new(params, :route_id, detour.route_id)
 
     detour
     |> Ecto.build_assoc(:detour_expiration_notifications)
@@ -276,7 +276,7 @@ defmodule Skate.Notifications.Notification do
     |> Ecto.build_assoc(:detour_status_notifications)
     |> Notifications.Db.Detour.changeset(%{
       status: :deactivated,
-      route_id: detour.state["context"]["route"]["id"]
+      route_id: detour.route_id
     })
     |> Skate.Repo.insert()
     |> log_notification()
@@ -291,7 +291,7 @@ defmodule Skate.Notifications.Notification do
     |> Ecto.build_assoc(:detour_status_notifications)
     |> Notifications.Db.Detour.changeset(%{
       status: :activated,
-      route_id: detour.state["context"]["route"]["id"]
+      route_id: detour.route_id
     })
     |> Skate.Repo.insert()
     |> log_notification()
@@ -306,7 +306,7 @@ defmodule Skate.Notifications.Notification do
     |> Ecto.build_assoc(:detour_status_notifications)
     |> Notifications.Db.Detour.changeset(%{
       status: :updated,
-      route_id: detour.state["context"]["route"]["id"]
+      route_id: detour.route_id
     })
     |> Skate.Repo.insert()
     |> log_notification()
