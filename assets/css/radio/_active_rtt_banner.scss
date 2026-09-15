@@ -1,0 +1,76 @@
+@use "../color/tokens_2024" as tokens;
+
+/* ==========================================================================
+   Active RTT Top Banner
+   ========================================================================== */
+
+.c-active-rtt-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1.25rem;
+  background-color: tokens.$kiwi-200;
+  color: tokens.$kiwi-800;
+  border-bottom: 1px solid tokens.$kiwi-300;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.c-active-rtt-banner__content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.c-active-rtt-banner__dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: tokens.$kiwi-600;
+  flex-shrink: 0;
+}
+
+.c-active-rtt-banner__text {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: tokens.$kiwi-800;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  text-align: left;
+
+  button#{&} {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.c-active-rtt-banner__mark-done-btn {
+  background-color: tokens.$gray-800;
+  color: tokens.$white;
+  border: 1px solid tokens.$gray-800;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.375rem 0.875rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: tokens.$gray-900;
+    border-color: tokens.$gray-900;
+  }
+
+  &:focus-visible {
+    outline: 2px solid tokens.$gray-600;
+    outline-offset: 1px;
+  }
+}
