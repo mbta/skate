@@ -78,7 +78,6 @@ defmodule Skate.Repo.Migrations.RetryBackfillSerializingSnapshot do
     |> (fn changed -> {:ok, changed} end).()
   end
 
-  # func (field, func) -> Ecto.Changeset.put_change(field, func(changeset))
 
   defp map_fields(state) do
     %{
