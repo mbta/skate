@@ -238,11 +238,28 @@ defmodule Skate.Detours.Detour do
     def from!(%Detour{is_text_only: false} = detour) do
       %{
         base_report(detour)
-        | missed_stops: detour.missed_stops,
-          connection_points: detour.connection_points,
+        | missed_stops: missed_stop_ids(detour.missed_stops),
+          connection_points: connection_points_ids(detour.connection_points),
           route_segments: route_segments(detour)
       }
     end
+
+    defp missed_stop_ids(missed_stops) when is_list(missed_stops) do
+      missed_stops when is_list(missed_stops) ->
+        missed_stops
+        |> Enum.map(&get_in(&1, ["id"]))
+        |> Enum.reject(&is_nil/1)
+    end
+
+    defp missed_stop_ids(_), do: nil
+
+    defp connection_point_ids(connection_points) when is_list(connection_points) do
+      ["start", "end"]
+      |> Enum.map(&get_in(connection_points, [&1, "id"]))
+      |> Enum.reject(&is_nil/1)
+    end
+
+    defp connection_point_ids(_), do: nil
 
     defp base_report(%Detour{} = detour) do
       %__MODULE__{
