@@ -74,15 +74,20 @@ defmodule Skate.Detours.SnapshotSerde do
   defp diff_snapshots(scoped_state, serialized_snapshot) do
     cleaned_state =
       scoped_state
-      |> Map.drop(["context", "activatedAt"])
-      |> Map.drop(["context", "finishedDetour", "detourShape"])
+      |> ignore_path(["context", "activatedAt"])
+      |> ignore_path(["context", "finishedDetour", "detourShape"])
 
     cleaned_serialized_snapshot =
       serialized_snapshot
-      |> Map.drop(["context", "activatedAt"])
-      |> Map.drop(["context", "finishedDetour", "detourShape"])
+      |> ignore_path(["context", "activatedAt"])
+      |> ignore_path(["context", "finishedDetour", "detourShape"])
 
     MapDiff.diff(cleaned_state, cleaned_serialized_snapshot)
+  end
+
+  defp ignore_path(snapshot, path) do
+    {_, trimmed_snapshot} = pop_in(snapshot, path)
+    trimmed_snapshot
   end
 
   defp serialize_snapshot(detour) do
