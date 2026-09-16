@@ -24,7 +24,7 @@ permissions:
 # List of jobs
 jobs:
   setup:
-    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-storybook') }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-to-storybook') }}
     permissions:
       contents: read
     name: ASDF and Elixir dependencies
@@ -71,7 +71,7 @@ jobs:
           mix deps.get
 
   deploy:
-    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-storybook') }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-to-storybook') }}
     permissions:
       contents: read
       id-token: write # Required to deploy GitHub Pages
