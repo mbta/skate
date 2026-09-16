@@ -1,9 +1,15 @@
 name: Build and Publish Storybook to GitHub Pages
  
 on:
+  workflow_dispatch:
+    # This block is purposely empty.
   push:
     branches:
       - 'main'
+  pull_request:
+    types:
+      - synchronize
+      - labeled
 
 # - https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#concurrency
 # - https://docs.zizmor.sh/audits/#concurrency-limits
@@ -18,6 +24,7 @@ permissions:
 # List of jobs
 jobs:
   setup:
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-storybook') }}
     permissions:
       contents: read
     name: ASDF and Elixir dependencies
@@ -64,6 +71,7 @@ jobs:
           mix deps.get
 
   deploy:
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'deploy-storybook') }}
     permissions:
       contents: read
       id-token: write # Required to deploy GitHub Pages
