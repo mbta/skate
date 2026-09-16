@@ -88,7 +88,7 @@ defmodule Skate.MixProject do
       {:oban, "~> 2.15"},
       {:phoenix, "~> 1.8.1"},
       {:phoenix_ecto, "~> 4.0"},
-      {:phoenix_html, "~> 3.0"},
+      {:phoenix_html, "~> 4.3"},
       {:phoenix_live_reload, "~> 1.3", only: :dev},
       {:phoenix_live_view, "~> 1.1"},
       {:phoenix_pubsub, "~> 2.0"},
