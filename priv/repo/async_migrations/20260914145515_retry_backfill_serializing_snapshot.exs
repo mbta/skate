@@ -78,7 +78,6 @@ defmodule Skate.Repo.Migrations.RetryBackfillSerializingSnapshot do
     |> (fn changed -> {:ok, changed} end).()
   end
 
-
   defp map_fields(state) do
     %{
       state_value: get_in(state, ["value"]),
