@@ -109,27 +109,18 @@ defmodule Skate.Detours.SnapshotSerdeTest do
 
   describe "log_fallback_summary/2 (via serialize_snapshot fallback aggregation)" do
     @tag :capture_log
-    test "logs a single aggregated warning listing every field that fell back to the snapshot" do
+    test "does not log fallback warnings when detour fields are persisted and the snapshot has unrelated extra data" do
       detour =
         :detour
         |> build()
         |> insert()
 
-      log =
-        capture_log(fn ->
-          SnapshotSerde.compare_snapshots(detour)
-        end)
-
-      refute log =~ "Unexpected detour structure"
-      refute log =~ "Using snapshot for fields: state, route, children"
-    end
-
-    @tag :capture_log
-    test "does not include optional fields that are absent from the snapshot" do
       detour =
-        :detour
-        |> build()
-        |> insert()
+        detour
+        |> Skate.Detours.Detours.change_detour(%{
+          state: put_in(detour.state, ["context", "extraField"], "irrelevant data")
+        })
+        |> Skate.Repo.update!()
 
       log =
         capture_log(fn ->
