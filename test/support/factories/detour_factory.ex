@@ -38,10 +38,14 @@ defmodule Skate.DetourFactory do
         %Skate.Detours.Db.Detour{
           author: build(:user),
           state: state,
+          state_value: state["value"],
+          snapshot_children: state["children"],
           status: :draft,
           nearest_intersection: state["context"]["nearestIntersection"],
           route_id: state["context"]["route"]["id"],
           route_name: state["context"]["route"]["name"],
+          garages: state["context"]["route"]["garages"],
+          direction_names: state["context"]["route"]["directionNames"],
           route_pattern: state["context"]["routePattern"],
           headsign: state["context"]["routePattern"]["headsign"],
           direction_id: state["context"]["routePattern"]["directionId"],
@@ -64,6 +68,7 @@ defmodule Skate.DetourFactory do
             "route" => %{
               "id" => sequence("detour_route_id:"),
               "name" => sequence("detour_route_name:"),
+              "garages" => [],
               "directionNames" => %{
                 "0" => "Outbound",
                 "1" => "Inbound"
