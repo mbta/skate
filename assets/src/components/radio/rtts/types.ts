@@ -2,6 +2,13 @@ export type RttCallType = "Emergency" | "PRTT" | "RTT"
 
 export type RttTab = "incoming" | "past"
 
+export const TAB_TYPE = {
+  INCOMING: "incoming",
+  PAST: "past",
+} as const satisfies Record<string, RttTab>
+
+export const DEFAULT_DISPATCHER_NAME = "Current Dispatcher"
+
 export type RttStatus = "unassigned" | "active" | "done"
 
 export interface RttCall {

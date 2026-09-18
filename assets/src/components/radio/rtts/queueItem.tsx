@@ -1,5 +1,11 @@
 import React from "react"
-import { RttCall, RttCallType, RttTab } from "./types"
+import {
+  DEFAULT_DISPATCHER_NAME,
+  RttCall,
+  RttCallType,
+  RttTab,
+  TAB_TYPE,
+} from "./types"
 import { RoutePill } from "../../routePill"
 import { formattedTime } from "../../../util/dateTime"
 import { joinClasses } from "../../../helpers/dom"
@@ -22,8 +28,8 @@ export interface RttQueueItemProps {
 export const RttQueueItem = ({
   call,
   isSelected = false,
-  tab = "incoming",
-  currentDispatcherName = "Current Dispatcher",
+  tab = TAB_TYPE.INCOMING,
+  currentDispatcherName = DEFAULT_DISPATCHER_NAME,
   onSelect,
   onRespond,
 }: RttQueueItemProps): JSX.Element => {
@@ -49,7 +55,7 @@ export const RttQueueItem = ({
     priorityBorderClass,
     isSelected && "c-rtt-queue-item--selected",
     isRespondedByCurrentUser && "c-rtt-queue-item--live",
-    tab === "past" && "c-rtt-queue-item--past",
+    tab === TAB_TYPE.PAST && "c-rtt-queue-item--past",
   ])
 
   const handleRowClick = () => {
@@ -105,7 +111,7 @@ export const RttQueueItem = ({
         </div>
       </div>
 
-      {tab === "incoming" && (
+      {tab === TAB_TYPE.INCOMING && (
         <div className="c-rtt-queue-item__action">
           {isActive ? (
             <div

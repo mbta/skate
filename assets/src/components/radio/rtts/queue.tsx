@@ -1,5 +1,5 @@
 import React from "react"
-import { RttTab } from "./types"
+import { RttTab, TAB_TYPE } from "./types"
 import { RttQueueItem } from "./queueItem"
 import { RttDetailsPanel } from "./detailsPanel"
 import { ActiveRttBanner } from "./activeBanner"
@@ -12,20 +12,20 @@ interface TabConfig {
 }
 
 const QUEUE_TABS: readonly TabConfig[] = [
-  { id: "incoming", label: "Incoming" },
-  { id: "past", label: "Past" },
+  { id: TAB_TYPE.INCOMING, label: "Incoming" },
+  { id: TAB_TYPE.PAST, label: "Past" },
 ]
 
 const EMPTY_STATE_CONTENT: Record<
   RttTab,
   { title: string; description: string }
 > = {
-  incoming: {
+  [TAB_TYPE.INCOMING]: {
     title: "No Incoming RTT Calls",
     description:
       "Incoming and active driver requests to talk will appear here.",
   },
-  past: {
+  [TAB_TYPE.PAST]: {
     title: "No Past RTT Calls",
     description: "Completed calls marked as done will appear here.",
   },
@@ -39,7 +39,7 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
 
   return (
     <div className="c-rtt-queue">
-      {tabs.current === "past" && calls.active && (
+      {tabs.current === TAB_TYPE.PAST && calls.active && (
         <ActiveRttBanner
           activeCall={calls.active}
           onMarkDone={actions.markDoneCall}
@@ -72,8 +72,8 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
                 onClick={() => actions.changeTab(id)}
               >
                 {label}
-                {id === "incoming" &&
-                  tabs.current === "past" &&
+                {id === TAB_TYPE.INCOMING &&
+                  tabs.current === TAB_TYPE.PAST &&
                   tabs.newIncomingCount > 0 && (
                     <span className="c-rtt-queue__tab-badge">
                       {tabs.newIncomingCount} NEW
@@ -104,7 +104,7 @@ export const RttQueue = (props: RttQueueProps): JSX.Element => {
             <div
               role="list"
               aria-label={
-                tabs.current === "incoming"
+                tabs.current === TAB_TYPE.INCOMING
                   ? "Incoming RTT Calls"
                   : "Past RTT Calls"
               }

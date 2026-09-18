@@ -3,21 +3,25 @@ import {
   rttQueueReducer,
   createInitialRttQueueState,
 } from "../../../../src/components/radio/rtts/rttQueueReducer"
+import {
+  DEFAULT_DISPATCHER_NAME,
+  TAB_TYPE,
+} from "../../../../src/components/radio/rtts/types"
 import { rttCallFactory } from "../../../factories/radio/rtt"
 
 describe("rttQueueReducer", () => {
   test("CHANGE_TAB updates tab and clears newIncomingCount when moving to incoming", () => {
     const initialState = createInitialRttQueueState({
-      tab: "past",
+      tab: TAB_TYPE.PAST,
       newIncomingCount: 5,
     })
 
     const nextState = rttQueueReducer(initialState, {
       type: "CHANGE_TAB",
-      tab: "incoming",
+      tab: TAB_TYPE.INCOMING,
     })
 
-    expect(nextState.tab).toBe("incoming")
+    expect(nextState.tab).toBe(TAB_TYPE.INCOMING)
     expect(nextState.newIncomingCount).toBe(0)
   })
 
@@ -55,7 +59,7 @@ describe("rttQueueReducer", () => {
       expect.objectContaining({
         id: targetCall.id,
         status: "active",
-        respondedBy: "Current Dispatcher",
+        respondedBy: DEFAULT_DISPATCHER_NAME,
         answeredAt: expect.any(Date),
       })
     )
@@ -160,13 +164,13 @@ describe("rttQueueReducer", () => {
 
   test.each([
     {
-      tab: "past" as const,
+      tab: TAB_TYPE.PAST,
       initialBadge: 1,
       expectedBadge: 2,
       desc: "increments newIncomingCount on past tab",
     },
     {
-      tab: "incoming" as const,
+      tab: TAB_TYPE.INCOMING,
       initialBadge: 0,
       expectedBadge: 0,
       desc: "does not increment newIncomingCount on incoming tab",

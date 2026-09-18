@@ -1,4 +1,4 @@
-import { RttCall, RttTab } from "./types"
+import { DEFAULT_DISPATCHER_NAME, RttCall, RttTab, TAB_TYPE } from "./types"
 
 export interface RttQueueState {
   tab: RttTab
@@ -30,7 +30,7 @@ export type InitialRttQueueState = Partial<RttQueueState>
 export const createInitialRttQueueState = (
   initialState: InitialRttQueueState = {}
 ): RttQueueState => ({
-  tab: initialState.tab ?? "incoming",
+  tab: initialState.tab ?? TAB_TYPE.INCOMING,
   incomingCalls: initialState.incomingCalls ?? [],
   pastCalls: initialState.pastCalls ?? [],
   selectedCallId: initialState.selectedCallId ?? null,
@@ -48,7 +48,7 @@ export const rttQueueReducer = (
         ...state,
         tab: action.tab,
         newIncomingCount:
-          action.tab === "incoming" ? 0 : state.newIncomingCount,
+          action.tab === TAB_TYPE.INCOMING ? 0 : state.newIncomingCount,
       }
     }
 
@@ -63,7 +63,7 @@ export const rttQueueReducer = (
       const now = action.answeredAt ?? new Date()
       const currentActiveId = state.activeCallId
       const targetCall = action.call
-      const dispatcher = action.currentDispatcherName ?? "Current Dispatcher"
+      const dispatcher = action.currentDispatcherName ?? DEFAULT_DISPATCHER_NAME
 
       let newPastCalls = state.pastCalls
       if (currentActiveId && currentActiveId !== targetCall.id) {
@@ -139,7 +139,7 @@ export const rttQueueReducer = (
         ...state,
         incomingCalls: [action.call, ...state.incomingCalls],
         newIncomingCount:
-          state.tab === "past"
+          state.tab === TAB_TYPE.PAST
             ? state.newIncomingCount + 1
             : state.newIncomingCount,
       }

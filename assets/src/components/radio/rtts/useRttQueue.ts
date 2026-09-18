@@ -1,5 +1,5 @@
 import { useReducer, useMemo, useCallback } from "react"
-import { RttCall, RttTab } from "./types"
+import { DEFAULT_DISPATCHER_NAME, RttCall, RttTab, TAB_TYPE } from "./types"
 import { sortRttCalls } from "./sorting"
 import {
   rttQueueReducer,
@@ -129,7 +129,7 @@ export const useRttQueue = (options: UseRttQueueOptions = {}) => {
   )
 
   const activeCallsList =
-    tab === "incoming" ? sortedIncomingCalls : sortedPastCalls
+    tab === TAB_TYPE.INCOMING ? sortedIncomingCalls : sortedPastCalls
 
   const { onRespondCall, onMarkDoneCall, currentDispatcherName } = options
 
@@ -138,7 +138,7 @@ export const useRttQueue = (options: UseRttQueueOptions = {}) => {
       dispatch({
         type: "RESPOND_CALL",
         call,
-        currentDispatcherName: currentDispatcherName ?? "Current Dispatcher",
+        currentDispatcherName: currentDispatcherName ?? DEFAULT_DISPATCHER_NAME,
       })
       onRespondCall?.(call)
     },
