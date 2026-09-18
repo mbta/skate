@@ -31,6 +31,20 @@ export const formattedTime = (date: Date): string => {
   return formattedHoursMinutes(date.getHours(), date.getMinutes())
 }
 
+export const formattedTimeWithSeconds = (
+  dateOrStr?: Date | string | null
+): string => {
+  if (!dateOrStr) return ""
+  const d = typeof dateOrStr === "string" ? new Date(dateOrStr) : dateOrStr
+  if (isNaN(d.getTime())) return ""
+  const hours24 = d.getHours()
+  const hours12 = hours24 % 12 || 12
+  const mins = d.getMinutes().toString().padStart(2, "0")
+  const secs = d.getSeconds().toString().padStart(2, "0")
+  const ampm = hours24 >= 12 ? "PM" : "AM"
+  return `${hours12}:${mins}:${secs} ${ampm}`
+}
+
 export const formattedDate = (date: Date): string => {
   const displayMonth = date.getMonth() + 1
   const day = date.getDate()
