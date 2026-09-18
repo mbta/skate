@@ -46,7 +46,7 @@ export const RttQueueItem = ({
     ? "YOU"
     : call.respondedBy || "ACTIVE"
 
-  const modifier = CALL_TYPE_MODIFIERS[call.callType] ?? "rtt"
+  const modifier = CALL_TYPE_MODIFIERS[call.callType] ?? CALL_TYPE_MODIFIERS.RTT
   const typeClass = `c-rtt-queue-item__type--${modifier}`
   const priorityBorderClass = `c-rtt-queue-item--${modifier}`
 
