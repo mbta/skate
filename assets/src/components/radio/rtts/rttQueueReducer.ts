@@ -112,24 +112,22 @@ export const rttQueueReducer = (
     }
 
     case "MARK_DONE_CALL": {
-      const now = new Date()
-      const targetCall = action.call
       const completedCall: RttCall = {
-        ...targetCall,
+        ...action.call,
         status: "done",
-        markedDoneAt: now,
+        markedDoneAt: new Date(),
       }
 
       return {
         ...state,
         incomingCalls: state.incomingCalls.filter(
-          (c) => c.id !== targetCall.id
+          (c) => c.id !== action.call.id
         ),
         pastCalls: [completedCall, ...state.pastCalls],
         activeCallId:
-          state.activeCallId === targetCall.id ? null : state.activeCallId,
+          state.activeCallId === action.call.id ? null : state.activeCallId,
         selectedCallId:
-          state.selectedCallId === targetCall.id
+          state.selectedCallId === action.call.id
             ? completedCall.id
             : state.selectedCallId,
       }
