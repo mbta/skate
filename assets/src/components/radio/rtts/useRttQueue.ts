@@ -59,7 +59,9 @@ export interface UseRttQueueOptions extends RttQueueCallbacks {
   currentDispatcherName?: string
 }
 
-export const useRttQueue = (options: UseRttQueueOptions = {}) => {
+export const useRttQueue = (
+  options: UseRttQueueOptions = {}
+): UseRttQueueResult => {
   const [state, dispatch] = useReducer(
     rttQueueReducer,
     {
