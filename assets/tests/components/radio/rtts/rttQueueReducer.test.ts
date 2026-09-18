@@ -110,11 +110,9 @@ describe("rttQueueReducer", () => {
       pastCalls: [],
     })
 
-    const markedDoneAt = new Date("2026-09-08T12:10:00Z")
     const nextState = rttQueueReducer(initialState, {
       type: "MARK_DONE_CALL",
       call: activeCall,
-      markedDoneAt,
     })
 
     expect(nextState.activeCallId).toBeNull()
@@ -123,7 +121,7 @@ describe("rttQueueReducer", () => {
       expect.objectContaining({
         id: activeCall.id,
         status: "done",
-        markedDoneAt,
+        markedDoneAt: expect.any(Date),
       }),
     ])
   })

@@ -18,7 +18,7 @@ export type RttQueueAction =
       currentDispatcherName?: string
       answeredAt?: Date
     }
-  | { type: "MARK_DONE_CALL"; call: RttCall; markedDoneAt?: Date }
+  | { type: "MARK_DONE_CALL"; call: RttCall }
   | { type: "RECEIVE_CALL"; call: RttCall }
   | {
       type: "RESET"
@@ -111,7 +111,7 @@ export const rttQueueReducer = (
     }
 
     case "MARK_DONE_CALL": {
-      const now = action.markedDoneAt ?? new Date()
+      const now = new Date()
       const targetCall = action.call
       const completedCall: RttCall = {
         ...targetCall,
