@@ -9,6 +9,12 @@ export interface RttDetailsPanelProps {
   onMarkDone?: (call: RttCall) => void
 }
 
+const BASE_CLASS = "c-rtt-details-panel"
+const bem = (element?: string, modifier?: string): string =>
+  modifier
+    ? `${BASE_CLASS}${element ? `__${element}` : ""}--${modifier}`
+    : `${BASE_CLASS}${element ? `__${element}` : ""}`
+
 export const RttDetailsPanel = ({
   call,
   isLive = false,
@@ -16,8 +22,8 @@ export const RttDetailsPanel = ({
 }: RttDetailsPanelProps): JSX.Element => {
   if (!call) {
     return (
-      <aside className="c-rtt-details-panel">
-        <div className="c-rtt-details-panel__empty">
+      <aside className={BASE_CLASS}>
+        <div className={bem("empty")}>
           <p>Select a call from the queue to view details</p>
         </div>
       </aside>
@@ -26,10 +32,7 @@ export const RttDetailsPanel = ({
 
   const live = isLive || call.status === "active"
 
-  const classes = joinClasses([
-    "c-rtt-details-panel",
-    live && "c-rtt-details-panel--live",
-  ])
+  const classes = joinClasses([BASE_CLASS, live && bem(undefined, "live")])
 
   const operatorDisplay =
     call.operatorBadge || call.operatorName
@@ -64,35 +67,28 @@ export const RttDetailsPanel = ({
 
   return (
     <aside className={classes}>
-      <div className="c-rtt-details-panel__header">
-        <div className="c-rtt-details-panel__header-info">
-          <h2 className="c-rtt-details-panel__title">
-            <span className="c-rtt-details-panel__call-type">
-              {call.callType}
-            </span>
-            <span className="c-rtt-details-panel__call-time">
+      <div className={bem("header")}>
+        <div className={bem("header-info")}>
+          <h2 className={bem("title")}>
+            <span className={bem("call-type")}>{call.callType}</span>
+            <span className={bem("call-time")}>
               {formattedTimeWithSeconds(call.receivedAt)}
             </span>
           </h2>
           {live && (
-            <div className="c-rtt-details-panel__live-tag">
-              <span
-                className="c-rtt-details-panel__live-dot"
-                aria-hidden="true"
-              />
+            <div className={bem("live-tag")}>
+              <span className={bem("live-dot")} aria-hidden="true" />
               Live Call
             </div>
           )}
         </div>
 
-        <div className="c-rtt-details-panel__header-actions">
-          <div className="c-rtt-details-panel__timestamps">
+        <div className={bem("header-actions")}>
+          <div className={bem("timestamps")}>
             {timestampRows.map(({ label, time }) => (
-              <div key={label} className="c-rtt-details-panel__timestamp-row">
-                <span className="c-rtt-details-panel__timestamp-label">
-                  {label}
-                </span>
-                <span className="c-rtt-details-panel__timestamp-val">
+              <div key={label} className={bem("timestamp-row")}>
+                <span className={bem("timestamp-label")}>{label}</span>
+                <span className={bem("timestamp-val")}>
                   {formattedTimeWithSeconds(time)}
                 </span>
               </div>
@@ -102,7 +98,7 @@ export const RttDetailsPanel = ({
           {live && onMarkDone && (
             <button
               type="button"
-              className="c-rtt-details-panel__mark-done-btn"
+              className={bem("mark-done-btn")}
               onClick={() => onMarkDone(call)}
             >
               MARK DONE
@@ -111,14 +107,14 @@ export const RttDetailsPanel = ({
         </div>
       </div>
 
-      <div className="c-rtt-details-panel__body">
-        <div className="c-rtt-details-panel__hero">
+      <div className={bem("body")}>
+        <div className={bem("hero")}>
           <div
-            className="c-rtt-details-panel__vehicle-badge"
+            className={bem("vehicle-badge")}
             aria-label={`Vehicle ${call.vehicleId}`}
           >
             <svg
-              className="c-rtt-details-panel__vehicle-triangle"
+              className={bem("vehicle-triangle")}
               viewBox="0 0 24 24"
               width="28"
               height="28"
@@ -126,33 +122,31 @@ export const RttDetailsPanel = ({
             >
               <path d="M12 2L2 22h20L12 2z" />
             </svg>
-            <span className="c-rtt-details-panel__vehicle-id">
-              {call.vehicleId}
-            </span>
+            <span className={bem("vehicle-id")}>{call.vehicleId}</span>
           </div>
 
-          <div className="c-rtt-details-panel__hero-route">
+          <div className={bem("hero-route")}>
             {call.direction && (
-              <div className="c-rtt-details-panel__direction">
+              <div className={bem("direction")}>
                 {call.direction.toUpperCase()}
               </div>
             )}
-            <div className="c-rtt-details-panel__headsign">
+            <div className={bem("headsign")}>
               {headsignDisplay.toUpperCase()}
             </div>
             {call.adherence && (
-              <div className="c-rtt-details-panel__adherence">
+              <div className={bem("adherence")}>
                 {call.adherence.toUpperCase()}
               </div>
             )}
           </div>
         </div>
 
-        <div className="c-rtt-details-panel__fields">
+        <div className={bem("fields")}>
           {detailFields.map(({ label, value }) => (
-            <div key={label} className="c-rtt-details-panel__field">
-              <span className="c-rtt-details-panel__label">{label}</span>
-              <span className="c-rtt-details-panel__value">{value}</span>
+            <div key={label} className={bem("field")}>
+              <span className={bem("label")}>{label}</span>
+              <span className={bem("value")}>{value}</span>
             </div>
           ))}
         </div>
