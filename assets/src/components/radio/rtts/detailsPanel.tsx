@@ -21,7 +21,7 @@ export const RttDetailsPanel = ({
 }: RttDetailsPanelProps): JSX.Element => {
   if (!call) {
     return (
-      <aside className={BASE_CLASS}>
+      <aside className={bem()}>
         <div className={bem("empty")}>
           <p>Select a call from the queue to view details</p>
         </div>
@@ -31,7 +31,7 @@ export const RttDetailsPanel = ({
 
   const live = isLive || call.status === "active"
 
-  const classes = joinClasses([BASE_CLASS, live && bem(undefined, "live")])
+  const classes = joinClasses([bem(), live && bem(undefined, "live")])
 
   const operatorDisplay =
     call.operatorBadge || call.operatorName
