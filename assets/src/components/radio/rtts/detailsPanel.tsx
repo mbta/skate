@@ -9,12 +9,11 @@ export interface RttDetailsPanelProps {
   onMarkDone?: (call: RttCall) => void
 }
 
-const BASE_CLASS = "c-rtt-details-panel"
-const bem = (element?: string, modifier?: string): string =>
-  modifier
-    ? `${BASE_CLASS}${element ? `__${element}` : ""}--${modifier}`
-    : `${BASE_CLASS}${element ? `__${element}` : ""}`
-
+const bem = (
+  element?: string,
+  modifier?: string,
+  base: string = "c-rtt-details-panel",
+) => base + (element ? "__" + element : "") + (modifier ? "--" + modifier : "")
 export const RttDetailsPanel = ({
   call,
   isLive = false,
