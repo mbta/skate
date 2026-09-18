@@ -12,7 +12,7 @@ export interface RttDetailsPanelProps {
 const bem = (
   element?: string,
   modifier?: string,
-  base: string = "c-rtt-details-panel",
+  base: string = "c-rtt-details-panel"
 ) => base + (element ? "__" + element : "") + (modifier ? "--" + modifier : "")
 export const RttDetailsPanel = ({
   call,
