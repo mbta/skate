@@ -80,6 +80,7 @@ export const rttQueueReducer = (
         }
       }
 
+      // Remove the previously active call from the incoming list when transitioning to a new active call
       const newIncomingCalls = state.incomingCalls
         .filter(
           (c) =>
