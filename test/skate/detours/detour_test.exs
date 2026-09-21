@@ -6,7 +6,7 @@ defmodule Skate.Detours.DetourTest do
 
   describe "Report.from!/1" do
     for is_text_only <- [true, false],
-        {copied_from_id, expected_type} <- [{12_345, :integer}, {nil, :nil}] do
+        {copied_from_id, expected_type} <- [{12_345, :integer}, {nil, nil}] do
       @is_text_only is_text_only
       @copied_from_id copied_from_id
       @expected_type expected_type
@@ -19,7 +19,7 @@ defmodule Skate.Detours.DetourTest do
 
         case @expected_type do
           :integer -> assert is_integer(report.copied_from)
-          :nil -> assert is_nil(report.copied_from)
+          nil -> assert is_nil(report.copied_from)
         end
       end
     end
@@ -35,8 +35,8 @@ defmodule Skate.Detours.DetourTest do
     is_text_only = Keyword.get(opts, :is_text_only, true)
 
     detour =
-      :detour
-      |> build(
+      build(
+        :detour,
         copied_from_id: copied_from_id,
         is_text_only: is_text_only,
         activated_at: DateTime.utc_now(),
