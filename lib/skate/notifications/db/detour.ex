@@ -128,7 +128,7 @@ defmodule Skate.Notifications.Db.Detour do
         headsign: d.headsign,
         route: d.route_name,
         direction: d.direction,
-        origin: d.route_pattern_name
+        origin: d.route_pattern["name"]
       })
     end
   end
