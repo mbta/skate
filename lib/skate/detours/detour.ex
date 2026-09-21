@@ -187,6 +187,7 @@ defmodule Skate.Detours.Detour do
 
     @type t :: %__MODULE__{
             id: integer(),
+            copied_from: integer() | nil,
             route_id: String.t(),
             reason: String.t(),
             nearest_intersection: String.t() | nil,
@@ -211,6 +212,7 @@ defmodule Skate.Detours.Detour do
     @derive Jason.Encoder
     defstruct [
       :id,
+      :copied_from,
       :route_id,
       :reason,
       :nearest_intersection,
@@ -247,6 +249,7 @@ defmodule Skate.Detours.Detour do
     defp base_report(%Detour{} = detour) do
       %__MODULE__{
         id: detour.id,
+        copied_from: detour.copied_from_id,
         route_id: detour.route_id,
         direction_id: get_in(detour.state, ["context", "routePattern", "directionId"]),
         reason: detour.reason,
