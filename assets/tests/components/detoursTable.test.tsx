@@ -2,7 +2,7 @@ import { describe, test, expect, jest } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { DetoursTable, DetourStatus } from "../../src/components/detoursTable"
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, within } from "@testing-library/react"
 import { simpleDetourFactory } from "../factories/detourListFactory"
 import routeFactory from "../factories/route"
 import type { DetoursFilter } from "../../src/models/detoursFilter"
@@ -12,15 +12,21 @@ const GLOBAL_DATE = new Date("2024-08-29T20:00:00")
 jest.mock("../../src/components/dateTimePicker", () => ({
   DateTimePicker: ({
     options,
+    ...props
   }: {
     options: { onChange?: (dates: Date[]) => void }
+    [key: string]: unknown
   }) => (
-    <button
-      aria-label="Mock date picker"
-      onClick={() => options.onChange?.([GLOBAL_DATE])}
-    >
-      Pick date
-    </button>
+    <div>
+      <input
+        type="text"
+        placeholder="Select date"
+        aria-label="Mock date picker"
+        onClick={() => options.onChange?.([GLOBAL_DATE])}
+        readOnly
+        {...props}
+      />
+    </div>
   ),
 }))
 
@@ -147,6 +153,17 @@ describe("DetoursTable - Closed", () => {
 
     expect(intersectionInput.value).toBe("Main St")
     expect(reasonSelect.value).toBe("Traffic")
+  })
+
+  test("renders 'Closed on' associated with the date picker input and does not render 'Last Closed'", () => {
+    renderClosedTable()
+
+    const datePickerInput = screen.getByPlaceholderText("Select date")
+    const headerScope = within(datePickerInput.closest("th")!)
+
+    expect(headerScope.getByText("Closed on")).toBeInTheDocument()
+    expect(headerScope.queryByText("Last Closed")).not.toBeInTheDocument()
+    expect(screen.queryByText("Last Closed")).not.toBeInTheDocument()
   })
 })
 
