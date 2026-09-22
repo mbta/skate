@@ -51,6 +51,9 @@ defmodule Skate.Detours.Db.Detour do
     # Default detour properties
     field :nearest_intersection, :string
 
+    # Auto-close time for detour
+    field :autoclose_on, :utc_datetime_usec
+
     has_many :detour_status_notifications, Notifications.Db.Detour
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
   end
@@ -61,6 +64,7 @@ defmodule Skate.Detours.Db.Detour do
     |> validate_activated_at()
     |> add_status()
     |> populate_fields_from_state()
+    |> calculate_autoclose_on_from_duration()
     |> add_updated_at()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
@@ -228,6 +232,52 @@ defmodule Skate.Detours.Db.Detour do
       _ ->
         changeset
     end
+  end
+
+  defp calculate_autoclose_on_from_duration(changeset) do
+    case fetch_change(changeset, :estimated_duration) do
+      {:ok, duration} ->
+        case calculate_autoclose_on(duration) do
+          nil -> changeset
+          autoclose_time -> put_change(changeset, :autoclose_on, autoclose_time)
+        end
+
+      :error ->
+        changeset
+    end
+  end
+
+  defp calculate_autoclose_on(estimated_duration) when is_nil(estimated_duration) do
+    nil
+  end
+
+  defp calculate_autoclose_on(estimated_duration) do
+    estimated_duration_str = String.trim(estimated_duration)
+
+    cond do
+      estimated_duration_str in ["1 - 8 hrs", "Until Further Notice", "End of Service"] ->
+        end_of_day_in_et(Date.utc_today())
+
+      String.match?(estimated_duration_str, ~r/^\d{4}-\d{2}-\d{2}$/) ->
+        case Date.from_iso8601(estimated_duration_str) do
+          {:ok, date} -> end_of_day_in_et(date)
+          {:error, _} -> nil
+        end
+
+      true ->
+        nil
+    end
+  end
+
+  defp end_of_day_in_et(date) do
+    # Create a naive datetime for 23:59:59.999999 on the given date (with microsecond precision)
+    end_of_day_naive = NaiveDateTime.new!(date, ~T[23:59:59.999999])
+
+    # Convert to UTC by treating it as ET time
+    # ET is UTC-5 (EST) or UTC-4 (EDT), but Elixir handles this automatically
+    end_of_day_naive
+    |> DateTime.from_naive!("America/New_York")
+    |> DateTime.shift_zone!("Etc/UTC")
   end
 
   defmodule Queries do
