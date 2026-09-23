@@ -85,7 +85,11 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "sets autoclose_on to nil for unrecognized duration string" do
       state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "Unknown Duration Format")
+        put_in(
+          build(:detour_snapshot),
+          ["context", "selectedDuration"],
+          "Unknown Duration Format"
+        )
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
