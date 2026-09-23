@@ -124,7 +124,8 @@ defmodule Skate.Detours.Db.DetourTest do
       # 23:59:59.999999 ET converts to early morning UTC (3-5 AM depending on DST)
       # In September 2026, EDT (UTC-4) is in effect, so it should be ~3:59:59 UTC
       time = DateTime.to_time(autoclose_on)
-      assert time.hour in [3, 4, 5]  # Could vary with DST
+      # Could vary with DST
+      assert time.hour in [3, 4, 5]
       assert time.minute == 59
       assert time.second == 59
     end
@@ -166,7 +167,7 @@ defmodule Skate.Detours.Db.DetourTest do
       {:ok, detour} = :detour |> build() |> Skate.Repo.insert()
 
       # Update with a new estimated_duration in state
-      new_state = 
+      new_state =
         detour.state
         |> put_in(["context", "selectedDuration"], "Until Further Notice")
 
@@ -179,4 +180,3 @@ defmodule Skate.Detours.Db.DetourTest do
     end
   end
 end
-
