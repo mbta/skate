@@ -7,8 +7,7 @@ defmodule Skate.Detours.Db.DetourTest do
   describe "changeset - autoclose_on calculation" do
     test "calculates autoclose_on as end of today for '1 - 8 hrs' from state" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "1 - 8 hrs")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 - 8 hrs")
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -22,8 +21,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "calculates autoclose_on as end of today for 'Until Further Notice' from state" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "Until Further Notice")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "Until Further Notice")
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -36,8 +34,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "calculates autoclose_on as end of today for 'End of Service' from state" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "End of Service")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "End of Service")
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -50,8 +47,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "calculates autoclose_on for custom date string '2026-09-25' from state" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "2026-09-25")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "2026-09-25")
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -66,8 +62,7 @@ defmodule Skate.Detours.Db.DetourTest do
       future_date = "2026-12-31"
 
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], future_date)
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], future_date)
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -80,8 +75,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "sets autoclose_on to nil for nil estimated_duration in state" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], nil)
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], nil)
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -91,8 +85,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "sets autoclose_on to nil for unrecognized duration string" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "Unknown Duration Format")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "Unknown Duration Format")
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -102,8 +95,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "sets autoclose_on to nil for invalid date format" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "2026-13-45")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "2026-13-45")
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -113,8 +105,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "autoclose_on is stored as UTC time (23:59:59 ET = early next morning UTC)" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "1 - 8 hrs")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 - 8 hrs")
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -132,8 +123,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
     test "whitespace in estimated_duration is trimmed" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "  1 - 8 hrs  ")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "  1 - 8 hrs  ")
 
       detour = build(:detour)
       changeset = Detour.changeset(detour, %{"state" => state})
@@ -146,8 +136,7 @@ defmodule Skate.Detours.Db.DetourTest do
   describe "changeset - integration with estimated_duration updates" do
     test "creating a detour with estimated_duration from state sets autoclose_on" do
       state =
-        build(:detour_snapshot)
-        |> put_in(["context", "selectedDuration"], "1 - 8 hrs")
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 - 8 hrs")
 
       detour = build(:detour)
 
@@ -168,8 +157,7 @@ defmodule Skate.Detours.Db.DetourTest do
 
       # Update with a new estimated_duration in state
       new_state =
-        detour.state
-        |> put_in(["context", "selectedDuration"], "Until Further Notice")
+        put_in(detour.state, ["context", "selectedDuration"], "Until Further Notice")
 
       changeset = Detour.changeset(detour, %{"state" => new_state})
 
