@@ -96,7 +96,7 @@ const SelectingDuration = ({
     />
     {selectedDuration && (
       <BaseAlert variant="secondary" className="mt-3 mb-0">
-        Detour will close automatically {" "}
+        Detour will close automatically{" "}
         {selectedDuration === formatIfDate(selectedDuration)
           ? "at the end of service."
           : `on ${formatIfDate(selectedDuration)} at the end of service`}
