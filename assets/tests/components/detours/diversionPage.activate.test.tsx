@@ -244,7 +244,7 @@ describe("DiversionPage activate workflow", () => {
 
       expect(
         screen.getByText(
-          "Detour will close automatically on Oct 9, 2026 at the end of service"
+          /Detour will close automatically on Oct 9, 2026 at the end of service\./
         )
       ).toBeVisible()
     })
