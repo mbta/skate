@@ -10,6 +10,8 @@ import {
   serviceDaySeconds,
   formattedDate,
   formattedTimeWithSeconds,
+  formatIfDate,
+  isIsoDateString,
 } from "../../src/util/dateTime"
 
 describe("now", () => {
@@ -77,6 +79,21 @@ describe("formattedDate", () => {
     expect(formattedDate(new Date("Februrary 7, 2020 21:08"))).toEqual(
       "2/07/2020"
     )
+  })
+})
+
+describe("isIsoDateString", () => {
+  test("only matches full YYYY-MM-DD strings", () => {
+    expect(isIsoDateString("2026-09-24")).toBe(true)
+    expect(isIsoDateString("1 hour")).toBe(false)
+    expect(isIsoDateString("2026-09-24 1 hour")).toBe(false)
+  })
+})
+
+describe("formatIfDate", () => {
+  test("formats date strings and leaves durations unchanged", () => {
+    expect(formatIfDate("2026-09-24")).toEqual("Sep 24, 2026")
+    expect(formatIfDate("1 hour")).toEqual("1 hour")
   })
 })
 

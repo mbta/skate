@@ -4,7 +4,7 @@ import { DurationSelect } from "./durationSelect"
 import { StepperBar } from "../stepperBar"
 import detourReasons from "../../data/detourReasons"
 import BaseAlert from "../alerts/baseAlert"
-import { formatIfDate } from "../../util/dateTime"
+import { formatIfDate, isIsoDateString } from "../../util/dateTime"
 
 interface SurroundingModalProps extends PropsWithChildren {
   onCancel: () => void
@@ -97,9 +97,9 @@ const SelectingDuration = ({
     {selectedDuration && (
       <BaseAlert variant="secondary" className="mt-3 mb-0">
         Detour will close automatically{" "}
-        {/\d{4}-\d{2}-\d{2}/.test(selectedDuration)
-          ? "at the end of service."
-          : `on ${formatIfDate(selectedDuration)} at the end of service.`}
+        {isIsoDateString(selectedDuration)
+          ? `on ${formatIfDate(selectedDuration)} at the end of service.`
+          : "at the end of service."}
       </BaseAlert>
     )}
   </>
