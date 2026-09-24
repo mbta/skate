@@ -261,9 +261,7 @@ defmodule Skate.Detours.Db.Detour do
       estimated_duration_str in ["Until further notice", "Until end of service"] or
         String.ends_with?(estimated_duration_str, "hour") or
           String.ends_with?(estimated_duration_str, "hours") ->
-        today_in_et =
-          DateTime.now!("America/New_York")
-          |> DateTime.to_date()
+        today_in_et = DateTime.to_date(DateTime.now!("America/New_York"))
 
         end_of_day_in_et(today_in_et)
 

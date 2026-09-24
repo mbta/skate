@@ -7,7 +7,7 @@ defmodule Skate.Detours.Db.DetourTest do
   # Converts autoclose_on back to Eastern Time and asserts it's today at end of day.
   defp assert_autoclose_on_end_of_today_et(autoclose_on) do
     autoclose_on_et = DateTime.shift_zone!(autoclose_on, "America/New_York")
-    today_in_et = DateTime.now!("America/New_York") |> DateTime.to_date()
+    today_in_et = DateTime.to_date(DateTime.now!("America/New_York"))
 
     assert DateTime.to_date(autoclose_on_et) == today_in_et
     assert autoclose_on_et.hour == 23
