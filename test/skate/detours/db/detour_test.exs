@@ -197,44 +197,5 @@ defmodule Skate.Detours.Db.DetourTest do
       assert updated_detour.estimated_duration == "Until further notice"
       assert updated_detour.autoclose_on != nil
     end
-
-    test "clears autoclose_on when an existing detour's estimated_duration no longer auto-closes" do
-      initial_state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
-
-      {:ok, detour} =
-        build(:detour)
-        |> Detour.changeset(%{"state" => initial_state})
-        |> Skate.Repo.insert()
-
-      new_state =
-        put_in(detour.state, ["context", "selectedDuration"], "Unknown Duration Format")
-
-      {:ok, updated_detour} =
-        detour
-        |> Detour.changeset(%{"state" => new_state})
-        |> Skate.Repo.update()
-
-      assert updated_detour.autoclose_on == nil
-    end
-
-    test "clears autoclose_on when an existing detour's estimated_duration is nil" do
-      initial_state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
-
-      {:ok, detour} =
-        build(:detour)
-        |> Detour.changeset(%{"state" => initial_state})
-        |> Skate.Repo.insert()
-
-      new_state = put_in(detour.state, ["context", "selectedDuration"], nil)
-
-      {:ok, updated_detour} =
-        detour
-        |> Detour.changeset(%{"state" => new_state})
-        |> Skate.Repo.update()
-
-      assert updated_detour.autoclose_on == nil
-    end
   end
 end

@@ -193,23 +193,9 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  defp put_change_from_state_allow_nil(changeset, field, path) do
-    case {fetch_field(changeset, field), fetch_change(changeset, :state)} do
-      {{:data, table_value}, {:ok, state}} ->
-        case get_in(state, Enum.map(path, &Access.key(&1, :missing))) do
-          :missing -> changeset
-          context_value when table_value == context_value -> changeset
-          context_value -> put_change(changeset, field, context_value)
-        end
-
-      _ ->
-        changeset
-    end
-  end
-
   defp populate_fields_from_state(changeset) do
     changeset
-    |> put_change_from_state_allow_nil(:estimated_duration, ["context", "selectedDuration"])
+    |> put_change_from_state(:estimated_duration, ["context", "selectedDuration"])
     |> put_change_from_state(:reason, ["context", "selectedReason"])
     |> put_change_from_state(:nearest_intersection, ["context", "nearestIntersection"])
     |> put_change_from_state(:start_point, ["context", "startPoint"])
