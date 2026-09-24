@@ -85,7 +85,13 @@ defmodule Skate.Detours.Db.Detour do
       })
 
     detour
-    |> change(%{activated_at: nil, estimated_duration: nil, reason: nil, swiftly_id: nil})
+    |> change(%{
+      activated_at: nil,
+      autoclose_on: nil,
+      estimated_duration: nil,
+      reason: nil,
+      swiftly_id: nil
+    })
     |> change(%{state: new_state})
   end
 
@@ -187,9 +193,23 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
+  defp put_change_from_state_allow_nil(changeset, field, path) do
+    case {fetch_field(changeset, field), fetch_change(changeset, :state)} do
+      {{:data, table_value}, {:ok, state}} ->
+        case get_in(state, Enum.map(path, &Access.key(&1, :missing))) do
+          :missing -> changeset
+          context_value when table_value == context_value -> changeset
+          context_value -> put_change(changeset, field, context_value)
+        end
+
+      _ ->
+        changeset
+    end
+  end
+
   defp populate_fields_from_state(changeset) do
     changeset
-    |> put_change_from_state(:estimated_duration, ["context", "selectedDuration"])
+    |> put_change_from_state_allow_nil(:estimated_duration, ["context", "selectedDuration"])
     |> put_change_from_state(:reason, ["context", "selectedReason"])
     |> put_change_from_state(:nearest_intersection, ["context", "nearestIntersection"])
     |> put_change_from_state(:start_point, ["context", "startPoint"])
@@ -237,10 +257,7 @@ defmodule Skate.Detours.Db.Detour do
   defp calculate_autoclose_on_from_duration(changeset) do
     case fetch_change(changeset, :estimated_duration) do
       {:ok, duration} ->
-        case calculate_autoclose_on(duration) do
-          nil -> changeset
-          autoclose_time -> put_change(changeset, :autoclose_on, autoclose_time)
-        end
+        put_change(changeset, :autoclose_on, calculate_autoclose_on(duration))
 
       :error ->
         changeset
@@ -255,8 +272,14 @@ defmodule Skate.Detours.Db.Detour do
     estimated_duration_str = String.trim(estimated_duration)
 
     cond do
-      estimated_duration_str in ["1 - 8 hrs", "Until Further Notice", "End of Service"] ->
-        end_of_day_in_et(Date.utc_today())
+      estimated_duration_str in ["Until further notice", "Until end of service"] or
+        String.ends_with?(estimated_duration_str, "hour") or
+          String.ends_with?(estimated_duration_str, "hours") ->
+        today_in_et =
+          DateTime.now!("America/New_York")
+          |> DateTime.to_date()
+
+        end_of_day_in_et(today_in_et)
 
       String.match?(estimated_duration_str, ~r/^\d{4}-\d{2}-\d{2}$/) ->
         case Date.from_iso8601(estimated_duration_str) do
