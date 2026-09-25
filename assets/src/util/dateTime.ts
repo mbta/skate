@@ -67,10 +67,13 @@ export const fromIsoDateString = (date: string): Date => {
   return new Date(year, month - 1, day)
 }
 
+export const isIsoDateString = (date: string): boolean =>
+  /^\d{4}-\d{2}-\d{2}$/.test(date)
+
 export const formatIfDate = (duration?: string): string => {
   if (!duration) return ""
 
-  if (/\d{4}-\d{2}-\d{2}/.test(duration)) {
+  if (isIsoDateString(duration)) {
     return fromIsoDateString(duration).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",

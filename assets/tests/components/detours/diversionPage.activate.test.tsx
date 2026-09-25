@@ -3,6 +3,7 @@ import {
   DiversionPage as DiversionPageDefault,
   DiversionPageProps,
 } from "../../../src/components/detours/diversionPage"
+import { ActivateDetour } from "../../../src/components/detours/activateDetourModal"
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
@@ -219,6 +220,33 @@ describe("DiversionPage activate workflow", () => {
       await userEvent.click(threeHoursRadio.get())
 
       expect(nextButton.get()).toBeEnabled()
+    })
+
+    test("shows the automatic closure alert for an estimated duration", async () => {
+      await diversionPageOnSelectDurationModalScreen()
+
+      await userEvent.click(threeHoursRadio.get())
+
+      expect(
+        screen.getByText(
+          "Detour will close automatically at the end of service."
+        )
+      ).toBeVisible()
+    })
+
+    test("shows the automatic closure alert for a custom date", () => {
+      render(
+        <ActivateDetour.SelectingDuration
+          onSelectDuration={jest.fn()}
+          selectedDuration="2026-10-09"
+        />
+      )
+
+      expect(
+        screen.getByText(
+          /Detour will close automatically on Oct 9, 2026 at the end of service\./
+        )
+      ).toBeVisible()
     })
 
     test("the 'Next' button advances to the next screen", async () => {

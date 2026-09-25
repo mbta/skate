@@ -51,6 +51,9 @@ defmodule Skate.Detours.Db.Detour do
     # Default detour properties
     field :nearest_intersection, :string
 
+    # Auto-close time for detour
+    field :autoclose_on, :utc_datetime_usec
+
     has_many :detour_status_notifications, Notifications.Db.Detour
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
   end
@@ -61,6 +64,7 @@ defmodule Skate.Detours.Db.Detour do
     |> validate_activated_at()
     |> add_status()
     |> populate_fields_from_state()
+    |> calculate_autoclose_on_from_duration()
     |> add_updated_at()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
@@ -81,7 +85,13 @@ defmodule Skate.Detours.Db.Detour do
       })
 
     detour
-    |> change(%{activated_at: nil, estimated_duration: nil, reason: nil, swiftly_id: nil})
+    |> change(%{
+      activated_at: nil,
+      autoclose_on: nil,
+      estimated_duration: nil,
+      reason: nil,
+      swiftly_id: nil
+    })
     |> change(%{state: new_state})
   end
 
@@ -228,6 +238,54 @@ defmodule Skate.Detours.Db.Detour do
       _ ->
         changeset
     end
+  end
+
+  defp calculate_autoclose_on_from_duration(changeset) do
+    case fetch_change(changeset, :estimated_duration) do
+      {:ok, duration} ->
+        put_change(changeset, :autoclose_on, calculate_autoclose_on(duration))
+
+      :error ->
+        changeset
+    end
+  end
+
+  defp calculate_autoclose_on(estimated_duration) when is_nil(estimated_duration) do
+    nil
+  end
+
+  defp calculate_autoclose_on(estimated_duration) do
+    estimated_duration_str = String.trim(estimated_duration)
+
+    cond do
+      estimated_duration_str in ["Until further notice", "Until end of service"] or
+        String.ends_with?(estimated_duration_str, "hour") or
+          String.ends_with?(estimated_duration_str, "hours") ->
+        today_in_et = DateTime.to_date(DateTime.now!("America/New_York"))
+
+        end_of_service_in_et(today_in_et)
+
+      String.match?(estimated_duration_str, ~r/^\d{4}-\d{2}-\d{2}$/) ->
+        case Date.from_iso8601(estimated_duration_str) do
+          {:ok, date} -> end_of_service_in_et(date)
+          {:error, _} -> nil
+        end
+
+      true ->
+        nil
+    end
+  end
+
+  defp end_of_service_in_et(date) do
+    # End of service is 03:00:00 ET the following day (covers trips running until ~2:30 AM)
+    next_day = Date.add(date, 1)
+    end_of_service_naive = NaiveDateTime.new!(next_day, ~T[03:00:00.000000])
+
+    # Convert to UTC by treating it as ET time
+    # ET is UTC-5 (EST) or UTC-4 (EDT), but Elixir handles this automatically
+    end_of_service_naive
+    |> DateTime.from_naive!("America/New_York")
+    |> DateTime.shift_zone!("Etc/UTC")
   end
 
   defmodule Queries do

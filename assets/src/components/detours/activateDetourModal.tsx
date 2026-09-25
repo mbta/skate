@@ -3,6 +3,8 @@ import { Button, Form, Modal } from "react-bootstrap"
 import { DurationSelect } from "./durationSelect"
 import { StepperBar } from "../stepperBar"
 import detourReasons from "../../data/detourReasons"
+import BaseAlert from "../alerts/baseAlert"
+import { formatIfDate, isIsoDateString } from "../../util/dateTime"
 
 interface SurroundingModalProps extends PropsWithChildren {
   onCancel: () => void
@@ -92,6 +94,14 @@ const SelectingDuration = ({
       selectedDuration={selectedDuration}
       onSelectDuration={onSelectDuration}
     />
+    {selectedDuration && (
+      <BaseAlert variant="secondary" className="mt-3 mb-0">
+        Detour will close automatically{" "}
+        {isIsoDateString(selectedDuration)
+          ? `on ${formatIfDate(selectedDuration)} at the end of service.`
+          : "at the end of service."}
+      </BaseAlert>
+    )}
   </>
 )
 
