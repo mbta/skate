@@ -263,11 +263,11 @@ defmodule Skate.Detours.Db.Detour do
           String.ends_with?(estimated_duration_str, "hours") ->
         today_in_et = DateTime.to_date(DateTime.now!("America/New_York"))
 
-        end_of_day_in_et(today_in_et)
+        end_of_service_in_et(today_in_et)
 
       String.match?(estimated_duration_str, ~r/^\d{4}-\d{2}-\d{2}$/) ->
         case Date.from_iso8601(estimated_duration_str) do
-          {:ok, date} -> end_of_day_in_et(date)
+          {:ok, date} -> end_of_service_in_et(date)
           {:error, _} -> nil
         end
 
@@ -276,13 +276,14 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  defp end_of_day_in_et(date) do
-    # Create a naive datetime for 23:59:59.999999 on the given date (with microsecond precision)
-    end_of_day_naive = NaiveDateTime.new!(date, ~T[23:59:59.999999])
+  defp end_of_service_in_et(date) do
+    # End of service is 03:00:00 ET the following day (covers trips running until ~2:30 AM)
+    next_day = Date.add(date, 1)
+    end_of_service_naive = NaiveDateTime.new!(next_day, ~T[03:00:00.000000])
 
     # Convert to UTC by treating it as ET time
     # ET is UTC-5 (EST) or UTC-4 (EDT), but Elixir handles this automatically
-    end_of_day_naive
+    end_of_service_naive
     |> DateTime.from_naive!("America/New_York")
     |> DateTime.shift_zone!("Etc/UTC")
   end
