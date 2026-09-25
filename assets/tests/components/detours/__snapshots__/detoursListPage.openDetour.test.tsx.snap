@@ -550,7 +550,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                 <label
                   for="date-filter"
                 >
-                  Last Closed
+                  Closed on
                 </label>
                 <div
                   class="input-group-filter display-editable mt-2"
@@ -2505,7 +2505,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                 <label
                   for="date-filter"
                 >
-                  Last Closed
+                  Closed on
                 </label>
                 <div
                   class="input-group-filter display-editable mt-2"

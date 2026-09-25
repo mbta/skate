@@ -776,7 +776,7 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                 <label
                   for="date-filter"
                 >
-                  Last Closed
+                  Closed on
                 </label>
                 <div
                   class="input-group-filter display-editable mt-2"
