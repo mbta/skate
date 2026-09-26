@@ -75,7 +75,38 @@ defmodule Skate.Detours.Detours do
   end
 
   defp apply_status_filter(query, status) do
+    case System.get_env("AUTOCLOSING_EXPERIMENT_ON") do
+      "true" -> apply_status_filter_experimental(query, status)
+      _ -> apply_status_filter_default(query, status)
+    end
+  end
+
+  defp apply_status_filter_default(query, status) do
     where(query, [detour: d], d.status == ^status)
+  end
+
+  defp apply_status_filter_experimental(query, :active) do
+    now = DateTime.utc_now()
+
+    where(
+      query,
+      [detour: d],
+      not is_nil(d.activated_at) and (is_nil(d.autoclose_on) or ^now <= d.autoclose_on)
+    )
+  end
+
+  defp apply_status_filter_experimental(query, :draft) do
+    where(query, [detour: d], is_nil(d.activated_at))
+  end
+
+  defp apply_status_filter_experimental(query, :past) do
+    now = DateTime.utc_now()
+
+    where(query, [detour: d], ^now > d.autoclose_on)
+  end
+
+  defp apply_status_filter_experimental(query, _status) do
+    query
   end
 
   defp apply_route_id_filter(query, route_id) do
@@ -144,11 +175,20 @@ defmodule Skate.Detours.Detours do
   end
 
   defp apply_user_and_status_filter(query, user_id, :draft) do
-    where(query, [detour: d], d.status == :draft and d.author_id == ^user_id)
+    case System.get_env("AUTOCLOSING_EXPERIMENT_ON") do
+      "true" ->
+        where(query, [detour: d], is_nil(d.activated_at) and d.author_id == ^user_id)
+
+      _ ->
+        where(query, [detour: d], d.status == :draft and d.author_id == ^user_id)
+    end
   end
 
   defp apply_user_and_status_filter(query, _user_id, status) do
-    where(query, [detour: d], d.status == ^status)
+    case System.get_env("AUTOCLOSING_EXPERIMENT_ON") do
+      "true" -> apply_status_filter_experimental(query, status)
+      _ -> where(query, [detour: d], d.status == ^status)
+    end
   end
 
   def db_detour_to_detour(%{status: status} = db_detour) do

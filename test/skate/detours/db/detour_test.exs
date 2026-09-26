@@ -143,7 +143,7 @@ defmodule Skate.Detours.Db.DetourTest do
       refute Ecto.Changeset.get_change(changeset, :autoclose_on)
     end
 
-    test "autoclose_on is end of day (23:59:59) when converted back to Eastern Time" do
+    test "autoclose_on is end of day (03:00:00) when converted back to Eastern Time" do
       state =
         put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
 
