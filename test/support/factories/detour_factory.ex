@@ -301,7 +301,62 @@ defmodule Skate.DetourFactory do
 
       def with_missed_stops(state, stops) do
         missed_stops = Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
-        put_in(state["context"]["finishedDetour"], %{"missedStops" => missed_stops})
+
+        update_in(state, ["context", "finishedDetour"], fn
+          nil -> %{"missedStops" => missed_stops}
+          finished_detour -> Map.put(finished_detour, "missedStops", missed_stops)
+        end)
+      end
+
+      def with_finished_state(detour_or_state, opts \\ [])
+
+      def with_finished_state(%Skate.Detours.Db.Detour{} = detour, opts) do
+        %{detour | state: with_finished_state(detour.state, opts)}
+      end
+
+      def with_finished_state(state, opts) do
+        default_connection_point = %{"start" => %{"id" => "101"}, "end" => %{"id" => "102"}}
+        default_route_segments = %{"beforeDetour" => [], "afterDetour" => [], "detour" => []}
+        default_detour_shape = %{"coordinates" => []}
+
+        connection_point = Keyword.get(opts, :connection_point)
+        route_segments = Keyword.get(opts, :route_segments)
+        detour_shape = Keyword.get(opts, :detour_shape)
+
+        missed_stops =
+          case Keyword.get(opts, :missed_stops) do
+            nil -> nil
+            stops when is_list(stops) -> Enum.map(stops, fn id -> %{"id" => to_string(id)} end)
+          end
+
+        update_in(state, ["context", "finishedDetour"], fn
+          nil ->
+            base = %{
+              "connectionPoint" => connection_point || default_connection_point,
+              "routeSegments" => route_segments || default_route_segments,
+              "detourShape" => detour_shape || default_detour_shape
+            }
+
+            if missed_stops, do: Map.put(base, "missedStops", missed_stops), else: base
+
+          finished_detour when is_map(finished_detour) ->
+            base =
+              finished_detour
+              |> Map.put_new("connectionPoint", default_connection_point)
+              |> Map.put_new("routeSegments", default_route_segments)
+              |> Map.put_new("detourShape", default_detour_shape)
+
+            base =
+              if connection_point,
+                do: Map.put(base, "connectionPoint", connection_point),
+                else: base
+
+            base =
+              if route_segments, do: Map.put(base, "routeSegments", route_segments), else: base
+
+            base = if detour_shape, do: Map.put(base, "detourShape", detour_shape), else: base
+            if missed_stops, do: Map.put(base, "missedStops", missed_stops), else: base
+        end)
       end
 
       def with_author(%Skate.Detours.Db.Detour{} = detour, user) do
