@@ -48,32 +48,7 @@ defmodule Skate.Detours.DetourTest do
     else
       detour
       |> with_missed_stops(["101", "102"])
-      |> populate_finished_detour_state()
+      |> with_finished_state()
     end
-  end
-
-  # Injects the minimal nested map structure required by non-text-only detours.
-  #
-  # When `is_text_only` is false, `Report.from!/1` extracts connection points,
-  # route segments, and bypassed coordinates from `state["context"]["finishedDetour"]`,
-  # raising an `ArgumentError` or `KeyError` if these keys are absent.
-  defp populate_finished_detour_state(detour) do
-    %{
-      detour
-      | state:
-          detour.state
-          |> put_in(
-            ["context", "finishedDetour", "connectionPoint"],
-            %{"start" => %{"id" => "101"}, "end" => %{"id" => "102"}}
-          )
-          |> put_in(
-            ["context", "finishedDetour", "routeSegments"],
-            %{"beforeDetour" => [], "afterDetour" => [], "detour" => []}
-          )
-          |> put_in(
-            ["context", "finishedDetour", "detourShape"],
-            %{"coordinates" => []}
-          )
-    }
   end
 end

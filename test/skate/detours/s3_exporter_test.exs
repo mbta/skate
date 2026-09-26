@@ -138,30 +138,12 @@ defmodule Skate.Detours.S3ExporterTest do
 
       # act
       for _ <- 1..active do
-        detour =
-          :detour
-          |> build()
-          |> activated()
-          |> with_missed_stops(for i <- 1..2, do: Integer.to_string(i))
-
-        # workaround because there's no `with_connection_point(...)` factory method
-        insert(%{
-          detour
-          | state:
-              detour.state
-              |> put_in(
-                ["context", "finishedDetour", "connectionPoint"],
-                %{start: %{id: 1}, end: %{id: 2}}
-              )
-              |> put_in(
-                ["context", "finishedDetour", "routeSegments"],
-                %{"beforeDetour" => [], "afterDetour" => [], "detour" => []}
-              )
-              |> put_in(
-                ["context", "finishedDetour", "detourShape"],
-                %{"coordinates" => []}
-              )
-        })
+        :detour
+        |> build()
+        |> activated()
+        |> with_missed_stops(for i <- 1..2, do: Integer.to_string(i))
+        |> with_finished_state()
+        |> insert()
       end
 
       for _ <- 1..inactive do
