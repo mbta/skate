@@ -76,19 +76,20 @@ defmodule Skate.Detours.Detours do
 
   defp apply_status_filter(query, status) do
     mode =
-      cond do
-        Skate.Detours.Autoclosing.enabled?() -> :autoclosing
-        true -> :default
+      if Skate.Detours.Autoclosing.enabled?() do
+        :autoclosing
+      else
+        :default
       end
 
     apply_status_filter(query, status, mode)
   end
 
-  defp apply_status_filter(query, status, _mode = :default) do
+  defp apply_status_filter(query, status, :default = _mode) do
     where(query, [detour: d], d.status == ^status)
   end
 
-  defp apply_status_filter(query, status, _mode = :autoclosing) do
+  defp apply_status_filter(query, status, :autoclosing = _mode) do
     Skate.Detours.Autoclosing.apply_status_filter(query, status)
   end
 

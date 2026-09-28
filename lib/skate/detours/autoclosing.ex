@@ -1,4 +1,6 @@
 defmodule Skate.Detours.Autoclosing do
+  @moduledoc false
+
   import Ecto.Query
   alias Skate.Settings.TestGroup
 
@@ -21,7 +23,7 @@ defmodule Skate.Detours.Autoclosing do
   @spec apply_status_filter(Ecto.Queryable.t(), atom()) :: Ecto.Query.t()
   def apply_status_filter(query, status)
 
-  def apply_status_filter(query, _status = :active) do
+  def apply_status_filter(query, :active = _status) do
     now = DateTime.utc_now()
 
     # Include detours that have been activated and are not manually closed.
@@ -34,11 +36,11 @@ defmodule Skate.Detours.Autoclosing do
     )
   end
 
-  def apply_status_filter(query, _status = :draft) do
+  def apply_status_filter(query, :draft = _status) do
     where(query, [detour: d], is_nil(d.activated_at))
   end
 
-  def apply_status_filter(query, _status = :past) do
+  def apply_status_filter(query, :past = _status) do
     now = DateTime.utc_now()
 
     where(
