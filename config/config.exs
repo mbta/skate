@@ -117,9 +117,11 @@ config :skate, Oban,
     Oban.Plugins.Pruner,
     {
       Oban.Plugins.Cron,
+      timezone: "America/New_York",
       crontab: [
         {"*/15 * * * *", Skate.Oban.CleanUpNotifications,
-         args: %{"cutoff_days" => 1, "limit" => 1000}}
+         args: %{"cutoff_days" => 1, "limit" => 1000}},
+        {"0 3 * * *", Skate.Oban.AutoCloseDetours}
       ]
     }
   ]

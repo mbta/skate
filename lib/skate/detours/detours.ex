@@ -34,6 +34,29 @@ defmodule Skate.Detours.Detours do
     |> Repo.all()
   end
 
+  def autoclose_expired_detours(now \\ DateTime.utc_now()) do
+    {count, closed_detours} =
+      Repo.update_all(
+        from(detour in Detour,
+          where:
+            detour.status == :active and not is_nil(detour.autoclose_on) and
+              detour.autoclose_on <= ^now,
+          select: detour
+        ),
+        set: [status: :past, updated_at: now]
+      )
+
+    Enum.each(closed_detours, fn detour ->
+      changeset =
+        Ecto.Changeset.change(%{detour | status: :active}, %{status: :past, updated_at: now})
+
+      update_swiftly(changeset, detour)
+      handle_detour_updated(changeset, detour, detour.author_id)
+    end)
+
+    count
+  end
+
   def detours_for_route(route_id, status, limit \\ nil, offset \\ nil, filters \\ %{})
 
   def detours_for_route("all", status, limit, offset, filters) do
