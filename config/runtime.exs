@@ -17,8 +17,7 @@ config :skate,
   busloc_url: System.get_env("BUSLOC_URL"),
   busloc_topic: System.get_env("BUSLOC_TOPIC"),
   trip_updates_url: System.get_env("TRIP_UPDATES_URL"),
-  fullstory_org: System.get_env("FULLSTORY_ORG"),
-  detours__autoclosing__pilot: System.get_env("DETOURS__AUTOCLOSING__PILOT", "off")
+  fullstory_org: System.get_env("FULLSTORY_ORG")
 
 # MBTA API
 config :skate,
