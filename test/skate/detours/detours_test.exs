@@ -333,40 +333,10 @@ defmodule Skate.Detours.DetoursTest do
     end
   end
 
-  describe "autoclosing" do
+  describe "apply_status_filter_experimental" do
     setup do
-      with :ok <- setup_feature_flag(),
-           :ok <- setup_test_group() do
-        :ok
-      else
-        _ -> :error
-      end
-    end
-
-    defp setup_test_group() do
-      test_group_name = Skate.Detours.Autoclosing.test_group_name()
-
-      with {:ok, test_group} <- Skate.Settings.TestGroup.create(test_group_name),
-           %Skate.Settings.TestGroup{override: :enabled} <-
-             Skate.Settings.TestGroup.update(%{
-               test_group
-               | override: :enabled
-             }) do
-        :ok
-      else
-        _ -> :error
-      end
-    end
-
-    defp setup_feature_flag() do
-      feature_flag_name = Skate.Detours.Autoclosing.feature_flag_name()
-
-      previous_value = Application.get_env(:skate, feature_flag_name)
-      Application.put_env(:skate, feature_flag_name, "on")
-
-      on_exit(fn ->
-        Application.put_env(:skate, feature_flag_name, previous_value)
-      end)
+      {:ok, test_group} = Skate.Settings.TestGroup.create("autoclosing-pilot")
+      Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
 
       :ok
     end
