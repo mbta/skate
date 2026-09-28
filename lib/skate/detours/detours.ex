@@ -75,9 +75,17 @@ defmodule Skate.Detours.Detours do
   end
 
   defp apply_status_filter(query, status) do
-    case System.get_env("AUTOCLOSING_EXPERIMENT_ON") do
-      "true" -> apply_status_filter_experimental(query, status)
-      _ -> apply_status_filter_default(query, status)
+    if autoclosing_pilot_enabled?() do
+      apply_status_filter_experimental(query, status)
+    else
+      apply_status_filter_default(query, status)
+    end
+  end
+
+  defp autoclosing_pilot_enabled? do
+    case TestGroup.get_by_name("autoclosing-pilot") do
+      %TestGroup{override: :enabled} -> true
+      _ -> false
     end
   end
 
@@ -88,10 +96,13 @@ defmodule Skate.Detours.Detours do
   defp apply_status_filter_experimental(query, :active) do
     now = DateTime.utc_now()
 
+    # Include detours that have been activated and are not manually closed.
+    # Manually closed means status = :past
     where(
       query,
       [detour: d],
-      not is_nil(d.activated_at) and (is_nil(d.autoclose_on) or ^now <= d.autoclose_on)
+      not is_nil(d.activated_at) and d.status != ^:past and
+        (is_nil(d.autoclose_on) or ^now <= d.autoclose_on)
     )
   end
 
@@ -102,7 +113,11 @@ defmodule Skate.Detours.Detours do
   defp apply_status_filter_experimental(query, :past) do
     now = DateTime.utc_now()
 
-    where(query, [detour: d], ^now > d.autoclose_on)
+    where(
+      query,
+      [detour: d],
+      (not is_nil(d.autoclose_on) and ^now > d.autoclose_on) or d.status == ^:past
+    )
   end
 
   defp apply_status_filter_experimental(query, _status) do
@@ -175,19 +190,18 @@ defmodule Skate.Detours.Detours do
   end
 
   defp apply_user_and_status_filter(query, user_id, :draft) do
-    case System.get_env("AUTOCLOSING_EXPERIMENT_ON") do
-      "true" ->
-        where(query, [detour: d], is_nil(d.activated_at) and d.author_id == ^user_id)
-
-      _ ->
-        where(query, [detour: d], d.status == :draft and d.author_id == ^user_id)
+    if autoclosing_pilot_enabled?() do
+      where(query, [detour: d], is_nil(d.activated_at) and d.author_id == ^user_id)
+    else
+      where(query, [detour: d], d.status == :draft and d.author_id == ^user_id)
     end
   end
 
   defp apply_user_and_status_filter(query, _user_id, status) do
-    case System.get_env("AUTOCLOSING_EXPERIMENT_ON") do
-      "true" -> apply_status_filter_experimental(query, status)
-      _ -> where(query, [detour: d], d.status == ^status)
+    if autoclosing_pilot_enabled?() do
+      apply_status_filter_experimental(query, status)
+    else
+      where(query, [detour: d], d.status == ^status)
     end
   end
 

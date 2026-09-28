@@ -335,11 +335,8 @@ defmodule Skate.Detours.DetoursTest do
 
   describe "apply_status_filter_experimental" do
     setup do
-      System.put_env("AUTOCLOSING_EXPERIMENT_ON", "true")
-
-      on_exit(fn ->
-        System.delete_env("AUTOCLOSING_EXPERIMENT_ON")
-      end)
+      {:ok, test_group} = Skate.Settings.TestGroup.create("autoclosing-pilot")
+      Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
 
       :ok
     end
@@ -403,6 +400,34 @@ defmodule Skate.Detours.DetoursTest do
       # Should NOT be included in active filter (not activated)
       detours = Detours.detours_for_route("all", :active)
       refute Enum.any?(detours, &(&1.id == 4))
+    end
+
+    test "filters :active status correctly - excludes manually deactivated detours" do
+      now = DateTime.utc_now()
+      past_activated = DateTime.add(now, -1, :hour)
+      future_autoclose = DateTime.add(now, 2, :hour)
+
+      :detour
+      |> build()
+      |> with_id(20)
+      |> activated(past_activated)
+      |> with_autoclose_on(future_autoclose)
+      |> deactivated()
+      |> insert()
+
+      :detour
+      |> build()
+      |> with_id(21)
+      |> activated(past_activated)
+      |> with_autoclose_on(nil)
+      |> deactivated()
+      |> insert()
+
+      active_detours = Detours.detours_for_route("all", :active)
+      refute Enum.any?(active_detours, &(&1.id in [20, 21]))
+
+      past_detours = Detours.detours_for_route("all", :past)
+      assert Enum.all?([20, 21], fn id -> Enum.any?(past_detours, &(&1.id == id)) end)
     end
 
     test "filters :draft status correctly - includes only detours without activated_at" do
