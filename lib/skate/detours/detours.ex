@@ -34,29 +34,6 @@ defmodule Skate.Detours.Detours do
     |> Repo.all()
   end
 
-  def autoclose_expired_detours(now \\ DateTime.utc_now()) do
-    {count, closed_detours} =
-      Repo.update_all(
-        from(detour in Detour,
-          where:
-            detour.status == :active and not is_nil(detour.autoclose_on) and
-              detour.autoclose_on <= ^now,
-          select: detour
-        ),
-        set: [status: :past, updated_at: now]
-      )
-
-    Enum.each(closed_detours, fn detour ->
-      changeset =
-        Ecto.Changeset.change(%{detour | status: :active}, %{status: :past, updated_at: now})
-
-      update_swiftly(changeset, detour)
-      handle_detour_updated(changeset, detour, detour.author_id)
-    end)
-
-    count
-  end
-
   def detours_for_route(route_id, status, limit \\ nil, offset \\ nil, filters \\ %{})
 
   def detours_for_route("all", status, limit, offset, filters) do
@@ -284,12 +261,43 @@ defmodule Skate.Detours.Detours do
     partial_changeset =
       Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
+    partial_changeset =
+      if Skate.Detours.Autoclosing.enabled?() do
+        case Ecto.Changeset.fetch_change(partial_changeset, :estimated_duration) do
+          {:ok, nil} ->
+            partial_changeset
+
+          {:ok, new_estimated_duration} ->
+            Ecto.Changeset.put_change(
+              partial_changeset,
+              :autoclose_on,
+              Detour.calculate_autoclose_on(new_estimated_duration)
+            )
+
+          _ ->
+            partial_changeset
+        end
+      else
+        partial_changeset
+      end
+
     detour = Ecto.Changeset.apply_changes(partial_changeset)
 
     with swiftly_response <- update_swiftly(partial_changeset, detour),
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
          {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset) do
+      case Ecto.Changeset.fetch_change(changeset, :autoclose_on) do
+        {:ok, nil} ->
+          nil
+
+        {:ok, _} ->
+          Skate.Detours.Autocloser.reschedule(changeset, new_record)
+
+        _ ->
+          nil
+      end
+
       handle_detour_updated(changeset, new_record, author_id)
       {:ok, new_record}
     end
@@ -304,6 +312,28 @@ defmodule Skate.Detours.Detours do
       conflict_target: [:id],
       on_conflict: {:replace, changed_fields}
     )
+  end
+
+  def autoclose_detour(%Detour{} = detour) do
+    changeset =
+      Ecto.Changeset.change(detour, %{status: :past})
+
+    case Repo.update(changeset) do
+      {:ok, autoclosed_detour = %Detour{}} ->
+        with :ok <- update_swiftly(changeset, autoclosed_detour),
+             :ok <-
+               handle_detour_updated(
+                 changeset,
+                 autoclosed_detour,
+                 autoclosed_detour.author_id
+               ) do
+          {:ok, nil}
+        else
+          {:error, %Ecto.Changeset{} = changeset} -> {:error, changeset.errors}
+          {:error, swiftly_error} -> {:error, inspect(swiftly_error)}
+          unknown -> {:error, inspect(unknown)}
+        end
+    end
   end
 
   defp handle_detour_updated(changeset, new_record, author_id) do
@@ -340,7 +370,8 @@ defmodule Skate.Detours.Detours do
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
          {:ok, new_record} <-
-           Repo.update(changeset) do
+           Repo.update(changeset),
+         {:ok, _} <- Skate.Detours.Autocloser.schedule(new_record) do
       handle_detour_updated(changeset, new_record, author_id)
       {:ok, new_record}
     end
@@ -378,7 +409,13 @@ defmodule Skate.Detours.Detours do
 
     Detour.changeset(detour, %{
       state: new_state,
-      activated_at: DateTime.utc_now(:millisecond)
+      activated_at: DateTime.utc_now(:millisecond),
+      autoclose_on:
+        if Skate.Detours.Autoclosing.enabled?() do
+          Detour.calculate_autoclose_on(selected_duration)
+        else
+          nil
+        end
     })
   end
 

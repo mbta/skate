@@ -240,7 +240,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  defp calculate_autoclose_on_from_duration(changeset) do
+  def calculate_autoclose_on_from_duration(changeset) do
     case fetch_change(changeset, :estimated_duration) do
       {:ok, duration} ->
         put_change(changeset, :autoclose_on, calculate_autoclose_on(duration))
@@ -250,11 +250,11 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  defp calculate_autoclose_on(estimated_duration) when is_nil(estimated_duration) do
+  def calculate_autoclose_on(estimated_duration) when is_nil(estimated_duration) do
     nil
   end
 
-  defp calculate_autoclose_on(estimated_duration) do
+  def calculate_autoclose_on(estimated_duration) do
     estimated_duration_str = String.trim(estimated_duration)
 
     cond do
@@ -276,7 +276,7 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  defp end_of_service_in_et(date) do
+  def end_of_service_in_et(date) do
     # End of service is 03:00:00 ET the following day (covers trips running until ~2:30 AM)
     next_day = Date.add(date, 1)
     end_of_service_naive = NaiveDateTime.new!(next_day, ~T[03:00:00.000000])
