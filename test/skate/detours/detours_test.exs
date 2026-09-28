@@ -361,12 +361,7 @@ defmodule Skate.Detours.DetoursTest do
     defp setup_feature_flag() do
       feature_flag_name = Skate.Detours.Autoclosing.feature_flag_name()
 
-      previous_value = Application.get_env(:skate, feature_flag_name)
-      Application.put_env(:skate, feature_flag_name, "on")
-
-      on_exit(fn ->
-        Application.put_env(:skate, feature_flag_name, previous_value)
-      end)
+      reassign_env(:skate, feature_flag_name, "on")
 
       :ok
     end
