@@ -3,7 +3,7 @@ defmodule Skate.Detours.Autoclosing.Test do
   alias Skate.Detours.Db.Detour
 
   import Skate.Factory
-  import Test.Support.Helpers
+  import Test.Support.AutoclosingHelpers
 
   use Skate.DataCase
 
@@ -14,29 +14,6 @@ defmodule Skate.Detours.Autoclosing.Test do
     else
       _ -> :error
     end
-  end
-
-  def setup_test_group() do
-    test_group_name = Skate.Detours.Autoclosing.test_group_name()
-
-    with {:ok, test_group} <- Skate.Settings.TestGroup.create(test_group_name),
-         %Skate.Settings.TestGroup{override: :enabled} <-
-           Skate.Settings.TestGroup.update(%{
-             test_group
-             | override: :enabled
-           }) do
-      :ok
-    else
-      _ -> :error
-    end
-  end
-
-  def setup_feature_flag() do
-    feature_flag_name = Skate.Detours.Autoclosing.feature_flag_name()
-
-    reassign_env(:skate, feature_flag_name, "on")
-
-    :ok
   end
 
   # Converts autoclose_on back to Eastern Time and asserts it's at end of service (03:00 ET next morning).

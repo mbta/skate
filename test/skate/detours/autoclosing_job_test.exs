@@ -8,8 +8,8 @@ defmodule Skate.Detours.AutoclosingJob.Test do
   setup do
     reassign_env(:skate, :s3_bucket, nil)
 
-    with :ok <- Skate.Detours.Autoclosing.Test.setup_feature_flag(),
-         :ok <- Skate.Detours.Autoclosing.Test.setup_test_group() do
+    with :ok <- Test.Support.AutoclosingHelpers.setup_feature_flag(),
+         :ok <- Test.Support.AutoclosingHelpers.setup_test_group() do
       :ok
     else
       _ -> :error
