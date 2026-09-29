@@ -64,7 +64,13 @@ defmodule Skate.Detours.Db.Detour do
     |> validate_activated_at()
     |> add_status()
     |> populate_fields_from_state()
-    |> Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration()
+    |> then(fn changeset ->
+      if Skate.Detours.Autoclosing.enabled?() do
+        Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(changeset)
+      else
+        changeset
+      end
+    end)
     |> add_updated_at()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
