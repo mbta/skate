@@ -1,47 +1,23 @@
-defmodule Skate.Autocloser.Test do
+defmodule Skate.Detours.AutoclosingJob.Test do
   use Skate.DataCase
   use Oban.Testing, repo: Skate.Repo
 
-  import Skate.Factory
   import Test.Support.Helpers
-  require Mox
+  import Skate.Factory
 
   setup do
     reassign_env(:skate, :s3_bucket, nil)
 
-    with :ok <- setup_feature_flag(),
-         :ok <- setup_test_group() do
+    with :ok <- Skate.Detours.Autoclosing.Test.setup_feature_flag(),
+         :ok <- Skate.Detours.Autoclosing.Test.setup_test_group() do
       :ok
     else
       _ -> :error
     end
   end
 
-  defp setup_test_group() do
-    test_group_name = Skate.Detours.Autoclosing.test_group_name()
-
-    with {:ok, test_group} <- Skate.Settings.TestGroup.create(test_group_name),
-         %Skate.Settings.TestGroup{override: :enabled} <-
-           Skate.Settings.TestGroup.update(%{
-             test_group
-             | override: :enabled
-           }) do
-      :ok
-    else
-      _ -> :error
-    end
-  end
-
-  defp setup_feature_flag() do
-    feature_flag_name = Skate.Detours.Autoclosing.feature_flag_name()
-
-    reassign_env(:skate, feature_flag_name, "on")
-
-    :ok
-  end
-
-  describe "autocloser" do
-    test "enqueues activated detour" do
+  describe "Skate.Detours.Autoclosing.Job" do
+    test "when detour is activated, job is scheduled" do
       Oban.Testing.with_testing_mode(:manual, fn ->
         %{id: id, author_id: author_id} =
           :detour
@@ -59,17 +35,17 @@ defmodule Skate.Autocloser.Test do
           )
 
         assert_enqueued(
-          worker: Skate.Detours.Autocloser,
+          worker: Skate.Detours.Autoclosing.Job,
           scheduled_at: detour.autoclose_on,
           args: %{"detour_id" => detour.id}
         )
       end)
     end
 
-    test "enqueues updated detour" do
+    test "when detour is updated with new selected duration, job is scheduled" do
       Oban.Testing.with_testing_mode(:manual, fn ->
         now = DateTime.utc_now()
-        autoclose_on = DateTime.add(now, 500, :millisecond)
+        autoclose_on = DateTime.add(now, 1, :hour)
 
         %{author_id: author_id, state: state} =
           :detour
@@ -91,14 +67,14 @@ defmodule Skate.Autocloser.Test do
           )
 
         assert_enqueued(
-          worker: Skate.Detours.Autocloser,
+          worker: Skate.Detours.Autoclosing.Job,
           scheduled_at: detour.autoclose_on,
           args: %{"detour_id" => detour.id}
         )
       end)
     end
 
-    test "closes detour" do
+    test "when job runs, detour is deactived" do
       Oban.Testing.with_testing_mode(:inline, fn ->
         %{id: id, author_id: author_id} =
           :detour

@@ -263,20 +263,7 @@ defmodule Skate.Detours.Detours do
 
     partial_changeset =
       if Skate.Detours.Autoclosing.enabled?() do
-        case Ecto.Changeset.fetch_change(partial_changeset, :estimated_duration) do
-          {:ok, nil} ->
-            partial_changeset
-
-          {:ok, new_estimated_duration} ->
-            Ecto.Changeset.put_change(
-              partial_changeset,
-              :autoclose_on,
-              Detour.calculate_autoclose_on(new_estimated_duration)
-            )
-
-          _ ->
-            partial_changeset
-        end
+        Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(partial_changeset)
       else
         partial_changeset
       end
@@ -287,15 +274,14 @@ defmodule Skate.Detours.Detours do
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
          {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset) do
-      case Ecto.Changeset.fetch_change(changeset, :autoclose_on) do
-        {:ok, nil} ->
-          nil
+      if Skate.Detours.Autoclosing.enabled?() and not is_nil(new_record.autoclose_on) do
+        case Ecto.Changeset.fetch_change(changeset, :autoclose_on) do
+          {:ok, _} ->
+            Skate.Detours.Autoclosing.Job.reschedule(new_record)
 
-        {:ok, _} ->
-          Skate.Detours.Autocloser.reschedule(changeset, new_record)
-
-        _ ->
-          nil
+          _ ->
+            nil
+        end
       end
 
       handle_detour_updated(changeset, new_record, author_id)
@@ -370,8 +356,11 @@ defmodule Skate.Detours.Detours do
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
          {:ok, new_record} <-
-           Repo.update(changeset),
-         {:ok, _} <- Skate.Detours.Autocloser.schedule(new_record) do
+           Repo.update(changeset) do
+      if Skate.Detours.Autoclosing.enabled?() do
+        _ = Skate.Detours.Autoclosing.Job.schedule(new_record)
+      end
+
       handle_detour_updated(changeset, new_record, author_id)
       {:ok, new_record}
     end
@@ -412,7 +401,7 @@ defmodule Skate.Detours.Detours do
       activated_at: DateTime.utc_now(:millisecond),
       autoclose_on:
         if Skate.Detours.Autoclosing.enabled?() do
-          Detour.calculate_autoclose_on(selected_duration)
+          Skate.Detours.Autoclosing.calculate_autoclose_on(selected_duration)
         else
           nil
         end

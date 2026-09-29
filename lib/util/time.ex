@@ -233,4 +233,13 @@ defmodule Util.Time do
     |> Timex.shift(hours: -12)
     |> Timex.to_unix()
   end
+
+  @spec end_of_service_in_et(Calendar.date()) :: DateTime.t()
+  def end_of_service_in_et(date) do
+    date
+    |> Date.add(1)
+    |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
+    # TODO: why convert to UTC of signature name ends with `_in_et`?
+    |> DateTime.shift_zone!("Etc/UTC")
+  end
 end
