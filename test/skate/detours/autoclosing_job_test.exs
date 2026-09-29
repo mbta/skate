@@ -42,7 +42,7 @@ defmodule Skate.Detours.AutoclosingJob.Test do
       end)
     end
 
-    test "when detour is updated with new selected duration, job is scheduled" do
+    test "when detour is updated with new selected duration, job is rescheduled" do
       Oban.Testing.with_testing_mode(:manual, fn ->
         now = DateTime.utc_now()
         autoclose_on = DateTime.add(now, 1, :hour)
