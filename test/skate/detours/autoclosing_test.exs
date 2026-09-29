@@ -39,6 +39,7 @@ defmodule Skate.Detours.Autoclosing.Test do
     :ok
   end
 
+  # Converts autoclose_on back to Eastern Time and asserts it's at end of service (03:00 ET next morning).
   defp assert_autoclose_on_end_of_service_et(autoclose_on) do
     autoclose_on_et = DateTime.shift_zone!(autoclose_on, "America/New_York")
     today_in_et = DateTime.to_date(DateTime.now!("America/New_York"))
