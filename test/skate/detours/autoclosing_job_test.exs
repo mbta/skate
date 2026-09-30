@@ -45,6 +45,53 @@ defmodule Skate.Detours.AutoclosingJob.Test do
       end)
     end
 
+    test "when autoclosing is enabled, users not in the test group cannot queue jobs" do
+      Oban.Testing.with_testing_mode(:manual, fn ->
+        Test.Support.AutoclosingHelpers.update_test_group_override(:none)
+
+        detour =
+          :detour
+          |> build()
+          |> insert()
+
+        Skate.Detours.Detours.activate_detour(
+          detour.id,
+          detour.author_id,
+          "1 hour",
+          "Construction"
+        )
+
+        refute_enqueued(worker: Skate.Detours.Autoclosing.Job)
+      end)
+    end
+
+    test "when autoclosing is enabled, users in the test group can queue jobs" do
+      Oban.Testing.with_testing_mode(:manual, fn ->
+        Test.Support.AutoclosingHelpers.update_test_group_override(:none)
+
+        detour =
+          :detour
+          |> build()
+          |> insert()
+
+        :ok = Test.Support.AutoclosingHelpers.add_test_group_user(detour.author_id)
+
+        {:ok, detour} =
+          Skate.Detours.Detours.activate_detour(
+            detour.id,
+            detour.author_id,
+            "1 hour",
+            "Construction"
+          )
+
+        assert_enqueued(
+          worker: Skate.Detours.Autoclosing.Job,
+          scheduled_at: detour.autoclose_on,
+          args: %{"detour_id" => detour.id}
+        )
+      end)
+    end
+
     test "when detour is activated, job is scheduled" do
       Oban.Testing.with_testing_mode(:manual, fn ->
         %{id: id, author_id: author_id} =

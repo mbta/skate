@@ -36,8 +36,10 @@ defmodule Skate.Detours.Autoclosing do
 
           %TestGroup{} = test_group ->
             Repo.exists?(
-              from user in TestGroupUser,
-                where: user.test_group_id == ^test_group.id and user.id == ^user_id
+              from test_group_user in TestGroupUser,
+                where:
+                  test_group_user.user_id == ^user_id and
+                    test_group_user.test_group_id == ^test_group.id
             )
 
           _ ->
