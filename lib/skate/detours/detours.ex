@@ -75,53 +75,22 @@ defmodule Skate.Detours.Detours do
   end
 
   defp apply_status_filter(query, status) do
-    if autoclosing_pilot_enabled?() do
-      apply_status_filter_experimental(query, status)
-    else
-      apply_status_filter_default(query, status)
-    end
+    mode =
+      if Skate.Detours.Autoclosing.enabled?() do
+        :autoclosing
+      else
+        :default
+      end
+
+    apply_status_filter(query, status, mode)
   end
 
-  defp autoclosing_pilot_enabled? do
-    case TestGroup.get_by_name("autoclosing-pilot") do
-      %TestGroup{override: :enabled} -> true
-      _ -> false
-    end
-  end
-
-  defp apply_status_filter_default(query, status) do
+  defp apply_status_filter(query, status, :default = _mode) do
     where(query, [detour: d], d.status == ^status)
   end
 
-  defp apply_status_filter_experimental(query, :active) do
-    now = DateTime.utc_now()
-
-    # Include detours that have been activated and are not manually closed.
-    # Manually closed means status = :past
-    where(
-      query,
-      [detour: d],
-      not is_nil(d.activated_at) and d.status != ^:past and
-        (is_nil(d.autoclose_on) or ^now <= d.autoclose_on)
-    )
-  end
-
-  defp apply_status_filter_experimental(query, :draft) do
-    where(query, [detour: d], is_nil(d.activated_at))
-  end
-
-  defp apply_status_filter_experimental(query, :past) do
-    now = DateTime.utc_now()
-
-    where(
-      query,
-      [detour: d],
-      (not is_nil(d.autoclose_on) and ^now > d.autoclose_on) or d.status == ^:past
-    )
-  end
-
-  defp apply_status_filter_experimental(query, _status) do
-    query
+  defp apply_status_filter(query, status, :autoclosing = _mode) do
+    Skate.Detours.Autoclosing.apply_status_filter(query, status)
   end
 
   defp apply_route_id_filter(query, route_id) do
@@ -190,19 +159,14 @@ defmodule Skate.Detours.Detours do
   end
 
   defp apply_user_and_status_filter(query, user_id, :draft) do
-    if autoclosing_pilot_enabled?() do
-      where(query, [detour: d], is_nil(d.activated_at) and d.author_id == ^user_id)
-    else
-      where(query, [detour: d], d.status == :draft and d.author_id == ^user_id)
-    end
+    apply_status_filter(
+      where(query, [detour: d], d.author_id == ^user_id),
+      :draft
+    )
   end
 
   defp apply_user_and_status_filter(query, _user_id, status) do
-    if autoclosing_pilot_enabled?() do
-      apply_status_filter_experimental(query, status)
-    else
-      where(query, [detour: d], d.status == ^status)
-    end
+    apply_status_filter(query, status)
   end
 
   def db_detour_to_detour(%{status: status} = db_detour) do
@@ -297,12 +261,31 @@ defmodule Skate.Detours.Detours do
     partial_changeset =
       Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
+    partial_changeset =
+      if Skate.Detours.Autoclosing.enabled?() do
+        Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(partial_changeset)
+      else
+        partial_changeset
+      end
+
     detour = Ecto.Changeset.apply_changes(partial_changeset)
 
     with swiftly_response <- update_swiftly(partial_changeset, detour),
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
-         {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset) do
+         {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset),
+         {:ok, new_autoclose_on} <-
+           if(
+             Skate.Detours.Autoclosing.enabled?(),
+             do: Ecto.Changeset.fetch_change(changeset, :autoclose_on),
+             else: {:ok, nil}
+           ),
+         {:ok, _} <-
+           if(
+             is_nil(new_autoclose_on),
+             do: {:ok, nil},
+             else: Skate.Detours.Autoclosing.Job.reschedule(new_record)
+           ) do
       handle_detour_updated(changeset, new_record, author_id)
       {:ok, new_record}
     end
@@ -317,6 +300,29 @@ defmodule Skate.Detours.Detours do
       conflict_target: [:id],
       on_conflict: {:replace, changed_fields}
     )
+  end
+
+  @spec autoclose_detour(Detour.t()) :: {:ok, nil} | {:error, any()}
+  def autoclose_detour(%Detour{} = detour) do
+    changeset =
+      Ecto.Changeset.change(detour, %{status: :past})
+
+    case Repo.update(changeset) do
+      {:ok, autoclosed_detour = %Detour{}} ->
+        with :ok <- update_swiftly(changeset, autoclosed_detour),
+             :ok <-
+               handle_detour_updated(
+                 changeset,
+                 autoclosed_detour,
+                 autoclosed_detour.author_id
+               ) do
+          {:ok, nil}
+        else
+          {:error, %Ecto.Changeset{} = changeset} -> {:error, changeset.errors}
+          {:error, swiftly_error} -> {:error, inspect(swiftly_error)}
+          unknown -> {:error, inspect(unknown)}
+        end
+    end
   end
 
   defp handle_detour_updated(changeset, new_record, author_id) do
@@ -353,7 +359,12 @@ defmodule Skate.Detours.Detours do
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
          {:ok, new_record} <-
-           Repo.update(changeset) do
+           Repo.update(changeset),
+         {:ok, _} <-
+           if(Skate.Detours.Autoclosing.enabled?(),
+             do: Skate.Detours.Autoclosing.Job.schedule(new_record),
+             else: {:ok, nil}
+           ) do
       handle_detour_updated(changeset, new_record, author_id)
       {:ok, new_record}
     end
@@ -391,7 +402,12 @@ defmodule Skate.Detours.Detours do
 
     Detour.changeset(detour, %{
       state: new_state,
-      activated_at: DateTime.utc_now(:millisecond)
+      activated_at: DateTime.utc_now(:millisecond),
+      autoclose_on:
+        if(Skate.Detours.Autoclosing.enabled?(),
+          do: Skate.Detours.Autoclosing.calculate_autoclose_on(selected_duration),
+          else: nil
+        )
     })
   end
 
@@ -732,6 +748,7 @@ defmodule Skate.Detours.Detours do
       "activate_detour id=#{detour.id} " <>
         "activated_at=#{format_datetime(detour.activated_at)} " <>
         "estimated_duration=#{format_str(detour.estimated_duration)} " <>
+        "autoclose_on=#{format_str(detour.autoclose_on)} " <>
         "copied_from_id=#{detour.copied_from_id || "none"} " <>
         "reason=#{format_str(detour.reason)}"
     )

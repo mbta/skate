@@ -233,4 +233,12 @@ defmodule Util.Time do
     |> Timex.shift(hours: -12)
     |> Timex.to_unix()
   end
+
+  @spec end_of_service_in_utc(Calendar.date()) :: DateTime.t()
+  def end_of_service_in_utc(date) do
+    date
+    |> Date.add(1)
+    |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
+    |> DateTime.shift_zone!("Etc/UTC")
+  end
 end
