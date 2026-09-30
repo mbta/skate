@@ -274,11 +274,11 @@ defmodule Skate.Detours.Detours do
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
          {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset),
-         {:ok, new_autoclose_on} <-
+         new_autoclose_on <-
            if(
              Skate.Detours.Autoclosing.enabled?(),
-             do: Ecto.Changeset.fetch_change(changeset, :autoclose_on),
-             else: {:ok, nil}
+             do: Ecto.Changeset.get_change(changeset, :autoclose_on, nil),
+             else: nil
            ),
          {:ok, _} <-
            if(
