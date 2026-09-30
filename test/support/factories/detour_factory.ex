@@ -146,6 +146,10 @@ defmodule Skate.DetourFactory do
         %{detour | updated_at: updated_at}
       end
 
+      def with_autoclose_on(detour, autoclose_on) do
+        %{detour | autoclose_on: autoclose_on}
+      end
+
       def with_route(
             %Skate.Detours.Db.Detour{} = detour,
             %{name: route_name, id: route_id} = route
