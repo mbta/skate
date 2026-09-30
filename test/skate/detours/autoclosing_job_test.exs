@@ -18,17 +18,31 @@ defmodule Skate.Detours.AutoclosingJob.Test do
 
   describe "Skate.Detours.Autoclosing.Job" do
     test "does not schedule or reschedule jobs when autoclosing is disabled" do
-      reassign_env(:skate, Skate.Detours.Autoclosing.feature_flag_name(), "off")
+      Oban.Testing.with_testing_mode(:manual, fn ->
+        reassign_env(:skate, Skate.Detours.Autoclosing.feature_flag_name(), "off")
 
-      detour =
-        :detour
-        |> build()
-        |> activated(DateTime.utc_now())
-        |> with_autoclose_on(DateTime.add(DateTime.utc_now(), 1, :hour))
-        |> insert()
+        detour =
+          :detour
+          |> build()
+          |> insert()
 
-      assert {:ok, nil} = Skate.Detours.Autoclosing.Job.schedule(detour)
-      assert {:ok, nil} = Skate.Detours.Autoclosing.Job.reschedule(detour)
+        Skate.Detours.Detours.activate_detour(
+          detour.id,
+          detour.author_id,
+          "1 hour",
+          "Construction"
+        )
+
+        refute_enqueued(worker: Skate.Detours.Autoclosing.Job)
+
+        {:ok, _} =
+          Skate.Detours.Detours.upsert_from_snapshot(
+            detour.author_id,
+            Map.merge(detour.state, %{"selectedDuration" => "Until end of service"})
+          )
+
+        refute_enqueued(worker: Skate.Detours.Autoclosing.Job)
+      end)
     end
 
     test "when detour is activated, job is scheduled" do
