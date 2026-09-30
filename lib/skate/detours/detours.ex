@@ -290,8 +290,8 @@ defmodule Skate.Detours.Detours do
          {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset),
          new_autoclose_on <-
            if(
-             Skate.Detours.Autoclosing.enabled_for_user?(author_id),
-             do: Ecto.Changeset.get_change(changeset, :autoclose_on),
+             Skate.Detours.Autoclosing.enabled?(),
+             do: Ecto.Changeset.get_change(changeset, :autoclose_on, nil),
              else: nil
            ),
          {:ok, _} <-
