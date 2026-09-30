@@ -17,6 +17,20 @@ defmodule Skate.Detours.AutoclosingJob.Test do
   end
 
   describe "Skate.Detours.Autoclosing.Job" do
+    test "does not schedule or reschedule jobs when autoclosing is disabled" do
+      reassign_env(:skate, Skate.Detours.Autoclosing.feature_flag_name(), "off")
+
+      detour =
+        :detour
+        |> build()
+        |> activated(DateTime.utc_now())
+        |> with_autoclose_on(DateTime.add(DateTime.utc_now(), 1, :hour))
+        |> insert()
+
+      assert {:ok, nil} = Skate.Detours.Autoclosing.Job.schedule(detour)
+      assert {:ok, nil} = Skate.Detours.Autoclosing.Job.reschedule(detour)
+    end
+
     test "when detour is activated, job is scheduled" do
       Oban.Testing.with_testing_mode(:manual, fn ->
         %{id: id, author_id: author_id} =
@@ -68,7 +82,42 @@ defmodule Skate.Detours.AutoclosingJob.Test do
 
         assert_enqueued(
           worker: Skate.Detours.Autoclosing.Job,
-          scheduled_at: detour.autoclose_on,
+          scheduled_at: DateTime.new!(tomorrow, ~T[07:00:00]),
+          args: %{"detour_id" => detour.id}
+        )
+      end)
+    end
+
+    test "rescheduling replaces the existing scheduled job" do
+      Oban.Testing.with_testing_mode(:manual, fn ->
+        now = DateTime.utc_now()
+        old_autoclose_on = DateTime.add(now, 1, :hour)
+        new_autoclose_on = DateTime.add(now, 2, :hour)
+
+        detour =
+          :detour
+          |> build()
+          |> activated(now)
+          |> with_autoclose_on(old_autoclose_on)
+          |> insert()
+
+        assert {:ok, _job} = Skate.Detours.Autoclosing.Job.schedule(detour)
+
+        assert {:ok, _job} =
+                 Skate.Detours.Autoclosing.Job.reschedule(%{
+                   detour
+                   | autoclose_on: new_autoclose_on
+                 })
+
+        assert_enqueued(
+          worker: Skate.Detours.Autoclosing.Job,
+          scheduled_at: new_autoclose_on,
+          args: %{"detour_id" => detour.id}
+        )
+
+        refute_enqueued(
+          worker: Skate.Detours.Autoclosing.Job,
+          scheduled_at: old_autoclose_on,
           args: %{"detour_id" => detour.id}
         )
       end)

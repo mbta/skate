@@ -3,6 +3,7 @@ defmodule Skate.Detours.Autoclosing.Test do
   alias Skate.Detours.Db.Detour
 
   import Skate.Factory
+  import Test.Support.Helpers
   import Test.Support.AutoclosingHelpers
 
   use Skate.DataCase
@@ -77,6 +78,31 @@ defmodule Skate.Detours.Autoclosing.Test do
       # Should NOT be included in active filter
       detours = Detours.detours_for_route("all", :active)
       refute Enum.any?(detours, &(&1.id == 3))
+    end
+
+    test "filters :active status correctly at the autoclose boundary" do
+      now = DateTime.utc_now()
+
+      :detour
+      |> build()
+      |> with_id(13)
+      |> activated(DateTime.add(now, -1, :hour))
+      |> with_autoclose_on(DateTime.add(now, 1, :second))
+      |> insert()
+
+      :detour
+      |> build()
+      |> with_id(14)
+      |> activated(DateTime.add(now, -1, :hour))
+      |> with_autoclose_on(DateTime.add(now, -1, :second))
+      |> insert()
+
+      active_detours = Detours.detours_for_route("all", :active)
+      past_detours = Detours.detours_for_route("all", :past)
+
+      assert Enum.any?(active_detours, &(&1.id == 13))
+      refute Enum.any?(active_detours, &(&1.id == 14))
+      assert Enum.any?(past_detours, &(&1.id == 14))
     end
 
     test "filters :active status correctly - excludes detours without activated_at" do
@@ -213,7 +239,7 @@ defmodule Skate.Detours.Autoclosing.Test do
       |> insert()
 
       count = Detours.count_detours_for_route("all", :active)
-      assert count >= 1
+      assert count == 1
       assert Enum.any?(Detours.detours_for_route("all", :active), &(&1.id == 10))
     end
 
@@ -226,11 +252,22 @@ defmodule Skate.Detours.Autoclosing.Test do
       |> insert()
 
       count = Detours.count_detours_for_user(author.id, :draft)
-      assert count >= 1
+      assert count == 1
     end
   end
 
   describe "Skate.Detours.Db.Detour.changeset/2" do
+    test "does not calculate autoclose_on when autoclosing is disabled" do
+      reassign_env(:skate, Skate.Detours.Autoclosing.feature_flag_name(), "off")
+
+      state =
+        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
+
+      changeset = Detour.changeset(build(:detour), %{"state" => state})
+
+      refute Ecto.Changeset.get_change(changeset, :autoclose_on)
+    end
+
     test "calculates autoclose_on as end of today (in ET) for '1 hour' from state" do
       state =
         put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
