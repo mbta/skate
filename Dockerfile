@@ -38,7 +38,7 @@ RUN apk add --no-cache --update curl
 WORKDIR /root
 
 ADD \
-  --checksum=sha256:e5bb2084ccf45087bda1c9bffdea0eb15ee67f0b91646106e466714f9de3c7e3 \
+  --checksum=sha256:fe45bbebf92ad3e27a583bbb2ddd1553c521ed4d49af5514dc0a40372ea5395c \
   https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem \
   aws-cert-bundle.pem
 
@@ -54,7 +54,7 @@ FROM alpine:3.21.7
 RUN apk upgrade --no-cache --update
 
 RUN apk add --no-cache --update libssl3 libstdc++ \
-    libgcc ncurses-libs bash curl dumb-init
+  libgcc ncurses-libs bash curl dumb-init
 
 # Create non-root user
 RUN addgroup -S skate && adduser -S -G skate skate
