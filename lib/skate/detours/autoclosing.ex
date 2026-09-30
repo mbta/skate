@@ -3,7 +3,10 @@ defmodule Skate.Detours.Autoclosing do
 
   import Ecto.Query
   alias Skate.Settings.TestGroup
+  alias Skate.Settings.Db.TestGroupUser
+  alias Skate.Settings.Db.User
   alias Skate.Detours.Db.Detour
+  alias Skate.Repo
 
   @spec feature_flag_name() :: atom()
   def feature_flag_name(), do: :detours__autoclosing__pilot
@@ -20,6 +23,33 @@ defmodule Skate.Detours.Autoclosing do
       _ -> false
     end
   end
+
+  @spec enabled_for_user?(User.id() | nil) :: boolean()
+  def enabled_for_user?(user_id)
+
+  def enabled_for_user?(user_id) when is_integer(user_id) do
+    case Application.fetch_env(:skate, feature_flag_name()) do
+      {:ok, "on"} ->
+        case TestGroup.get_by_name(test_group_name()) do
+          %TestGroup{override: :enabled} ->
+            true
+
+          %TestGroup{} = test_group ->
+            Repo.exists?(
+              from user in TestGroupUser,
+                where: user.test_group_id == ^test_group.id and user.id == ^user_id
+            )
+
+          _ ->
+            false
+        end
+
+      _ ->
+        false
+    end
+  end
+
+  def enabled_for_user?(nil), do: enabled?()
 
   @spec calculate_autoclose_on_from_duration(Ecto.Changeset.t()) :: Ecto.Changeset.t()
   def calculate_autoclose_on_from_duration(%Ecto.Changeset{} = changeset) do
@@ -111,7 +141,6 @@ defmodule Skate.Detours.Autoclosing do
         keys: [:detour_id]
       ]
 
-    alias Skate.Detours.Autoclosing
     alias Skate.Detours.Db.Detour
     alias Skate.Detours.Detours
     alias Skate.Repo
@@ -132,32 +161,34 @@ defmodule Skate.Detours.Autoclosing do
 
     @spec schedule(Detour.t()) ::
             {:ok, Oban.Job.t()} | {:ok, nil} | {:error, Oban.Job.changeset() | term()}
-    def schedule(%Detour{id: id, autoclose_on: autoclose_on} = _activated_detour) do
-      if Autoclosing.enabled?() do
-        %{detour_id: id}
-        |> __MODULE__.new(scheduled_at: autoclose_on)
-        |> Oban.insert()
-      else
-        {:ok, nil}
-      end
+    def schedule(
+          %Detour{
+            id: id,
+            autoclose_on: autoclose_on
+          } = _activated_detour
+        ) do
+      %{detour_id: id}
+      |> __MODULE__.new(scheduled_at: autoclose_on)
+      |> Oban.insert()
     end
 
     @spec reschedule(Detour.t()) ::
             {:ok, Oban.Job.t()} | {:ok, nil} | {:error, Oban.Job.changeset() | term()}
-    def reschedule(%Detour{id: id, autoclose_on: autoclose_on} = _updated_detour) do
-      if Autoclosing.enabled?() do
-        %{"detour_id" => id}
-        |> __MODULE__.new(
-          scheduled_at: autoclose_on,
-          replace: [
-            scheduled: [:scheduled_at],
-            available: [:scheduled_at]
-          ]
-        )
-        |> Oban.insert()
-      else
-        {:ok, nil}
-      end
+    def reschedule(
+          %Detour{
+            id: id,
+            autoclose_on: autoclose_on
+          } = _updated_detour
+        ) do
+      %{"detour_id" => id}
+      |> __MODULE__.new(
+        scheduled_at: autoclose_on,
+        replace: [
+          scheduled: [:scheduled_at],
+          available: [:scheduled_at]
+        ]
+      )
+      |> Oban.insert()
     end
   end
 end

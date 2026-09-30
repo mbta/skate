@@ -65,7 +65,9 @@ defmodule Skate.Detours.Db.Detour do
     |> add_status()
     |> populate_fields_from_state()
     |> then(fn changeset ->
-      if Skate.Detours.Autoclosing.enabled?() do
+      if changeset
+         |> Ecto.Changeset.get_field(:author_id)
+         |> Skate.Detours.Autoclosing.enabled_for_user?() do
         Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(changeset)
       else
         changeset
