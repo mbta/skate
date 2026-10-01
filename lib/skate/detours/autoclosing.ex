@@ -3,7 +3,6 @@ defmodule Skate.Detours.Autoclosing do
 
   import Ecto.Query
   alias Skate.Settings.TestGroup
-  alias Skate.Settings.Db.TestGroupUser
   alias Skate.Settings.Db.User
   alias Skate.Detours.Db.Detour
   alias Skate.Repo
@@ -35,12 +34,7 @@ defmodule Skate.Detours.Autoclosing do
             true
 
           %TestGroup{} = test_group ->
-            Repo.exists?(
-              from test_group_user in TestGroupUser,
-                where:
-                  test_group_user.user_id == ^user_id and
-                    test_group_user.test_group_id == ^test_group.id
-            )
+            TestGroup.contains_user?(test_group, user_id)
 
           _ ->
             false
