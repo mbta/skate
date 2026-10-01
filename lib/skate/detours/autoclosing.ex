@@ -3,7 +3,6 @@ defmodule Skate.Detours.Autoclosing do
 
   import Ecto.Query
   alias Skate.Settings.TestGroup
-  alias Skate.Settings.Db.User
   alias Skate.Detours.Db.Detour
   alias Skate.Repo
 
@@ -23,7 +22,7 @@ defmodule Skate.Detours.Autoclosing do
     end
   end
 
-  @spec enabled_for_user?(User.id() | nil) :: boolean()
+  @spec enabled_for_user?(integer() | nil) :: boolean()
   def enabled_for_user?(user_id)
 
   def enabled_for_user?(user_id) when is_integer(user_id) do
