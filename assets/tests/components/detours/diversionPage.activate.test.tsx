@@ -32,6 +32,12 @@ import { Ok } from "../../../src/util/result"
 import { finishedDetourFactory } from "../../factories/detourFactory"
 
 beforeEach(() => {
+  document.getElementById("app")?.remove()
+  const app = document.createElement("div")
+  app.id = "app"
+  app.dataset.detoursAutoclosingPilot = "on"
+  document.body.appendChild(app)
+
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
@@ -247,6 +253,42 @@ describe("DiversionPage activate workflow", () => {
           /Detour will close automatically on Oct 9, 2026 at the end of service\./
         )
       ).toBeVisible()
+    })
+
+    test("hides the automatic closure alert when the autoclosing pilot is off", () => {
+      const app = document.getElementById("app")
+      app!.dataset.detoursAutoclosingPilot = "off"
+
+      render(
+        <ActivateDetour.SelectingDuration
+          onSelectDuration={jest.fn()}
+          selectedDuration="3 hours"
+        />
+      )
+
+      expect(
+        screen.queryByText(
+          "Detour will close automatically at the end of service."
+        )
+      ).not.toBeInTheDocument()
+    })
+
+    test("hides the automatic closure alert for custom date when the autoclosing pilot is off", () => {
+      const app = document.getElementById("app")
+      app!.dataset.detoursAutoclosingPilot = "off"
+
+      render(
+        <ActivateDetour.SelectingDuration
+          onSelectDuration={jest.fn()}
+          selectedDuration="2026-10-10"
+        />
+      )
+
+      expect(
+        screen.queryByText(
+          /Detour will close automatically on Oct 10, 2026 at the end of service\./
+        )
+      ).not.toBeInTheDocument()
     })
 
     test("the 'Next' button advances to the next screen", async () => {
