@@ -3,6 +3,7 @@ defmodule Skate.Settings.TestGroupTest do
 
   alias Skate.Settings.TestGroup
   alias Skate.Settings.User
+  import Skate.Factory
 
   describe "create/1" do
     test "creates the test group" do
@@ -142,6 +143,151 @@ defmodule Skate.Settings.TestGroupTest do
       TestGroup.delete(test_group.id)
 
       assert Enum.empty?(TestGroup.get_all())
+    end
+  end
+
+  describe "add_user/2" do
+    @test_group_name "add-user"
+
+    setup do
+      setup_test_group(@test_group_name)
+    end
+
+    test "when adding a user not yet in the test group, then returns `:ok`" do
+      test_group = TestGroup.get_by_name(@test_group_name)
+
+      user =
+        :user
+        |> build()
+        |> insert()
+
+      assert :ok == TestGroup.add_user(test_group, user.id)
+    end
+
+    test "when adding a user already in the test group, then returns `:ok`" do
+      test_group = TestGroup.get_by_name(@test_group_name)
+
+      user =
+        :user
+        |> build()
+        |> insert()
+
+      _ = TestGroup.add_user(test_group, user.id)
+      assert :ok == TestGroup.add_user(test_group, user.id)
+    end
+
+    test "when adding a nonexisting user, then returns `:error`" do
+      assert :error ==
+               @test_group_name
+               |> TestGroup.get_by_name()
+               |> TestGroup.add_user(-1)
+    end
+
+    test "when user id is nil, then returns `:error`" do
+      assert :error ==
+               @test_group_name
+               |> TestGroup.get_by_name()
+               |> TestGroup.add_user(nil)
+    end
+  end
+
+  describe "remove_user/2" do
+    @test_group_name "remove-user"
+
+    setup do
+      setup_test_group(@test_group_name)
+    end
+
+    test "when removing a user already in the test group, then returns `:ok`" do
+      test_group = TestGroup.get_by_name(@test_group_name)
+
+      user =
+        :user
+        |> build()
+        |> insert()
+
+      _ = TestGroup.add_user(test_group, user.id)
+      assert :ok == TestGroup.remove_user(test_group, user.id)
+    end
+
+    test "when removing a user not yet in the test group, then returns `:error`" do
+      user =
+        :user
+        |> build()
+        |> insert()
+
+      assert :error ==
+               @test_group_name
+               |> TestGroup.get_by_name()
+               |> TestGroup.remove_user(user.id)
+    end
+
+    test "when removing a nonexisting user, then returns `:error`" do
+      assert :error ==
+               @test_group_name
+               |> TestGroup.get_by_name()
+               |> TestGroup.remove_user(-1)
+    end
+
+    test "when user id is nil, then returns `:error`" do
+      assert :error ==
+               @test_group_name
+               |> TestGroup.get_by_name()
+               |> TestGroup.remove_user(nil)
+    end
+  end
+
+  describe "contains_user?/2" do
+    @test_group_name "contains-user"
+
+    setup do
+      setup_test_group(@test_group_name)
+    end
+
+    test "when user is in test group, then returns true" do
+      test_group = TestGroup.get_by_name(@test_group_name)
+
+      user =
+        :user
+        |> build()
+        |> insert()
+
+      _ = TestGroup.add_user(test_group, user.id)
+
+      assert @test_group_name
+             |> TestGroup.get_by_name()
+             |> TestGroup.contains_user?(user.id)
+    end
+
+    test "when user is not in test group, then returns false" do
+      user =
+        :user
+        |> build()
+        |> insert()
+
+      assert false ==
+               @test_group_name
+               |> TestGroup.get_by_name()
+               |> TestGroup.contains_user?(user.id)
+    end
+
+    test "when user does not exist, then returns false" do
+      assert false ==
+               @test_group_name
+               |> TestGroup.get_by_name()
+               |> TestGroup.contains_user?(-1)
+    end
+  end
+
+  @spec setup_test_group(binary()) :: :ok | :error
+  defp setup_test_group(name) do
+    case TestGroup.create(name) do
+      {:ok, %TestGroup{id: id} = _} ->
+        on_exit(fn -> TestGroup.delete(id) end)
+        :ok
+
+      _ ->
+        :error
     end
   end
 end

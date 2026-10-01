@@ -2,6 +2,7 @@ defmodule Skate.Settings.TestGroup do
   @moduledoc false
 
   alias Skate.Settings.Db.TestGroup, as: DbTestGroup
+  alias Skate.Settings.Db.TestGroupUser, as: DbTestGroupUser
   alias Skate.Settings.Db.User, as: DbUser
 
   import Ecto.Query, only: [from: 2]
@@ -114,4 +115,55 @@ defmodule Skate.Settings.TestGroup do
   def delete(id) do
     Skate.Repo.delete(%DbTestGroup{id: id})
   end
+
+  @spec add_user(t(), integer() | nil) :: :ok | :error
+  def add_user(test_group, user_id)
+
+  def add_user(%__MODULE__{id: id} = _test_group, user_id) when is_integer(user_id) do
+    with %DbUser{} = user <- Skate.Repo.get(DbUser, user_id),
+         %DbTestGroup{} = test_group <- Skate.Repo.get(DbTestGroup, id),
+         {:ok, %DbTestGroupUser{} = _} <-
+           Skate.Repo.insert(%DbTestGroupUser{test_group: test_group, user: user}) do
+      :ok
+    else
+      _ -> :error
+    end
+  end
+
+  def add_user(_test_group, nil), do: :error
+
+  @spec remove_user(t(), integer() | nil) :: :ok | :error
+  def remove_user(test_group, user_id)
+
+  def remove_user(%__MODULE__{} = test_group, user_id) when is_integer(user_id) do
+    with %DbTestGroupUser{} = relationship <-
+           Skate.Repo.get_by(DbTestGroupUser,
+             test_group_id: test_group.id,
+             user_id: user_id
+           ),
+         {:ok, %DbTestGroupUser{} = _} <-
+           Skate.Repo.delete(relationship) do
+      :ok
+    else
+      _ -> :error
+    end
+  end
+
+  def remove_user(_test_group, nil), do: :error
+
+  @spec contains_user?(t(), integer() | nil) :: boolean()
+  def contains_user?(test_group, user_id)
+
+  def contains_user?(%__MODULE__{} = test_group, user_id) when is_integer(user_id) do
+    Skate.Repo.exists?(
+      from(
+        relationship in DbTestGroupUser,
+        where:
+          relationship.test_group_id == ^test_group.id and
+            relationship.user_id == ^user_id
+      )
+    )
+  end
+
+  def contains_user?(_test_group, nil), do: false
 end
