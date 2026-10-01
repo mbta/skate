@@ -222,6 +222,15 @@ defmodule SkateWeb.PageControllerTest do
     end
 
     @tag :authenticated
+    test "sets the detours autoclosing pilot flag", %{conn: conn} do
+      reassign_env(:skate, :detours__autoclosing__pilot, "on")
+
+      conn = get(conn, "/")
+
+      assert html_response(conn, 200) =~ "data-detours-autoclosing-pilot=\"on\""
+    end
+
+    @tag :authenticated
     test "correct username set", %{conn: conn, user: %{username: username}} do
       conn = get(conn, "/")
       assert html_response(conn, 200) =~ "<meta name=\"username\" content=\"#{username}\">"

@@ -5,6 +5,7 @@ import { StepperBar } from "../stepperBar"
 import detourReasons from "../../data/detourReasons"
 import BaseAlert from "../alerts/baseAlert"
 import { formatIfDate, isIsoDateString } from "../../util/dateTime"
+import appData from "../../appData"
 
 interface SurroundingModalProps extends PropsWithChildren {
   onCancel: () => void
@@ -83,27 +84,31 @@ const SelectingDuration = ({
 }: {
   onSelectDuration: (duration: string | undefined) => void
   selectedDuration?: string
-}) => (
-  <>
-    <StepperBar totalSteps={3} currentStep={1} />
-    <StepSubtitle>Step 1 of 3 - Select detour duration</StepSubtitle>
-    <p>
-      <span className="fw-bold">Time length</span> <span>(estimate)</span>
-    </p>
-    <DurationSelect
-      selectedDuration={selectedDuration}
-      onSelectDuration={onSelectDuration}
-    />
-    {selectedDuration && (
-      <BaseAlert variant="secondary" className="mt-3 mb-0">
-        Detour will close automatically{" "}
-        {isIsoDateString(selectedDuration)
-          ? `on ${formatIfDate(selectedDuration)} at the end of service.`
-          : "at the end of service."}
-      </BaseAlert>
-    )}
-  </>
-)
+}) => {
+  const autoclosingPilotEnabled = appData()?.detoursAutoclosingPilot === "on"
+
+  return (
+    <>
+      <StepperBar totalSteps={3} currentStep={1} />
+      <StepSubtitle>Step 1 of 3 - Select detour duration</StepSubtitle>
+      <p>
+        <span className="fw-bold">Time length</span> <span>(estimate)</span>
+      </p>
+      <DurationSelect
+        selectedDuration={selectedDuration}
+        onSelectDuration={onSelectDuration}
+      />
+      {autoclosingPilotEnabled && selectedDuration && (
+        <BaseAlert variant="secondary" className="mt-3 mb-0">
+          Detour will close automatically{" "}
+          {isIsoDateString(selectedDuration)
+            ? `on ${formatIfDate(selectedDuration)} at the end of service.`
+            : "at the end of service."}
+        </BaseAlert>
+      )}
+    </>
+  )
+}
 
 const SelectingReason = ({
   onSelectReason,
