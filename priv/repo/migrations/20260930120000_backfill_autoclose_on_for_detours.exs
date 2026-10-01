@@ -19,7 +19,7 @@ defmodule Skate.Repo.Migrations.BackfillAutocloseOnForDetours do
       from(d in "detours", where: d.id == ^detour.id)
       |> repo().update_all(set: [autoclose_on: autoclose_on])
 
-      Skate.Detours.Autoclosing.Job.schedule(%Detour{
+      Skate.Detours.Autoclosing.Job.schedule(%Skate.Detours.Db.Detour{
         detour
         | autoclose_on: autoclose_on
       })
