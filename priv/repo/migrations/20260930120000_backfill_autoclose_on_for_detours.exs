@@ -13,10 +13,10 @@ defmodule Skate.Repo.Migrations.BackfillAutocloseOnForDetours do
       select: {d.id, d.estimated_duration}
     )
     |> repo().all()
-    |> Enum.each(fn detour ->
-      autoclose_on = calculate_autoclose_on(detour.estimated_duration)
+    |> Enum.each(fn (%{id: id, estimated_duration: estimated_duration} = detour) ->
+      autoclose_on = calculate_autoclose_on(estimated_duration)
 
-      from(d in "detours", where: d.id == ^detour.id)
+      from(d in "detours", where: d.id == ^id)
       |> repo().update_all(set: [autoclose_on: autoclose_on])
 
       Skate.Detours.Autoclosing.Job.schedule(%Skate.Detours.Db.Detour{
