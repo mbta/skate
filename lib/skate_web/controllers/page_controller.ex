@@ -39,7 +39,11 @@ defmodule SkateWeb.PageController do
     |> assign(:map_limits, map_limits)
     |> assign(
       :detours_autoclosing_pilot,
-      Application.get_env(:skate, :detours__autoclosing__pilot)
+      if(
+        Skate.Detours.Autoclosing.enabled?(),
+        do: "on",
+        else: "off"
+      )
     )
     |> assign(:sentry_org_slug, Application.get_env(:skate, :sentry_org_slug))
     |> render("index.html")

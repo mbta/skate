@@ -223,7 +223,8 @@ defmodule SkateWeb.PageControllerTest do
 
     @tag :authenticated
     test "sets the detours autoclosing pilot flag", %{conn: conn} do
-      reassign_env(:skate, :detours__autoclosing__pilot, "on")
+      Test.Support.AutoclosingHelpers.setup_feature_flag()
+      Test.Support.AutoclosingHelpers.setup_test_group()
 
       conn = get(conn, "/")
 
