@@ -3,7 +3,6 @@ defmodule Skate.Detours.Autoclosing do
 
   import Ecto.Query
   alias Skate.Settings.TestGroup
-  alias Skate.Detours.Db.Detour
 
   @spec feature_flag_name() :: atom()
   def feature_flag_name(), do: :detours__autoclosing__pilot
@@ -130,9 +129,9 @@ defmodule Skate.Detours.Autoclosing do
       end
     end
 
-    @spec schedule(Detour.t()) ::
+    @spec schedule(map()) ::
             {:ok, Oban.Job.t()} | {:ok, nil} | {:error, Oban.Job.changeset() | term()}
-    def schedule(%Detour{id: id, autoclose_on: autoclose_on} = _activated_detour) do
+    def schedule(%{id: id, autoclose_on: autoclose_on} = _activated_detour) do
       if Autoclosing.enabled?() do
         %{detour_id: id}
         |> __MODULE__.new(scheduled_at: autoclose_on)
@@ -142,9 +141,9 @@ defmodule Skate.Detours.Autoclosing do
       end
     end
 
-    @spec reschedule(Detour.t()) ::
+    @spec reschedule(map()) ::
             {:ok, Oban.Job.t()} | {:ok, nil} | {:error, Oban.Job.changeset() | term()}
-    def reschedule(%Detour{id: id, autoclose_on: autoclose_on} = _updated_detour) do
+    def reschedule(%{id: id, autoclose_on: autoclose_on} = _updated_detour) do
       if Autoclosing.enabled?() do
         %{"detour_id" => id}
         |> __MODULE__.new(
