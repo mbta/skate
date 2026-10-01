@@ -143,6 +143,26 @@ describe("DiversionPage edit duration workflow", () => {
       ).toBeVisible()
     })
 
+    test("shows the automatic closure alert for custom date when the autoclosing pilot is on", () => {
+      const app = document.createElement("div")
+      app.id = "app"
+      app.dataset.detoursAutoclosingPilot = "on"
+      document.body.appendChild(app)
+
+      render(
+        <ChangeDuration.Body
+          onSelectDuration={jest.fn()}
+          selectedDuration="2026-10-11"
+        />
+      )
+
+      expect(
+        screen.getByText(
+          /Detour will close automatically on Oct 11, 2026 at the end of service\./
+        )
+      ).toBeVisible()
+    })
+
     test("hides the automatic closure alert when the autoclosing pilot is off", () => {
       const app = document.createElement("div")
       app.id = "app"
@@ -159,6 +179,26 @@ describe("DiversionPage edit duration workflow", () => {
       expect(
         screen.queryByText(
           "Detour will close automatically at the end of service."
+        )
+      ).not.toBeInTheDocument()
+    })
+
+    test("hides the automatic closure alert for custom date when the autoclosing pilot is off", () => {
+      const app = document.createElement("div")
+      app.id = "app"
+      app.dataset.detoursAutoclosingPilot = "off"
+      document.body.appendChild(app)
+
+      render(
+        <ChangeDuration.Body
+          onSelectDuration={jest.fn()}
+          selectedDuration="2026-10-10"
+        />
+      )
+
+      expect(
+        screen.queryByText(
+          /Detour will close automatically on Oct 10, 2026 at the end of service\./
         )
       ).not.toBeInTheDocument()
     })

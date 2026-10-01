@@ -273,6 +273,24 @@ describe("DiversionPage activate workflow", () => {
       ).not.toBeInTheDocument()
     })
 
+    test("hides the automatic closure alert for custom date when the autoclosing pilot is off", () => {
+      const app = document.getElementById("app")
+      app!.dataset.detoursAutoclosingPilot = "off"
+
+      render(
+        <ActivateDetour.SelectingDuration
+          onSelectDuration={jest.fn()}
+          selectedDuration="2026-10-10"
+        />
+      )
+
+      expect(
+        screen.queryByText(
+          /Detour will close automatically on Oct 10, 2026 at the end of service\./
+        )
+      ).not.toBeInTheDocument()
+    })
+
     test("the 'Next' button advances to the next screen", async () => {
       await diversionPageOnSelectDurationModalScreen()
 
