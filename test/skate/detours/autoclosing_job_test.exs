@@ -2,6 +2,7 @@ defmodule Skate.Detours.AutoclosingJob.Test do
   use Skate.DataCase
   use Oban.Testing, repo: Skate.Repo
 
+  alias Skate.Settings.TestGroup
   import Test.Support.Helpers
   import Skate.Factory
 
@@ -47,7 +48,8 @@ defmodule Skate.Detours.AutoclosingJob.Test do
 
     test "when autoclosing is enabled, users not in the test group cannot queue jobs" do
       Oban.Testing.with_testing_mode(:manual, fn ->
-        Test.Support.AutoclosingHelpers.update_test_group_override(:none)
+        test_group = TestGroup.get_by_name(Skate.Detours.Autoclosing.test_group_name())
+        TestGroup.update(%{test_group | override: :none})
 
         detour =
           :detour
@@ -67,14 +69,15 @@ defmodule Skate.Detours.AutoclosingJob.Test do
 
     test "when autoclosing is enabled, users in the test group can queue jobs" do
       Oban.Testing.with_testing_mode(:manual, fn ->
-        Test.Support.AutoclosingHelpers.update_test_group_override(:none)
+        test_group = TestGroup.get_by_name(Skate.Detours.Autoclosing.test_group_name())
+        TestGroup.update(%{test_group | override: :none})
 
         detour =
           :detour
           |> build()
           |> insert()
 
-        :ok = Test.Support.AutoclosingHelpers.add_test_group_user(detour.author_id)
+        :ok = TestGroup.add_user(test_group, detour.author_id)
 
         {:ok, detour} =
           Skate.Detours.Detours.activate_detour(
@@ -119,31 +122,37 @@ defmodule Skate.Detours.AutoclosingJob.Test do
 
     test "when detour is updated with new selected duration, job is rescheduled" do
       Oban.Testing.with_testing_mode(:manual, fn ->
-        now = DateTime.utc_now()
-        autoclose_on = DateTime.add(now, 1, :hour)
-
-        %{author_id: author_id, state: state} =
+        detour =
           :detour
           |> build()
-          |> activated(now)
-          |> with_autoclose_on(autoclose_on)
           |> insert()
 
-        today = Date.utc_today()
-        tomorrow = Date.add(today, 1)
+        {:ok, detour} =
+          Skate.Detours.Detours.activate_detour(
+            detour.id,
+            detour.author_id,
+            "1 hour",
+            "Construction"
+          )
+
+        (%Date{year: year, month: month, day: day} = tomorrow) =
+          "America/New_York"
+          |> DateTime.now!()
+          |> DateTime.to_date()
+          |> Date.add(1)
 
         {:ok, detour} =
           Skate.Detours.Detours.upsert_from_snapshot(
-            author_id,
+            detour.author_id,
             Map.merge(
-              state,
-              %{"selectedDuration" => "#{tomorrow.year}-#{tomorrow.month}-#{tomorrow.day}"}
+              detour.state,
+              %{"selectedDuration" => "#{year}-#{month}-#{day}"}
             )
           )
 
         assert_enqueued(
           worker: Skate.Detours.Autoclosing.Job,
-          scheduled_at: DateTime.new!(tomorrow, ~T[07:00:00]),
+          scheduled_at: DateTime.new!(tomorrow, ~T[07:00:00.000000]),
           args: %{"detour_id" => detour.id}
         )
       end)
