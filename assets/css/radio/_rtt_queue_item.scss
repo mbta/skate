@@ -154,31 +154,46 @@
   width: 110px;
   flex-shrink: 0;
   margin-left: 0.75rem;
+  align-self: stretch;
+
+  &--respond {
+    margin-top: -0.625rem;
+    margin-bottom: -0.625rem;
+    margin-right: -0.875rem;
+  }
 }
 
 .c-rtt-queue-item__respond-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
   background-color: tokens.$gray-800;
   color: tokens.$white;
-  border: 1px solid tokens.$gray-800;
+  border: none;
+  border-left: 1px solid tokens.$gray-800;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  padding: 0.375rem 0.875rem;
-  border-radius: 0.25rem;
+  padding: 0 0.875rem;
+  border-top-right-radius: 0.3125rem;
+  border-bottom-right-radius: 0.3125rem;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
-  width: 100%;
   text-align: center;
 
   &:hover {
     background-color: tokens.$gray-900;
-    border-color: tokens.$gray-900;
+    border-left-color: tokens.$gray-900;
   }
 
   &:focus-visible {
     outline: 2px solid tokens.$gray-600;
-    outline-offset: 1px;
+    outline-offset: -2px;
   }
 }
 
