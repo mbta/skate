@@ -23,11 +23,19 @@ export const rttCallFactory = Factory.define<RttCall>(
       "Lynn",
       "Southampton",
     ]
+    const talkGroups = [
+      "Charlestown",
+      "Cabot",
+      "Albany",
+      "Southampton",
+      "Fellsway",
+      "Lynn",
+    ]
 
     return {
       id: params.id ?? `rtt-${sequence}`,
       callType,
-      talkGroup: params.talkGroup ?? `TG-${100 + (sequence % 5)}`,
+      talkGroup: params.talkGroup ?? talkGroups[sequence % talkGroups.length],
       routeId: params.routeId ?? `${((sequence * 7) % 100) + 1}`,
       routeName: params.routeName ?? `${((sequence * 7) % 100) + 1}`,
       vehicleId: params.vehicleId ?? `${1000 + sequence}`,

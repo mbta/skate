@@ -6,7 +6,7 @@ const now = new Date()
 export const mockEmergencyCall: RttCall = rttCallFactory.build({
   id: "rtt-call-001",
   callType: "Emergency",
-  talkGroup: "TG-102",
+  talkGroup: "Charlestown",
   routeId: "66",
   routeName: "66",
   vehicleId: "2098",
@@ -27,7 +27,7 @@ export const mockEmergencyCall: RttCall = rttCallFactory.build({
 export const mockActivePrttCallByOther: RttCall = rttCallFactory.build({
   id: "rtt-call-002",
   callType: "PRTT",
-  talkGroup: "TG-101",
+  talkGroup: "Charlestown",
   routeId: "88",
   routeName: "88",
   vehicleId: "2345",
@@ -48,7 +48,7 @@ export const mockActivePrttCallByOther: RttCall = rttCallFactory.build({
 export const mockPrttCall: RttCall = rttCallFactory.build({
   id: "rtt-call-003",
   callType: "PRTT",
-  talkGroup: "TG-105",
+  talkGroup: "Albany",
   routeId: "70",
   routeName: "70",
   vehicleId: "1895",
@@ -69,7 +69,7 @@ export const mockPrttCall: RttCall = rttCallFactory.build({
 export const mockStandardRttCall1: RttCall = rttCallFactory.build({
   id: "rtt-call-004",
   callType: "RTT",
-  talkGroup: "TG-104",
+  talkGroup: "Southampton",
   routeId: "1",
   routeName: "1",
   vehicleId: "1902",
@@ -90,7 +90,7 @@ export const mockStandardRttCall1: RttCall = rttCallFactory.build({
 export const mockStandardRttCall2: RttCall = rttCallFactory.build({
   id: "rtt-call-005",
   callType: "RTT",
-  talkGroup: "TG-108",
+  talkGroup: "Charlestown",
   routeId: "111",
   routeName: "111",
   vehicleId: "2055",
@@ -119,7 +119,7 @@ export const mockIncomingCalls: RttCall[] = [
 export const mockPastCall1: RttCall = rttCallFactory.build({
   id: "rtt-past-001",
   callType: "RTT",
-  talkGroup: "TG-102",
+  talkGroup: "Cabot",
   routeId: "66",
   routeName: "66",
   vehicleId: "2098",
@@ -141,7 +141,7 @@ export const mockPastCall1: RttCall = rttCallFactory.build({
 export const mockPastCall2: RttCall = rttCallFactory.build({
   id: "rtt-past-002",
   callType: "PRTT",
-  talkGroup: "TG-104",
+  talkGroup: "Charlestown",
   routeId: "77",
   routeName: "77",
   vehicleId: "1622",
@@ -163,7 +163,7 @@ export const mockPastCall2: RttCall = rttCallFactory.build({
 export const mockPastCall3: RttCall = rttCallFactory.build({
   id: "rtt-past-003",
   callType: "Emergency",
-  talkGroup: "TG-101",
+  talkGroup: "Southampton",
   routeId: "9",
   routeName: "9",
   vehicleId: "2201",

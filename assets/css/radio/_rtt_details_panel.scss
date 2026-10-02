@@ -16,8 +16,8 @@
     border-color 0.2s ease;
 
   &--live {
-    background-color: tokens.$kiwi-50;
-    border-top: 4px solid tokens.$kiwi-500;
+    background-color: tokens.$lemon-50;
+    border-top: 4px solid tokens.$lemon-500;
   }
 }
 
@@ -63,7 +63,7 @@
   gap: 0.375rem;
   font-size: 0.75rem;
   font-weight: 700;
-  color: tokens.$kiwi-700;
+  color: tokens.$lemon-900;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -72,22 +72,22 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background-color: tokens.$kiwi-500;
+  background-color: tokens.$lemon-500;
   animation: pulse-live 1.5s infinite ease-in-out;
 }
 
 @keyframes pulse-live {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(38, 156, 149, 0.7);
+    box-shadow: 0 0 0 0 rgba(221, 223, 93, 0.7);
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 6px rgba(38, 156, 149, 0);
+    box-shadow: 0 0 0 6px rgba(221, 223, 93, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(38, 156, 149, 0);
+    box-shadow: 0 0 0 0 rgba(221, 223, 93, 0);
   }
 }
 
