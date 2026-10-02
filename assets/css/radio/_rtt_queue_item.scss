@@ -48,13 +48,13 @@
   }
 
   &--live {
-    background-color: tokens.$kiwi-100;
-    border-color: tokens.$kiwi-300;
+    background-color: tokens.$lemon-100;
+    border-color: tokens.$lemon-300;
 
     &.c-rtt-queue-item--selected {
-      border-color: tokens.$kiwi-600;
-      box-shadow: 0 0 0 1px tokens.$kiwi-600;
-      background-color: tokens.$kiwi-200;
+      border-color: tokens.$lemon-600;
+      box-shadow: 0 0 0 1px tokens.$lemon-600;
+      background-color: tokens.$lemon-200;
     }
   }
 
@@ -202,9 +202,9 @@
   align-items: center;
   justify-content: center;
   gap: 0.375rem;
-  background-color: tokens.$kiwi-200;
-  color: tokens.$kiwi-800;
-  border: 1px solid tokens.$kiwi-300;
+  background-color: tokens.$lemon-200;
+  color: tokens.$lemon-900;
+  border: 1px solid tokens.$lemon-300;
   padding: 0.3125rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 0.75rem;
@@ -218,7 +218,7 @@
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background-color: tokens.$kiwi-600;
+  background-color: tokens.$lemon-600;
   flex-shrink: 0;
 }
 
