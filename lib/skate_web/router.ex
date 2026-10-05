@@ -23,6 +23,10 @@ defmodule SkateWeb.Router do
     plug(SkateWeb.EnsureEnvironmentAccess)
   end
 
+  pipeline :ensure_preview_routes_enabled do
+    plug(SkateWeb.EnsurePreviewRoutesEnabled)
+  end
+
   pipeline :ensure_admin_group do
     plug(SkateWeb.EnsureAdminGroup)
   end
@@ -119,6 +123,7 @@ defmodule SkateWeb.Router do
       :auth,
       :ensure_auth,
       :ensure_environment_access,
+      :ensure_preview_routes_enabled,
       :put_user_token
     ]
 
