@@ -254,7 +254,7 @@ defmodule Skate.Detours.Detour do
 
     defp missed_stop_ids(_), do: nil
 
-    defp connection_point_ids(connection_points) when is_list(connection_points) do
+    defp connection_point_ids(connection_points) when is_map(connection_points) do
       ["start", "end"]
       |> Enum.map(&get_in(connection_points, [&1, "id"]))
       |> Enum.reject(&is_nil/1)
