@@ -1,23 +1,32 @@
-const detourReasons = [
+export const detourReasons = [
   "Accident",
   "Construction",
   "Demonstration",
   "Disabled bus",
   "Drawbridge being raised",
-  "Electrical work",
   "Fire",
   "Hazmat condition",
   "Holiday",
-  "Hurricane",
   "Maintenance",
   "Medical emergency",
   "Parade",
   "Police activity",
   "Snow",
   "Special event",
-  "Tie replacement",
   "Traffic",
+  "Utility work",
   "Weather",
 ]
 
-export default detourReasons
+export const retiredDetourReasons = [
+  "Electrical work",
+  "Hurricane",
+  "Tie replacement",
+]
+
+// used for filtering the list of past detours
+// contains both active and legacy detour reasons
+export const historicalDetourReasons = [
+  ...detourReasons,
+  ...retiredDetourReasons,
+].sort()

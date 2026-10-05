@@ -763,6 +763,11 @@ exports[`DetourListPage renders detour list page for dispatchers 1`] = `
                   Traffic
                 </option>
                 <option
+                  value="Utility work"
+                >
+                  Utility work
+                </option>
+                <option
                   value="Weather"
                 >
                   Weather
