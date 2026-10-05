@@ -133,4 +133,22 @@ defmodule Skate.Detours.SnapshotSerdeTest do
       refute log =~ "selectedDuration"
     end
   end
+
+  describe "column/state fallback" do
+    test "falls back to legacy state for route_pattern when the route_pattern column is nil" do
+      detour =
+        :detour
+        |> build()
+        |> insert()
+        |> without_columns(:route_pattern)
+
+
+      expected = get_in(detour.state, ["context", "routePattern"])
+      refute is_nil(expected)
+
+      snapshot = SnapshotSerde.serialize(detour)
+
+      assert get_in(snapshot, ["context", "routePattern"]) == expected
+    end
+  end
 end
