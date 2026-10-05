@@ -18,7 +18,10 @@ defmodule SkateWeb.EnsurePreviewRoutesEnabledTest do
     test "halts and returns 404 when preview routes are disabled", %{conn: conn} do
       reassign_env(:skate, :preview_routes_enabled?, false)
 
-      conn = SkateWeb.EnsurePreviewRoutesEnabled.call(conn, [])
+      conn =
+        conn
+        |> fetch_query_params()
+        |> SkateWeb.EnsurePreviewRoutesEnabled.call([])
 
       assert conn.halted
       assert conn.status == 404

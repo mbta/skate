@@ -11,6 +11,7 @@ defmodule SkateWeb.EnsurePreviewRoutesEnabled do
     else
       conn
       |> put_status(:not_found)
+      |> Phoenix.Controller.put_format("html")
       |> Phoenix.Controller.put_view(html: SkateWeb.ErrorHTML)
       |> Phoenix.Controller.render(:"404")
       |> halt()
