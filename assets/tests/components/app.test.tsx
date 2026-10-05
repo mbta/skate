@@ -243,4 +243,18 @@ describe("App", () => {
     )
     expect(mockedUsePanelState().setPath).toHaveBeenNthCalledWith(2, path)
   })
+
+  test("renders RadioQueuePage at /_preview/radio/queue", () => {
+    render(
+      <StateDispatchProvider state={stateFactory.build()} dispatch={jest.fn()}>
+        <MemoryRouter initialEntries={["/_preview/radio/queue"]}>
+          <AppRoutes />
+        </MemoryRouter>
+      </StateDispatchProvider>
+    )
+
+    expect(
+      screen.getByRole("heading", { name: "Radio RTT Queue" })
+    ).toBeInTheDocument()
+  })
 })
