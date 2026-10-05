@@ -297,5 +297,7 @@ defmodule Skate.Detours.Detour do
         detour_segment: detour_segment
       }
     end
+
+    defp route_segments(_), do: nil
   end
 end
