@@ -18,6 +18,8 @@ export const detourReasons = [
   "Weather",
 ]
 
+// used for filtering the list of past detours
+// contains all past detour reasons
 export const historicalDetourReasons = [
   "Accident",
   "Construction",
