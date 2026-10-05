@@ -55,6 +55,9 @@ defmodule Skate.Detours.Db.Detour do
     field :detour_shape, :map
     field :edited_directions, :string
 
+    # Auto-close time for detour
+    field :autoclose_on, :utc_datetime_usec
+
     has_many :detour_status_notifications, Notifications.Db.Detour
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
   end
@@ -65,6 +68,13 @@ defmodule Skate.Detours.Db.Detour do
     |> validate_activated_at()
     |> add_status()
     |> populate_fields_from_state()
+    |> then(fn changeset ->
+      if Skate.Detours.Autoclosing.enabled?() do
+        Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(changeset)
+      else
+        changeset
+      end
+    end)
     |> add_updated_at()
     |> validate_required([:state, :status])
     |> foreign_key_constraint(:author_id)
@@ -88,6 +98,7 @@ defmodule Skate.Detours.Db.Detour do
         :detour_expiration_notifications,
         # "deactivate" detour
         :activated_at,
+        :autoclose_on,
         :estimated_duration,
         :reason,
         :swiftly_id

@@ -9,6 +9,9 @@ import {
   formattedScheduledTime,
   serviceDaySeconds,
   formattedDate,
+  formattedTimeWithSeconds,
+  formatIfDate,
+  isIsoDateString,
 } from "../../src/util/dateTime"
 
 describe("now", () => {
@@ -76,6 +79,21 @@ describe("formattedDate", () => {
     expect(formattedDate(new Date("Februrary 7, 2020 21:08"))).toEqual(
       "2/07/2020"
     )
+  })
+})
+
+describe("isIsoDateString", () => {
+  test("only matches full YYYY-MM-DD strings", () => {
+    expect(isIsoDateString("2026-09-24")).toBe(true)
+    expect(isIsoDateString("1 hour")).toBe(false)
+    expect(isIsoDateString("2026-09-24 1 hour")).toBe(false)
+  })
+})
+
+describe("formatIfDate", () => {
+  test("formats date strings and leaves durations unchanged", () => {
+    expect(formatIfDate("2026-09-24")).toEqual("Sep 24, 2026")
+    expect(formatIfDate("1 hour")).toEqual("1 hour")
   })
 })
 
@@ -174,5 +192,34 @@ describe("formattedHoursMinutes", () => {
 
   test("zero pads short minutes, but not hours", () => {
     expect(formattedHoursMinutes(5, 5)).toEqual("5:05 AM")
+  })
+})
+
+describe("formattedTimeWithSeconds", () => {
+  const morningDate = new Date(2026, 8, 8, 9, 5, 7)
+  const afternoonDate = new Date(2026, 8, 8, 14, 30, 45)
+
+  test.each([
+    { input: null, expected: "", desc: "null" },
+    { input: undefined, expected: "", desc: "undefined" },
+    { input: "", expected: "", desc: "empty string" },
+    { input: "invalid-date", expected: "", desc: "invalid date string" },
+    {
+      input: morningDate,
+      expected: "9:05:07 AM",
+      desc: "morning Date with 12-hour AM conversion",
+    },
+    {
+      input: afternoonDate,
+      expected: "2:30:45 PM",
+      desc: "afternoon Date with 12-hour PM conversion",
+    },
+    {
+      input: afternoonDate.toISOString(),
+      expected: formattedTimeWithSeconds(afternoonDate),
+      desc: "ISO timestamp string matching Date equivalent",
+    },
+  ])("returns '$expected' when given $desc", ({ input, expected }) => {
+    expect(formattedTimeWithSeconds(input)).toEqual(expected)
   })
 })

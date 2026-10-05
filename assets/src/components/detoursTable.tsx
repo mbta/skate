@@ -267,7 +267,7 @@ export const DetoursTable = ({
               </th>
               <th className="px-3 py-3 c-detours-table__col-sm">
                 <div>
-                  <label htmlFor="date-filter">Last Closed</label>
+                  <label htmlFor="date-filter">Closed on</label>
                   <DateTimePicker
                     className="mt-2"
                     value={dates}

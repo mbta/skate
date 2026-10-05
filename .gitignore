@@ -43,6 +43,7 @@ npm-debug.log
 
 # Ignore Storybook Logs
 build-storybook.log
+/assets/storybook-static/
 assets/build-storybook.log
 
 # dev and test cache files for faster loading

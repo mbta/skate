@@ -3,6 +3,7 @@ import {
   DiversionPage as DiversionPageDefault,
   DiversionPageProps,
 } from "../../../src/components/detours/diversionPage"
+import { ActivateDetour } from "../../../src/components/detours/activateDetourModal"
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
@@ -31,6 +32,12 @@ import { Ok } from "../../../src/util/result"
 import { finishedDetourFactory } from "../../factories/detourFactory"
 
 beforeEach(() => {
+  document.getElementById("app")?.remove()
+  const app = document.createElement("div")
+  app.id = "app"
+  app.dataset.detoursAutoclosingPilot = "on"
+  document.body.appendChild(app)
+
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
@@ -219,6 +226,69 @@ describe("DiversionPage activate workflow", () => {
       await userEvent.click(threeHoursRadio.get())
 
       expect(nextButton.get()).toBeEnabled()
+    })
+
+    test("shows the automatic closure alert for an estimated duration", async () => {
+      await diversionPageOnSelectDurationModalScreen()
+
+      await userEvent.click(threeHoursRadio.get())
+
+      expect(
+        screen.getByText(
+          "Detour will close automatically at the end of service."
+        )
+      ).toBeVisible()
+    })
+
+    test("shows the automatic closure alert for a custom date", () => {
+      render(
+        <ActivateDetour.SelectingDuration
+          onSelectDuration={jest.fn()}
+          selectedDuration="2026-10-09"
+        />
+      )
+
+      expect(
+        screen.getByText(
+          /Detour will close automatically on Oct 9, 2026 at the end of service\./
+        )
+      ).toBeVisible()
+    })
+
+    test("hides the automatic closure alert when the autoclosing pilot is off", () => {
+      const app = document.getElementById("app")
+      app!.dataset.detoursAutoclosingPilot = "off"
+
+      render(
+        <ActivateDetour.SelectingDuration
+          onSelectDuration={jest.fn()}
+          selectedDuration="3 hours"
+        />
+      )
+
+      expect(
+        screen.queryByText(
+          "Detour will close automatically at the end of service."
+        )
+      ).not.toBeInTheDocument()
+    })
+
+    test("hides the automatic closure alert for custom date when the autoclosing pilot is off", () => {
+      const app = document.getElementById("app")
+      app!.dataset.detoursAutoclosingPilot = "off"
+
+      render(
+        <ActivateDetour.SelectingDuration
+          onSelectDuration={jest.fn()}
+          selectedDuration="2026-10-10"
+        />
+      )
+
+      expect(
+        screen.queryByText(
+          /Detour will close automatically on Oct 10, 2026 at the end of service\./
+        )
+      ).not.toBeInTheDocument()
     })
 
     test("the 'Next' button advances to the next screen", async () => {

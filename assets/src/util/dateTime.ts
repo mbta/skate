@@ -31,6 +31,20 @@ export const formattedTime = (date: Date): string => {
   return formattedHoursMinutes(date.getHours(), date.getMinutes())
 }
 
+export const formattedTimeWithSeconds = (
+  dateOrStr?: Date | string | null
+): string => {
+  if (!dateOrStr) return ""
+  const d = typeof dateOrStr === "string" ? new Date(dateOrStr) : dateOrStr
+  if (isNaN(d.getTime())) return ""
+  const hours24 = d.getHours()
+  const hours12 = hours24 % 12 || 12
+  const mins = d.getMinutes().toString().padStart(2, "0")
+  const secs = d.getSeconds().toString().padStart(2, "0")
+  const ampm = hours24 >= 12 ? "PM" : "AM"
+  return `${hours12}:${mins}:${secs} ${ampm}`
+}
+
 export const formattedDate = (date: Date): string => {
   const displayMonth = date.getMonth() + 1
   const day = date.getDate()
@@ -53,10 +67,13 @@ export const fromIsoDateString = (date: string): Date => {
   return new Date(year, month - 1, day)
 }
 
+export const isIsoDateString = (date: string): boolean =>
+  /^\d{4}-\d{2}-\d{2}$/.test(date)
+
 export const formatIfDate = (duration?: string): string => {
   if (!duration) return ""
 
-  if (/\d{4}-\d{2}-\d{2}/.test(duration)) {
+  if (isIsoDateString(duration)) {
     return fromIsoDateString(duration).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
