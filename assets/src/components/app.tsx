@@ -33,6 +33,7 @@ import inTestGroup, { TestGroups } from "../userInTestGroup"
 import { MinimalLadderPage } from "./minimalLadderPage"
 import { MinimalLadder } from "./minimalLadder"
 import { appendIfNew } from "../helpers/array"
+import { RadioQueuePage } from "./radio/radioQueuePage"
 
 export const AppRoutes = () => {
   useAppcues()
@@ -118,6 +119,10 @@ export const AppRoutes = () => {
                 {inTestGroup(TestGroups.DetoursList) && (
                   <BrowserRoute path="/detours" element={<DetourListPage />} />
                 )}
+                <BrowserRoute
+                  path="/_preview/radio/queue"
+                  element={<RadioQueuePage />}
+                />
               </Route>
               <Route
                 element={
