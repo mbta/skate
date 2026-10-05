@@ -110,6 +110,21 @@ defmodule SkateWeb.Router do
     get "/unauthorized", UnauthorizedController, :index
   end
 
+  scope "/_preview", SkateWeb do
+    pipe_through [
+      :redirect_prod_http,
+      :accepts_html,
+      :browser,
+      :capture_auth_return_path,
+      :auth,
+      :ensure_auth,
+      :ensure_environment_access,
+      :put_user_token
+    ]
+
+    get "/radio/queue", PageController, :index
+  end
+
   scope "/", SkateWeb do
     pipe_through [
       :redirect_prod_http,

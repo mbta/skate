@@ -28,6 +28,15 @@ defmodule SkateWeb.RouterTest do
     end
   end
 
+  describe "GET /_preview/radio/queue (client-side route)" do
+    @tag :authenticated
+    test "shows you the app, letting the client handle routing", %{conn: conn} do
+      conn = get(conn, "/_preview/radio/queue")
+
+      assert html_response(conn, 200) =~ "div id=\"app\""
+    end
+  end
+
   describe "GET /docs" do
     test "GET /agency-policies/aup, should return :skate, :acceptable_use_policy", %{conn: conn} do
       conn = get(conn, "/docs/agency-policies/aup")
