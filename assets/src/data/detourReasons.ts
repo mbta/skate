@@ -1,4 +1,24 @@
-const detourReasons = [
+export const detourReasons = [
+  "Accident",
+  "Construction",
+  "Demonstration",
+  "Disabled bus",
+  "Drawbridge being raised",
+  "Fire",
+  "Hazmat condition",
+  "Holiday",
+  "Maintenance",
+  "Medical emergency",
+  "Parade",
+  "Police activity",
+  "Snow",
+  "Special event",
+  "Traffic",
+  "Utility work",
+  "Weather",
+]
+
+export const historicalDetourReasons = [
   "Accident",
   "Construction",
   "Demonstration",
@@ -17,7 +37,6 @@ const detourReasons = [
   "Special event",
   "Tie replacement",
   "Traffic",
+  "Utility work",
   "Weather",
 ]
-
-export default detourReasons
