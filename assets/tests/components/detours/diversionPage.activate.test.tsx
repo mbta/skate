@@ -4,6 +4,10 @@ import {
   DiversionPageProps,
 } from "../../../src/components/detours/diversionPage"
 import { ActivateDetour } from "../../../src/components/detours/activateDetourModal"
+import {
+  detourReasons,
+  retiredDetourReasons,
+} from "../../../src/data/detourReasons"
 import { originalRouteFactory } from "../../factories/originalRouteFactory"
 import { beforeEach, describe, expect, jest, test } from "@jest/globals"
 import "@testing-library/jest-dom/jest-globals"
@@ -317,6 +321,23 @@ describe("DiversionPage activate workflow", () => {
   })
 
   describe("from the reason-selection screen on the activate modal", () => {
+    test("offers only active detour reasons", () => {
+      render(
+        <ActivateDetour.SelectingReason
+          onSelectReason={jest.fn()}
+          selectedReason={undefined}
+        />
+      )
+
+      expect(screen.getAllByRole("radio")).toHaveLength(detourReasons.length)
+
+      retiredDetourReasons.forEach((reason) => {
+        expect(
+          screen.queryByRole("radio", { name: reason })
+        ).not.toBeInTheDocument()
+      })
+    })
+
     test("buttons start out in the right states on the activate flow modal", async () => {
       await diversionPageOnSelectReasonModalScreen()
 
