@@ -14,6 +14,7 @@ export enum TestGroups {
   StateOfCharge = "state-of-charge",
   EditActiveDetours = "edit-active-detours",
   TextOnlyDetours = "text-only-detours",
+  DetourAutoClosingPilot = "detours-autoclosing-pilot",
 }
 
 const inTestGroup = (key: TestGroups): boolean => {

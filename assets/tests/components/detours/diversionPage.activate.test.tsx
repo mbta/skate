@@ -36,12 +36,6 @@ import { Ok } from "../../../src/util/result"
 import { finishedDetourFactory } from "../../factories/detourFactory"
 
 beforeEach(() => {
-  document.getElementById("app")?.remove()
-  const app = document.createElement("div")
-  app.id = "app"
-  app.dataset.detoursAutoclosingPilot = "on"
-  document.body.appendChild(app)
-
   jest.spyOn(global, "scrollTo").mockImplementationOnce(jest.fn())
 })
 
@@ -72,7 +66,11 @@ beforeEach(() => {
 
   jest
     .mocked(getTestGroups)
-    .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
+    .mockReturnValue([
+      TestGroups.DetoursPilot,
+      TestGroups.DetoursList,
+      TestGroups.DetourAutoClosingPilot,
+    ])
 })
 
 const diversionPageOnReviewScreen = async (
@@ -260,8 +258,9 @@ describe("DiversionPage activate workflow", () => {
     })
 
     test("hides the automatic closure alert when the autoclosing pilot is off", () => {
-      const app = document.getElementById("app")
-      app!.dataset.detoursAutoclosingPilot = "off"
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
 
       render(
         <ActivateDetour.SelectingDuration
@@ -278,9 +277,9 @@ describe("DiversionPage activate workflow", () => {
     })
 
     test("hides the automatic closure alert for custom date when the autoclosing pilot is off", () => {
-      const app = document.getElementById("app")
-      app!.dataset.detoursAutoclosingPilot = "off"
-
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
       render(
         <ActivateDetour.SelectingDuration
           onSelectDuration={jest.fn()}
