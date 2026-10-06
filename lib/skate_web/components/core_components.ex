@@ -3,7 +3,6 @@ defmodule SkateWeb.CoreComponents do
   Provides core UI components.
   """
 
-  use Phoenix.HTML
   use Phoenix.Component
 
   def static_content_route(conn, path) do
