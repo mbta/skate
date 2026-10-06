@@ -23,8 +23,8 @@ defmodule Swiftly.API.Requests do
          beginTime: parse_begin_time(detour),
          detourRouteDirectionDetails: [
            %DetourRouteDirectionCreationDetails{
-             routeShortName: detour.state["context"]["route"]["name"],
-             direction: Integer.to_string(detour.state["context"]["routePattern"]["directionId"]),
+             routeShortName: detour.route_name,
+             direction: parse_direction(detour),
              shape: parse_shape(detour),
              skippedStops: map_skipped_stops(detour)
            }
@@ -41,6 +41,17 @@ defmodule Swiftly.API.Requests do
 
   defp parse_begin_time(_), do: nil
 
+  defp parse_direction(%Detour{direction_id: direction_id}) when is_integer(direction_id) do
+    Integer.to_string(direction_id)
+  end
+
+  defp parse_direction(%Detour{
+         state: %{"context" => %{"routePattern" => %{"directionId" => direction_id}}}
+       })
+       when is_integer(direction_id) do
+    Integer.to_string(direction_id)
+  end
+
   defp parse_shape(%Detour{coordinates: coordinates}) when not is_nil(coordinates) do
     map_coordinates(coordinates)
   end
@@ -56,6 +67,12 @@ defmodule Swiftly.API.Requests do
 
   defp map_coordinates(coordinates) do
     Enum.map(coordinates, fn %{"lat" => lat, "lon" => lon} -> [lat, lon] end)
+  end
+
+  defp map_skipped_stops(%Detour{
+         missed_stops: [_ | _] = missed_stops
+       }) do
+    Enum.map(missed_stops, fn missed_stop -> Map.get(missed_stop, "id") end)
   end
 
   defp map_skipped_stops(%Detour{
