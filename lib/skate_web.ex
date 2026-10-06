@@ -35,8 +35,10 @@ defmodule SkateWeb do
   def html do
     quote do
       use Phoenix.Component
+      use PhoenixHTMLHelpers
 
-      use Phoenix.HTML
+      import Phoenix.HTML
+      import Phoenix.HTML.Form
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
