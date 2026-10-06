@@ -142,7 +142,6 @@ defmodule Skate.Detours.SnapshotSerdeTest do
         |> insert()
         |> without_columns(:route_pattern)
 
-
       expected = get_in(detour.state, ["context", "routePattern"])
       refute is_nil(expected)
 
