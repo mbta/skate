@@ -1,0 +1,44 @@
+@import "../color/definitions";
+
+.c-research-scenario-dropdown {
+  display: inline-block;
+  box-sizing: border-box;
+
+  &__toggle {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  &__menu {
+    min-width: 14rem;
+    padding: 0.25rem 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  &__item {
+    font-size: 0.875rem;
+    padding: 0.375rem 1rem;
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background-color: $gray-100;
+      color: $gray-800;
+    }
+
+    &.active,
+    &:active {
+      background-color: $gray-800;
+      color: #fff;
+    }
+
+    &--reset {
+      &:hover,
+      &:focus {
+        background-color: $gray-100;
+      }
+    }
+  }
+}
