@@ -33,8 +33,6 @@ jest.mock("../../../src/hooks/useDetours")
 jest.mock("../../../src/userTestGroups")
 
 beforeEach(() => {
-  document.getElementById("app")?.remove()
-
   const detours = detourListFactory.build()
   jest.mocked(useActiveDetours).mockReturnValue(detours.active)
   jest.mocked(useDraftDetours).mockReturnValue(detours.draft)
@@ -48,7 +46,11 @@ beforeEach(() => {
 
   jest
     .mocked(getTestGroups)
-    .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
+    .mockReturnValue([
+      TestGroups.DetoursPilot,
+      TestGroups.DetoursList,
+      TestGroups.DetourAutoClosingPilot,
+    ])
 })
 
 const DiversionPage = (props: Partial<DiversionPageProps>) => {
@@ -124,11 +126,6 @@ describe("DiversionPage edit duration workflow", () => {
 
   describe("from the change duration modal", () => {
     test("shows the automatic closure alert when the autoclosing pilot is on", () => {
-      const app = document.createElement("div")
-      app.id = "app"
-      app.dataset.detoursAutoclosingPilot = "on"
-      document.body.appendChild(app)
-
       render(
         <ChangeDuration.Body
           onSelectDuration={jest.fn()}
@@ -144,11 +141,6 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("shows the automatic closure alert for custom date when the autoclosing pilot is on", () => {
-      const app = document.createElement("div")
-      app.id = "app"
-      app.dataset.detoursAutoclosingPilot = "on"
-      document.body.appendChild(app)
-
       render(
         <ChangeDuration.Body
           onSelectDuration={jest.fn()}
@@ -164,10 +156,9 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("hides the automatic closure alert when the autoclosing pilot is off", () => {
-      const app = document.createElement("div")
-      app.id = "app"
-      app.dataset.detoursAutoclosingPilot = "off"
-      document.body.appendChild(app)
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
 
       render(
         <ChangeDuration.Body
@@ -184,10 +175,9 @@ describe("DiversionPage edit duration workflow", () => {
     })
 
     test("hides the automatic closure alert for custom date when the autoclosing pilot is off", () => {
-      const app = document.createElement("div")
-      app.id = "app"
-      app.dataset.detoursAutoclosingPilot = "off"
-      document.body.appendChild(app)
+      jest
+        .mocked(getTestGroups)
+        .mockReturnValue([TestGroups.DetoursPilot, TestGroups.DetoursList])
 
       render(
         <ChangeDuration.Body
