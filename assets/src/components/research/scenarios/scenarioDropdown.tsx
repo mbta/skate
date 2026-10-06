@@ -1,26 +1,23 @@
 import React, { ReactElement } from "react"
 import { Dropdown } from "react-bootstrap"
 import { joinClasses } from "../../../helpers/dom"
-import { ResearchScenario } from "./types"
+import { Scenario } from "./types"
 import {
-  useResearchScenarioDropdown,
-  UseResearchScenarioDropdownOptions,
-} from "./useResearchScenarioDropdown"
+  useScenarioDropdown,
+  UseScenarioDropdownOptions,
+} from "./useScenarioDropdown"
 
-export interface ResearchScenarioDropdownProps<
+export interface ScenarioDropdownProps<
   T = unknown,
   Id extends string = string,
-> extends UseResearchScenarioDropdownOptions<T, Id> {
-  scenarios: readonly ResearchScenario<T, Id>[]
+> extends UseScenarioDropdownOptions<T, Id> {
+  scenarios: readonly Scenario<T, Id>[]
   buttonLabel?: string
   resetLabel?: string
   className?: string
 }
 
-export const ResearchScenarioDropdown = <
-  T = unknown,
-  Id extends string = string,
->({
+export const ScenarioDropdown = <T = unknown, Id extends string = string>({
   scenarios,
   socket,
   topic,
@@ -29,11 +26,8 @@ export const ResearchScenarioDropdown = <
   onTriggerScenario,
   onResetScenario,
   className = "",
-}: ResearchScenarioDropdownProps<T, Id>): ReactElement => {
-  const { state, selectScenario, resetScenario } = useResearchScenarioDropdown<
-    T,
-    Id
-  >({
+}: ScenarioDropdownProps<T, Id>): ReactElement => {
+  const { state, selectScenario, resetScenario } = useScenarioDropdown<T, Id>({
     scenarios,
     socket,
     topic,
@@ -44,7 +38,7 @@ export const ResearchScenarioDropdown = <
   return (
     <div
       className={joinClasses([
-        "c-research-scenario-dropdown",
+        "c-scenario-dropdown",
         "border-box",
         "inherit-box",
         className,
@@ -52,21 +46,21 @@ export const ResearchScenarioDropdown = <
     >
       <Dropdown className="border-box inherit-box">
         <Dropdown.Toggle
-          id="research-scenario-dropdown-toggle"
+          id="scenario-dropdown-toggle"
           variant="secondary"
-          className="c-research-scenario-dropdown__toggle"
+          className="c-scenario-dropdown__toggle"
           disabled={state.isBroadcasting}
         >
           {state.isBroadcasting ? "Broadcasting..." : buttonLabel}
         </Dropdown.Toggle>
 
-        <Dropdown.Menu className="c-research-scenario-dropdown__menu border-box inherit-box">
+        <Dropdown.Menu className="c-scenario-dropdown__menu border-box inherit-box">
           {scenarios.map((scenario) => (
             <Dropdown.Item
               key={scenario.id}
               active={state.activeScenarioId === scenario.id}
               onClick={() => selectScenario(scenario.id)}
-              className="c-research-scenario-dropdown__item"
+              className="c-scenario-dropdown__item"
             >
               {scenario.name}
             </Dropdown.Item>
@@ -74,7 +68,7 @@ export const ResearchScenarioDropdown = <
           <Dropdown.Divider />
           <Dropdown.Item
             onClick={resetScenario}
-            className="c-research-scenario-dropdown__item c-research-scenario-dropdown__item--reset text-danger"
+            className="c-scenario-dropdown__item c-scenario-dropdown__item--reset text-danger"
           >
             {resetLabel}
           </Dropdown.Item>
@@ -84,4 +78,4 @@ export const ResearchScenarioDropdown = <
   )
 }
 
-export default ResearchScenarioDropdown
+export default ScenarioDropdown

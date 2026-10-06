@@ -2,45 +2,41 @@ import { Channel, Socket } from "phoenix"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { SocketContext } from "../../../contexts/socketContext"
 import { reload } from "../../../models/browser"
-import { ResearchScenario } from "./types"
+import { Scenario } from "./types"
 
-export const DEFAULT_RESEARCH_SCENARIOS_TOPIC = "research:scenarios:default"
+export const DEFAULT_SCENARIOS_TOPIC = "research:scenarios:default"
 
-export interface UseResearchScenarioChannelOptions<
+export interface UseScenarioChannelOptions<
   T = unknown,
   Id extends string = string,
 > {
   socket?: Socket
   topic?: string
-  onScenarioTriggered?: (scenario: ResearchScenario<T, Id>) => void
+  onScenarioTriggered?: (scenario: Scenario<T, Id>) => void
   onScenarioReset?: () => void
 }
 
-export interface UseResearchScenarioChannelResult<
+export interface UseScenarioChannelResult<
   T = unknown,
   Id extends string = string,
 > {
   isConnected: boolean
-  activeScenario: ResearchScenario<T, Id> | null
-  triggerScenario: (scenario: ResearchScenario<T, Id>) => Promise<void>
+  activeScenario: Scenario<T, Id> | null
+  triggerScenario: (scenario: Scenario<T, Id>) => Promise<void>
   resetScenario: () => Promise<void>
 }
 
-export const useResearchScenarioChannel = <
-  T = unknown,
-  Id extends string = string,
->(
-  options: UseResearchScenarioChannelOptions<T, Id> = {}
-): UseResearchScenarioChannelResult<T, Id> => {
+export const useScenarioChannel = <T = unknown, Id extends string = string>(
+  options: UseScenarioChannelOptions<T, Id> = {}
+): UseScenarioChannelResult<T, Id> => {
   const contextSocket = useContext(SocketContext)
   const socket = options.socket ?? contextSocket?.socket
-  const topic = options.topic ?? DEFAULT_RESEARCH_SCENARIOS_TOPIC
+  const topic = options.topic ?? DEFAULT_SCENARIOS_TOPIC
 
   const [isConnected, setIsConnected] = useState(false)
-  const [activeScenario, setActiveScenario] = useState<ResearchScenario<
-    T,
-    Id
-  > | null>(null)
+  const [activeScenario, setActiveScenario] = useState<Scenario<T, Id> | null>(
+    null
+  )
   const channelRef = useRef<Channel | undefined>()
 
   const { onScenarioTriggered, onScenarioReset } = options
@@ -53,15 +49,12 @@ export const useResearchScenarioChannel = <
     const channel = socket.channel(topic)
     channelRef.current = channel
 
-    channel.on(
-      "scenario_triggered",
-      ({ data }: { data: ResearchScenario<T, Id> }) => {
-        setActiveScenario(data)
-        if (onScenarioTriggered) {
-          onScenarioTriggered(data)
-        }
+    channel.on("scenario_triggered", ({ data }: { data: Scenario<T, Id> }) => {
+      setActiveScenario(data)
+      if (onScenarioTriggered) {
+        onScenarioTriggered(data)
       }
-    )
+    })
 
     channel.on("scenario_reset", () => {
       setActiveScenario(null)
@@ -74,7 +67,7 @@ export const useResearchScenarioChannel = <
 
     channel
       .join()
-      .receive("ok", (resp: { data?: ResearchScenario<T, Id> | null }) => {
+      .receive("ok", (resp: { data?: Scenario<T, Id> | null }) => {
         setIsConnected(true)
         if (resp && resp.data) {
           setActiveScenario(resp.data)
@@ -95,7 +88,7 @@ export const useResearchScenarioChannel = <
   }, [socket, topic, onScenarioTriggered, onScenarioReset])
 
   const triggerScenario = useCallback(
-    (scenario: ResearchScenario<T, Id>): Promise<void> => {
+    (scenario: Scenario<T, Id>): Promise<void> => {
       return new Promise((resolve, reject) => {
         const channel = channelRef.current
         if (!channel) {

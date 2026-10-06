@@ -1,18 +1,16 @@
 import { describe, test, expect, jest } from "@jest/globals"
 import { renderHook, act } from "@testing-library/react"
-import { useResearchScenarioDropdown } from "../../../../src/components/research/scenarios/useResearchScenarioDropdown"
-import { ResearchScenario } from "../../../../src/components/research/scenarios/types"
+import { useScenarioDropdown } from "../../../../src/components/research/scenarios/useScenarioDropdown"
+import { Scenario } from "../../../../src/components/research/scenarios/types"
 
-describe("useResearchScenarioDropdown", () => {
-  const scenarios: readonly ResearchScenario[] = [
+describe("useScenarioDropdown", () => {
+  const scenarios: readonly Scenario[] = [
     { id: "s1", name: "Scenario 1", description: "Desc 1" },
     { id: "s2", name: "Scenario 2", description: "Desc 2" },
   ]
 
   test("initializes with default state", () => {
-    const { result } = renderHook(() =>
-      useResearchScenarioDropdown({ scenarios })
-    )
+    const { result } = renderHook(() => useScenarioDropdown({ scenarios }))
 
     expect(result.current.state).toEqual({
       activeScenarioId: null,
@@ -22,9 +20,9 @@ describe("useResearchScenarioDropdown", () => {
   })
 
   test("selectScenario triggers scenario and updates activeScenarioId", async () => {
-    const onTriggerScenario = jest.fn<(scenario: ResearchScenario) => void>()
+    const onTriggerScenario = jest.fn<(scenario: Scenario) => void>()
     const { result } = renderHook(() =>
-      useResearchScenarioDropdown({ scenarios, onTriggerScenario })
+      useScenarioDropdown({ scenarios, onTriggerScenario })
     )
 
     await act(async () => {
@@ -44,7 +42,7 @@ describe("useResearchScenarioDropdown", () => {
   test("resetScenario triggers reset and clears activeScenarioId", async () => {
     const onResetScenario = jest.fn<() => void>()
     const { result } = renderHook(() =>
-      useResearchScenarioDropdown({ scenarios, onResetScenario })
+      useScenarioDropdown({ scenarios, onResetScenario })
     )
 
     await act(async () => {

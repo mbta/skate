@@ -1,39 +1,33 @@
 import { useCallback, useReducer } from "react"
 import { Socket } from "phoenix"
-import {
-  initialResearchScenarioState,
-  researchScenarioReducer,
-} from "./researchScenarioReducer"
-import { ResearchScenario, ResearchScenarioState } from "./types"
-import { useResearchScenarioChannel } from "./useResearchScenarioChannel"
+import { initialScenarioState, scenarioReducer } from "./scenarioReducer"
+import { Scenario, ScenarioState } from "./types"
+import { useScenarioChannel } from "./useScenarioChannel"
 
-export interface UseResearchScenarioDropdownOptions<
+export interface UseScenarioDropdownOptions<
   T = unknown,
   Id extends string = string,
 > {
-  scenarios?: readonly ResearchScenario<T, Id>[]
+  scenarios?: readonly Scenario<T, Id>[]
   socket?: Socket
   topic?: string
-  onTriggerScenario?: (scenario: ResearchScenario<T, Id>) => void
+  onTriggerScenario?: (scenario: Scenario<T, Id>) => void
   onResetScenario?: () => void
 }
 
-export interface UseResearchScenarioDropdownResult<Id extends string = string> {
-  state: ResearchScenarioState<Id>
+export interface UseScenarioDropdownResult<Id extends string = string> {
+  state: ScenarioState<Id>
   selectScenario: (scenarioId: Id) => Promise<void>
   resetScenario: () => Promise<void>
 }
 
 /**
  * Custom hook orchestrating scenario selection,
- * Phoenix channel broadcasting, and state transitions for research scenario dropdowns.
+ * Phoenix channel broadcasting, and state transitions for scenario dropdowns.
  */
-export const useResearchScenarioDropdown = <
-  T = unknown,
-  Id extends string = string,
->(
-  options: UseResearchScenarioDropdownOptions<T, Id> = {}
-): UseResearchScenarioDropdownResult<Id> => {
+export const useScenarioDropdown = <T = unknown, Id extends string = string>(
+  options: UseScenarioDropdownOptions<T, Id> = {}
+): UseScenarioDropdownResult<Id> => {
   const {
     scenarios = [],
     socket,
@@ -43,11 +37,11 @@ export const useResearchScenarioDropdown = <
   } = options
 
   const [state, dispatch] = useReducer(
-    researchScenarioReducer<Id>,
-    initialResearchScenarioState as ResearchScenarioState<Id>
+    scenarioReducer<Id>,
+    initialScenarioState as ScenarioState<Id>
   )
 
-  const channel = useResearchScenarioChannel<T, Id>({
+  const channel = useScenarioChannel<T, Id>({
     socket,
     topic,
     onScenarioTriggered: onTriggerScenario,

@@ -1,18 +1,18 @@
-import { ResearchScenarioAction, ResearchScenarioState } from "./types"
+import { ScenarioAction, ScenarioState } from "./types"
 
-export const initialResearchScenarioState: ResearchScenarioState<string> = {
+export const initialScenarioState: ScenarioState<string> = {
   activeScenarioId: null,
   isBroadcasting: false,
   error: null,
 }
 
 /**
- * Reducer managing research scenario activation, reset, and broadcast lifecycle.
+ * Reducer managing scenario activation, reset, and broadcast lifecycle.
  */
-export const researchScenarioReducer = <Id extends string = string>(
-  state: ResearchScenarioState<Id> = initialResearchScenarioState as ResearchScenarioState<Id>,
-  action: ResearchScenarioAction<Id>
-): ResearchScenarioState<Id> => {
+export const scenarioReducer = <Id extends string = string>(
+  state: ScenarioState<Id> = initialScenarioState as ScenarioState<Id>,
+  action: ScenarioAction<Id>
+): ScenarioState<Id> => {
   switch (action.type) {
     case "TRIGGER_START":
       return {

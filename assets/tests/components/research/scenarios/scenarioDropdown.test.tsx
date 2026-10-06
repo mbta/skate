@@ -3,17 +3,17 @@ import "@testing-library/jest-dom/jest-globals"
 import React from "react"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { ResearchScenarioDropdown } from "../../../../src/components/research/scenarios/researchScenarioDropdown"
-import { ResearchScenario } from "../../../../src/components/research/scenarios/types"
+import { ScenarioDropdown } from "../../../../src/components/research/scenarios/scenarioDropdown"
+import { Scenario } from "../../../../src/components/research/scenarios/types"
 
-describe("ResearchScenarioDropdown", () => {
-  const scenarios: readonly ResearchScenario[] = [
+describe("ScenarioDropdown", () => {
+  const scenarios: readonly Scenario[] = [
     { id: "scenario-1", name: "Standard Scenario", description: "Baseline" },
     { id: "scenario-2", name: "Stress Scenario", description: "High volume" },
   ]
 
   test("renders dropdown toggle with default button label", () => {
-    render(<ResearchScenarioDropdown scenarios={scenarios} />)
+    render(<ScenarioDropdown scenarios={scenarios} />)
 
     const toggle = screen.getByRole("button", {
       name: "Skate testing scenarios",
@@ -23,7 +23,7 @@ describe("ResearchScenarioDropdown", () => {
 
   test("renders dropdown toggle with custom button label", () => {
     render(
-      <ResearchScenarioDropdown
+      <ScenarioDropdown
         scenarios={scenarios}
         buttonLabel="Custom Research Scenarios"
       />
@@ -37,10 +37,7 @@ describe("ResearchScenarioDropdown", () => {
 
   test("renders all scenarios and reset option in dropdown menu", async () => {
     render(
-      <ResearchScenarioDropdown
-        scenarios={scenarios}
-        resetLabel="Reset test view"
-      />
+      <ScenarioDropdown scenarios={scenarios} resetLabel="Reset test view" />
     )
 
     const toggle = screen.getByRole("button", {
@@ -61,7 +58,7 @@ describe("ResearchScenarioDropdown", () => {
   test("selecting a scenario triggers triggerScenario callback", async () => {
     const onTriggerScenario = jest.fn()
     render(
-      <ResearchScenarioDropdown
+      <ScenarioDropdown
         scenarios={scenarios}
         onTriggerScenario={onTriggerScenario}
       />
@@ -81,7 +78,7 @@ describe("ResearchScenarioDropdown", () => {
       expect(onTriggerScenario).toHaveBeenCalledTimes(1)
     })
 
-    const scenario = onTriggerScenario.mock.calls[0][0] as ResearchScenario
+    const scenario = onTriggerScenario.mock.calls[0][0] as Scenario
     expect(scenario.id).toBe("scenario-2")
     expect(scenario.name).toBe("Stress Scenario")
   })
@@ -89,7 +86,7 @@ describe("ResearchScenarioDropdown", () => {
   test("selecting reset triggers onResetScenario callback", async () => {
     const onResetScenario = jest.fn()
     render(
-      <ResearchScenarioDropdown
+      <ScenarioDropdown
         scenarios={scenarios}
         onResetScenario={onResetScenario}
       />

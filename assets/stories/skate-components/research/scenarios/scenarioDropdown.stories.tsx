@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import React, { useState } from "react"
-import { ResearchScenarioDropdown } from "../../../../src/components/research/scenarios/researchScenarioDropdown"
-import { ResearchScenario } from "../../../../src/components/research/scenarios/types"
+import { ScenarioDropdown } from "../../../../src/components/research/scenarios/scenarioDropdown"
+import { Scenario } from "../../../../src/components/research/scenarios/types"
 
-const SAMPLE_SCENARIOS: readonly ResearchScenario<string>[] = [
+const SAMPLE_SCENARIOS: readonly Scenario<string>[] = [
   {
     id: "scenario-1",
     name: "Baseline Scenario",
@@ -25,7 +25,7 @@ const SAMPLE_SCENARIOS: readonly ResearchScenario<string>[] = [
 ]
 
 const meta = {
-  component: ResearchScenarioDropdown,
+  component: ScenarioDropdown,
   parameters: {
     layout: "fullscreen",
   },
@@ -48,17 +48,17 @@ const meta = {
       </div>
     ),
   ],
-} satisfies Meta<typeof ResearchScenarioDropdown>
+} satisfies Meta<typeof ScenarioDropdown>
 
 export default meta
-type Story = StoryObj<typeof ResearchScenarioDropdown>
+type Story = StoryObj<typeof ScenarioDropdown>
 
 export const Default: Story = {}
 
 export const InteractiveWithOutput: Story = {
   render: () => {
     const [activeScenario, setActiveScenario] =
-      useState<ResearchScenario<string> | null>(null)
+      useState<Scenario<string> | null>(null)
 
     return (
       <div
@@ -69,7 +69,7 @@ export const InteractiveWithOutput: Story = {
         }}
       >
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-          <ResearchScenarioDropdown
+          <ScenarioDropdown
             scenarios={SAMPLE_SCENARIOS}
             onTriggerScenario={(scenario) => setActiveScenario(scenario)}
             onResetScenario={() => setActiveScenario(null)}
