@@ -37,14 +37,6 @@ defmodule SkateWeb.PageController do
     })
     |> assign(:user_test_groups, User.all_test_group_names(user))
     |> assign(:map_limits, map_limits)
-    |> assign(
-      :detours_autoclosing_pilot,
-      if(
-        Skate.Detours.Autoclosing.enabled?(),
-        do: "on",
-        else: "off"
-      )
-    )
     |> assign(:sentry_org_slug, Application.get_env(:skate, :sentry_org_slug))
     |> render("index.html")
   end
