@@ -76,10 +76,22 @@ defmodule Skate.Detours.SnapshotSerde do
   # check as the prop level value should always be the source of truth. This function removes the now prop-level
   # keys and only compares the data currently stored within the :state prop.
   defp diff_snapshots(scoped_state, serialized_snapshot) do
-    {_, cleaned_state} = pop_in(scoped_state, ["context", "activatedAt"])
-    {_, cleaned_serialized_snapshot} = pop_in(serialized_snapshot, ["context", "activatedAt"])
+    cleaned_state =
+      scoped_state
+      |> ignore_path(["context", "activatedAt"])
+      |> ignore_path(["context", "finishedDetour", "detourShape"])
+
+    cleaned_serialized_snapshot =
+      serialized_snapshot
+      |> ignore_path(["context", "activatedAt"])
+      |> ignore_path(["context", "finishedDetour", "detourShape"])
 
     MapDiff.diff(cleaned_state, cleaned_serialized_snapshot)
+  end
+
+  defp ignore_path(snapshot, path) do
+    {_, trimmed_snapshot} = pop_in(snapshot, path)
+    trimmed_snapshot
   end
 
   defp serialize_snapshot(%Detour{id: id, author_id: author_id} = detour) do
@@ -143,8 +155,8 @@ defmodule Skate.Detours.SnapshotSerde do
     :maps.filter(fn _, v -> v != nil end, %{
       "uuid" => uuid_from_detour(detour),
       "route" => route_from_detour(detour),
-      "routePattern" => routepattern_from_detour(detour),
       "routePatterns" => routepatterns_from_detour(detour),
+      "routePattern" => routepattern_from_detour(detour),
       "startPoint" => startpoint_from_detour(detour),
       "endPoint" => endpoint_from_detour(detour),
       "waypoints" => waypoints_from_detour(detour),
@@ -183,12 +195,14 @@ defmodule Skate.Detours.SnapshotSerde do
     end
   end
 
-  # defp state_from_detour(%Detour{detour_state: state}), do: state
+  defp state_from_detour(%Detour{state_value: state}) when not is_nil(state), do: state
+
   defp state_from_detour(%Detour{
          state: %{
            "value" => state
          }
-       }) do
+       })
+       when not is_nil(state) do
     log_fallback("state")
     state
   end
@@ -197,35 +211,53 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp uuid_from_detour(%Detour{id: id}), do: id
 
-  # defp route_from_detour(%Detour{route: route}), do: route
+  defp route_from_detour(%Detour{
+         route_id: route_id,
+         route_name: route_name,
+         garages: garages,
+         direction_names: direction_names
+       })
+       when not is_nil(route_id) and not is_nil(route_name) and not is_nil(garages) and
+              not is_nil(direction_names) do
+    %{
+      "id" => route_id,
+      "name" => route_name,
+      "garages" => garages,
+      "directionNames" => direction_names
+    }
+  end
+
   defp route_from_detour(%Detour{
          state: %{
            "context" => %{
              "route" => route
            }
          }
-       }) do
+       })
+       when not is_nil(route) do
     log_fallback("route")
     route
   end
 
-  defp route_from_detour(_), do: nil
+  defp routepattern_from_detour(%Detour{route_pattern: route_pattern})
+       when not is_nil(route_pattern) do
+    route_pattern
+  end
 
-  # defp routepattern_from_detour(%Detour{route_pattern: route_pattern}), do: route_pattern
   defp routepattern_from_detour(%Detour{
          state: %{
            "context" => %{
              "routePattern" => route_pattern
            }
          }
-       }) do
+       })
+       when not is_nil(route_pattern) do
     log_fallback("routePattern")
     route_pattern
   end
 
   defp routepattern_from_detour(_), do: nil
 
-  # defp routepatterns_from_detour(%Detour{route_patterns: route_patterns}), do: route_patterns
   defp routepatterns_from_detour(%Detour{
          state: %{
            "context" => %{
@@ -233,48 +265,58 @@ defmodule Skate.Detours.SnapshotSerde do
            }
          }
        }) do
-    log_fallback("route_patterns")
+    # storing route_patterns is not strictly necessary and is bulky
+    # consider removing routePatterns from context once the serialization comparison is no longer needed
     route_patterns
   end
 
   defp routepatterns_from_detour(_), do: nil
 
-  # defp startpoint_from_detour(%Detour{start_point: start_point}), do: start_point
+  defp startpoint_from_detour(%Detour{start_point: start_point}) when not is_nil(start_point),
+    do: start_point
+
   defp startpoint_from_detour(%Detour{
          state: %{
            "context" => %{
              "startPoint" => start_point
            }
          }
-       }) do
+       })
+       when not is_nil(start_point) do
     log_fallback("startPoint")
     start_point
   end
 
   defp startpoint_from_detour(_), do: nil
 
-  # defp endpoint_from_detour(%Detour{end_point: end_point}), do: end_point
+  defp endpoint_from_detour(%Detour{end_point: end_point}) when not is_nil(end_point),
+    do: end_point
+
   defp endpoint_from_detour(%Detour{
          state: %{
            "context" => %{
              "endPoint" => end_point
            }
          }
-       }) do
+       })
+       when not is_nil(end_point) do
     log_fallback("endPoint")
     end_point
   end
 
   defp endpoint_from_detour(_), do: nil
 
-  # defp waypoints_from_detour(%Detour{waypoints: waypoints}), do: waypoints
+  defp waypoints_from_detour(%Detour{waypoints: waypoints}) when not is_nil(waypoints),
+    do: waypoints
+
   defp waypoints_from_detour(%Detour{
          state: %{
            "context" => %{
              "waypoints" => waypoints
            }
          }
-       }) do
+       })
+       when not is_nil(waypoints) do
     log_fallback("waypoints")
     waypoints
   end
@@ -284,75 +326,108 @@ defmodule Skate.Detours.SnapshotSerde do
   defp nearestintersection_from_detour(%Detour{nearest_intersection: nearest_intersection}),
     do: nearest_intersection
 
-  # defp detourshape_from_detour(%Detour{detour_shape: detour_shape}), do: detour_shape
+  defp detourshape_from_detour(%Detour{detour_shape: detour_shape}) when not is_nil(detour_shape),
+    do: detour_shape
+
   defp detourshape_from_detour(%Detour{
          state: %{
            "context" => %{
              "detourShape" => detour_shape
            }
          }
-       }) do
+       })
+       when not is_nil(detour_shape) do
     log_fallback("detourShape")
     detour_shape
   end
 
   defp detourshape_from_detour(_), do: nil
 
-  # defp finisheddetour_from_detour(%Detour{finished_detour: finished_detour}), do: finished_detour
+  defp finisheddetour_from_detour(%Detour{
+         detour_shape: %{"ok" => detour_shape},
+         connection_points: connection_points,
+         missed_stops: missed_stops,
+         route_segments: route_segments
+       })
+       when not is_nil(detour_shape) and not is_nil(connection_points) and
+              not is_nil(missed_stops) and
+              not is_nil(route_segments) do
+    %{
+      "detourShape" => detour_shape,
+      "connectionPoint" => connection_points,
+      "missedStops" => missed_stops,
+      "routeSegments" => route_segments
+    }
+  end
+
   defp finisheddetour_from_detour(%Detour{
          state: %{
            "context" => %{
              "finishedDetour" => finished_detour
            }
          }
-       }) do
+       })
+       when not is_nil(finished_detour) do
     log_fallback("finishedDetour")
     finished_detour
   end
 
   defp finisheddetour_from_detour(_), do: nil
 
-  # defp editeddirections_from_detour(%Detour{edited_directions: edited_directions}), do: edited_directions
+  defp editeddirections_from_detour(%Detour{edited_directions: edited_directions})
+       when not is_nil(edited_directions),
+       do: edited_directions
+
   defp editeddirections_from_detour(%Detour{
          state: %{
            "context" => %{
              "editedDirections" => edited_directions
            }
          }
-       }) do
+       })
+       when not is_nil(edited_directions) do
     log_fallback("editedDirections")
     edited_directions
   end
 
   defp editeddirections_from_detour(_), do: nil
 
-  # defp undostack_from_detour(%Detour{undo_stack: undo_stack}), do: undo_stack
+  defp undostack_from_detour(%Detour{undo_stack: undo_stack}) when not is_nil(undo_stack),
+    do: undo_stack
+
   defp undostack_from_detour(%Detour{
          state: %{
            "context" => %{
              "undoStack" => undo_stack
            }
          }
-       }) do
+       })
+       when not is_nil(undo_stack) do
     log_fallback("undoStack")
     undo_stack
   end
 
   defp undostack_from_detour(_), do: nil
 
-  # defp istextonly_from_detour(%Detour{is_text_only: is_text_only}), do: is_text_only
+  defp istextonly_from_detour(%Detour{is_text_only: is_text_only}) when not is_nil(is_text_only),
+    do: is_text_only
+
   defp istextonly_from_detour(%Detour{
          state: %{
            "context" => %{
              "isTextOnly" => is_text_only
            }
          }
-       }) do
+       })
+       when not is_nil(is_text_only) do
     log_fallback("isTextOnly")
     is_text_only
   end
 
   defp istextonly_from_detour(_), do: nil
+
+  defp typeddetour_from_detour(%Detour{typed_detour: typed_detour}) when not is_nil(typed_detour),
+    do: typed_detour
 
   defp typeddetour_from_detour(%Detour{
          state: %{
@@ -360,14 +435,18 @@ defmodule Skate.Detours.SnapshotSerde do
              "typedDetour" => typed_detour
            }
          }
-       }) do
+       })
+       when not is_nil(typed_detour) do
     log_fallback("typedDetour")
     typed_detour
   end
 
   defp typeddetour_from_detour(_), do: nil
 
-  # defp selectedduration_from_detour(%Detour{estimated_duration: estimated_duration}), do: estimated_duration
+  defp selectedduration_from_detour(%Detour{estimated_duration: estimated_duration})
+       when not is_nil(estimated_duration),
+       do: estimated_duration
+
   defp selectedduration_from_detour(
          %Detour{
            state: %{
@@ -377,7 +456,7 @@ defmodule Skate.Detours.SnapshotSerde do
            }
          } = detour
        ) do
-    log_fallback("selectedDuration")
+    if not is_nil(selected_duration), do: log_fallback("selectedDuration")
 
     if detour.status == :active and selected_duration == nil do
       Logger.warning(
@@ -392,14 +471,16 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp selectedduration_from_detour(_), do: nil
 
-  # defp selectedreason_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
+  defp selectedreason_from_detour(%Detour{reason: reason}) when not is_nil(reason), do: reason
+
   defp selectedreason_from_detour(%Detour{
          state: %{
            "context" => %{
              "selectedReason" => selected_reason
            }
          }
-       }) do
+       })
+       when not is_nil(selected_reason) do
     log_fallback("selectedReason")
     selected_reason
   end
@@ -425,12 +506,16 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp activated_at_from_detour(%Detour{activated_at: nil}), do: nil
 
-  # defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children}), do: snapshot_children
+  defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children})
+       when not is_nil(snapshot_children),
+       do: snapshot_children
+
   defp snapshot_children_from_detour(%Detour{
          state: %{
            "children" => snapshot_children
          }
-       }) do
+       })
+       when not is_nil(snapshot_children) do
     log_fallback("children")
     snapshot_children
   end

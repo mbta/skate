@@ -537,6 +537,11 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   Traffic
                 </option>
                 <option
+                  value="Utility work"
+                >
+                  Utility work
+                </option>
+                <option
                   value="Weather"
                 >
                   Weather
@@ -2490,6 +2495,11 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   value="Traffic"
                 >
                   Traffic
+                </option>
+                <option
+                  value="Utility work"
+                >
+                  Utility work
                 </option>
                 <option
                   value="Weather"

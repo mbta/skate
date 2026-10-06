@@ -20,7 +20,7 @@ import { Route } from "../schedule"
 import { CircleXIcon } from "./circleXIcon"
 import { SearchIcon } from "../helpers/icon"
 import { fullStoryEvent } from "../helpers/fullStory"
-import detourReasons from "../data/detourReasons"
+import { historicalDetourReasons } from "../data/detourReasons"
 
 interface DetoursTableProps {
   data: SimpleDetour[]
@@ -258,7 +258,7 @@ export const DetoursTable = ({
                   <option key="" value="all">
                     Select reason
                   </option>
-                  {detourReasons.map((reason) => (
+                  {historicalDetourReasons.map((reason) => (
                     <option key={reason} value={reason}>
                       {reason}
                     </option>
