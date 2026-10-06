@@ -112,7 +112,12 @@ export const RttQueueItem = ({
       </div>
 
       {tab === TAB_TYPE.INCOMING && (
-        <div className="c-rtt-queue-item__action">
+        <div
+          className={joinClasses([
+            "c-rtt-queue-item__action",
+            !isActive && "c-rtt-queue-item__action--respond",
+          ])}
+        >
           {isActive ? (
             <div
               className="c-rtt-queue-item__status-cell"

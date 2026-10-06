@@ -14,7 +14,7 @@ export type RttStatus = "unassigned" | "active" | "done"
 export interface RttCall {
   id: string
   callType: RttCallType
-  talkGroup: string
+  talkGroup?: string
   routeId: string
   routeName: string
   vehicleId: string
