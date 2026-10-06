@@ -252,7 +252,9 @@ defmodule Skate.Detours.Autoclosing.Test do
 
   describe "Skate.Detours.Db.Detour.changeset/2" do
     test "does not calculate autoclose_on when autoclosing is disabled" do
-      test_group = Skate.Settings.TestGroup.get_by_name(Skate.Detours.Autoclosing.test_group_name())
+      test_group =
+        Skate.Settings.TestGroup.get_by_name(Skate.Detours.Autoclosing.test_group_name())
+
       Skate.Settings.TestGroup.update(%{test_group | override: :disabled})
 
       state =
