@@ -3,7 +3,7 @@ import { SurroundingModal } from "./activateDetourModal"
 import { DurationSelect } from "./durationSelect"
 import { formatIfDate, isIsoDateString } from "../../util/dateTime"
 import BaseAlert from "../alerts/baseAlert"
-import appData from "../../appData"
+import inTestGroup, { TestGroups } from "../../userInTestGroup"
 
 const ChangingDuration = ({
   onSelectDuration,
@@ -15,7 +15,6 @@ const ChangingDuration = ({
   editedSelectedDuration?: string
 }) => {
   const duration = editedSelectedDuration ?? selectedDuration
-  const autoclosingPilotEnabled = appData()?.detoursAutoclosingPilot === "on"
 
   return (
     <>
@@ -36,7 +35,7 @@ const ChangingDuration = ({
         selectedDuration={duration}
         onSelectDuration={onSelectDuration}
       />
-      {autoclosingPilotEnabled && duration && (
+      {inTestGroup(TestGroups.DetourAutoClosingPilot) && duration && (
         <BaseAlert variant="secondary" className="mt-3 mb-0">
           Detour will close automatically{" "}
           {isIsoDateString(duration)
