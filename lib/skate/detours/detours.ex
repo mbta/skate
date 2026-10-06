@@ -304,7 +304,7 @@ defmodule Skate.Detours.Detours do
 
   @spec autoclose_detour(Detour.t()) :: {:ok, nil} | {:error, any()}
   def autoclose_detour(%Detour{} = detour) do
-    changeset = build_deactivation_changeset(detour) |> dbg()
+    changeset = build_deactivation_changeset(detour)
 
     case Repo.update(changeset) do
       {:ok, autoclosed_detour = %Detour{}} ->

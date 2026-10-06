@@ -4,7 +4,8 @@ defmodule Skate.Detours.Autoclosing do
   import Ecto.Query
   alias Skate.Settings.TestGroup
 
-  defp enabled?() do
+  @spec enabled?() :: boolean()
+  def enabled?() do
     case TestGroup.get_by_name("detours-autoclosing-pilot") do
       %TestGroup{override: :enabled} -> true
       _ -> false
