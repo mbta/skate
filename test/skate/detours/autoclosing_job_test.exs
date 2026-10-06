@@ -8,17 +8,15 @@ defmodule Skate.Detours.AutoclosingJob.Test do
   setup do
     reassign_env(:skate, :s3_bucket, nil)
 
-    with :ok <- Test.Support.AutoclosingHelpers.setup_feature_flag(),
-         :ok <- Test.Support.AutoclosingHelpers.setup_test_group() do
-      :ok
-    else
-      _ -> :error
-    end
+    Test.Support.AutoclosingHelpers.setup_test_group()
   end
 
   describe "Skate.Detours.Autoclosing.Job" do
     test "does not schedule or reschedule jobs when autoclosing is disabled" do
-      reassign_env(:skate, Skate.Detours.Autoclosing.feature_flag_name(), "off")
+      test_group =
+        Skate.Settings.TestGroup.get_by_name(Skate.Detours.Autoclosing.test_group_name())
+
+      Skate.Settings.TestGroup.update(%{test_group | override: :disabled})
 
       detour =
         :detour
