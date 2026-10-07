@@ -41,6 +41,12 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
 
   const { onScenarioTriggered, onScenarioReset } = options
 
+  const onScenarioTriggeredRef = useRef(onScenarioTriggered)
+  onScenarioTriggeredRef.current = onScenarioTriggered
+
+  const onScenarioResetRef = useRef(onScenarioReset)
+  onScenarioResetRef.current = onScenarioReset
+
   useEffect(() => {
     if (!socket || !topic) {
       return
@@ -51,15 +57,15 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
 
     channel.on("scenario_triggered", ({ data }: { data: Scenario<T, Id> }) => {
       setActiveScenario(data)
-      if (onScenarioTriggered) {
-        onScenarioTriggered(data)
+      if (onScenarioTriggeredRef.current) {
+        onScenarioTriggeredRef.current(data)
       }
     })
 
     channel.on("scenario_reset", () => {
       setActiveScenario(null)
-      if (onScenarioReset) {
-        onScenarioReset()
+      if (onScenarioResetRef.current) {
+        onScenarioResetRef.current()
       }
     })
 
@@ -71,8 +77,8 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
         setIsConnected(true)
         if (resp && resp.data) {
           setActiveScenario(resp.data)
-          if (onScenarioTriggered) {
-            onScenarioTriggered(resp.data)
+          if (onScenarioTriggeredRef.current) {
+            onScenarioTriggeredRef.current(resp.data)
           }
         }
       })
@@ -85,7 +91,7 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
       channelRef.current = undefined
       setIsConnected(false)
     }
-  }, [socket, topic, onScenarioTriggered, onScenarioReset])
+  }, [socket, topic])
 
   const triggerScenario = useCallback(
     (scenario: Scenario<T, Id>): Promise<void> => {
@@ -93,8 +99,8 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
         const channel = channelRef.current
         if (!channel) {
           setActiveScenario(scenario)
-          if (onScenarioTriggered) {
-            onScenarioTriggered(scenario)
+          if (onScenarioTriggeredRef.current) {
+            onScenarioTriggeredRef.current(scenario)
           }
           resolve()
           return
@@ -112,7 +118,7 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
           )
       })
     },
-    [onScenarioTriggered]
+    []
   )
 
   const resetScenario = useCallback((): Promise<void> => {
@@ -120,8 +126,8 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
       const channel = channelRef.current
       if (!channel) {
         setActiveScenario(null)
-        if (onScenarioReset) {
-          onScenarioReset()
+        if (onScenarioResetRef.current) {
+          onScenarioResetRef.current()
         }
         resolve()
         return
@@ -136,7 +142,7 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
         .receive("error", (err) => reject(err))
         .receive("timeout", () => reject(new Error("Reset push timed out")))
     })
-  }, [onScenarioReset])
+  }, [])
 
   return {
     isConnected,
