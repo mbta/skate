@@ -304,8 +304,7 @@ defmodule Skate.Detours.Detours do
 
   @spec autoclose_detour(Detour.t()) :: {:ok, nil} | {:error, any()}
   def autoclose_detour(%Detour{} = detour) do
-    changeset =
-      Ecto.Changeset.change(detour, %{status: :past})
+    changeset = build_deactivation_changeset(detour)
 
     case Repo.update(changeset) do
       {:ok, autoclosed_detour = %Detour{}} ->

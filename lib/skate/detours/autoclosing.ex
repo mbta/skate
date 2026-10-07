@@ -4,18 +4,13 @@ defmodule Skate.Detours.Autoclosing do
   import Ecto.Query
   alias Skate.Settings.TestGroup
 
-  @spec feature_flag_name() :: atom()
-  def feature_flag_name(), do: :detours__autoclosing__pilot
-
   @spec test_group_name() :: binary()
   def test_group_name(), do: "detours-autoclosing-pilot"
 
   @spec enabled?() :: boolean()
   def enabled?() do
-    with {:ok, "on"} <- Application.fetch_env(:skate, feature_flag_name()),
-         %TestGroup{override: :enabled} <- TestGroup.get_by_name(test_group_name()) do
-      true
-    else
+    case TestGroup.get_by_name(test_group_name()) do
+      %TestGroup{override: :enabled} -> true
       _ -> false
     end
   end
