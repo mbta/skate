@@ -12,7 +12,6 @@ config :skate, ecto_repos: [Skate.Repo]
 config :skate,
   # Default. Can be configured via environment variable, which is loaded in application.ex
   restrict_environment_access?: false,
-  preview_routes_enabled?: config_env() != :prod,
   bridge_requester: Bridge.Request,
   start_data_processes: true,
   record_appcues: false,
