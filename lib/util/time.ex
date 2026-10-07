@@ -234,11 +234,51 @@ defmodule Util.Time do
     |> Timex.to_unix()
   end
 
-  @spec end_of_service_in_utc(Calendar.date()) :: DateTime.t()
-  def end_of_service_in_utc(date) do
+  @spec end_of_service() :: DateTime.t()
+  def end_of_service() do
+    end_of_service(DateTime.now!("America/New_York"))
+  end
+
+  @spec end_of_service(DateTime.t() | Date.t()) :: DateTime.t()
+  def end_of_service(%DateTime{} = datetime) do
+    {:ok, eos_same_day} =
+      datetime
+      |> DateTime.shift_zone!("America/New_York")
+      |> DateTime.to_date()
+      |> DateTime.new(~T[03:00:00], "America/New_York")
+
+    # check to see if the timestamp is after the current date's end of service time for the previous date.
+    days_to_add =
+      if DateTime.diff(datetime, eos_same_day) > 0 do
+        1
+      else
+        0
+      end
+
+    datetime
+    |> Date.add(days_to_add)
+    |> DateTime.new!(~T[03:00:00], "America/New_York")
+  end
+
+  def end_of_service(%Date{} = date) do
     date
     |> Date.add(1)
-    |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
+    |> DateTime.new!(~T[03:00:00], "America/New_York")
+  end
+
+  defp to_utc_with_precision(dt) do
+    dt
     |> DateTime.shift_zone!("Etc/UTC")
+    |> Map.update!(:microsecond, fn {usec, _} -> {usec, 6} end)
+  end
+
+  def end_of_service_in_utc() do
+    end_of_service()
+    |> to_utc_with_precision()
+  end
+
+  def end_of_service_in_utc(dt) do
+    end_of_service(dt)
+    |> to_utc_with_precision()
   end
 end
