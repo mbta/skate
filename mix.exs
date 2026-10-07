@@ -57,7 +57,7 @@ defmodule Skate.MixProject do
     [
       {:doctest_formatter, "~> 0.4.0", runtime: false},
       {:bypass, "~> 2.1.0", only: :test},
-      {:castore, "~> 0.1.5"},
+      {:castore, "~> 1.0.21"},
       {:configparser_ex, "~> 4.0", only: :dev},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:csv, "~> 2.4.1"},
