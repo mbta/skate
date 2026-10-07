@@ -104,7 +104,7 @@ defmodule Skate.MixProject do
       {:stream_data, "~> 1.1.1", only: :test},
       {:telemetry, "~> 1.3"},
       {:timex, "~> 3.7.5"},
-      {:typed_ecto_schema, "~> 0.4.1"},
+      {:typed_ecto_schema, "~> 0.5.0"},
       {:ueberauth, "~> 0.10.5"},
       {:ueberauth_oidcc, "~> 0.4.0"}
     ]
