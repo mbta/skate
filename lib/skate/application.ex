@@ -50,7 +50,8 @@ defmodule Skate.Application do
           {Skate.Detours.TripModificationPublisher,
            Application.get_env(:skate, Skate.Detours.TripModificationPublisher)},
           {Singleton.Supervisor, name: Skate.Singleton},
-          Skate.Detours.FeedSynchronizer
+          Skate.Detours.FeedSynchronizer,
+          {Skate.Research.ScenarioStore, []}
         ]
 
     Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)
