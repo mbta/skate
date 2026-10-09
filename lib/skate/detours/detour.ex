@@ -189,6 +189,7 @@ defmodule Skate.Detours.Detour do
     @type t :: %__MODULE__{
             id: integer(),
             copied_from: integer() | nil,
+            autoclose_on: integer() | nil,
             route_id: String.t(),
             reason: String.t(),
             nearest_intersection: String.t() | nil,
@@ -214,6 +215,7 @@ defmodule Skate.Detours.Detour do
     defstruct [
       :id,
       :copied_from,
+      :autoclose_on,
       :route_id,
       :reason,
       :nearest_intersection,
@@ -266,6 +268,7 @@ defmodule Skate.Detours.Detour do
       %__MODULE__{
         id: detour.id,
         copied_from: detour.copied_from_id,
+        autoclose_on: Util.Time.datetime_to_unix(detour.autoclose_on),
         route_id: detour.route_id,
         direction_id: detour.direction_id,
         reason: detour.reason,

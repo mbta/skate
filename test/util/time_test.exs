@@ -32,4 +32,16 @@ defmodule Util.TimeTest do
       assert Util.Time.end_of_service_in_utc(~D[2026-10-31]) == ~U[2026-11-01 08:00:00.000000Z]
     end
   end
+
+  describe "datetime_to_unix/1" do
+    test "converts DateTime to unix timestamp in seconds" do
+      dt = ~U[2026-10-09 12:00:00Z]
+      assert Util.Time.datetime_to_unix(dt) == 1_791_547_200
+      assert is_integer(Util.Time.datetime_to_unix(dt))
+    end
+
+    test "returns nil when given nil" do
+      assert Util.Time.datetime_to_unix(nil) == nil
+    end
+  end
 end
