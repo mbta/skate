@@ -268,7 +268,12 @@ defmodule Skate.Detours.Detour do
       %__MODULE__{
         id: detour.id,
         copied_from: detour.copied_from_id,
-        autoclose_on: Util.Time.datetime_to_unix(detour.autoclose_on),
+        autoclose_on:
+          if(
+            detour.autoclose_on,
+            do: DateTime.to_unix(detour.autoclose_on),
+            else: nil
+          ),
         route_id: detour.route_id,
         direction_id: detour.direction_id,
         reason: detour.reason,

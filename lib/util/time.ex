@@ -241,17 +241,4 @@ defmodule Util.Time do
     |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
     |> DateTime.shift_zone!("Etc/UTC")
   end
-
-  @doc """
-  Converts a DateTime to a Unix timestamp in seconds, or returns nil if given nil.
-
-      iex> Util.Time.datetime_to_unix(~U[2026-10-09 12:00:00Z])
-      1791547200
-
-      iex> Util.Time.datetime_to_unix(nil)
-      nil
-  """
-  @spec datetime_to_unix(DateTime.t() | nil) :: timestamp() | nil
-  def datetime_to_unix(%DateTime{} = datetime), do: DateTime.to_unix(datetime)
-  def datetime_to_unix(nil), do: nil
 end
