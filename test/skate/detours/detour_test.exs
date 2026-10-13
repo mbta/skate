@@ -37,5 +37,45 @@ defmodule Skate.Detours.DetourTest do
         end
       end
     end
+
+    fixed_autoclose = ~U[2026-10-09 12:00:00Z]
+    expected_autoclose_unix = DateTime.to_unix(fixed_autoclose)
+
+    for is_text_only <- [true, false],
+        {autoclose_on, expected_value, expected_type} <- [
+          {fixed_autoclose, expected_autoclose_unix, :integer},
+          {nil, nil, nil}
+        ] do
+      @is_text_only is_text_only
+      @autoclose_on autoclose_on
+      @expected_value expected_value
+      @expected_type expected_type
+
+      test "populates autoclose_on=#{inspect(expected_value)} when is_text_only=#{is_text_only}" do
+        detour =
+          build(
+            :detour,
+            autoclose_on: @autoclose_on,
+            is_text_only: @is_text_only,
+            activated_at: DateTime.utc_now(),
+            updated_at: NaiveDateTime.utc_now()
+          )
+
+        detour =
+          if @is_text_only do
+            detour
+          else
+            with_finished_state(detour, missed_stops: ["101", "102"])
+          end
+
+        assert %Report{} = report = Report.from!(detour)
+        assert report.autoclose_on == @expected_value
+
+        case @expected_type do
+          :integer -> assert is_integer(report.autoclose_on)
+          nil -> assert is_nil(report.autoclose_on)
+        end
+      end
+    end
   end
 end
