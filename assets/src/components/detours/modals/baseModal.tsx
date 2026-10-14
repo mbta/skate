@@ -2,7 +2,6 @@ import React, { PropsWithChildren, ReactNode } from "react"
 import { Modal } from "react-bootstrap"
 
 export interface BaseModalProps extends PropsWithChildren {
-  show?: boolean
   onCancel: () => void
   title: string | ReactNode
   footer?: ReactNode
@@ -11,7 +10,6 @@ export interface BaseModalProps extends PropsWithChildren {
 }
 
 export const BaseModal = ({
-  show = true,
   onCancel,
   title,
   children,
@@ -20,7 +18,7 @@ export const BaseModal = ({
   className,
 }: BaseModalProps) => (
   <Modal
-    show={show}
+    show
     animation={false}
     onHide={onCancel}
     enforceFocus={enforceFocus}
