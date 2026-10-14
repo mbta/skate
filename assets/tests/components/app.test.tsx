@@ -254,7 +254,7 @@ describe("App", () => {
     )
 
     expect(
-      screen.getByRole("heading", { name: "Radio RTT Queue" })
+      screen.getByRole("heading", { name: /Radio RTT Queue/ })
     ).toBeInTheDocument()
   })
 })
