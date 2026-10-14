@@ -1,4 +1,4 @@
-import { useCallback, useReducer } from "react"
+import { useCallback, useEffect, useReducer } from "react"
 import { Socket } from "phoenix"
 import { initialScenarioState, scenarioReducer } from "./scenarioReducer"
 import { Scenario, ScenarioState } from "./types"
@@ -47,6 +47,18 @@ export const useScenarioDropdown = <T = unknown, Id extends string = string>(
     onScenarioTriggered: onTriggerScenario,
     onScenarioReset: onResetScenario,
   })
+
+  useEffect(() => {
+    if (channel.activeScenario) {
+      dispatch({
+        type: "TRIGGER_SUCCESS",
+        scenarioId: channel.activeScenario.id,
+      })
+      return
+    }
+
+    dispatch({ type: "RESET_SUCCESS" })
+  }, [channel.activeScenario])
 
   const selectScenario = useCallback(
     async (scenarioId: Id) => {
