@@ -3,9 +3,10 @@ import { RttCall, TAB_TYPE } from "./rtts"
 import { Scenario } from "../research/scenarios/types"
 
 export type RttQueueScenarioId =
-	| "baseline_scenario"
-	| "high_stress_scenario"
-	| "edge_case_scenario"
+	| "standard_scenario"
+	| "stress_case_scenario"
+	| "prtt_scenario"
+	| "past_rtt_scenario"
 
 export type RttQueueScenario = Scenario<
 	InitialRttQueueState,
@@ -37,140 +38,182 @@ const createCall = (
 	...call,
 })
 
+const RECENT_BASE_TIME = new Date("2026-10-14T14:00:00.000Z")
+
+const minutesBefore = (base: Date, minutes: number): string =>
+	new Date(base.getTime() - minutes * 60_000).toISOString()
+
+const stressTalkGroups = ["Cabot", "Charlestown", "Southampton", "Albany"]
+const stressGarages = ["Cabot", "Charlestown", "Southampton", "Albany"]
+
+// generates incoming rtt calls with semi-random values
+const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
+	{ length: 30 },
+	(_, index) => {
+		const talkGroup = stressTalkGroups[index % stressTalkGroups.length]
+		const garage = stressGarages[index % stressGarages.length]
+		const callId = `stress-rtt-${index + 1}`
+		const isExternalActiveCall = index === 26
+
+		return createCall({
+			id: callId,
+			callType: "RTT",
+			routeId: `${1 + ((index * 7) % 116)}`,
+			routeName: `${1 + ((index * 7) % 116)}`,
+			vehicleId: `${3201 + index}`,
+			status: isExternalActiveCall ? "active" : "unassigned",
+			talkGroup,
+			garage,
+			receivedAt: minutesBefore(RECENT_BASE_TIME, 30 - index),
+			respondedBy: isExternalActiveCall ? "Dispatcher Morgan" : null,
+			answeredAt: isExternalActiveCall
+				? minutesBefore(RECENT_BASE_TIME, 30 - index - 1)
+				: null,
+			operatorBadge: `${53000 + index}`,
+			operatorName: `Operator ${index + 1}`,
+			runNumber: `R-${200 + index}`,
+			adherence:
+				index % 3 === 0 ? "11 min late" : index % 3 === 1 ? "On time" : "5 min early",
+		})
+	}
+)
+
+// generates past rtt calls with semi-random values
+const PAST_RTT_CALLS: readonly RttCall[] = Array.from({ length: 32 }, (_, index) =>
+	createCall({
+		id: `past-rtt-${index + 1}`,
+		callType: "RTT",
+		routeId: `${1 + ((index * 5) % 116)}`,
+		routeName: `${1 + ((index * 5) % 116)}`,
+		vehicleId: `${4101 + index}`,
+		status: "done",
+		talkGroup: stressTalkGroups[index % stressTalkGroups.length],
+		garage: stressGarages[index % stressGarages.length],
+		receivedAt: minutesBefore(RECENT_BASE_TIME, 60 + index * 20),
+		answeredAt: minutesBefore(RECENT_BASE_TIME, 55 + index * 20),
+		markedDoneAt: minutesBefore(RECENT_BASE_TIME, 50 + index * 20),
+		operatorBadge: `${54000 + index}`,
+		operatorName: `Past Operator ${index + 1}`,
+		runNumber: `R-${500 + index}`,
+		adherence: index % 2 === 0 ? "On time" : "8 min late",
+	})
+)
+
 export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
 	{
-		id: "baseline_scenario",
-		name: "Baseline Scenario",
-		description: "Standard initial state for research session",
+		id: "standard_scenario",
+		name: "Standard",
+		description: "Two RTTs from the same talk group for a typical RTT workflow.",
 		data: {
 			tab: TAB_TYPE.INCOMING,
 			incomingCalls: [
 				createCall({
-					id: "baseline-active",
+					id: "standard-rtt-1",
 					callType: "RTT",
 					routeId: "22",
 					routeName: "22",
 					vehicleId: "1901",
-					status: "active",
-					respondedBy: "Dispatcher Lane",
-					answeredAt: "2026-10-14T14:00:45.000Z",
+					status: "unassigned",
+					talkGroup: "Cabot",
+					garage: "Cabot",
+					receivedAt: "2026-10-14T14:00:45.000Z",
+					currentLocation: "Mass Ave @ Melnea Cass Blvd",
+					operatorBadge: "50123",
+					operatorName: "Operator One",
+					runNumber: "R-101",
 				}),
 				createCall({
-					id: "baseline-next",
-					callType: "PRTT",
+					id: "standard-rtt-2",
+					callType: "RTT",
 					routeId: "28",
 					routeName: "28",
 					vehicleId: "1902",
 					status: "unassigned",
 					receivedAt: "2026-10-14T14:01:00.000Z",
-					garage: "Charlestown",
-					talkGroup: "Charlestown",
+					garage: "Cabot",
+					talkGroup: "Cabot",
 					operatorBadge: "50124",
 					operatorName: "Operator Two",
 					runNumber: "R-102",
+					currentLocation: "Blue Hill Ave @ Dudley St",
 				}),
 			],
-			selectedCallId: "baseline-active",
-			activeCallId: "baseline-active",
+			selectedCallId: "standard-rtt-1",
 		},
 	},
 	{
-		id: "high_stress_scenario",
-		name: "High Stress Scenario",
-		description: "Stress case with high volume of activity",
+		id: "stress_case_scenario",
+		name: "Stress case",
+		description:
+			"Thirty RTTs across multiple talk groups with one already active for another dispatcher.",
+		data: {
+			tab: TAB_TYPE.INCOMING,
+			incomingCalls: [...STRESS_CASE_INCOMING_CALLS],
+			selectedCallId: "stress-rtt-1",
+			activeCallId: "stress-rtt-7",
+		},
+	},
+	{
+		id: "prtt_scenario",
+		name: "PRTT",
+		description: "Two RTTs plus one PRTT to validate the priority response flow.",
 		data: {
 			tab: TAB_TYPE.INCOMING,
 			incomingCalls: [
 				createCall({
-					id: "stress-emergency",
-					callType: "Emergency",
-					routeId: "39",
-					routeName: "39",
-					vehicleId: "2901",
-					status: "unassigned",
-					receivedAt: "2026-10-14T14:02:00.000Z",
-					garage: "Southampton",
-					talkGroup: "Southampton",
-					adherence: "17 min late",
-				}),
-				createCall({
-					id: "stress-rtt",
+					id: "prtt-rtt-1",
 					callType: "RTT",
-					routeId: "111",
-					routeName: "111",
-					vehicleId: "2902",
-					status: "active",
-					respondedBy: "Dispatcher Cole",
-					answeredAt: "2026-10-14T14:02:30.000Z",
-					receivedAt: "2026-10-14T14:01:45.000Z",
-				}),
-				createCall({
-					id: "stress-prtt",
-					callType: "PRTT",
-					routeId: "57",
-					routeName: "57",
-					vehicleId: "2903",
-					status: "unassigned",
-					receivedAt: "2026-10-14T14:03:00.000Z",
-					garage: "Albany",
-					talkGroup: "Albany",
-				}),
-			],
-			pastCalls: [
-				createCall({
-					id: "stress-past",
-					callType: "RTT",
-					routeId: "1",
-					routeName: "1",
-					vehicleId: "2891",
-					status: "done",
-					receivedAt: "2026-10-14T13:53:00.000Z",
-					answeredAt: "2026-10-14T13:53:30.000Z",
-					markedDoneAt: "2026-10-14T13:58:00.000Z",
-				}),
-			],
-			selectedCallId: "stress-emergency",
-			activeCallId: "stress-rtt",
-		},
-	},
-	{
-		id: "edge_case_scenario",
-		name: "Edge Case Scenario",
-		description: "Unusual inputs and rare state transitions",
-		data: {
-			tab: TAB_TYPE.PAST,
-			incomingCalls: [
-				createCall({
-					id: "edge-live",
-					callType: "Emergency",
 					routeId: "66",
 					routeName: "66",
 					vehicleId: "3901",
-					status: "active",
-					respondedBy: "Dispatcher Gray",
-					answeredAt: "2026-10-14T14:04:15.000Z",
+					status: "unassigned",
+					garage: "Albany",
+					talkGroup: "Albany",
+					receivedAt: "2026-10-14T14:03:15.000Z",
 					currentLocation: "Harvard Ave @ Brighton Ave",
 					adherence: "23 min late",
 				}),
-			],
-			pastCalls: [
 				createCall({
-					id: "edge-complete",
-					callType: "PRTT",
+					id: "prtt-rtt-2",
+					callType: "RTT",
 					routeId: "47",
 					routeName: "47",
 					vehicleId: "3902",
-					status: "done",
-					receivedAt: "2026-10-14T13:45:00.000Z",
-					answeredAt: "2026-10-14T13:46:00.000Z",
-					markedDoneAt: "2026-10-14T13:55:00.000Z",
+					status: "unassigned",
+					receivedAt: "2026-10-14T14:04:00.000Z",
 					garage: "Albany",
 					talkGroup: "Albany",
+					currentLocation: "Central Sq",
+				}),
+				createCall({
+					id: "prtt-priority-1",
+					callType: "PRTT",
+					routeId: "111",
+					routeName: "111",
+					vehicleId: "3903",
+					status: "unassigned",
+					receivedAt: "2026-10-14T14:04:30.000Z",
+					garage: "Albany",
+					talkGroup: "Albany",
+					operatorBadge: "50125",
+					operatorName: "Operator Three",
+					runNumber: "R-103",
+					currentLocation: "Union Sq",
 				}),
 			],
-			selectedCallId: "edge-complete",
-			activeCallId: "edge-live",
-			newIncomingCount: 1,
+			selectedCallId: "prtt-priority-1",
+		},
+	},
+	{
+		id: "past_rtt_scenario",
+		name: "Past RTT",
+		description:
+			"An incoming-first view with more than 30 recently answered past RTTs available on the Past tab.",
+		data: {
+			tab: TAB_TYPE.INCOMING,
+			incomingCalls: [],
+			pastCalls: [...PAST_RTT_CALLS],
+			selectedCallId: null,
 		},
 	},
 ]

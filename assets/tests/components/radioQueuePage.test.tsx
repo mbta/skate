@@ -114,7 +114,7 @@ describe("RadioQueuePage", () => {
       })
     )
     await user.click(
-      within(firstViewer.container).getByText("Baseline Scenario")
+      within(firstViewer.container).getByText("Standard")
     )
 
     expect(
@@ -135,7 +135,7 @@ describe("RadioQueuePage", () => {
     )
 
     expect(
-      within(secondViewer.container).getByText("Baseline Scenario")
+      within(secondViewer.container).getByText("Standard")
     ).toHaveClass("active")
   })
 })

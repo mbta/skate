@@ -59,6 +59,8 @@ export const RttQueueItem = ({
   ])
 
   const handleRowClick = () => {
+    console.log('handle')
+    console.log(onSelect)
     onSelect?.(call)
   }
 
