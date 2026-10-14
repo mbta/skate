@@ -11,33 +11,36 @@ import { ExtendDetourModal } from "../../../src/components/detours/modals/extend
 
 interface TestCase {
   name: string
-  title: string
-  confirmButtonText: string
-  cancelButtonText: string
   renderModal: (callbacks: [() => void, () => void]) => React.ReactElement
-  additionalAssertions?: () => void
+  expected: {
+    title: string
+    confirmButtonText: string
+    cancelButtonText: string
+    additionalAssertions?: () => void
+  }
 }
 
 const testCases: TestCase[] = [
   {
     name: "ConfirmCantDrawModal",
-    title: "Text-only detour?",
-    confirmButtonText: "Create text-only detour",
-    cancelButtonText: "Cancel",
     renderModal: ([onConfirm, onCancel]) => (
       <ConfirmCantDrawModal onConfirm={onConfirm} onCancel={onCancel} />
     ),
-    additionalAssertions: () => {
-      expect(
-        screen.getByText("Are you sure you want to create a text-only detour?")
-      ).toBeInTheDocument()
+    expected: {
+      title: "Text-only detour?",
+      confirmButtonText: "Create text-only detour",
+      cancelButtonText: "Cancel",
+      additionalAssertions: () => {
+        expect(
+          screen.getByText(
+            "Are you sure you want to create a text-only detour?"
+          )
+        ).toBeInTheDocument()
+      },
     },
   },
   {
     name: "DiscardChangesModal",
-    title: "Discard unsaved changes?",
-    confirmButtonText: "Discard changes",
-    cancelButtonText: "Keep editing",
     renderModal: ([onConfirm, onCancel]) => (
       <DiscardChangesModal
         onConfirm={onConfirm}
@@ -45,18 +48,20 @@ const testCases: TestCase[] = [
         affectedRoute={<span data-testid="affected-route">Route 1</span>}
       />
     ),
-    additionalAssertions: () => {
-      expect(screen.getByTestId("affected-route")).toBeInTheDocument()
-      expect(
-        screen.getByText("If you close now, your changes will be lost.")
-      ).toBeInTheDocument()
+    expected: {
+      title: "Discard unsaved changes?",
+      confirmButtonText: "Discard changes",
+      cancelButtonText: "Keep editing",
+      additionalAssertions: () => {
+        expect(screen.getByTestId("affected-route")).toBeInTheDocument()
+        expect(
+          screen.getByText("If you close now, your changes will be lost.")
+        ).toBeInTheDocument()
+      },
     },
   },
   {
     name: "DeleteDetourModal",
-    title: "Delete Draft",
-    confirmButtonText: "Delete draft",
-    cancelButtonText: "Cancel",
     renderModal: ([onDelete, onCancel]) => (
       <DeleteDetourModal
         onDelete={onDelete}
@@ -64,18 +69,20 @@ const testCases: TestCase[] = [
         affectedRoute={<span data-testid="affected-route">Route 1</span>}
       />
     ),
-    additionalAssertions: () => {
-      expect(screen.getByTestId("affected-route")).toBeInTheDocument()
-      expect(
-        screen.getByText("Are you sure you want to delete this draft?")
-      ).toBeInTheDocument()
+    expected: {
+      title: "Delete Draft",
+      confirmButtonText: "Delete draft",
+      cancelButtonText: "Cancel",
+      additionalAssertions: () => {
+        expect(screen.getByTestId("affected-route")).toBeInTheDocument()
+        expect(
+          screen.getByText("Are you sure you want to delete this draft?")
+        ).toBeInTheDocument()
+      },
     },
   },
   {
     name: "DeactivateDetourModal",
-    title: "Return to regular route?",
-    confirmButtonText: "Return to regular route",
-    cancelButtonText: "Cancel",
     renderModal: ([onDeactivate, onCancel]) => (
       <DeactivateDetourModal
         onDeactivate={onDeactivate}
@@ -86,22 +93,24 @@ const testCases: TestCase[] = [
         routeDirection="Outbound"
       />
     ),
-    additionalAssertions: () => {
-      expect(screen.getByText("Harvard")).toBeInTheDocument()
-      expect(screen.getByText("from Nubian")).toBeInTheDocument()
-      expect(screen.getByText("Outbound")).toBeInTheDocument()
-      expect(
-        screen.getByText(
-          "Are you sure that you want to stop this detour and return to the regular route?"
-        )
-      ).toBeInTheDocument()
+    expected: {
+      title: "Return to regular route?",
+      confirmButtonText: "Return to regular route",
+      cancelButtonText: "Cancel",
+      additionalAssertions: () => {
+        expect(screen.getByText("Harvard")).toBeInTheDocument()
+        expect(screen.getByText("from Nubian")).toBeInTheDocument()
+        expect(screen.getByText("Outbound")).toBeInTheDocument()
+        expect(
+          screen.getByText(
+            "Are you sure that you want to stop this detour and return to the regular route?"
+          )
+        ).toBeInTheDocument()
+      },
     },
   },
   {
     name: "ExtendDetourModal",
-    title: "Extend time or close detour",
-    confirmButtonText: "Extend time",
-    cancelButtonText: "Return to regular route",
     renderModal: ([onDeactivate, onCancel]) => (
       <ExtendDetourModal
         onDeactivate={onDeactivate}
@@ -112,10 +121,15 @@ const testCases: TestCase[] = [
         routeDirection="Outbound"
       />
     ),
-    additionalAssertions: () => {
-      expect(screen.getByText("Harvard")).toBeInTheDocument()
-      expect(screen.getByText("from Nubian")).toBeInTheDocument()
-      expect(screen.getByText("Outbound")).toBeInTheDocument()
+    expected: {
+      title: "Extend time or close detour",
+      confirmButtonText: "Extend time",
+      cancelButtonText: "Return to regular route",
+      additionalAssertions: () => {
+        expect(screen.getByText("Harvard")).toBeInTheDocument()
+        expect(screen.getByText("from Nubian")).toBeInTheDocument()
+        expect(screen.getByText("Outbound")).toBeInTheDocument()
+      },
     },
   },
 ]
@@ -123,11 +137,13 @@ const testCases: TestCase[] = [
 describe.each(testCases)(
   "$name",
   ({
-    title,
-    confirmButtonText,
-    cancelButtonText,
     renderModal,
-    additionalAssertions,
+    expected: {
+      title,
+      confirmButtonText,
+      cancelButtonText,
+      additionalAssertions,
+    },
   }) => {
     test("renders header title and action buttons", () => {
       render(renderModal([jest.fn(), jest.fn()]))
