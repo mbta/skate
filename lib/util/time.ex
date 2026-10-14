@@ -273,12 +273,12 @@ defmodule Util.Time do
   end
 
   def end_of_service_in_utc() do
-    end_of_service()
-    |> to_utc_with_precision()
+    to_utc_with_precision(end_of_service())
   end
 
   def end_of_service_in_utc(dt) do
-    end_of_service(dt)
+    dt
+    |> end_of_service()
     |> to_utc_with_precision()
   end
 end

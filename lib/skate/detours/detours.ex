@@ -1058,7 +1058,8 @@ defmodule Skate.Detours.Detours do
         |> DateTime.add(hours, :hour)
 
       duration =~ ~r/\d{4}-\d{2}-\d{2}/ ->
-        Date.from_iso8601!(duration)
+        duration
+        |> Date.from_iso8601!()
         |> Util.Time.end_of_service()
 
       true ->
