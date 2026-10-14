@@ -1,28 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5"
 import React, { useState } from "react"
 import { ScenarioDropdown } from "../../../../src/components/research/scenarios/scenarioDropdown"
-import { Scenario } from "../../../../src/components/research/scenarios/types"
-
-const SAMPLE_SCENARIOS: readonly Scenario<string>[] = [
-  {
-    id: "scenario-1",
-    name: "Baseline Scenario",
-    description: "Standard initial state for research session",
-    data: "sample-baseline-data",
-  },
-  {
-    id: "scenario-2",
-    name: "High Stress Scenario",
-    description: "Stress case with high volume of activity",
-    data: "sample-stress-data",
-  },
-  {
-    id: "scenario-3",
-    name: "Edge Case Scenario",
-    description: "Unusual inputs and rare state transitions",
-    data: "sample-edge-case-data",
-  },
-]
+import {
+  RttQueueScenario,
+  SAMPLE_RTT_QUEUE_SCENARIOS,
+} from "../../../../src/components/radio"
 
 const meta = {
   component: ScenarioDropdown,
@@ -30,7 +12,7 @@ const meta = {
     layout: "fullscreen",
   },
   args: {
-    scenarios: SAMPLE_SCENARIOS,
+    scenarios: SAMPLE_RTT_QUEUE_SCENARIOS,
   },
   decorators: [
     (StoryFn) => (
@@ -58,7 +40,7 @@ export const Default: Story = {}
 export const InteractiveWithOutput: Story = {
   render: () => {
     const [activeScenario, setActiveScenario] =
-      useState<Scenario<string> | null>(null)
+      useState<RttQueueScenario | null>(null)
 
     return (
       <div
@@ -70,7 +52,7 @@ export const InteractiveWithOutput: Story = {
       >
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <ScenarioDropdown
-            scenarios={SAMPLE_SCENARIOS}
+            scenarios={SAMPLE_RTT_QUEUE_SCENARIOS}
             onTriggerScenario={(scenario) => setActiveScenario(scenario)}
             onResetScenario={() => setActiveScenario(null)}
           />
@@ -98,9 +80,12 @@ export const InteractiveWithOutput: Story = {
               <p style={{ margin: "0 0 0.25rem 0" }}>
                 <strong>Description:</strong> {activeScenario.description}
               </p>
-              <p style={{ margin: "0" }}>
-                <strong>Data payload:</strong> {activeScenario.data}
-              </p>
+              <div style={{ margin: "0" }}>
+                <strong>Data payload:</strong>{" "}
+                <pre style={{ margin: "0.5rem 0 0", whiteSpace: "pre-wrap" }}>
+                  {JSON.stringify(activeScenario.data, null, 2)}
+                </pre>
+              </div>
             </div>
           ) : (
             <p style={{ margin: 0, color: "#6c757d" }}>
