@@ -40,20 +40,22 @@ const makeScenarioSocket = () => {
       }),
       push: jest.fn((event: string, payload: any) => {
         const pushResult = {
-          receive: jest.fn((message: string, handler: (value?: any) => void) => {
-            if (message === "ok") {
-              if (event === "trigger_scenario") {
-                activeScenario = payload
-                handler({})
-                broadcast("scenario_triggered", { data: payload })
-              } else if (event === "reset_scenario") {
-                activeScenario = null
-                handler({})
-                broadcast("scenario_reset", { data: null })
+          receive: jest.fn(
+            (message: string, handler: (value?: any) => void) => {
+              if (message === "ok") {
+                if (event === "trigger_scenario") {
+                  activeScenario = payload
+                  handler({})
+                  broadcast("scenario_triggered", { data: payload })
+                } else if (event === "reset_scenario") {
+                  activeScenario = null
+                  handler({})
+                  broadcast("scenario_reset", { data: null })
+                }
               }
+              return pushResult
             }
-            return pushResult
-          }),
+          ),
         }
 
         return pushResult
@@ -113,9 +115,7 @@ describe("RadioQueuePage", () => {
         name: "Skate testing scenarios",
       })
     )
-    await user.click(
-      within(firstViewer.container).getByText("Standard")
-    )
+    await user.click(within(firstViewer.container).getByText("Standard"))
 
     expect(
       within(firstViewer.container).getByRole("button", {
@@ -134,8 +134,8 @@ describe("RadioQueuePage", () => {
       })
     )
 
-    expect(
-      within(secondViewer.container).getByText("Standard")
-    ).toHaveClass("active")
+    expect(within(secondViewer.container).getByText("Standard")).toHaveClass(
+      "active"
+    )
   })
 })
