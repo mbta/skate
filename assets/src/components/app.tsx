@@ -91,6 +91,10 @@ export const AppRoutes = () => {
                 />
               </>
             )}
+            <BrowserRoute
+              path="/_preview/radio/queue"
+              element={<RadioQueuePage />}
+            />
             <Route
               element={
                 <Nav>
@@ -119,10 +123,6 @@ export const AppRoutes = () => {
                 {inTestGroup(TestGroups.DetoursList) && (
                   <BrowserRoute path="/detours" element={<DetourListPage />} />
                 )}
-                <BrowserRoute
-                  path="/_preview/radio/queue"
-                  element={<RadioQueuePage />}
-                />
               </Route>
               <Route
                 element={
