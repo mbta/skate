@@ -53,8 +53,8 @@ export const DeactivateDetourModal = ({
         </div>
       </div>
       <p>
-        Are you sure that you want to stop this detour and return to the
-        regular route?
+        Are you sure that you want to stop this detour and return to the regular
+        route?
       </p>
     </BaseModal>
   )

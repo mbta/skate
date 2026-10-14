@@ -32,9 +32,7 @@ describe("DeleteDetourModal", () => {
     const onDeleteMock = jest.fn()
     render(<DeleteDetourModal {...defaultProps} onDelete={onDeleteMock} />)
 
-    await userEvent.click(
-      screen.getByRole("button", { name: "Delete draft" })
-    )
+    await userEvent.click(screen.getByRole("button", { name: "Delete draft" }))
     expect(onDeleteMock).toHaveBeenCalledTimes(1)
   })
 

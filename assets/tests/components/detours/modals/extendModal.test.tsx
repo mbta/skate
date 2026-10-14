@@ -34,11 +34,11 @@ describe("ExtendDetourModal", () => {
 
   test("calls onDeactivate when Extend time button clicked", async () => {
     const onDeactivateMock = jest.fn()
-    render(<ExtendDetourModal {...defaultProps} onDeactivate={onDeactivateMock} />)
-
-    await userEvent.click(
-      screen.getByRole("button", { name: "Extend time" })
+    render(
+      <ExtendDetourModal {...defaultProps} onDeactivate={onDeactivateMock} />
     )
+
+    await userEvent.click(screen.getByRole("button", { name: "Extend time" }))
     expect(onDeactivateMock).toHaveBeenCalledTimes(1)
   })
 

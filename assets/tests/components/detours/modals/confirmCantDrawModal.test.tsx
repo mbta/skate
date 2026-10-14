@@ -7,9 +7,7 @@ import { ConfirmCantDrawModal } from "../../../../src/components/detours/modals/
 
 describe("ConfirmCantDrawModal", () => {
   test("renders title, body description, and buttons", () => {
-    render(
-      <ConfirmCantDrawModal onConfirm={jest.fn()} onCancel={jest.fn()} />
-    )
+    render(<ConfirmCantDrawModal onConfirm={jest.fn()} onCancel={jest.fn()} />)
 
     expect(
       screen.getByRole("heading", { name: "Text-only detour?" })
@@ -20,9 +18,7 @@ describe("ConfirmCantDrawModal", () => {
     expect(
       screen.getByRole("button", { name: "Create text-only detour" })
     ).toBeInTheDocument()
-    expect(
-      screen.getByRole("button", { name: "Cancel" })
-    ).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument()
   })
 
   test("triggers onConfirm when confirm button clicked", async () => {
