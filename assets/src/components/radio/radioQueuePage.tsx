@@ -8,8 +8,9 @@ import {
 } from "./rttQueueScenarios"
 
 export const RadioQueuePage = (): ReactElement<HTMLDivElement> => {
-  const [activeScenario, setActiveScenario] =
-    useState<RttQueueScenario | null>(null)
+  const [activeScenario, setActiveScenario] = useState<RttQueueScenario | null>(
+    null
+  )
 
   const handleTriggerScenario = useCallback((scenario: RttQueueScenario) => {
     setActiveScenario(scenario)
@@ -21,17 +22,19 @@ export const RadioQueuePage = (): ReactElement<HTMLDivElement> => {
 
   return (
     <div className="l-page c-radio-queue-page">
-      <div className="h-100 overflow-y-auto p-4 bg-white">
+      <div className="h-100 overflow-y-auto bg-white d-flex flex-column">
+        <div className="flex-grow-1 m-4 mb-2">
+          <RttQueue
+            key={activeScenario?.id ?? "default"}
+            initialState={activeScenario?.data}
+          />
+        </div>
         <ScenarioDropdown
           scenarios={SAMPLE_RTT_QUEUE_SCENARIOS}
           topic={RTT_QUEUE_SCENARIO_TOPIC}
           onTriggerScenario={handleTriggerScenario}
           onResetScenario={handleResetScenario}
-          className="mb-4"
-        />
-        <RttQueue
-          key={activeScenario?.id ?? "default"}
-          initialState={activeScenario?.data}
+          className="mx-4 mb-2"
         />
       </div>
     </div>
