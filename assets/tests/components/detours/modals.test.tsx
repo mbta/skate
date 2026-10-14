@@ -11,10 +11,12 @@ import { ExtendDetourModal } from "../../../src/components/detours/modals/extend
 
 interface TestCase {
   name: string
-  renderModal: (callbacks: [() => void, () => void]) => React.ReactElement
+  renderModal: (
+    callbacks: [onAction: () => void, onCancel: () => void]
+  ) => React.ReactElement
   expected: {
     title: string
-    confirmButtonText: string
+    actionButtonText: string
     cancelButtonText: string
     additionalAssertions?: () => void
   }
@@ -28,7 +30,7 @@ const testCases: TestCase[] = [
     ),
     expected: {
       title: "Text-only detour?",
-      confirmButtonText: "Create text-only detour",
+      actionButtonText: "Create text-only detour",
       cancelButtonText: "Cancel",
       additionalAssertions: () => {
         expect(
@@ -50,7 +52,7 @@ const testCases: TestCase[] = [
     ),
     expected: {
       title: "Discard unsaved changes?",
-      confirmButtonText: "Discard changes",
+      actionButtonText: "Discard changes",
       cancelButtonText: "Keep editing",
       additionalAssertions: () => {
         expect(screen.getByTestId("affected-route")).toBeInTheDocument()
@@ -71,7 +73,7 @@ const testCases: TestCase[] = [
     ),
     expected: {
       title: "Delete Draft",
-      confirmButtonText: "Delete draft",
+      actionButtonText: "Delete draft",
       cancelButtonText: "Cancel",
       additionalAssertions: () => {
         expect(screen.getByTestId("affected-route")).toBeInTheDocument()
@@ -95,7 +97,7 @@ const testCases: TestCase[] = [
     ),
     expected: {
       title: "Return to regular route?",
-      confirmButtonText: "Return to regular route",
+      actionButtonText: "Return to regular route",
       cancelButtonText: "Cancel",
       additionalAssertions: () => {
         expect(screen.getByText("Harvard")).toBeInTheDocument()
@@ -123,7 +125,7 @@ const testCases: TestCase[] = [
     ),
     expected: {
       title: "Extend time or close detour",
-      confirmButtonText: "Extend time",
+      actionButtonText: "Extend time",
       cancelButtonText: "Return to regular route",
       additionalAssertions: () => {
         expect(screen.getByText("Harvard")).toBeInTheDocument()
@@ -140,7 +142,7 @@ describe.each(testCases)(
     renderModal,
     expected: {
       title,
-      confirmButtonText,
+      actionButtonText,
       cancelButtonText,
       additionalAssertions,
     },
@@ -150,7 +152,7 @@ describe.each(testCases)(
 
       expect(screen.getByRole("heading", { name: title })).toBeInTheDocument()
       expect(
-        screen.getByRole("button", { name: confirmButtonText })
+        screen.getByRole("button", { name: actionButtonText })
       ).toBeInTheDocument()
       expect(
         screen.getByRole("button", { name: cancelButtonText })
@@ -161,12 +163,12 @@ describe.each(testCases)(
       }
     })
 
-    test(`triggers confirm callback when clicking "${confirmButtonText}"`, async () => {
+    test(`triggers action callback when clicking "${actionButtonText}"`, async () => {
       const mockCallbacks: [jest.Mock, jest.Mock] = [jest.fn(), jest.fn()]
       render(renderModal(mockCallbacks))
 
       await userEvent.click(
-        screen.getByRole("button", { name: confirmButtonText })
+        screen.getByRole("button", { name: actionButtonText })
       )
       expect(mockCallbacks[0]).toHaveBeenCalledTimes(1)
       expect(mockCallbacks[1]).not.toHaveBeenCalled()
