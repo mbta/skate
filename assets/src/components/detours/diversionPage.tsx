@@ -467,7 +467,7 @@ export const DiversionPage = ({
             },
           }) ? (
             <ActivateDetour.Modal
-              nextStepLabel={
+              nextStepFsElement={
                 (snapshot.matches({
                   "Detour Drawing": {
                     "Share Detour": { Activating: "Selecting Duration" },
@@ -644,7 +644,6 @@ export const DiversionPage = ({
                   : undefined
               }
               nextStepButton="Done"
-              nextStepLabel="Confirm Duration"
               modalTitle="Change detour duration"
             >
               <ChangeDuration.Body

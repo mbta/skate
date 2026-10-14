@@ -10,7 +10,6 @@ interface ChangeDurationModalProps extends PropsWithChildren {
   onCancel: () => void
   onNext?: () => void
   nextStepButton?: string
-  nextStepLabel?: string
   modalTitle?: string
 }
 
@@ -18,7 +17,6 @@ const ChangeDurationModal = ({
   onCancel,
   onNext,
   nextStepButton = "Done",
-  nextStepLabel = "Confirm Duration",
   modalTitle = "Change detour duration",
   children,
 }: ChangeDurationModalProps) => (
@@ -35,7 +33,7 @@ const ChangeDurationModal = ({
           variant="primary"
           disabled={onNext === undefined}
           onClick={onNext}
-          data-fs-element={nextStepLabel}
+          data-fs-element="Confirm Duration"
         >
           {nextStepButton}
         </Button>

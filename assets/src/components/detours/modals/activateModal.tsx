@@ -8,31 +8,28 @@ import { formatIfDate, isIsoDateString } from "../../../util/dateTime"
 import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 import { BaseModal } from "./baseModal"
 
-interface SurroundingModalProps extends PropsWithChildren {
+export interface ActivateDetourModalProps extends PropsWithChildren {
   onCancel: () => void
   onNext?: () => void
   onBack?: () => void
   onActivate?: () => void
   nextStepButton?: string
+  nextStepFsElement?: string
   modalTitle?: string
   isActiveDetour?: boolean
 }
 
-interface FSElementProps {
-  nextStepLabel: string | undefined
-}
-
-export const SurroundingModal = ({
+export const ActivateDetourModal = ({
   onCancel,
   onNext,
   onBack,
   onActivate,
   children,
-  nextStepLabel,
+  nextStepFsElement,
   nextStepButton,
   modalTitle,
   isActiveDetour,
-}: SurroundingModalProps & FSElementProps) => (
+}: ActivateDetourModalProps) => (
   <BaseModal
     onCancel={onCancel}
     title={modalTitle || (isActiveDetour ? "Update detour" : "Start detour")}
@@ -66,7 +63,7 @@ export const SurroundingModal = ({
             variant="primary"
             disabled={onNext === undefined}
             onClick={onNext}
-            data-fs-element={nextStepLabel}
+            data-fs-element={nextStepFsElement}
           >
             {nextStepButton || "Next"}
           </Button>
@@ -155,7 +152,7 @@ const Confirming = ({ isActiveDetour }: { isActiveDetour: boolean }) => (
 )
 
 export const ActivateDetour = {
-  Modal: SurroundingModal,
+  Modal: ActivateDetourModal,
   SelectingDuration,
   SelectingReason,
   Confirming,
