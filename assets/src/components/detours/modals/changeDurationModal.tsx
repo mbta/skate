@@ -1,9 +1,50 @@
-import React from "react"
-import { SurroundingModal } from "./activateDetourModal"
-import { DurationSelect } from "./durationSelect"
-import { formatIfDate, isIsoDateString } from "../../util/dateTime"
-import BaseAlert from "../alerts/baseAlert"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import React, { PropsWithChildren } from "react"
+import { Button } from "react-bootstrap"
+import { DurationSelect } from "../durationSelect"
+import { formatIfDate, isIsoDateString } from "../../../util/dateTime"
+import BaseAlert from "../../alerts/baseAlert"
+import inTestGroup, { TestGroups } from "../../../userInTestGroup"
+import { BaseModal } from "./baseModal"
+
+interface ChangeDurationModalProps extends PropsWithChildren {
+  onCancel: () => void
+  onNext?: () => void
+  nextStepButton?: string
+  nextStepLabel?: string
+  modalTitle?: string
+}
+
+const ChangeDurationModal = ({
+  onCancel,
+  onNext,
+  nextStepButton = "Done",
+  nextStepLabel = "Confirm Duration",
+  modalTitle = "Change detour duration",
+  children,
+}: ChangeDurationModalProps) => (
+  <BaseModal
+    onCancel={onCancel}
+    title={modalTitle}
+    enforceFocus={false}
+    footer={
+      <>
+        <Button variant="outline-primary" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button
+          variant="primary"
+          disabled={onNext === undefined}
+          onClick={onNext}
+          data-fs-element={nextStepLabel}
+        >
+          {nextStepButton}
+        </Button>
+      </>
+    }
+  >
+    {children}
+  </BaseModal>
+)
 
 const ChangingDuration = ({
   onSelectDuration,
@@ -48,6 +89,6 @@ const ChangingDuration = ({
 }
 
 export const ChangeDuration = {
-  Modal: SurroundingModal,
+  Modal: ChangeDurationModal,
   Body: ChangingDuration,
 }
