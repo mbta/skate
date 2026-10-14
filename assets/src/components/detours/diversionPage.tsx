@@ -28,8 +28,8 @@ import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
 import { ActivateDetour } from "./modals/activateModal"
 import { DeactivateDetourModal } from "./modals/deactivateModal"
 import { DeleteDetourModal } from "./modals/deleteDraftModal"
-import { DiscardChangesModal } from "./modals/discardChangesModal"
-import { ConfirmCantDrawModal } from "./modals/confirmCantDrawModal"
+import { DiscardDetourChangesModal } from "./modals/discardChangesModal"
+import { ConfirmCantDrawDetourModal } from "./modals/confirmCantDrawModal"
 import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
 import { TextOnlyMapAlert } from "./alerts/textOnlyAlert"
@@ -353,7 +353,7 @@ export const DiversionPage = ({
           {snapshot.matches({
             "Detour Drawing": "Discarding",
           }) && (
-            <DiscardChangesModal
+            <DiscardDetourChangesModal
               onConfirm={() => send({ type: "detour.discard-modal.confirm" })}
               onCancel={() => send({ type: "detour.discard-modal.cancel" })}
               affectedRoute={
@@ -370,7 +370,7 @@ export const DiversionPage = ({
           {snapshot.matches({
             "Detour Drawing": { Editing: "Confirm Cant Draw" },
           }) && (
-            <ConfirmCantDrawModal
+            <ConfirmCantDrawDetourModal
               onConfirm={() => send({ type: "detour.edit.cant-draw.confirm" })}
               onCancel={() => send({ type: "detour.edit.cant-draw.cancel" })}
             />

@@ -2,15 +2,15 @@ import React from "react"
 import { Button } from "react-bootstrap"
 import { BaseModal } from "./baseModal"
 
-export interface ConfirmCantDrawModalProps {
+export interface ConfirmCantDrawDetourModalProps {
   onConfirm: () => void
   onCancel: () => void
 }
 
-export const ConfirmCantDrawModal = ({
+export const ConfirmCantDrawDetourModal = ({
   onConfirm,
   onCancel,
-}: ConfirmCantDrawModalProps) => {
+}: ConfirmCantDrawDetourModalProps) => {
   return (
     <BaseModal
       title="Text-only detour?"

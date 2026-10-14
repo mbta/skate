@@ -2,17 +2,17 @@ import React, { ReactNode } from "react"
 import { Button } from "react-bootstrap"
 import { BaseModal } from "./baseModal"
 
-export interface DiscardChangesModalProps {
+export interface DiscardDetourChangesModalProps {
   onConfirm: () => void
   onCancel: () => void
   affectedRoute: ReactNode
 }
 
-export const DiscardChangesModal = ({
+export const DiscardDetourChangesModal = ({
   onConfirm,
   onCancel,
   affectedRoute,
-}: DiscardChangesModalProps) => {
+}: DiscardDetourChangesModalProps) => {
   return (
     <BaseModal
       title="Discard unsaved changes?"

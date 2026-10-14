@@ -3,8 +3,8 @@ import { describe, expect, jest, test } from "@jest/globals"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
-import { ConfirmCantDrawModal } from "../../../src/components/detours/modals/confirmCantDrawModal"
-import { DiscardChangesModal } from "../../../src/components/detours/modals/discardChangesModal"
+import { ConfirmCantDrawDetourModal } from "../../../src/components/detours/modals/confirmCantDrawModal"
+import { DiscardDetourChangesModal } from "../../../src/components/detours/modals/discardChangesModal"
 import { DeleteDetourModal } from "../../../src/components/detours/modals/deleteDraftModal"
 import { DeactivateDetourModal } from "../../../src/components/detours/modals/deactivateModal"
 import { ExtendDetourModal } from "../../../src/components/detours/modals/extendModal"
@@ -24,9 +24,9 @@ interface TestCase {
 
 const testCases: TestCase[] = [
   {
-    name: "ConfirmCantDrawModal",
+    name: "ConfirmCantDrawDetourModal",
     renderModal: ([onConfirm, onCancel]) => (
-      <ConfirmCantDrawModal onConfirm={onConfirm} onCancel={onCancel} />
+      <ConfirmCantDrawDetourModal onConfirm={onConfirm} onCancel={onCancel} />
     ),
     expected: {
       title: "Text-only detour?",
@@ -42,9 +42,9 @@ const testCases: TestCase[] = [
     },
   },
   {
-    name: "DiscardChangesModal",
+    name: "DiscardDetourChangesModal",
     renderModal: ([onConfirm, onCancel]) => (
-      <DiscardChangesModal
+      <DiscardDetourChangesModal
         onConfirm={onConfirm}
         onCancel={onCancel}
         affectedRoute={<span data-testid="affected-route">Route 1</span>}

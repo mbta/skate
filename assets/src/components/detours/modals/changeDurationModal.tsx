@@ -6,20 +6,20 @@ import BaseAlert from "../../alerts/baseAlert"
 import inTestGroup, { TestGroups } from "../../../userInTestGroup"
 import { BaseModal } from "./baseModal"
 
-interface ChangeDurationModalProps extends PropsWithChildren {
+export interface ChangeDetourDurationModalProps extends PropsWithChildren {
   onCancel: () => void
   onNext?: () => void
   nextStepButton?: string
   modalTitle?: string
 }
 
-const ChangeDurationModal = ({
+export const ChangeDetourDurationModal = ({
   onCancel,
   onNext,
   nextStepButton = "Done",
   modalTitle = "Change detour duration",
   children,
-}: ChangeDurationModalProps) => (
+}: ChangeDetourDurationModalProps) => (
   <BaseModal
     onCancel={onCancel}
     title={modalTitle}
@@ -86,7 +86,10 @@ const ChangingDuration = ({
   )
 }
 
-export const ChangeDuration = {
-  Modal: ChangeDurationModal,
+export const ChangeDetourDuration = {
+  Modal: ChangeDetourDurationModal,
   Body: ChangingDuration,
 }
+
+// Backwards-compatible alias for existing consumers
+export const ChangeDuration = ChangeDetourDuration
