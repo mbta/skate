@@ -9,7 +9,7 @@ import { DeleteDetourModal } from "../../../src/components/detours/modals/delete
 import { DeactivateDetourModal } from "../../../src/components/detours/modals/deactivateModal"
 import { ExtendDetourModal } from "../../../src/components/detours/modals/extendModal"
 
-interface ModalTestCase {
+interface TestCase {
   name: string
   title: string
   confirmButtonText: string
@@ -18,7 +18,7 @@ interface ModalTestCase {
   additionalAssertions?: () => void
 }
 
-const concreteModalTestCases: ModalTestCase[] = [
+const testCases: TestCase[] = [
   {
     name: "ConfirmCantDrawModal",
     title: "Text-only detour?",
@@ -120,7 +120,7 @@ const concreteModalTestCases: ModalTestCase[] = [
   },
 ]
 
-describe.each(concreteModalTestCases)(
+describe.each(testCases)(
   "$name",
   ({
     title,
