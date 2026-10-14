@@ -161,38 +161,35 @@ describe.each(testCases)(
       }
     })
 
-    test(`triggers primary callback when clicking "${confirmButtonText}"`, async () => {
-      const primaryMock = jest.fn()
-      const cancelMock = jest.fn()
-      render(renderModal([primaryMock, cancelMock]))
+    test(`triggers confirm callback when clicking "${confirmButtonText}"`, async () => {
+      const mockCallbacks: [jest.Mock, jest.Mock] = [jest.fn(), jest.fn()]
+      render(renderModal(mockCallbacks))
 
       await userEvent.click(
         screen.getByRole("button", { name: confirmButtonText })
       )
-      expect(primaryMock).toHaveBeenCalledTimes(1)
-      expect(cancelMock).not.toHaveBeenCalled()
+      expect(mockCallbacks[0]).toHaveBeenCalledTimes(1)
+      expect(mockCallbacks[1]).not.toHaveBeenCalled()
     })
 
     test(`triggers cancel callback when clicking "${cancelButtonText}"`, async () => {
-      const primaryMock = jest.fn()
-      const cancelMock = jest.fn()
-      render(renderModal([primaryMock, cancelMock]))
+      const mockCallbacks: [jest.Mock, jest.Mock] = [jest.fn(), jest.fn()]
+      render(renderModal(mockCallbacks))
 
       await userEvent.click(
         screen.getByRole("button", { name: cancelButtonText })
       )
-      expect(cancelMock).toHaveBeenCalledTimes(1)
-      expect(primaryMock).not.toHaveBeenCalled()
+      expect(mockCallbacks[0]).not.toHaveBeenCalled()
+      expect(mockCallbacks[1]).toHaveBeenCalledTimes(1)
     })
 
     test("triggers cancel callback when clicking header close button", async () => {
-      const primaryMock = jest.fn()
-      const cancelMock = jest.fn()
-      render(renderModal([primaryMock, cancelMock]))
+      const mockCallbacks: [jest.Mock, jest.Mock] = [jest.fn(), jest.fn()]
+      render(renderModal(mockCallbacks))
 
       await userEvent.click(screen.getByRole("button", { name: /close/i }))
-      expect(cancelMock).toHaveBeenCalledTimes(1)
-      expect(primaryMock).not.toHaveBeenCalled()
+      expect(mockCallbacks[0]).not.toHaveBeenCalled()
+      expect(mockCallbacks[1]).toHaveBeenCalledTimes(1)
     })
   }
 )
