@@ -29,7 +29,7 @@ const createCall = (
   variant: "Standard Route",
   currentLocation: "Washington St @ Mass Ave",
   operatorBadge: "50123",
-  operatorName: "Operator One",
+  operatorName: "Jane Doe",
   runNumber: "123-1023",
   adherence: "On time",
   respondedBy: null,
@@ -46,12 +46,24 @@ const minutesBefore = (base: Date, minutes: number): string =>
 const stressTalkGroups = ["Cabot", "Charlestown", "Southampton", "Albany"]
 const stressGarages = ["Cabot", "Charlestown", "Southampton", "Albany"]
 
+const placeholderNames = [
+  "John Doe",
+  "Jane Doe",
+  "Liam Doe",
+  "Olivia Doe",
+  "John Smith",
+  "Jane Smith",
+  "Liam Smith",
+  "Olivia Smith",
+]
+
 // generates incoming rtt calls with semi-random values
 const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
   { length: 30 },
   (_, index) => {
     const talkGroup = stressTalkGroups[index % stressTalkGroups.length]
     const garage = stressGarages[index % stressGarages.length]
+    const operatorName = placeholderNames[index % placeholderNames.length]
     const callId = `stress-rtt-${index + 1}`
     const isExternalActiveCall = index === 26
 
@@ -70,7 +82,7 @@ const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
         ? minutesBefore(RECENT_BASE_TIME, 30 - index - 1)
         : null,
       operatorBadge: `${53000 + index}`,
-      operatorName: `Operator ${index + 1}`,
+      operatorName: operatorName,
       runNumber: `123-${1200 + index * 3}`,
       adherence:
         index % 3 === 0
@@ -99,7 +111,7 @@ const PAST_RTT_CALLS: readonly RttCall[] = Array.from(
       answeredAt: minutesBefore(RECENT_BASE_TIME, 55 + index * 20),
       markedDoneAt: minutesBefore(RECENT_BASE_TIME, 50 + index * 20),
       operatorBadge: `${54000 + index}`,
-      operatorName: `Past Operator ${index + 1}`,
+      operatorName: placeholderNames[index % placeholderNames.length],
       runNumber: `123-${1300 + index * 3}`,
       adherence: index % 2 === 0 ? "On time" : "8 min late",
     })
@@ -126,7 +138,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           receivedAt: "2026-10-14T14:00:45.000Z",
           currentLocation: "Mass Ave @ Melnea Cass Blvd",
           operatorBadge: "50123",
-          operatorName: "Operator One",
+          operatorName: "John Doe",
           runNumber: "123-1431",
         }),
         createCall({
@@ -140,7 +152,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           garage: "Cabot",
           talkGroup: "Cabot",
           operatorBadge: "50124",
-          operatorName: "Operator Two",
+          operatorName: "Jane Doe",
           runNumber: "123-1020",
           currentLocation: "Blue Hill Ave @ Dudley St",
         }),
@@ -179,6 +191,8 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           talkGroup: "Cabot",
           receivedAt: "2026-10-14T14:03:15.000Z",
           currentLocation: "Harvard Ave @ Brighton Ave",
+          operatorBadge: "50122",
+          operatorName: "John Doe",
           adherence: "23 min late",
         }),
         createCall({
@@ -188,9 +202,11 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           routeName: "43",
           vehicleId: "3902",
           status: "unassigned",
-          receivedAt: "2026-10-14T14:04:00.000Z",
           garage: "Cabot",
           talkGroup: "Cabot",
+          receivedAt: "2026-10-14T14:04:00.000Z",
+          operatorBadge: "50123",
+          operatorName: "Jane Doe",
           currentLocation: "Central Sq",
         }),
         createCall({
@@ -200,11 +216,11 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           routeName: "45",
           vehicleId: "3903",
           status: "unassigned",
-          receivedAt: "2026-10-14T14:04:30.000Z",
           garage: "Cabot",
           talkGroup: "Cabot",
+          receivedAt: "2026-10-14T14:04:30.000Z",
           operatorBadge: "50125",
-          operatorName: "Operator Three",
+          operatorName: "Liam Doe",
           runNumber: "123-1054",
           currentLocation: "Union Sq",
         }),
