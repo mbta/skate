@@ -56,6 +56,12 @@ const placeholderNames = [
   "Liam Smith",
   "Olivia Smith",
 ]
+const generateName = (index: number): string => {
+  const firstNames = ["John", "Jane", "Liam", "Olivia", "Noah", "Maria"]
+  const surnames = ["Doe", "Smith", "Lee", "Jones"]
+
+  return `${firstNames[index % firstNames.length]} ${surnames[index % surnames.lengths]}`
+}
 
 // generates incoming rtt calls with semi-random values
 const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
@@ -63,7 +69,6 @@ const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
   (_, index) => {
     const talkGroup = stressTalkGroups[index % stressTalkGroups.length]
     const garage = stressGarages[index % stressGarages.length]
-    const operatorName = placeholderNames[index % placeholderNames.length]
     const callId = `stress-rtt-${index + 1}`
     const isExternalActiveCall = index === 26
 
@@ -82,7 +87,7 @@ const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
         ? minutesBefore(RECENT_BASE_TIME, 30 - index - 1)
         : null,
       operatorBadge: `${53000 + index}`,
-      operatorName: operatorName,
+      operatorName: generateName(index),
       runNumber: `123-${1200 + index * 3}`,
       adherence:
         index % 3 === 0
@@ -111,7 +116,7 @@ const PAST_RTT_CALLS: readonly RttCall[] = Array.from(
       answeredAt: minutesBefore(RECENT_BASE_TIME, 55 + index * 20),
       markedDoneAt: minutesBefore(RECENT_BASE_TIME, 50 + index * 20),
       operatorBadge: `${54000 + index}`,
-      operatorName: placeholderNames[index % placeholderNames.length],
+      operatorName: generateName(index),
       runNumber: `123-${1300 + index * 3}`,
       adherence: index % 2 === 0 ? "On time" : "8 min late",
     })
@@ -138,7 +143,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           receivedAt: "2026-10-14T14:00:45.000Z",
           currentLocation: "Mass Ave @ Melnea Cass Blvd",
           operatorBadge: "50123",
-          operatorName: "John Doe",
+          operatorName: generateName(0),
           runNumber: "123-1431",
         }),
         createCall({
@@ -152,7 +157,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           garage: "Cabot",
           talkGroup: "Cabot",
           operatorBadge: "50124",
-          operatorName: "Jane Doe",
+          operatorName: generateName(1),
           runNumber: "123-1020",
           currentLocation: "Blue Hill Ave @ Dudley St",
         }),
@@ -192,7 +197,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           receivedAt: "2026-10-14T14:03:15.000Z",
           currentLocation: "Harvard Ave @ Brighton Ave",
           operatorBadge: "50122",
-          operatorName: "John Doe",
+          operatorName: generateName(0),
           adherence: "23 min late",
         }),
         createCall({
@@ -206,7 +211,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           talkGroup: "Cabot",
           receivedAt: "2026-10-14T14:04:00.000Z",
           operatorBadge: "50123",
-          operatorName: "Jane Doe",
+          operatorName: generateName(1),
           currentLocation: "Central Sq",
         }),
         createCall({
@@ -220,7 +225,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           talkGroup: "Cabot",
           receivedAt: "2026-10-14T14:04:30.000Z",
           operatorBadge: "50125",
-          operatorName: "Liam Doe",
+          operatorName: generateName(2),
           runNumber: "123-1054",
           currentLocation: "Union Sq",
         }),
