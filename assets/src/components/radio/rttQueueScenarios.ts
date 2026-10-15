@@ -27,7 +27,7 @@ const createCall = (
   receivedAt: "2026-10-14T14:00:00.000Z",
   direction: "Outbound",
   variant: "Standard Route",
-  currentLocation: "Washington St @ Mass Ave",
+  currentLocation: "123 Haywood Ave, Somerville MA 01381",
   operatorBadge: "50123",
   operatorName: "Jane Doe",
   runNumber: "123-1023",
@@ -45,22 +45,24 @@ const minutesBefore = (base: Date, minutes: number): string =>
 
 const stressTalkGroups = ["Cabot", "Charlestown", "Southampton", "Albany"]
 const stressGarages = ["Cabot", "Charlestown", "Southampton", "Albany"]
-
-const placeholderNames = [
-  "John Doe",
-  "Jane Doe",
-  "Liam Doe",
-  "Olivia Doe",
-  "John Smith",
-  "Jane Smith",
-  "Liam Smith",
-  "Olivia Smith",
+const addresses = [
+  "240 Washington St, Boston, MA 02108",
+  "177 Milk St, Boston, MA 02109",
+  "800 Boylston St, Boston, MA 02199",
+  "392 Columbus Ave, Boston, MA 02116",
+  "125 Nashua St, Boston, MA 02114",
+  "700 Commonwealth Ave, Boston, MA 02215",
+  "54 Cumberland St, Boston, MA 02115",
+  "451 Hanover St, Boston, MA 02113",
+  "100 William T Morrissey Blvd, Boston, MA 02125",
+  "241 Perimeter Rd, Boston, MA 02125",
 ]
+
 const generateName = (index: number): string => {
   const firstNames = ["John", "Jane", "Liam", "Olivia", "Noah", "Maria"]
   const surnames = ["Doe", "Smith", "Lee", "Jones"]
 
-  return `${firstNames[index % firstNames.length]} ${surnames[index % surnames.lengths]}`
+  return `${firstNames[index % firstNames.length]} ${surnames[index % surnames.length]}`
 }
 
 // generates incoming rtt calls with semi-random values
@@ -89,6 +91,7 @@ const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
       operatorBadge: `${53000 + index}`,
       operatorName: generateName(index),
       runNumber: `123-${1200 + index * 3}`,
+      currentLocation: addresses[index % addresses.length],
       adherence:
         index % 3 === 0
           ? "11 min late"
@@ -115,6 +118,7 @@ const PAST_RTT_CALLS: readonly RttCall[] = Array.from(
       receivedAt: minutesBefore(RECENT_BASE_TIME, 60 + index * 20),
       answeredAt: minutesBefore(RECENT_BASE_TIME, 55 + index * 20),
       markedDoneAt: minutesBefore(RECENT_BASE_TIME, 50 + index * 20),
+      currentLocation: addresses[index % addresses.length],
       operatorBadge: `${54000 + index}`,
       operatorName: generateName(index),
       runNumber: `123-${1300 + index * 3}`,
@@ -141,7 +145,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           talkGroup: "Cabot",
           garage: "Cabot",
           receivedAt: "2026-10-14T14:00:45.000Z",
-          currentLocation: "Mass Ave @ Melnea Cass Blvd",
+          currentLocation: addresses[0],
           operatorBadge: "50123",
           operatorName: generateName(0),
           runNumber: "123-1431",
@@ -159,7 +163,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           operatorBadge: "50124",
           operatorName: generateName(1),
           runNumber: "123-1020",
-          currentLocation: "Blue Hill Ave @ Dudley St",
+          currentLocation: addresses[1],
         }),
       ],
       selectedCallId: "standard-rtt-1",
@@ -195,9 +199,9 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           garage: "Cabot",
           talkGroup: "Cabot",
           receivedAt: "2026-10-14T14:03:15.000Z",
-          currentLocation: "Harvard Ave @ Brighton Ave",
           operatorBadge: "50122",
           operatorName: generateName(0),
+          currentLocation: addresses[0],
           adherence: "23 min late",
         }),
         createCall({
@@ -212,7 +216,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           receivedAt: "2026-10-14T14:04:00.000Z",
           operatorBadge: "50123",
           operatorName: generateName(1),
-          currentLocation: "Central Sq",
+          currentLocation: addresses[1],
         }),
         createCall({
           id: "prtt-priority-1",
@@ -227,7 +231,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           operatorBadge: "50125",
           operatorName: generateName(2),
           runNumber: "123-1054",
-          currentLocation: "Union Sq",
+          currentLocation: addresses[2],
         }),
       ],
       selectedCallId: "prtt-priority-1",
