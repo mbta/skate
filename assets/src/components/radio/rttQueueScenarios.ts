@@ -30,7 +30,7 @@ const createCall = (
   currentLocation: "Washington St @ Mass Ave",
   operatorBadge: "50123",
   operatorName: "Operator One",
-  runNumber: "R-101",
+  runNumber: "123-1023",
   adherence: "On time",
   respondedBy: null,
   answeredAt: null,
@@ -71,7 +71,7 @@ const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
         : null,
       operatorBadge: `${53000 + index}`,
       operatorName: `Operator ${index + 1}`,
-      runNumber: `R-${200 + index}`,
+      runNumber: `123-${1200 + index * 3}`,
       adherence:
         index % 3 === 0
           ? "11 min late"
@@ -100,7 +100,7 @@ const PAST_RTT_CALLS: readonly RttCall[] = Array.from(
       markedDoneAt: minutesBefore(RECENT_BASE_TIME, 50 + index * 20),
       operatorBadge: `${54000 + index}`,
       operatorName: `Past Operator ${index + 1}`,
-      runNumber: `R-${500 + index}`,
+      runNumber: `123-${1300 + index * 3}`,
       adherence: index % 2 === 0 ? "On time" : "8 min late",
     })
 )
@@ -127,7 +127,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           currentLocation: "Mass Ave @ Melnea Cass Blvd",
           operatorBadge: "50123",
           operatorName: "Operator One",
-          runNumber: "R-101",
+          runNumber: "123-1431",
         }),
         createCall({
           id: "standard-rtt-2",
@@ -141,7 +141,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           talkGroup: "Cabot",
           operatorBadge: "50124",
           operatorName: "Operator Two",
-          runNumber: "R-102",
+          runNumber: "123-1020",
           currentLocation: "Blue Hill Ave @ Dudley St",
         }),
       ],
@@ -184,8 +184,8 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
         createCall({
           id: "prtt-rtt-2",
           callType: "RTT",
-          routeId: "47",
-          routeName: "47",
+          routeId: "43",
+          routeName: "43",
           vehicleId: "3902",
           status: "unassigned",
           receivedAt: "2026-10-14T14:04:00.000Z",
@@ -196,8 +196,8 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
         createCall({
           id: "prtt-priority-1",
           callType: "PRTT",
-          routeId: "111",
-          routeName: "111",
+          routeId: "45",
+          routeName: "45",
           vehicleId: "3903",
           status: "unassigned",
           receivedAt: "2026-10-14T14:04:30.000Z",
@@ -205,7 +205,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
           talkGroup: "Cabot",
           operatorBadge: "50125",
           operatorName: "Operator Three",
-          runNumber: "R-103",
+          runNumber: "123-1054",
           currentLocation: "Union Sq",
         }),
       ],
