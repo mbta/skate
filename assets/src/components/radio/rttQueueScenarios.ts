@@ -33,7 +33,6 @@ const addresses = [
   "241 Perimeter Rd, Boston, MA 02125",
 ]
 
-const stressTalkGroups = ["Cabot", "Charlestown", "Southampton", "Albany"]
 const stressGarages = ["Cabot", "Charlestown", "Southampton", "Albany"]
 
 const generateName = (index: number): string => {
@@ -83,8 +82,8 @@ const STANDARD_CALLS: readonly RttCall[] = Array.from(
 const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
   { length: 30 },
   (_, index) => {
-    const talkGroup = stressTalkGroups[index % stressTalkGroups.length]
     const garage = stressGarages[index % stressGarages.length]
+    const talkGroup = garage
     const isExternalActiveCall = index === 26
 
     return createCall(
@@ -176,7 +175,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
     data: {
       tab: TAB_TYPE.INCOMING,
       incomingCalls: [...PRTT_CASE_CALLS],
-      selectedCallId: "prtt-priority-1",
+      selectedCallId: "prtt-rtt-3",
     },
   },
   {
