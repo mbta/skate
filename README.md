@@ -284,5 +284,5 @@ If you go a half hour without seeing any issues, then you're good to consider th
 ### 6. Notify the team
 
  1. Mark any Asana tickets associated with this release as completed.
- 2. Announce the deployment's completion in `#skate-product` with list of asana tickets that were deployed
+ 1. Post in the `#skate-product` Slack channel the list of Asana tickets that were included in the deployment.
  
