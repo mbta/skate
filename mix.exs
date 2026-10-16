@@ -60,7 +60,7 @@ defmodule Skate.MixProject do
       {:castore, "~> 1.0.21"},
       {:configparser_ex, "~> 4.0", only: :dev},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:csv, "~> 2.4.1"},
+      {:csv, "~> 3.2.2"},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:diskusage_logger, "~> 0.2.0"},
       {:dns_cluster, "~> 0.2.0"},
