@@ -42,22 +42,37 @@ const generateName = (index: number): string => {
   return `${firstNames[index % firstNames.length]} ${surnames[index % surnames.length]}`
 }
 
-const createCall = (
-  call: Partial<RttCall> & Pick<RttCall, "id" | "callType" | "status">,
-  index: number = 0
-): RttCall => ({
+const getIndexedDefaults = (index: number): Partial<RttCall> => ({
   routeId: `${1 + ((index * 7) % 116)}`,
   routeName: `${1 + ((index * 7) % 116)}`,
   vehicleId: `${3201 + index}`,
-  talkGroup: "Cabot",
-  garage: "Cabot",
-  receivedAt: minutesBefore(RECENT_BASE_TIME, 30 - index),
-  direction: "Outbound",
-  variant: "Standard Route",
   currentLocation: addresses[index % addresses.length],
   operatorBadge: `${54000 + index}`,
   operatorName: generateName(index),
   runNumber: `123-${1200 + index * 3}`,
+  receivedAt: minutesBefore(RECENT_BASE_TIME, 30 - index),
+})
+
+const createIndexedCall = (
+  index: number,
+  overrides: Partial<RttCall> & Pick<RttCall, "id" | "callType" | "status">
+): RttCall => createCall({ ...getIndexedDefaults(index), ...overrides })
+
+const createCall = (
+  call: Partial<RttCall> & Pick<RttCall, "id" | "callType" | "status">
+): RttCall => ({
+  routeId: "1",
+  routeName: "1",
+  vehicleId: "3201",
+  talkGroup: "Cabot",
+  garage: "Cabot",
+  receivedAt: minutesBefore(RECENT_BASE_TIME, 30),
+  direction: "Outbound",
+  variant: "Standard Route",
+  currentLocation: addresses[0],
+  operatorBadge: "54000",
+  operatorName: generateName(0),
+  runNumber: "123-1200",
   adherence: "On time",
   respondedBy: null,
   answeredAt: null,
@@ -68,14 +83,11 @@ const createCall = (
 const STANDARD_CALLS: readonly RttCall[] = Array.from(
   { length: 2 },
   (_, index) =>
-    createCall(
-      {
-        id: `standard-rtt-${index + 1}`,
-        callType: "RTT",
-        status: "unassigned",
-      },
-      index
-    )
+    createIndexedCall(index, {
+      id: `standard-rtt-${index + 1}`,
+      callType: "RTT",
+      status: "unassigned",
+    })
 )
 
 // generates incoming rtt calls with semi-random values
@@ -86,61 +98,52 @@ const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
     const talkGroup = garage
     const isExternalActiveCall = index === 26
 
-    return createCall(
-      {
-        id: `stress-rtt-${index + 1}`,
-        callType: "RTT",
-        status: isExternalActiveCall ? "active" : "unassigned",
-        talkGroup,
-        garage,
-        receivedAt: minutesBefore(RECENT_BASE_TIME, 30 - index),
-        respondedBy: isExternalActiveCall ? "Dispatcher Morgan" : null,
-        answeredAt: isExternalActiveCall
-          ? minutesBefore(RECENT_BASE_TIME, 30 - index - 1)
-          : null,
-        adherence:
-          index % 3 === 0
-            ? "11 min late"
-            : index % 3 === 1
-              ? "On time"
-              : "5 min early",
-      },
-      index
-    )
+    return createIndexedCall(index, {
+      id: `stress-rtt-${index + 1}`,
+      callType: "RTT",
+      status: isExternalActiveCall ? "active" : "unassigned",
+      talkGroup,
+      garage,
+      receivedAt: minutesBefore(RECENT_BASE_TIME, 30 - index),
+      respondedBy: isExternalActiveCall ? "Dispatcher Morgan" : null,
+      answeredAt: isExternalActiveCall
+        ? minutesBefore(RECENT_BASE_TIME, 30 - index - 1)
+        : null,
+      adherence:
+        index % 3 === 0
+          ? "11 min late"
+          : index % 3 === 1
+            ? "On time"
+            : "5 min early",
+    })
   }
 )
 
 const PRTT_CASE_CALLS: readonly RttCall[] = Array.from(
   { length: 3 },
   (_, index) =>
-    createCall(
-      {
-        id: `prtt-rtt-${index + 1}`,
-        callType: index === 2 ? "PRTT" : "RTT",
-        status: "unassigned",
-        adherence: index === 0 ? "23 min late" : undefined,
-      },
-      index
-    )
+    createIndexedCall(index, {
+      id: `prtt-rtt-${index + 1}`,
+      callType: index === 2 ? "PRTT" : "RTT",
+      status: "unassigned",
+      adherence: index === 0 ? "23 min late" : undefined,
+    })
 )
 
 // generates past rtt calls with semi-random values
 const PAST_RTT_CALLS: readonly RttCall[] = Array.from(
   { length: 32 },
   (_, index) =>
-    createCall(
-      {
-        id: `past-rtt-${index + 1}`,
-        callType: "RTT",
-        vehicleId: `${4101 + index}`,
-        status: "done",
-        receivedAt: minutesBefore(RECENT_BASE_TIME, 60 + index * 20),
-        answeredAt: minutesBefore(RECENT_BASE_TIME, 55 + index * 20),
-        markedDoneAt: minutesBefore(RECENT_BASE_TIME, 50 + index * 20),
-        adherence: index % 2 === 0 ? "On time" : "8 min late",
-      },
-      index
-    )
+    createIndexedCall(index, {
+      id: `past-rtt-${index + 1}`,
+      callType: "RTT",
+      vehicleId: `${4101 + index}`,
+      status: "done",
+      receivedAt: minutesBefore(RECENT_BASE_TIME, 60 + index * 20),
+      answeredAt: minutesBefore(RECENT_BASE_TIME, 55 + index * 20),
+      markedDoneAt: minutesBefore(RECENT_BASE_TIME, 50 + index * 20),
+      adherence: index % 2 === 0 ? "On time" : "8 min late",
+    })
 )
 
 export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
