@@ -279,4 +279,10 @@ Return to your Splunk query created in step 1. You should continue to see no new
 
 In Sentry, check the [skate-backend](https://mbtace.sentry.io/issues/?environment=production&project=5303878&statsPeriod=14d) and [skate-frontend](https://mbtace.sentry.io/issues/?environment=production&project=5303927&statsPeriod=14d) projects again. You shouldn't see any new errors.
 
-If you go a half hour without seeing any issues, then you're good to consider the deploy successful. Mark any Asana tickets associated with this release as completed.
+If you go a half hour without seeing any issues, then you're good to consider the deploy successful.
+
+### 6. Notify the team
+
+ 1. Mark any Asana tickets associated with this release as completed.
+ 1. Post in the `#skate-product` Slack channel the list of Asana tickets that were included in the deployment.
+ 
