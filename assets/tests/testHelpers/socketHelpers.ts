@@ -14,6 +14,8 @@ export const makeMockChannel = (
     join: jest.fn(),
     leave: jest.fn(),
     on: jest.fn<Channel["on"]>(),
+    onError: jest.fn<Channel["onError"]>(),
+    onClose: jest.fn<Channel["onClose"]>(),
     receive:
       jest.fn<(message: PushStatus, handler: (data?: any) => void) => void>(),
     push: jest.fn(),
@@ -61,9 +63,18 @@ export const makeMockChannel = (
 }
 
 export const makeMockOneShotChannel = (dataOnJoin?: any) => {
-  const result: { join: any; on: any; receive: any; leave: any } = {
+  const result: {
+    join: any
+    on: any
+    onError: any
+    onClose: any
+    receive: any
+    leave: any
+  } = {
     join: () => result,
     on: jest.fn(),
+    onError: jest.fn(),
+    onClose: jest.fn(),
     receive: (event: any, handler: ({ data }: { data: any }) => void) => {
       if (event === "ok") {
         handler({ data: dataOnJoin })
