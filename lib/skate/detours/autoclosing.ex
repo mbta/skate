@@ -40,10 +40,7 @@ defmodule Skate.Detours.Autoclosing do
       estimated_duration_str in ["Until further notice", "Until end of service"] or
         String.ends_with?(estimated_duration_str, "hour") or
           String.ends_with?(estimated_duration_str, "hours") ->
-        "America/New_York"
-        |> DateTime.now!()
-        |> DateTime.to_date()
-        |> Util.Time.end_of_service_in_utc()
+        Util.Time.end_of_service_in_utc()
 
       String.match?(estimated_duration_str, ~r/^\d{4}-\d{2}-\d{2}$/) ->
         case Date.from_iso8601(estimated_duration_str) do
