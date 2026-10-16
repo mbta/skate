@@ -14,23 +14,65 @@ export type RttQueueScenario = Scenario<
 >
 
 export const RTT_QUEUE_SCENARIO_TOPIC = "research:scenarios:rtt_queue"
+const RECENT_BASE_TIME = new Date()
+
+const minutesBefore = (base: Date, minutes: number): string =>
+  new Date(base.getTime() - minutes * 60_000).toISOString()
+
+const addresses = [
+  "123 Haywood Ave, Somerville MA 01381",
+  "240 Washington St, Boston, MA 02108",
+  "177 Milk St, Boston, MA 02109",
+  "800 Boylston St, Boston, MA 02199",
+  "392 Columbus Ave, Boston, MA 02116",
+  "125 Nashua St, Boston, MA 02114",
+  "700 Commonwealth Ave, Boston, MA 02215",
+  "54 Cumberland St, Boston, MA 02115",
+  "451 Hanover St, Boston, MA 02113",
+  "100 William T Morrissey Blvd, Boston, MA 02125",
+  "241 Perimeter Rd, Boston, MA 02125",
+]
+
+const stressGarages = ["Cabot", "Charlestown", "Southampton", "Albany"]
+
+const generateName = (index: number): string => {
+  const firstNames = ["John", "Jane", "Liam", "Olivia", "Noah", "Maria"]
+  const surnames = ["Doe", "Smith", "Lee", "Jones"]
+
+  return `${firstNames[index % firstNames.length]} ${surnames[index % surnames.length]}`
+}
+
+const getIndexedDefaults = (index: number): Partial<RttCall> => ({
+  routeId: `${1 + ((index * 7) % 116)}`,
+  routeName: `${1 + ((index * 7) % 116)}`,
+  vehicleId: `${3201 + index}`,
+  currentLocation: addresses[index % addresses.length],
+  operatorBadge: `${54000 + index}`,
+  operatorName: generateName(index),
+  runNumber: `123-${1200 + index * 3}`,
+  receivedAt: minutesBefore(RECENT_BASE_TIME, 30 - index),
+})
+
+const createIndexedCall = (
+  index: number,
+  overrides: Partial<RttCall> & Pick<RttCall, "id" | "callType" | "status">
+): RttCall => createCall({ ...getIndexedDefaults(index), ...overrides })
 
 const createCall = (
-  call: Partial<RttCall> &
-    Pick<
-      RttCall,
-      "id" | "callType" | "routeId" | "routeName" | "vehicleId" | "status"
-    >
+  call: Partial<RttCall> & Pick<RttCall, "id" | "callType" | "status">
 ): RttCall => ({
+  routeId: "1",
+  routeName: "1",
+  vehicleId: "3201",
   talkGroup: "Cabot",
   garage: "Cabot",
-  receivedAt: "2026-10-14T14:00:00.000Z",
+  receivedAt: minutesBefore(RECENT_BASE_TIME, 30),
   direction: "Outbound",
   variant: "Standard Route",
-  currentLocation: "Washington St @ Mass Ave",
-  operatorBadge: "50123",
-  operatorName: "Operator One",
-  runNumber: "R-101",
+  currentLocation: addresses[0],
+  operatorBadge: "54000",
+  operatorName: generateName(0),
+  runNumber: "123-1200",
   adherence: "On time",
   respondedBy: null,
   answeredAt: null,
@@ -38,29 +80,27 @@ const createCall = (
   ...call,
 })
 
-const RECENT_BASE_TIME = new Date("2026-10-14T14:00:00.000Z")
-
-const minutesBefore = (base: Date, minutes: number): string =>
-  new Date(base.getTime() - minutes * 60_000).toISOString()
-
-const stressTalkGroups = ["Cabot", "Charlestown", "Southampton", "Albany"]
-const stressGarages = ["Cabot", "Charlestown", "Southampton", "Albany"]
+const STANDARD_CALLS: readonly RttCall[] = Array.from(
+  { length: 2 },
+  (_, index) =>
+    createIndexedCall(index, {
+      id: `standard-rtt-${index + 1}`,
+      callType: "RTT",
+      status: "unassigned",
+    })
+)
 
 // generates incoming rtt calls with semi-random values
 const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
   { length: 30 },
   (_, index) => {
-    const talkGroup = stressTalkGroups[index % stressTalkGroups.length]
     const garage = stressGarages[index % stressGarages.length]
-    const callId = `stress-rtt-${index + 1}`
+    const talkGroup = garage
     const isExternalActiveCall = index === 26
 
-    return createCall({
-      id: callId,
+    return createIndexedCall(index, {
+      id: `stress-rtt-${index + 1}`,
       callType: "RTT",
-      routeId: `${1 + ((index * 7) % 116)}`,
-      routeName: `${1 + ((index * 7) % 116)}`,
-      vehicleId: `${3201 + index}`,
       status: isExternalActiveCall ? "active" : "unassigned",
       talkGroup,
       garage,
@@ -69,9 +109,6 @@ const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
       answeredAt: isExternalActiveCall
         ? minutesBefore(RECENT_BASE_TIME, 30 - index - 1)
         : null,
-      operatorBadge: `${53000 + index}`,
-      operatorName: `Operator ${index + 1}`,
-      runNumber: `R-${200 + index}`,
       adherence:
         index % 3 === 0
           ? "11 min late"
@@ -82,25 +119,29 @@ const STRESS_CASE_INCOMING_CALLS: readonly RttCall[] = Array.from(
   }
 )
 
+const PRTT_CASE_CALLS: readonly RttCall[] = Array.from(
+  { length: 3 },
+  (_, index) =>
+    createIndexedCall(index, {
+      id: `prtt-rtt-${index + 1}`,
+      callType: index === 2 ? "PRTT" : "RTT",
+      status: "unassigned",
+      adherence: index === 0 ? "23 min late" : undefined,
+    })
+)
+
 // generates past rtt calls with semi-random values
 const PAST_RTT_CALLS: readonly RttCall[] = Array.from(
   { length: 32 },
   (_, index) =>
-    createCall({
+    createIndexedCall(index, {
       id: `past-rtt-${index + 1}`,
       callType: "RTT",
-      routeId: `${1 + ((index * 5) % 116)}`,
-      routeName: `${1 + ((index * 5) % 116)}`,
       vehicleId: `${4101 + index}`,
       status: "done",
-      talkGroup: stressTalkGroups[index % stressTalkGroups.length],
-      garage: stressGarages[index % stressGarages.length],
       receivedAt: minutesBefore(RECENT_BASE_TIME, 60 + index * 20),
       answeredAt: minutesBefore(RECENT_BASE_TIME, 55 + index * 20),
       markedDoneAt: minutesBefore(RECENT_BASE_TIME, 50 + index * 20),
-      operatorBadge: `${54000 + index}`,
-      operatorName: `Past Operator ${index + 1}`,
-      runNumber: `R-${500 + index}`,
       adherence: index % 2 === 0 ? "On time" : "8 min late",
     })
 )
@@ -113,38 +154,7 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
       "Two RTTs from the same talk group for a typical RTT workflow.",
     data: {
       tab: TAB_TYPE.INCOMING,
-      incomingCalls: [
-        createCall({
-          id: "standard-rtt-1",
-          callType: "RTT",
-          routeId: "22",
-          routeName: "22",
-          vehicleId: "1901",
-          status: "unassigned",
-          talkGroup: "Cabot",
-          garage: "Cabot",
-          receivedAt: "2026-10-14T14:00:45.000Z",
-          currentLocation: "Mass Ave @ Melnea Cass Blvd",
-          operatorBadge: "50123",
-          operatorName: "Operator One",
-          runNumber: "R-101",
-        }),
-        createCall({
-          id: "standard-rtt-2",
-          callType: "RTT",
-          routeId: "28",
-          routeName: "28",
-          vehicleId: "1902",
-          status: "unassigned",
-          receivedAt: "2026-10-14T14:01:00.000Z",
-          garage: "Cabot",
-          talkGroup: "Cabot",
-          operatorBadge: "50124",
-          operatorName: "Operator Two",
-          runNumber: "R-102",
-          currentLocation: "Blue Hill Ave @ Dudley St",
-        }),
-      ],
+      incomingCalls: [...STANDARD_CALLS],
       selectedCallId: "standard-rtt-1",
     },
   },
@@ -167,49 +177,8 @@ export const SAMPLE_RTT_QUEUE_SCENARIOS: readonly RttQueueScenario[] = [
       "Two RTTs plus one PRTT to validate the priority response flow.",
     data: {
       tab: TAB_TYPE.INCOMING,
-      incomingCalls: [
-        createCall({
-          id: "prtt-rtt-1",
-          callType: "RTT",
-          routeId: "66",
-          routeName: "66",
-          vehicleId: "3901",
-          status: "unassigned",
-          garage: "Albany",
-          talkGroup: "Albany",
-          receivedAt: "2026-10-14T14:03:15.000Z",
-          currentLocation: "Harvard Ave @ Brighton Ave",
-          adherence: "23 min late",
-        }),
-        createCall({
-          id: "prtt-rtt-2",
-          callType: "RTT",
-          routeId: "47",
-          routeName: "47",
-          vehicleId: "3902",
-          status: "unassigned",
-          receivedAt: "2026-10-14T14:04:00.000Z",
-          garage: "Albany",
-          talkGroup: "Albany",
-          currentLocation: "Central Sq",
-        }),
-        createCall({
-          id: "prtt-priority-1",
-          callType: "PRTT",
-          routeId: "111",
-          routeName: "111",
-          vehicleId: "3903",
-          status: "unassigned",
-          receivedAt: "2026-10-14T14:04:30.000Z",
-          garage: "Albany",
-          talkGroup: "Albany",
-          operatorBadge: "50125",
-          operatorName: "Operator Three",
-          runNumber: "R-103",
-          currentLocation: "Union Sq",
-        }),
-      ],
-      selectedCallId: "prtt-priority-1",
+      incomingCalls: [...PRTT_CASE_CALLS],
+      selectedCallId: "prtt-rtt-3",
     },
   },
   {

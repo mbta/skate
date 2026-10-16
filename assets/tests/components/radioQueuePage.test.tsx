@@ -119,12 +119,12 @@ describe("RadioQueuePage", () => {
 
     expect(
       within(firstViewer.container).getByRole("button", {
-        name: "Select RTT call for vehicle 1901",
+        name: "Select RTT call for vehicle 3201",
       })
     ).toBeInTheDocument()
     expect(
       within(secondViewer.container).getByRole("button", {
-        name: "Select RTT call for vehicle 1901",
+        name: "Select RTT call for vehicle 3201",
       })
     ).toBeInTheDocument()
 
