@@ -1,7 +1,15 @@
-import { beforeEach, describe, expect, jest, test } from "@jest/globals"
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  jest,
+  test,
+} from "@jest/globals"
 import * as Sentry from "@sentry/react"
 import {
   attachChannelLogging,
+  initSocketTelemetry,
   logChannelNotice,
   logSocketClose,
   logSocketError,
@@ -12,11 +20,57 @@ import {
 jest.mock("@sentry/react", () => ({
   __esModule: true,
   captureMessage: jest.fn(),
+  addBreadcrumb: jest.fn(),
 }))
 
 describe("socketSentry", () => {
+  let teardownTelemetry: (() => void) | undefined
+
   beforeEach(() => {
     jest.clearAllMocks()
+  })
+
+  afterEach(() => {
+    if (teardownTelemetry) {
+      teardownTelemetry()
+      teardownTelemetry = undefined
+    }
+  })
+
+  describe("initSocketTelemetry", () => {
+    test("suppresses socket and channel error messages during document unload", () => {
+      teardownTelemetry = initSocketTelemetry()
+
+      window.dispatchEvent(new Event("beforeunload"))
+
+      logSocketClose({
+        code: 1006,
+        reason: "Abnormal closure",
+        wasClean: false,
+      } as CloseEvent)
+
+      expect(Sentry.captureMessage).not.toHaveBeenCalled()
+
+      logSocketError(new Error("socket failure"))
+      expect(Sentry.captureMessage).not.toHaveBeenCalled()
+
+      logChannelNotice("test:topic", "error", "error reason")
+      expect(Sentry.captureMessage).not.toHaveBeenCalled()
+
+      // Reset when pageshow occurs (e.g. navigation aborted or bfcache restored)
+      window.dispatchEvent(new Event("pageshow"))
+
+      logSocketClose({
+        code: 1006,
+        reason: "Abnormal closure",
+        wasClean: false,
+      } as CloseEvent)
+
+      expect(Sentry.captureMessage).toHaveBeenCalledWith(
+        expect.stringContaining("WebSocket connection closed: code=1006"),
+        expect.anything()
+      )
+    })
   })
 
   describe("logSocketClose", () => {
@@ -174,6 +228,17 @@ describe("socketSentry", () => {
       })
     )
     expect(mockCallback).toHaveBeenCalledTimes(1)
+  })
+
+  test("withChannelTimeoutLogging works without callback", () => {
+    const wrapped = withChannelTimeoutLogging("topic-abc")
+    expect(() => wrapped()).not.toThrow()
+    expect(Sentry.captureMessage).toHaveBeenCalledWith(
+      'Channel timeout on topic "topic-abc"',
+      expect.objectContaining({
+        level: "warning",
+      })
+    )
   })
 
   test("withChannelAuthExpiredLogging logs auth expired notice and invokes callback", () => {

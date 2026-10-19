@@ -1,8 +1,41 @@
 import * as Sentry from "@sentry/react"
 import { Channel } from "phoenix"
 
+let isDocumentUnloading = false
+
+/**
+ * Initializes browser lifecycle listeners to detect navigation unloads.
+ * Returns a teardown function for clean cleanup in tests.
+ */
+export const initSocketTelemetry = (): (() => void) => {
+  if (typeof window === "undefined") {
+    return () => {}
+  }
+
+  const handleBeforeUnload = () => {
+    isDocumentUnloading = true
+  }
+
+  const handlePageShow = () => {
+    isDocumentUnloading = false
+  }
+
+  window.addEventListener("beforeunload", handleBeforeUnload)
+  window.addEventListener("pageshow", handlePageShow)
+
+  return () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload)
+    window.removeEventListener("pageshow", handlePageShow)
+    isDocumentUnloading = false
+  }
+}
+
 /** Records WebSocket disconnection details in Sentry. */
 export const logSocketClose = (event?: CloseEvent): void => {
+  if (isDocumentUnloading) {
+    return
+  }
+
   const isPlannedClosure = event?.code === 1000
 
   Sentry.captureMessage(
@@ -28,6 +61,10 @@ export const logSocketClose = (event?: CloseEvent): void => {
 
 /** Records WebSocket transport errors in Sentry. */
 export const logSocketError = (error: unknown): void => {
+  if (isDocumentUnloading) {
+    return
+  }
+
   Sentry.captureMessage("WebSocket connection encountered an error", {
     level: "error",
     tags: {
@@ -54,6 +91,10 @@ export function logChannelNotice(
   event: "error" | "timeout" | "auth_expired" | "close",
   reason?: unknown
 ): void {
+  if (isDocumentUnloading) {
+    return
+  }
+
   const isError = event === "error"
   const isClose = event === "close"
   const level = isError ? "error" : isClose ? "info" : "warning"
@@ -71,18 +112,22 @@ export function logChannelNotice(
 
 /** Wraps a timeout callback to record channel timeouts in Sentry before execution. */
 export const withChannelTimeoutLogging =
-  (topic: string, callback: () => void): (() => void) =>
+  (topic: string, callback?: () => void): (() => void) =>
   () => {
     logChannelNotice(topic, "timeout")
-    callback()
+    if (callback) {
+      callback()
+    }
   }
 
 /** Wraps an auth expiration callback to record expired session notices in Sentry before execution. */
 export const withChannelAuthExpiredLogging =
-  (topic: string, callback: () => void): (() => void) =>
+  (topic: string, callback?: () => void): (() => void) =>
   () => {
     logChannelNotice(topic, "auth_expired")
-    callback()
+    if (callback) {
+      callback()
+    }
   }
 
 /** Attaches Sentry error and closure listeners to a Phoenix Channel instance. */
