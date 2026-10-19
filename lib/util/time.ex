@@ -257,8 +257,7 @@ defmodule Util.Time do
   end
 
   def end_of_service_in_utc() do
-    end_of_service()
-    |> DateTime.shift_zone!("Etc/UTC")
+    DateTime.shift_zone!(end_of_service(), "Etc/UTC")
   end
 
   def end_of_service_in_utc(date_or_datetime) do
