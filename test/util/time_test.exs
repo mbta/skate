@@ -15,7 +15,7 @@ defmodule Util.TimeTest do
   describe "end_of_service/1" do
     test "uses the next day if the given DateTime is before midnight before the end of the service day" do
       dt = DateTime.new!(@fixed_date, ~T[23:00:00], @timezone)
-      eos = Date.add(@fixed_eos, 1)
+      eos = DateTime.add(@fixed_eos, 1, :day)
 
       assert Util.Time.end_of_service(dt) == eos
     end
