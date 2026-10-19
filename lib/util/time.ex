@@ -241,21 +241,11 @@ defmodule Util.Time do
 
   @spec end_of_service(DateTime.t() | Date.t()) :: DateTime.t()
   def end_of_service(%DateTime{} = datetime) do
-    {:ok, eos_same_day} =
-      datetime
-      |> DateTime.shift_zone!("America/New_York")
-      |> DateTime.to_date()
-      |> DateTime.new(~T[03:00:00], "America/New_York")
+    ny_datetime = DateTime.shift_zone!(datetime, "America/New_York")
+    days_to_add = if ny_datetime.hour < 3, do: 0, else: 1
 
-    # check to see if the timestamp is after the current date's end of service time for the previous date.
-    days_to_add =
-      if DateTime.diff(datetime, eos_same_day) > 0 do
-        1
-      else
-        0
-      end
-
-    datetime
+    ny_datetime
+    |> DateTime.to_date()
     |> Date.add(days_to_add)
     |> DateTime.new!(~T[03:00:00], "America/New_York")
   end
