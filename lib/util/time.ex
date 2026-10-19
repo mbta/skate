@@ -247,28 +247,23 @@ defmodule Util.Time do
     ny_datetime
     |> DateTime.to_date()
     |> Date.add(days_to_add)
-    |> DateTime.new!(~T[03:00:00], "America/New_York")
+    |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
   end
 
   def end_of_service(%Date{} = date) do
     date
     |> Date.add(1)
-    |> DateTime.new!(~T[03:00:00], "America/New_York")
-  end
-
-  defp to_utc_with_precision(dt) do
-    dt
-    |> DateTime.shift_zone!("Etc/UTC")
-    |> Map.update!(:microsecond, fn {usec, _} -> {usec, 6} end)
+    |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
   end
 
   def end_of_service_in_utc() do
-    to_utc_with_precision(end_of_service())
+    end_of_service()
+    |> DateTime.shift_zone!("Etc/UTC")
   end
 
-  def end_of_service_in_utc(dt) do
-    dt
+  def end_of_service_in_utc(date_or_datetime) do
+    date_or_datetime
     |> end_of_service()
-    |> to_utc_with_precision()
+    |> DateTime.shift_zone!("Etc/UTC")
   end
 end

@@ -3,7 +3,7 @@ defmodule Util.TimeTest do
   doctest Util.Time
   @timezone "America/New_York"
   @fixed_date ~D[2026-10-15]
-  @fixed_eos DateTime.new!(@fixed_date, ~T[03:00:00], @timezone)
+  @fixed_eos DateTime.new!(@fixed_date, ~T[03:00:00.000000], @timezone)
 
   describe "end_of_service/0" do
     test "matches end_of_service/1 for current time in Eastern Time" do
@@ -45,12 +45,12 @@ defmodule Util.TimeTest do
 
     test "uses daylight saving time for the spring transition" do
       assert Util.Time.end_of_service(~D[2026-03-07]) ==
-               DateTime.new!(~D[2026-03-08], ~T[03:00:00], @timezone)
+               DateTime.new!(~D[2026-03-08], ~T[03:00:00.000000], @timezone)
     end
 
     test "uses standard time for the fall transition" do
       assert Util.Time.end_of_service(~D[2026-10-31]) ==
-               DateTime.new!(~D[2026-11-01], ~T[03:00:00], @timezone)
+               DateTime.new!(~D[2026-11-01], ~T[03:00:00.000000], @timezone)
     end
   end
 
