@@ -91,8 +91,10 @@ defmodule Skate.Radio.SQS.Client do
 
   def start_link(options \\ []) do
     merged_options =
-      Application.get_env(:skate, __MODULE__, [])
-      |> Keyword.merge(options)
+      Keyword.merge(
+        Application.get_env(:skate, __MODULE__, []),
+        options
+      )
 
     if Keyword.get(merged_options, :enabled?, false) do
       server_name = Keyword.get(merged_options, :name, @default_name)
