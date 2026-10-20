@@ -5,6 +5,8 @@ defmodule Skate.Detours.AutoclosingJob.Test do
   import Test.Support.Helpers
   import Skate.Factory
 
+  require Mox
+
   setup do
     reassign_env(:skate, :s3_bucket, nil)
 
@@ -139,6 +141,32 @@ defmodule Skate.Detours.AutoclosingJob.Test do
         detour = Repo.get(Skate.Detours.Db.Detour, id)
         assert detour.status == :past
       end)
+    end
+
+    test "logs notice events for the autoclose and s3 export jobs" do
+      reassign_env(:skate, :s3_bucket, "test-bucket")
+      Test.Support.Helpers.set_log_level(:notice)
+
+      Mox.expect(ExAws.Request.HttpMock, :request, 2, fn _, _, _, _, _ ->
+        {:ok, %{status_code: 200, body: ""}}
+      end)
+
+      Mox.verify_on_exit!()
+
+      log =
+        ExUnit.CaptureLog.capture_log([level: :notice], fn ->
+          Oban.Testing.with_testing_mode(:inline, fn ->
+            %{id: id, author_id: author_id} =
+              :detour
+              |> build()
+              |> insert()
+
+            Skate.Detours.Detours.activate_detour(id, author_id, "1 hour", "Construction")
+          end)
+        end)
+
+      assert log =~ "oban job start: worker=Skate.Detours.Autoclosing.Job"
+      assert log =~ "oban job start: worker=Skate.Detours.S3Exporter"
     end
   end
 end
