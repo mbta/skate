@@ -17,7 +17,7 @@ defmodule Skate.Application do
     Skate.Telemetry.setup_telemetry()
 
     Skate.Detours.S3Exporter.Telemetry.attach_handler()
-    Skate.Radio.SQS.Client.Telemetry.attach_handler()
+    Skate.Radio.SQS.Telemetry.attach_handler()
 
     # List all child processes to be supervised
     children =
