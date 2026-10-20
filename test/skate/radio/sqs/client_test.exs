@@ -116,8 +116,7 @@ defmodule Skate.Radio.SQS.ClientTest do
       assert_receive {:sleep_called, 10}
       assert_receive {:sleep_called, 20}
 
-      assert_receive {[:skate, :radio, :sqs, :connection, :success], _reference,
-                      %{attempts: 3},
+      assert_receive {[:skate, :radio, :sqs, :connection, :success], _reference, %{attempts: 3},
                       %{queue_type: :commands, queue_url: ^commands_queue_url}}
 
       status_map = Client.get_connection_status(client_process)
@@ -159,8 +158,7 @@ defmodule Skate.Radio.SQS.ClientTest do
       assert_receive {:sleep_called, 5}
       assert_receive {:sleep_called, 10}
 
-      assert_receive {[:skate, :radio, :sqs, :connection, :failure], _reference,
-                      %{attempts: 3},
+      assert_receive {[:skate, :radio, :sqs, :connection, :failure], _reference, %{attempts: 3},
                       %{
                         queue_type: :commands,
                         queue_url: ^commands_queue_url,
@@ -204,8 +202,12 @@ defmodule Skate.Radio.SQS.ClientTest do
         end)
 
       assert log_output =~ "Radio SQS connection check started: queue_type=commands"
-      assert log_output =~ "Radio SQS connection check succeeded: queue_type=commands duration_microseconds=1234 attempts=1"
-      assert log_output =~ "Radio SQS connection check failed: queue_type=events attempts=3 error_reason=:econnrefused"
+
+      assert log_output =~
+               "Radio SQS connection check succeeded: queue_type=commands duration_microseconds=1234 attempts=1"
+
+      assert log_output =~
+               "Radio SQS connection check failed: queue_type=events attempts=3 error_reason=:econnrefused"
     end
 
     test "attaches and detaches custom handler identifier cleanly" do

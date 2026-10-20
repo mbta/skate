@@ -162,4 +162,3 @@ config :skate, Skate.Radio.SQS.Client,
   commands_queue_url: if(commands_queue_defined?, do: commands_queue_url, else: nil),
   events_queue_url: if(events_queue_defined?, do: events_queue_url, else: nil),
   enabled?: commands_queue_defined? or events_queue_defined?
-
