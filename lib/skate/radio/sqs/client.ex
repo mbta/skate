@@ -13,8 +13,7 @@ defmodule Skate.Radio.SQS.Client do
   @default_maximum_attempts 5
   @default_heartbeat_interval_milliseconds 300_000
 
-  alias Skate.Radio.SQS.Messages.Publisher
-  alias Skate.Radio.SQS.Messages.Receiver
+  alias Skate.Radio.SQS.Publisher
 
   # Client API
 
@@ -38,30 +37,6 @@ defmodule Skate.Radio.SQS.Client do
   """
   def get_connection_status(server \\ @default_name) do
     GenServer.call(server, :get_connection_status)
-  end
-
-  @doc """
-  Publishes a message to a configured SQS queue and emits publish telemetry events.
-  Delegates to Skate.Radio.SQS.Messages.Publisher.
-  """
-  def publish_message(message, options \\ []) do
-    Publisher.publish(message, options)
-  end
-
-  @doc """
-  Constructs and publishes a Heartbeat message to the commands queue.
-  Delegates to Skate.Radio.SQS.Messages.Publisher.
-  """
-  def publish_heartbeat(options \\ []) do
-    Publisher.publish_heartbeat(options)
-  end
-
-  @doc """
-  Receives and discards messages from the events queue.
-  Delegates to Skate.Radio.SQS.Messages.Receiver.
-  """
-  def receive_events(options \\ []) do
-    Receiver.receive_and_discard(options)
   end
 
   # GenServer Callbacks

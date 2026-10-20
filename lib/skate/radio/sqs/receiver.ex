@@ -1,4 +1,4 @@
-defmodule Skate.Radio.SQS.Messages.Receiver do
+defmodule Skate.Radio.SQS.Receiver do
   @moduledoc """
   Stateless receiver for consuming and discarding messages from AWS SQS queues.
   """
@@ -14,9 +14,7 @@ defmodule Skate.Radio.SQS.Messages.Receiver do
   """
   @spec receive_and_discard(Keyword.t()) :: {:ok, non_neg_integer()} | {:error, term()}
   def receive_and_discard(options \\ []) do
-    queue_url = resolve_queue_url(options)
-
-    case queue_url do
+    case resolve_queue_url(options) do
       url when is_binary(url) and url != "" ->
         process_queue_messages(url, options)
 

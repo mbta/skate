@@ -1,4 +1,4 @@
-defmodule Skate.Radio.SQS.Messages.Publisher do
+defmodule Skate.Radio.SQS.Publisher do
   @moduledoc """
   Stateless publisher for sending radio messages to AWS SQS queues.
   """
@@ -8,30 +8,18 @@ defmodule Skate.Radio.SQS.Messages.Publisher do
 
   @doc """
   Publishes a message to the specified or default SQS queue.
-  Requires the message to be a struct with a binary `message_identifier`.
+  Requires a known message struct with a binary `message_identifier`.
   """
   @spec publish(struct(), Keyword.t()) :: {:ok, map()} | {:error, term()}
   def publish(message, options \\ [])
 
-  def publish(%struct_module{message_identifier: identifier} = message, options)
+  def publish(%Heartbeat{message_identifier: identifier} = heartbeat, options)
       when is_binary(identifier) and identifier != "" do
-    queue_url = resolve_queue_url(options)
-
-    case queue_url do
-      url when is_binary(url) and url != "" ->
-        message_type =
-          Keyword.get_lazy(options, :message_type, fn ->
-            struct_module |> Module.split() |> List.last()
-          end)
-
-        deliver_message(url, message, message_type, identifier)
-
-      _ ->
-        {:error, :queue_not_configured}
-    end
+    message_type = Keyword.get(options, :message_type, "Heartbeat")
+    deliver_message(heartbeat, message_type, identifier, options)
   end
 
-  def publish(_invalid_message, _options) do
+  def publish(_unsupported_message, _options) do
     {:error, :invalid_message}
   end
 
@@ -42,6 +30,16 @@ defmodule Skate.Radio.SQS.Messages.Publisher do
   def publish_heartbeat(options \\ []) do
     heartbeat = Heartbeat.new(options)
     publish(heartbeat, options)
+  end
+
+  defp deliver_message(message, message_type, message_identifier, options) do
+    case resolve_queue_url(options) do
+      url when is_binary(url) and url != "" ->
+        execute_send(url, message, message_type, message_identifier)
+
+      _ ->
+        {:error, :queue_not_configured}
+    end
   end
 
   defp resolve_queue_url(options) do
@@ -60,7 +58,7 @@ defmodule Skate.Radio.SQS.Messages.Publisher do
     end
   end
 
-  defp deliver_message(queue_url, message, message_type, message_identifier) do
+  defp execute_send(queue_url, message, message_type, message_identifier) do
     :telemetry.execute(
       [:skate, :radio, :sqs, :publish, :start],
       %{system_time: System.system_time()},
