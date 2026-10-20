@@ -123,8 +123,6 @@ defmodule Skate.Radio.SQS.Client do
       maximum_delay_milliseconds:
         Keyword.get(options, :maximum_delay_milliseconds, @default_maximum_delay_milliseconds),
       maximum_attempts: Keyword.get(options, :maximum_attempts, @default_maximum_attempts),
-      request_function: Keyword.get(options, :request_function, &ExAws.request/1),
-      sleep_function: Keyword.get(options, :sleep_function, &:timer.sleep/1),
       connection_status: %{
         commands_queue: :pending,
         events_queue: :pending
@@ -184,8 +182,9 @@ defmodule Skate.Radio.SQS.Client do
          state
        ) do
     query = ExAws.SQS.get_queue_attributes(queue_url, [:queue_arn])
+    request_config_overrides = Application.get_env(:ex_aws, :request_config_overrides, %{})
 
-    case state.request_function.(query) do
+    case ExAws.request(query, request_config_overrides) do
       {:ok, attributes} ->
         duration_microseconds = System.monotonic_time(:microsecond) - start_monotonic_time
 
@@ -206,7 +205,7 @@ defmodule Skate.Radio.SQS.Client do
               state.maximum_delay_milliseconds
             )
 
-          state.sleep_function.(delay_milliseconds)
+          :timer.sleep(delay_milliseconds)
 
           attempt_queue_connection(
             queue_type,
