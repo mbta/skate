@@ -367,7 +367,9 @@ defmodule Skate.Radio.SQS.Client do
       case ExAws.request(query, request_config_overrides) do
         {:ok, response} ->
           duration_microseconds = System.monotonic_time(:microsecond) - start_monotonic_time
-          message_id = Map.get(response, :message_id) || ""
+
+          message_id =
+            get_in(response, [:body, :message_id]) || Map.get(response, :message_id) || ""
 
           :telemetry.execute(
             [:skate, :radio, :sqs, :publish, :success],
