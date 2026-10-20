@@ -1037,23 +1037,7 @@ defmodule Skate.Detours.Detours do
          detour,
          "Until end of service"
        ) do
-    {:ok, eos_same_day} =
-      detour.activated_at
-      |> DateTime.shift_zone!("America/New_York")
-      |> DateTime.to_date()
-      |> DateTime.new(~T[03:00:00], "America/New_York")
-
-    # check to see if the activated_at timestamp is after the current date's end of service time for the previous date.
-    days_to_add =
-      if DateTime.diff(detour.activated_at, eos_same_day) > 0 do
-        1
-      else
-        0
-      end
-
-    detour.activated_at
-    |> Date.add(days_to_add)
-    |> DateTime.new!(~T[03:00:00], "America/New_York")
+    Util.Time.end_of_service(detour.activated_at)
   end
 
   defp do_calculate_expiration_timestamp(
@@ -1074,9 +1058,9 @@ defmodule Skate.Detours.Detours do
         |> DateTime.add(hours, :hour)
 
       duration =~ ~r/\d{4}-\d{2}-\d{2}/ ->
-        Date.from_iso8601!(duration)
-        |> Date.add(1)
-        |> DateTime.new!(~T[03:00:00], "America/New_York")
+        duration
+        |> Date.from_iso8601!()
+        |> Util.Time.end_of_service()
 
       true ->
         nil

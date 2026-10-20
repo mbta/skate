@@ -234,11 +234,35 @@ defmodule Util.Time do
     |> Timex.to_unix()
   end
 
-  @spec end_of_service_in_utc(Calendar.date()) :: DateTime.t()
-  def end_of_service_in_utc(date) do
+  @spec end_of_service() :: DateTime.t()
+  def end_of_service() do
+    end_of_service(DateTime.now!("America/New_York"))
+  end
+
+  @spec end_of_service(DateTime.t() | Date.t()) :: DateTime.t()
+  def end_of_service(%DateTime{} = datetime) do
+    ny_datetime = DateTime.shift_zone!(datetime, "America/New_York")
+    days_to_add = if ny_datetime.hour < 3, do: 0, else: 1
+
+    ny_datetime
+    |> DateTime.to_date()
+    |> Date.add(days_to_add)
+    |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
+  end
+
+  def end_of_service(%Date{} = date) do
     date
     |> Date.add(1)
     |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
+  end
+
+  def end_of_service_in_utc() do
+    DateTime.shift_zone!(end_of_service(), "Etc/UTC")
+  end
+
+  def end_of_service_in_utc(date_or_datetime) do
+    date_or_datetime
+    |> end_of_service()
     |> DateTime.shift_zone!("Etc/UTC")
   end
 end
