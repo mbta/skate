@@ -30,7 +30,7 @@ defmodule Skate.Radio.SQS.Messages.Heartbeat do
         Keyword.get_lazy(attributes, :instance_identifier, &default_instance_identifier/0),
       timestamp:
         Keyword.get_lazy(attributes, :timestamp, fn ->
-          DateTime.utc_now() |> DateTime.to_iso8601()
+          DateTime.to_iso8601(DateTime.utc_now())
         end),
       version: Keyword.get(attributes, :version, @default_schema_version)
     }
