@@ -161,4 +161,5 @@ events_queue_defined? = events_queue_url not in [nil, ""]
 config :skate, Skate.Radio.SQS.Client,
   commands_queue_url: if(commands_queue_defined?, do: commands_queue_url, else: nil),
   events_queue_url: if(events_queue_defined?, do: events_queue_url, else: nil),
-  enabled?: commands_queue_defined? or events_queue_defined?
+  enabled?: commands_queue_defined? or events_queue_defined?,
+  heartbeat_interval_milliseconds: 300_000
