@@ -14,33 +14,33 @@ defmodule Util.TimeTest do
 
   describe "end_of_service/1" do
     test "uses the next day if the given DateTime is before midnight before the end of the service day" do
-      dt = DateTime.new!(@fixed_date, ~T[23:00:00], @timezone)
-      eos = DateTime.add(@fixed_eos, 1, :day)
+      datetime = DateTime.new!(@fixed_date, ~T[23:00:00], @timezone)
+      expected_end_of_service = DateTime.add(@fixed_end_of_service, 1, :day)
 
-      assert Util.Time.end_of_service(dt) == eos
+      assert Util.Time.end_of_service(datetime) == expected_end_of_service
     end
 
     test "uses the same day if the given DateTime is after midnight before the end of the service day" do
-      dt = DateTime.new!(@fixed_date, ~T[02:00:00], @timezone)
-      eos = @fixed_eos
+      datetime = DateTime.new!(@fixed_date, ~T[02:00:00], @timezone)
+      expected_end_of_service = @fixed_end_of_service
 
-      assert Util.Time.end_of_service(dt) == eos
+      assert Util.Time.end_of_service(datetime) == expected_end_of_service
     end
 
     test "UTC inputs are not assumed to be eastern time" do
       # 01:30 AM EDT on Oct 15 is 05:30 AM UTC on Oct 15
-      dt = DateTime.new!(@fixed_date, ~T[05:30:00], "Etc/UTC")
-      eos = @fixed_eos
+      datetime = DateTime.new!(@fixed_date, ~T[05:30:00], "Etc/UTC")
+      expected_end_of_service = @fixed_end_of_service
 
-      assert Util.Time.end_of_service(dt) == eos
+      assert Util.Time.end_of_service(datetime) == expected_end_of_service
     end
 
     test "correctly handles UTC datetimes where UTC date differs from Eastern date" do
       # 11:30 PM EDT on Oct 14 is 03:30 AM UTC on Oct 15
-      dt = DateTime.new!(@fixed_date, ~T[03:30:00], "Etc/UTC")
-      eos = @fixed_eos
+      datetime = DateTime.new!(@fixed_date, ~T[03:30:00], "Etc/UTC")
+      expected_end_of_service = @fixed_end_of_service
 
-      assert Util.Time.end_of_service(dt) == eos
+      assert Util.Time.end_of_service(datetime) == expected_end_of_service
     end
 
     test "uses daylight saving time for the spring transition" do
