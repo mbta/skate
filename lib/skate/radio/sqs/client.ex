@@ -14,6 +14,7 @@ defmodule Skate.Radio.SQS.Client do
   @default_heartbeat_interval_milliseconds 300_000
 
   alias Skate.Radio.SQS.Messages.Publisher
+  alias Skate.Radio.SQS.Messages.Receiver
 
   # Client API
 
@@ -53,6 +54,14 @@ defmodule Skate.Radio.SQS.Client do
   """
   def publish_heartbeat(options \\ []) do
     Publisher.publish_heartbeat(options)
+  end
+
+  @doc """
+  Receives and discards messages from the events queue.
+  Delegates to Skate.Radio.SQS.Messages.Receiver.
+  """
+  def receive_events(options \\ []) do
+    Receiver.receive_and_discard(options)
   end
 
   # GenServer Callbacks
