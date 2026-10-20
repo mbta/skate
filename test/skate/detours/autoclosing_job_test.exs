@@ -143,9 +143,9 @@ defmodule Skate.Detours.AutoclosingJob.Test do
       end)
     end
 
-    test "logs notice events for the autoclose and s3 export jobs" do
+    test "logs events for the autoclose and s3 export jobs" do
       reassign_env(:skate, :s3_bucket, "test-bucket")
-      Test.Support.Helpers.set_log_level(:notice)
+      Test.Support.Helpers.set_log_level(:info)
 
       Mox.expect(ExAws.Request.HttpMock, :request, 10, fn _, _, _, _, _ ->
         {:ok, %{status_code: 200, body: ""}}
@@ -154,7 +154,7 @@ defmodule Skate.Detours.AutoclosingJob.Test do
       Mox.verify_on_exit!()
 
       log =
-        ExUnit.CaptureLog.capture_log([level: :notice], fn ->
+        ExUnit.CaptureLog.capture_log([level: :info], fn ->
           Oban.Testing.with_testing_mode(:inline, fn ->
             for _ <- 1..5 do
               detour =
@@ -174,13 +174,19 @@ defmodule Skate.Detours.AutoclosingJob.Test do
 
       autoclose_count =
         log
-        |> Regex.scan(~r/oban job start: worker=Skate\.Detours\.Autoclosing\.Job/)
-        |> length()
+        |> String.split("\n")
+        |> Enum.count(fn line ->
+          String.contains?(line, "\"event\":\"job:start\"") and
+            String.contains?(line, "\"worker\":\"Skate.Detours.Autoclosing.Job\"")
+        end)
 
       s3_export_count =
         log
-        |> Regex.scan(~r/oban job start: worker=Skate\.Detours\.S3Exporter/)
-        |> length()
+        |> String.split("\n")
+        |> Enum.count(fn line ->
+          String.contains?(line, "\"event\":\"job:start\"") and
+            String.contains?(line, "\"worker\":\"Skate.Detours.S3Exporter\"")
+        end)
 
       assert autoclose_count == 5
       assert s3_export_count == 10
