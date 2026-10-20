@@ -1,8 +1,6 @@
 defmodule Skate.Radio.SQS.ClientTest do
   use ExUnit.Case, async: false
-  import ExUnit.CaptureLog
   import Mox
-  import Test.Support.Helpers, only: [set_log_level: 1]
 
   alias Skate.Radio.SQS.Client
 
@@ -179,8 +177,8 @@ defmodule Skate.Radio.SQS.ClientTest do
     end
   end
 
-  describe "publish_message/2 and publish_heartbeat/1" do
-    test "publishes a heartbeat message to the commands queue and emits telemetry" do
+  describe "periodic heartbeat timer" do
+    test "fires and publishes heartbeat according to configured interval" do
       commands_queue_url = "https://sqs.us-east-1.amazonaws.com/123456789012/commands_queue"
 
       Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, _body, _headers, _opts ->
@@ -190,93 +188,6 @@ defmodule Skate.Radio.SQS.ClientTest do
       Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, body, _headers, _opts ->
         assert body =~ "Action=SendMessage"
         assert body =~ "ready"
-        {:ok, %{status_code: 200, body: @send_message_xml}}
-      end)
-
-      options = [
-        enabled?: true,
-        name: :test_sqs_client_publish,
-        commands_queue_url: commands_queue_url,
-        events_queue_url: nil,
-        initial_delay_milliseconds: 0,
-        maximum_delay_milliseconds: 0,
-        heartbeat_interval_milliseconds: nil
-      ]
-
-      assert {:ok, client_process} = Client.start_link(options)
-
-      _status_map = Client.get_connection_status(client_process)
-
-      assert {:ok, response} = Client.publish_heartbeat(server: client_process)
-      assert response.body.message_id == "5fea7743-dd80-46e3-ac0f-d20f7f7cd347"
-
-      assert_receive {[:skate, :radio, :sqs, :publish, :start], _reference, _measurements,
-                      %{
-                        queue_url: ^commands_queue_url,
-                        message_type: "Heartbeat",
-                        message_identifier: _
-                      }}
-
-      assert_receive {[:skate, :radio, :sqs, :publish, :success], _reference,
-                      %{duration_microseconds: _},
-                      %{
-                        queue_url: ^commands_queue_url,
-                        message_type: "Heartbeat",
-                        message_identifier: _,
-                        message_id: "5fea7743-dd80-46e3-ac0f-d20f7f7cd347"
-                      }}
-
-      GenServer.stop(client_process)
-    end
-
-    test "emits failure telemetry on publish error" do
-      commands_queue_url = "https://sqs.us-east-1.amazonaws.com/123456789012/commands_queue"
-
-      Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, _body, _headers, _opts ->
-        {:ok, %{status_code: 200, body: @queue_attributes_xml}}
-      end)
-
-      Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, _body, _headers, _opts ->
-        {:ok, %{status_code: 403, body: "Forbidden"}}
-      end)
-
-      options = [
-        enabled?: true,
-        name: :test_sqs_client_publish_error,
-        commands_queue_url: commands_queue_url,
-        events_queue_url: nil,
-        initial_delay_milliseconds: 0,
-        maximum_delay_milliseconds: 0,
-        heartbeat_interval_milliseconds: nil
-      ]
-
-      assert {:ok, client_process} = Client.start_link(options)
-
-      _status_map = Client.get_connection_status(client_process)
-
-      assert {:error, {:http_error, 403, "Forbidden"}} =
-               Client.publish_heartbeat(server: client_process)
-
-      assert_receive {[:skate, :radio, :sqs, :publish, :failure], _reference,
-                      %{duration_microseconds: _},
-                      %{
-                        queue_url: ^commands_queue_url,
-                        message_type: "Heartbeat",
-                        message_identifier: _,
-                        error_reason: {:http_error, 403, "Forbidden"}
-                      }}
-
-      GenServer.stop(client_process)
-    end
-
-    test "periodic heartbeat fires and publishes according to configured interval" do
-      commands_queue_url = "https://sqs.us-east-1.amazonaws.com/123456789012/commands_queue"
-
-      Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, _body, _headers, _opts ->
-        {:ok, %{status_code: 200, body: @queue_attributes_xml}}
-      end)
-
-      Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, _body, _headers, _opts ->
         {:ok, %{status_code: 200, body: @send_message_xml}}
       end)
 
@@ -300,94 +211,23 @@ defmodule Skate.Radio.SQS.ClientTest do
                         message_id: "5fea7743-dd80-46e3-ac0f-d20f7f7cd347"
                       }}
 
-      # Stop the process immediately to prevent subsequent periodic ticks from exceeding expectations
       GenServer.stop(client_process)
     end
   end
 
-  describe "Telemetry handler" do
-    test "logs expected messages on start, success, and failure events" do
-      set_log_level(:info)
+  describe "client delegation helpers" do
+    test "publish_heartbeat/1 delegates to Publisher" do
+      commands_queue_url = "https://sqs.us-east-1.amazonaws.com/123456789012/commands_queue"
 
-      log_output =
-        capture_log([level: :info], fn ->
-          :telemetry.execute(
-            [:skate, :radio, :sqs, :connection, :start],
-            %{system_time: System.system_time()},
-            %{queue_type: :commands, queue_url: "https://sqs.us-east-1.amazonaws.com/test"}
-          )
+      Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, body, _headers, _opts ->
+        assert body =~ "Action=SendMessage"
+        {:ok, %{status_code: 200, body: @send_message_xml}}
+      end)
 
-          :telemetry.execute(
-            [:skate, :radio, :sqs, :connection, :success],
-            %{duration_microseconds: 1_234, attempts: 1},
-            %{queue_type: :commands, queue_url: "https://sqs.us-east-1.amazonaws.com/test"}
-          )
+      assert {:ok, response} =
+               Client.publish_heartbeat(queue_url: commands_queue_url)
 
-          :telemetry.execute(
-            [:skate, :radio, :sqs, :connection, :failure],
-            %{duration_microseconds: 5_000, attempts: 3},
-            %{
-              queue_type: :events,
-              queue_url: "https://sqs.us-east-1.amazonaws.com/events",
-              error_reason: :econnrefused
-            }
-          )
-
-          :telemetry.execute(
-            [:skate, :radio, :sqs, :publish, :start],
-            %{system_time: System.system_time()},
-            %{
-              queue_url: "https://sqs.us-east-1.amazonaws.com/commands",
-              message_type: "Heartbeat",
-              message_identifier: "msg-123"
-            }
-          )
-
-          :telemetry.execute(
-            [:skate, :radio, :sqs, :publish, :success],
-            %{duration_microseconds: 2_345},
-            %{
-              queue_url: "https://sqs.us-east-1.amazonaws.com/commands",
-              message_type: "Heartbeat",
-              message_identifier: "msg-123",
-              message_id: "sqs-id-456"
-            }
-          )
-
-          :telemetry.execute(
-            [:skate, :radio, :sqs, :publish, :failure],
-            %{duration_microseconds: 3_456},
-            %{
-              queue_url: "https://sqs.us-east-1.amazonaws.com/commands",
-              message_type: "Heartbeat",
-              message_identifier: "msg-123",
-              error_reason: :timeout
-            }
-          )
-        end)
-
-      assert log_output =~ "Radio SQS connection check started: queue_type=commands"
-
-      assert log_output =~
-               "Radio SQS connection check succeeded: queue_type=commands duration_microseconds=1234 attempts=1"
-
-      assert log_output =~
-               "Radio SQS connection check failed: queue_type=events attempts=3 error_reason=:econnrefused"
-
-      assert log_output =~
-               "Radio SQS message publish started: message_type=Heartbeat message_identifier=msg-123"
-
-      assert log_output =~
-               "Radio SQS message publish succeeded: message_type=Heartbeat message_identifier=msg-123 message_id=sqs-id-456"
-
-      assert log_output =~
-               "Radio SQS message publish failed: message_type=Heartbeat message_identifier=msg-123 duration_microseconds=3456 error_reason=:timeout"
-    end
-
-    test "attaches and detaches custom handler identifier cleanly" do
-      custom_handler_identifier = "custom_test_radio_sqs_handler"
-      assert :ok = Client.Telemetry.attach_handler(custom_handler_identifier)
-      assert :ok = Client.Telemetry.detach_handler(custom_handler_identifier)
+      assert response.body.message_id == "5fea7743-dd80-46e3-ac0f-d20f7f7cd347"
     end
   end
 end
