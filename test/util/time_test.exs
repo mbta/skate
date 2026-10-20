@@ -3,7 +3,7 @@ defmodule Util.TimeTest do
   doctest Util.Time
   @timezone "America/New_York"
   @fixed_date ~D[2026-10-15]
-  @fixed_eos DateTime.new!(@fixed_date, ~T[03:00:00.000000], @timezone)
+  @fixed_end_of_service DateTime.new!(@fixed_date, ~T[03:00:00.000000], @timezone)
 
   describe "end_of_service/0" do
     test "matches end_of_service/1 for current time in Eastern Time" do
