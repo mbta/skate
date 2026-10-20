@@ -147,7 +147,7 @@ defmodule Skate.Detours.AutoclosingJob.Test do
       reassign_env(:skate, :s3_bucket, "test-bucket")
       Test.Support.Helpers.set_log_level(:notice)
 
-      Mox.expect(ExAws.Request.HttpMock, :request, 2, fn _, _, _, _, _ ->
+      Mox.expect(ExAws.Request.HttpMock, :request, 10, fn _, _, _, _, _ ->
         {:ok, %{status_code: 200, body: ""}}
       end)
 
@@ -156,17 +156,34 @@ defmodule Skate.Detours.AutoclosingJob.Test do
       log =
         ExUnit.CaptureLog.capture_log([level: :notice], fn ->
           Oban.Testing.with_testing_mode(:inline, fn ->
-            %{id: id, author_id: author_id} =
-              :detour
-              |> build()
-              |> insert()
+            for _ <- 1..5 do
+              detour =
+                :detour
+                |> build()
+                |> insert()
 
-            Skate.Detours.Detours.activate_detour(id, author_id, "1 hour", "Construction")
+              Skate.Detours.Detours.activate_detour(
+                detour.id,
+                detour.author_id,
+                "1 hour",
+                "Construction"
+              )
+            end
           end)
         end)
 
-      assert log =~ "oban job start: worker=Skate.Detours.Autoclosing.Job"
-      assert log =~ "oban job start: worker=Skate.Detours.S3Exporter"
+      autoclose_count =
+        log
+        |> Regex.scan(~r/oban job start: worker=Skate\.Detours\.Autoclosing\.Job/)
+        |> length()
+
+      s3_export_count =
+        log
+        |> Regex.scan(~r/oban job start: worker=Skate\.Detours\.S3Exporter/)
+        |> length()
+
+      assert autoclose_count == 5
+      assert s3_export_count == 10
     end
   end
 end
