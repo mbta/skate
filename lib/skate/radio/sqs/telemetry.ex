@@ -21,7 +21,13 @@ defmodule Skate.Radio.SQS.Telemetry do
       [:skate, :radio, :sqs, :connection, :failure],
       [:skate, :radio, :sqs, :publish, :start],
       [:skate, :radio, :sqs, :publish, :success],
-      [:skate, :radio, :sqs, :publish, :failure]
+      [:skate, :radio, :sqs, :publish, :failure],
+      [:skate, :radio, :sqs, :receive, :start],
+      [:skate, :radio, :sqs, :receive, :success],
+      [:skate, :radio, :sqs, :receive, :failure],
+      [:skate, :radio, :sqs, :discard, :start],
+      [:skate, :radio, :sqs, :discard, :success],
+      [:skate, :radio, :sqs, :discard, :failure]
     ]
 
     :telemetry.attach_many(
@@ -122,6 +128,72 @@ defmodule Skate.Radio.SQS.Telemetry do
       "Radio SQS message publish failed: message_type=#{message_type} " <>
         "message_identifier=#{message_identifier} duration_microseconds=#{duration_microseconds} " <>
         "error_reason=#{inspect(error_reason)}"
+    )
+  end
+
+  def handle_event(
+        [:skate, :radio, :sqs, :receive, :start],
+        _measurements,
+        %{queue_url: queue_url},
+        _configuration
+      ) do
+    Logger.info("Radio SQS receive started: queue_url=#{queue_url}")
+  end
+
+  def handle_event(
+        [:skate, :radio, :sqs, :receive, :success],
+        %{duration_microseconds: duration_microseconds, message_count: message_count},
+        %{queue_url: queue_url},
+        _configuration
+      ) do
+    Logger.info(
+      "Radio SQS receive succeeded: queue_url=#{queue_url} " <>
+        "message_count=#{message_count} duration_microseconds=#{duration_microseconds}"
+    )
+  end
+
+  def handle_event(
+        [:skate, :radio, :sqs, :receive, :failure],
+        %{duration_microseconds: duration_microseconds},
+        %{queue_url: queue_url, error_reason: error_reason},
+        _configuration
+      ) do
+    Logger.error(
+      "Radio SQS receive failed: queue_url=#{queue_url} " <>
+        "duration_microseconds=#{duration_microseconds} error_reason=#{inspect(error_reason)}"
+    )
+  end
+
+  def handle_event(
+        [:skate, :radio, :sqs, :discard, :start],
+        _measurements,
+        %{queue_url: queue_url, message_id: message_id},
+        _configuration
+      ) do
+    Logger.info("Radio SQS discard started: message_id=#{message_id} queue_url=#{queue_url}")
+  end
+
+  def handle_event(
+        [:skate, :radio, :sqs, :discard, :success],
+        %{duration_microseconds: duration_microseconds},
+        %{queue_url: queue_url, message_id: message_id},
+        _configuration
+      ) do
+    Logger.info(
+      "Radio SQS discard succeeded: message_id=#{message_id} queue_url=#{queue_url} " <>
+        "duration_microseconds=#{duration_microseconds}"
+    )
+  end
+
+  def handle_event(
+        [:skate, :radio, :sqs, :discard, :failure],
+        %{duration_microseconds: duration_microseconds},
+        %{queue_url: queue_url, message_id: message_id, error_reason: error_reason},
+        _configuration
+      ) do
+    Logger.error(
+      "Radio SQS discard failed: message_id=#{message_id} queue_url=#{queue_url} " <>
+        "duration_microseconds=#{duration_microseconds} error_reason=#{inspect(error_reason)}"
     )
   end
 end
