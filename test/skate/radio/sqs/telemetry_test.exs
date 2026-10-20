@@ -64,6 +64,52 @@ defmodule Skate.Radio.SQS.TelemetryTest do
               error_reason: :timeout
             }
           )
+
+          :telemetry.execute(
+            [:skate, :radio, :sqs, :receive, :start],
+            %{system_time: System.system_time()},
+            %{queue_url: "https://sqs.us-east-1.amazonaws.com/events"}
+          )
+
+          :telemetry.execute(
+            [:skate, :radio, :sqs, :receive, :success],
+            %{duration_microseconds: 4_567, message_count: 2},
+            %{queue_url: "https://sqs.us-east-1.amazonaws.com/events"}
+          )
+
+          :telemetry.execute(
+            [:skate, :radio, :sqs, :receive, :failure],
+            %{duration_microseconds: 5_678},
+            %{queue_url: "https://sqs.us-east-1.amazonaws.com/events", error_reason: :timeout}
+          )
+
+          :telemetry.execute(
+            [:skate, :radio, :sqs, :discard, :start],
+            %{system_time: System.system_time()},
+            %{
+              queue_url: "https://sqs.us-east-1.amazonaws.com/events",
+              message_id: "msg-discard-1"
+            }
+          )
+
+          :telemetry.execute(
+            [:skate, :radio, :sqs, :discard, :success],
+            %{duration_microseconds: 6_789},
+            %{
+              queue_url: "https://sqs.us-east-1.amazonaws.com/events",
+              message_id: "msg-discard-1"
+            }
+          )
+
+          :telemetry.execute(
+            [:skate, :radio, :sqs, :discard, :failure],
+            %{duration_microseconds: 7_890},
+            %{
+              queue_url: "https://sqs.us-east-1.amazonaws.com/events",
+              message_id: "msg-discard-1",
+              error_reason: :access_denied
+            }
+          )
         end)
 
       assert log_output =~ "Radio SQS connection check started: queue_type=commands"
@@ -82,6 +128,24 @@ defmodule Skate.Radio.SQS.TelemetryTest do
 
       assert log_output =~
                "Radio SQS message publish failed: message_type=Heartbeat message_identifier=msg-123 duration_microseconds=3456 error_reason=:timeout"
+
+      assert log_output =~
+               "Radio SQS receive started: queue_url=https://sqs.us-east-1.amazonaws.com/events"
+
+      assert log_output =~
+               "Radio SQS receive succeeded: queue_url=https://sqs.us-east-1.amazonaws.com/events message_count=2 duration_microseconds=4567"
+
+      assert log_output =~
+               "Radio SQS receive failed: queue_url=https://sqs.us-east-1.amazonaws.com/events duration_microseconds=5678 error_reason=:timeout"
+
+      assert log_output =~
+               "Radio SQS discard started: message_id=msg-discard-1 queue_url=https://sqs.us-east-1.amazonaws.com/events"
+
+      assert log_output =~
+               "Radio SQS discard succeeded: message_id=msg-discard-1 queue_url=https://sqs.us-east-1.amazonaws.com/events duration_microseconds=6789"
+
+      assert log_output =~
+               "Radio SQS discard failed: message_id=msg-discard-1 queue_url=https://sqs.us-east-1.amazonaws.com/events duration_microseconds=7890 error_reason=:access_denied"
     end
 
     test "attaches and detaches custom handler identifier cleanly" do
