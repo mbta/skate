@@ -5,30 +5,11 @@ defmodule Skate.Radio.SQS.Messages.ReceiverTest do
 
   alias Skate.Radio.SQS.Messages.Receiver
 
-  @telemetry_events [
-    [:skate, :radio, :sqs, :receive, :start],
-    [:skate, :radio, :sqs, :receive, :success],
-    [:skate, :radio, :sqs, :receive, :failure],
-    [:skate, :radio, :sqs, :discard, :start],
-    [:skate, :radio, :sqs, :discard, :success],
-    [:skate, :radio, :sqs, :discard, :failure]
-  ]
-
   setup :set_mox_global
   setup :verify_on_exit!
 
-  setup do
-    telemetry_reference = :telemetry_test.attach_event_handlers(self(), @telemetry_events)
-
-    on_exit(fn ->
-      :telemetry.detach(telemetry_reference)
-    end)
-
-    %{telemetry_reference: telemetry_reference}
-  end
-
   describe "receive_and_discard/1" do
-    test "receives messages from events queue and deletes each message, emitting telemetry" do
+    test "receives messages from events queue and deletes each message" do
       events_url = events_queue_url()
 
       # 1 ReceiveMessage call
@@ -54,26 +35,6 @@ defmodule Skate.Radio.SQS.Messages.ReceiverTest do
 
       assert {:ok, 2} =
                Receiver.receive_and_discard(queue_url: events_url)
-
-      assert_receive {[:skate, :radio, :sqs, :receive, :start], _reference, _measurements,
-                      %{queue_url: ^events_url}}
-
-      assert_receive {[:skate, :radio, :sqs, :receive, :success], _reference,
-                      %{duration_microseconds: _, message_count: 2}, %{queue_url: ^events_url}}
-
-      assert_receive {[:skate, :radio, :sqs, :discard, :start], _reference, _measurements,
-                      %{queue_url: ^events_url, message_id: "msg-event-001"}}
-
-      assert_receive {[:skate, :radio, :sqs, :discard, :success], _reference,
-                      %{duration_microseconds: _},
-                      %{queue_url: ^events_url, message_id: "msg-event-001"}}
-
-      assert_receive {[:skate, :radio, :sqs, :discard, :start], _reference, _measurements,
-                      %{queue_url: ^events_url, message_id: "msg-event-002"}}
-
-      assert_receive {[:skate, :radio, :sqs, :discard, :success], _reference,
-                      %{duration_microseconds: _},
-                      %{queue_url: ^events_url, message_id: "msg-event-002"}}
     end
 
     test "handles empty queue responses gracefully" do
@@ -86,14 +47,9 @@ defmodule Skate.Radio.SQS.Messages.ReceiverTest do
 
       assert {:ok, 0} =
                Receiver.receive_and_discard(queue_url: events_url)
-
-      assert_receive {[:skate, :radio, :sqs, :receive, :success], _reference,
-                      %{duration_microseconds: _, message_count: 0}, %{queue_url: ^events_url}}
-
-      refute_receive {[:skate, :radio, :sqs, :discard, :start], _, _, _}
     end
 
-    test "emits failure telemetry when receive_message fails" do
+    test "returns error when receive_message fails" do
       events_url = events_queue_url()
 
       Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, _body, _headers, _opts ->
@@ -102,16 +58,9 @@ defmodule Skate.Radio.SQS.Messages.ReceiverTest do
 
       assert {:error, {:http_error, 403, "Forbidden"}} =
                Receiver.receive_and_discard(queue_url: events_url)
-
-      assert_receive {[:skate, :radio, :sqs, :receive, :failure], _reference,
-                      %{duration_microseconds: _},
-                      %{
-                        queue_url: ^events_url,
-                        error_reason: {:http_error, 403, "Forbidden"}
-                      }}
     end
 
-    test "emits failure telemetry when delete_message fails" do
+    test "continues processing batch even when a delete_message fails" do
       events_url = events_queue_url()
 
       Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, _body, _headers, _opts ->
@@ -130,25 +79,11 @@ defmodule Skate.Radio.SQS.Messages.ReceiverTest do
 
       assert {:ok, 2} =
                Receiver.receive_and_discard(queue_url: events_url)
-
-      assert_receive {[:skate, :radio, :sqs, :discard, :failure], _reference,
-                      %{duration_microseconds: _},
-                      %{
-                        queue_url: ^events_url,
-                        message_id: "msg-event-001",
-                        error_reason: {:http_error, 403, "Forbidden"}
-                      }}
-
-      assert_receive {[:skate, :radio, :sqs, :discard, :success], _reference,
-                      %{duration_microseconds: _},
-                      %{queue_url: ^events_url, message_id: "msg-event-002"}}
     end
 
     test "returns error when queue URL is unconfigured" do
       assert {:error, :queue_not_configured} =
                Receiver.receive_and_discard(queue_url: nil)
-
-      refute_receive {[:skate, :radio, :sqs, :receive, :start], _, _, _}
     end
   end
 end

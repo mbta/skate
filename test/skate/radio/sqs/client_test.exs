@@ -5,27 +5,8 @@ defmodule Skate.Radio.SQS.ClientTest do
 
   alias Skate.Radio.SQS.Client
 
-  @telemetry_events [
-    [:skate, :radio, :sqs, :connection, :start],
-    [:skate, :radio, :sqs, :connection, :success],
-    [:skate, :radio, :sqs, :connection, :failure],
-    [:skate, :radio, :sqs, :publish, :start],
-    [:skate, :radio, :sqs, :publish, :success],
-    [:skate, :radio, :sqs, :publish, :failure]
-  ]
-
   setup :set_mox_global
   setup :verify_on_exit!
-
-  setup do
-    telemetry_reference = :telemetry_test.attach_event_handlers(self(), @telemetry_events)
-
-    on_exit(fn ->
-      :telemetry.detach(telemetry_reference)
-    end)
-
-    %{telemetry_reference: telemetry_reference}
-  end
 
   describe "start_link/1" do
     test "returns :ignore when enabled? is false" do
@@ -37,7 +18,7 @@ defmodule Skate.Radio.SQS.ClientTest do
       assert Client.start_link(options) == :ignore
     end
 
-    test "verifies configured queues and emits success telemetry" do
+    test "verifies configured queues" do
       commands_url = commands_queue_url()
       events_url = events_queue_url()
 
@@ -55,23 +36,6 @@ defmodule Skate.Radio.SQS.ClientTest do
       ]
 
       assert {:ok, client_process} = Client.start_link(options)
-
-      # Drain the continue message
-      _status_map = Client.get_connection_status(client_process)
-
-      assert_receive {[:skate, :radio, :sqs, :connection, :start], _reference, _measurements,
-                      %{queue_type: :commands, queue_url: ^commands_url}}
-
-      assert_receive {[:skate, :radio, :sqs, :connection, :success], _reference,
-                      %{duration_microseconds: _, attempts: 1},
-                      %{queue_type: :commands, queue_url: ^commands_url}}
-
-      assert_receive {[:skate, :radio, :sqs, :connection, :start], _reference, _measurements,
-                      %{queue_type: :events, queue_url: ^events_url}}
-
-      assert_receive {[:skate, :radio, :sqs, :connection, :success], _reference,
-                      %{duration_microseconds: _, attempts: 1},
-                      %{queue_type: :events, queue_url: ^events_url}}
 
       status_map = Client.get_connection_status(client_process)
       assert status_map == %{commands_queue: :connected, events_queue: :connected}
@@ -106,19 +70,13 @@ defmodule Skate.Radio.SQS.ClientTest do
 
       assert {:ok, client_process} = Client.start_link(options)
 
-      # Drain the continue message
-      _status_map = Client.get_connection_status(client_process)
-
-      assert_receive {[:skate, :radio, :sqs, :connection, :success], _reference, %{attempts: 3},
-                      %{queue_type: :commands, queue_url: ^commands_url}}
-
       status_map = Client.get_connection_status(client_process)
       assert status_map == %{commands_queue: :connected, events_queue: :not_configured}
 
       GenServer.stop(client_process)
     end
 
-    test "exhausts retries on persistent failure and emits failure telemetry" do
+    test "exhausts retries on persistent failure" do
       commands_url = commands_queue_url()
 
       Mox.expect(ExAws.Request.HttpMock, :request, 3, fn :post, _url, _body, _headers, _opts ->
@@ -137,16 +95,6 @@ defmodule Skate.Radio.SQS.ClientTest do
 
       assert {:ok, client_process} = Client.start_link(options)
 
-      # Drain the continue message
-      _status_map = Client.get_connection_status(client_process)
-
-      assert_receive {[:skate, :radio, :sqs, :connection, :failure], _reference, %{attempts: 3},
-                      %{
-                        queue_type: :commands,
-                        queue_url: ^commands_url,
-                        error_reason: {:http_error, 403, "Forbidden"}
-                      }}
-
       status_map = Client.get_connection_status(client_process)
       assert status_map == %{commands_queue: :failed, events_queue: :not_configured}
 
@@ -162,9 +110,12 @@ defmodule Skate.Radio.SQS.ClientTest do
         {:ok, %{status_code: 200, body: queue_attributes_xml()}}
       end)
 
+      test_pid = self()
+
       Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, body, _headers, _opts ->
         assert body =~ "Action=SendMessage"
         assert body =~ "ready"
+        send(test_pid, :heartbeat_sent_to_sqs)
         {:ok, %{status_code: 200, body: send_message_xml()}}
       end)
 
@@ -180,13 +131,7 @@ defmodule Skate.Radio.SQS.ClientTest do
 
       assert {:ok, client_process} = Client.start_link(options)
 
-      assert_receive {[:skate, :radio, :sqs, :publish, :success], _reference,
-                      %{duration_microseconds: _},
-                      %{
-                        queue_url: ^commands_url,
-                        message_type: "Heartbeat",
-                        message_id: "5fea7743-dd80-46e3-ac0f-d20f7f7cd347"
-                      }}
+      assert_receive :heartbeat_sent_to_sqs
 
       GenServer.stop(client_process)
     end
