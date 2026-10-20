@@ -72,6 +72,7 @@ defmodule Skate.MixProject do
       {:ex_aws_s3, "~> 2.5"},
       {:ex_aws_secretsmanager, "~> 2.0"},
       {:ex_aws_sqs, "~> 3.4"},
+      {:saxy, "~> 1.1"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:ex_machina, "~> 2.8.0", only: :test},
       {:excellent_migrations, "~> 0.1", only: [:dev], runtime: false},
