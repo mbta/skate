@@ -38,8 +38,7 @@ defmodule Skate.Radio.SQS.Messages.Receiver do
 
   defp process_queue_messages(queue_url, options) do
     receive_options = [
-      wait_time_seconds:
-        Keyword.get(options, :wait_time_seconds, @default_wait_time_seconds),
+      wait_time_seconds: Keyword.get(options, :wait_time_seconds, @default_wait_time_seconds),
       max_number_of_messages:
         Keyword.get(options, :max_number_of_messages, @default_max_number_of_messages)
     ]
@@ -98,7 +97,11 @@ defmodule Skate.Radio.SQS.Messages.Receiver do
     end)
   end
 
-  defp discard_message(queue_url, %{receipt_handle: receipt_handle} = message, request_config_overrides) do
+  defp discard_message(
+         queue_url,
+         %{receipt_handle: receipt_handle} = message,
+         request_config_overrides
+       ) do
     message_id = Map.get(message, :message_id) || ""
 
     :telemetry.execute(
