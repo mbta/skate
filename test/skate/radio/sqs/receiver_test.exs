@@ -1,9 +1,9 @@
-defmodule Skate.Radio.SQS.Messages.ReceiverTest do
+defmodule Skate.Radio.SQS.ReceiverTest do
   use ExUnit.Case, async: false
   import Mox
   import Test.Support.Radio.SQSFixtures
 
-  alias Skate.Radio.SQS.Messages.Receiver
+  alias Skate.Radio.SQS.Receiver
 
   setup :set_mox_global
   setup :verify_on_exit!

@@ -136,20 +136,4 @@ defmodule Skate.Radio.SQS.ClientTest do
       GenServer.stop(client_process)
     end
   end
-
-  describe "client delegation helpers" do
-    test "publish_heartbeat/1 delegates to Publisher" do
-      commands_url = commands_queue_url()
-
-      Mox.expect(ExAws.Request.HttpMock, :request, fn :post, _url, body, _headers, _opts ->
-        assert body =~ "Action=SendMessage"
-        {:ok, %{status_code: 200, body: send_message_xml()}}
-      end)
-
-      assert {:ok, response} =
-               Client.publish_heartbeat(queue_url: commands_url)
-
-      assert response.body.message_id == "5fea7743-dd80-46e3-ac0f-d20f7f7cd347"
-    end
-  end
 end

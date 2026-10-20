@@ -1,10 +1,10 @@
-defmodule Skate.Radio.SQS.Messages.PublisherTest do
+defmodule Skate.Radio.SQS.PublisherTest do
   use ExUnit.Case, async: false
   import Mox
   import Test.Support.Radio.SQSFixtures
 
   alias Skate.Radio.SQS.Messages.Heartbeat
-  alias Skate.Radio.SQS.Messages.Publisher
+  alias Skate.Radio.SQS.Publisher
 
   setup :set_mox_global
   setup :verify_on_exit!
