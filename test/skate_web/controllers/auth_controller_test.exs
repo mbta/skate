@@ -2,8 +2,33 @@ defmodule SkateWeb.AuthControllerTest do
   use SkateWeb.ConnCase
 
   import Test.Support.Helpers
+  import ExUnit.CaptureLog
 
   alias Skate.Settings.User
+
+  describe "request failure" do
+    test "returns bad request for an invalid Keycloak redirect URI", %{conn: conn} do
+      failure = %Ueberauth.Failure{
+        provider: :keycloak,
+        errors: [
+          %Ueberauth.Failure.Error{
+            message_key: "invalid_request",
+            message: "Invalid parameter: redirect_uri"
+          }
+        ]
+      }
+
+      conn =
+        conn
+        |> fetch_query_params()
+        |> assign(:ueberauth_failure, failure)
+        |> put_private(:phoenix_action, :request)
+        |> SkateWeb.AuthController.action([])
+
+      assert response(conn, :bad_request) == "invalid keycloak request"
+      refute Guardian.Plug.authenticated?(conn)
+    end
+  end
 
   describe "GET /auth/:provider" do
     test "redirects to the callback", %{conn: conn} do
