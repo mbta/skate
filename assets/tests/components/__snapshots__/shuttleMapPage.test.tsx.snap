@@ -638,7 +638,7 @@ exports[`Shuttle Map Page renders 1`] = `
             >
               <a
                 aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                 href="#"
                 role="button"
                 title="Full Screen"
@@ -1347,7 +1347,7 @@ exports[`Shuttle Map Page renders selected shuttle routes 1`] = `
             >
               <a
                 aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                 href="#"
                 role="button"
                 title="Full Screen"
@@ -2056,7 +2056,7 @@ exports[`Shuttle Map Page renders with all shuttles selected 1`] = `
             >
               <a
                 aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                 href="#"
                 role="button"
                 title="Full Screen"
@@ -2366,7 +2366,7 @@ exports[`Shuttle Map Page renders with shapes selected 1`] = `
             >
               <a
                 aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                 href="#"
                 role="button"
                 title="Full Screen"
@@ -3104,7 +3104,7 @@ exports[`Shuttle Map Page renders with train vehicles 1`] = `
             >
               <a
                 aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                 href="#"
                 role="button"
                 title="Full Screen"

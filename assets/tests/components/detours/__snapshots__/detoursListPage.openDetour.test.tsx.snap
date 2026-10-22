@@ -1860,7 +1860,7 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   >
                     <a
                       aria-label="Full Screen"
-                      class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                      class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                       href="#"
                       role="button"
                       title="Full Screen"
@@ -3820,7 +3820,7 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   >
                     <a
                       aria-label="Full Screen"
-                      class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                      class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                       href="#"
                       role="button"
                       title="Full Screen"

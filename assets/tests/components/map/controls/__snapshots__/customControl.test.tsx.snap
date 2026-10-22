@@ -85,7 +85,7 @@ exports[`CustomControls when insertAfterSelector is specified and there is a nod
     >
       <a
         aria-label="Full Screen"
-        class="leaflet-control-zoom-fullscreen fullscreen-icon"
+        class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
         href="#"
         role="button"
         title="Full Screen"
@@ -148,7 +148,7 @@ exports[`CustomControls when insertAfterSelector is specified and there is not a
     >
       <a
         aria-label="Full Screen"
-        class="leaflet-control-zoom-fullscreen fullscreen-icon"
+        class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
         href="#"
         role="button"
         title="Full Screen"
