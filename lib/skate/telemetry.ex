@@ -11,6 +11,8 @@ defmodule Skate.Telemetry do
       &Skate.Telemetry.repo_query_telemetry/4,
       %{}
     )
+
+    Oban.Telemetry.attach_default_logger()
   end
 
   def repo_query_telemetry(
