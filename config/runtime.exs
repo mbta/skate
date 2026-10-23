@@ -151,6 +151,9 @@ if mqtt_url not in [nil, ""] do
   config :skate, Skate.MqttConnection, broker_configs: configs
 end
 
+config :ex_aws,
+  region: System.get_env("AWS_REGION", "us-east-1")
+
 config :skate, Skate.Radio.SQS.Config,
   commands_queue_url: System.get_env("BUS_TECH_RADIO_COMMANDS_QUEUE_URL"),
   events_queue_url: System.get_env("BUS_TECH_RADIO_EVENTS_QUEUE_URL")
