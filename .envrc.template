@@ -31,10 +31,6 @@ export SECRET_KEY_BASE=$(openssl rand -base64 48)
 # export OPEN_ROUTE_SERVICE_API_URL=
 # export OPEN_ROUTE_SERVICE_API_KEY=
 
-## Radio message queues
-# export BUS_TECH_RADIO_COMMANDS_QUEUE_URL="http://localhost:4566/000000000000/BusTechRadioCommandsQueue"
-# export BUS_TECH_RADIO_EVENTS_QUEUE_URL="http://localhost:4566/000000000000/BusTechRadioEventsQueue"
-
 ### The following variables are imported by 1Password in `.env.1p.skate`
 
 ## API key from [Swiftly Transitime API](https://swiftly-inc.stoplight.io/docs/realtime-standalone/YXBpOjI4NDM2MDU3-swiftly-api-reference)
