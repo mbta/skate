@@ -154,9 +154,3 @@ end
 config :skate, Skate.Radio.SQS.Config,
   commands_queue_url: System.get_env("BUS_TECH_RADIO_COMMANDS_QUEUE_URL"),
   events_queue_url: System.get_env("BUS_TECH_RADIO_EVENTS_QUEUE_URL")
-
-config :skate, Skate.Radio.SQS.Heartbeat,
-  interval_milliseconds:
-    "BUS_TECH_RADIO_SQS_HEARTBEAT_INTERVAL_MILLISECONDS"
-    |> System.get_env("1800000")
-    |> String.to_integer()
