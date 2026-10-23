@@ -1,5 +1,6 @@
 defmodule Skate.Radio.SQS.CommandsTest do
   use ExUnit.Case, async: false
+  doctest Skate.Radio.SQS.Commands
 
   import Test.Support.Helpers
 
