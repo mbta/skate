@@ -11,7 +11,7 @@ defmodule Skate.Radio.SQS.Events do
 
   @spec start_link(GenServer.options()) :: GenServer.on_start()
   def start_link(_options \\ []) do
-    case Config.queue_url(:commands) do
+    case Config.queue_url(:events) do
       {:ok, queue_url} ->
         Broadway.start_link(__MODULE__,
           name: __MODULE__,
