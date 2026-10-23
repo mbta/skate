@@ -3,6 +3,8 @@ defmodule Skate.Radio.SQS.Config do
 
   alias Skate.Radio.SQS.Constants
 
+  # The guard clauses assert we will only convert trusted input into atoms
+  # sobelow_skip ["DOS.BinToAtom"]
   @spec queue_url(Constants.queue_name()) :: {:ok, String.t()} | :error
   def queue_url(queue_name) do
     with true <- queue_name in Constants.queue_names(),
