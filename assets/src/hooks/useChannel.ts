@@ -1,6 +1,12 @@
 import { Channel, Socket } from "phoenix"
 import { useCallback, useEffect, useState } from "react"
 import { create, Struct, StructError } from "superstruct"
+import {
+  attachChannelLogging,
+  logChannelNotice,
+  withChannelAuthExpiredLogging,
+  withChannelTimeoutLogging,
+} from "../helpers/socketSentry"
 import { reload } from "../models/browser"
 import * as Sentry from "@sentry/react"
 
@@ -33,10 +39,11 @@ export const useChannel = <T>({
     let channel: Channel | undefined
     if (socket !== undefined && topic !== null) {
       channel = socket.channel(topic)
+      attachChannelLogging(channel, topic)
       channel.on(event, ({ data: data }) => {
         setState(parser(data))
       })
-      channel.on("auth_expired", reload)
+      channel.on("auth_expired", withChannelAuthExpiredLogging(topic, reload))
 
       channel
         .join()
@@ -50,6 +57,7 @@ export const useChannel = <T>({
         })
 
         .receive("error", ({ reason }) => {
+          logChannelNotice(topic, "error", reason)
           if (reason === "not_authenticated") {
             reload()
           } else {
@@ -57,7 +65,7 @@ export const useChannel = <T>({
             console.error(`joining topic ${topic} failed`, reason)
           }
         })
-        .receive("timeout", reload)
+        .receive("timeout", withChannelTimeoutLogging(topic, reload))
     }
 
     return () => {
@@ -156,10 +164,11 @@ export const useCheckedTwoWayChannel = <T, U, V>({
     let channel: Channel | undefined
     if (socket !== undefined && topic !== null) {
       channel = socket.channel(topic)
+      attachChannelLogging(channel, topic)
       channel.on(event, (data: { data: unknown }) => {
         onOk(data)
       })
-      channel.on("auth_expired", reload)
+      channel.on("auth_expired", withChannelAuthExpiredLogging(topic, reload))
 
       channel
         .join()
@@ -173,6 +182,7 @@ export const useCheckedTwoWayChannel = <T, U, V>({
           }
         })
         .receive("error", ({ reason }) => {
+          logChannelNotice(topic, "error", reason)
           if (reason === "not_authenticated") {
             reload()
           } else {
@@ -180,7 +190,7 @@ export const useCheckedTwoWayChannel = <T, U, V>({
             console.error(`joining topic ${topic} failed`, reason)
           }
         })
-        .receive("timeout", reload)
+        .receive("timeout", withChannelTimeoutLogging(topic, reload))
     }
 
     return () => {

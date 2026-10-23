@@ -2,6 +2,12 @@ import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
 import { array, assert, object, string } from "superstruct"
 import { equalByElements } from "../helpers/array"
+import {
+  attachChannelLogging,
+  logChannelNotice,
+  withChannelAuthExpiredLogging,
+  withChannelTimeoutLogging,
+} from "../helpers/socketSentry"
 import { reload } from "../models/browser"
 import { ByRouteId, RouteId } from "../schedule"
 
@@ -30,17 +36,21 @@ const subscribe = (
 
   const topic = `alerts:route:${routeId}`
   const channel = socket.channel(topic)
+  attachChannelLogging(channel, topic)
 
   channel.on("alerts", handleAlerts)
 
-  channel.on("auth_expired", reload)
+  channel.on("auth_expired", withChannelAuthExpiredLogging(topic, reload))
 
   channel
     .join()
     .receive("ok", handleAlerts)
-    // eslint-disable-next-line no-console
-    .receive("error", ({ reason }) => console.error("join failed", reason))
-    .receive("timeout", reload)
+    .receive("error", ({ reason }) => {
+      logChannelNotice(topic, "error", reason)
+      // eslint-disable-next-line no-console
+      console.error("join failed", reason)
+    })
+    .receive("timeout", withChannelTimeoutLogging(topic, reload))
 
   return channel
 }
