@@ -2,10 +2,13 @@ defmodule Skate.Radio.SQS.Commands do
   @moduledoc false
 
   alias Skate.Radio.SQS.Config
+  alias Skate.Radio.SQS.Constants
 
   use GenServer
 
   @type state :: %{queue_url: String.t()}
+
+  @type command :: %{name: Constants.command_name(), data: any()}
 
   @spec start_link(GenServer.options()) :: GenServer.on_start()
   def start_link(options \\ [name: __MODULE__]) do
@@ -25,43 +28,26 @@ defmodule Skate.Radio.SQS.Commands do
   end
 
   @impl GenServer
-  @spec handle_call(
-          {:send, command :: %{name: command_name(), data: any()}},
-          GenServer.from(),
-          state()
-        ) ::
+  @spec handle_call({:send, command()}, GenServer.from(), state()) ::
           {:reply, :ok | :error, state()}
   def handle_call(
         {:send, %{name: command_name, data: _} = command},
         _from,
         %{queue_url: queue_url} = state
-      ) do
-    reply =
-      with true <- command_name in __MODULE__.command_names(),
-           {:ok, serialized} <- Jason.encode(command),
-           {:ok, _} <-
-             queue_url
-             |> ExAws.SQS.send_message(serialized)
-             |> ExAws.request(Application.get_env(:ex_aws, :request_config_overrides, %{})) do
-        :ok
-      else
-        _ ->
-          :error
-      end
-
-    {:reply, reply, state}
-  end
-
-  @type command_name :: :noop
-
-  @doc """
-  Canonical list of command names.
-
-  ## Examples
-
-      iex> Skate.Radio.SQS.Commands.command_names()
-      [:noop]
-  """
-  @spec command_names() :: [command_name()]
-  def command_names, do: [:noop]
+      ),
+      do: {
+        :reply,
+        with true <- command_name in Constants.command_names(),
+             {:ok, serialized} <- Jason.encode(command),
+             {:ok, _} <-
+               queue_url
+               |> ExAws.SQS.send_message(serialized)
+               |> ExAws.request(Application.get_env(:ex_aws, :request_config_overrides, %{})) do
+          :ok
+        else
+          _ ->
+            :error
+        end,
+        state
+      }
 end
