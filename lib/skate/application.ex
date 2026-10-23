@@ -51,10 +51,15 @@ defmodule Skate.Application do
            Application.get_env(:skate, Skate.Detours.TripModificationPublisher)},
           {Singleton.Supervisor, name: Skate.Singleton},
           Skate.Detours.FeedSynchronizer,
-          {Skate.Research.ScenarioStore, []},
-          Skate.Radio.SQS.Commands,
-          Skate.Radio.SQS.Events
-        ]
+          {Skate.Research.ScenarioStore, []}
+        ] ++
+        if(Mix.env() == :test,
+          do: [],
+          else: [
+            Skate.Radio.SQS.Commands,
+            Skate.Radio.SQS.Events
+          ]
+        )
 
     Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)
   end
