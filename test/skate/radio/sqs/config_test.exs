@@ -34,7 +34,7 @@ defmodule Skate.Radio.SQS.ConfigTest do
             Keyword.put([], :"#{unquote(queue_name)}_queue_url", unquote(input))
           )
 
-          assert unquote(expected) = Kernel.apply(Config, unquote(url), [])
+          assert unquote(expected) = Config.queue_url(unquote(queue_name))
         end
       end
     end
