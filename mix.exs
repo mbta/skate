@@ -59,6 +59,7 @@ defmodule Skate.MixProject do
       {:broadway_sqs, "~> 0.7.4"},
       {:bypass, "~> 2.1.0", only: :test},
       {:castore, "~> 1.0.21"},
+      {:certifi, "2.18.0", override: true},
       {:configparser_ex, "~> 4.0", only: :dev},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:csv, "~> 2.4.1"},

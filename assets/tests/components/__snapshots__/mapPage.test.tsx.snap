@@ -531,7 +531,7 @@ exports[`<MapPage /> Snapshot renders the empty state 1`] = `
             >
               <a
                 aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                 href="#"
                 role="button"
                 title="Full Screen"
@@ -1118,7 +1118,7 @@ exports[`<MapPage /> Snapshot renders the null state 1`] = `
             >
               <a
                 aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                 href="#"
                 role="button"
                 title="Full Screen"
@@ -2043,7 +2043,7 @@ exports[`<MapPage /> Snapshot renders vehicle data 1`] = `
             >
               <a
                 aria-label="Full Screen"
-                class="leaflet-control-zoom-fullscreen fullscreen-icon"
+                class="leaflet-control-zoom-fullscreen leaflet-fullscreen-icon"
                 href="#"
                 role="button"
                 title="Full Screen"

@@ -1,29 +1,60 @@
 defmodule Util.TimeTest do
   use ExUnit.Case, async: true
   doctest Util.Time
+  @timezone "America/New_York"
+  @fixed_date ~D[2026-10-15]
+  @fixed_end_of_service DateTime.new!(@fixed_date, ~T[03:00:00.000000], @timezone)
 
-  describe "end_of_service_in_utc/1" do
-    test "end of service is next calendar day at 3am" do
-      timezone = "America/New_York"
+  describe "end_of_service/0" do
+    test "matches end_of_service/1 for current time in Eastern Time" do
+      now = DateTime.now!(@timezone)
+      assert Util.Time.end_of_service() == Util.Time.end_of_service(now)
+    end
+  end
 
-      today =
-        timezone
-        |> DateTime.now!()
-        |> DateTime.to_date()
+  describe "end_of_service/1" do
+    test "uses the next day if the given DateTime is before midnight before the end of the service day" do
+      datetime = DateTime.new!(@fixed_date, ~T[23:00:00], @timezone)
+      expected_end_of_service = DateTime.add(@fixed_end_of_service, 1, :day)
 
-      tomorrow = Date.add(today, 1)
-
-      end_of_service =
-        today
-        |> Util.Time.end_of_service_in_utc()
-        |> DateTime.shift_zone!(timezone)
-
-      assert DateTime.to_date(end_of_service) == tomorrow
-      assert end_of_service.hour == 3
-      assert end_of_service.minute == 0
-      assert end_of_service.second == 0
+      assert Util.Time.end_of_service(datetime) == expected_end_of_service
     end
 
+    test "uses the same day if the given DateTime is after midnight before the end of the service day" do
+      datetime = DateTime.new!(@fixed_date, ~T[02:00:00], @timezone)
+      expected_end_of_service = @fixed_end_of_service
+
+      assert Util.Time.end_of_service(datetime) == expected_end_of_service
+    end
+
+    test "UTC inputs are not assumed to be eastern time" do
+      # 01:30 AM EDT on Oct 15 is 05:30 AM UTC on Oct 15
+      datetime = DateTime.new!(@fixed_date, ~T[05:30:00], "Etc/UTC")
+      expected_end_of_service = @fixed_end_of_service
+
+      assert Util.Time.end_of_service(datetime) == expected_end_of_service
+    end
+
+    test "correctly handles UTC datetimes where UTC date differs from Eastern date" do
+      # 11:30 PM EDT on Oct 14 is 03:30 AM UTC on Oct 15
+      datetime = DateTime.new!(@fixed_date, ~T[03:30:00], "Etc/UTC")
+      expected_end_of_service = @fixed_end_of_service
+
+      assert Util.Time.end_of_service(datetime) == expected_end_of_service
+    end
+
+    test "uses daylight saving time for the spring transition" do
+      assert Util.Time.end_of_service(~D[2026-03-07]) ==
+               DateTime.new!(~D[2026-03-08], ~T[03:00:00.000000], @timezone)
+    end
+
+    test "uses standard time for the fall transition" do
+      assert Util.Time.end_of_service(~D[2026-10-31]) ==
+               DateTime.new!(~D[2026-11-01], ~T[03:00:00.000000], @timezone)
+    end
+  end
+
+  describe "end_of_service_in_utc/1" do
     test "uses daylight saving time for the spring transition" do
       assert Util.Time.end_of_service_in_utc(~D[2026-03-07]) == ~U[2026-03-08 07:00:00.000000Z]
     end

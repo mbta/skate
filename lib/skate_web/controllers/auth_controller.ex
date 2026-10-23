@@ -9,6 +9,10 @@ defmodule SkateWeb.AuthController do
   alias SkateWeb.AuthManager
   alias SkateWeb.Plugs.CaptureAuthReturnPath
 
+  def request(%{assigns: %{ueberauth_failure: %{provider: :keycloak}}} = conn, _params) do
+    send_resp(conn, :bad_request, "invalid keycloak request")
+  end
+
   def callback(%{assigns: %{ueberauth_auth: %{provider: :keycloak} = auth}} = conn, _params) do
     username = auth.uid
     email = auth.info.email

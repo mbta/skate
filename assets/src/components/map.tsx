@@ -1,7 +1,7 @@
 import Leaflet, { LatLng, LatLngLiteral, Map as LeafletMap } from "leaflet"
 
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
-import "leaflet.fullscreen"
+import FullScreen from "leaflet.fullscreen"
 import React, {
   MutableRefObject,
   PropsWithChildren,
@@ -72,7 +72,7 @@ export const defaultCenter: LatLngLiteral = {
 }
 
 export const FullscreenControl = createControlComponent(
-  Leaflet.control.fullscreen
+  (options) => new FullScreen(options)
 )
 
 const EventAdder = (): ReactElement => {
