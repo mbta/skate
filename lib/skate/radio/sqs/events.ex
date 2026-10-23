@@ -16,7 +16,10 @@ defmodule Skate.Radio.SQS.Events do
         Broadway.start_link(__MODULE__,
           name: __MODULE__,
           producer: [
-            module: {BroadwaySQS.Producer, queue_url: queue_url}
+            module: {
+              BroadwaySQS.Producer,
+              queue_url: queue_url, config: [region: Application.get_env(:ex_aws, :region)]
+            }
           ],
           processors: [
             default: []
