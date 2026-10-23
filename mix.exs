@@ -56,6 +56,7 @@ defmodule Skate.MixProject do
   defp deps do
     [
       {:doctest_formatter, "~> 0.4.0", runtime: false},
+      {:broadway_sqs, "~> 1.0.1"},
       {:bypass, "~> 2.1.0", only: :test},
       {:castore, "~> 1.0.21"},
       {:configparser_ex, "~> 4.0", only: :dev},
