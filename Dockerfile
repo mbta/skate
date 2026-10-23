@@ -1,4 +1,4 @@
-FROM hexpm/elixir:1.17.3-erlang-27.3.4.14-alpine-3.21.7 AS elixir-builder
+FROM hexpm/elixir:1.17.3-erlang-27.3.4.19-alpine-3.24.3 AS elixir-builder
 
 # elixir expects utf8.
 ENV LANG=C.UTF-8 \
@@ -15,7 +15,7 @@ RUN mix local.hex --force && \
   mix local.rebar --force && \
   mix do deps.get --only prod
 
-FROM node:20.11.0-alpine3.19 AS assets-builder
+FROM node:22.23.4-alpine3.23 AS assets-builder
 
 WORKDIR /root
 ADD . .
@@ -49,7 +49,7 @@ ENV SENTRY_RELEASE=${SENTRY_RELEASE}
 
 RUN mix do compile --force, phx.digest, sentry.package_source_code, release
 
-FROM alpine:3.21.7
+FROM alpine:3.24.3
 
 RUN apk upgrade --no-cache --update
 
