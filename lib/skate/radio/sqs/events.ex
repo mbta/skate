@@ -18,7 +18,16 @@ defmodule Skate.Radio.SQS.Events do
           producer: [
             module: {
               BroadwaySQS.Producer,
-              queue_url: queue_url, config: [region: Application.get_env(:ex_aws, :region)]
+              queue_url: queue_url,
+              config: [
+                region: Application.get_env(:ex_aws, :region),
+                # Need to make sure the wait time does not exceed
+                # the underlying HTTP client's receive timeout
+                wait_time_seconds:
+                  :skate
+                  |> Application.get_env(__MODULE__, [])
+                  |> Keyword.get(:wait_time_seconds, 10)
+              ]
             }
           ],
           processors: [
