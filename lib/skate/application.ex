@@ -17,7 +17,6 @@ defmodule Skate.Application do
     Skate.Telemetry.setup_telemetry()
 
     Skate.Detours.S3Exporter.Telemetry.attach_handler()
-    Skate.Radio.SQS.Telemetry.attach_handler()
 
     # List all child processes to be supervised
     children =
@@ -50,10 +49,11 @@ defmodule Skate.Application do
           Skate.Migrate,
           {Skate.Detours.TripModificationPublisher,
            Application.get_env(:skate, Skate.Detours.TripModificationPublisher)},
-          {Skate.Radio.SQS.Client, Application.get_env(:skate, Skate.Radio.SQS.Client, [])},
           {Singleton.Supervisor, name: Skate.Singleton},
           Skate.Detours.FeedSynchronizer,
-          {Skate.Research.ScenarioStore, []}
+          {Skate.Research.ScenarioStore, []},
+          Skate.Radio.SQS.Commands,
+          Skate.Radio.SQS.Events
         ]
 
     Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)

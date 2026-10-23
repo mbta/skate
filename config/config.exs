@@ -159,11 +159,6 @@ config :skate, Skate.MqttConnection,
   broker_configs: ["mqtt://system:manager@localhost/"],
   broker_client_prefix: "skate"
 
-config :skate, Skate.Radio.SQS.Client,
-  commands_queue_url: nil,
-  events_queue_url: nil,
-  enabled?: false
-
 config :skate, :swiftly, adjustments_module: Swiftly.API.ServiceAdjustments
 
 config :skate, Skate.BridgeStatus,

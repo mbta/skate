@@ -151,15 +151,12 @@ if mqtt_url not in [nil, ""] do
   config :skate, Skate.MqttConnection, broker_configs: configs
 end
 
-# Radio AWS SQS configuration
-commands_queue_url = System.get_env("BUS_TECH_RADIO_COMMANDS_QUEUE_URL")
-events_queue_url = System.get_env("BUS_TECH_RADIO_EVENTS_QUEUE_URL")
+config :skate, Skate.Radio.SQS.Config,
+  commands_queue_url: System.get_env("BUS_TECH_RADIO_COMMANDS_QUEUE_URL"),
+  events_queue_url: System.get_env("BUS_TECH_RADIO_EVENTS_QUEUE_URL")
 
-commands_queue_defined? = commands_queue_url not in [nil, ""]
-events_queue_defined? = events_queue_url not in [nil, ""]
-
-config :skate, Skate.Radio.SQS.Client,
-  commands_queue_url: if(commands_queue_defined?, do: commands_queue_url, else: nil),
-  events_queue_url: if(events_queue_defined?, do: events_queue_url, else: nil),
-  enabled?: commands_queue_defined? or events_queue_defined?,
-  heartbeat_interval_milliseconds: 300_000
+config :skate, Skate.Radio.SQS.Heartbeat,
+  interval_milliseconds:
+    "BUS_TECH_RADIO_SQS_HEARTBEAT_INTERVAL_MILLISECONDS"
+    |> System.get_env("1800000")
+    |> String.to_integer()
