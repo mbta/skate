@@ -13,7 +13,14 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   def parse(data)
 
   def parse(binary) when is_binary(binary) do
-    Logger.warning("attempting to parse #{inspect(binary)}")
+    Logger.warning(
+      inspect(%{
+        raw_input: inspect(binary),
+        raw_input_is_valid_string?: String.valid?(binary),
+        decompressed_input: inspect(:zlib.gunzip())
+      })
+    )
+
     json = Jason.decode!(binary)
     parse_json(json)
   end
