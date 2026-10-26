@@ -1,7 +1,7 @@
 import Leaflet, { LatLng, LatLngLiteral, Map as LeafletMap } from "leaflet"
 
 import "leaflet-defaulticon-compatibility" // see https://github.com/Leaflet/Leaflet/issues/4968#issuecomment-483402699
-import { FullScreen } from "leaflet.fullscreen"
+import FullScreen from "leaflet.fullscreen"
 import React, {
   MutableRefObject,
   PropsWithChildren,
