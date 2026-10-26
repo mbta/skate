@@ -1,6 +1,11 @@
 import { Channel, Socket } from "phoenix"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { SocketContext } from "../../../contexts/socketContext"
+import {
+  attachChannelLogging,
+  logChannelNotice,
+  withChannelAuthExpiredLogging,
+} from "../../../helpers/socketSentry"
 import { reload } from "../../../models/browser"
 import { Scenario } from "./types"
 
@@ -54,6 +59,7 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
 
     const channel = socket.channel(topic)
     channelRef.current = channel
+    attachChannelLogging(channel, topic)
 
     channel.on("scenario_triggered", ({ data }: { data: Scenario<T, Id> }) => {
       setActiveScenario(data)
@@ -69,7 +75,7 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
       }
     })
 
-    channel.on("auth_expired", reload)
+    channel.on("auth_expired", withChannelAuthExpiredLogging(topic, reload))
 
     channel
       .join()
@@ -82,7 +88,8 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
           }
         }
       })
-      .receive("error", () => {
+      .receive("error", (reason) => {
+        logChannelNotice(topic, "error", reason)
         setIsConnected(false)
       })
 

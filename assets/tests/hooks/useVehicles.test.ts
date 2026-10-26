@@ -14,6 +14,7 @@ import * as Sentry from "@sentry/react"
 jest.mock("@sentry/react", () => ({
   __esModule: true,
   captureException: jest.fn(),
+  captureMessage: jest.fn(),
 }))
 
 describe("useVehicles", () => {
@@ -170,16 +171,56 @@ describe("useVehicles", () => {
     })
   })
 
-  test("reloads the window on channel timeout", async () => {
-    const reloadSpy = jest.spyOn(browser, "reload")
-    reloadSpy.mockImplementationOnce(() => ({}))
-    const mockSocket = makeMockSocket()
-    const mockChannel = makeMockChannel("timeout")
-    mockSocket.channel.mockImplementationOnce(() => mockChannel)
+  test.each([
+    {
+      scenario: "channel timeout",
+      channelReceiveStatus: "timeout" as const,
+      channelReceiveData: undefined,
+      expectedMessage: 'Channel timeout on topic "vehicles:route:1"',
+      expectedLevel: "warning",
+      shouldReload: true,
+    },
+    {
+      scenario: "join error",
+      channelReceiveStatus: "error" as const,
+      channelReceiveData: { reason: "forbidden" },
+      expectedMessage: 'Channel error on topic "vehicles:route:1"',
+      expectedLevel: "error",
+      shouldReload: false,
+    },
+  ])(
+    "logs to Sentry on $scenario",
+    ({
+      channelReceiveStatus,
+      channelReceiveData,
+      expectedMessage,
+      expectedLevel,
+      shouldReload,
+    }) => {
+      const consoleErrorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {})
+      const reloadSpy = jest.spyOn(browser, "reload")
+      reloadSpy.mockImplementationOnce(() => ({}))
+      const mockSocket = makeMockSocket()
+      const mockChannel = makeMockChannel(
+        channelReceiveStatus,
+        channelReceiveData
+      )
+      mockSocket.channel.mockImplementationOnce(() => mockChannel)
 
-    renderHook(() => useVehicles(mockSocket, ["1"]))
+      renderHook(() => useVehicles(mockSocket, ["1"]))
 
-    expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
-  })
+      expect(reloadSpy).toHaveBeenCalledTimes(shouldReload ? 1 : 0)
+
+      expect(Sentry.captureMessage).toHaveBeenCalledWith(
+        expectedMessage,
+        expect.objectContaining({
+          level: expectedLevel,
+        })
+      )
+      reloadSpy.mockRestore()
+      consoleErrorSpy.mockRestore()
+    }
+  )
 })

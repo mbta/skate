@@ -1,5 +1,11 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
+import {
+  attachChannelLogging,
+  logChannelNotice,
+  withChannelAuthExpiredLogging,
+  withChannelTimeoutLogging,
+} from "../helpers/socketSentry"
 import { reload } from "../models/browser"
 import { TrainVehicle } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule"
@@ -134,20 +140,22 @@ const subscribe = (
 
   const topic = `train_vehicles:${routeId}`
   const channel = socket.channel(topic)
+  attachChannelLogging(channel, topic)
 
   channel.on("train_vehicles", handleTrainVehicles)
 
   // Reload our session if the auth has expired
-  channel.on("auth_expired", reload)
+  channel.on("auth_expired", withChannelAuthExpiredLogging(topic, reload))
 
   channel
     .join()
     .receive("ok", handleTrainVehicles)
-    .receive("error", ({ reason }) =>
+    .receive("error", ({ reason }) => {
+      logChannelNotice(topic, "error", reason)
       // eslint-disable-next-line no-console
       console.error("Train vehicles join failed", reason)
-    )
-    .receive("timeout", reload)
+    })
+    .receive("timeout", withChannelTimeoutLogging(topic, reload))
   return channel
 }
 
