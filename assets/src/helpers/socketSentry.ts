@@ -38,25 +38,27 @@ export const logSocketClose = (event?: CloseEvent): void => {
 
   const isPlannedClosure = event?.code === 1000
 
-  Sentry.captureMessage(
-    `WebSocket connection closed: code=${event?.code ?? "unknown"} reason="${
-      event?.reason ?? ""
-    }" wasClean=${event?.wasClean ?? "unknown"}`,
-    {
-      level: isPlannedClosure ? "info" : "warning",
-      tags: {
-        socket_event: "close",
-        socket_code: event?.code?.toString() ?? "unknown",
-        socket_clean:
-          event?.wasClean !== undefined ? String(event.wasClean) : "unknown",
-      },
-      extra: {
-        code: event?.code,
-        reason: event?.reason,
-        wasClean: event?.wasClean,
-      },
-    }
-  )
+  if (!isPlannedClosure) {
+    Sentry.captureMessage(
+      `WebSocket connection closed unexpectedly: code=${event?.code ?? "unknown"} reason="${
+        event?.reason ?? ""
+      }" wasClean=${event?.wasClean ?? "unknown"}`,
+      {
+        level: isPlannedClosure ? "info" : "warning",
+        tags: {
+          socket_event: "close",
+          socket_code: event?.code?.toString() ?? "unknown",
+          socket_clean:
+            event?.wasClean !== undefined ? String(event.wasClean) : "unknown",
+        },
+        extra: {
+          code: event?.code,
+          reason: event?.reason,
+          wasClean: event?.wasClean,
+        },
+      }
+    )
+  }
 }
 
 /** Records WebSocket transport errors in Sentry. */
@@ -141,11 +143,7 @@ export const attachChannelLogging = (
     })
   }
 
-  if (typeof channel.onClose === "function") {
-    channel.onClose(() => {
-      logChannelNotice(topic, "close")
-    })
-  }
+  // TODO: decide whether to add logging for channel closures
 
   return channel
 }

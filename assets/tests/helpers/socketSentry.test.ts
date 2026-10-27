@@ -67,27 +67,28 @@ describe("socketSentry", () => {
       } as CloseEvent)
 
       expect(Sentry.captureMessage).toHaveBeenCalledWith(
-        expect.stringContaining("WebSocket connection closed: code=1006"),
+        expect.stringContaining(
+          "WebSocket connection closed unexpectedly: code=1006"
+        ),
         expect.anything()
       )
     })
   })
 
   describe("logSocketClose", () => {
+    test("does not log to sentry when a planned closure occurs with code 1000", () => {
+      const event = {
+        code: 1000,
+        reason: "Normal closure",
+        wasClean: true,
+      } as CloseEvent
+
+      logSocketClose(event)
+
+      expect(Sentry.captureMessage).not.toHaveBeenCalled()
+    })
+
     test.each([
-      {
-        scenario: "a planned closure occurs with code 1000",
-        event: {
-          code: 1000,
-          reason: "Normal closure",
-          wasClean: true,
-        } as CloseEvent,
-        expectedLevel: "info",
-        expectedMessage:
-          'WebSocket connection closed: code=1000 reason="Normal closure" wasClean=true',
-        expectedCleanTag: "true",
-        expectedCodeTag: "1000",
-      },
       {
         scenario: "an abnormal closure occurs with code 1006",
         event: {
@@ -97,7 +98,7 @@ describe("socketSentry", () => {
         } as CloseEvent,
         expectedLevel: "warning",
         expectedMessage:
-          'WebSocket connection closed: code=1006 reason="Server dropped" wasClean=false',
+          'WebSocket connection closed unexpectedly: code=1006 reason="Server dropped" wasClean=false',
         expectedCleanTag: "false",
         expectedCodeTag: "1006",
       },
@@ -106,7 +107,7 @@ describe("socketSentry", () => {
         event: undefined,
         expectedLevel: "warning",
         expectedMessage:
-          'WebSocket connection closed: code=unknown reason="" wasClean=unknown',
+          'WebSocket connection closed unexpectedly: code=unknown reason="" wasClean=unknown',
         expectedCleanTag: "unknown",
         expectedCodeTag: "unknown",
       },
@@ -256,16 +257,15 @@ describe("socketSentry", () => {
     expect(mockCallback).toHaveBeenCalledTimes(1)
   })
 
-  test("attachChannelLogging attaches onError and onClose handlers", () => {
+  // TODO: decide whether to attach an onClose handler
+  test("attachChannelLogging attaches onError handler", () => {
     const mockChannel = {
       onError: jest.fn(),
-      onClose: jest.fn(),
     } as any
 
     attachChannelLogging(mockChannel, "test-topic")
 
     expect(mockChannel.onError).toHaveBeenCalled()
-    expect(mockChannel.onClose).toHaveBeenCalled()
 
     // Trigger registered callbacks
     const [errorHandler] = mockChannel.onError.mock.calls[0]
@@ -275,13 +275,6 @@ describe("socketSentry", () => {
       expect.objectContaining({
         extra: expect.objectContaining({ reason: "fail" }),
       })
-    )
-
-    const [closeHandler] = mockChannel.onClose.mock.calls[0]
-    closeHandler()
-    expect(Sentry.captureMessage).toHaveBeenCalledWith(
-      'Channel close on topic "test-topic"',
-      expect.objectContaining({ level: "info" })
     )
   })
 })
