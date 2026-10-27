@@ -67,27 +67,26 @@ describe("socketSentry", () => {
       } as CloseEvent)
 
       expect(Sentry.captureMessage).toHaveBeenCalledWith(
-        expect.stringContaining("WebSocket connection closed: code=1006"),
+        expect.stringContaining("WebSocket connection closed unexpectedly: code=1006"),
         expect.anything()
       )
     })
   })
 
   describe("logSocketClose", () => {
+    test("does not log to sentry when a planned closure occurs with code 1000", () => {
+      const event = {
+        code: 1000,
+        reason: "Normal closure",
+        wasClean: true,
+      } as CloseEvent
+      
+      logSocketClose(event)
+      
+      expect(Sentry.captureMessage).not.toHaveBeenCalled()
+    })
+    
     test.each([
-      {
-        scenario: "a planned closure occurs with code 1000",
-        event: {
-          code: 1000,
-          reason: "Normal closure",
-          wasClean: true,
-        } as CloseEvent,
-        expectedLevel: "info",
-        expectedMessage:
-          'WebSocket connection closed: code=1000 reason="Normal closure" wasClean=true',
-        expectedCleanTag: "true",
-        expectedCodeTag: "1000",
-      },
       {
         scenario: "an abnormal closure occurs with code 1006",
         event: {
@@ -97,7 +96,7 @@ describe("socketSentry", () => {
         } as CloseEvent,
         expectedLevel: "warning",
         expectedMessage:
-          'WebSocket connection closed: code=1006 reason="Server dropped" wasClean=false',
+          'WebSocket connection closed unexpectedly: code=1006 reason="Server dropped" wasClean=false',
         expectedCleanTag: "false",
         expectedCodeTag: "1006",
       },
@@ -106,7 +105,7 @@ describe("socketSentry", () => {
         event: undefined,
         expectedLevel: "warning",
         expectedMessage:
-          'WebSocket connection closed: code=unknown reason="" wasClean=unknown',
+          'WebSocket connection closed unexpectedly: code=unknown reason="" wasClean=unknown',
         expectedCleanTag: "unknown",
         expectedCodeTag: "unknown",
       },
