@@ -141,11 +141,7 @@ export const attachChannelLogging = (
     })
   }
 
-  if (typeof channel.onClose === "function") {
-    channel.onClose(() => {
-      logChannelNotice(topic, "close")
-    })
-  }
+  // TODO: decide whether to add logging for channel closures
 
   return channel
 }
