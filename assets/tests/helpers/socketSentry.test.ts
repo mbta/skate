@@ -67,7 +67,9 @@ describe("socketSentry", () => {
       } as CloseEvent)
 
       expect(Sentry.captureMessage).toHaveBeenCalledWith(
-        expect.stringContaining("WebSocket connection closed unexpectedly: code=1006"),
+        expect.stringContaining(
+          "WebSocket connection closed unexpectedly: code=1006"
+        ),
         expect.anything()
       )
     })
@@ -80,12 +82,12 @@ describe("socketSentry", () => {
         reason: "Normal closure",
         wasClean: true,
       } as CloseEvent
-      
+
       logSocketClose(event)
-      
+
       expect(Sentry.captureMessage).not.toHaveBeenCalled()
     })
-    
+
     test.each([
       {
         scenario: "an abnormal closure occurs with code 1006",
