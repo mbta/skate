@@ -256,12 +256,13 @@ defmodule Util.Time do
     |> DateTime.new!(~T[03:00:00.000000], "America/New_York")
   end
 
-  # @TODO undo
   def end_of_service_in_utc() do
-    DateTime.add(DateTime.utc_now(), 1, :minute)
+    DateTime.shift_zone!(end_of_service(), "Etc/UTC")
   end
 
-  def end_of_service_in_utc(_date_or_datetime) do
-    DateTime.add(DateTime.utc_now(), 1, :minute)
+  def end_of_service_in_utc(date_or_datetime) do
+    date_or_datetime
+    |> end_of_service()
+    |> DateTime.shift_zone!("Etc/UTC")
   end
 end
