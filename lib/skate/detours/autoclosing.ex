@@ -151,4 +151,87 @@ defmodule Skate.Detours.Autoclosing do
       end
     end
   end
+
+  defmodule Telemetry do
+    @moduledoc """
+    Provides methods for configuring telemetry for autoclosing jobs.
+    """
+
+    @default_handler_id "skate.detours.autoclosing"
+    @default_handler_config []
+
+    @doc """
+    Attach a handler that subscribes to Oban job start, stop, and exception events.
+    """
+    def attach_handler(id \\ @default_handler_id, config \\ @default_handler_config) do
+      events =
+        for event <- [:start, :stop, :exception] do
+          [:oban, :job, event]
+        end
+
+      :telemetry.attach_many(id, events, &handle_event/4, config)
+    end
+
+    @doc false
+    @spec handle_event(
+            :telemetry.event_name(),
+            :telemetry.event_measurements(),
+            :telemetry.event_metadata(),
+            :telemetry.handler_config()
+          ) :: any()
+
+    def handle_event(
+          [:oban, :job, :start],
+          %{system_time: system_time} = _measurements,
+          %{
+            worker: "Skate.Detours.Autoclosing.Job",
+            args: %{"detour_id" => detour_id}
+          } = _metadata,
+          _config
+        ) do
+      Logger.info(
+        "detour autoclose job: " <>
+          "started at #{system_time} " <>
+          "for detour_id=#{detour_id}"
+      )
+    end
+
+    def handle_event(
+          [:oban, :job, :stop],
+          %{duration: duration} = _measurements,
+          %{
+            worker: "Skate.Detours.Autoclosing.Job",
+            args: %{"detour_id" => detour_id},
+            result: result
+          } = _metadata,
+          _config
+        ) do
+      Logger.info(
+        "detour autoclose job: " <>
+          "completed in #{System.convert_time_unit(duration, :native, :millisecond)} ms " <>
+          "for detour_id=#{detour_id} " <>
+          "with result #{inspect(result)}"
+      )
+    end
+
+    def handle_event(
+          [:oban, :job, :exception],
+          %{duration: duration} = _measurements,
+          %{
+            worker: "Skate.Detours.Autoclosing.Job",
+            args: %{"detour_id" => detour_id},
+            reason: reason
+          } = _metadata,
+          _config
+        ) do
+      Logger.error(
+        "detour autoclose job: " <>
+          "failed in #{System.convert_time_unit(duration, :native, :millisecond)} ms " <>
+          "for detour_id=#{detour_id} " <>
+          "with reason #{inspect(reason)}"
+      )
+    end
+
+    def handle_event(_, _, _, _), do: nil
+  end
 end
