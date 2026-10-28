@@ -1,6 +1,8 @@
 defmodule Skate.Detours.Autoclosing do
   @moduledoc false
 
+  require Logger
+
   import Ecto.Query
   alias Skate.Settings.TestGroup
 
