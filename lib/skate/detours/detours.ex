@@ -261,31 +261,12 @@ defmodule Skate.Detours.Detours do
     partial_changeset =
       Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
-    partial_changeset =
-      if Skate.Detours.Autoclosing.enabled?() do
-        Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(partial_changeset)
-      else
-        partial_changeset
-      end
-
     detour = Ecto.Changeset.apply_changes(partial_changeset)
 
     with swiftly_response <- update_swiftly(partial_changeset, detour),
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
-         {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset),
-         new_autoclose_on <-
-           if(
-             Skate.Detours.Autoclosing.enabled?(),
-             do: Ecto.Changeset.get_change(changeset, :autoclose_on, nil),
-             else: nil
-           ),
-         {:ok, _} <-
-           if(
-             is_nil(new_autoclose_on),
-             do: {:ok, nil},
-             else: Skate.Detours.Autoclosing.Job.reschedule(new_record)
-           ) do
+         {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset) do
       handle_detour_updated(changeset, new_record, author_id)
       {:ok, new_record}
     end
@@ -324,12 +305,36 @@ defmodule Skate.Detours.Detours do
     end
   end
 
+  # Side-effects from updating a detour
   defp handle_detour_updated(changeset, new_record, author_id) do
     broadcast_detour(new_record, author_id)
+    schedule_autoclose_job(changeset, new_record)
     process_notifications(changeset, new_record)
     trigger_active_detour_s3_export_job(changeset, new_record)
     log_metadata(changeset, new_record)
   end
+
+  defp schedule_autoclose_job(
+         %Ecto.Changeset{
+           data: %Detour{status: :active},
+           changes: %{autoclose_on: _}
+         },
+         detour
+       ) do
+    Skate.Detours.Autoclosing.Job.reschedule(detour)
+  end
+
+  defp schedule_autoclose_job(
+         %Ecto.Changeset{
+           data: %Detour{status: :draft},
+           changes: %{status: :active}
+         },
+         detour
+       ) do
+    Skate.Detours.Autoclosing.Job.schedule(detour)
+  end
+
+  defp schedule_autoclose_job(_, _), do: nil
 
   @spec delete_draft_detour(Detour.t(), DbUser.id()) :: :ok
   def delete_draft_detour(detour, author_id) do
@@ -358,12 +363,7 @@ defmodule Skate.Detours.Detours do
          changeset <-
            Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
          {:ok, new_record} <-
-           Repo.update(changeset),
-         {:ok, _} <-
-           if(Skate.Detours.Autoclosing.enabled?(),
-             do: Skate.Detours.Autoclosing.Job.schedule(new_record),
-             else: {:ok, nil}
-           ) do
+           Repo.update(changeset) do
       handle_detour_updated(changeset, new_record, author_id)
       {:ok, new_record}
     end
@@ -761,6 +761,24 @@ defmodule Skate.Detours.Detours do
     )
   end
 
+  defp log_metadata(
+         %Ecto.Changeset{
+           changes: %{updated_at: _} = changes,
+           data: %{status: :active}
+         },
+         %Detour{} = detour
+       ) do
+    Logger.info(
+      "update_detour id=#{detour.id} " <>
+        "activated_at=#{format_datetime(detour.activated_at)} " <>
+        "estimated_duration=#{format_str(detour.estimated_duration)} " <>
+        "autoclose_on=#{format_str(detour.autoclose_on)} " <>
+        "copied_from_id=#{detour.copied_from_id || "none"} " <>
+        "reason=#{format_str(detour.reason)} " <>
+        "changed_fields=#{format_list(Map.keys(changes))}"
+    )
+  end
+
   defp log_metadata(_, _), do: nil
 
   defp format_datetime(%DateTime{} = dt), do: DateTime.to_iso8601(dt)
@@ -768,6 +786,9 @@ defmodule Skate.Detours.Detours do
 
   defp format_str(str) when is_binary(str), do: String.replace(str, " ", "_")
   defp format_str(_), do: "none"
+
+  defp format_list(list) when is_list(list), do: "[#{Enum.join(list, ", ")}]"
+  defp format_list(_), do: "none"
 
   def sync_swiftly_with_skate(
         adjustments_module \\ service_adjustments_module(),
