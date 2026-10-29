@@ -341,10 +341,7 @@ const subscribeByRoute = (
       return activeDetours
     })
   })
-  channel.on(
-    "auth_expired",
-    reload
-  )
+  channel.on("auth_expired", reload)
 
   channel
     .join()
@@ -367,7 +364,7 @@ const subscribeByRoute = (
         console.error(`joining topic ${topicWithRoute} failed`, reason)
       }
     })
-    .receive("timeout",reload)
+    .receive("timeout", reload)
 
   return channel
 }
