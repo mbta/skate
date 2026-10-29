@@ -52,7 +52,15 @@ defmodule Skate.Application do
           {Singleton.Supervisor, name: Skate.Singleton},
           Skate.Detours.FeedSynchronizer,
           {Skate.Research.ScenarioStore, []}
-        ]
+        ] ++
+        case Skate.Radio.SQS.Config.queue_url(:commands) do
+          {:ok, _queue_url} -> [Skate.Radio.SQS.Commands]
+          _ -> []
+        end ++
+        case Skate.Radio.SQS.Config.queue_url(:events) do
+          {:ok, _queue_url} -> [Skate.Radio.SQS.Events]
+          _ -> []
+        end
 
     Supervisor.start_link(children, strategy: :rest_for_one, name: Skate.Supervisor)
   end

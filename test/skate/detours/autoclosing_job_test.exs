@@ -80,7 +80,7 @@ defmodule Skate.Detours.AutoclosingJob.Test do
 
         assert_enqueued(
           worker: Skate.Detours.Autoclosing.Job,
-          scheduled_at: DateTime.new!(tomorrow, ~T[07:00:00]),
+          scheduled_at: DateTime.new!(tomorrow, ~T[07:00:00.000000]),
           args: %{"detour_id" => detour.id}
         )
       end)
