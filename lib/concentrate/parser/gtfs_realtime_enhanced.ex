@@ -12,9 +12,17 @@ defmodule Concentrate.Parser.GTFSRealtimeEnhanced do
   @impl Concentrate.Parser
   def parse(data)
 
-  def parse(binary) when is_binary(binary) do
-    json = Jason.decode!(binary)
-    parse_json(json)
+  # Handle GZIP-compressed responses from the Busloc S3 endpoint.
+  def parse(<<31, 139, 8, _rest::binary>> = data) do
+    data
+    |> :zlib.gunzip()
+    |> parse()
+  end
+
+  def parse(data) when is_binary(data) do
+    data
+    |> Jason.decode!()
+    |> parse_json()
   end
 
   def parse(json) when is_map(json) do
