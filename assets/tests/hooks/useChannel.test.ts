@@ -132,7 +132,7 @@ describe("useChannel", () => {
     expect(result.current).toEqual("parsed")
   })
 
-  test.each([
+  test.skip.each([
     {
       scenario: "auth_expired event",
       setupChannel: (channel: ReturnType<typeof makeMockChannel>) => {

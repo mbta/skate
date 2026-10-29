@@ -11,12 +11,6 @@ import {
   parsePaginationPayload,
 } from "../models/detoursPaginationData"
 import { useCallback, useEffect, useRef, useState } from "react"
-import {
-  attachChannelLogging,
-  logChannelNotice,
-  withChannelAuthExpiredLogging,
-  withChannelTimeoutLogging,
-} from "../helpers/socketSentry"
 import { reload } from "../models/browser"
 import { userUuid } from "../util/userUuid"
 import { ByRouteId, RouteId } from "../schedule"
@@ -60,7 +54,6 @@ const subscribe = ({
   onJoined,
 }: SubscribeOptions): Channel => {
   const channel = socket.channel(topic)
-  attachChannelLogging(channel, topic)
 
   if (handleDrafted)
     channel.on("drafted", ({ data: unknownData }: { data: unknown }) => {
@@ -83,7 +76,7 @@ const subscribe = ({
         handleDeleted(detourId)
       }
     })
-  channel.on("auth_expired", withChannelAuthExpiredLogging(topic, reload))
+  channel.on("auth_expired", reload)
 
   channel
     .join()
@@ -112,7 +105,6 @@ const subscribe = ({
     })
 
     .receive("error", ({ reason }) => {
-      logChannelNotice(topic, "error", reason)
       if (reason === "not_authenticated") {
         reload()
       } else {
@@ -120,7 +112,7 @@ const subscribe = ({
         console.error(`joining topic ${topic} failed`, reason)
       }
     })
-    .receive("timeout", withChannelTimeoutLogging(topic, reload))
+    .receive("timeout", reload)
 
   return channel
 }
@@ -331,7 +323,6 @@ const subscribeByRoute = (
 ): Channel => {
   const topicWithRoute = topic + routeId
   const channel = socket.channel(topicWithRoute)
-  attachChannelLogging(channel, topicWithRoute)
 
   channel.on("activated", ({ data: unknownData }: { data: unknown }) => {
     const data = create(unknownData, SimpleActiveDetourData)
@@ -352,7 +343,7 @@ const subscribeByRoute = (
   })
   channel.on(
     "auth_expired",
-    withChannelAuthExpiredLogging(topicWithRoute, reload)
+    reload
   )
 
   channel
@@ -369,7 +360,6 @@ const subscribeByRoute = (
     })
 
     .receive("error", ({ reason }) => {
-      logChannelNotice(topicWithRoute, "error", reason)
       if (reason === "not_authenticated") {
         reload()
       } else {
@@ -377,7 +367,7 @@ const subscribeByRoute = (
         console.error(`joining topic ${topicWithRoute} failed`, reason)
       }
     })
-    .receive("timeout", withChannelTimeoutLogging(topicWithRoute, reload))
+    .receive("timeout",reload)
 
   return channel
 }
