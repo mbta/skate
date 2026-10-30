@@ -775,7 +775,7 @@ defmodule Skate.Detours.Detours do
         "autoclose_on=#{format_str(detour.autoclose_on)} " <>
         "copied_from_id=#{detour.copied_from_id || "none"} " <>
         "reason=#{format_str(detour.reason)} " <>
-        "changed_fields=#{format_list(Map.keys(changes))}"
+        "changed_fields=#{inspect(Map.keys(changes))}"
     )
   end
 
@@ -786,9 +786,6 @@ defmodule Skate.Detours.Detours do
 
   defp format_str(str) when is_binary(str), do: String.replace(str, " ", "_")
   defp format_str(_), do: "none"
-
-  defp format_list(list) when is_list(list), do: "[#{Enum.join(list, ", ")}]"
-  defp format_list(_), do: "none"
 
   def sync_swiftly_with_skate(
         adjustments_module \\ service_adjustments_module(),
