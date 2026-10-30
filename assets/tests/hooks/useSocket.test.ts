@@ -2,7 +2,6 @@ import { jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import { act } from "react"
 import { Socket } from "phoenix"
-import * as Sentry from "@sentry/react"
 import useSocket, {
   ConnectionStatus,
   readUserToken,
@@ -17,7 +16,6 @@ jest.mock("phoenix", () => ({
   Socket: jest.fn(() => ({
     connect: jest.fn(),
     onOpen: jest.fn(),
-    onError: jest.fn(),
     onClose: jest.fn(),
   })),
   __esModule: true,
@@ -44,7 +42,7 @@ describe("useSocket", () => {
     expect(result.current.connectionStatus).toEqual(ConnectionStatus.Connected)
   })
 
-  test("connectionStatus is set to Disconnected when the socket closes and logs to Sentry", () => {
+  test("connectionStatus is set to Disconnected when the socket closes", () => {
     const { result } = renderHook(() => useSocket())
     const mockSocket = result.current.socket
     const [[onCloseHandler]] = (
@@ -52,44 +50,13 @@ describe("useSocket", () => {
     ).mock.calls
     act(() => {
       onCloseHandler({
-        code: 1006,
-        reason: "abnormal closure",
+        code: 500,
+        reason: "some reason",
         wasClean: false,
       } as CloseEvent)
     })
     expect(result.current.connectionStatus).toEqual(
       ConnectionStatus.Disconnected
-    )
-    expect(Sentry.captureMessage).toHaveBeenCalledWith(
-      expect.stringContaining("WebSocket connection closed"),
-      expect.objectContaining({
-        level: "warning",
-        extra: expect.objectContaining({
-          code: 1006,
-          reason: "abnormal closure",
-          wasClean: false,
-        }),
-      })
-    )
-  })
-
-  test("logs socket error to Sentry when socket onError is called", () => {
-    const { result } = renderHook(() => useSocket())
-    const mockSocket = result.current.socket
-    const [[onErrorHandler]] = (
-      mockSocket!.onError as jest.Mock<Socket["onError"]>
-    ).mock.calls
-    act(() => {
-      ;(onErrorHandler as any)("network failed")
-    })
-    expect(Sentry.captureMessage).toHaveBeenCalledWith(
-      "WebSocket connection encountered an error",
-      expect.objectContaining({
-        level: "error",
-        extra: expect.objectContaining({
-          error: "network failed",
-        }),
-      })
     )
   })
 })

@@ -1,7 +1,6 @@
 import { Socket } from "phoenix"
 import { useEffect, useState } from "react"
 import appData from "../appData"
-import { logSocketClose, logSocketError } from "../helpers/socketSentry"
 import { UserToken } from "../skate.d"
 
 export enum ConnectionStatus {
@@ -39,9 +38,7 @@ const useSocket = (): SocketStatus => {
     })
     initialSocket.connect()
     initialSocket.onOpen(() => setConnectionStatus(ConnectionStatus.Connected))
-    initialSocket.onError((error) => logSocketError(error))
-    initialSocket.onClose((event?: CloseEvent) => {
-      logSocketClose(event)
+    initialSocket.onClose((_event: CloseEvent) => {
       setConnectionStatus(ConnectionStatus.Disconnected)
     })
     setSocket(initialSocket)
