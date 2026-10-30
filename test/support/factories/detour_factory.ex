@@ -160,6 +160,19 @@ defmodule Skate.DetourFactory do
         %{detour | autoclose_on: autoclose_on}
       end
 
+      def with_estimated_duration(%Skate.Detours.Db.Detour{} = detour, estimated_duration) do
+        detour
+        |> Map.put(:estimated_duration, estimated_duration)
+        |> Map.put(:state, with_estimated_duration(detour.state, estimated_duration))
+      end
+
+      def with_estimated_duration(
+            %{"context" => %{"selectedDuration" => _}} = state,
+            estimated_duration
+          ) do
+        put_in(state, ["context", "selectedDuration"], estimated_duration)
+      end
+
       def with_route(
             %Skate.Detours.Db.Detour{} = detour,
             %{name: route_name, id: route_id} = route
