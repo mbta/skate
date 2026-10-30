@@ -165,7 +165,7 @@ defmodule Skate.DetourFactory do
               String.t()
             ) :: map()
       def with_estimated_duration(detour_or_state, estimated_duration)
-     
+
       def with_estimated_duration(%Skate.Detours.Db.Detour{} = detour, estimated_duration) do
         detour
         |> Map.put(:estimated_duration, estimated_duration)
