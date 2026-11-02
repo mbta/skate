@@ -135,7 +135,7 @@ defmodule Skate.Detours.S3Exporter do
         ) do
       Logger.info(
         "detour s3 export job: " <>
-          "completed in #{duration} ms " <>
+          "completed in #{System.convert_time_unit(duration, :native, :millisecond)} ms " <>
           "and exported #{count} detours " <>
           "with filter #{inspect(filter)}"
       )
@@ -152,7 +152,7 @@ defmodule Skate.Detours.S3Exporter do
         ) do
       Logger.error(
         "detour s3 export job: " <>
-          "failed in #{duration} ms " <>
+          "failed in #{System.convert_time_unit(duration, :native, :millisecond)} ms " <>
           "with reason message '#{reason.message}'"
       )
     end

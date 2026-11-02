@@ -59,7 +59,7 @@ defmodule Skate.Detours.AutoclosingJob.Test do
         now = DateTime.utc_now()
         autoclose_on = DateTime.add(now, 1, :hour)
 
-        %{author_id: author_id, state: state} =
+        %{author_id: author_id, id: id, state: state} =
           :detour
           |> build()
           |> activated(now)
@@ -69,18 +69,20 @@ defmodule Skate.Detours.AutoclosingJob.Test do
         today = Date.utc_today()
         tomorrow = Date.add(today, 1)
 
+        snapshot =
+          state
+          |> with_estimated_duration("#{tomorrow.year}-#{tomorrow.month}-#{tomorrow.day}")
+          |> with_id(id)
+
         {:ok, detour} =
           Skate.Detours.Detours.upsert_from_snapshot(
             author_id,
-            Map.merge(
-              state,
-              %{"selectedDuration" => "#{tomorrow.year}-#{tomorrow.month}-#{tomorrow.day}"}
-            )
+            snapshot
           )
 
         assert_enqueued(
           worker: Skate.Detours.Autoclosing.Job,
-          scheduled_at: DateTime.new!(tomorrow, ~T[07:00:00.000000]),
+          scheduled_at: Util.Time.end_of_service_in_utc(tomorrow),
           args: %{"detour_id" => detour.id}
         )
       end)

@@ -5,6 +5,9 @@ defmodule Skate.Telemetry do
   require Logger
 
   def setup_telemetry do
+    Skate.Detours.S3Exporter.Telemetry.attach_handler()
+    Skate.Detours.Autoclosing.Telemetry.attach_handler()
+
     :telemetry.attach(
       "skate",
       [:skate, :repo, :query],

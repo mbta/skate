@@ -1,12 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import { array, assert, StructError, union } from "superstruct"
-import {
-  attachChannelLogging,
-  logChannelNotice,
-  withChannelAuthExpiredLogging,
-  withChannelTimeoutLogging,
-} from "../helpers/socketSentry"
 import { reload } from "../models/browser"
 import {
   vehicleInScheduledServiceOrGhostFromData,
@@ -141,22 +135,20 @@ const subscribe = (
 
   const topic = `vehicles:route:${routeId}`
   const channel = socket.channel(topic)
-  attachChannelLogging(channel, topic)
 
   channel.on("vehicles", handleVehicles)
 
   // Reload our session if the auth has expired
-  channel.on("auth_expired", withChannelAuthExpiredLogging(topic, reload))
+  channel.on("auth_expired", reload)
 
   channel
     .join()
     .receive("ok", handleVehicles)
     .receive("error", ({ reason }) => {
-      logChannelNotice(topic, "error", reason)
       // eslint-disable-next-line no-console
       console.error("join failed", reason)
     })
-    .receive("timeout", withChannelTimeoutLogging(topic, reload))
+    .receive("timeout", reload)
   return channel
 }
 

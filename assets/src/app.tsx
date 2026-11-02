@@ -21,7 +21,6 @@ import { tagManagerIdentify } from "./helpers/googleTagManager"
 import { fullStoryInit } from "./helpers/fullStory"
 import inTestGroup, { TestGroups } from "./userInTestGroup"
 import { userUuid } from "./util/userUuid"
-import { initSocketTelemetry } from "./helpers/socketSentry"
 
 document.documentElement.dataset.demoMode = inTestGroup(
   TestGroups.DemoMode
@@ -40,8 +39,6 @@ sentryInit(
 )
 
 tagManagerIdentify(userUuid())
-
-initSocketTelemetry()
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const root = createRoot(document.getElementById("app")!)

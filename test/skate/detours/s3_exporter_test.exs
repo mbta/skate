@@ -94,11 +94,8 @@ defmodule Skate.Detours.S3ExporterTest do
           |> activated()
           |> insert()
 
-        # workaround because there's no `with_estimated_duration(...)` factory method
-        %{author_id: author_id, id: id, state: snapshot} = %{
-          detour
-          | state: put_in(detour.state, ["context", "selectedDuration"], "6 hours")
-        }
+        %{author_id: author_id, id: id, state: snapshot} =
+          with_estimated_duration(detour, "6 hours")
 
         Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
       end
