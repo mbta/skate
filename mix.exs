@@ -101,7 +101,7 @@ defmodule Skate.MixProject do
       {:polyline, "~> 1.4.0"},
       {:postgrex, "~> 0.15"},
       {:sentry, "~> 13.0"},
-      {:server_sent_event_stage, "~> 1.2.1"},
+      {:server_sent_event_stage, "~> 1.3.0"},
       {:singleton, "~> 1.0"},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:ssl_verify_fun, "~> 1.1"},
