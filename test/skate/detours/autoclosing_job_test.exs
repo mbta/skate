@@ -71,7 +71,7 @@ defmodule Skate.Detours.AutoclosingJob.Test do
 
         snapshot =
           state
-          |> with_estimated_duration("#{tomorrow.year}-#{tomorrow.month}-#{tomorrow.day}")
+          |> with_estimated_duration(Date.to_iso8601(tomorrow))
           |> with_id(id)
 
         {:ok, detour} =
