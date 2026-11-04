@@ -134,7 +134,7 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           attribution={
             tileType === "base"
               ? '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              : '<a href="https://www.mass.gov/info-details/massgis-data-2021-aerial-imagery">MassGIS 2021</a>'
+              : '<a href=https://www.mass.gov/info-details/massgis-data-2025-aerial-imagery">MassGIS</a>'
           }
         />
         <EventAdder />

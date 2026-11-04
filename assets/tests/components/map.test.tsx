@@ -730,7 +730,7 @@ describe("TileLayer", () => {
     ).not.toBeNull()
 
     expect(
-      screen.getByRole("link", { name: "MassGIS 2021" })
+      screen.getByRole("link", { name: "MassGIS" })
     ).toBeInTheDocument()
   })
 })
