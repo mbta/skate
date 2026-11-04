@@ -131,13 +131,11 @@ const Map = (props: Props): ReactElement<HTMLDivElement> => {
           maxZoom={21}
           maxNativeZoom={18}
           url={`${tilesetUrlForType(tileType)}`}
-          attribution={
-            `Map data from ${
-              tileType === "base"
+          attribution={`Map data from ${
+            tileType === "base"
               ? '<a href="https://openstreetmap.org/copyright">OpenStreetMap</a>'
               : '<a href="https://www.mass.gov/info-details/massgis-data-2025-aerial-imagery">MassGIS</a>'
-            }`
-          }
+          }`}
         />
         <EventAdder />
         {props.allowStreetView && (
