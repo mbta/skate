@@ -105,7 +105,7 @@ defmodule Skate.MixProject do
       {:singleton, "~> 1.0"},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:ssl_verify_fun, "~> 1.1"},
-      {:stream_data, "~> 1.1.1", only: :test},
+      {:stream_data, "~> 1.4.0", only: :test},
       {:telemetry, "~> 1.3"},
       {:timex, "~> 3.7.5"},
       {:typed_ecto_schema, "~> 0.5.0"},
