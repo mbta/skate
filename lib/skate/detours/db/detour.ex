@@ -16,7 +16,7 @@ defmodule Skate.Detours.Db.Detour do
     belongs_to :copied_from, __MODULE__, foreign_key: :copied_from_id
 
     # State properties
-    field :state, :map
+    field :state, :map, virtual: true
     field(:status, Ecto.Enum, values: [:draft, :active, :past]) :: status()
     field :activated_at, :utc_datetime_usec
     timestamps()
@@ -68,15 +68,9 @@ defmodule Skate.Detours.Db.Detour do
     |> validate_activated_at()
     |> add_status()
     |> populate_fields_from_state()
-    |> then(fn changeset ->
-      if Skate.Detours.Autoclosing.enabled?() do
-        Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(changeset)
-      else
-        changeset
-      end
-    end)
+    |> delete_change(:state)
     |> add_updated_at()
-    |> validate_required([:state, :status])
+    |> validate_required([:status])
     |> foreign_key_constraint(:author_id)
   end
 
@@ -105,27 +99,10 @@ defmodule Skate.Detours.Db.Detour do
       ])
       |> Map.merge(%{
         status: :draft,
-        state: copy_to_draft_state(source.state),
         state_value: %{"SaveState" => "Saved", "Detour Drawing" => "Share Detour"}
       })
 
     change(new_detour, copied_fields)
-  end
-
-  defp copy_to_draft_state(state) do
-    state
-    |> Map.put(
-      "context",
-      state["context"]
-      |> Map.merge(%{"status" => "draft"})
-      |> Map.drop(["selectedReason", "selectedDuration", "activatedAt"])
-    )
-    |> Map.put("value", %{"SaveState" => "Saved", "Detour Drawing" => "Share Detour"})
-  end
-
-  def set_state_uuid_changeset(detour) do
-    new_state = put_in(detour.state, ["context", "uuid"], detour.id)
-    change(detour, %{state: new_state})
   end
 
   # Add or update swiftly_id
@@ -164,11 +141,6 @@ defmodule Skate.Detours.Db.Detour do
       _ ->
         changeset
     end
-  end
-
-  # Do not update updated_at if the changeset only contains state changes
-  defp add_updated_at(changeset) when map_size(changeset.changes) < 2 do
-    changeset
   end
 
   defp add_updated_at(changeset) do
@@ -263,6 +235,15 @@ defmodule Skate.Detours.Db.Detour do
     |> put_changes_from_state(@state_fields, false)
     |> put_changes_from_state(@nullable_state_fields, true)
     |> populate_direction_from_state()
+    |> maybe_populate_autoclose()
+  end
+
+  defp maybe_populate_autoclose(changeset) do
+    if Skate.Detours.Autoclosing.enabled?() do
+      Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(changeset)
+    else
+      changeset
+    end
   end
 
   defp populate_direction_from_state(changeset) do
