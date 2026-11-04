@@ -1,76 +1,78 @@
 import React, { PropsWithChildren } from "react"
-import { Button, Form, Modal } from "react-bootstrap"
-import { DurationSelect } from "./durationSelect"
-import { StepperBar } from "../stepperBar"
-import { detourReasons } from "../../data/detourReasons"
-import BaseAlert from "../alerts/baseAlert"
-import { formatIfDate, isIsoDateString } from "../../util/dateTime"
-import inTestGroup, { TestGroups } from "../../userInTestGroup"
+import { Button, Form } from "react-bootstrap"
+import { DurationSelect } from "../durationSelect"
+import { StepperBar } from "../../stepperBar"
+import { detourReasons } from "../../../data/detourReasons"
+import BaseAlert from "../../alerts/baseAlert"
+import { formatIfDate, isIsoDateString } from "../../../util/dateTime"
+import inTestGroup, { TestGroups } from "../../../userInTestGroup"
+import { BaseModal } from "./baseModal"
 
-interface SurroundingModalProps extends PropsWithChildren {
+export interface ActivateDetourModalProps extends PropsWithChildren {
   onCancel: () => void
   onNext?: () => void
   onBack?: () => void
   onActivate?: () => void
   nextStepButton?: string
+  nextStepFsElement?: string
   modalTitle?: string
   isActiveDetour?: boolean
 }
 
-interface FSElementProps {
-  nextStepLabel: string | undefined
-}
-
-export const SurroundingModal = ({
+export const ActivateDetourModal = ({
   onCancel,
   onNext,
   onBack,
   onActivate,
   children,
-  nextStepLabel,
+  nextStepFsElement,
   nextStepButton,
   modalTitle,
   isActiveDetour,
-}: SurroundingModalProps & FSElementProps) => (
-  // @TODO: Need to add support for nested modals or change detour page to not be a modal
-  <Modal show animation={false} onHide={onCancel} enforceFocus={false}>
-    <Modal.Header closeButton>
-      <h3 className="fs-3 fw-semibold lh-sm my-1">
-        {modalTitle || (isActiveDetour ? "Update detour" : "Start detour")}
-      </h3>
-    </Modal.Header>
-    <Modal.Body>{children}</Modal.Body>
-    <Modal.Footer>
-      {onBack && (
-        <Button variant="outline-primary" className="me-auto" onClick={onBack}>
-          Back
+}: ActivateDetourModalProps) => (
+  <BaseModal
+    onCancel={onCancel}
+    title={modalTitle || (isActiveDetour ? "Update detour" : "Start detour")}
+    enforceFocus={false}
+    footer={
+      <>
+        {onBack && (
+          <Button
+            variant="outline-primary"
+            className="me-auto"
+            onClick={onBack}
+          >
+            Back
+          </Button>
+        )}
+        <Button variant="outline-primary" onClick={onCancel}>
+          Cancel
         </Button>
-      )}
-      <Button variant="outline-primary" onClick={onCancel}>
-        Cancel
-      </Button>
-      {onActivate ? (
-        <Button
-          variant="primary"
-          onClick={onActivate}
-          data-fs-element={
-            isActiveDetour ? "Confirm Update Detour" : "Confirm Active Detour"
-          }
-        >
-          {isActiveDetour ? "Update detour" : "Activate detour"}
-        </Button>
-      ) : (
-        <Button
-          variant="primary"
-          disabled={onNext === undefined}
-          onClick={onNext}
-          data-fs-element={nextStepLabel}
-        >
-          {nextStepButton || "Next"}
-        </Button>
-      )}
-    </Modal.Footer>
-  </Modal>
+        {onActivate ? (
+          <Button
+            variant="primary"
+            onClick={onActivate}
+            data-fs-element={
+              isActiveDetour ? "Confirm Update Detour" : "Confirm Active Detour"
+            }
+          >
+            {isActiveDetour ? "Update detour" : "Activate detour"}
+          </Button>
+        ) : (
+          <Button
+            variant="primary"
+            disabled={onNext === undefined}
+            onClick={onNext}
+            data-fs-element={nextStepFsElement}
+          >
+            {nextStepButton || "Next"}
+          </Button>
+        )}
+      </>
+    }
+  >
+    {children}
+  </BaseModal>
 )
 
 type StepSubtitleProps = PropsWithChildren
@@ -150,7 +152,7 @@ const Confirming = ({ isActiveDetour }: { isActiveDetour: boolean }) => (
 )
 
 export const ActivateDetour = {
-  Modal: SurroundingModal,
+  Modal: ActivateDetourModal,
   SelectingDuration,
   SelectingReason,
   Confirming,

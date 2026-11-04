@@ -26,7 +26,7 @@ import {
   useDraftDetours,
   usePastDetours,
 } from "../../../src/hooks/useDetours"
-import { ChangeDuration } from "../../../src/components/detours/changeDurationModal"
+import { ChangeDuration } from "../../../src/components/detours/modals/changeDurationModal"
 
 jest.mock("../../../src/api")
 jest.mock("../../../src/hooks/useDetours")
