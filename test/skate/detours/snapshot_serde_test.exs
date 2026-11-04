@@ -1,153 +1,95 @@
 defmodule Skate.Detours.SnapshotSerdeTest do
   use Skate.DataCase
-  import Skate.Factory
+
   import ExUnit.CaptureLog
+  import Skate.Factory
 
   alias Skate.Detours.SnapshotSerde
 
-  describe "compare_snapshots" do
-    test "true: compares activated_at prop with activatedAt in serialized detour snapshot" do
+  describe "deserialize/2" do
+    test "extracts activatedAt into the detour changeset and keeps snapshot state clean" do
       activated_at = Skate.DetourFactory.browser_date()
 
-      %{id: id, state: snapshot} =
-        detour =
-        :detour
+      snapshot =
+        :detour_snapshot
         |> build()
-        |> activated(activated_at)
-        |> insert()
+        |> with_id(42)
+        |> put_in(["context", "activatedAt"], DateTime.to_iso8601(activated_at))
 
-      snapshot = with_id(snapshot, id)
+      changeset = SnapshotSerde.deserialize(99, snapshot)
 
-      {_value, snapshot} = pop_in(snapshot["context"]["activatedAt"])
-
-      detour =
-        detour
-        |> Skate.Detours.Detours.change_detour(%{state: snapshot})
-        |> Skate.Repo.update!()
-
-      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
+      assert changeset.data.author_id == 99
+      assert DateTime.compare(changeset.changes[:activated_at], activated_at) == :eq
+      assert get_in(changeset.changes.state, ["context", "activatedAt"]) == nil
+      assert get_in(changeset.changes.state, ["value", "SaveState"]) == "Saved"
     end
 
-    test "true: compares activatedAt stored in state prop with activatedAt in serialized detour snapshot" do
-      activated_at = Skate.DetourFactory.browser_date()
-
-      %{id: id, state: snapshot} =
-        detour =
+    test "uses the existing detour record when the snapshot uuid matches a DB detour" do
+      detour =
         :detour
         |> build()
-        |> activated(activated_at)
+        |> Map.put(:id, 77)
         |> insert()
 
-      # Make ID match snapshot
-      snapshot = with_id(snapshot, id)
-
-      detour =
-        detour
-        |> Skate.Detours.Detours.change_detour(%{state: snapshot})
-        |> Skate.Repo.update!()
-
-      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
-    end
-
-    test "true: compares activatedAt stored in state prop with activatedAt in serialized detour snapshot, defer to prop level vaule" do
-      activated_at = Skate.DetourFactory.browser_date()
-      later_activated_at = Skate.DetourFactory.browser_date(DateTime.add(activated_at, 1, :hour))
-
-      %{id: id, state: snapshot} =
-        detour =
-        :detour
+      snapshot =
+        :detour_snapshot
         |> build()
-        |> activated(activated_at)
-        |> insert()
+        |> with_id(detour.id)
 
-      snapshot = with_id(snapshot, id)
-      put_in(snapshot, ["context", "activatedAt"], later_activated_at)
+      changeset = SnapshotSerde.deserialize(detour.author_id, snapshot)
 
-      detour =
-        detour
-        |> Skate.Detours.Detours.change_detour(%{state: snapshot})
-        |> Skate.Repo.update!()
-
-      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
-    end
-
-    test "returns true when state snapshot matches serialized snapshot" do
-      %{id: id, state: snapshot} =
-        detour =
-        :detour
-        |> build()
-        |> insert()
-
-      snapshot = with_id(snapshot, id)
-
-      detour =
-        detour
-        |> Skate.Detours.Detours.change_detour(%{state: snapshot})
-        |> Skate.Repo.update!()
-
-      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
-    end
-
-    test "returns true when state snapshot matches serialized snapshot even with extra, untracked fields in state snapshot" do
-      %{id: id, state: snapshot} =
-        detour =
-        :detour
-        |> build()
-        |> insert()
-
-      snapshot = with_id(snapshot, id)
-      put_in(snapshot, ["context", "extraField"], "irrelevant data")
-
-      detour =
-        detour
-        |> Skate.Detours.Detours.change_detour(%{state: snapshot})
-        |> Skate.Repo.update!()
-
-      assert {true, _} = SnapshotSerde.compare_snapshots(detour)
+      assert changeset.data.id == detour.id
+      assert changeset.data.author_id == detour.author_id
+      assert get_in(changeset.changes.state, ["context", "uuid"]) == detour.id
     end
   end
 
-  describe "log_fallback_summary/2 (via serialize_snapshot fallback aggregation)" do
-    @tag :capture_log
-    test "does not log fallback warnings when detour fields are persisted and the snapshot has unrelated extra data" do
+  describe "serialize/1" do
+    test "serializes detour fields from persisted DB columns" do
+      activated_at = Skate.DetourFactory.browser_date()
+
       detour =
         :detour
         |> build()
+        |> activated(activated_at)
         |> insert()
-
-      detour =
-        detour
-        |> Skate.Detours.Detours.change_detour(%{
-          state: put_in(detour.state, ["context", "extraField"], "irrelevant data")
-        })
-        |> Skate.Repo.update!()
-
-      log =
-        capture_log(fn ->
-          SnapshotSerde.compare_snapshots(detour)
-        end)
-
-      refute log =~ "Unexpected detour structure"
-      refute log =~ "Using snapshot for fields: state, route, children"
-      refute log =~ "route_patterns"
-      refute log =~ "selectedDuration"
-    end
-  end
-
-  describe "column/state fallback" do
-    test "falls back to legacy state for route_pattern when the route_pattern column is nil" do
-      detour =
-        :detour
-        |> build()
-        |> insert()
-        |> without_columns(:route_pattern)
-
-      expected = get_in(detour.state, ["context", "routePattern"])
-      refute is_nil(expected)
 
       snapshot = SnapshotSerde.serialize(detour)
 
-      assert get_in(snapshot, ["context", "routePattern"]) == expected
+      assert get_in(snapshot, ["context", "activatedAt"]) ==
+               DateTime.to_iso8601(DateTime.truncate(activated_at, :millisecond))
+
+      assert get_in(snapshot, ["context", "routePattern"]) == detour.route_pattern
+      assert get_in(snapshot, ["context", "selectedDuration"]) == detour.estimated_duration
+    end
+
+    test "uses the persisted estimated duration when present" do
+      detour =
+        :detour
+        |> build()
+        |> Map.put(:estimated_duration, "2 hours")
+        |> Map.put(:state, put_in(build(:detour_snapshot), ["context", "selectedDuration"], "2 hours"))
+        |> insert()
+
+      snapshot = SnapshotSerde.serialize(detour)
+
+      assert get_in(snapshot, ["context", "selectedDuration"]) == "2 hours"
+    end
+
+    test "falls back to 'Until further notice' for active detours without a persisted duration" do
+      detour =
+        :detour
+        |> build()
+        |> Map.put(:status, :active)
+        |> Map.put(:estimated_duration, nil)
+
+      log =
+        capture_log(fn ->
+          snapshot = SnapshotSerde.serialize(detour)
+          assert get_in(snapshot, ["context", "selectedDuration"]) == "Until further notice"
+        end)
+
+      assert log =~ "selectedDuration is nil in active detour"
     end
   end
 end
