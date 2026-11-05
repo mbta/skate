@@ -1941,13 +1941,12 @@ exports[`Detours Page: Open a Detour renders detour details in an open drawer on
                   <div
                     class="leaflet-control-attribution leaflet-control"
                   >
-                    © 
+                    Map data from 
                     <a
-                      href="http://osm.org/copyright"
+                      href="https://openstreetmap.org/copyright"
                     >
                       OpenStreetMap
                     </a>
-                     contributors
                   </div>
                 </div>
               </div>
@@ -3901,13 +3900,12 @@ exports[`Detours Page: Open a Detour renders detour details modal to match mocke
                   <div
                     class="leaflet-control-attribution leaflet-control"
                   >
-                    © 
+                    Map data from 
                     <a
-                      href="http://osm.org/copyright"
+                      href="https://openstreetmap.org/copyright"
                     >
                       OpenStreetMap
                     </a>
-                     contributors
                   </div>
                 </div>
               </div>
