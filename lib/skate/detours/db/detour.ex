@@ -62,6 +62,8 @@ defmodule Skate.Detours.Db.Detour do
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
   end
 
+  # upsert_from_snapshot uses the state changeset to populate the db field changes
+  # other fields are also cast because activate and deactivate actions set them directly
   def changeset(detour, attrs) do
     detour
     |> cast(attrs, [
@@ -136,6 +138,7 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp add_status(changeset) do
+    # status is derived from xstate state value changes
     case {fetch_field(changeset, :status), fetch_change(changeset, :state)} do
       {{:data, :active}, {:ok, %{"value" => %{"Detour Drawing" => "Past"}}}} ->
         put_change(changeset, :status, :past)
@@ -150,6 +153,9 @@ defmodule Skate.Detours.Db.Detour do
         changeset
     end
   end
+
+  # do not change updated_at when there are no changes to make
+  defp add_updated_at(changeset) when map_size(changeset.changes) == 0, do: changeset
 
   defp add_updated_at(changeset) do
     case {fetch_field(changeset, :status), fetch_field(changeset, :activated_at)} do
@@ -239,6 +245,8 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp populate_fields_from_state(changeset) do
+    # Maps most of the snapshot object into normalized DB columns
+    # nullable state fields allow nil to overwrite the database value
     changeset
     |> put_changes_from_state(@state_fields, false)
     |> put_changes_from_state(@nullable_state_fields, true)

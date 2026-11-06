@@ -78,24 +78,64 @@ defmodule Skate.Detours.DbTest do
                |> fetch_change(:activated_at)
     end
 
-    test "change_detour/1 updates persisted status and activation fields" do
-      {:ok, activated_detour} =
-        build(:detour)
-        |> Detours.change_detour(%{
-          "status" => "active",
-          "activated_at" => DateTime.utc_now(),
-          "estimated_duration" => "1 hour"
-        })
+    test "change_detour/1 derives :status from snapshot :state updates" do
+      draft_snapshot = build(:detour_snapshot)
+      active_snapshot = activated(draft_snapshot)
+      past_snapshot = deactivated(active_snapshot)
+
+      detour = build(:detour)
+
+      {:ok, draft_detour} =
+        detour
+        |> Detours.change_detour(%{state: draft_snapshot})
         |> Ecto.Changeset.apply_action(:update)
 
-      assert %Detour{status: :active, estimated_duration: "1 hour"} = activated_detour
+      assert %Detour{status: :draft} = draft_detour
 
-      {:ok, deactivated_detour} =
-        activated_detour
-        |> Detours.change_detour(%{"status" => "past", "estimated_duration" => nil})
+      {:ok, active_detour} =
+        draft_detour
+        |> Detours.change_detour(%{state: active_snapshot})
         |> Ecto.Changeset.apply_action(:update)
 
-      assert %Detour{status: :past, estimated_duration: nil} = deactivated_detour
+      assert %Detour{status: :active} = active_detour
+
+      {:ok, past_detour} =
+        active_detour
+        |> Detours.change_detour(%{state: past_snapshot})
+        |> Ecto.Changeset.apply_action(:update)
+
+      assert %Detour{status: :past} = past_detour
+    end
+
+    test "change_detour/1 does not set updated_at for a no-op active snapshot update" do
+      detour =
+        :detour
+        |> build()
+        |> activated()
+
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
+      changeset = Detours.change_detour(detour, %{state: snapshot})
+
+      assert :error = fetch_change(changeset, :updated_at)
+    end
+
+    test "change_detour/1 sets updated_at when an active detour changes a field" do
+      activated_at = DateTime.add(DateTime.utc_now(), -1, :hour)
+
+      detour =
+        :detour
+        |> build()
+        |> activated(activated_at)
+        |> insert()
+
+      snapshot =
+        detour
+        |> with_estimated_duration("2 hours")
+        |> Skate.Detours.SnapshotSerde.serialize()
+
+      changeset = Detours.change_detour(detour, %{state: snapshot})
+
+      assert {:ok, _updated_at} = fetch_change(changeset, :updated_at)
     end
   end
 end

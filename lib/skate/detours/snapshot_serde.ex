@@ -23,8 +23,7 @@ defmodule Skate.Detours.SnapshotSerde do
     Skate.Detours.Db.Detour.changeset(
       detour,
       %{
-        # Save Snapshot to DB until we've fully transitioned to serializing
-        # snapshots from DB data
+        # The detour changeset deserializes db field changes from the snapshot updates
         state: snapshot,
         activated_at: activated_at
       }

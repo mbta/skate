@@ -33,6 +33,8 @@ defmodule Skate.DetourFactory do
       end
 
       def detour_factory do
+        headsign = sequence("detour_route_pattern_headsign:")
+
         %Skate.Detours.Db.Detour{
           author: build(:user),
           status: :draft,
@@ -45,16 +47,17 @@ defmodule Skate.DetourFactory do
           route_pattern: %{
             "id" => sequence("detour_route_pattern_id:") <> "-_--1",
             "name" => sequence("detour_route_pattern_name:"),
-            "headsign" => sequence("detour_route_pattern_headsign:"),
+            "headsign" => headsign,
             "directionId" => 0
           },
-          headsign: sequence("detour_route_pattern_headsign:"),
+          headsign: headsign,
           direction: "Outbound",
           direction_id: 0,
           nearest_intersection: sequence("detour_nearest_intersection:"),
           is_text_only: false,
           undo_stack: [],
           detour_shape: %{"ok" => %{"coordinates" => []}},
+          coordinates: [],
           connection_points: %{"start" => %{"id" => "start"}, "end" => %{"id" => "end"}},
           route_segments: %{"beforeDetour" => [], "afterDetour" => [], "detour" => []},
           missed_stops: []
