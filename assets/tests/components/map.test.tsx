@@ -729,8 +729,6 @@ describe("TileLayer", () => {
       container.querySelector("img[src^=test_satellite_url")
     ).not.toBeNull()
 
-    expect(
-      screen.getByRole("link", { name: "MassGIS 2021" })
-    ).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "MassGIS" })).toBeInTheDocument()
   })
 })
