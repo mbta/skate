@@ -8,8 +8,6 @@ defmodule SkateWeb.DetoursControllerTest do
   import Mox
   import Skate.Factory
 
-  alias ExUnit.CaptureLog
-
   alias Skate.Notifications
   alias Skate.Detours.Detours
   alias Skate.Detours.MissedStops
@@ -51,10 +49,7 @@ defmodule SkateWeb.DetoursControllerTest do
 
       assert %{"data" => number} = json_response(conn, 200)
 
-      assert %Skate.Detours.Db.Detour{
-               id: ^number,
-               state: %{"context" => %{}}
-             } = Detours.get_detour!(number)
+      assert %Skate.Detours.Db.Detour{id: ^number} = Detours.get_detour!(number)
     end
 
     defp setup_notification_server do
@@ -82,10 +77,7 @@ defmodule SkateWeb.DetoursControllerTest do
 
       assert %{"data" => 8} = json_response(conn, 200)
 
-      assert %Skate.Detours.Db.Detour{
-               id: 8,
-               state: %{"context" => %{"uuid" => 8}}
-             } = Detours.get_detour!(8)
+      assert %Skate.Detours.Db.Detour{id: 8} = Detours.get_detour!(8)
     end
 
     @tag :authenticated
@@ -131,10 +123,15 @@ defmodule SkateWeb.DetoursControllerTest do
     test "creates a new notification when detour is activated", %{conn: conn} do
       setup_notification_server()
 
-      %Skate.Detours.Db.Detour{id: id, state: snapshot} = insert(:detour)
+      detour =
+        :detour
+        |> build()
+        |> insert()
+
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       put(conn, ~p"/api/detours/update_snapshot", %{
-        "snapshot" => snapshot |> activated |> with_id(id)
+        "snapshot" => snapshot |> activated |> with_id(detour.id)
       })
 
       Process.sleep(10)
@@ -143,18 +140,23 @@ defmodule SkateWeb.DetoursControllerTest do
 
     @tag :authenticated
     test "adds `activated_at` field when provided", %{conn: conn} do
-      %Skate.Detours.Db.Detour{id: id, state: snapshot, activated_at: nil} = insert(:detour)
+      detour =
+        :detour
+        |> build()
+        |> insert()
 
       activated_at_time =
         DateTime.utc_now() |> Skate.DetourFactory.browser_date() |> Skate.DetourFactory.db_date()
 
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
+
       put(conn, ~p"/api/detours/update_snapshot", %{
-        "snapshot" => snapshot |> activated(activated_at_time) |> with_id(id)
+        "snapshot" => activated(snapshot, activated_at_time)
       })
 
       Process.sleep(10)
 
-      assert Skate.Detours.Detours.get_detour!(id).activated_at ==
+      assert Skate.Detours.Detours.get_detour!(detour.id).activated_at ==
                activated_at_time
     end
 
@@ -162,11 +164,16 @@ defmodule SkateWeb.DetoursControllerTest do
     test "does not create a new notification if detour was already activated", %{conn: conn} do
       setup_notification_server()
 
-      %Skate.Detours.Db.Detour{id: id, state: snapshot} =
-        :detour |> build |> activated |> insert
+      detour =
+        :detour
+        |> build()
+        |> activated()
+        |> insert()
+
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       put(conn, ~p"/api/detours/update_snapshot", %{
-        "snapshot" => with_id(snapshot, id)
+        "snapshot" => snapshot
       })
 
       Process.sleep(10)
@@ -177,14 +184,19 @@ defmodule SkateWeb.DetoursControllerTest do
     test "creates a new notification when detour is deactivated", %{conn: conn} do
       setup_notification_server()
 
-      %Skate.Detours.Db.Detour{id: id, state: snapshot} =
-        detour = :detour |> build |> activated |> insert()
+      detour =
+        :detour
+        |> build()
+        |> activated()
+        |> insert()
 
       %Skate.Detours.Db.DetourExpirationTask{} =
         :detour_expiration_task |> build(detour: detour) |> insert()
 
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
+
       put(conn, ~p"/api/detours/update_snapshot", %{
-        "snapshot" => snapshot |> deactivated |> with_id(id)
+        "snapshot" => snapshot |> deactivated |> with_id(detour.id)
       })
 
       Process.sleep(10)
@@ -195,11 +207,16 @@ defmodule SkateWeb.DetoursControllerTest do
     test "does not create a new notification if detour was already deactivated", %{conn: conn} do
       setup_notification_server()
 
-      %Skate.Detours.Db.Detour{id: id, state: snapshot} =
-        :detour |> build |> deactivated |> insert
+      detour =
+        :detour
+        |> build()
+        |> deactivated()
+        |> insert()
+
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       put(conn, ~p"/api/detours/update_snapshot", %{
-        "snapshot" => with_id(snapshot, id)
+        "snapshot" => snapshot
       })
 
       Process.sleep(10)
@@ -209,16 +226,21 @@ defmodule SkateWeb.DetoursControllerTest do
 
   @tag :authenticated
   test "when a detour is deactivated, then the detour's expiration task is deleted", %{conn: conn} do
-    %Skate.Detours.Db.Detour{id: id, state: snapshot} =
-      detour = :detour |> build |> activated |> insert()
+    detour =
+      :detour
+      |> build()
+      |> activated()
+      |> insert()
 
     %Skate.Detours.Db.DetourExpirationTask{} =
       :detour_expiration_task |> build(detour: detour) |> insert()
 
     assert Skate.Repo.aggregate(Skate.Detours.Db.DetourExpirationTask, :count) == 1
 
+    snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
+
     put(conn, ~p"/api/detours/update_snapshot", %{
-      "snapshot" => snapshot |> deactivated |> with_id(id)
+      "snapshot" => snapshot |> deactivated |> with_id(detour.id)
     })
 
     assert Skate.Repo.aggregate(Skate.Detours.Db.DetourExpirationTask, :count) == 0
@@ -334,13 +356,8 @@ defmodule SkateWeb.DetoursControllerTest do
 
       put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
 
-      {conn, log} =
-        CaptureLog.with_log(fn ->
-          get(conn, "/api/detours/#{detour_id}")
-        end)
-
-      refute log =~
-               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{detour_id}"
+      conn =
+        get(conn, "/api/detours/#{detour_id}")
 
       assert serialized_detour_snapshot == json_response(conn, 200)["data"]["state"]
     end
@@ -349,25 +366,18 @@ defmodule SkateWeb.DetoursControllerTest do
     test "serialized snapshot `activatedAt` value is formatted as iso-8601", %{conn: conn} do
       activated_at = Skate.DetourFactory.browser_date()
 
-      %{id: id} =
-        detour =
+      detour =
         :detour
         |> build()
         |> activated(activated_at)
         |> insert()
 
-      # Make ID match snapshot
       detour
       |> Skate.Detours.Detours.change_detour(detour |> update_id() |> Map.from_struct())
       |> Skate.Repo.update!()
 
-      {conn, log} =
-        CaptureLog.with_log(fn ->
-          get(conn, "/api/detours/#{id}")
-        end)
-
-      refute log =~
-               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id}"
+      conn =
+        get(conn, "/api/detours/#{detour.id}")
 
       assert DateTime.to_iso8601(activated_at) ==
                json_response(conn, 200)["data"]["state"]["context"]["activatedAt"]
@@ -375,126 +385,31 @@ defmodule SkateWeb.DetoursControllerTest do
 
     @tag :authenticated
     @tag :bug
-    test "defers to `activated_at` column when serialized detour doesn't match saved snapshot and does not log error",
+    test "uses the persisted `activated_at` value when the snapshot omits it",
          %{
            conn: conn
          } do
       activated_at = Skate.DetourFactory.browser_date()
 
-      %{id: id, state: snapshot} =
-        detour =
+      detour =
         :detour
         |> build()
         |> activated(activated_at)
         |> insert()
 
-      # Make ID match snapshot
-      snapshot = with_id(snapshot, id)
-      # Old snapshots will not have this key populated
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
+
       {_value, snapshot} = pop_in(snapshot["context"]["activatedAt"])
 
       detour
       |> Skate.Detours.Detours.change_detour(%{state: snapshot})
       |> Skate.Repo.update!()
 
-      {conn, log} =
-        CaptureLog.with_log(fn ->
-          get(conn, "/api/detours/#{id}")
-        end)
-
-      refute log =~
-               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id}"
+      conn =
+        get(conn, "/api/detours/#{detour.id}")
 
       assert DateTime.to_iso8601(activated_at) ==
                json_response(conn, 200)["data"]["state"]["context"]["activatedAt"]
-    end
-
-    @tag :authenticated
-    test "log an error if the serialized detour does not match db state", %{conn: conn} do
-      detour_id = 4
-
-      detour_snapshot =
-        :detour_snapshot
-        |> build()
-        |> with_id(detour_id)
-
-      conn = put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
-
-      # Changing the status is a sure way to force a fallback, as it should always be "active"
-      detour_id
-      |> Detours.get_detour!()
-      |> Detours.change_detour(%{state: put_in(detour_snapshot["status"], nil)})
-      |> Skate.Repo.update()
-
-      log =
-        CaptureLog.capture_log(fn ->
-          get(conn, "/api/detours/#{detour_id}")
-        end)
-
-      assert log =~
-               "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{detour_id}"
-    end
-
-    @tag :authenticated
-    test "fallback to snapshot if the serialized detour does not match db state", %{conn: conn} do
-      detour_id = 5
-
-      detour_snapshot =
-        :detour_snapshot
-        |> build()
-        |> with_id(detour_id)
-        |> with_direction(:inbound)
-
-      conn = put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
-
-      edited_snapshot = put_in(detour_snapshot["context"]["routePattern"]["directionId"], 0)
-
-      detour_id
-      |> Detours.get_detour!()
-      |> Detours.change_detour(%{state: edited_snapshot})
-      |> Skate.Repo.update()
-
-      conn = get(conn, "/api/detours/#{detour_id}")
-
-      # Serializer returns the fallback original, instead of `"status" => "active"`,
-      # which it sets for all successful serializations
-      assert %{
-               "data" => %{
-                 "author" => _,
-                 "state" => ^edited_snapshot,
-                 "updated_at" => _
-               }
-             } = json_response(conn, 200)
-    end
-
-    @tag :authenticated
-    test "does not log an error if mismatch is an irrelevant field", %{conn: conn} do
-      detour_id = 5
-
-      detour_snapshot =
-        :detour_snapshot
-        |> build()
-        |> with_id(detour_id)
-
-      conn = put(conn, "/api/detours/update_snapshot", %{"snapshot" => detour_snapshot})
-
-      edited_snapshot = put_in(detour_snapshot["irrelevantField"], "someData")
-
-      detour_id
-      |> Detours.get_detour!()
-      |> Detours.change_detour(%{state: edited_snapshot})
-      |> Skate.Repo.update()
-
-      conn = get(conn, "/api/detours/#{detour_id}")
-
-      # Serializer does not return the extra data
-      assert %{
-               "data" => %{
-                 "author" => _,
-                 "state" => ^detour_snapshot,
-                 "updated_at" => _
-               }
-             } = json_response(conn, 200)
     end
   end
 

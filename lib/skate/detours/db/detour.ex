@@ -16,7 +16,7 @@ defmodule Skate.Detours.Db.Detour do
     belongs_to :copied_from, __MODULE__, foreign_key: :copied_from_id
 
     # State properties
-    field :state, :map
+    field :state, :map, virtual: true
     field(:status, Ecto.Enum, values: [:draft, :active, :past]) :: status()
     field :activated_at, :utc_datetime_usec
     timestamps()
@@ -62,21 +62,25 @@ defmodule Skate.Detours.Db.Detour do
     has_many :detour_expiration_notifications, Notifications.Db.DetourExpiration
   end
 
+  # upsert_from_snapshot uses the state changeset to populate the db field changes
+  # other fields are also cast because activate and deactivate actions set them directly
   def changeset(detour, attrs) do
     detour
-    |> cast(attrs, [:state, :activated_at, :swiftly_id])
+    |> cast(attrs, [
+      :state,
+      :state_value,
+      :status,
+      :estimated_duration,
+      :reason,
+      :activated_at,
+      :swiftly_id
+    ])
     |> validate_activated_at()
     |> add_status()
     |> populate_fields_from_state()
-    |> then(fn changeset ->
-      if Skate.Detours.Autoclosing.enabled?() do
-        Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(changeset)
-      else
-        changeset
-      end
-    end)
+    |> delete_change(:state)
     |> add_updated_at()
-    |> validate_required([:state, :status])
+    |> validate_required([:status])
     |> foreign_key_constraint(:author_id)
   end
 
@@ -105,27 +109,10 @@ defmodule Skate.Detours.Db.Detour do
       ])
       |> Map.merge(%{
         status: :draft,
-        state: copy_to_draft_state(source.state),
         state_value: %{"SaveState" => "Saved", "Detour Drawing" => "Share Detour"}
       })
 
     change(new_detour, copied_fields)
-  end
-
-  defp copy_to_draft_state(state) do
-    state
-    |> Map.put(
-      "context",
-      state["context"]
-      |> Map.merge(%{"status" => "draft"})
-      |> Map.drop(["selectedReason", "selectedDuration", "activatedAt"])
-    )
-    |> Map.put("value", %{"SaveState" => "Saved", "Detour Drawing" => "Share Detour"})
-  end
-
-  def set_state_uuid_changeset(detour) do
-    new_state = put_in(detour.state, ["context", "uuid"], detour.id)
-    change(detour, %{state: new_state})
   end
 
   # Add or update swiftly_id
@@ -151,6 +138,7 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp add_status(changeset) do
+    # status is derived from xstate state value changes
     case {fetch_field(changeset, :status), fetch_change(changeset, :state)} do
       {{:data, :active}, {:ok, %{"value" => %{"Detour Drawing" => "Past"}}}} ->
         put_change(changeset, :status, :past)
@@ -166,10 +154,8 @@ defmodule Skate.Detours.Db.Detour do
     end
   end
 
-  # Do not update updated_at if the changeset only contains state changes
-  defp add_updated_at(changeset) when map_size(changeset.changes) < 2 do
-    changeset
-  end
+  # do not change updated_at when there are no changes to make
+  defp add_updated_at(changeset) when map_size(changeset.changes) == 0, do: changeset
 
   defp add_updated_at(changeset) do
     case {fetch_field(changeset, :status), fetch_field(changeset, :activated_at)} do
@@ -259,10 +245,21 @@ defmodule Skate.Detours.Db.Detour do
   end
 
   defp populate_fields_from_state(changeset) do
+    # Maps most of the snapshot object into normalized DB columns
+    # nullable state fields allow nil to overwrite the database value
     changeset
     |> put_changes_from_state(@state_fields, false)
     |> put_changes_from_state(@nullable_state_fields, true)
     |> populate_direction_from_state()
+    |> maybe_populate_autoclose()
+  end
+
+  defp maybe_populate_autoclose(changeset) do
+    if Skate.Detours.Autoclosing.enabled?() do
+      Skate.Detours.Autoclosing.calculate_autoclose_on_from_duration(changeset)
+    else
+      changeset
+    end
   end
 
   defp populate_direction_from_state(changeset) do

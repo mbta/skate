@@ -59,7 +59,7 @@ defmodule Skate.Detours.AutoclosingJob.Test do
         now = DateTime.utc_now()
         autoclose_on = DateTime.add(now, 1, :hour)
 
-        %{author_id: author_id, id: id, state: state} =
+        detour =
           :detour
           |> build()
           |> activated(now)
@@ -70,13 +70,13 @@ defmodule Skate.Detours.AutoclosingJob.Test do
         tomorrow = Date.add(today, 1)
 
         snapshot =
-          state
+          detour
+          |> Skate.Detours.SnapshotSerde.serialize()
           |> with_estimated_duration(Date.to_iso8601(tomorrow))
-          |> with_id(id)
 
         {:ok, detour} =
           Skate.Detours.Detours.upsert_from_snapshot(
-            author_id,
+            detour.author_id,
             snapshot
           )
 

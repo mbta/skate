@@ -73,14 +73,16 @@ defmodule Skate.Detours.S3ExporterTest do
   describe "when detour status changes to :past" do
     test "the job starts" do
       test_job_starts do
-        %{id: id, author_id: author_id, state: snapshot} =
+        detour =
           :detour
           |> build()
           |> activated()
           |> insert()
           |> deactivated()
 
-        Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+        snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
+
+        Skate.Detours.Detours.upsert_from_snapshot(detour.author_id, snapshot)
       end
     end
   end
@@ -94,10 +96,12 @@ defmodule Skate.Detours.S3ExporterTest do
           |> activated()
           |> insert()
 
-        %{author_id: author_id, id: id, state: snapshot} =
-          with_estimated_duration(detour, "6 hours")
+        snapshot =
+          detour
+          |> with_estimated_duration("6 hours")
+          |> Skate.Detours.SnapshotSerde.serialize()
 
-        Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+        Skate.Detours.Detours.upsert_from_snapshot(detour.author_id, snapshot)
       end
     end
   end
@@ -111,13 +115,12 @@ defmodule Skate.Detours.S3ExporterTest do
           |> activated(~U[2026-01-05 15:00:00.000000Z])
           |> insert()
 
-        # workaround because there's no `with_saved_context(...)` factory method
-        %{author_id: author_id, id: id, state: snapshot} = %{
+        snapshot =
           detour
-          | state: put_in(detour.state, ["context", "endPoint"], %{"id" => "start"})
-        }
+          |> Skate.Detours.SnapshotSerde.serialize()
+          |> put_in(["context", "endPoint"], %{"id" => "start"})
 
-        Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+        Skate.Detours.Detours.upsert_from_snapshot(detour.author_id, snapshot)
       end
     end
   end
