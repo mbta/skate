@@ -257,32 +257,21 @@ defmodule Skate.Detours.Autoclosing.Test do
 
       Skate.Settings.TestGroup.update(%{test_group | override: :disabled})
 
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
-
-      changeset = Detour.changeset(build(:detour), %{"state" => state})
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => "1 hour"})
 
       refute Ecto.Changeset.get_change(changeset, :autoclose_on)
     end
 
-    test "calculates autoclose_on as end of today (in ET) for '1 hour' from state" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+    test "calculates autoclose_on as end of today (in ET) for '1 hour' from estimated_duration" do
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => "1 hour"})
 
       assert autoclose_on = Ecto.Changeset.get_change(changeset, :autoclose_on)
       assert autoclose_on != nil
       assert_autoclose_on_end_of_service_et(autoclose_on)
     end
 
-    test "calculates autoclose_on as end of today (in ET) for '8 hours' from state" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "8 hours")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+    test "calculates autoclose_on as end of today (in ET) for '8 hours' from estimated_duration" do
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => "8 hours"})
 
       assert autoclose_on = Ecto.Changeset.get_change(changeset, :autoclose_on)
       assert autoclose_on != nil
@@ -290,45 +279,31 @@ defmodule Skate.Detours.Autoclosing.Test do
     end
 
     test "sets autoclose_on to nil for a duration range that doesn't match" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "not matching")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => "not matching"})
 
       refute Ecto.Changeset.get_change(changeset, :autoclose_on)
     end
 
-    test "calculates autoclose_on as end of today (in ET) for 'Until further notice' from state" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "Until further notice")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+    test "calculates autoclose_on as end of today (in ET) for 'Until further notice' from estimated_duration" do
+      changeset =
+        Detour.changeset(build(:detour), %{"estimated_duration" => "Until further notice"})
 
       assert autoclose_on = Ecto.Changeset.get_change(changeset, :autoclose_on)
       assert autoclose_on != nil
       assert_autoclose_on_end_of_service_et(autoclose_on)
     end
 
-    test "calculates autoclose_on as end of today (in ET) for 'Until end of service' from state" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "Until end of service")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+    test "calculates autoclose_on as end of today (in ET) for 'Until end of service' from estimated_duration" do
+      changeset =
+        Detour.changeset(build(:detour), %{"estimated_duration" => "Until end of service"})
 
       assert autoclose_on = Ecto.Changeset.get_change(changeset, :autoclose_on)
       assert autoclose_on != nil
       assert_autoclose_on_end_of_service_et(autoclose_on)
     end
 
-    test "calculates autoclose_on for custom date string '2026-09-25' from state" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "2026-09-25")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+    test "calculates autoclose_on for custom date string '2026-09-25' from estimated_duration" do
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => "2026-09-25"})
 
       assert autoclose_on = Ecto.Changeset.get_change(changeset, :autoclose_on)
       assert autoclose_on != nil
@@ -342,11 +317,7 @@ defmodule Skate.Detours.Autoclosing.Test do
     test "calculates autoclose_on as end of specified date for future dates" do
       future_date = "2026-12-31"
 
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], future_date)
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => future_date})
 
       assert autoclose_on = Ecto.Changeset.get_change(changeset, :autoclose_on)
       assert autoclose_on != nil
@@ -357,69 +328,36 @@ defmodule Skate.Detours.Autoclosing.Test do
       assert autoclose_on_et.second == 0
     end
 
-    test "sets autoclose_on to nil for nil estimated_duration in state" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], nil)
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+    test "sets autoclose_on to nil for nil estimated_duration" do
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => nil})
 
       refute Ecto.Changeset.get_change(changeset, :autoclose_on)
     end
 
     test "sets autoclose_on to nil for unrecognized duration string" do
-      state =
-        put_in(
-          build(:detour_snapshot),
-          ["context", "selectedDuration"],
-          "Unknown Duration Format"
-        )
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+      changeset =
+        Detour.changeset(build(:detour), %{"estimated_duration" => "Unknown Duration Format"})
 
       refute Ecto.Changeset.get_change(changeset, :autoclose_on)
     end
 
     test "sets autoclose_on to nil for invalid date format" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "2026-13-45")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => "2026-13-45"})
 
       refute Ecto.Changeset.get_change(changeset, :autoclose_on)
     end
 
-    test "autoclose_on is end of day (03:00:00) when converted back to Eastern Time" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
-
-      autoclose_on = Ecto.Changeset.get_change(changeset, :autoclose_on)
-      assert autoclose_on != nil
-      assert_autoclose_on_end_of_service_et(autoclose_on)
-    end
-
     test "whitespace in estimated_duration is trimmed" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "  1 hour  ")
-
-      detour = build(:detour)
-      changeset = Detour.changeset(detour, %{"state" => state})
+      changeset = Detour.changeset(build(:detour), %{"estimated_duration" => "  1 hour  "})
 
       assert autoclose_on = Ecto.Changeset.get_change(changeset, :autoclose_on)
       assert autoclose_on != nil
     end
 
-    test "creating a detour with estimated_duration from state sets autoclose_on" do
-      state = build(:detour_snapshot) |> with_estimated_duration("1 hour")
-
+    test "creating a detour with estimated_duration sets autoclose_on" do
       {:ok, detour} =
         build(:detour)
-        |> Detour.changeset(%{"state" => state})
+        |> Detour.changeset(%{"estimated_duration" => "1 hour"})
         |> Skate.Repo.insert()
 
       assert detour.estimated_duration == "1 hour"
@@ -433,12 +371,8 @@ defmodule Skate.Detours.Autoclosing.Test do
         |> build()
         |> Skate.Repo.insert()
 
-      new_state =
-        detour
-        |> Skate.Detours.SnapshotSerde.serialize()
-        |> with_estimated_duration("Until further notice")
-
-      changeset = Detour.changeset(detour, %{"state" => new_state})
+      changeset =
+        Detour.changeset(detour, %{"estimated_duration" => "Until further notice"})
 
       {:ok, updated_detour} = Skate.Repo.update(changeset)
 

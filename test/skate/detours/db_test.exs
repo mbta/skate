@@ -78,33 +78,24 @@ defmodule Skate.Detours.DbTest do
                |> fetch_change(:activated_at)
     end
 
-    test "change_detour/1 changes :status when :state updates" do
-      draft_snapshot = build(:detour_snapshot)
-      active_snapshot = activated(draft_snapshot)
-      past_snapshot = deactivated(active_snapshot)
-
-      detour = build(:detour)
-
-      {:ok, draft_detour} =
-        detour
-        |> Detours.change_detour(%{state: draft_snapshot})
+    test "change_detour/1 updates persisted status and activation fields" do
+      {:ok, activated_detour} =
+        build(:detour)
+        |> Detours.change_detour(%{
+          "status" => "active",
+          "activated_at" => DateTime.utc_now(),
+          "estimated_duration" => "1 hour"
+        })
         |> Ecto.Changeset.apply_action(:update)
 
-      assert %Detour{status: :draft} = draft_detour
+      assert %Detour{status: :active, estimated_duration: "1 hour"} = activated_detour
 
-      {:ok, active_detour} =
-        draft_detour
-        |> Detours.change_detour(%{state: active_snapshot})
+      {:ok, deactivated_detour} =
+        activated_detour
+        |> Detours.change_detour(%{"status" => "past", "estimated_duration" => nil})
         |> Ecto.Changeset.apply_action(:update)
 
-      assert %Detour{status: :active} = active_detour
-
-      {:ok, past_detour} =
-        active_detour
-        |> Detours.change_detour(%{state: past_snapshot})
-        |> Ecto.Changeset.apply_action(:update)
-
-      assert %Detour{status: :past} = past_detour
+      assert %Detour{status: :past, estimated_duration: nil} = deactivated_detour
     end
   end
 end

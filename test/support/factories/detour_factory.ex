@@ -90,10 +90,6 @@ defmodule Skate.DetourFactory do
         }
       end
 
-      def with_state(%Skate.Detours.Db.Detour{} = detour, state) when is_map(state) do
-        %{detour | state: state}
-      end
-
       def with_id(%Skate.Detours.Db.Detour{} = detour, id) do
         %{detour | id: id}
       end
@@ -329,19 +325,6 @@ defmodule Skate.DetourFactory do
 
       def with_author(%Skate.Detours.Db.Detour{} = detour, user) do
         Map.put(detour, :author, user)
-      end
-
-      @doc """
-      Sets the given dedicated column(s) to `nil` so `state` remains the only
-      populated source of truth. Use to exercise the "column missing, fall back
-      to legacy state" branches in `Skate.Detours.SnapshotSerde`.
-      """
-      def without_columns(%Skate.Detours.Db.Detour{} = detour, fields) when is_list(fields) do
-        Enum.reduce(fields, detour, fn field, acc -> Map.replace!(acc, field, nil) end)
-      end
-
-      def without_columns(%Skate.Detours.Db.Detour{} = detour, field) when is_atom(field) do
-        without_columns(detour, [field])
       end
     end
   end
