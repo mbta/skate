@@ -267,10 +267,10 @@ defmodule Skate.DetourFactory do
       end
 
       def with_missed_stops(%Skate.Detours.Db.Detour{} = detour, stops) do
-        missed_stops = Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
+        missed_stops =
+          Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
 
-        detour
-        |> Map.put(:missed_stops, missed_stops)
+        Map.put(detour, :missed_stops, missed_stops)
       end
 
       def with_missed_stops(state, stops) do

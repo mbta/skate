@@ -128,9 +128,7 @@ defmodule SkateWeb.DetoursControllerTest do
         |> build()
         |> insert()
 
-      snapshot =
-        detour
-        |> Skate.Detours.SnapshotSerde.serialize()
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       put(conn, ~p"/api/detours/update_snapshot", %{
         "snapshot" => snapshot |> activated |> with_id(detour.id)
@@ -150,12 +148,10 @@ defmodule SkateWeb.DetoursControllerTest do
       activated_at_time =
         DateTime.utc_now() |> Skate.DetourFactory.browser_date() |> Skate.DetourFactory.db_date()
 
-      snapshot =
-        detour
-        |> Skate.Detours.SnapshotSerde.serialize()
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       put(conn, ~p"/api/detours/update_snapshot", %{
-        "snapshot" => snapshot |> activated(activated_at_time)
+        "snapshot" => activated(snapshot, activated_at_time)
       })
 
       Process.sleep(10)
@@ -174,9 +170,7 @@ defmodule SkateWeb.DetoursControllerTest do
         |> activated()
         |> insert()
 
-      snapshot =
-        detour
-        |> Skate.Detours.SnapshotSerde.serialize()
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       put(conn, ~p"/api/detours/update_snapshot", %{
         "snapshot" => snapshot
@@ -199,9 +193,7 @@ defmodule SkateWeb.DetoursControllerTest do
       %Skate.Detours.Db.DetourExpirationTask{} =
         :detour_expiration_task |> build(detour: detour) |> insert()
 
-      snapshot =
-        detour
-        |> Skate.Detours.SnapshotSerde.serialize()
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       put(conn, ~p"/api/detours/update_snapshot", %{
         "snapshot" => snapshot |> deactivated |> with_id(detour.id)
@@ -221,9 +213,7 @@ defmodule SkateWeb.DetoursControllerTest do
         |> deactivated()
         |> insert()
 
-      snapshot =
-        detour
-        |> Skate.Detours.SnapshotSerde.serialize()
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       put(conn, ~p"/api/detours/update_snapshot", %{
         "snapshot" => snapshot
@@ -247,9 +237,7 @@ defmodule SkateWeb.DetoursControllerTest do
 
     assert Skate.Repo.aggregate(Skate.Detours.Db.DetourExpirationTask, :count) == 1
 
-    snapshot =
-      detour
-      |> Skate.Detours.SnapshotSerde.serialize()
+    snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
     put(conn, ~p"/api/detours/update_snapshot", %{
       "snapshot" => snapshot |> deactivated |> with_id(detour.id)
@@ -409,9 +397,7 @@ defmodule SkateWeb.DetoursControllerTest do
         |> activated(activated_at)
         |> insert()
 
-      snapshot =
-        detour
-        |> Skate.Detours.SnapshotSerde.serialize()
+      snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
       {_value, snapshot} = pop_in(snapshot["context"]["activatedAt"])
 

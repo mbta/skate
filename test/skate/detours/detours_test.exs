@@ -190,8 +190,7 @@ defmodule Skate.Detours.DetoursTest do
         |> deactivated()
 
       snapshot =
-        detour
-        |> Skate.Detours.SnapshotSerde.serialize()
+        Skate.Detours.SnapshotSerde.serialize(detour)
 
       log =
         capture_log(fn ->

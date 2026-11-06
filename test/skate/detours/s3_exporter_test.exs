@@ -80,9 +80,7 @@ defmodule Skate.Detours.S3ExporterTest do
           |> insert()
           |> deactivated()
 
-        snapshot =
-          detour
-          |> Skate.Detours.SnapshotSerde.serialize()
+        snapshot = Skate.Detours.SnapshotSerde.serialize(detour)
 
         Skate.Detours.Detours.upsert_from_snapshot(detour.author_id, snapshot)
       end
