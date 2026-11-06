@@ -415,27 +415,28 @@ defmodule Skate.Detours.Autoclosing.Test do
     end
 
     test "creating a detour with estimated_duration from state sets autoclose_on" do
-      state =
-        put_in(build(:detour_snapshot), ["context", "selectedDuration"], "1 hour")
+      state = build(:detour_snapshot) |> with_estimated_duration("1 hour")
 
-      detour = build(:detour)
+      {:ok, detour} =
+        build(:detour)
+        |> Detour.changeset(%{"state" => state})
+        |> Skate.Repo.insert()
 
-      changeset = Detour.changeset(detour, %{"state" => state})
-
-      # populate_fields_from_state will extract estimated_duration from state
-      {:ok, saved_detour} = Skate.Repo.insert(changeset)
-
-      assert saved_detour.estimated_duration == "1 hour"
-      assert saved_detour.autoclose_on != nil
-      assert_autoclose_on_end_of_service_et(saved_detour.autoclose_on)
+      assert detour.estimated_duration == "1 hour"
+      assert detour.autoclose_on != nil
+      assert_autoclose_on_end_of_service_et(detour.autoclose_on)
     end
 
     test "updating an existing detour's estimated_duration updates autoclose_on" do
-      {:ok, detour} = :detour |> build() |> Skate.Repo.insert()
+      {:ok, detour} =
+        :detour
+        |> build()
+        |> Skate.Repo.insert()
 
-      # Update with a new estimated_duration in state
       new_state =
-        put_in(detour.state, ["context", "selectedDuration"], "Until further notice")
+        detour
+        |> Skate.Detours.SnapshotSerde.serialize()
+        |> with_estimated_duration("Until further notice")
 
       changeset = Detour.changeset(detour, %{"state" => new_state})
 

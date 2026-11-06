@@ -2,7 +2,6 @@ defmodule SkateWeb.AuthControllerTest do
   use SkateWeb.ConnCase
 
   import Test.Support.Helpers
-  import ExUnit.CaptureLog
 
   alias Skate.Settings.User
 

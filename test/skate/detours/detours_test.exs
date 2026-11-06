@@ -182,19 +182,23 @@ defmodule Skate.Detours.DetoursTest do
     end
 
     test "logs metadata when deactivating a detour" do
-      %{id: id, author_id: author_id, state: snapshot} =
+      detour =
         :detour
         |> build()
         |> activated()
         |> insert()
         |> deactivated()
 
+      snapshot =
+        detour
+        |> Skate.Detours.SnapshotSerde.serialize()
+
       log =
         capture_log(fn ->
-          Skate.Detours.Detours.upsert_from_snapshot(author_id, with_id(snapshot, id))
+          Skate.Detours.Detours.upsert_from_snapshot(detour.author_id, snapshot)
         end)
 
-      assert log =~ "deactivate_detour id=#{id}"
+      assert log =~ "deactivate_detour id=#{detour.id}"
     end
   end
 

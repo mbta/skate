@@ -311,30 +311,19 @@ defmodule Skate.Notifications.NotificationTest do
     end
 
     test "returns detour information" do
-      # create new notification
-      %{
-        state: %{
-          "context" => %{
-            "route" => %{
-              "name" => route_name
-            },
-            "routePattern" => %{
-              "name" => route_pattern_name,
-              "headsign" => headsign
-            }
-          }
-        }
-      } =
-        detour =
+      detour =
         :detour
         |> build()
         |> with_direction(:inbound)
         |> insert()
 
+      route_name = detour.route_name
+      route_pattern_name = detour.route_pattern["name"]
+      headsign = detour.headsign
+
       {:ok, %{notification: %{id: notification_id}}} =
         Notifications.Notification.create_activated_detour_notification_from_detour(detour)
 
-      # assert fields are set
       assert %Notifications.Notification{
                content: %Notifications.Db.Detour{
                  status: :activated,
