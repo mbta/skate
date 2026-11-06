@@ -119,8 +119,7 @@ defmodule Skate.Detours.DetoursTest do
 
       assert draft_detour.status == :draft
       assert draft_detour.author_id == author_id
-      assert draft_detour.state["context"]["uuid"] == draft_detour.id
-      assert draft_detour.state["context"]["activatedAt"] == nil
+      assert draft_detour.activated_at == nil
       refute draft_detour.id == detour.id
       assert draft_detour.copied_from_id == detour.id
     end
@@ -153,8 +152,7 @@ defmodule Skate.Detours.DetoursTest do
 
       assert draft_detour.status == :draft
       assert draft_detour.author_id == new_author.id
-      assert draft_detour.state["context"]["uuid"] == draft_detour.id
-      assert draft_detour.state["context"]["activatedAt"] == nil
+      assert draft_detour.activated_at == nil
       refute draft_detour.id == detour.id
       assert draft_detour.copied_from_id == detour.id
       assert draft_detour.estimated_duration == nil

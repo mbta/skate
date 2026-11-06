@@ -64,7 +64,15 @@ defmodule Skate.Detours.Db.Detour do
 
   def changeset(detour, attrs) do
     detour
-    |> cast(attrs, [:state, :activated_at, :swiftly_id])
+    |> cast(attrs, [
+      :state,
+      :state_value,
+      :status,
+      :estimated_duration,
+      :reason,
+      :activated_at,
+      :swiftly_id
+    ])
     |> validate_activated_at()
     |> add_status()
     |> populate_fields_from_state()

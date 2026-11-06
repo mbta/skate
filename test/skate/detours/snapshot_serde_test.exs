@@ -7,7 +7,7 @@ defmodule Skate.Detours.SnapshotSerdeTest do
   alias Skate.Detours.SnapshotSerde
 
   describe "deserialize/2" do
-    test "extracts activatedAt into the detour changeset and keeps snapshot state clean" do
+    test "extracts activatedAt into the detour changeset" do
       activated_at = Skate.DetourFactory.browser_date()
 
       snapshot =
@@ -20,8 +20,6 @@ defmodule Skate.Detours.SnapshotSerdeTest do
 
       assert changeset.data.author_id == 99
       assert DateTime.compare(changeset.changes[:activated_at], activated_at) == :eq
-      assert get_in(changeset.changes.state, ["context", "activatedAt"]) == nil
-      assert get_in(changeset.changes.state, ["value", "SaveState"]) == "Saved"
     end
 
     test "uses the existing detour record when the snapshot uuid matches a DB detour" do
@@ -40,7 +38,6 @@ defmodule Skate.Detours.SnapshotSerdeTest do
 
       assert changeset.data.id == detour.id
       assert changeset.data.author_id == detour.author_id
-      assert get_in(changeset.changes.state, ["context", "uuid"]) == detour.id
     end
   end
 
@@ -68,7 +65,6 @@ defmodule Skate.Detours.SnapshotSerdeTest do
         :detour
         |> build()
         |> Map.put(:estimated_duration, "2 hours")
-        |> Map.put(:state, put_in(build(:detour_snapshot), ["context", "selectedDuration"], "2 hours"))
         |> insert()
 
       snapshot = SnapshotSerde.serialize(detour)

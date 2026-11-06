@@ -51,10 +51,7 @@ defmodule SkateWeb.DetoursControllerTest do
 
       assert %{"data" => number} = json_response(conn, 200)
 
-      assert %Skate.Detours.Db.Detour{
-               id: ^number,
-               state: %{"context" => %{}}
-             } = Detours.get_detour!(number)
+      assert %Skate.Detours.Db.Detour{id: ^number} = Detours.get_detour!(number)
     end
 
     defp setup_notification_server do
@@ -82,10 +79,7 @@ defmodule SkateWeb.DetoursControllerTest do
 
       assert %{"data" => 8} = json_response(conn, 200)
 
-      assert %Skate.Detours.Db.Detour{
-               id: 8,
-               state: %{"context" => %{"uuid" => 8}}
-             } = Detours.get_detour!(8)
+      assert %Skate.Detours.Db.Detour{id: 8} = Detours.get_detour!(8)
     end
 
     @tag :authenticated

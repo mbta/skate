@@ -397,6 +397,7 @@ defmodule Skate.Detours.Detours do
   defp build_activation_changeset(detour, selected_duration, selected_reason) do
     Detour.changeset(detour, %{
       state_value: %{"SaveState" => "Saved", "Detour Drawing" => %{"Active" => "Reviewing"}},
+      status: :active,
       estimated_duration: selected_duration,
       reason: selected_reason,
       activated_at: DateTime.utc_now(:millisecond),
