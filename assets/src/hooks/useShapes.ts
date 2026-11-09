@@ -67,25 +67,19 @@ export const useRouteShapes = (
 }
 
 export const useTripShape = (tripId: TripId | null): Shape[] => {
-  console.log("useTripShape")
   // null means loading
   const [shape, setShape] = useState<Shape | null>(null)
 
   useEffect(() => {
-    console.log(tripId)
     if (tripId !== null) {
-      fetchShapeForTrip(tripId)
-        .then((shapeResult: Shape | null) => {
-          console.log(shapeResult)
-          setShape(shapeResult)
-        })
-        .catch((e) => console.log(e))
+      fetchShapeForTrip(tripId).then((shapeResult: Shape | null) =>
+        setShape(shapeResult)
+      )
     } else {
       setShape(null)
     }
   }, [tripId])
 
-  console.log(shape)
   return shape === null ? [] : [shape]
 }
 
