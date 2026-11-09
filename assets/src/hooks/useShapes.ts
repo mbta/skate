@@ -74,10 +74,12 @@ export const useTripShape = (tripId: TripId | null): Shape[] => {
   useEffect(() => {
     console.log(tripId)
     if (tripId !== null) {
-      fetchShapeForTrip(tripId).then((shapeResult: Shape | null) =>
-        console.log(shapeResult)
-        setShape(shapeResult)
-      ).catch(e => console.log(e))
+      fetchShapeForTrip(tripId)
+        .then((shapeResult: Shape | null) => {
+          console.log(shapeResult)
+          setShape(shapeResult)
+        })
+        .catch((e) => console.log(e))
     } else {
       setShape(null)
     }
