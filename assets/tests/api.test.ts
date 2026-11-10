@@ -640,7 +640,7 @@ describe("fetchShapeForTrip", () => {
     })
   })
 
-  test("defaults to null if a trip is not found", () => {
+  test("returns null without reporting to Sentry if a trip has no shape", () => {
     mockFetch(200, { data: null })
 
     return fetchShapeForTrip("28").then((result) => {
