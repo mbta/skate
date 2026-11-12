@@ -91,6 +91,8 @@ defmodule Skate.Detours.SnapshotSerde do
     }
   end
 
+  defp route_from_detour(_), do: nil
+
   defp routepattern_from_detour(%Detour{route_pattern: route_pattern})
        when not is_nil(route_pattern) do
     route_pattern
