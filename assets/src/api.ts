@@ -35,6 +35,7 @@ import {
   Infer,
   is,
   never,
+  nullable,
   number,
   object,
   string,
@@ -377,8 +378,8 @@ export const fetchFinishedDetour = (
 export const fetchShapeForTrip = (tripId: TripId): Promise<Shape | null> =>
   checkedApiCall({
     url: `/api/shapes/trip/${tripId}`,
-    parser: shapeFromData,
-    dataStruct: ShapeData,
+    parser: nullableParser(shapeFromData),
+    dataStruct: nullable(ShapeData),
     defaultResult: null,
   })
 
