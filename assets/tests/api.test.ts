@@ -640,6 +640,15 @@ describe("fetchShapeForTrip", () => {
     })
   })
 
+  test("returns null without reporting to Sentry if a trip has no shape", () => {
+    mockFetch(200, { data: null })
+
+    return fetchShapeForTrip("28").then((result) => {
+      expect(Sentry.captureException).not.toHaveBeenCalled()
+      expect(result).toEqual(null)
+    })
+  })
+
   test("defaults to null if there's an error", () => {
     mockFetch(500, { data: null })
 
