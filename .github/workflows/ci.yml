@@ -77,7 +77,7 @@ jobs:
       GUARDIAN_SECRET_KEY: test_guardian_secret_keys
     services:
       postgres:
-        image: postgres@sha256:6491a703d8705e7547aa0b170f2e6ccae7abc2622603a96ea61ddfea1a7b4248
+        image: postgres:18@sha256:e3d24f6906d0760bf4da0dae872415391ededefad23fd471c47dc53b0ddf3c42
         ports:
           - 5432:5432
         env:
