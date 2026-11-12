@@ -101,10 +101,6 @@ defmodule Skate.DetourFactory do
         put_in(snapshot["context"]["uuid"], id)
       end
 
-      def update_id(%Skate.Detours.Db.Detour{} = detour) do
-        with_id(detour, detour.id)
-      end
-
       def activated(
             detour_or_state,
             activated_at \\ DateTime.utc_now(),
@@ -285,10 +281,23 @@ defmodule Skate.DetourFactory do
       def with_finished_state(detour_or_state, opts \\ [])
 
       def with_finished_state(%Skate.Detours.Db.Detour{} = detour, opts) do
+        default_connection_points = %{"start" => %{"id" => "101"}, "end" => %{"id" => "102"}}
+        default_route_segments = %{"beforeDetour" => [], "afterDetour" => [], "detour" => []}
+        default_detour_shape = %{"coordinates" => []}
+
         detour
-        |> maybe_update_detour_field(:route_segments, Keyword.get(opts, :route_segments))
-        |> maybe_update_detour_field(:connection_points, Keyword.get(opts, :connection_point))
-        |> maybe_update_detour_field(:detour_shape, Keyword.get(opts, :detour_shape))
+        |> maybe_update_detour_field(
+          :route_segments,
+          Keyword.get(opts, :route_segments, default_route_segments)
+        )
+        |> maybe_update_detour_field(
+          :connection_points,
+          Keyword.get(opts, :connection_point, default_connection_points)
+        )
+        |> maybe_update_detour_field(
+          :detour_shape,
+          Keyword.get(opts, :detour_shape, default_detour_shape)
+        )
       end
 
       def with_finished_state(state, opts) do

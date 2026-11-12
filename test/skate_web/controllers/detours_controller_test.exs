@@ -372,10 +372,6 @@ defmodule SkateWeb.DetoursControllerTest do
         |> activated(activated_at)
         |> insert()
 
-      detour
-      |> Skate.Detours.Detours.change_detour(detour |> update_id() |> Map.from_struct())
-      |> Skate.Repo.update!()
-
       conn =
         get(conn, "/api/detours/#{detour.id}")
 
