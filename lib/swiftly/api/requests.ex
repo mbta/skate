@@ -45,6 +45,8 @@ defmodule Swiftly.API.Requests do
     Integer.to_string(direction_id)
   end
 
+  defp parse_direction(_), do: nil
+
   defp parse_shape(%Detour{coordinates: coordinates}) when not is_nil(coordinates) do
     map_coordinates(coordinates)
   end
