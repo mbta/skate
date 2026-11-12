@@ -71,6 +71,7 @@ defmodule Skate.Detours.Db.Detour do
       :state_value,
       :status,
       :estimated_duration,
+      :autoclose_on,
       :reason,
       :activated_at,
       :swiftly_id
