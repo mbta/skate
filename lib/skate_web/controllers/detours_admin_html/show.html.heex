@@ -1,5 +1,3 @@
-<p>Valid?: {@matches}</p>
-
 <p>Detour Info</p>
 <pre>
   <%= extract_pre(@detour) %>
@@ -31,33 +29,6 @@
   <% end %>
   <p>Detour not present in swiftly.</p>
 <% end %>
-<details>
-  <summary>Changed</summary>
-  <pre>
-    <%= extract_pre(@detour_diff, :changed) %>
-  </pre>
-</details>
-
-<details>
-  <summary>Added (Present in serialized snapshot)</summary>
-  <pre>
-    <%= extract_pre(@detour_diff, :added) %>
-  </pre>
-</details>
-
-<details>
-  <summary>Removed (Present in state)</summary>
-  <pre>
-    <%= extract_pre(@detour_diff, :removed) %>
-  </pre>
-</details>
-
-<details>
-  <summary>Value</summary>
-  <pre>
-    <%= extract_pre(@detour_diff, :value) %>
-  </pre>
-</details>
 
 <details>
   <summary>DB Value</summary>

@@ -33,29 +33,34 @@ defmodule Skate.DetourFactory do
       end
 
       def detour_factory do
-        state = build(:detour_snapshot)
+        headsign = sequence("detour_route_pattern_headsign:")
 
         %Skate.Detours.Db.Detour{
           author: build(:user),
-          state: state,
-          state_value: state["value"],
-          snapshot_children: state["children"],
           status: :draft,
-          nearest_intersection: state["context"]["nearestIntersection"],
-          route_id: state["context"]["route"]["id"],
-          route_name: state["context"]["route"]["name"],
-          garages: state["context"]["route"]["garages"],
-          direction_names: state["context"]["route"]["directionNames"],
-          route_pattern: state["context"]["routePattern"],
-          headsign: state["context"]["routePattern"]["headsign"],
-          direction_id: state["context"]["routePattern"]["directionId"],
-          undo_stack: state["context"]["undoStack"],
-          is_text_only: state["context"]["isTextOnly"],
-          direction:
-            Map.get(
-              state["context"]["route"]["directionNames"],
-              Integer.to_string(state["context"]["routePattern"]["directionId"])
-            )
+          state_value: %{"SaveState" => "Saved", "Detour Drawing" => "Share Detour"},
+          snapshot_children: %{},
+          route_id: sequence("detour_route_id:"),
+          route_name: sequence("detour_route_name:"),
+          garages: [],
+          direction_names: %{"0" => "Outbound", "1" => "Inbound"},
+          route_pattern: %{
+            "id" => sequence("detour_route_pattern_id:") <> "-_--1",
+            "name" => sequence("detour_route_pattern_name:"),
+            "headsign" => headsign,
+            "directionId" => 0
+          },
+          headsign: headsign,
+          direction: "Outbound",
+          direction_id: 0,
+          nearest_intersection: sequence("detour_nearest_intersection:"),
+          is_text_only: false,
+          undo_stack: [],
+          detour_shape: %{"ok" => %{"coordinates" => []}},
+          coordinates: [],
+          connection_points: %{"start" => %{"id" => "start"}, "end" => %{"id" => "end"}},
+          route_segments: %{"beforeDetour" => [], "afterDetour" => [], "detour" => []},
+          missed_stops: []
         }
       end
 
@@ -69,10 +74,7 @@ defmodule Skate.DetourFactory do
               "id" => sequence("detour_route_id:"),
               "name" => sequence("detour_route_name:"),
               "garages" => [],
-              "directionNames" => %{
-                "0" => "Outbound",
-                "1" => "Inbound"
-              }
+              "directionNames" => %{"0" => "Outbound", "1" => "Inbound"}
             },
             "routePattern" => %{
               "name" => sequence("detour_route_pattern_name:"),
@@ -92,23 +94,15 @@ defmodule Skate.DetourFactory do
       end
 
       def with_id(%Skate.Detours.Db.Detour{} = detour, id) do
-        state = put_in(detour.state, ["context", "uuid"], id)
-
-        detour
-        |> Map.put(:id, id)
-        |> Map.put(:state, state)
+        %{detour | id: id}
       end
 
       def with_id(%{"context" => %{"uuid" => _}} = snapshot, id) do
         put_in(snapshot["context"]["uuid"], id)
       end
 
-      def update_id(%Skate.Detours.Db.Detour{id: id} = detour) do
-        with_id(detour, id)
-      end
-
       def activated(
-            update_arg,
+            detour_or_state,
             activated_at \\ DateTime.utc_now(),
             estimated_duration \\ "1 hour"
           )
@@ -118,11 +112,11 @@ defmodule Skate.DetourFactory do
 
         %{
           detour
-          | state: activated(detour.state, activated_at, estimated_duration),
-            activated_at: activated_at,
+          | activated_at: activated_at,
             updated_at: activated_at,
             status: :active,
-            estimated_duration: estimated_duration
+            estimated_duration: estimated_duration,
+            state_value: %{"SaveState" => "Saved", "Detour Drawing" => %{"Active" => "Reviewing"}}
         }
       end
 
@@ -138,14 +132,15 @@ defmodule Skate.DetourFactory do
             |> DateTime.to_iso8601()
           )
 
-        put_in(
-          state["context"]["selectedDuration"],
-          estimated_duration
-        )
+        put_in(state["context"]["selectedDuration"], estimated_duration)
       end
 
       def deactivated(%Skate.Detours.Db.Detour{} = detour) do
-        %{detour | state: deactivated(detour.state), status: :past}
+        %{
+          detour
+          | status: :past,
+            state_value: %{"SaveState" => "Saved", "Detour Drawing" => "Past"}
+        }
       end
 
       def deactivated(%{"value" => %{}} = state) do
@@ -160,29 +155,18 @@ defmodule Skate.DetourFactory do
         %{detour | autoclose_on: autoclose_on}
       end
 
-      @spec with_estimated_duration(
-              Skate.Detours.Db.Detour.t() | map(),
-              String.t()
-            ) :: map()
+      @spec with_estimated_duration(Skate.Detours.Db.Detour.t() | map(), String.t()) :: map()
       def with_estimated_duration(detour_or_state, estimated_duration)
 
       def with_estimated_duration(%Skate.Detours.Db.Detour{} = detour, estimated_duration) do
-        detour
-        |> Map.put(:estimated_duration, estimated_duration)
-        |> Map.put(:state, with_estimated_duration(detour.state, estimated_duration))
+        %{detour | estimated_duration: estimated_duration}
       end
 
-      def with_estimated_duration(
-            %{"context" => %{"selectedDuration" => _}} = state,
-            estimated_duration
-          ) do
+      def with_estimated_duration(%{"context" => %{}} = state, estimated_duration) do
         put_in(state, ["context", "selectedDuration"], estimated_duration)
       end
 
-      def with_route(
-            %Skate.Detours.Db.Detour{} = detour,
-            %{name: route_name, id: route_id} = route
-          ) do
+      def with_route(%Skate.Detours.Db.Detour{} = detour, %{name: route_name, id: route_id}) do
         detour |> with_route_id(route_id) |> with_route_name(route_name)
       end
 
@@ -191,9 +175,7 @@ defmodule Skate.DetourFactory do
       end
 
       def with_route_name(%Skate.Detours.Db.Detour{} = detour, name) do
-        detour
-        |> Map.put(:route_name, name)
-        |> Map.put(:state, with_route_name(detour.state, name))
+        %{detour | route_name: name}
       end
 
       def with_route_name(%{"context" => %{"route" => _}} = state, name) do
@@ -201,9 +183,7 @@ defmodule Skate.DetourFactory do
       end
 
       def with_route_id(%Skate.Detours.Db.Detour{} = detour, id) do
-        detour
-        |> Map.put(:route_id, id)
-        |> Map.put(:state, with_route_id(detour.state, id))
+        %{detour | route_id: id}
       end
 
       def with_route_id(%{"context" => %{"route" => _}} = state, id) do
@@ -217,10 +197,7 @@ defmodule Skate.DetourFactory do
             :outbound -> {"Outbound", 0}
           end
 
-        detour
-        |> Map.put(:direction, direction_str)
-        |> Map.put(:direction_id, direction_id)
-        |> Map.put(:state, with_direction(detour.state, direction))
+        %{detour | direction: direction_str, direction_id: direction_id}
       end
 
       def with_direction(%{"context" => %{"routePattern" => _}} = state, direction) do
@@ -234,9 +211,7 @@ defmodule Skate.DetourFactory do
       end
 
       def with_route_pattern_id(%Skate.Detours.Db.Detour{} = detour, id) do
-        detour
-        |> Map.put(:route_pattern_id, id)
-        |> Map.put(:state, with_route_pattern_id(detour.state, id))
+        %{detour | route_pattern: Map.put(detour.route_pattern || %{}, "id", id)}
       end
 
       def with_route_pattern_id(%{"context" => %{"routePattern" => _}} = state, id) do
@@ -244,9 +219,11 @@ defmodule Skate.DetourFactory do
       end
 
       def with_headsign(%Skate.Detours.Db.Detour{} = detour, headsign) do
-        detour
-        |> Map.put(:headsign, headsign)
-        |> Map.put(:state, with_headsign(detour.state, headsign))
+        %{
+          detour
+          | headsign: headsign,
+            route_pattern: Map.put(detour.route_pattern || %{}, "headsign", headsign)
+        }
       end
 
       def with_headsign(%{"context" => %{"routePattern" => _}} = state, headsign) do
@@ -254,9 +231,7 @@ defmodule Skate.DetourFactory do
       end
 
       def with_nearest_intersection(%Skate.Detours.Db.Detour{} = detour, value) do
-        detour
-        |> Map.put(:nearest_intersection, value)
-        |> Map.put(:state, with_nearest_intersection(detour.state, value))
+        %{detour | nearest_intersection: value}
       end
 
       def with_nearest_intersection(%{"context" => %{"nearestIntersection" => _}} = state, value) do
@@ -276,33 +251,22 @@ defmodule Skate.DetourFactory do
           )
 
       def with_coordinates(%Skate.Detours.Db.Detour{} = detour, coordinates) do
-        detour_shape = %{"ok" => %{"coordinates" => coordinates}}
-
-        detour
-        |> Map.put(:coordinates, coordinates)
-        |> Map.put(:detour_shape, detour_shape)
-        |> Map.put(:state, with_coordinates(detour.state, coordinates))
+        %{
+          detour
+          | coordinates: coordinates,
+            detour_shape: %{"ok" => %{"coordinates" => coordinates}}
+        }
       end
 
       def with_coordinates(%{"context" => %{}} = state, coordinates) do
-        put_in(state, ["context", "detourShape"], %{
-          "ok" => %{"coordinates" => coordinates}
-        })
+        put_in(state, ["context", "detourShape"], %{"ok" => %{"coordinates" => coordinates}})
       end
 
       def with_missed_stops(%Skate.Detours.Db.Detour{} = detour, stops) do
-        missed_stops = Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
+        missed_stops =
+          Enum.map(stops, fn stop_id -> %{"id" => stop_id} end)
 
-        route_segments =
-          detour.route_segments || %{"beforeDetour" => [], "afterDetour" => [], "detour" => []}
-
-        detour_shape = detour.detour_shape || %{"ok" => %{"coordinates" => []}}
-
-        detour
-        |> Map.put(:missed_stops, missed_stops)
-        |> Map.put(:route_segments, route_segments)
-        |> Map.put(:detour_shape, detour_shape)
-        |> Map.put(:state, with_missed_stops(detour.state, stops))
+        Map.put(detour, :missed_stops, missed_stops)
       end
 
       def with_missed_stops(state, stops) do
@@ -317,69 +281,62 @@ defmodule Skate.DetourFactory do
       def with_finished_state(detour_or_state, opts \\ [])
 
       def with_finished_state(%Skate.Detours.Db.Detour{} = detour, opts) do
-        %{detour | state: with_finished_state(detour.state, opts)}
-      end
-
-      def with_finished_state(state, opts) do
-        default_connection_point = %{"start" => %{"id" => "101"}, "end" => %{"id" => "102"}}
+        default_connection_points = %{"start" => %{"id" => "101"}, "end" => %{"id" => "102"}}
         default_route_segments = %{"beforeDetour" => [], "afterDetour" => [], "detour" => []}
         default_detour_shape = %{"coordinates" => []}
 
-        connection_point = Keyword.get(opts, :connection_point)
-        route_segments = Keyword.get(opts, :route_segments)
-        detour_shape = Keyword.get(opts, :detour_shape)
+        detour
+        |> maybe_update_detour_field(
+          :route_segments,
+          Keyword.get(opts, :route_segments, default_route_segments)
+        )
+        |> maybe_update_detour_field(
+          :connection_points,
+          Keyword.get(opts, :connection_point, default_connection_points)
+        )
+        |> maybe_update_detour_field(
+          :detour_shape,
+          Keyword.get(opts, :detour_shape, default_detour_shape)
+        )
+      end
 
-        missed_stops =
-          case Keyword.get(opts, :missed_stops) do
-            nil -> nil
-            stops when is_list(stops) -> Enum.map(stops, fn id -> %{"id" => to_string(id)} end)
-          end
+      def with_finished_state(state, opts) do
+        defaults = %{
+          "connectionPoint" => %{"start" => %{"id" => "101"}, "end" => %{"id" => "102"}},
+          "routeSegments" => %{"beforeDetour" => [], "afterDetour" => [], "detour" => []},
+          "detourShape" => %{"coordinates" => []}
+        }
 
-        update_in(state, ["context", "finishedDetour"], fn
-          nil ->
-            base = %{
-              "connectionPoint" => connection_point || default_connection_point,
-              "routeSegments" => route_segments || default_route_segments,
-              "detourShape" => detour_shape || default_detour_shape
-            }
+        overrides =
+          [
+            {"connectionPoint", Keyword.get(opts, :connection_point)},
+            {"routeSegments", Keyword.get(opts, :route_segments)},
+            {"detourShape", Keyword.get(opts, :detour_shape)},
+            {"missedStops", missed_stops_from_opts(opts)}
+          ]
+          |> Enum.filter(fn {_key, value} -> not is_nil(value) end)
+          |> Map.new()
 
-            if missed_stops, do: Map.put(base, "missedStops", missed_stops), else: base
+        finished_detour =
+          (get_in(state, ["context", "finishedDetour"]) || %{})
+          |> Map.merge(defaults)
+          |> Map.merge(overrides)
 
-          finished_detour when is_map(finished_detour) ->
-            base =
-              finished_detour
-              |> Map.put_new("connectionPoint", default_connection_point)
-              |> Map.put_new("routeSegments", default_route_segments)
-              |> Map.put_new("detourShape", default_detour_shape)
+        put_in(state, ["context", "finishedDetour"], finished_detour)
+      end
 
-            base =
-              if connection_point,
-                do: Map.put(base, "connectionPoint", connection_point),
-                else: base
+      defp maybe_update_detour_field(detour, field, nil), do: detour
+      defp maybe_update_detour_field(detour, field, value), do: Map.put(detour, field, value)
 
-            base =
-              if route_segments, do: Map.put(base, "routeSegments", route_segments), else: base
-
-            base = if detour_shape, do: Map.put(base, "detourShape", detour_shape), else: base
-            if missed_stops, do: Map.put(base, "missedStops", missed_stops), else: base
-        end)
+      defp missed_stops_from_opts(opts) do
+        case Keyword.get(opts, :missed_stops) do
+          nil -> nil
+          stops when is_list(stops) -> Enum.map(stops, fn id -> %{"id" => to_string(id)} end)
+        end
       end
 
       def with_author(%Skate.Detours.Db.Detour{} = detour, user) do
         Map.put(detour, :author, user)
-      end
-
-      @doc """
-      Sets the given dedicated column(s) to `nil` so `state` remains the only
-      populated source of truth. Use to exercise the "column missing, fall back
-      to legacy state" branches in `Skate.Detours.SnapshotSerde`.
-      """
-      def without_columns(%Skate.Detours.Db.Detour{} = detour, fields) when is_list(fields) do
-        Enum.reduce(fields, detour, fn field, acc -> Map.replace!(acc, field, nil) end)
-      end
-
-      def without_columns(%Skate.Detours.Db.Detour{} = detour, field) when is_atom(field) do
-        without_columns(detour, [field])
       end
     end
   end

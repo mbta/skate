@@ -45,21 +45,9 @@ defmodule Swiftly.API.Requests do
     Integer.to_string(direction_id)
   end
 
-  defp parse_direction(%Detour{
-         state: %{"context" => %{"routePattern" => %{"directionId" => direction_id}}}
-       })
-       when is_integer(direction_id) do
-    Integer.to_string(direction_id)
-  end
+  defp parse_direction(_), do: nil
 
   defp parse_shape(%Detour{coordinates: coordinates}) when not is_nil(coordinates) do
-    map_coordinates(coordinates)
-  end
-
-  defp parse_shape(%Detour{
-         state: %{"context" => %{"detourShape" => %{"ok" => %{"coordinates" => coordinates}}}}
-       })
-       when not is_nil(coordinates) do
     map_coordinates(coordinates)
   end
 
@@ -71,12 +59,6 @@ defmodule Swiftly.API.Requests do
 
   defp map_skipped_stops(%Detour{
          missed_stops: [_ | _] = missed_stops
-       }) do
-    Enum.map(missed_stops, fn missed_stop -> Map.get(missed_stop, "id") end)
-  end
-
-  defp map_skipped_stops(%Detour{
-         state: %{"context" => %{"finishedDetour" => %{"missedStops" => [_ | _] = missed_stops}}}
        }) do
     Enum.map(missed_stops, fn missed_stop -> Map.get(missed_stop, "id") end)
   end

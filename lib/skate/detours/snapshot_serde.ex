@@ -4,13 +4,8 @@ defmodule Skate.Detours.SnapshotSerde do
   Serializes Ecto Database Structs into XState JSON Snapshots
   """
 
-  require Logger
-
   alias Skate.Detours.Db.Detour
-
-  # Process dictionary key used to batch `log_fallback/1` warnings emitted
-  # while serializing a single detour into one aggregated log line.
-  @fallback_fields_key :snapshot_serde_fallback_fields
+  require Logger
 
   @doc """
   Converts a XState JSON Snapshot to Detours Database Changeset
@@ -28,8 +23,7 @@ defmodule Skate.Detours.SnapshotSerde do
     Skate.Detours.Db.Detour.changeset(
       detour,
       %{
-        # Save Snapshot to DB until we've fully transitioned to serializing
-        # snapshots from DB data
+        # The detour changeset deserializes db field changes from the snapshot updates
         state: snapshot,
         activated_at: activated_at
       }
@@ -46,116 +40,18 @@ defmodule Skate.Detours.SnapshotSerde do
   Builds XState Snapshot from Detours Database object
   """
   def serialize(%Detour{} = detour) do
-    validate_serialized_snapshot(detour)
-  end
-
-  def compare_snapshots(%Detour{} = detour) do
-    serialized_snapshot = serialize_snapshot(detour)
-    compare_snapshots(detour, serialized_snapshot)
-  end
-
-  def compare_snapshots(
-        %Detour{state: %{"context" => state_context} = state},
-        %{"context" => serialized_context} = serialized_snapshot
-      ) do
-    relevant_state_keys = Map.keys(serialized_snapshot)
-    relevant_context_keys = Map.keys(serialized_context)
-    scoped_state_context = Map.take(state_context, relevant_context_keys)
-
-    scoped_state =
-      state
-      |> Map.take(relevant_state_keys)
-      |> Map.put("context", scoped_state_context)
-
-    diff = diff_snapshots(scoped_state, serialized_snapshot)
-
-    {Map.get(diff, :changed) == :equal, diff}
-  end
-
-  # As fields are moved to their own property within the detour struct, we can remove them from this serialization
-  # check as the prop level value should always be the source of truth. This function removes the now prop-level
-  # keys and only compares the data currently stored within the :state prop.
-  defp diff_snapshots(scoped_state, serialized_snapshot) do
-    cleaned_state =
-      scoped_state
-      |> ignore_path(["context", "activatedAt"])
-      |> ignore_path(["context", "finishedDetour", "detourShape"])
-
-    cleaned_serialized_snapshot =
-      serialized_snapshot
-      |> ignore_path(["context", "activatedAt"])
-      |> ignore_path(["context", "finishedDetour", "detourShape"])
-
-    MapDiff.diff(cleaned_state, cleaned_serialized_snapshot)
-  end
-
-  defp ignore_path(snapshot, path) do
-    {_, trimmed_snapshot} = pop_in(snapshot, path)
-    trimmed_snapshot
-  end
-
-  defp serialize_snapshot(%Detour{id: id, author_id: author_id} = detour) do
-    # Fallback warnings from `log_fallback/1` accumulate per-process during this
-    # call; flush them as a single aggregated warning instead of one per field.
-    Process.delete(@fallback_fields_key)
-
-    snapshot = %{
+    %{
       "value" => state_from_detour(detour),
       "status" => "active",
       "context" => context_from_detour(detour),
       "children" => snapshot_children_from_detour(detour)
     }
-
-    log_fallback_summary(id, author_id)
-
-    snapshot
   end
-
-  defp validate_serialized_snapshot(%Detour{id: id} = detour) do
-    serialized_snapshot = serialize_snapshot(detour)
-    {matches, diff} = compare_snapshots(detour, serialized_snapshot)
-
-    if !matches do
-      Sentry.capture_message(mismatch_message(id), extra: %{diff: diff})
-
-      Logger.error("#{mismatch_message(id)} #{diff_details(diff)}")
-    end
-
-    serialized_snapshot
-  end
-
-  defp mismatch_message(id) do
-    "Serialized detour doesn't match saved snapshot. Falling back to snapshot for detour_id=#{id}"
-  end
-
-  defp diff_details(diff) do
-    diff
-    |> Map.delete(:value)
-    |> Enum.map_join(
-      " ",
-      fn {key, val} ->
-        "#{key}=#{inspect(val, printable_limit: :infinity, limit: :infinity)}"
-      end
-    )
-  end
-
-  # For each of these retrieve functions, the first function is the one
-  # that will look for the correct field on the db object, once the detour state
-  # is properly distributed across db tables / columns.
-  #
-  # The second function is the fallback that uses the existing state snapshot.
-  #
-  # Note that the first function is only stubbed out and will be significantly updated
-  # when the new fields are added to the db. For example, `get_route_from_db_detour`
-  # suggests that the field `route` will be surfaced at the top level of the detour
-  # but actually, it may be nested under `route_pattern` or however else we organize
-  # it in the db.
 
   defp context_from_detour(%Detour{} = detour) do
     :maps.filter(fn _, v -> v != nil end, %{
       "uuid" => uuid_from_detour(detour),
       "route" => route_from_detour(detour),
-      "routePatterns" => routepatterns_from_detour(detour),
       "routePattern" => routepattern_from_detour(detour),
       "startPoint" => startpoint_from_detour(detour),
       "endPoint" => endpoint_from_detour(detour),
@@ -173,39 +69,7 @@ defmodule Skate.Detours.SnapshotSerde do
     })
   end
 
-  defmacrop log_fallback(field) do
-    quote do
-      Process.put(
-        @fallback_fields_key,
-        [unquote(field) | Process.get(@fallback_fields_key, [])]
-      )
-    end
-  end
-
-  defp log_fallback_summary(detour_id, author_id) do
-    case Process.delete(@fallback_fields_key) do
-      fields when is_list(fields) and fields != [] ->
-        Logger.warning(
-          "Unexpected detour structure for detour_id=#{detour_id} author_id=#{author_id}. " <>
-            "Using snapshot for fields: #{fields |> Enum.reverse() |> Enum.join(", ")}"
-        )
-
-      _ ->
-        :ok
-    end
-  end
-
   defp state_from_detour(%Detour{state_value: state}) when not is_nil(state), do: state
-
-  defp state_from_detour(%Detour{
-         state: %{
-           "value" => state
-         }
-       })
-       when not is_nil(state) do
-    log_fallback("state")
-    state
-  end
 
   defp state_from_detour(_), do: nil
 
@@ -227,99 +91,27 @@ defmodule Skate.Detours.SnapshotSerde do
     }
   end
 
-  defp route_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "route" => route
-           }
-         }
-       })
-       when not is_nil(route) do
-    log_fallback("route")
-    route
-  end
+  defp route_from_detour(_), do: nil
 
   defp routepattern_from_detour(%Detour{route_pattern: route_pattern})
        when not is_nil(route_pattern) do
     route_pattern
   end
 
-  defp routepattern_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "routePattern" => route_pattern
-           }
-         }
-       })
-       when not is_nil(route_pattern) do
-    log_fallback("routePattern")
-    route_pattern
-  end
-
   defp routepattern_from_detour(_), do: nil
-
-  defp routepatterns_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "routePatterns" => route_patterns
-           }
-         }
-       }) do
-    # storing route_patterns is not strictly necessary and is bulky
-    # consider removing routePatterns from context once the serialization comparison is no longer needed
-    route_patterns
-  end
-
-  defp routepatterns_from_detour(_), do: nil
 
   defp startpoint_from_detour(%Detour{start_point: start_point}) when not is_nil(start_point),
     do: start_point
-
-  defp startpoint_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "startPoint" => start_point
-           }
-         }
-       })
-       when not is_nil(start_point) do
-    log_fallback("startPoint")
-    start_point
-  end
 
   defp startpoint_from_detour(_), do: nil
 
   defp endpoint_from_detour(%Detour{end_point: end_point}) when not is_nil(end_point),
     do: end_point
 
-  defp endpoint_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "endPoint" => end_point
-           }
-         }
-       })
-       when not is_nil(end_point) do
-    log_fallback("endPoint")
-    end_point
-  end
-
   defp endpoint_from_detour(_), do: nil
 
   defp waypoints_from_detour(%Detour{waypoints: waypoints}) when not is_nil(waypoints),
     do: waypoints
-
-  defp waypoints_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "waypoints" => waypoints
-           }
-         }
-       })
-       when not is_nil(waypoints) do
-    log_fallback("waypoints")
-    waypoints
-  end
 
   defp waypoints_from_detour(_), do: nil
 
@@ -328,18 +120,6 @@ defmodule Skate.Detours.SnapshotSerde do
 
   defp detourshape_from_detour(%Detour{detour_shape: detour_shape}) when not is_nil(detour_shape),
     do: detour_shape
-
-  defp detourshape_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "detourShape" => detour_shape
-           }
-         }
-       })
-       when not is_nil(detour_shape) do
-    log_fallback("detourShape")
-    detour_shape
-  end
 
   defp detourshape_from_detour(_), do: nil
 
@@ -360,86 +140,26 @@ defmodule Skate.Detours.SnapshotSerde do
     }
   end
 
-  defp finisheddetour_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "finishedDetour" => finished_detour
-           }
-         }
-       })
-       when not is_nil(finished_detour) do
-    log_fallback("finishedDetour")
-    finished_detour
-  end
-
   defp finisheddetour_from_detour(_), do: nil
 
   defp editeddirections_from_detour(%Detour{edited_directions: edited_directions})
        when not is_nil(edited_directions),
        do: edited_directions
 
-  defp editeddirections_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "editedDirections" => edited_directions
-           }
-         }
-       })
-       when not is_nil(edited_directions) do
-    log_fallback("editedDirections")
-    edited_directions
-  end
-
   defp editeddirections_from_detour(_), do: nil
 
   defp undostack_from_detour(%Detour{undo_stack: undo_stack}) when not is_nil(undo_stack),
     do: undo_stack
-
-  defp undostack_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "undoStack" => undo_stack
-           }
-         }
-       })
-       when not is_nil(undo_stack) do
-    log_fallback("undoStack")
-    undo_stack
-  end
 
   defp undostack_from_detour(_), do: nil
 
   defp istextonly_from_detour(%Detour{is_text_only: is_text_only}) when not is_nil(is_text_only),
     do: is_text_only
 
-  defp istextonly_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "isTextOnly" => is_text_only
-           }
-         }
-       })
-       when not is_nil(is_text_only) do
-    log_fallback("isTextOnly")
-    is_text_only
-  end
-
   defp istextonly_from_detour(_), do: nil
 
   defp typeddetour_from_detour(%Detour{typed_detour: typed_detour}) when not is_nil(typed_detour),
     do: typed_detour
-
-  defp typeddetour_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "typedDetour" => typed_detour
-           }
-         }
-       })
-       when not is_nil(typed_detour) do
-    log_fallback("typedDetour")
-    typed_detour
-  end
 
   defp typeddetour_from_detour(_), do: nil
 
@@ -447,43 +167,22 @@ defmodule Skate.Detours.SnapshotSerde do
        when not is_nil(estimated_duration),
        do: estimated_duration
 
-  defp selectedduration_from_detour(
-         %Detour{
-           state: %{
-             "context" => %{
-               "selectedDuration" => selected_duration
-             }
-           }
-         } = detour
-       ) do
-    if not is_nil(selected_duration), do: log_fallback("selectedDuration")
+  defp selectedduration_from_detour(%Detour{
+         status: :active,
+         estimated_duration: estimated_duration,
+         id: id
+       })
+       when is_nil(estimated_duration) do
+    Logger.warning(
+      "selectedDuration is nil in active detour #{id}, defaulting to 'Until further notice'"
+    )
 
-    if detour.status == :active and selected_duration == nil do
-      Logger.warning(
-        "selectedDuration is nil in active detour #{detour.id}, defaulting to 'Until further notice'"
-      )
-
-      "Until further notice"
-    else
-      selected_duration
-    end
+    "Until further notice"
   end
 
   defp selectedduration_from_detour(_), do: nil
 
   defp selectedreason_from_detour(%Detour{reason: reason}) when not is_nil(reason), do: reason
-
-  defp selectedreason_from_detour(%Detour{
-         state: %{
-           "context" => %{
-             "selectedReason" => selected_reason
-           }
-         }
-       })
-       when not is_nil(selected_reason) do
-    log_fallback("selectedReason")
-    selected_reason
-  end
 
   defp selectedreason_from_detour(_), do: nil
 
@@ -509,16 +208,6 @@ defmodule Skate.Detours.SnapshotSerde do
   defp snapshot_children_from_detour(%Detour{snapshot_children: snapshot_children})
        when not is_nil(snapshot_children),
        do: snapshot_children
-
-  defp snapshot_children_from_detour(%Detour{
-         state: %{
-           "children" => snapshot_children
-         }
-       })
-       when not is_nil(snapshot_children) do
-    log_fallback("children")
-    snapshot_children
-  end
 
   defp snapshot_children_from_detour(_), do: nil
 end

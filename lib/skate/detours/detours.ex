@@ -258,29 +258,32 @@ defmodule Skate.Detours.Detours do
   Update or insert a detour given a user id and a XState Snapshot.
   """
   def upsert_from_snapshot(author_id, %{} = snapshot) do
-    partial_changeset =
+    changeset =
       Skate.Detours.SnapshotSerde.deserialize(author_id, snapshot)
 
-    detour = Ecto.Changeset.apply_changes(partial_changeset)
-
-    with swiftly_response <- update_swiftly(partial_changeset, detour),
-         changeset <-
-           Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
-         {:ok, %Detour{} = new_record} <- do_upsert_from_snapshot(changeset) do
-      handle_detour_updated(changeset, new_record, author_id)
-      {:ok, new_record}
-    end
+    do_upsert_from_snapshot(changeset, author_id)
   end
 
-  defp do_upsert_from_snapshot(changeset) do
-    changed_fields = if changeset.changes != %{}, do: Map.keys(changeset.changes), else: [:state]
+  defp do_upsert_from_snapshot(%Ecto.Changeset{changes: changes} = changeset, _author_id)
+       when map_size(changes) == 0 do
+    {:ok, Ecto.Changeset.apply_changes(changeset)}
+  end
 
-    Skate.Repo.insert(
-      changeset,
-      returning: true,
-      conflict_target: [:id],
-      on_conflict: {:replace, changed_fields}
-    )
+  defp do_upsert_from_snapshot(changeset, author_id) do
+    detour = Ecto.Changeset.apply_changes(changeset)
+
+    with swiftly_response <- update_swiftly(changeset, detour),
+         enriched_changeset <- Detour.put_change_from_swiftly(swiftly_response, changeset),
+         {:ok, %Detour{} = new_record} <-
+           Skate.Repo.insert(
+             enriched_changeset,
+             returning: true,
+             conflict_target: [:id],
+             on_conflict: {:replace, Map.keys(enriched_changeset.changes)}
+           ) do
+      handle_detour_updated(enriched_changeset, new_record, author_id)
+      {:ok, new_record}
+    end
   end
 
   @spec autoclose_detour(Detour.t()) :: {:ok, nil} | {:error, any()}
@@ -392,17 +395,9 @@ defmodule Skate.Detours.Detours do
   defp validate_detour_status(_), do: {:error, :invalid_status}
 
   defp build_activation_changeset(detour, selected_duration, selected_reason) do
-    state_value = %{"SaveState" => "Saved", "Detour Drawing" => %{"Active" => "Reviewing"}}
-
-    new_state =
-      detour.state
-      |> put_in(["context", "selectedDuration"], selected_duration)
-      |> put_in(["context", "selectedReason"], selected_reason)
-      |> put_in(["value"], state_value)
-
     Detour.changeset(detour, %{
-      state: new_state,
-      state_value: state_value,
+      state_value: %{"SaveState" => "Saved", "Detour Drawing" => %{"Active" => "Reviewing"}},
+      status: :active,
       estimated_duration: selected_duration,
       reason: selected_reason,
       activated_at: DateTime.utc_now(:millisecond),
@@ -415,12 +410,12 @@ defmodule Skate.Detours.Detours do
   end
 
   defp build_deactivation_changeset(detour) do
-    state_value = %{"SaveState" => "Saved", "Detour Drawing" => "Past"}
-    new_state = put_in(detour.state, ["value"], state_value)
-
     Detour.changeset(
       detour,
-      %{state: new_state, state_value: state_value, status: :past}
+      %{
+        state_value: %{"SaveState" => "Saved", "Detour Drawing" => "Past"},
+        status: :past
+      }
     )
   end
 
@@ -428,13 +423,9 @@ defmodule Skate.Detours.Detours do
     with {:ok, new_draft_detour} <-
            %Detour{author_id: author_id, copied_from: detour}
            |> Detour.copy_to_draft_changeset(detour)
-           |> Repo.insert(),
-         {:ok, updated_state_detour} <-
-           new_draft_detour
-           |> Detour.set_state_uuid_changeset()
-           |> Repo.update() do
-      broadcast_detour(updated_state_detour, author_id)
-      {:ok, updated_state_detour}
+           |> Repo.insert() do
+      broadcast_detour(new_draft_detour, author_id)
+      {:ok, new_draft_detour}
     end
   end
 
