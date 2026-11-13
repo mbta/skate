@@ -3,7 +3,7 @@ import {
   DiversionPage as DiversionPageDefault,
   DiversionPageProps,
 } from "../../../src/components/detours/diversionPage"
-import { ActivateDetour } from "../../../src/components/detours/activateDetourModal"
+import { ActivateDetour } from "../../../src/components/detours/modals/activateModal"
 import {
   detourReasons,
   retiredDetourReasons,

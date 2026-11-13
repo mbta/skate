@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-webpack5"
 
-import { ExtendDetourModal } from "../../../src/components/detours/extendDetourModal"
+import { ExtendDetourModal } from "../../../src/components/detours/modals/extendModal"
 
 const meta = {
   component: ExtendDetourModal,
