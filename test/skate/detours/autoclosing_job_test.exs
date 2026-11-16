@@ -136,7 +136,9 @@ defmodule Skate.Detours.AutoclosingJob.Test do
         |> insert()
 
       assert {:ok, nil} = perform_job(Skate.Detours.Autoclosing.Job, %{detour_id: detour.id})
-      assert Repo.get!(Skate.Detours.Db.Detour, detour.id).status == :past
+      updated_detour = Repo.get!(Skate.Detours.Db.Detour, detour.id)
+      assert updated_detour.status == :past
+      assert is_nil(updated_detour.swiftly_id)
     end
 
     test "when job runs, detour is deactived" do
