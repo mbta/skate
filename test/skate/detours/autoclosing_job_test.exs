@@ -123,6 +123,24 @@ defmodule Skate.Detours.AutoclosingJob.Test do
       end)
     end
 
+    test "job succeeds when deleting the Swiftly adjustment returns {:ok, nil}" do
+      {:ok, test_group} = Skate.Settings.TestGroup.create("send-detours-to-swiftly-enabled")
+      Skate.Settings.TestGroup.update(%{test_group | override: :enabled})
+
+      reassign_env(:skate, :swiftly, adjustments_module: Swiftly.API.FakeServiceAdjustments)
+
+      detour =
+        :detour
+        |> build(swiftly_id: "test-adjustment-id", is_text_only: false)
+        |> activated()
+        |> insert()
+
+      assert {:ok, nil} = perform_job(Skate.Detours.Autoclosing.Job, %{detour_id: detour.id})
+      updated_detour = Repo.get!(Skate.Detours.Db.Detour, detour.id)
+      assert updated_detour.status == :past
+      assert is_nil(updated_detour.swiftly_id)
+    end
+
     test "when job runs, detour is deactived" do
       Oban.Testing.with_testing_mode(:inline, fn ->
         %{id: id, author_id: author_id} =
