@@ -288,23 +288,15 @@ defmodule Skate.Detours.Detours do
 
   @spec autoclose_detour(Detour.t()) :: {:ok, nil} | {:error, any()}
   def autoclose_detour(%Detour{} = detour) do
-    changeset = build_deactivation_changeset(detour)
+    partial_changeset = build_deactivation_changeset(detour)
 
-    case Repo.update(changeset) do
-      {:ok, autoclosed_detour = %Detour{}} ->
-        with {:ok, nil} <- update_swiftly(changeset, autoclosed_detour),
-             :ok <-
-               handle_detour_updated(
-                 changeset,
-                 autoclosed_detour,
-                 autoclosed_detour.author_id
-               ) do
-          {:ok, nil}
-        else
-          {:error, %Ecto.Changeset{} = changeset} -> {:error, changeset.errors}
-          {:error, swiftly_error} -> {:error, inspect(swiftly_error)}
-          unknown -> {:error, inspect(unknown)}
-        end
+    with swiftly_response <- update_swiftly(partial_changeset, detour),
+         changeset <-
+           Skate.Detours.Db.Detour.put_change_from_swiftly(swiftly_response, partial_changeset),
+         {:ok, new_record} <-
+           Repo.update(changeset) do
+      handle_detour_updated(changeset, new_record, new_record.author_id)
+      {:ok, nil}
     end
   end
 
