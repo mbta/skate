@@ -25,11 +25,11 @@ import { TypeDetourPanel } from "./detourPanels/typeDetourPanel"
 import { useCurrentTimeSeconds } from "../../hooks/useCurrentTime"
 import { timeAgoLabel } from "../../util/dateTime"
 import { DetourStatus, timestampLabelFromStatus } from "../detoursTable"
-import { ActivateDetour } from "./activateDetourModal"
-import { DeactivateDetourModal } from "./deactivateDetourModal"
-import { DeleteDetourModal } from "./deleteDetourModal"
-import { DiscardChangesModal } from "./discardChangesModal"
-import { ConfirmCantDrawModal } from "./confirmCantDrawModal"
+import { ActivateDetour } from "./modals/activateModal"
+import { DeactivateDetourModal } from "./modals/deactivateModal"
+import { DeleteDetourModal } from "./modals/deleteDraftModal"
+import { DiscardDetourChangesModal } from "./modals/discardChangesModal"
+import { ConfirmCantDrawDetourModal } from "./modals/confirmCantDrawModal"
 import DetourDrawingAlert from "./alerts/detourDrawingAlert"
 import RoutingErrorAlert from "./alerts/routingErrorAlert"
 import { TextOnlyMapAlert } from "./alerts/textOnlyAlert"
@@ -37,7 +37,7 @@ import useScreenSize from "../../hooks/useScreenSize"
 import { Drawer } from "../drawer"
 import { isMobile } from "../../util/screenSize"
 import { AffectedRoute } from "./detourPanelComponents"
-import { ChangeDuration } from "./changeDurationModal"
+import { ChangeDuration } from "./modals/changeDurationModal"
 import { deleteDetour, copyToDraftDetour } from "../../api"
 import { isOk } from "../../util/result"
 import CopiedDetourToast from "./alerts/copiedDetourToast"
@@ -353,7 +353,7 @@ export const DiversionPage = ({
           {snapshot.matches({
             "Detour Drawing": "Discarding",
           }) && (
-            <DiscardChangesModal
+            <DiscardDetourChangesModal
               onConfirm={() => send({ type: "detour.discard-modal.confirm" })}
               onCancel={() => send({ type: "detour.discard-modal.cancel" })}
               affectedRoute={
@@ -370,7 +370,7 @@ export const DiversionPage = ({
           {snapshot.matches({
             "Detour Drawing": { Editing: "Confirm Cant Draw" },
           }) && (
-            <ConfirmCantDrawModal
+            <ConfirmCantDrawDetourModal
               onConfirm={() => send({ type: "detour.edit.cant-draw.confirm" })}
               onCancel={() => send({ type: "detour.edit.cant-draw.cancel" })}
             />
@@ -467,7 +467,7 @@ export const DiversionPage = ({
             },
           }) ? (
             <ActivateDetour.Modal
-              nextStepLabel={
+              nextStepFsElement={
                 (snapshot.matches({
                   "Detour Drawing": {
                     "Share Detour": { Activating: "Selecting Duration" },
@@ -644,7 +644,6 @@ export const DiversionPage = ({
                   : undefined
               }
               nextStepButton="Done"
-              nextStepLabel="Confirm Duration"
               modalTitle="Change detour duration"
             >
               <ChangeDuration.Body
