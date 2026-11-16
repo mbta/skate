@@ -22,6 +22,14 @@ defmodule Schedule.Garage do
     "T" => "Somerville"
   }
 
+  @doc "Returns the garage associated with a block, not the vehicle's home garage."
+  @spec garage_for_block(Schedule.Block.id() | nil) :: id() | nil
+  def garage_for_block(nil), do: nil
+
+  def garage_for_block(block_id) do
+    block_id |> String.at(0) |> garage_for_block_code()
+  end
+
   @spec garage_for_block_code(String.t()) :: id() | nil
   # Ignore privately-operated routes and empty block IDs
   defp garage_for_block_code(block_code) when block_code in ["P", "J", "", nil] do
@@ -49,7 +57,7 @@ defmodule Schedule.Garage do
         route = acc[trip.route_id]
 
         with false <- is_nil(route),
-             garage <- trip.block_id |> String.at(0) |> garage_for_block_code(),
+             garage <- garage_for_block(trip.block_id),
              false <- is_nil(garage) do
           Map.put(acc, route.id, %Route{route | garages: MapSet.put(route.garages, garage)})
         else

@@ -3,6 +3,25 @@ defmodule Schedule.GarageTest do
   import Skate.Factory
   import ExUnit.CaptureLog
 
+  describe "garage_for_block/1" do
+    test "uses the assigned block's garage code" do
+      assert Schedule.Garage.garage_for_block("C12-34") == "Cabot"
+      assert Schedule.Garage.garage_for_block("D12-34") == "Cabot / Albany"
+    end
+
+    test "handles missing and private carrier blocks" do
+      for block_id <- [nil, "", "P12-34", "J12-34"] do
+        assert Schedule.Garage.garage_for_block(block_id) == nil
+      end
+    end
+
+    test "logs unknown block codes" do
+      assert capture_log(fn ->
+               assert Schedule.Garage.garage_for_block("X12-34") == nil
+             end) =~ "Unrecognized block code"
+    end
+  end
+
   describe "add_garages_to_routes/2" do
     test "adds garage information to routes" do
       [%Schedule.Gtfs.Route{garages: garages}] =
