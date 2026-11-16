@@ -292,7 +292,7 @@ defmodule Skate.Detours.Detours do
 
     case Repo.update(changeset) do
       {:ok, autoclosed_detour = %Detour{}} ->
-        with :ok <- update_swiftly(changeset, autoclosed_detour),
+        with {:ok, nil} <- update_swiftly(changeset, autoclosed_detour),
              :ok <-
                handle_detour_updated(
                  changeset,
