@@ -29,6 +29,162 @@ defmodule Skate.Detours.DetoursTest do
     end
   end
 
+  defmodule LifecycleAdjustments do
+    def create_adjustment_v1(request, opts) do
+      record_call({:create, request, opts})
+    end
+
+    def delete_adjustment_v1(id, opts) do
+      record_call({:delete, id, opts})
+    end
+
+    defp record_call(call) do
+      detour = Skate.Repo.get!(Skate.Detours.Db.Detour, Process.get(:lifecycle_detour_id))
+      send(self(), {:adjustment_call, call, detour.status, detour.swiftly_id})
+      [result | remaining] = Process.get(:adjustment_results)
+      Process.put(:adjustment_results, remaining)
+      result
+    end
+  end
+
+  describe "lifecycle Swiftly adjustments" do
+    setup do
+      reassign_env(:skate, :s3_bucket, nil)
+      reassign_env(:skate, :swiftly, adjustments_module: LifecycleAdjustments)
+      {:ok, group} = Skate.Settings.TestGroup.create("send-detours-to-swiftly-enabled")
+      group = Skate.Settings.TestGroup.update(%{group | override: :enabled})
+      %{group: group}
+    end
+
+    test "activation retries before persistence and stores the adjustment id" do
+      detour = insert(:detour)
+      Process.put(:lifecycle_detour_id, detour.id)
+
+      Process.put(:adjustment_results, [
+        {:error, :unavailable},
+        {:ok, %{adjustmentId: "new-id"}}
+      ])
+
+      assert {:ok, activated} =
+               Detours.activate_detour(detour.id, detour.author_id, "1 hour", "Construction")
+
+      assert activated.swiftly_id == "new-id"
+      assert_receive {:adjustment_call, {:create, request, opts}, :draft, nil}
+      assert request.notes == to_string(detour.id)
+      refute Keyword.has_key?(opts, :adjustment_id)
+      assert_receive {:adjustment_call, {:create, ^request, ^opts}, :draft, nil}
+      refute_receive {:adjustment_call, _, _, _}
+    end
+
+    test "disabled integration and text-only activation do not call Swiftly", %{group: group} do
+      Skate.Settings.TestGroup.update(%{group | override: :disabled})
+      detour = insert(:detour)
+
+      assert {:ok, %{status: :active}} =
+               Detours.activate_detour(detour.id, detour.author_id, "1 hour", "Construction")
+
+      Skate.Settings.TestGroup.update(%{group | override: :enabled})
+      text_detour = insert(:detour, is_text_only: true)
+
+      assert {:ok, %{status: :active}} =
+               Detours.activate_detour(
+                 text_detour.id,
+                 text_detour.author_id,
+                 "1 hour",
+                 "Construction"
+               )
+
+      refute_receive {:adjustment_call, _, _, _}
+    end
+
+    test "text-only transitions take precedence over geometry updates" do
+      detour = :detour |> build(is_text_only: true) |> activated() |> insert()
+      Process.put(:lifecycle_detour_id, detour.id)
+      Process.put(:adjustment_results, [{:ok, %{adjustmentId: "new-id"}}, {:ok, nil}])
+
+      snapshot =
+        detour
+        |> Skate.Detours.SnapshotSerde.serialize()
+        |> put_in(["context", "isTextOnly"], false)
+        |> put_in(["context", "startPoint"], %{"lat" => 1, "lon" => 2})
+
+      assert {:ok, drawn} = Detours.upsert_from_snapshot(detour.author_id, snapshot)
+      assert drawn.swiftly_id == "new-id"
+      assert_receive {:adjustment_call, {:create, _, opts}, :active, nil}
+      refute Keyword.has_key?(opts, :adjustment_id)
+
+      snapshot =
+        drawn
+        |> Skate.Detours.SnapshotSerde.serialize()
+        |> put_in(["context", "isTextOnly"], true)
+        |> put_in(["context", "startPoint"], %{"lat" => 3, "lon" => 4})
+
+      assert {:ok, text} = Detours.upsert_from_snapshot(detour.author_id, snapshot)
+      assert is_nil(text.swiftly_id)
+      assert_receive {:adjustment_call, {:delete, "new-id", _}, :active, "new-id"}
+      refute_receive {:adjustment_call, _, _, _}
+    end
+
+    test "geometry update uses existing id; failed deactivation retries and still persists" do
+      detour =
+        :detour
+        |> build(swiftly_id: "existing")
+        |> activated()
+        |> with_updated_at(NaiveDateTime.add(NaiveDateTime.utc_now(), -120))
+        |> insert()
+
+      Process.put(:lifecycle_detour_id, detour.id)
+
+      Process.put(:adjustment_results, [
+        {:ok, %{adjustmentId: "existing"}},
+        {:error, :unavailable},
+        {:error, :unavailable}
+      ])
+
+      snapshot =
+        detour
+        |> Skate.Detours.SnapshotSerde.serialize()
+        |> put_in(["context", "startPoint"], %{"lat" => 1, "lon" => 2})
+
+      assert {:ok, updated} = Detours.upsert_from_snapshot(detour.author_id, snapshot)
+      assert_receive {:adjustment_call, {:create, _, opts}, :active, "existing"}
+      assert opts[:adjustment_id] == "existing"
+
+      assert {:ok, nil} = Detours.autoclose_detour(updated)
+      assert_receive {:adjustment_call, {:delete, "existing", _}, :active, "existing"}
+      assert_receive {:adjustment_call, {:delete, "existing", _}, :active, "existing"}
+
+      assert %{status: :past, swiftly_id: "existing"} =
+               Repo.get!(Skate.Detours.Db.Detour, detour.id)
+    end
+
+    test "geometry update without an id does not create an adjustment" do
+      detour =
+        :detour
+        |> build()
+        |> activated()
+        |> with_updated_at(NaiveDateTime.add(NaiveDateTime.utc_now(), -120))
+        |> insert()
+
+      snapshot =
+        detour
+        |> Skate.Detours.SnapshotSerde.serialize()
+        |> put_in(["context", "startPoint"], %{"lat" => 1, "lon" => 2})
+
+      assert {:ok, %{swiftly_id: nil}} =
+               Detours.upsert_from_snapshot(detour.author_id, snapshot)
+
+      assert {:error, :not_found} =
+               Skate.Detours.SwiftlyAdjustments.execute(
+                 {:update, detour, nil},
+                 LifecycleAdjustments,
+                 []
+               )
+
+      refute_receive {:adjustment_call, _, _, _}
+    end
+  end
+
   describe "sync_swiftly_with_skate" do
     @tag :capture_log
     test "it creates adjustments in swiftly that are active in skate, but not present in swiftly" do

@@ -8,6 +8,7 @@ defmodule Skate.Detours.Detours do
   alias Skate.Detours.Db.Detour
   alias Skate.Detours.SnapshotSerde
   alias Skate.Detours.S3Exporter
+  alias Skate.Detours.SwiftlyAdjustments
   alias Skate.Detours.Detour.Simple, as: SimpleDetour
   alias Skate.Detours.Detour.WithState, as: DetourWithState
   alias Skate.Notifications
@@ -609,14 +610,17 @@ defmodule Skate.Detours.Detours do
 
   defp update_swiftly(changeset, detour) do
     update_swiftly_fn = fn ->
-      update_swiftly(changeset, detour, test_group_enabled?())
+      case swiftly_operation(changeset, detour, test_group_enabled?()) do
+        :noop -> :ok
+        operation -> SwiftlyAdjustments.execute(operation)
+      end
     end
 
     Helpers.retry(update_swiftly_fn, 1)
   end
 
   # Create adjustment in swiftly when activating drawn detours
-  defp update_swiftly(
+  defp swiftly_operation(
          %Ecto.Changeset{
            data: %Detour{status: :draft},
            changes: %{status: :active}
@@ -624,16 +628,11 @@ defmodule Skate.Detours.Detours do
          %Detour{is_text_only: false} = detour,
          true
        ) do
-    {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
-
-    service_adjustments_module().create_adjustment_v1(
-      adjustment_request,
-      build_swiftly_opts()
-    )
+    {:create, detour}
   end
 
   # Create adjustment in swiftly when updating active text-only detours to drawn
-  defp update_swiftly(
+  defp swiftly_operation(
          %Ecto.Changeset{
            data: %Detour{is_text_only: true, status: :active},
            changes: %{is_text_only: false}
@@ -641,26 +640,21 @@ defmodule Skate.Detours.Detours do
          %Detour{} = detour,
          true
        ) do
-    {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
-
-    service_adjustments_module().create_adjustment_v1(
-      adjustment_request,
-      build_swiftly_opts()
-    )
+    {:create, detour}
   end
 
   # Remove adjustment from swiftly when an activated drawn detour is updated to be text-only
-  defp update_swiftly(
+  defp swiftly_operation(
          %Ecto.Changeset{data: %Detour{swiftly_id: swiftly_id}, changes: %{is_text_only: true}},
          %Detour{},
          true
        )
        when is_binary(swiftly_id) do
-    service_adjustments_module().delete_adjustment_v1(swiftly_id, build_swiftly_opts())
+    {:delete, swiftly_id}
   end
 
   # Remove adjustment from swiftly when a drawn detour is deactivated
-  defp update_swiftly(
+  defp swiftly_operation(
          %Ecto.Changeset{
            data: %Detour{status: :active, swiftly_id: swiftly_id},
            changes: %{status: :past}
@@ -669,11 +663,11 @@ defmodule Skate.Detours.Detours do
          true
        )
        when is_binary(swiftly_id) do
-    service_adjustments_module().delete_adjustment_v1(swiftly_id, build_swiftly_opts())
+    {:delete, swiftly_id}
   end
 
   # Update swiftly when an active detour has relevant fields updated
-  defp update_swiftly(
+  defp swiftly_operation(
          %Ecto.Changeset{
            data: %Detour{status: :active},
            changes: %{updated_at: _} = changes
@@ -684,21 +678,10 @@ defmodule Skate.Detours.Detours do
        when is_map_key(changes, :end_point) or
               is_map_key(changes, :start_point) or
               is_map_key(changes, :waypoints) do
-    {:ok, adjustment_request} = Swiftly.API.Requests.to_swiftly(detour)
-
-    case Map.get(detour, :swiftly_id) do
-      nil ->
-        {:error, :not_found}
-
-      adjustment_id ->
-        service_adjustments_module().create_adjustment_v1(
-          adjustment_request,
-          Keyword.put(build_swiftly_opts(), :adjustment_id, adjustment_id)
-        )
-    end
+    {:update, detour, detour.swiftly_id}
   end
 
-  defp update_swiftly(_, _, _), do: :ok
+  defp swiftly_operation(_, _, _), do: :noop
 
   defp log_metadata(
          %Ecto.Changeset{
