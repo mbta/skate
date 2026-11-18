@@ -49,7 +49,8 @@ defmodule Skate.Application do
            Application.get_env(:skate, Skate.Detours.TripModificationPublisher)},
           {Singleton.Supervisor, name: Skate.Singleton},
           Skate.Detours.FeedSynchronizer,
-          {Skate.Research.ScenarioStore, []}
+          {Skate.Research.ScenarioStore, []},
+          {Skate.Radio.Store, []}
         ] ++
         case Skate.Radio.SQS.Config.queue_url(:commands) do
           {:ok, _queue_url} -> [Skate.Radio.SQS.Commands]
