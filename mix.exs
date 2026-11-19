@@ -77,7 +77,7 @@ defmodule Skate.MixProject do
       {:saxy, "~> 1.1"},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:ex_machina, "~> 2.8.0", only: :test},
-      {:excellent_migrations, "~> 0.1", only: [:dev], runtime: false},
+      {:excellent_migrations, "0.1.10", only: [:dev], runtime: false},
       {:gen_stage, "~> 1.3.2"},
       {:guardian, "~> 2.0"},
       {:guardian_phoenix, "~> 2.0"},
