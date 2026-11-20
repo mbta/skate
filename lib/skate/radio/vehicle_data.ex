@@ -54,17 +54,22 @@ defmodule Skate.Radio.VehicleData do
         %{
           "RadioMessageID" => id,
           "Initiator" => %{"UnitID" => unit_id},
-          "InitialTimeStamp" => received_at
+          "InitialTimeStamp" => received_at,
+          "MessagePriority" => message_priority
         } = rtt_data
       )
       when ((is_integer(id) and id >= 0) or (is_binary(id) and id != "")) and
-             is_integer(unit_id) and unit_id > 0 and is_binary(received_at) and
-             received_at != "" do
+             is_integer(unit_id) and unit_id > 0 and is_integer(message_priority) and
+             message_priority >= 0 and is_binary(received_at) and received_at != "" do
     with {:ok, vehicle} <- fetch("y" <> Integer.to_string(unit_id)) do
       data =
         Map.merge(map_vehicle(vehicle), %{
           "id" => to_string(id),
-          "callType" => RttData.default_call_type(),
+          "callType" =>
+            if(message_priority == 0,
+              do: RttData.call_type(:prtt),
+              else: RttData.default_call_type()
+            ),
           "talkGroup" => get_in(rtt_data, ["CurrentGroup", "Alias"]),
           "receivedAt" => received_at,
           "respondedBy" => nil,

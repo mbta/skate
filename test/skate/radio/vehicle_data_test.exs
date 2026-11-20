@@ -202,6 +202,7 @@ defmodule Skate.Radio.VehicleDataTest do
           "RadioMessageID" => 100,
           "Initiator" => %{"UnitID" => 501, "Alias" => "ALBANY-123456"},
           "CurrentGroup" => %{"Alias" => "Test1"},
+          "MessagePriority" => 2,
           "InitialTimeStamp" => "2026-09-22T15:51:24.8790282-04:00",
           "UpdateTimeStamp" => "2026-09-22T15:52:32.3400206-04:00",
           "Alias" => "Bus_RTT"
@@ -240,6 +241,13 @@ defmodule Skate.Radio.VehicleDataTest do
              }
 
       assert data == data |> Jason.encode!() |> Jason.decode!()
+    end
+
+    test "maps priority zero to PRTT", %{vehicle: vehicle, rtt_data: rtt_data} do
+      put_vehicle(%{vehicle | id: "y501"})
+
+      assert {:ok, data} = VehicleData.map_rtt_data(Map.put(rtt_data, "MessagePriority", 0))
+      assert data["callType"] == "PRTT"
     end
 
     test "allows a missing talk group", %{vehicle: vehicle, rtt_data: rtt_data} do
@@ -292,11 +300,15 @@ defmodule Skate.Radio.VehicleDataTest do
     test "returns an explicit error for malformed messages", %{rtt_data: rtt_data} do
       invalid_messages =
         [nil, %{}] ++
-          Enum.map(["RadioMessageID", "Initiator", "InitialTimeStamp"], &Map.delete(rtt_data, &1)) ++
+          Enum.map(
+            ["RadioMessageID", "Initiator", "InitialTimeStamp", "MessagePriority"],
+            &Map.delete(rtt_data, &1)
+          ) ++
           [
             %{rtt_data | "RadioMessageID" => nil},
             %{rtt_data | "Initiator" => %{"UnitID" => nil}},
             %{rtt_data | "Initiator" => %{"UnitID" => ""}},
+            %{rtt_data | "MessagePriority" => -1},
             %{rtt_data | "InitialTimeStamp" => ""}
           ]
 

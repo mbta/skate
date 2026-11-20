@@ -16,9 +16,13 @@ defmodule Skate.Radio.RttData do
 
   @type t :: %{required(String.t()) => String.t() | nil}
   @type errors :: %{required(String.t()) => String.t()}
+  @type call_type :: :emergency | :prtt | :rtt
+
+  @spec call_type(call_type()) :: String.t()
+  def call_type(type), do: Map.fetch!(@call_types, type)
 
   @spec default_call_type() :: String.t()
-  def default_call_type, do: @call_types.rtt
+  def default_call_type, do: call_type(:rtt)
 
   @spec default_status() :: String.t()
   def default_status, do: @rtt_statuses.active
