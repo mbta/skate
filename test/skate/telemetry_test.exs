@@ -5,8 +5,11 @@ defmodule Skate.TelemetryTest do
   import ExUnit.CaptureLog, only: [capture_log: 2]
   import Test.Support.Helpers, only: [set_log_level: 1]
 
-  alias Skate.Detours.Detours
   alias Skate.Detours.Db.Detour
+  alias Skate.Detours.Detours
+  alias Skate.Telemetry
+  alias Skate.Telemetry.Sockets
+  alias Skate.Telemetry.Sockets.Monitor
 
   setup tags do
     if events = tags[:telemetry_listen] do
@@ -15,6 +18,8 @@ defmodule Skate.TelemetryTest do
       on_exit(fn -> :telemetry.detach(ref) end)
 
       %{telemetry_ref: ref}
+    else
+      :ok
     end
   end
 
@@ -41,5 +46,19 @@ defmodule Skate.TelemetryTest do
                     }}
 
     assert log =~ "Telemetry for db query, source=detours"
+  end
+
+  test "setup_telemetry/0 attaches socket handlers and Monitor supervisor is running" do
+    :telemetry.detach("skate.telemetry.sockets")
+    on_exit(fn -> Sockets.attach_handler() end)
+
+    Telemetry.setup_telemetry()
+
+    for event <- [[:phoenix, :socket_connected], [:phoenix, :channel_joined]] do
+      assert Enum.any?(:telemetry.list_handlers(event), &(&1.id == "skate.telemetry.sockets"))
+    end
+
+    assert is_pid(Process.whereis(Monitor.Supervisor))
+    assert is_pid(Process.whereis(Monitor))
   end
 end

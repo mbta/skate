@@ -1,8 +1,13 @@
 defmodule SkateWeb.UserSocket do
   require Logger
 
+  alias Phoenix.Socket.Transport
+  alias Skate.Telemetry.Sockets.Monitor
+
   use Phoenix.Socket,
     max_channels_per_transport: 500
+
+  defoverridable init: 1, terminate: 2
 
   ## Channels
   channel("data_status", SkateWeb.DataStatusChannel)
@@ -26,6 +31,7 @@ defmodule SkateWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+  @impl Phoenix.Socket
   def connect(%{"token" => token}, socket, _connect_info) do
     unverified_user_id =
       with %{claims: claims} <- SkateWeb.AuthManager.peek(token),
@@ -60,5 +66,23 @@ defmodule SkateWeb.UserSocket do
   #     SkateWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
+  @impl Phoenix.Socket
   def id(_socket), do: nil
+
+  @impl Transport
+  def init(state) do
+    {:ok, {_internal_state, socket} = initialized} = super(state)
+    Monitor.track(socket)
+    {:ok, initialized}
+  end
+
+  @impl Transport
+  def terminate(reason, state) do
+    case state do
+      {_internal_state, socket} -> Monitor.untrack(socket, reason)
+      _ -> :ok
+    end
+
+    super(reason, state)
+  end
 end
