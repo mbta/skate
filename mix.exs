@@ -82,7 +82,7 @@ defmodule Skate.MixProject do
       {:guardian, "~> 2.0"},
       {:guardian_phoenix, "~> 2.0"},
       {:haversine, "~> 0.1.0"},
-      {:httpoison, "~> 2.2.1"},
+      {:httpoison, "~> 2.3.0"},
       {:http_stage, "~> 0.2.0"},
       {:jason, "~> 1.0"},
       {:lcov_ex, "~> 0.2", only: [:dev, :test], runtime: false},
