@@ -16,11 +16,12 @@ defmodule Skate.Radio.VehicleData do
   @doc """
   Returns the latest realtime vehicle for an exact feed ID.
 
-  Returns an explicit error for invalid IDs or vehicles absent from the live
-  store (including ghost vehicles), so callers can fail an SQS message for retry.
+  Returns an explicit error for invalid IDs, vehicles absent from the live
+  store (including ghost vehicles), or an unavailable realtime server.
   """
   @spec fetch(String.t()) ::
-          {:ok, Vehicle.t()} | {:error, :vehicle_not_found | :invalid_vehicle_id}
+          {:ok, Vehicle.t()}
+          | {:error, :vehicle_not_found | :invalid_vehicle_id | :vehicle_data_unavailable}
   def fetch(vehicle_id) when is_binary(vehicle_id) and vehicle_id != "" do
     case Server.peek_at_vehicle_by_id(vehicle_id) do
       [%Vehicle{} = vehicle] ->
@@ -30,6 +31,10 @@ defmodule Skate.Radio.VehicleData do
         Logger.warning("Radio vehicle lookup failed: vehicle not found #{inspect(vehicle_id)}")
         {:error, :vehicle_not_found}
     end
+  catch
+    :exit, {reason, {GenServer, :call, _}} ->
+      Logger.warning("Radio vehicle lookup unavailable: #{inspect(reason)}")
+      {:error, :vehicle_data_unavailable}
   end
 
   def fetch(vehicle_id) do
@@ -38,19 +43,17 @@ defmodule Skate.Radio.VehicleData do
   end
 
   @doc """
-  Maps a decoded RTT message to a JSON-ready call with latest vehicle data.
-
-  Looks up `"y" <> Initiator.UnitID` and converts `RadioMessageID` to a string.
-  Validates the final output against `Skate.Radio.RttData`
+  Maps the RTT-related fields to JSON-ready format.
   """
-  @spec map_rtt_data(map()) ::
-          {:ok, RttData.t()}
-          | {:error,
-             :invalid_rtt_data
-             | :vehicle_not_found
-             | :invalid_vehicle_id
-             | {:invalid_rtt_data, RttData.error()}}
-  def map_rtt_data(
+  @spec map_rtt_fields(map()) ::
+          {:ok, data()} | {:error, :invalid_rtt_data}
+  def map_rtt_fields(%{"CurrentGroup" => group})
+      when not is_map(group) and not is_nil(group) do
+    Logger.warning("Radio RTT mapping failed: invalid RTT data")
+    {:error, :invalid_rtt_data}
+  end
+
+  def map_rtt_fields(
         %{
           "RadioMessageID" => id,
           "Initiator" => %{"UnitID" => unit_id},
@@ -61,22 +64,44 @@ defmodule Skate.Radio.VehicleData do
       when ((is_integer(id) and id >= 0) or (is_binary(id) and id != "")) and
              is_integer(unit_id) and unit_id > 0 and is_integer(message_priority) and
              message_priority >= 0 and is_binary(received_at) and received_at != "" do
-    with {:ok, vehicle} <- fetch("y" <> Integer.to_string(unit_id)) do
-      data =
-        Map.merge(map_vehicle(vehicle), %{
-          "id" => to_string(id),
-          "callType" =>
-            if(message_priority == 0,
-              do: RttData.call_type(:prtt),
-              else: RttData.default_call_type()
-            ),
-          "talkGroup" => get_in(rtt_data, ["CurrentGroup", "Alias"]),
-          "receivedAt" => received_at,
-          "respondedBy" => nil,
-          "answeredAt" => nil,
-          "markedDoneAt" => nil,
-          "status" => RttData.default_status()
-        })
+    mapped_data = %{
+      "id" => to_string(id),
+      "vehicleId" => "y" <> to_string(unit_id),
+      "callType" =>
+        if(message_priority == 0,
+          do: RttData.call_type(:prtt),
+          else: RttData.default_call_type()
+        ),
+      "talkGroup" => get_in(rtt_data, ["CurrentGroup", "Alias"]),
+      "receivedAt" => received_at,
+      "respondedBy" => nil,
+      "answeredAt" => nil,
+      "markedDoneAt" => nil,
+      "status" => RttData.default_status()
+    }
+
+    {:ok, mapped_data}
+  end
+
+  def map_rtt_fields(_rtt_data) do
+    Logger.warning("Radio RTT mapping failed: invalid RTT data")
+    {:error, :invalid_rtt_data}
+  end
+
+  @doc """
+  Maps and validates an RTT, enriching it with available vehicle and schedule data.
+
+  Missing or unavailable realtime data leaves vehicle fields absent. Lookup
+  failures are logged; invalid RTT data is returned as an error.
+  """
+  @spec merge_and_validate_data(map()) ::
+          {:ok, RttData.t()}
+          | {:error,
+             :invalid_rtt_data | :invalid_vehicle_id | {:invalid_rtt_data, RttData.error()}}
+  def merge_and_validate_data(rtt_data) do
+    with {:ok, rtt_fields} <- map_rtt_fields(rtt_data),
+         {:ok, vehicle_fields} <- fetch_vehicle_fields(rtt_fields["vehicleId"]) do
+      data = Map.merge(vehicle_fields, rtt_fields)
 
       case RttData.validate(data) do
         {:ok, data} ->
@@ -89,22 +114,29 @@ defmodule Skate.Radio.VehicleData do
     end
   end
 
-  def map_rtt_data(_rtt_data) do
-    Logger.warning("Radio RTT mapping failed: invalid RTT data")
-    {:error, :invalid_rtt_data}
+  defp fetch_vehicle_fields(vehicle_id) do
+    case fetch(vehicle_id) do
+      {:ok, vehicle} ->
+        {:ok, map_vehicle_fields(vehicle)}
+
+      {:error, reason} when reason in [:vehicle_not_found, :vehicle_data_unavailable] ->
+        {:ok, %{}}
+
+      {:error, :invalid_vehicle_id} = error ->
+        error
+    end
   end
 
   @doc """
   Maps vehicle-related fields to a JSON-ready format.
   """
-  @spec map_vehicle(Vehicle.t()) :: data()
-  def map_vehicle(%Vehicle{} = vehicle) do
+  @spec map_vehicle_fields(Vehicle.t()) :: data()
+  def map_vehicle_fields(%Vehicle{} = vehicle) do
     route = vehicle.route_id && Schedule.route_by_id(vehicle.route_id)
 
     %{
       "routeId" => vehicle.route_id,
       "routeName" => route && route.name,
-      "vehicleId" => vehicle.id,
       "garage" => Garage.garage_for_block(vehicle.block_id),
       "direction" => route && route.direction_names[vehicle.direction_id],
       "variant" => variant(vehicle.via_variant),

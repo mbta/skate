@@ -10,8 +10,8 @@ defmodule Skate.Radio.RttData do
   @call_types %{emergency: "Emergency", prtt: "PRTT", rtt: "RTT"}
   @rtt_statuses %{unassigned: "unassigned", active: "active", done: "done"}
 
-  @required_fields ~w(id routeId routeName vehicleId receivedAt)
-  @optional_fields ~w(talkGroup garage direction variant currentLocation operatorBadge operatorName runNumber adherence)
+  @required_fields ~w(id vehicleId receivedAt)
+  @optional_fields ~w(talkGroup routeId routeName garage direction variant currentLocation operatorBadge operatorName runNumber adherence)
   @nullable_fields ~w(respondedBy answeredAt markedDoneAt)
   @call_type_values Map.values(@call_types)
   @rtt_status_values Map.values(@rtt_statuses)

@@ -62,12 +62,11 @@ defmodule Skate.Radio.VehicleDataTest do
   end
 
   test "returns the exact JSON-ready field set with schedule enrichment", %{vehicle: vehicle} do
-    data = VehicleData.map_vehicle(vehicle)
+    data = VehicleData.map_vehicle_fields(vehicle)
 
     assert %{
              "routeId" => "39",
              "routeName" => "39",
-             "vehicleId" => "y1714",
              "garage" => "Arborway",
              "direction" => "Outbound",
              "variant" => "A",
@@ -98,18 +97,17 @@ defmodule Skate.Radio.VehicleDataTest do
 
     Server.update_vehicles({%{}, [], [vehicle]})
     assert {:ok, ^vehicle} = VehicleData.fetch(vehicle.id)
-    data = VehicleData.map_vehicle(vehicle)
-
-    assert data["vehicleId"] == vehicle.id
+    data = VehicleData.map_vehicle_fields(vehicle)
 
     assert data
-           |> Map.delete("vehicleId")
            |> Map.values()
            |> Enum.all?(&is_nil/1)
   end
 
   test "retains available fields when the route is unknown", %{vehicle: vehicle} do
-    data = VehicleData.map_vehicle(%{vehicle | route_id: "unknown", operator_first_name: nil})
+    data =
+      VehicleData.map_vehicle_fields(%{vehicle | route_id: "unknown", operator_first_name: nil})
+
     assert data["routeId"] == "unknown"
     assert data["routeName"] == nil
     assert data["direction"] == nil
@@ -118,14 +116,15 @@ defmodule Skate.Radio.VehicleDataTest do
   end
 
   test "uses the route-specific direction name", %{vehicle: vehicle} do
-    assert %{"direction" => "Inbound"} = VehicleData.map_vehicle(%{vehicle | direction_id: 1})
+    assert %{"direction" => "Inbound"} =
+             VehicleData.map_vehicle_fields(%{vehicle | direction_id: 1})
   end
 
   test "handles blank operator fields, unknown direction, and absent stop status", %{
     vehicle: vehicle
   } do
     data =
-      VehicleData.map_vehicle(%{
+      VehicleData.map_vehicle_fields(%{
         vehicle
         | operator_id: " ",
           operator_first_name: " ",
@@ -156,14 +155,16 @@ defmodule Skate.Radio.VehicleDataTest do
         {420, "7 min late"}
       ] do
     test "formats adherence of #{seconds} seconds", %{vehicle: vehicle} do
-      data = VehicleData.map_vehicle(%{vehicle | schedule_adherence_secs: unquote(seconds)})
+      data =
+        VehicleData.map_vehicle_fields(%{vehicle | schedule_adherence_secs: unquote(seconds)})
+
       assert data["adherence"] == unquote(expected)
     end
   end
 
   test "omits invalid adherence for off-course and shuttle vehicles", %{vehicle: vehicle} do
     for attrs <- [%{is_off_course: true}, %{is_shuttle: true}] do
-      assert %{"adherence" => nil} = VehicleData.map_vehicle(struct!(vehicle, attrs))
+      assert %{"adherence" => nil} = VehicleData.map_vehicle_fields(struct!(vehicle, attrs))
     end
   end
 
@@ -195,7 +196,7 @@ defmodule Skate.Radio.VehicleDataTest do
            end) =~ "invalid vehicle ID"
   end
 
-  describe "map_rtt_data/1" do
+  describe "merge_and_validate_data/1" do
     setup do
       %{
         rtt_data: %{
@@ -210,13 +211,23 @@ defmodule Skate.Radio.VehicleDataTest do
       }
     end
 
+    test "maps RTT fields without accessing realtime data", %{rtt_data: rtt_data} do
+      stop_supervised!(Server)
+
+      assert {:ok, fields} = VehicleData.map_rtt_fields(rtt_data)
+      assert fields["id"] == "100"
+      assert fields["vehicleId"] == "y501"
+      assert fields["talkGroup"] == "Test1"
+      refute Map.has_key?(fields, "routeId")
+    end
+
     test "returns the exact RTT call field set with default type and status", %{
       vehicle: vehicle,
       rtt_data: rtt_data
     } do
       put_vehicle(%{vehicle | id: "y501"})
 
-      assert {:ok, data} = VehicleData.map_rtt_data(rtt_data)
+      assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
 
       assert data == %{
                "id" => "100",
@@ -246,7 +257,9 @@ defmodule Skate.Radio.VehicleDataTest do
     test "maps priority zero to PRTT", %{vehicle: vehicle, rtt_data: rtt_data} do
       put_vehicle(%{vehicle | id: "y501"})
 
-      assert {:ok, data} = VehicleData.map_rtt_data(Map.put(rtt_data, "MessagePriority", 0))
+      assert {:ok, data} =
+               VehicleData.merge_and_validate_data(Map.put(rtt_data, "MessagePriority", 0))
+
       assert data["callType"] == "PRTT"
     end
 
@@ -254,29 +267,75 @@ defmodule Skate.Radio.VehicleDataTest do
       put_vehicle(%{vehicle | id: "y501"})
 
       for group <- [nil, %{}, %{"Alias" => nil}] do
-        assert {:ok, data} = VehicleData.map_rtt_data(Map.put(rtt_data, "CurrentGroup", group))
+        assert {:ok, data} =
+                 VehicleData.merge_and_validate_data(Map.put(rtt_data, "CurrentGroup", group))
+
         refute Map.has_key?(data, "talkGroup")
       end
 
-      assert {:ok, data} = VehicleData.map_rtt_data(Map.delete(rtt_data, "CurrentGroup"))
+      assert {:ok, data} =
+               VehicleData.merge_and_validate_data(Map.delete(rtt_data, "CurrentGroup"))
+
       refute Map.has_key?(data, "talkGroup")
     end
 
-    test "rejects missing required vehicle assignments", %{vehicle: vehicle, rtt_data: rtt_data} do
+    test "omits missing vehicle assignments", %{vehicle: vehicle, rtt_data: rtt_data} do
       vehicle = %{vehicle | id: "y501", route_id: nil, block_id: nil, stop_status: nil}
       Server.update_vehicles({%{}, [], [vehicle]})
 
-      assert capture_log(fn ->
-               assert {:error, {:invalid_rtt_data, {:invalid_field, "routeId"}}} =
-                        VehicleData.map_rtt_data(rtt_data)
-             end) =~ "invalid output"
+      assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
+      refute Map.has_key?(data, "routeId")
+      refute Map.has_key?(data, "routeName")
+      assert data["vehicleId"] == "y501"
     end
 
     test "omits missing optional vehicle fields", %{vehicle: vehicle, rtt_data: rtt_data} do
       put_vehicle(%{vehicle | id: "y501", block_id: nil, stop_status: nil})
-      assert {:ok, data} = VehicleData.map_rtt_data(rtt_data)
+      assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
       refute Map.has_key?(data, "garage")
       refute Map.has_key?(data, "currentLocation")
+    end
+
+    test "retains vehicle fields when schedule data is unavailable", %{
+      vehicle: vehicle,
+      rtt_data: rtt_data
+    } do
+      put_vehicle(%{vehicle | id: "y501"})
+      :persistent_term.put(Schedule, :not_loaded)
+
+      assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
+      assert data["routeId"] == "39"
+      assert data["garage"] == "Arborway"
+      assert data["operatorName"] == "First Last"
+      refute Map.has_key?(data, "routeName")
+      refute Map.has_key?(data, "direction")
+    end
+
+    test "retains vehicle fields when the route is unknown", %{
+      vehicle: vehicle,
+      rtt_data: rtt_data
+    } do
+      put_vehicle(%{vehicle | id: "y501", route_id: "unknown"})
+
+      assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
+      assert data["routeId"] == "unknown"
+      assert data["operatorName"] == "First Last"
+      refute Map.has_key?(data, "routeName")
+    end
+
+    test "maps RTT fields when the realtime server is unavailable", %{rtt_data: rtt_data} do
+      stop_supervised!(Server)
+
+      assert capture_log(fn ->
+               assert {:error, :vehicle_data_unavailable} = VehicleData.fetch("y501")
+               assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
+               assert data["id"] == "100"
+               assert data["vehicleId"] == "y501"
+               assert data["talkGroup"] == "Test1"
+               assert data["status"] == "active"
+               refute Map.has_key?(data, "routeId")
+               refute Map.has_key?(data, "operatorName")
+             end) =~ "lookup unavailable"
     end
 
     test "rejects invalid mapped field types", %{vehicle: vehicle, rtt_data: rtt_data} do
@@ -285,14 +344,44 @@ defmodule Skate.Radio.VehicleDataTest do
 
       assert capture_log(fn ->
                assert {:error, {:invalid_rtt_data, {:invalid_field, "talkGroup"}}} =
-                        VehicleData.map_rtt_data(rtt_data)
+                        VehicleData.merge_and_validate_data(rtt_data)
              end) =~ "invalid output"
     end
 
-    test "propagates missing vehicle errors", %{rtt_data: rtt_data} do
+    test "maps RTT fields when the vehicle is missing", %{rtt_data: rtt_data} do
       assert capture_log(fn ->
-               assert {:error, :vehicle_not_found} = VehicleData.map_rtt_data(rtt_data)
+               assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
+
+               assert data == %{
+                        "id" => "100",
+                        "vehicleId" => "y501",
+                        "callType" => "RTT",
+                        "talkGroup" => "Test1",
+                        "receivedAt" => rtt_data["InitialTimeStamp"],
+                        "status" => "active",
+                        "respondedBy" => nil,
+                        "answeredAt" => nil,
+                        "markedDoneAt" => nil
+                      }
+
+               assert {:ok, %{"callType" => "PRTT"} = priority_data} =
+                        VehicleData.merge_and_validate_data(
+                          rtt_data
+                          |> Map.put("MessagePriority", 0)
+                          |> Map.delete("CurrentGroup")
+                        )
+
+               refute Map.has_key?(priority_data, "talkGroup")
              end) =~ "vehicle not found"
+    end
+
+    test "validates mapped RTT fields when the vehicle is missing", %{rtt_data: rtt_data} do
+      rtt_data = put_in(rtt_data, ["CurrentGroup", "Alias"], 123)
+
+      assert capture_log(fn ->
+               assert {:error, {:invalid_rtt_data, {:invalid_field, "talkGroup"}}} =
+                        VehicleData.merge_and_validate_data(rtt_data)
+             end) =~ "invalid output"
     end
 
     test "returns an explicit error for malformed messages", %{rtt_data: rtt_data} do
@@ -307,12 +396,13 @@ defmodule Skate.Radio.VehicleDataTest do
             %{rtt_data | "Initiator" => %{"UnitID" => nil}},
             %{rtt_data | "Initiator" => %{"UnitID" => ""}},
             %{rtt_data | "MessagePriority" => -1},
+            %{rtt_data | "CurrentGroup" => "invalid"},
             %{rtt_data | "InitialTimeStamp" => ""}
           ]
 
       assert capture_log(fn ->
                for message <- invalid_messages do
-                 assert {:error, :invalid_rtt_data} = VehicleData.map_rtt_data(message)
+                 assert {:error, :invalid_rtt_data} = VehicleData.merge_and_validate_data(message)
                end
              end) =~ "invalid RTT data"
     end

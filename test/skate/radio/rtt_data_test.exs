@@ -30,7 +30,7 @@ defmodule Skate.Radio.RttDataTest do
   end
 
   test "rejects missing and incorrectly typed required fields", %{data: data} do
-    for field <- ~w(id routeId routeName vehicleId receivedAt callType status) do
+    for field <- ~w(id vehicleId receivedAt callType status) do
       for invalid <- [
             Map.delete(data, field),
             Map.put(data, field, nil),
@@ -60,10 +60,11 @@ defmodule Skate.Radio.RttDataTest do
 
   test "optional fields accept strings, omit nil, and reject other types", %{data: data} do
     for field <-
-          ~w(talkGroup garage direction variant currentLocation operatorBadge operatorName runNumber adherence) do
+          ~w(talkGroup routeId routeName garage direction variant currentLocation operatorBadge operatorName runNumber adherence) do
       with_string = Map.put(data, field, "value")
       assert {:ok, ^with_string} = RttData.validate(with_string)
-      assert {:ok, ^data} = RttData.validate(Map.put(data, field, nil))
+      without_field = Map.delete(data, field)
+      assert {:ok, ^without_field} = RttData.validate(Map.put(data, field, nil))
 
       for value <- [123, false, [], %{}] do
         assert {:error, {:invalid_field, ^field}} = RttData.validate(Map.put(data, field, value))
