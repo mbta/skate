@@ -263,37 +263,40 @@ defmodule Skate.Radio.VehicleDataTest do
       assert data["callType"] == "PRTT"
     end
 
-    test "allows a missing talk group", %{vehicle: vehicle, rtt_data: rtt_data} do
+    test "allows a missing talk group as nil", %{vehicle: vehicle, rtt_data: rtt_data} do
       put_vehicle(%{vehicle | id: "y501"})
 
       for group <- [nil, %{}, %{"Alias" => nil}] do
         assert {:ok, data} =
                  VehicleData.merge_and_validate_data(Map.put(rtt_data, "CurrentGroup", group))
 
-        refute Map.has_key?(data, "talkGroup")
+        assert data["talkGroup"] == nil
       end
 
       assert {:ok, data} =
                VehicleData.merge_and_validate_data(Map.delete(rtt_data, "CurrentGroup"))
 
-      refute Map.has_key?(data, "talkGroup")
+      assert data["talkGroup"] == nil
     end
 
-    test "omits missing vehicle assignments", %{vehicle: vehicle, rtt_data: rtt_data} do
+    test "returns null for missing vehicle assignments", %{vehicle: vehicle, rtt_data: rtt_data} do
       vehicle = %{vehicle | id: "y501", route_id: nil, block_id: nil, stop_status: nil}
       Server.update_vehicles({%{}, [], [vehicle]})
 
       assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
-      refute Map.has_key?(data, "routeId")
-      refute Map.has_key?(data, "routeName")
+      assert data["routeId"] == nil
+      assert data["routeName"] == nil
       assert data["vehicleId"] == "y501"
     end
 
-    test "omits missing optional vehicle fields", %{vehicle: vehicle, rtt_data: rtt_data} do
+    test "returns null for missing optional vehicle fields", %{
+      vehicle: vehicle,
+      rtt_data: rtt_data
+    } do
       put_vehicle(%{vehicle | id: "y501", block_id: nil, stop_status: nil})
       assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
-      refute Map.has_key?(data, "garage")
-      refute Map.has_key?(data, "currentLocation")
+      assert data["garage"] == nil
+      assert data["currentLocation"] == nil
     end
 
     test "retains vehicle fields when schedule data is unavailable", %{
@@ -307,8 +310,8 @@ defmodule Skate.Radio.VehicleDataTest do
       assert data["routeId"] == "39"
       assert data["garage"] == "Arborway"
       assert data["operatorName"] == "First Last"
-      refute Map.has_key?(data, "routeName")
-      refute Map.has_key?(data, "direction")
+      assert data["routeName"] == nil
+      assert data["direction"] == nil
     end
 
     test "retains vehicle fields when the route is unknown", %{
@@ -320,7 +323,7 @@ defmodule Skate.Radio.VehicleDataTest do
       assert {:ok, data} = VehicleData.merge_and_validate_data(rtt_data)
       assert data["routeId"] == "unknown"
       assert data["operatorName"] == "First Last"
-      refute Map.has_key?(data, "routeName")
+      assert data["routeName"] == nil
     end
 
     test "maps RTT fields when the realtime server is unavailable", %{rtt_data: rtt_data} do
@@ -371,7 +374,7 @@ defmodule Skate.Radio.VehicleDataTest do
                           |> Map.delete("CurrentGroup")
                         )
 
-               refute Map.has_key?(priority_data, "talkGroup")
+               assert priority_data["talkGroup"] == nil
              end) =~ "vehicle not found"
     end
 

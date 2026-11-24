@@ -15,7 +15,6 @@ defmodule Skate.Radio.RttData do
   @nullable_fields ~w(respondedBy answeredAt markedDoneAt)
   @call_type_values Map.values(@call_types)
   @rtt_status_values Map.values(@rtt_statuses)
-  @fields @required_fields ++ @optional_fields ++ @nullable_fields ++ ~w(callType status)
 
   @type t :: %{required(String.t()) => String.t() | nil}
   @type error :: {:invalid_field, String.t()}
@@ -33,7 +32,7 @@ defmodule Skate.Radio.RttData do
   @doc """
   Validates mapped call data without coercing values or filling required fields.
 
-  Returns a normalized map on success, or the first invalid field.
+  Returns the original map on success, or the first invalid field.
   """
   @spec validate(map()) :: {:ok, t()} | {:error, error()}
   def validate(data) when is_map(data) do
@@ -44,7 +43,7 @@ defmodule Skate.Radio.RttData do
            end),
          :ok <- validate_inclusion(data, "callType", @call_type_values),
          :ok <- validate_inclusion(data, "status", @rtt_status_values) do
-      {:ok, normalize(data)}
+      {:ok, data}
     end
   end
 
@@ -59,11 +58,5 @@ defmodule Skate.Radio.RttData do
     if data[field] in allowed,
       do: :ok,
       else: {:error, {:invalid_field, field}}
-  end
-
-  defp normalize(data) do
-    data
-    |> Map.take(@fields)
-    |> Map.reject(fn {field, value} -> field in @optional_fields and is_nil(value) end)
   end
 end
