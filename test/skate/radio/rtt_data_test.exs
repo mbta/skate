@@ -36,16 +36,25 @@ defmodule Skate.Radio.RttDataTest do
             Map.put(data, field, nil),
             Map.put(data, field, 123)
           ] do
-        assert {:error, errors} = RttData.validate(invalid)
-        assert Map.has_key?(errors, field)
+        assert {:error, {:invalid_field, ^field}} = RttData.validate(invalid)
       end
     end
   end
 
+  test "returns only the first validation error", %{data: data} do
+    invalid =
+      data
+      |> Map.put("id", nil)
+      |> Map.put("routeId", 123)
+      |> Map.put("callType", "unknown")
+
+    assert {:error, {:invalid_field, "id"}} = RttData.validate(invalid)
+  end
+
   test "rejects unknown enum values", %{data: data} do
     for field <- ~w(callType status) do
-      assert {:error, errors} = RttData.validate(Map.put(data, field, "unknown"))
-      assert Map.has_key?(errors, field)
+      assert {:error, {:invalid_field, ^field}} =
+               RttData.validate(Map.put(data, field, "unknown"))
     end
   end
 
@@ -57,8 +66,7 @@ defmodule Skate.Radio.RttDataTest do
       assert {:ok, ^data} = RttData.validate(Map.put(data, field, nil))
 
       for value <- [123, false, [], %{}] do
-        assert {:error, %{^field => "must be a string"}} =
-                 RttData.validate(Map.put(data, field, value))
+        assert {:error, {:invalid_field, ^field}} = RttData.validate(Map.put(data, field, value))
       end
     end
   end
@@ -70,8 +78,7 @@ defmodule Skate.Radio.RttDataTest do
         assert {:ok, ^call} = RttData.validate(call)
       end
 
-      assert {:error, %{^field => "must be a string"}} =
-               RttData.validate(Map.put(data, field, 123))
+      assert {:error, {:invalid_field, ^field}} = RttData.validate(Map.put(data, field, 123))
     end
 
     assert {:ok, ^data} = RttData.validate(data)

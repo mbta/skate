@@ -267,9 +267,7 @@ defmodule Skate.Radio.VehicleDataTest do
       Server.update_vehicles({%{}, [], [vehicle]})
 
       assert capture_log(fn ->
-               assert {:error,
-                       {:invalid_rtt_data,
-                        %{"routeId" => "must be a string", "routeName" => "must be a string"}}} =
+               assert {:error, {:invalid_rtt_data, {:invalid_field, "routeId"}}} =
                         VehicleData.map_rtt_data(rtt_data)
              end) =~ "invalid output"
     end
@@ -286,7 +284,7 @@ defmodule Skate.Radio.VehicleDataTest do
       rtt_data = put_in(rtt_data, ["CurrentGroup", "Alias"], 123)
 
       assert capture_log(fn ->
-               assert {:error, {:invalid_rtt_data, %{"talkGroup" => "must be a string"}}} =
+               assert {:error, {:invalid_rtt_data, {:invalid_field, "talkGroup"}}} =
                         VehicleData.map_rtt_data(rtt_data)
              end) =~ "invalid output"
     end

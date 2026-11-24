@@ -13,9 +13,12 @@ defmodule Skate.Radio.RttData do
   @required_fields ~w(id routeId routeName vehicleId receivedAt)
   @optional_fields ~w(talkGroup garage direction variant currentLocation operatorBadge operatorName runNumber adherence)
   @nullable_fields ~w(respondedBy answeredAt markedDoneAt)
+  @call_type_values Map.values(@call_types)
+  @rtt_status_values Map.values(@rtt_statuses)
+  @fields @required_fields ++ @optional_fields ++ @nullable_fields ++ ~w(callType status)
 
   @type t :: %{required(String.t()) => String.t() | nil}
-  @type errors :: %{required(String.t()) => String.t()}
+  @type error :: {:invalid_field, String.t()}
   @type call_type :: :emergency | :prtt | :rtt
 
   @spec call_type(call_type()) :: String.t()
@@ -30,44 +33,37 @@ defmodule Skate.Radio.RttData do
   @doc """
   Validates mapped call data without coercing values or filling required fields.
 
-  Returns a normalized map on success, or errors keyed by frontend field name.
+  Returns a normalized map on success, or the first invalid field.
   """
-  @spec validate(map()) :: {:ok, t()} | {:error, errors()}
+  @spec validate(map()) :: {:ok, t()} | {:error, error()}
   def validate(data) when is_map(data) do
-    errors =
-      Enum.reduce(@required_fields, %{}, fn field, errors ->
-        if is_binary(data[field]), do: errors, else: Map.put(errors, field, "must be a string")
-      end)
-
-    errors =
-      Enum.reduce(@optional_fields ++ @nullable_fields, errors, fn field, errors ->
-        if is_nil(data[field]) or is_binary(data[field]),
-          do: errors,
-          else: Map.put(errors, field, "must be a string")
-      end)
-
-    errors =
-      Enum.reduce(
-        [{"callType", Map.values(@call_types)}, {"status", Map.values(@rtt_statuses)}],
-        errors,
-        fn {field, allowed}, errors ->
-          if data[field] in allowed,
-            do: errors,
-            else: Map.put(errors, field, "must be one of #{Enum.join(allowed, ", ")}")
-        end
-      )
-
-    if map_size(errors) == 0 do
-      fields = @required_fields ++ @optional_fields ++ @nullable_fields ++ ~w(callType status)
-
-      normalized =
-        data
-        |> Map.take(fields)
-        |> Map.reject(fn {field, value} -> field in @optional_fields and is_nil(value) end)
-
-      {:ok, normalized}
-    else
-      {:error, errors}
+    with :ok <- validate_fields(@required_fields, &is_binary(data[&1])),
+         :ok <-
+           validate_fields(@optional_fields ++ @nullable_fields, fn field ->
+             is_nil(data[field]) or is_binary(data[field])
+           end),
+         :ok <- validate_inclusion(data, "callType", @call_type_values),
+         :ok <- validate_inclusion(data, "status", @rtt_status_values) do
+      {:ok, normalize(data)}
     end
+  end
+
+  defp validate_fields(fields, valid?) do
+    case Enum.find(fields, &(not valid?.(&1))) do
+      nil -> :ok
+      field -> {:error, {:invalid_field, field}}
+    end
+  end
+
+  defp validate_inclusion(data, field, allowed) do
+    if data[field] in allowed,
+      do: :ok,
+      else: {:error, {:invalid_field, field}}
+  end
+
+  defp normalize(data) do
+    data
+    |> Map.take(@fields)
+    |> Map.reject(fn {field, value} -> field in @optional_fields and is_nil(value) end)
   end
 end

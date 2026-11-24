@@ -49,7 +49,7 @@ defmodule Skate.Radio.VehicleData do
              :invalid_rtt_data
              | :vehicle_not_found
              | :invalid_vehicle_id
-             | {:invalid_rtt_data, RttData.errors()}}
+             | {:invalid_rtt_data, RttData.error()}}
   def map_rtt_data(
         %{
           "RadioMessageID" => id,
