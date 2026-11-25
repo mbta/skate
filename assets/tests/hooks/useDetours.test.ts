@@ -1,4 +1,4 @@
-import { describe, expect, jest, test } from "@jest/globals"
+import { afterEach, describe, expect, jest, test } from "@jest/globals"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 import { renderHook } from "@testing-library/react"
 import { act } from "react"
@@ -19,6 +19,7 @@ import {
   simpleDetourFromData,
 } from "../../src/models/detoursList"
 import { RouteId } from "../../src/schedule"
+import * as browser from "../../src/models/browser"
 
 describe("useActiveDetours", () => {
   const detourA = simpleActiveDetourDataFactory.build()
@@ -485,6 +486,10 @@ describe("useDraftDetours", () => {
 // Not totally comprehensive, but was having difficulty mocking both initial results
 // from joining a channel and results pushed to a channel at the same time
 describe("useActiveDetoursByRoute", () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   test("selecting a new route subscribes to the new channel", () => {
     const mockSocket = makeMockSocket()
     const mockChannel = makeMockChannel()
@@ -571,5 +576,22 @@ describe("useActiveDetoursByRoute", () => {
         [detourD.id]: parsedDetourD,
       },
     })
+  })
+
+  test("disconnects socket with code 1000 before reloading on not_authenticated", () => {
+    const reloadSpy = jest.spyOn(browser, "reload").mockImplementation(() => {})
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("error", {
+      reason: "not_authenticated",
+    })
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    renderHook(() => useActiveDetoursByRoute(mockSocket, ["1"]))
+
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
+    expect(reloadSpy).toHaveBeenCalledTimes(1)
   })
 })

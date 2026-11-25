@@ -1,16 +1,21 @@
-import { describe, test, expect, jest } from "@jest/globals"
+import { afterEach, describe, test, expect, jest } from "@jest/globals"
 import { renderHook, act } from "@testing-library/react"
 import {
   useScenarioChannel,
   DEFAULT_SCENARIOS_TOPIC,
 } from "../../../../src/components/research/scenarios/useScenarioChannel"
 import { Scenario } from "../../../../src/components/research/scenarios/types"
+import * as browser from "../../../../src/models/browser"
 import {
   makeMockChannel,
   makeMockSocket,
 } from "../../../testHelpers/socketHelpers"
 
 describe("useScenarioChannel", () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   const sampleScenario: Scenario = {
     id: "s1",
     name: "Scenario 1",
@@ -113,5 +118,30 @@ describe("useScenarioChannel", () => {
     expect(mockChannel.leave).not.toHaveBeenCalled()
     unmount()
     expect(mockChannel.leave).toHaveBeenCalledTimes(1)
+  })
+
+  test("disconnects socket with code 1000 before reloading on auth_expired", () => {
+    const reloadSpy = jest.spyOn(browser, "reload").mockImplementation(() => {})
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("ok", { data: null })
+    mockSocket.channel.mockReturnValue(mockChannel)
+
+    const eventHandlers: Record<string, () => void> = {}
+    mockChannel.on.mockImplementation((event: string, handler: any) => {
+      eventHandlers[event] = handler
+      return 1
+    })
+
+    renderHook(() => useScenarioChannel({ socket: mockSocket }))
+
+    act(() => {
+      eventHandlers["auth_expired"]?.()
+    })
+
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
+    expect(reloadSpy).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,7 +1,7 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
 import { array, assert, StructError, union } from "superstruct"
-import { reload } from "../models/browser"
+import { disconnectAndReload } from "../helpers/socketLifecycle"
 import {
   vehicleInScheduledServiceOrGhostFromData,
   VehicleInScheduledServiceData,
@@ -135,11 +135,12 @@ const subscribe = (
 
   const topic = `vehicles:route:${routeId}`
   const channel = socket.channel(topic)
+  const reloadWithDisconnect = () => disconnectAndReload(socket)
 
   channel.on("vehicles", handleVehicles)
 
   // Reload our session if the auth has expired
-  channel.on("auth_expired", reload)
+  channel.on("auth_expired", reloadWithDisconnect)
 
   channel
     .join()
@@ -148,7 +149,7 @@ const subscribe = (
       // eslint-disable-next-line no-console
       console.error("join failed", reason)
     })
-    .receive("timeout", reload)
+    .receive("timeout", reloadWithDisconnect)
   return channel
 }
 

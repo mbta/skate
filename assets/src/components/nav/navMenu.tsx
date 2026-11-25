@@ -1,11 +1,12 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Link } from "react-router"
 import { Nav } from "react-bootstrap"
+import { SocketContext } from "../../contexts/socketContext"
 import { LogoIcon } from "../../helpers/icon"
 import CloseButton from "../closeButton"
 import * as BsIcon from "../../helpers/bsIcons"
 import { joinClasses } from "../../helpers/dom"
-import { reload } from "../../models/browser"
+import { disconnectAndReload } from "../../helpers/socketLifecycle"
 import { LoggedInAs } from "../loggedInAs"
 import getEmailAddress from "../../userEmailAddress"
 import LeftNav from "./leftNav"
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
+  const { socket } = useContext(SocketContext)
   const email = getEmailAddress()
 
   return (
@@ -52,7 +54,7 @@ const NavMenu: React.FC<Props> = ({ mobileMenuIsOpen, toggleMobileMenu }) => {
               <div className="d-flex gap-3">
                 <Nav.Link
                   as="button"
-                  onClick={reload}
+                  onClick={() => disconnectAndReload(socket)}
                   className="c-nav-menu__button button-small"
                 >
                   <BsIcon.ArrowClockwise /> Refresh

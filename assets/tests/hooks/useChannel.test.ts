@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { afterEach, jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import { act } from "react"
 import { string, unknown } from "superstruct"
@@ -17,6 +17,10 @@ jest.mock("@sentry/react", () => ({
   captureException: jest.fn(),
   captureMessage: jest.fn(),
 }))
+
+afterEach(() => {
+  jest.restoreAllMocks()
+})
 
 describe("useChannel", () => {
   test("returns loadingState initially", () => {
@@ -281,7 +285,6 @@ describe("useChannel", () => {
     )
 
     expect(spyConsoleError).toHaveBeenCalled()
-    spyConsoleError.mockRestore()
   })
 
   test("reloads on join error due to not being authenticated", async () => {
@@ -303,8 +306,11 @@ describe("useChannel", () => {
       })
     )
 
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
     expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 
   test("reloads the window on channel timeout", async () => {
@@ -324,8 +330,11 @@ describe("useChannel", () => {
       })
     )
 
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
     expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 
   test("returns data from the initial join with closeAfterFirstRead, leaves", () => {
@@ -551,8 +560,11 @@ describe("useCheckedChannel", () => {
       })
     )
 
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
     expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 
   test("leaves the channel on unmount", () => {
@@ -716,7 +728,6 @@ describe("useCheckedChannel", () => {
     )
 
     expect(spyConsoleError).toHaveBeenCalled()
-    spyConsoleError.mockRestore()
   })
 
   test("reloads on join error due to not being authenticated", async () => {
@@ -740,8 +751,11 @@ describe("useCheckedChannel", () => {
       })
     )
 
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
     expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 
   test("reloads the window on channel timeout", async () => {
@@ -763,8 +777,11 @@ describe("useCheckedChannel", () => {
       })
     )
 
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
     expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 
   test("returns data from the initial join with closeAfterFirstRead, leaves", () => {

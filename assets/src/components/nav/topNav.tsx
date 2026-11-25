@@ -1,8 +1,9 @@
-import React, { useRef, useState } from "react"
+import React, { useContext, useRef, useState } from "react"
 import { Link } from "react-router"
+import { SocketContext } from "../../contexts/socketContext"
 import { LogoIcon, RefreshIcon } from "../../helpers/icon"
 import * as BsIcon from "../../helpers/bsIcons"
-import { reload } from "../../models/browser"
+import { disconnectAndReload } from "../../helpers/socketLifecycle"
 import { Overlay, Popover, Dropdown } from "react-bootstrap"
 import { LoggedInAs } from "../loggedInAs"
 import getEmailAddress from "../../userEmailAddress"
@@ -11,6 +12,7 @@ import { UserAvatar } from "../userAvatar"
 import { todayIsHalloween } from "../../helpers/date"
 
 const TopNav = (): JSX.Element => {
+  const { socket } = useContext(SocketContext)
   const email = getEmailAddress()
   const [showUserPopover, setShowUserPopover] = useState<boolean>(false)
   const userButtonRef = useRef(null)
@@ -28,7 +30,7 @@ const TopNav = (): JSX.Element => {
         <li>
           <button
             className="c-top-nav__right-item"
-            onClick={() => reload()}
+            onClick={() => disconnectAndReload(socket)}
             title="Refresh"
           >
             <RefreshIcon className="c-top-nav__icon" />

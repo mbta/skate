@@ -1,10 +1,19 @@
 import { jest } from "@jest/globals"
 import { Socket, PushStatus, Channel } from "phoenix"
 
-export const makeMockSocket = (): Socket & { channel: jest.Mock } =>
+export const makeMockSocket = (): Socket & {
+  channel: jest.Mock
+  disconnect: jest.Mock<Socket["disconnect"]>
+} =>
   ({
     channel: jest.fn(),
-  }) as Socket & { channel: jest.Mock }
+    disconnect: jest.fn<Socket["disconnect"]>((callback) => {
+      callback?.()
+    }),
+  }) as unknown as Socket & {
+    channel: jest.Mock
+    disconnect: jest.Mock<Socket["disconnect"]>
+  }
 
 export const makeMockChannel = (
   expectedReceiveMessage?: PushStatus | (() => PushStatus),

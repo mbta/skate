@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { afterEach, jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import useTrainVehicles, {
   TrainVehicleData,
@@ -9,6 +9,10 @@ import { RouteId } from "../../src/schedule"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 describe("useTrainVehicles", () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   const trainVehiclesData: TrainVehicleData[] = [
     {
       id: "R-5463D2D3",
@@ -118,7 +122,10 @@ describe("useTrainVehicles", () => {
 
     renderHook(() => useTrainVehicles(mockSocket, ["Red"]))
 
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
     expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 })

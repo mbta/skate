@@ -1,6 +1,6 @@
 import { Channel, Socket } from "phoenix"
 import { Dispatch as ReactDispatch, useEffect, useReducer } from "react"
-import { reload } from "../models/browser"
+import { disconnectAndReload } from "../helpers/socketLifecycle"
 import { TrainVehicle } from "../realtime"
 import { ByRouteId, RouteId } from "../schedule"
 
@@ -134,11 +134,12 @@ const subscribe = (
 
   const topic = `train_vehicles:${routeId}`
   const channel = socket.channel(topic)
+  const reloadWithDisconnect = () => disconnectAndReload(socket)
 
   channel.on("train_vehicles", handleTrainVehicles)
 
   // Reload our session if the auth has expired
-  channel.on("auth_expired", reload)
+  channel.on("auth_expired", reloadWithDisconnect)
 
   channel
     .join()
@@ -147,7 +148,7 @@ const subscribe = (
       // eslint-disable-next-line no-console
       console.error("Train vehicles join failed", reason)
     })
-    .receive("timeout", reload)
+    .receive("timeout", reloadWithDisconnect)
   return channel
 }
 
