@@ -2,7 +2,7 @@ import { Channel, Socket } from "phoenix"
 import { useEffect, useState } from "react"
 import { array, assert, object, string } from "superstruct"
 import { equalByElements } from "../helpers/array"
-import { reload } from "../models/browser"
+import { disconnectAndReload } from "../helpers/socketLifecycle"
 import { ByRouteId, RouteId } from "../schedule"
 
 const subscribe = (
@@ -30,10 +30,11 @@ const subscribe = (
 
   const topic = `alerts:route:${routeId}`
   const channel = socket.channel(topic)
+  const reloadWithDisconnect = () => disconnectAndReload(socket)
 
   channel.on("alerts", handleAlerts)
 
-  channel.on("auth_expired", reload)
+  channel.on("auth_expired", reloadWithDisconnect)
 
   channel
     .join()
@@ -42,7 +43,7 @@ const subscribe = (
       // eslint-disable-next-line no-console
       console.error("join failed", reason)
     })
-    .receive("timeout", reload)
+    .receive("timeout", reloadWithDisconnect)
 
   return channel
 }

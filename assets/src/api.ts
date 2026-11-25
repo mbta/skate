@@ -1,7 +1,7 @@
 import "whatwg-fetch"
 import appData from "./appData"
 import { ScheduleBlock, ScheduleRun } from "./minischedule"
-import { reload } from "./models/browser"
+import { disconnectAndReload } from "./helpers/socketLifecycle"
 import {
   scheduleBlockFromData,
   scheduleRunFromData,
@@ -104,7 +104,7 @@ const checkResponseStatus = (response: Response) => {
   if (Math.floor(response.status / 100) === 3 || response.status === 403) {
     // If the API sends us a redirect or forbidden, the user needs to
     // re-authenticate. Reload to go through the auth flow again.
-    reload()
+    disconnectAndReload()
   }
 
   throw new Error(`Response error: ${response.status}`)

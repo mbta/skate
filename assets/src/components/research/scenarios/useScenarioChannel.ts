@@ -1,7 +1,7 @@
 import { Channel, Socket } from "phoenix"
 import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { SocketContext } from "../../../contexts/socketContext"
-import { reload } from "../../../models/browser"
+import { disconnectAndReload } from "../../../helpers/socketLifecycle"
 import { Scenario } from "./types"
 
 export const DEFAULT_SCENARIOS_TOPIC = "research:scenarios:default"
@@ -69,7 +69,7 @@ export const useScenarioChannel = <T = unknown, Id extends string = string>(
       }
     })
 
-    channel.on("auth_expired", reload)
+    channel.on("auth_expired", () => disconnectAndReload(socket))
 
     channel
       .join()

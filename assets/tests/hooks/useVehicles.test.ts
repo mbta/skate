@@ -1,6 +1,7 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { afterEach, jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import useVehicles from "../../src/hooks/useVehicles"
+import * as browser from "../../src/models/browser"
 import { VehicleData, vehicleFromData } from "../../src/models/vehicleData"
 import { Ghost, Vehicle } from "../../src/realtime"
 import { RouteId } from "../../src/schedule.d"
@@ -17,6 +18,10 @@ jest.mock("@sentry/react", () => ({
 }))
 
 describe("useVehicles", () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   const vehicleData = vehicleDataFactory.build()
   const vehiclesData: VehicleData[] = [vehicleData]
   const vehicle: Vehicle = vehicleFromData(vehicleData)
@@ -168,5 +173,22 @@ describe("useVehicles", () => {
     expect(result.current).toEqual({
       "1": vehicles,
     })
+  })
+
+  test("disconnects socket with code 1000 and reloads on auth_expired or timeout", () => {
+    const reloadSpy = jest.spyOn(browser, "reload").mockImplementation(() => {})
+    const mockSocket = makeMockSocket()
+    const mockChannel = makeMockChannel("timeout")
+    mockSocket.channel.mockImplementation(() => mockChannel)
+
+    renderHook(() => useVehicles(mockSocket, ["1", "2"]))
+
+    // Concurrent timeouts across multiple routes deduplicate if teardown is in flight,
+    // and with synchronous mock callback each disconnects with 1000 before reloading
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
+    expect(reloadSpy).toHaveBeenCalled()
   })
 })

@@ -1,4 +1,4 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { afterEach, jest, describe, test, expect } from "@jest/globals"
 import { renderHook } from "@testing-library/react"
 import useAlerts from "../../src/hooks/useAlerts"
 import * as browser from "../../src/models/browser"
@@ -6,6 +6,10 @@ import { RouteId } from "../../src/schedule.d"
 import { makeMockChannel, makeMockSocket } from "../testHelpers/socketHelpers"
 
 describe("useAlerts", () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   test("alerts is empty to start with", () => {
     const { result } = renderHook(() => useAlerts(undefined, []))
     expect(result.current).toEqual({})
@@ -85,7 +89,10 @@ describe("useAlerts", () => {
 
     renderHook(() => useAlerts(mockSocket, ["1"]))
 
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
     expect(reloadSpy).toHaveBeenCalled()
-    reloadSpy.mockRestore()
   })
 })

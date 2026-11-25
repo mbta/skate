@@ -1,10 +1,13 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { afterEach, jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import "@testing-library/jest-dom/jest-globals"
 import * as browser from "../../../src/models/browser"
 import NavMenu from "../../../src/components/nav/navMenu"
+import { SocketProvider } from "../../../src/contexts/socketContext"
+import { ConnectionStatus } from "../../../src/hooks/useSocket"
+import { makeMockSocket } from "../../testHelpers/socketHelpers"
 import { Router } from "../../testHelpers/wrappers"
 import getEmailAddress from "../../../src/userEmailAddress"
 
@@ -26,6 +29,10 @@ jest.mock("userTestGroups", () => ({
 jest.mock("../../../src/userEmailAddress")
 
 describe("NavMenu", () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   test("when mobile menu is open, clicking the backdrop toggled the mobile menu", async () => {
     const toggleMobileMenu = jest.fn()
 
@@ -118,6 +125,41 @@ describe("NavMenu", () => {
     await user.click(result.getByRole("button", { name: "Refresh" }))
 
     expect(reloadSpy).toHaveBeenCalled()
+  })
+
+  test("refresh button disconnects active socket with code 1000 before reloading", async () => {
+    jest.mocked(getEmailAddress).mockReturnValue("test@example.localhost")
+    const reloadSpy = jest.spyOn(browser, "reload").mockImplementation(() => {})
+    const mockSocket = makeMockSocket()
+    let completeDisconnect: (() => void) | undefined
+    mockSocket.disconnect.mockImplementation((callback) => {
+      completeDisconnect = callback
+    })
+
+    const user = userEvent.setup()
+    const result = render(
+      <SocketProvider
+        socketStatus={{
+          socket: mockSocket,
+          connectionStatus: ConnectionStatus.Connected,
+        }}
+      >
+        <Router>
+          <NavMenu toggleMobileMenu={jest.fn()} mobileMenuIsOpen={true} />
+        </Router>
+      </SocketProvider>
+    )
+
+    await user.click(result.getByRole("button", { name: "Refresh" }))
+
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
+    expect(reloadSpy).not.toHaveBeenCalled()
+
+    completeDisconnect?.()
+    expect(reloadSpy).toHaveBeenCalledTimes(1)
   })
 
   test("clicking the settings button closes the mobile menu", async () => {

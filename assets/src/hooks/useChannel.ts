@@ -1,7 +1,7 @@
 import { Channel, Socket } from "phoenix"
 import { useCallback, useEffect, useState } from "react"
 import { create, Struct, StructError } from "superstruct"
-import { reload } from "../models/browser"
+import { disconnectAndReload } from "../helpers/socketLifecycle"
 import * as Sentry from "@sentry/react"
 
 /** Opens a channel for the given topic
@@ -32,11 +32,12 @@ export const useChannel = <T>({
     setState(loadingState)
     let channel: Channel | undefined
     if (socket !== undefined && topic !== null) {
+      const reloadWithDisconnect = () => disconnectAndReload(socket)
       channel = socket.channel(topic)
       channel.on(event, ({ data: data }) => {
         setState(parser(data))
       })
-      channel.on("auth_expired", reload)
+      channel.on("auth_expired", reloadWithDisconnect)
 
       channel
         .join()
@@ -51,13 +52,13 @@ export const useChannel = <T>({
 
         .receive("error", ({ reason }) => {
           if (reason === "not_authenticated") {
-            reload()
+            reloadWithDisconnect()
           } else {
             // eslint-disable-next-line no-console
             console.error(`joining topic ${topic} failed`, reason)
           }
         })
-        .receive("timeout", reload)
+        .receive("timeout", reloadWithDisconnect)
     }
 
     return () => {
@@ -155,11 +156,12 @@ export const useCheckedTwoWayChannel = <T, U, V>({
     setState(loadingState)
     let channel: Channel | undefined
     if (socket !== undefined && topic !== null) {
+      const reloadWithDisconnect = () => disconnectAndReload(socket)
       channel = socket.channel(topic)
       channel.on(event, (data: { data: unknown }) => {
         onOk(data)
       })
-      channel.on("auth_expired", reload)
+      channel.on("auth_expired", reloadWithDisconnect)
 
       channel
         .join()
@@ -174,13 +176,13 @@ export const useCheckedTwoWayChannel = <T, U, V>({
         })
         .receive("error", ({ reason }) => {
           if (reason === "not_authenticated") {
-            reload()
+            reloadWithDisconnect()
           } else {
             // eslint-disable-next-line no-console
             console.error(`joining topic ${topic} failed`, reason)
           }
         })
-        .receive("timeout", reload)
+        .receive("timeout", reloadWithDisconnect)
     }
 
     return () => {

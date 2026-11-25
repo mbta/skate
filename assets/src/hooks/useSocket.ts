@@ -1,6 +1,12 @@
 import { Socket } from "phoenix"
 import { useEffect, useState } from "react"
 import appData from "../appData"
+import {
+  isReloadInFlight,
+  NORMAL_SOCKET_CLOSE_CODE,
+  registerSocket,
+  unregisterSocket,
+} from "../helpers/socketLifecycle"
 import { UserToken } from "../skate.d"
 
 export enum ConnectionStatus {
@@ -33,15 +39,31 @@ const useSocket = (): SocketStatus => {
   const userToken: UserToken | undefined = readUserToken()
 
   useEffect(() => {
+    let isMounted = true
     const initialSocket = new Socket("/socket", {
       params: { token: userToken },
     })
+    registerSocket(initialSocket)
     initialSocket.connect()
-    initialSocket.onOpen(() => setConnectionStatus(ConnectionStatus.Connected))
+    initialSocket.onOpen(() => {
+      if (isMounted) {
+        setConnectionStatus(ConnectionStatus.Connected)
+      }
+    })
     initialSocket.onClose((_event: CloseEvent) => {
-      setConnectionStatus(ConnectionStatus.Disconnected)
+      if (isMounted && !isReloadInFlight()) {
+        setConnectionStatus(ConnectionStatus.Disconnected)
+      }
     })
     setSocket(initialSocket)
+
+    return () => {
+      isMounted = false
+      unregisterSocket(initialSocket)
+      if (typeof initialSocket.disconnect === "function") {
+        initialSocket.disconnect(undefined, NORMAL_SOCKET_CLOSE_CODE)
+      }
+    }
   }, [userToken])
 
   return { socket, connectionStatus }

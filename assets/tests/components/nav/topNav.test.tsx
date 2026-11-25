@@ -1,15 +1,22 @@
-import { jest, describe, test, expect } from "@jest/globals"
+import { afterEach, jest, describe, test, expect } from "@jest/globals"
 import React from "react"
 import { render, screen } from "@testing-library/react"
 import TopNav from "../../../src/components/nav/topNav"
 import userEvent from "@testing-library/user-event"
+import { SocketProvider } from "../../../src/contexts/socketContext"
 import { StateDispatchProvider } from "../../../src/contexts/stateDispatchContext"
+import { ConnectionStatus } from "../../../src/hooks/useSocket"
 import { initialState } from "../../../src/state"
+import { makeMockSocket } from "../../testHelpers/socketHelpers"
 import { Router } from "../../testHelpers/wrappers"
 import "@testing-library/jest-dom/jest-globals"
 import * as browser from "../../../src/models/browser"
 
 describe("TopNav", () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   test("refresh button reloads the page", async () => {
     const reloadSpy = jest
       .spyOn(browser, "reload")
@@ -28,6 +35,43 @@ describe("TopNav", () => {
     await user.click(screen.getByTitle("Refresh"))
 
     expect(reloadSpy).toHaveBeenCalled()
+  })
+
+  test("refresh button disconnects active socket with code 1000 before reloading", async () => {
+    const reloadSpy = jest.spyOn(browser, "reload").mockImplementation(() => {})
+    const mockSocket = makeMockSocket()
+    let completeDisconnect: (() => void) | undefined
+    mockSocket.disconnect.mockImplementation((callback) => {
+      completeDisconnect = callback
+    })
+
+    const dispatch = jest.fn()
+    const user = userEvent.setup()
+    render(
+      <StateDispatchProvider state={initialState} dispatch={dispatch}>
+        <SocketProvider
+          socketStatus={{
+            socket: mockSocket,
+            connectionStatus: ConnectionStatus.Connected,
+          }}
+        >
+          <Router>
+            <TopNav />
+          </Router>
+        </SocketProvider>
+      </StateDispatchProvider>
+    )
+
+    await user.click(screen.getByTitle("Refresh"))
+
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      1000
+    )
+    expect(reloadSpy).not.toHaveBeenCalled()
+
+    completeDisconnect?.()
+    expect(reloadSpy).toHaveBeenCalledTimes(1)
   })
 
   describe("User info", () => {

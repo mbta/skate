@@ -34,6 +34,11 @@ import routeFactory from "./factories/route"
 import routeTabFactory from "./factories/routeTab"
 import { stopFactory } from "./factories/stop"
 import * as browser from "../src/models/browser"
+import {
+  NORMAL_SOCKET_CLOSE_CODE,
+  registerSocket,
+} from "../src/helpers/socketLifecycle"
+import { makeMockSocket } from "./testHelpers/socketHelpers"
 import { string, unknown } from "superstruct"
 import {
   LocationType,
@@ -123,6 +128,31 @@ describe("apiCall", () => {
     }).then(() => {
       expect(browser.reload).toHaveBeenCalled()
     })
+  })
+
+  test("disconnects active socket with code 1000 before reloading on auth failure", async () => {
+    const mockSocket = makeMockSocket()
+    let completeDisconnect: (() => void) | undefined
+    mockSocket.disconnect.mockImplementation((callback) => {
+      completeDisconnect = callback
+    })
+    registerSocket(mockSocket)
+    mockFetch(403, { data: null })
+
+    await apiCall({
+      url: "/",
+      parser: () => null,
+      defaultResult: "default",
+    })
+
+    expect(mockSocket.disconnect).toHaveBeenCalledWith(
+      expect.any(Function),
+      NORMAL_SOCKET_CLOSE_CODE
+    )
+    expect(browser.reload).not.toHaveBeenCalled()
+
+    completeDisconnect?.()
+    expect(browser.reload).toHaveBeenCalledTimes(1)
   })
 
   test("returns a default for any other response", () => {
