@@ -5,6 +5,7 @@ import React from "react"
 import { randomUUID } from "node:crypto"
 import { TextEncoder, TextDecoder } from "node:util"
 import { config } from "react-transition-group"
+import { resetBrowserReloadState } from "../src/models/browser"
 
 const ignoreList = [/.*components\/app\.test\.tsx/]
 const ignoreNameList = []
@@ -80,4 +81,8 @@ config.disabled = true
 beforeEach(() => {
   // eslint-disable-next-line jest/no-standalone-expect
   expect.hasAssertions()
+})
+
+afterEach(() => {
+  resetBrowserReloadState?.()
 })
