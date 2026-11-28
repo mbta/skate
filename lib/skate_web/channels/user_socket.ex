@@ -26,6 +26,7 @@ defmodule SkateWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+  @impl Phoenix.Socket
   def connect(%{"token" => token}, socket, _connect_info) do
     unverified_user_id =
       with %{claims: claims} <- SkateWeb.AuthManager.peek(token),
@@ -60,5 +61,31 @@ defmodule SkateWeb.UserSocket do
   #     SkateWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
+  @impl Phoenix.Socket
   def id(_socket), do: nil
+
+  ### Override the transport callback implementations to monitor the socket lifecycle.
+  defoverridable init: 1, terminate: 2
+
+  alias SkateWeb.SocketMonitor
+
+  @impl Phoenix.Socket.Transport
+  @spec init(Phoenix.Socket.Transport.state()) ::
+          {:ok, Phoenix.Socket.Transport.state()}
+  def init(state) do
+    {:ok, {_, %Phoenix.Socket{} = socket} = state} = super(state)
+    SocketMonitor.monitor(socket)
+    {:ok, state}
+  end
+
+  @impl Phoenix.Socket.Transport
+  @spec terminate(term(), Phoenix.Socket.Transport.state()) :: :ok
+  def terminate(reason, state) do
+    case state do
+      {_, %Phoenix.Socket{} = socket} -> SocketMonitor.demonitor(socket, reason)
+      _ -> :ok
+    end
+
+    super(reason, state)
+  end
 end

@@ -15,6 +15,8 @@ defmodule Skate.TelemetryTest do
       on_exit(fn -> :telemetry.detach(ref) end)
 
       %{telemetry_ref: ref}
+    else
+      :ok
     end
   end
 
