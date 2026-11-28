@@ -42,7 +42,7 @@ defmodule Skate.Application do
         [
           {Phoenix.PubSub, name: Skate.PubSub},
           {DNSCluster, Application.get_env(:skate, DNSCluster)},
-          Skate.Telemetry.Sockets.Monitor.Supervisor,
+          SkateWeb.SocketMonitor.Supervisor,
           SkateWeb.Endpoint,
           {Oban, Application.fetch_env!(:skate, Oban)},
           Skate.Migrate,

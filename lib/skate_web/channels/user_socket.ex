@@ -1,13 +1,8 @@
 defmodule SkateWeb.UserSocket do
   require Logger
 
-  alias Phoenix.Socket.Transport
-  alias Skate.Telemetry.Sockets.Monitor
-
   use Phoenix.Socket,
     max_channels_per_transport: 500
-
-  defoverridable init: 1, terminate: 2
 
   ## Channels
   channel("data_status", SkateWeb.DataStatusChannel)
@@ -69,17 +64,25 @@ defmodule SkateWeb.UserSocket do
   @impl Phoenix.Socket
   def id(_socket), do: nil
 
-  @impl Transport
+  ### Override the transport callback implementations to monitor the socket lifecycle.
+  defoverridable init: 1, terminate: 2
+
+  alias SkateWeb.SocketMonitor
+
+  @impl Phoenix.Socket.Transport
+  @spec init(Phoenix.Socket.Transport.state()) ::
+          {:ok, Phoenix.Socket.Transport.state()}
   def init(state) do
-    {:ok, {_internal_state, socket} = initialized} = super(state)
-    Monitor.track(socket)
-    {:ok, initialized}
+    {:ok, {_, %Phoenix.Socket{} = socket} = state} = super(state)
+    SocketMonitor.monitor(socket)
+    {:ok, state}
   end
 
-  @impl Transport
+  @impl Phoenix.Socket.Transport
+  @spec terminate(term(), Phoenix.Socket.Transport.state()) :: :ok
   def terminate(reason, state) do
     case state do
-      {_internal_state, socket} -> Monitor.untrack(socket, reason)
+      {_, %Phoenix.Socket{} = socket} -> SocketMonitor.demonitor(socket, reason)
       _ -> :ok
     end
 
