@@ -121,7 +121,7 @@ defmodule SkateWeb.SocketMonitor do
 
     @doc false
     @spec start_link([Elixir.Supervisor.option()]) :: Elixir.Supervisor.on_start()
-    def start_link(options \\ [name: __MODULE__]) do
+    def start_link(options \\ []) do
       Elixir.Supervisor.start_link(
         __MODULE__,
         nil,
